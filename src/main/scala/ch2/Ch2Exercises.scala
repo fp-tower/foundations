@@ -1,9 +1,9 @@
 package ch2
 
 object Ch2Exercises {
-  
+
   // 1a. How many possible values are of type Boolean?
-  
+
   // 1b. How many possible values are of type Char?
 
   // 1c. How many possible values are of type Unit?
@@ -31,21 +31,21 @@ object Ch2Exercises {
   // 1n. How many possible values are of type (Boolean, Nothing)?
 
 
-  
-  
-  // 2a. Create a type containing 2 possible values using Zero, One, Pair and Branch 
+
+
+  // 2a. Create a type containing 2 possible values using Zero, One, Pair and Branch
   sealed trait Zero
-  
+
   case object One
-  
+
   case class Pair[A, B](_1: A, _2: B)
-  
+
   sealed trait Branch[A, B]
   object Branch {
     case class Left [A, B](value: A) extends Branch[A, B]
     case class Right[A, B](value: B) extends Branch[A, B]
   }
-  
+
   // 2b. Create a type containing 3 possible values using Zero, One, Pair and Branch
 
 
@@ -65,9 +65,10 @@ object Ch2Exercises {
 
   // 2g. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
   // Pair[A, Branch[B, C]] == Branch[Pair[A, B], Pair[A, C]] ?
-  
+
 
 
   // 3.
+
 
 }
