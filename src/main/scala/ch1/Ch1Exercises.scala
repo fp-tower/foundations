@@ -1,6 +1,6 @@
 package ch1
 
-object ExerciseCh1 extends App {
+object Ch1Exercises {
 
   // 1a. is plus a pure function? why?
   def plus(a: Int, b: Int): Int = a + b
@@ -17,6 +17,10 @@ object ExerciseCh1 extends App {
     i * 2
   }
 
+  // 1d. is mapLookup a pure function? why?
+  def mapLookup(map: Map[String, Int], key: String): Int =
+    map(key)
+
   // 1d. is times3 a pure function? why?
   def times3(i: Int): Int = {
     println("do something here") // could be a database access or http call
@@ -30,7 +34,7 @@ object ExerciseCh1 extends App {
 
   // 1f. is inc or inc_v2 a pure function? why?
   def inc(xs: Array[Int]): Unit =
-    for { i <- 0 until xs.length } xs(i) = xs(i) + 1
+    for { i <- 0 to xs.length } xs(i) = xs(i) + 1
 
   def inc_v2(xs: Array[Int]): Unit =
     for { i <- xs.indices } xs(i) = xs(i) + 1
