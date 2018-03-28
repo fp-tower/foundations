@@ -42,30 +42,4 @@ object Ch1Exercises {
 
 
 
-
-  // 2a. Implement isAdult
-  def isAdult(i: Int): Boolean = ???
-
-
-
-
-
-  // 2b. What if a user pass a negative number? e.g. isAdult(-5)
-  // how would update the definition / signature of isAdult
-
-
-
-
-
-  // 2c. What is the most precise type?
-  // Int                  => Option[Boolean]
-  // Int Refined Positive => Boolean          (see https://github.com/fthomas/refined)
-
-
-
-  // 2d. Why? How do you define precision?
-
-
-
-
 }

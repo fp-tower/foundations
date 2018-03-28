@@ -7,7 +7,7 @@ Reason about your program
 * immutability: when I have an object, I can do whatever I want with it. I don't need to worry about other people reference on this object
 * pure function: no need to check result type for null / catch exception, signature do not lie == some documentation for free, memoization/caching
 
-## Chapter 2: Data modelling
+## Chapter 2: Data / Function modelling
 
 ## Chapter 3: Error handling
 Option, Either, Validation

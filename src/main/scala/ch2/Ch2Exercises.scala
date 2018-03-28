@@ -67,8 +67,47 @@ object Ch2Exercises {
   // Pair[A, Branch[B, C]] == Branch[Pair[A, B], Pair[A, C]] ?
 
 
+  // 2e. Can you think of any other properties that types and basic algebra have in common?
+  // e.g. What can you say about a + b or a * b
 
-  // 3.
+
+
+  // 3a. Implement isAdult
+  def isAdult(i: Int): Boolean = ???
+
+
+
+
+
+  // 3b. What if a user pass a negative number? e.g. isAdult(-5)
+  // how would update the signature and implementation of isAdult
+
+
+
+
+
+  // 3c. What is the most precise type?
+  // Int                  => Option[Boolean]
+  // Int Refined Positive => Boolean          (see https://github.com/fthomas/refined)
+
+
+
+  // 3d. Why? How do you define precision?
+
+
+
+  // 4a. Implement compareInt such as it return:
+  // -1 if x < y
+  //  0 if x == y
+  //  1 if x > y
+  /** see [[Integer.compare]] */
+  def compareInt(x: Int, y: Int): Int = ???
+
+
+
+  // 4b. why can we say that compareInt is imprecise? Implement a more precise compareInt_v2
+  def compareInt_v2 = ???
+
 
 
 }
