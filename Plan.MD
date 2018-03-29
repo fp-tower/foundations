@@ -12,4 +12,7 @@ Reason about your program
 ## Chapter 3: Error handling
 Option, Either, Validation
 
-## Chapter 4: Typeclasses
+## Chapter 4: Data Structure
+List, Vector, NonEmptyList, Map, Set
+
+## Chapter 5: Typeclasses
