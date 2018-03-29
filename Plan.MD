@@ -15,4 +15,7 @@ Option, Either, Validation
 ## Chapter 4: Data Structure
 List, Vector, NonEmptyList, Map, Set
 
-## Chapter 5: Typeclasses
+## Chapter 5: Generic Function
+identity, absurd
+
+## Chapter 6: Typeclasses
