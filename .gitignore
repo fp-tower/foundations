@@ -12,5 +12,5 @@
 *.class
 target/
 project/project/
-benchData/
+docs/
 _site/
