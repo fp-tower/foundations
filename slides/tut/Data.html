@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Data</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Data
+`@JulienTruffaut`
+
+---
+
+# And - Or
+
+a `PersonRow` is an `Int` (id) **AND** a `String` (name)
+
+a `DayOfWeek` is `Monday` **OR** `Tuesday` **OR** ...
+
+a `Result` is a `Failure` **OR** a `Success`
+
+
+---
+
+# And (Product)
+
+```tut:silent
+case class PersonRow(id: Int, name: String)
+
+type PersonRow = (Int, String)
+```
+
+```tut:silent
+val p = PersonRow(5, "John")
+```
+
+```tut
+p.id
+
+p.name
+```
+
+---
+
+# Or (Coproduct)
+
+```tut:silent
+sealed trait DayOfWeek
+
+object DayOfWeek {
+  case object Monday  extends DayOfWeek
+  case object Tuesday extends DayOfWeek
+  // ...
+}
+```
+
+--
+
+```tut:silent
+def dayToInt(d: DayOfWeek): Int = d match {
+  case DayOfWeek.Monday  => 1
+  case DayOfWeek.Tuesday => 2
+}
+```
+
+---
+
+# And - Or
+
+```tut:silent
+sealed trait Result
+
+object Result {
+  case class Success(row: PersonRow, day: DayOfWeek) extends Result
+  case class Failure(message: String) extends Result
+}
+```
+
+--
+
+a `Result` is a `Success` **OR** a `Failure`
+
+a `Success` is a `PersonRow` **AND** a `DayOfWeek`
+
+a `Failure` is a `String`
+
+---
+
+# And - Or
+
+```tut:silent
+sealed trait List[A]
+
+object List {
+  case class Nil[A]() extends List[A]
+  case class Cons[A](head: A, tail: List[A]) extends List[A]
+}
+```
+
+a `List[A]` is a `Nil` **OR** a `Cons`
+
+a `Cons` is a `A` (head) **AND** a `List[A]` (tail)
+
+--
+
+```haskell
+data List a = Nil | Cons a (List a)
+
+data DaysOfWeek = Monday | Tuesday | Wednesday // ...
+```
+
+---
+
+# And - Or
+
+* Almost every type can be encoded as a combination of `Product` and `CoProduct`
+
+* Encoding used for derivation (see later)
+
+* Useful to count possible state
+
+---
+
+# Exercise 1: How many values of ...
+
+--
+
+* `Boolean` can be `true` or `false`, so it has 2 values
+
+--
+
+* `Unit` has a single value `()`
+
+--
+
+* `Char` encode characters with 8 bits, so it has `2^8 - 1 == 255` values
+
+--
+
+* `Int` encode a number with 32 bits, so it has `2^32 - 1 =~ 4.2 Billion` values
+
+--
+
+* `Option[Unit]` is either a `None` or a `Some(())`, so it has 2 values like Boolean
+
+--
+
+* `Option[Boolean]` is either a `None`, `Some(true)`, `Some(false)`, so it has 3 values
+
+--
+
+* `(Boolean, Unit)` is either `(true, ())` or `(false, ())`, so it has 2 values
+
+--
+
+* `(Boolean, Char)` is either `(true, x: Char)` or `(false, x: Char)`, so it has `2 * 255 == 510` values
+
+
+---
+
+# Exercise 1: How many values of ...
+
+
+* `String` is an unbounded sequence of characters, so it would have an **Infinite** number of values
+
+--
+
+* `List[Unit]` is an unbounded sequence of `Unit`, so it would have an **Infinite** number of values
+
+--
+
+This is not exactly correct, in practice `String` is encoded as an array of `Char` which is limited in size by `Int`
+
+
+---
+
+# Exercise 1: How many values of ...
+
+* `Nothing` is by definition a type with no value, it is impossible to create a value of type `Nothing`!
+
+--
+
+* `Option[Nothing]` is either `None` or `Some(???)`, it is impossible to create a `Some` of `Nothing`, so it has a 1 value
+
+--
+
+* `(Boolean, Nothing)` has 0 value, if it had a value then we would be able to extract a value of type `Nothing`
+
+--
+
+* `List[Nothing]` is either `Nil` or `(Nothing, List[Nothing])` which is impossible. So it has 1 value
+
+
+---
+
+# Exercise 2: Create a 2 value type
+
+```tut:silent
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+```
+
+--
+
+```tut:silent
+type Two = Branch[One.type, One.type]
+```
+
+`Two` can be either `Left(One)` or `Right(One)`
+
+---
+
+# Exercise 2: Create a 4 value type
+
+```tut:silent
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+```
+
+--
+
+```tut:silent
+type Four = Pair[Two, Two]
+```
+
+`Four` can be either:
+* `Pair( Left(One), Left(One))`
+* `Pair(Right(One), Left(One))`
+* `Pair( Left(One), Right(One))`
+* `Pair(Right(One), Right(One))`
+
+
+---
+
+# Exercise 2: Create an 8 value type
+
+```tut:silent
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+```
+
+--
+
+```tut:silent
+type Eight_1 = Pair[Four, Two]
+type Eight_2 = Pair[Two , Four]
+type Eight_3 = Branch[Four, Four]
+```
+
+---
+
+# Exercise 2: Create an 8 value type with Func
+
+```tut:silent
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+
+trait Func[A, B]{
+  def apply(value: A): B
+}
+```
+
+--
+
+```tut:silent
+type Three   = Branch[One.type, Two]
+type Eight_4 = Func[Three, Two]
+```
+
+---
+
+# Exercise 2: Create an 8 value type with Func
+
+TODO add diagram for function mapping
+
+---
+# Exercise 3: Algebra
+
+Let's define `|A|` as the number of values of type `A`, e.g.
+
+```
+|Nothing| == 0
+
+|Unit| == 1
+
+|Boolean| == 2
+
+|Option[Boolean]| == 3
+
+|(Boolean, Boolean)| == 4
+```
+
+---
+# Exercise 3: Algebra
+
+--
+
+* `|Pair[A,B]| == |A| * |B|`  hence the name Product type
+
+--
+
+* `|Branch[A, B]| == |A| + |B|` hence the name Sum type
+
+--
+
+* `|Func[A, B]| == |B|^|A|`
+
+
+---
+# Exercise 3: Algebra
+
+--
+
+* `|Pair[A, Unit]| == |A|`, this is equivalent to `a * 1 == a`
+
+--
+
+* `|Branch[A, Nothing]| == |A|`, this is equivalent to `a + 0 == a`
+
+--
+
+* `|Pair[A, Branch[B, C]]| == |Pair[Branch[A, B]|, Pair[A, C]]`, this is equivalent to `a * (b + c) == a * b + a * c`
+
+--
+
+* `|Pair[A, Nothing]| == |Nothing|`, this is equivalent to `a * 0 == 0`
+
+* `|Pair[A, B]| == |Pair[B, A]|`, this is equivalent to `a * b == b * a`
+
+* `|Branch[A, B]| == |Branch[B, A]|`, this is equivalent to `a + b == b + a`
+
+
+---
+# Exercise 3: Algebra
+
+`|A| == |B|` means 
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>

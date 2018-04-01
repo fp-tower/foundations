@@ -4,11 +4,11 @@ object Ch2Exercises {
 
   // 1a. How many possible values are of type Boolean?
 
-  // 1b. How many possible values are of type Char?
+  // 1b. How many possible values are of type Unit?
 
-  // 1c. How many possible values are of type Unit?
+  // 1c. How many possible values are of type Char?
 
-  // 1d. How many possible values are of type String?
+  // 1d. How many possible values are of type Int?
 
   // 1e. How many possible values are of type Option[Unit]?
 
@@ -16,19 +16,19 @@ object Ch2Exercises {
 
   // 1g. How many possible values are of type (Boolean, Unit)?
 
-  // 1h. How many possible values are of type (Boolean, Int)?
+  // 1h. How many possible values are of type (Boolean, Char)?
 
-  // 1i. How many possible values are of type List[Unit]?
+  // 1i. How many possible values are of type String?
 
-  // 1j. How many possible values are of type List[Boolean]?
+  // 1j. How many possible values are of type List[Unit]?
 
   // 1k. How many possible values are of type Nothing?
 
   // 1l. How many possible values are of type Option[Nothing]?
 
-  // 1m. How many possible values are of type List[Nothing]?
+  // 1m. How many possible values are of type (Boolean, Nothing)?
 
-  // 1n. How many possible values are of type (Boolean, Nothing)?
+  // 1n. How many possible values are of type List[Nothing]?
 
 
 
@@ -46,29 +46,48 @@ object Ch2Exercises {
     case class Right[A, B](value: B) extends Branch[A, B]
   }
 
-  // 2b. Create a type containing 3 possible values using Zero, One, Pair and Branch
+  // 2b. Create a type containing 2 possible values using all previously defined types
 
 
-  // 2c. Create a type containing 7 possible values using all previously defined types
+
+  // 2c. Create a type containing 4 possible values using all previously defined types
 
 
-  // 2d. Let's define |A| has the number of elements of type A
+
+  // 2d. Create a type containing 8 possible values using all previously defined types
+
+
+
+  // 2e. Create a type containing 8 possible values using Func and all previously defined types
+  trait Func[A, B]{
+    def apply(value: A): B
+  }
+
+
+
+  // 3a. Let's define |A| has the number of elements of type A
   // Express with a formula how many elements are of type Pair[A, B]
 
 
-  // 2e. Express with a formula how many elements are of type Branch[A, B]
+  // 3b. Express with a formula how many elements are of type Branch[A, B]
 
 
-  // 2f. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
+  // 3c. Express with a formula how many elements are of type Func[A, B]
+
+
+  // 3d. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
   // Is it also true with types?
 
 
-  // 2g. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
+  // 2j. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
   // Pair[A, Branch[B, C]] == Branch[Pair[A, B], Pair[A, C]] ?
 
 
-  // 2e. Can you think of any other properties that types and basic algebra have in common?
+  // 2k. Can you think of any other properties that types and basic algebra have in common?
   // e.g. What can you say about a + b or a * b
+
+
+  // 2l. What does it mean `|A| == |B|`? What can we say about these two types?
 
 
 
@@ -86,13 +105,11 @@ object Ch2Exercises {
 
 
 
-  // 3c. What is the most precise type?
+  // 3c. What is the most precise type? Why?
   // Int                  => Option[Boolean]
   // Int Refined Positive => Boolean          (see https://github.com/fthomas/refined)
 
 
-
-  // 3d. Why? How do you define precision?
 
 
 

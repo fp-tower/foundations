@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Title</title>
+<title>Basis of Functional Programming</title>
 <meta charset="utf-8">
 <style>
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -31,18 +31,64 @@ class: center, middle
 1. FP Basics / motivation
 2. Data / Function modelling
 3. Error handling
-4. Data Structure
+4. Functional Data Structures
 5. Typeclasses
 
 ---
 
-# Introduction
+# Why functional programming?
+
+* less bug
+* more confidence to update
+* more enjoyable
+
+---
+
+# What's functional programming?
+
+## 1. programming using **PURE** function
+
+--
+
+* deterministic
+* no exception
+* no side effect
+
+--
+
+## 2. composable
+
+---
+
+# Types
+
+## 1. Dynamically typed e.g. Javascript, Clojure
+
+## 2. Statically typed e.g. Scala, Haskell, Purescript
+
+
+---
+
+# Scala safe subset
+
+* no `null`
+* no exception
+* no side effect
+* only use exhaustive matching
+* no type casting
+* no reflection
+* no `equals` / `toString`
+
+???
+Also known as Scalaz subset
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
 </script>
 <script>
-    var slideshow = remark.create();
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
 </script>
 </body>
 </html>
