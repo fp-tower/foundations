@@ -70,6 +70,30 @@ identity("foo")
 
 ---
 
+# Function: lazy arguments
+
+```tut:silent
+def or(x: Boolean, y: => Boolean): Boolean =
+  x match {
+    case true  => true
+    case false => y
+  }
+```
+
+--
+
+```tut
+or(true, false)
+or(false, true)
+or(true, ???)
+```
+
+```tut:fail
+or(false, ???)
+```
+
+---
+
 # Case class
 
 ```tut:silent
@@ -148,6 +172,34 @@ Bar.Bar1(5)
 Bar(5)
 ```
 
+---
+
+## Generic
+
+```tut:silent
+case class WithId[A](id: Int, value: A)
+```
+
+```tut
+WithId(5, "foo")
+WithId(5, true)
+```
+
+--
+
+```tut:silent
+sealed trait Foo[A]
+
+object Foo {
+  case class JustFoo[A](x: A) extends Foo[A]
+  case class NoFoo[A]() extends Foo[A]
+}
+```
+
+```tut
+Foo.JustFoo(5)
+Foo.NoFoo()
+```
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
