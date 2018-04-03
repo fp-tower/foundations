@@ -1,0 +1,2 @@
+* [Gabriel Gonzalez](https://twitter.com/GabrielG439/status/981177498841972736) I see the decision to use a typed functional language as not one of saving keystrokes, but rather helping the codebase gracefully scale to a large number of developers while still remaining easy to comprehend, debug, and maintain
+* [Paul Snively](https://twitter.com/paul_snively/status/981179078425415680) ... But it’s literally true in a specific, well-defined sense, which we (maybe intimidatingly) call “equational reasoning via the substitution model of evaluation."

@@ -79,33 +79,33 @@ object Ch2Exercises {
   // Is it also true with types?
 
 
-  // 2j. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
+  // 3j. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
   // Pair[A, Branch[B, C]] == Branch[Pair[A, B], Pair[A, C]] ?
 
 
-  // 2k. Can you think of any other properties that types and basic algebra have in common?
+  // 3k. Can you think of any other properties that types and basic algebra have in common?
   // e.g. What can you say about a + b or a * b
 
 
-  // 2l. What does it mean `|A| == |B|`? What can we say about these two types?
+  // 3l. What does it mean `|A| == |B|`? What can we say about these two types?
 
 
 
-  // 3a. Implement isAdult
+  // 4a. Implement isAdult
   def isAdult(i: Int): Boolean = ???
 
 
 
 
 
-  // 3b. What if a user pass a negative number? e.g. isAdult(-5)
+  // 4b. What if a user pass a negative number? e.g. isAdult(-5)
   // how would update the signature and implementation of isAdult
 
 
 
 
 
-  // 3c. What is the most precise type? Why?
+  // 4c. What is the most precise type? Why?
   // Int                  => Option[Boolean]
   // Int Refined Positive => Boolean          (see https://github.com/fthomas/refined)
 
@@ -113,7 +113,7 @@ object Ch2Exercises {
 
 
 
-  // 4a. Implement compareInt such as it return:
+  // 5a. Implement compareInt such as it return:
   // -1 if x < y
   //  0 if x == y
   //  1 if x > y
@@ -122,16 +122,17 @@ object Ch2Exercises {
 
 
 
-  // 4b. why can we say that compareInt is imprecise? Implement a more precise compareInt_v2
+  // 5b. why can we say that compareInt is imprecise? Implement a more precise compareInt_v2
   def compareInt_v2 = ???
 
 
-  // a. implement getCountryDialCode for UK, France, Germany
+
+  // 6a. implement getCountryDialCode for UK, France, Germany
   // UK is country code is 44, France is 33 and Germany is 49
   def getCountryDialCode(country: String): Int = ???
 
 
-  // b. what happens if someone call getCountryDialCode with "Italy", "france" or "Grande Bretagne" (french version of UK)
+  // 6b. what happens if someone call getCountryDialCode with "Italy", "france" or "Grande Bretagne" (french version of UK)
   // change getCountryDialCode to avoid this situation
 
 
