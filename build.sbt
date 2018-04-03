@@ -10,14 +10,16 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-language:implicitConversions", "-language:existentials",
     "-unchecked",
     "-Xfatal-warnings",
-    "-Xlint",
     "-Yno-adapted-args",
     //    "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
     "-Xfuture"
   ),
   addCompilerPlugin(kindProjector),
-  libraryDependencies += scalaTest % Test
+  libraryDependencies ++= Seq(
+    refined,
+    scalaTest % Test
+  )
 )
 
 lazy val `fp-basis` = project.in(file("."))
@@ -29,12 +31,6 @@ lazy val `fp-basis` = project.in(file("."))
 lazy val exercises = project
   .settings(moduleName := "fp-basis-exercises")
   .settings(baseSettings: _*)
-  .settings(libraryDependencies ++= Seq(
-    "org.typelevel"  %% "cats"       % "0.9.0",
-    "org.apache.poi"  % "poi-ooxml"  % "3.15",
-    "org.scalatest"  %% "scalatest"  % "3.0.1"  % "test"
-  ))
-
 
 lazy val slides = project
   .settings(moduleName := "fp-basis-slides")

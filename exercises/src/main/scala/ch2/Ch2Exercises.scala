@@ -126,5 +126,13 @@ object Ch2Exercises {
   def compareInt_v2 = ???
 
 
+  // a. implement getCountryDialCode for UK, France, Germany
+  // UK is country code is 44, France is 33 and Germany is 49
+  def getCountryDialCode(country: String): Int = ???
+
+
+  // b. what happens if someone call getCountryDialCode with "Italy", "france" or "Grande Bretagne" (french version of UK)
+  // change getCountryDialCode to avoid this situation
+
 
 }

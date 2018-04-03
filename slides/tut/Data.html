@@ -26,24 +26,21 @@ class: center, middle
 
 ---
 
-# And - Or
+# And (Product)
 
 a `PersonRow` is an `Int` (id) **AND** a `String` (name)
 
-a `DayOfWeek` is `Monday` **OR** `Tuesday` **OR** ...
 
-a `Result` is a `Failure` **OR** a `Success`
+--
 
-
----
-
-# And (Product)
 
 ```tut:silent
 case class PersonRow(id: Int, name: String)
 
 type PersonRow = (Int, String)
 ```
+
+--
 
 ```tut:silent
 val p = PersonRow(5, "John")
@@ -58,6 +55,10 @@ p.name
 ---
 
 # Or (Sum / Coproduct)
+
+a `DayOfWeek` is `Monday` **OR** `Tuesday` **OR** ...
+
+--
 
 ```tut:silent
 sealed trait DayOfWeek
@@ -82,6 +83,14 @@ def dayToInt(d: DayOfWeek): Int = d match {
 
 # And - Or
 
+a `Result` is a `Success` **OR** a `Failure`
+
+a `Success` is a `PersonRow` **AND** a `DayOfWeek`
+
+a `Failure` is a `String`
+
+--
+
 ```tut:silent
 sealed trait Result
 
@@ -91,17 +100,15 @@ object Result {
 }
 ```
 
---
-
-a `Result` is a `Success` **OR** a `Failure`
-
-a `Success` is a `PersonRow` **AND** a `DayOfWeek`
-
-a `Failure` is a `String`
-
 ---
 
 # And - Or
+
+a `List[A]` is a `Nil` **OR** a `Cons`
+
+a `Cons` is a `A` (head) **AND** a `List[A]` (tail)
+
+--
 
 ```tut:silent
 sealed trait List[A]
@@ -111,10 +118,6 @@ object List {
   case class Cons[A](head: A, tail: List[A]) extends List[A]
 }
 ```
-
-a `List[A]` is a `Nil` **OR** a `Cons`
-
-a `Cons` is a `A` (head) **AND** a `List[A]` (tail)
 
 --
 
@@ -262,7 +265,6 @@ type Four = Pair[Two, Two]
 * `Pair( Left(One), Right(One))`
 * `Pair(Right(One), Right(One))`
 
-
 ---
 
 # Exercise 2: Create an 8 value type
@@ -382,10 +384,213 @@ Let's define `|A|` as the number of values of type `A`, e.g.
 
 
 ---
-# Exercise 3: Algebra
+# Exercise 4: isAdult
 
-`|A| == |B|` means
+```tut:silent
+def isAdult(i: Int): Boolean = ???
+```
 
+---
+# Exercise 4: isAdult
+
+```tut:silent
+def isAdult(i: Int): Boolean = i >= 18
+```
+
+--
+
+```tut:silent
+def isAdult(i: Int): Option[Boolean] =
+  if(i < 0) None else Some(i >= 18)
+```
+
+--
+
+
+```tut:silent
+import eu.timepit.refined._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.auto._
+import eu.timepit.refined.numeric._
+
+def isAdult(i: Int Refined Positive): Boolean =
+  i.value >= 18
+```
+
+--
+
+```tut
+isAdult(11)
+```
+
+```tut:fail
+isAdult(-2)
+```
+
+---
+
+# Refined
+
+```tut:silent
+val age1: Int = 20
+val age2: Int = -2
+```
+
+```tut:fail
+isAdult(age1)
+```
+
+--
+
+```tut
+val agePos = refineV[Positive](age1)
+val ageNeg = refineV[Positive](age2)
+```
+
+--
+
+```tut
+refineV[Positive](age1).map(isAdult)
+```
+
+---
+# Exercise 4: isAdult
+
+```scala
+Int                  => Option[Boolean]
+
+Int Refined Positive => Boolean
+```
+
+--
+
+```scala
+|A => B| == |B|^|A|
+```
+
+--
+
+```scala
+|Int => Option[Boolean]| == |Option[Boolean]| ^ |Int| == 3 ^ |Int|
+
+
+|Int Refined Positive => Boolean| =~ |Boolean| ^ (|Int| / 2) == 2 ^ (|Int| / 2)
+```
+
+---
+
+# Exercise 5: compareInt
+
+```tut:silent
+def compareInt(x: Int, y: Int): Int = ???
+```
+
+---
+
+# Exercise 5: compareInt
+
+```tut:silent
+def compareInt(x: Int, y: Int): Int = {
+  if(x < y)       -1
+  else if (x > 1)  1
+  else             0
+}
+```
+
+--
+
+Output type of `Int` means `2 ^ 32 - 1` possible results but `compareInt` has only possible 3 outcomes!
+
+---
+
+# Exercise 5: compareInt
+
+```tut:silent
+sealed trait Comparison
+
+object Comparison {
+  case object LessThan    extends Comparison
+  case object EqualTo     extends Comparison
+  case object GreaterThan extends Comparison
+}
+
+import Comparison._
+
+def compareInt(x: Int, y: Int): Comparison = {
+  if(x < y)       LessThan
+  else if (x > 1) GreaterThan
+  else            EqualTo
+}
+```
+
+---
+
+# Exercise 5: getCountryDialCode
+
+```tut:silent
+def getCountryDialCode(country: String): Int = ???
+```
+
+---
+
+# Exercise 5: getCountryDialCode
+
+```tut:silent
+def getCountryDialCode(country: String): Int = country match {
+  case "United Kingdom" => 44
+  case "France"         => 33
+  case "Germany"        => 49
+  case other            => ???
+}
+```
+
+--
+
+```tut:fail
+getCountryDialCode("Italy")
+getCountryDialCode("france")
+getCountryDialCode("Grande Bretagne")
+```
+
+---
+
+# Exercise 5: getCountryDialCode
+
+```tut:silent
+sealed trait Country
+
+object Country {
+  case object UnitedKingdom extends Country
+  case object France        extends Country
+  case object Germany       extends Country
+}
+
+import Country._
+
+def getCountryDialCode(country: Country): Int = country match {
+  case UnitedKingdom => 44
+  case France        => 33
+  case Germany       => 49
+}
+```
+
+---
+
+# Exercise 5: getCountryDialCode
+
+```tut:silent
+sealed abstract class Country(val dialCode: Int)
+
+object Country {
+  case object UnitedKingdom extends Country(44)
+  case object France        extends Country(33)
+  case object Germany       extends Country(49)
+}
+```
+
+```tut
+Country.France.dialCode
+```
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
