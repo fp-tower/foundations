@@ -47,4 +47,19 @@ object Ch1Exercises {
     for { i <- xs.indices } xs(i) = xs(i) + 1
 
 
+  // 1i. is incAll a pure function? why?
+  def incAll(value: Any): Any = value match {
+    case x: Int    => x + 1
+    case x: Long   => x + 1
+    case x: Double => x + 1
+  }
+
+  // 1j. is incAll_v2 a pure function? why?
+  def incAll_v2(value: Any): Any = value match {
+    case x: Int    => x + 1
+    case x: Long   => x + 1
+    case x: Double => x + 1
+    case _         => 0
+  }
+
 }

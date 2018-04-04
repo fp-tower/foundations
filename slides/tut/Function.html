@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pure Function</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Pure Function
+`@JulienTruffaut`
+
+---
+
+# What is it?
+
+* referentially transparent
+* no exception
+* no null
+* no reflection
+
+---
+
+# Referentially transparent
+
+```tut:silent
+def inc(x: Int): Int = x + 1
+```
+
+```tut
+inc(5)
+6
+```
+
+--
+
+* deterministic
+* no side effect
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def plus(a: Int, b: Int): Int = a + b
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def div(a: Int, b: Int): Int = {
+  if(b == 0) sys.error("Cannot divide by 0")
+  else a / b
+}
+```
+
+--
+
+```tut
+div(8, 2)
+```
+
+```tut:fail
+div(8, 0)
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+var counterTimes2 = 0
+def times2(i: Int): Int = {
+  counterTimes2 += 1
+  i * 2
+}
+```
+
+--
+
+```tut
+times2(5)
+counterTimes2
+times2(5)
+counterTimes2
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+import scala.util.Random
+
+def boolToInt(b: Boolean): Int = {
+  if(b) 5
+  else Random.nextInt() / 2
+}
+```
+
+--
+
+```tut
+boolToInt(true)
+boolToInt(true)
+boolToInt(false)
+boolToInt(false)
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def mapLookup(map: Map[String, Int], key: String): Int =
+  map(key)
+```
+
+--
+
+```tut:silent
+val map = Map("One" -> 1, "Two" -> 2)
+```
+
+```tut
+mapLookup(map, "Two")
+```
+
+```tut:fail
+mapLookup(map, "Three")
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def times3(i: Int): Int = {
+  println("do something here") // could be a database access or http call
+  i * 3
+}
+```
+
+--
+
+```tut
+val x = times3(5)
+x
+x
+times3(5)
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+val pi = 3.14
+
+def circleArea(radius: Double): Double =
+  radius * radius * pi
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def inc(xs: Array[Int]): Unit =
+  for { i <- 0 to xs.length } xs(i) = xs(i) + 1
+```
+
+--
+
+```tut:fail
+inc(Array(1,2,3))
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def inc_v2(xs: Array[Int]): Unit =
+  for { i <- xs.indices } xs(i) = xs(i) + 1
+```
+
+--
+
+```tut:silent
+val xs = Array(1, 2, 3)
+```
+
+```tut
+xs
+
+inc_v2(xs)
+
+xs
+
+()
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def incAll(value: Any): Any = value match {
+  case x: Int    => x + 1
+  case x: Long   => x + 1
+  case x: Double => x + 1
+}
+```
+
+--
+
+```tut
+incAll(1)
+incAll(1L)
+incAll(1.0)
+```
+
+```tut:fail
+incAll("Hello")
+```
+
+---
+
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def incAll_v2(value: Any): Any = value match {
+  case x: Int    => x + 1
+  case x: Long   => x + 1
+  case x: Double => x + 1
+  case _         => 0
+}
+```
+
+```tut
+incAll_v2(1)
+incAll_v2(1L)
+incAll_v2(1.0)
+incAll_v2("Hello")
+```
+
+---
+# Why using pure function?
+
+* Referential transparency: easier to reason, easier to test, can be memoized
+
+--
+
+* no exception, no null, no reflection: no hole in the type system, more informative signature
+
+--
+
+* but we lose the ability to affect the external world (so far)
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>
