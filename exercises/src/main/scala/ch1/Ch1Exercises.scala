@@ -62,4 +62,11 @@ object Ch1Exercises {
     case _         => 0
   }
 
+  // 1k. is sum a pure function? why?
+  def sum(xs: List[Int]): Int = {
+    var acc = 0
+    xs.foreach(x => acc += x)
+    acc
+  }
+
 }

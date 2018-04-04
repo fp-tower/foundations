@@ -37,6 +37,11 @@ class: center, middle
 
 # Referentially transparent
 
+A function is referentially transparent if we can replace all the calls of the function by its output without
+changing the behaviour of the program.
+
+--
+
 ```tut:silent
 def inc(x: Int): Int = x + 1
 ```
@@ -45,11 +50,6 @@ def inc(x: Int): Int = x + 1
 inc(5)
 6
 ```
-
---
-
-* deterministic
-* no side effect
 
 ---
 
@@ -95,7 +95,6 @@ def times2(i: Int): Int = {
 --
 
 ```tut
-times2(5)
 counterTimes2
 times2(5)
 counterTimes2
@@ -262,17 +261,78 @@ incAll_v2("Hello")
 ```
 
 ---
-# Why using pure function?
 
-* Referential transparency: easier to reason, easier to test, can be memoized
+# Exercise 1: Is it a pure function?
+
+```tut:silent
+def sum(xs: List[Int]): Int = {
+  var acc = 0
+  xs.foreach(x => acc += x)
+  acc
+}
+```
 
 --
 
-* no exception, no null, no reflection: no hole in the type system, more informative signature
+```tut
+sum(List(1,3,4,5))
+sum(Nil)
+```
+
+---
+
+# Side effects
+
+* touch the external world, e.g. read/write a file, http or database call, console output
+* mutation
+* concurrency
 
 --
 
-* but we lose the ability to affect the external world (so far)
+Things that could be considered as side effects but are often not:
+
+* stack or heap allocation
+* parallelism
+
+---
+
+# Referential transparency
+
+* function only depends on arguments
+* deterministic
+* no side effect
+* only a mapping between input values to output values
+
+--
+
+This means:
+
+* Easier to test (no dependency injection or mock)
+* Easier to reason about our code
+* Easier to refactor
+* All functions can be memoized
+
+---
+
+# Type system
+
+* no exception
+* no null
+* no reflection
+
+--
+
+This means:
+
+* no hole in the type system
+* less forgettable runtime checks (try/catch, `if(x == null)`)
+* more informative signature
+
+---
+# Cost
+
+* we lose the ability to affect the external world (so far)
+* we need to reconsider many algorithms an data structures
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
