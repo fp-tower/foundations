@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Error Handling</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Error Handling
+`@JulienTruffaut`
+
+---
+# Error Handling
+
+* `Option`
+* `Either`
+* `Validation`
+
+???
+fp => no exception, no null
+
+
+---
+# Option
+
+* An `Option` is a `None` or a `Some`
+* a `None` is equivalent to `Unit`
+* a `Some[A]` is equivalent to `A`
+
+--
+
+```tut:silent
+sealed trait Option[A]
+
+object Option {
+  case class None[A]() extends Option[A]
+  case class Some[A](value: A) extends Option[A]
+}
+```
+
+--
+
+```haskell
+data Option a = None | Some a
+```
+
+---
+# Option in stdlib
+
+```tut:silent
+sealed trait Option[+A]
+
+case object None extends Option[Nothing]
+
+case class Some[+A](x: A) extends Option[A]
+```
+
+???
+Use variance `+A` / `Nothing`
+
+`None` and `Some` are top level
+
+---
+# Option usage
+
+An `Option` is great way to encode something that can fail for a **SINGLE OBVIOUS** reason.
+
+An `Option` **CANNOT** describe in any way why a failure occurred.
+
+--
+
+## Examples
+
+* lookup something in a data structure / storage
+
+---
+# Exercise 1: getUser
+
+```tut:silent
+case class User(id: Int, name: String)
+
+def getUser(id: Int, users: List[User]): Option[User] = ???
+```
+
+---
+# Exercise 1: getUser
+
+```tut:reset:silent
+case class User(id: Int, name: String)
+
+def getUser(id: Int, users: List[User]): Option[User] =
+  users match {
+    case Nil     => None
+    case x :: xs =>
+      if(x.id == id) Some(x)
+      else getUser(id, xs)
+  }
+```
+
+---
+# Exercise 1: getUser
+
+```tut:reset:silent
+case class User(id: Int, name: String)
+
+def getUser(id: Int, users: List[User]): Option[User] =
+  users.find(_.id == id)
+```
+
+--
+
+```tut:silent
+val users = List(
+  User(1, "John"),
+  User(5, "Alice"),
+  User(3, "Natalie")
+)
+```
+
+```tut
+getUser(3, users)
+getUser(2, users)
+```
+
+---
+# Exercise 1: getUser
+
+```tut:silent
+case class User(id: Int, name: String)
+
+def getUser(id: Int, users: List[User]): Option[User] =
+  users.filter(_.id == id) match {
+    case Nil         => None    // no user matching
+    case x :: Nil    => Some(x) // one user matching
+    case _ :: _ :: _ => None    // several users matching
+  }
+```
+
+---
+# Exercise 2: charToDigit
+
+```tut:silent
+def charToDigit(c: Char): Option[Int] = ???
+```
+
+---
+# Exercise 2: charToDigit
+
+```tut:silent
+val charToDigitMapping: Map[Char, Int] = Map(
+  '0' -> 0,
+  '1' -> 1,
+  '2' -> 2,
+  '3' -> 3,
+  '4' -> 4,
+  '5' -> 5,
+  '6' -> 6,
+  '7' -> 7,
+  '8' -> 8,
+  '9' -> 9
+)
+
+def charToDigit(c: Char): Option[Int] =
+  charToDigitMapping.get(c)
+```
+
+---
+# Exercise 2: charToDigit
+
+```tut:silent
+sealed trait Digit
+
+object Digit {
+  case object One extends Digit
+  case object Two extends Digit
+  // ...
+}
+```
+
+---
+# Exercise 3: Form
+
+```tut:silent
+sealed trait Form
+object Form {
+  case class Rectangle(width: Int, height: Int) extends Form
+  case class Circe(radius: Int) extends Form
+}
+
+def asRectangle(form: Form): Option[Form.Rectangle] = ???
+
+def asCircle(form: Form): Option[Form.Circe] = ???
+```
+
+---
+# Exercise 3: Form
+
+```tut:silent
+sealed trait Form
+object Form {
+  case class Rectangle(width: Int, height: Int) extends Form
+  case class Circle(radius: Int) extends Form
+}
+
+import Form._
+
+def asRectangle(form: Form): Option[Rectangle] = form match {
+  case x: Rectangle => Some(x)
+  case _: Circle    => None
+}
+
+def asCircle(form: Form): Option[Circle] = form match {
+  case _: Rectangle => None
+  case x: Circle    => Some(x)
+}
+```
+
+---
+# Exercise 4: Combining Option
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] = ???
+```
+
+such as
+
+```tut:silent
+val rectangle = Rectangle(3, 4)
+val circle    = Circle(5)
+```
+
+```scala
+asRectangles(rectangle, rectangle) == Some((rectangle, rectangle))
+asRectangles(circle   , rectangle) == None
+asRectangles(rectangle, circle   ) == None
+asRectangles(circle   , circle   ) == None
+```
+
+---
+# Exercise 4: Combining Option
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] = (f1, f2) match {
+  case (x: Rectangle, y: Rectangle) => Some((x, y))
+  case (x: Circle   , y: Rectangle) => None
+  case (x: Rectangle, y: Circle)    => None
+  case (x: Circle   , y: Circle)    => None
+}
+```
+
+```tut
+asRectangles(rectangle, rectangle)
+asRectangles(circle   , rectangle)
+asRectangles(rectangle, circle   )
+asRectangles(circle   , circle   )
+```
+
+???
+* not scalable
+* does not reuse asRectangle
+
+
+---
+# Exercise 4: Combining Option
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] =
+  asRectangle(f1) match {
+    case None     => None
+    case Some(r1) => asRectangle(f2) match {
+      case None     => None
+      case Some(r2) => Some((r1, r2))
+    }
+  }
+```
+
+```tut
+asRectangles(rectangle, rectangle)
+asRectangles(circle   , rectangle)
+asRectangles(rectangle, circle   )
+asRectangles(circle   , circle   )
+```
+
+---
+# Exercise 4: Combining Option with map2
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+```
+
+such as
+
+```scala
+flatMap(Some(3))(i => Some(i + 1)) == Some(4)
+flatMap(Some(3))(i => None       ) == None
+flatMap(None   )(i => Some(i + 1)) == None
+```
+
+---
+# Exercise 4: Combining Option with map2
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  (fa, fb) match {
+    case (Some(a), Some(b)) => Some(f(a, b))
+    case (Some(_), None   ) => None
+    case (None   , Some(_)) => None
+    case (None   , None   ) => None
+  }
+```
+
+---
+# Exercise 4: Combining Option with map2
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] =
+  map2(asRectangle(f1), asRectangle(f2))((r1, r2) => (r1, r2))
+```
+
+```tut
+asRectangles(rectangle, rectangle)
+asRectangles(circle   , rectangle)
+asRectangles(rectangle, circle   )
+asRectangles(circle   , circle   )
+```
+
+---
+# Exercise 4: Combining Option with tuple2
+
+```tut:silent
+def tuple2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] = ???
+```
+
+---
+# Exercise 4: Combining Option with tuple2
+
+```tut:silent
+def tuple2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] =
+  map2(fa, fb)((a, b) => (a, b))
+```
+
+--
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] =
+  tuple2(asRectangle(f1), asRectangle(f2))
+```
+
+---
+# Exercise 4: Combining Option with map / flatMap
+
+```tut:silent
+def map    [A, B](fa: Option[A])(f: A =>        B ): Option[B] = ???
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+```
+
+such as
+
+```scala
+map(Some(3))(i => i + 1) == Some(4)
+map(None   )(i => i + 1) == None
+
+flatMap(Some(3))(i => Some(i + 1)) == Some(4)
+flatMap(Some(3))(i => None       ) == None
+flatMap(None   )(i => Some(i + 1)) == None
+```
+
+---
+# Exercise 4: Combining Option with map / flatMap
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+  fa match {
+    case None    => None
+    case Some(a) => Some(f(a))
+  }
+
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] =
+  fa match {
+    case None    => None
+    case Some(a) => f(a)
+  }
+```
+
+```tut
+map(Some(3))(i => i + 1) == Some(4)
+map(None: Option[Int])(i => i + 1) == None
+
+flatMap(Some(3))(i => Some(i + 1)) == Some(4)
+flatMap(Some(3))(i => None) == None
+flatMap(None: Option[Int])(i => Some(i + 1)) == None
+```
+
+---
+# Exercise 4: Combining Option with map / flatMap
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] =
+  flatMap(asRectangle(f1))(r1 =>
+    map(asRectangle(f2))(r2 => (r1, r2))
+  )
+```
+
+```tut
+asRectangles(rectangle, rectangle)
+asRectangles(circle   , rectangle)
+asRectangles(rectangle, circle   )
+asRectangles(circle   , circle   )
+```
+
+---
+# Exercise 4: Combining Option with for comprehension
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] =
+  for {
+    r1 <- asRectangle(f1)
+    r2 <- asRectangle(f2)
+  } yield (r1, r2)
+```
+
+```tut:silent
+def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] =
+  flatMap(asRectangle(f1))(r1 =>
+    map(asRectangle(f2))(r2 => (r1, r2))
+  )
+```
+
+---
+# Exercise 4: map using flatMap
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+```
+
+---
+# Exercise 4: map using flatMap
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+  flatMap(fa)(a => Some(f(a)))
+```
+
+---
+# Exercise 4: map2 using flatMap
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+```
+
+---
+# Exercise 4: map2 using flatMap
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  flatMap(fa)(a => map(fb)(b => f(a, b)))
+```
+
+--
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  for {
+    a <- fa
+    b <- fb
+  } yield f(a, b)
+```
+
+---
+# Option combination
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+def tuple2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] = ???
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+```
+
+```scala
+flatMap --> map
+        --> map2 --> tuple2
+```
+
+---
+# Either
+
+* An `Either` is a `Left` or a `Right`
+* a `Left[E]` is equivalent to `E`
+* a `Right[A]` is equivalent to `A`
+
+--
+
+```tut:silent
+sealed trait Either[E, A]
+
+object Option {
+  case class Left [E, A](value: E) extends Either[E, A]
+  case class Right[E, A](value: A) extends Either[E, A]
+}
+```
+
+--
+
+```haskell
+data Either e a = Left e | Right a
+```
+
+---
+# Either usage
+
+An `Either` allows to encode failure in **MULTIPLE** ways.
+
+An `Either` is like an `Option` where we can describe the failure.
+
+--
+
+## Examples
+
+* ...
+
+---
+## Option as an Either
+
+
+```haskell
+data Option   a = None   | Some  a
+data Either e a = Left e | Right a
+```
+
+--
+
+```scala
+type Option[A] = Either[Unit, A]
+```
+
+---
+# Exercise 4: getUser_v2
+
+```tut:reset:silent
+case class User(id: Int, name: String)
+
+sealed trait GetUserError
+
+def getUser_v2(id: Int, users: List[User]): Either[GetUserError, User] = ???
+```
+
+---
+# Exercise 4: getUser_v2
+
+```tut:silent
+import cats.data.NonEmptyList
+
+sealed trait GetUserError
+object GetUserError {
+  case object NoUserMatching extends GetUserError
+  case class NonUniqueUserId(users: NonEmptyList[User]) extends GetUserError
+}
+
+def getUser_v2(id: Int, users: List[User]): Either[GetUserError, User] = ???
+```
+
+---
+# Exercise 4: getUser_v2
+
+```tut:silent
+sealed trait GetUserError
+object GetUserError {
+  case object NoUserMatching extends GetUserError
+  case class NonUniqueUserId(users: NonEmptyList[User]) extends GetUserError
+}
+
+import GetUserError._
+
+def getUser_v2(id: Int, users: List[User]): Either[GetUserError, User] =
+  users.filter(_.id == id) match {
+    case Nil             => Left(NoUserMatching)
+    case x :: Nil        => Right(x)
+    case x1 :: x2 :: xs  => Left(NonUniqueUserId(NonEmptyList(x1, x2 :: xs)))
+  }
+```
+
+---
+# Exercise 4: getUser_v2
+
+```tut:silent
+val users = List(
+  User(1, "John"),
+  User(5, "Alice"),
+  User(3, "Natalie"),
+  User(1, "Bob")
+)
+```
+
+```tut
+getUser_v2(3, users)
+getUser_v2(2, users)
+getUser_v2(1, users)
+```
+
+---
+# Exercise 5:
+
+```tut:silent
+
+```
+
+
+---
+# Validation
+
+* a `Validation` is an `Invalid` or a `Valid`
+* a `Invalid[E]` is equivalent to `E`
+* a `Valid[A]` is equivalent to `A`
+
+--
+
+```tut:silent
+sealed trait Validation[E, A]
+
+object Validation {
+  case class Invalid[E, A](value: E) extends Validation[E, A]
+  case class   Valid[E, A](value: A) extends Validation[E, A]
+}
+```
+
+---
+# Validation - Either
+
+A `Validation` is an `Either` with different names
+
+```haskell
+data Either     e a = Left    e | Right   a
+data Validation e a = Invalid e | Invalid a
+```
+
+
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>
