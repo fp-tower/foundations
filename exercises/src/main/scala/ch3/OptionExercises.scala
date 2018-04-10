@@ -1,7 +1,11 @@
 package ch3
 
+import eu.timepit.refined._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.auto._
+import eu.timepit.refined.numeric._
 
-object Ch3Exercises {
+object OptionExercises {
 
 
   // 1a. Implement getUser such as it returns the first user matching the id
@@ -12,6 +16,13 @@ object Ch3Exercises {
 
   // 2a. Implement charToDigit such as it returns 0 for '0', 1 for '1', ..., 9 for '9'
   def charToDigit(c: Char): Option[Int] = ???
+
+
+  // 2b. Implement charToDigit_v2
+  def charToDigit_v2(c: Char): Option[Int Refined Interval.Closed[W.`0`.T, W.`9`.T]] = ???
+
+
+  // 2c. Implement charToDigit in terms of charToDigit_v2
 
 
   // 3a. Implement asRectangle and asCircle
@@ -61,6 +72,9 @@ object Ch3Exercises {
   // 4i. Implement map2 using flatMap
 
 
+  // 4j. Implement map using map2
+
+
   // 5a. Implement getUser_v2 such as it returns the first user matching the id
   // or an error signaling if there is no user matching or several users matching
   sealed trait GetUserError
@@ -70,14 +84,18 @@ object Ch3Exercises {
 
 
 
-
-  // a. Implement validatePassword such as it returns true if it
+  // a. Create PasswordError such as it handle the following cases, a password must have:
   // * has at least 8 characters long
   // * contains at least one upper/lower case letter
   // * contains at least a digit
-  def validatePassword(s: String): Boolean = ???
+  sealed trait PasswordError
+  def validatePassword(s: String): Either[PasswordError, Unit] = ???
 
 
+  // b. Implement one helper method for each type of error
+
+
+  // c. Use helper methods to implement
 
 
   // b. how would change validatePassword such as it describes the kind of error

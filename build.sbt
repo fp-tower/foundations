@@ -13,7 +13,8 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-Yno-adapted-args",
     //    "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
-    "-Xfuture"
+    "-Xfuture",
+    "-Ypartial-unification"
   ),
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(

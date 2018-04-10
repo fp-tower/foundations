@@ -115,7 +115,7 @@ def getUser(id: Int, users: List[User]): Option[User] =
 ---
 # Exercise 1: getUser
 
-```tut:reset:silent
+```tut:silent
 case class User(id: Int, name: String)
 
 def getUser(id: Int, users: List[User]): Option[User] =
@@ -183,14 +183,45 @@ def charToDigit(c: Char): Option[Int] =
 # Exercise 2: charToDigit
 
 ```tut:silent
-sealed trait Digit
+import eu.timepit.refined._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.auto._
+import eu.timepit.refined.numeric._
 
-object Digit {
-  case object One extends Digit
-  case object Two extends Digit
-  // ...
-}
+type Digit = Int Refined Interval.Closed[W.`0`.T, W.`9`.T]
+
+def charToDigit_v2(c: Char): Option[Digit] = ???
 ```
+
+---
+# Exercise 2: charToDigit
+
+```tut:silent
+
+val charToDigitMapping: Map[Char, Digit] = Map(
+  '0' -> 0,
+  '1' -> 1,
+  '2' -> 2,
+  '3' -> 3,
+  '4' -> 4,
+  '5' -> 5,
+  '6' -> 6,
+  '7' -> 7,
+  '8' -> 8,
+  '9' -> 9
+)
+
+def charToDigit_v2(c: Char): Option[Digit] =
+  charToDigitMapping.get(c)
+```
+
+--
+
+```tut:silent
+def charToDigit(c: Char): Option[Int] =
+  charToDigit_v2(c).map(_.value)
+```
+
 
 ---
 # Exercise 3: Form
@@ -306,9 +337,10 @@ def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
 such as
 
 ```scala
-flatMap(Some(3))(i => Some(i + 1)) == Some(4)
-flatMap(Some(3))(i => None       ) == None
-flatMap(None   )(i => Some(i + 1)) == None
+map2(Some(3), Some(4))((a, b) => a + b) == Some(7)
+map2(Some(3), None   )((a, b) => a + b) == None
+map2(None   , Some(3))((a, b) => a + b) == None
+map2(None   , None   )((a, b) => a + b) == None
 ```
 
 ---
@@ -322,6 +354,13 @@ def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
     case (None   , Some(_)) => None
     case (None   , None   ) => None
   }
+```
+
+```tut
+map2(Some(3), Some(4))((a, b) => a + b)
+map2(Some(3), None: Option[Int])((a, b) => a + b)
+map2(None: Option[Int], Some(3))((a, b) => a + b)
+map2(None: Option[Int], None: Option[Int])((a, b) => a + b)
 ```
 
 ---
@@ -496,6 +535,20 @@ flatMap --> map
         --> map2 --> tuple2
 ```
 
+--
+
+```scala
+flatMap --> map2 --> tuple2
+                 \-> map
+```
+
+--
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+  map2(fa, Some(()))((a, _) => f(a))
+```
+
 ---
 # Either
 
@@ -549,7 +602,7 @@ type Option[A] = Either[Unit, A]
 ```
 
 ---
-# Exercise 4: getUser_v2
+# Exercise 5: getUser_v2
 
 ```tut:reset:silent
 case class User(id: Int, name: String)
@@ -560,7 +613,7 @@ def getUser_v2(id: Int, users: List[User]): Either[GetUserError, User] = ???
 ```
 
 ---
-# Exercise 4: getUser_v2
+# Exercise 5: getUser_v2
 
 ```tut:silent
 import cats.data.NonEmptyList
@@ -575,7 +628,7 @@ def getUser_v2(id: Int, users: List[User]): Either[GetUserError, User] = ???
 ```
 
 ---
-# Exercise 4: getUser_v2
+# Exercise 5: getUser_v2
 
 ```tut:silent
 sealed trait GetUserError
@@ -595,7 +648,7 @@ def getUser_v2(id: Int, users: List[User]): Either[GetUserError, User] =
 ```
 
 ---
-# Exercise 4: getUser_v2
+# Exercise 5: getUser_v2
 
 ```tut:silent
 val users = List(
@@ -613,12 +666,462 @@ getUser_v2(1, users)
 ```
 
 ---
-# Exercise 5:
+# Exercise 6: Validate password
 
 ```tut:silent
+sealed trait PasswordError
 
+def validatePassword(s: String): Either[PasswordError, Unit] = ???
 ```
 
+---
+# Exercise 6: Validate password
+
+```tut:silent
+sealed trait PasswordError
+object PasswordError {
+  case class NotLongEnough(size: Int) extends PasswordError
+  case object NoUpperCase extends PasswordError
+  case object NoLowerCase extends PasswordError
+  case object NoDigit extends PasswordError
+}
+
+import PasswordError._
+
+def checkLength   (s: String): Either[NotLongEnough   , Unit] = ???
+def checkUpperCase(s: String): Either[NoUpperCase.type, Unit] = ???
+def checkLowerCase(s: String): Either[NoLowerCase.type, Unit] = ???
+def checkDigit    (s: String): Either[NoDigit.type    , Unit] = ???
+
+def validatePassword(s: String): Either[PasswordError, Unit] = ???
+```
+
+---
+# Exercise 6: Validate password
+
+```tut:silent
+def checkLength(s: String): Either[NotLongEnough, Unit] = {
+  if(s.length < 8) Left(NotLongEnough(s.length))
+  else Right(())
+}
+
+def checkUpperCase(s: String): Either[NoUpperCase.type, Unit] = {
+  s.find(_.isUpper) match {
+    case None    => Left(NoUpperCase)
+    case Some(_) => Right(())
+  }
+}
+
+def checkLowerCase(s: String): Either[NoLowerCase.type, Unit] = {
+  s.find(_.isLower) match {
+    case None    => Left(NoLowerCase)
+    case Some(_) => Right(())
+  }
+}
+
+def checkDigit(s: String): Either[NoDigit.type, Unit] = {
+  s.find(_.isDigit) match {
+    case None    => Left(NoDigit)
+    case Some(_) => Right(())
+  }
+}
+```
+
+---
+# Exercise 6: Validate password
+
+```tut:silent
+def contains[E](s: String, p: Char => Boolean, e: E): Either[E, Unit] = {
+  s.find(p) match {
+    case None    => Left(e)
+    case Some(_) => Right(())
+  }
+}
+```
+
+--
+
+```tut:silent
+def checkUpperCase(s: String): Either[NoUpperCase.type, Unit] =
+  contains(s, _.isUpper, NoUpperCase)
+
+def checkLowerCase(s: String): Either[NoLowerCase.type, Unit] =
+  contains(s, _.isLower, NoLowerCase)
+
+def checkDigit(s: String): Either[NoDigit.type, Unit] =
+  contains(s, _.isDigit, NoDigit)
+```
+
+???
+Note that checkLowerCase must use NoLowerCase as `e` because it is the only value this type
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:silent
+def flatMap[   A, B](fa:    Option[A])(f: A =>    Option[B]):    Option[B] = ???
+def flatMap[E, A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
+```
+
+--
+
+```scala
+validatePassword = checkLength flatMap checkUpperCase flatMap checkLowerCase flatMap checkDigit
+```
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:silent
+def flatMap[E, A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
+```
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:silent
+def flatMap[E, A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = fa match {
+  case Left(e)  => Left(e)
+  case Right(a) => f(a)
+}
+```
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```scala
+validatePassword = checkLength flatMap checkUpperCase flatMap checkLowerCase flatMap checkDigit
+```
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] = ???
+```
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:fail
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  flatMap(checkLength(s))(_ =>
+    flatMap(checkUpperCase(s))(_ =>
+      flatMap(checkLowerCase(s))(_ =>
+        checkDigit(s)
+      )
+    )
+  )
+```
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:silent
+def checkLength(s: String): Either[NotLongEnough, Unit] = {
+  if(s.length < 8) Left(NotLongEnough(s.length))
+  else Right(())
+}
+
+def checkUpperCase(s: String): Either[NoUpperCase.type, Unit] =
+  contains(s, _.isUpper, NoUpperCase)
+
+def checkLowerCase(s: String): Either[NoLowerCase.type, Unit] =
+  contains(s, _.isLower, NoLowerCase)
+
+def checkDigit(s: String): Either[NoDigit.type, Unit] =
+  contains(s, _.isDigit, NoDigit)
+```
+
+```tut:silent
+def flatMap[E, A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
+```
+
+---
+# Sum type encoding
+
+
+```tut:silent
+sealed trait Foo
+object Foo {
+  case class FooInt(x: Int) extends Foo
+  case class FooBool(x: Boolean) extends Foo
+}
+```
+
+```tut
+Foo.FooInt(5)
+Foo.FooInt(5): Foo
+```
+
+## Haskell
+
+```haskell
+data Foo = FooInt Int | FooBool Bool
+```
+
+```haskell
+λ> FooInt 5
+λ> FooInt 5 :: Foo
+```
+
+---
+# Exercise 6: Combining Either (up-casting)
+
+```tut
+checkLength("foo")
+
+checkLength("foo"): Either[PasswordError, Unit]
+```
+
+--
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  flatMap(checkLength(s): Either[PasswordError, Unit])(_ =>
+    flatMap(checkUpperCase(s): Either[PasswordError, Unit])(_ =>
+      flatMap(checkLowerCase(s): Either[PasswordError, Unit])(_ =>
+        checkDigit(s))))
+```
+
+---
+# Exercise 6: Combining Either (up-casting)
+
+
+```tut:silent
+def leftMap[E, A, F](fa: Either[E, A])(f: E => F): Either[F, A] = fa match {
+  case  Left(e) => Left(f(e))
+  case Right(a) => Right(a)
+}
+
+def liftE[E, A, F >: E](fa: Either[E, A]): Either[F, A] =
+  leftMap(fa)(e => e: F)
+```
+
+--
+
+```tut:invisible
+implicit class EitherLiftE[E, A](self: Either[E, A]){
+  def liftE[F >: E]: Either[F, A] =
+    leftMap(self)(e => e: F)
+}
+```
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  flatMap(checkLength(s).liftE[PasswordError])(_ =>
+    flatMap(checkUpperCase(s).liftE[PasswordError])(_ =>
+      flatMap(checkLowerCase(s).liftE[PasswordError])(_ =>
+        checkDigit(s))))
+```
+
+---
+# Exercise 6: Combining Either (smart constructor)
+
+```tut:silent
+def checkLength(s: String): Either[PasswordError, Unit] = {
+  if(s.length < 8) Left(NotLongEnough(s.length))
+  else Right(())
+}
+
+def checkUpperCase(s: String): Either[PasswordError, Unit] =
+  contains(s, _.isUpper, NoUpperCase)
+
+def checkLowerCase(s: String): Either[PasswordError, Unit] =
+  contains(s, _.isLower, NoLowerCase)
+
+def checkDigit(s: String): Either[PasswordError, Unit] =
+  contains(s, _.isDigit, NoDigit)
+```
+
+--
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  flatMap(checkLength(s))(_ =>
+    flatMap(checkUpperCase(s))(_ =>
+      flatMap(checkLowerCase(s))(_ =>
+        checkDigit(s))))
+```
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  flatMap(checkLength(s))(_ =>
+    flatMap(checkUpperCase(s))(_ =>
+      flatMap(checkLowerCase(s))(_ =>
+        checkDigit(s))))
+```
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  for {
+    _ <- checkLength(s)
+    _ <- checkUpperCase(s)
+    _ <- checkLowerCase(s)
+    _ <- checkDigit(s)
+  } yield ()
+```
+
+???
+for-comprehension type inference is somehow better such as we could have used our previous error encoding
+
+---
+# Exercise 6: Validate password (flatMap)
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  for {
+    _ <- checkLength(s)
+    _ <- checkUpperCase(s)
+    _ <- checkLowerCase(s)
+    _ <- checkDigit(s)
+  } yield ()
+```
+
+```tut
+validatePassword("abcdefG1")
+validatePassword("foo")
+validatePassword("hellllllllll12")
+validatePassword("hellllllllllOO")
+validatePassword("HELLLLLLLOO1234")
+```
+
+???
+flatMap / for-comprehension defines a sequential calculation
+
+do 1, once use have result of 1 do 2, once you have the result of 2 do 3 ...
+
+here we do not need to perform our checks sequentially, they don't depend on each other!
+
+---
+# Exercise 6: Validate password (map4)
+
+```scala
+validatePassword = checkLength /\ checkUpperCase /\ checkLowerCase /\ checkDigit
+```
+
+```tut:silent
+def map4[E, A1, A2, A3, A4, B](
+  fa: Either[E, A1],
+  fb: Either[E, A2],
+  fc: Either[E, A3],
+  fd: Either[E, A4])(
+  f: (A1, A2, A3, A4) => B
+): Either[E, B] = ???
+```
+
+--
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  map4(checkLength(s), checkUpperCase(s), checkLowerCase(s), checkDigit(s))(
+    (_,_,_,_) => ()
+  )
+```
+
+---
+# Exercise 6: Validate password (map2)
+
+```tut:silent
+def map2[   A, B, C](fa: Option[   A], fb: Option[   B])(f: (A, B) => C) = ???
+def map2[E, A, B, C](fa: Either[E, A], fb: Either[E, B])(f: (A, B) => C) = ???
+```
+
+---
+# Exercise 6: Validate password (map2)
+
+```tut:silent
+def map2[E, A1, A2, B](fa: Either[E, A1], fb: Either[E, A2])(f: (A1, A2) => B): Either[E, B] =
+  (fa, fb) match {
+     case (Right(a), Right(b)) => ???
+     case ( Left(e), Right(b)) => ???
+     case (Right(a),  Left(e)) => ???
+     case (Left(e1), Left(e2)) => ???
+  }
+```
+
+---
+# Exercise 6: Validate password (map2)
+
+```tut:silent
+def map2[E, A1, A2, B](fa: Either[E, A1], fb: Either[E, A2])(f: (A1, A2) => B): Either[E, B] =
+  (fa, fb) match {
+     case (Right(a), Right(b)) => Right(f(a, b))
+     case ( Left(e), Right(_)) => Left(e)
+     case (Right(_),  Left(e)) => Left(e)
+     case (Left(e1), Left(e2)) => ???
+  }
+```
+
+???
+We are forced to implement the first 3 cases this way
+we have no freedom! ==> we don't need to test these cases
+
+---
+# Exercise 6: Validate password (map2)
+
+```tut:silent
+def map2[E, A1, A2, B](fa: Either[E, A1], fb: Either[E, A2])(f: (A1, A2) => B): Either[E, B] =
+  (fa, fb) match {
+     case (Right(a), Right(b)) => Right(f(a, b))
+     case ( Left(e), Right(_)) => Left(e)
+     case (Right(_),  Left(e)) => Left(e)
+     case ( Left(e),  Left(_)) => Left(e)
+  }
+```
+
+---
+# Exercise 6: Validate password (map3)
+
+```tut:silent
+def map3[E, A1, A2, A3, B](
+  fa: Either[E, A1],
+  fb: Either[E, A2],
+  fc: Either[E, A3])(
+  f: (A1, A2, A3) => B
+): Either[E, B] = ???
+```
+
+---
+# Exercise 6: Validate password (map3)
+
+```tut:silent
+def tuple2[E, A1, A2](fa: Either[E, A1], fb: Either[E, A2]): Either[E, (A1, A2)] =
+  map2(fa, fb)((a1,a2) => (a1,a2))
+```
+
+--
+
+```tut:silent
+def map3[E, A1, A2, A3, B](
+  fa: Either[E, A1],
+  fb: Either[E, A2],
+  fc: Either[E, A3])(
+  f: (A1, A2, A3) => B
+): Either[E, B] =
+  map2(fa, tuple2(fb, fc)){ case (a, (b, c)) => f(a,b,c) }
+```
+
+---
+# Exercise 6: Validate password (map4)
+
+```tut:silent
+def map4[E, A1, A2, A3, A4, B](
+  fa: Either[E, A1],
+  fb: Either[E, A2],
+  fc: Either[E, A3],
+  fd: Either[E, A4])(
+  f: (A1, A2, A3, A4) => B
+): Either[E, B] =
+  map2(tuple2(fa, fb), tuple2(fc, fd)){ case ((a, b), (c, d)) => f(a,b,c,d) }
+```
+
+```tut:silent
+def validatePassword(s: String): Either[PasswordError, Unit] =
+  map4(checkLength(s), checkUpperCase(s), checkLowerCase(s), checkDigit(s))(
+    (_,_,_,_) => ()
+  )
+```
 
 ---
 # Validation
