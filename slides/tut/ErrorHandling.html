@@ -982,6 +982,246 @@ def map[A, B](fa: Option[A])(f: A => B): Option[B] =
 ```
 
 ---
+# Exercise X: combining many options
+
+```tut:silent
+val forms1: List[Form] = List(
+  Rectangle(1, 2), Rectangle(3, 3), Rectangle(5, 5)
+)
+
+val forms2: List[Form] = List(
+  Rectangle(2, 2), Circle(5), Rectangle(1, 4)
+)
+```
+
+--
+
+```tut
+forms1.map(asRectangle)
+forms2.map(asRectangle)
+```
+
+---
+# Exercise X: combining many options
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] = ???
+```
+
+---
+# Exercise X: combining many options
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] =
+  forms match {
+    case Nil     => ??? : Option[List[Rectangle]]
+    case x :: xs => ??? : Option[List[Rectangle]]
+  }
+```
+
+---
+# Exercise X: combining many options
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] =
+  forms match {
+    case Nil     => Some(Nil)
+    case x :: xs => ???  : Option[List[Rectangle]]
+  }
+```
+
+---
+# Exercise X: combining many options
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] =
+  forms match {
+    case Nil     => Some(Nil)
+    case x :: xs =>
+      asRectangle(x)  : Option[Rectangle]
+      asRectangles(xs): Option[List[Rectangle]]
+
+      ??? : Option[List[Rectangle]]
+  }
+```
+
+---
+# Exercise X: combining many options
+
+```tut:invisible
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  fa.flatMap(a => fb.map(b => f(a, b)))
+```
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] =
+  forms match {
+    case Nil     => Some(Nil)
+    case x :: xs =>
+      map2(
+        asRectangle(x),
+        asRectangles(xs)
+      )((r, rs) => r :: rs)
+  }
+```
+
+---
+# Exercise X: combining many options
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] =
+  forms match {
+    case Nil     => Some(Nil)
+    case x :: xs => map2(asRectangle(x), asRectangles(xs))(_ :: _)
+  }
+```
+
+--
+
+#### Input
+```scala
+List[A]         // List[Form]
+A => Option[B]  // Form => Option[Rectangle]
+```
+
+#### Output
+```scala
+Option[List[B]] // Option[List[Form]]
+```
+
+---
+# Exercise X: combining many options (traverse)
+
+```tut:silent
+def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = ???
+```
+
+--
+
+```tut:silent
+def asRectangles(forms: List[Form]): Option[List[Rectangle]] =
+  forms match {
+    case Nil     => Some(Nil)
+    case x :: xs => map2(asRectangle(x), asRectangles(xs))(_ :: _)
+  }
+```
+
+---
+# Exercise X: combining many options (traverse)
+
+```tut:silent
+def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] =
+  as match {
+    case Nil     => Some(Nil)
+    case x :: xs => map2(f(x), traverse(xs)(f))(_ :: _)
+  }
+```
+
+--
+
+```tut:silent
+def asRectangles(xs: List[Form]): Option[List[Rectangle]] =
+  traverse(xs)(asRectangle)
+```
+
+--
+
+```tut
+asRectangles(forms1)
+asRectangles(forms2)
+```
+
+---
+# Exercise X: combining many options (sequence)
+
+```tut:silent
+def sequence[A](as: List[Option[A]]): Option[List[A]] = ???
+```
+
+--
+
+```tut:silent
+def asRectangles(xs: List[Form]): Option[List[Rectangle]] =
+  sequence(xs.map(asRectangle))
+```
+
+---
+# Exercise X: combining many options (sequence)
+
+```tut:silent
+def sequence[A](as: List[Option[A]]): Option[List[A]] =
+  as match {
+    case Nil     => ??? : Option[List[A]]
+    case x :: xs => ??? : Option[List[A]]
+  }
+```
+
+---
+# Exercise X: combining many options (sequence)
+
+```tut:silent
+def sequence[A](as: List[Option[A]]): Option[List[A]] =
+  as match {
+    case Nil     => Some(Nil)
+    case x :: xs => map2(x, sequence(xs))(_ :: _)
+  }
+```
+
+--
+
+```tut:silent
+def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] =
+  as match {
+    case Nil     => Some(Nil)
+    case x :: xs => map2(f(x), traverse(xs)(f))(_ :: _)
+  }
+```
+
+---
+# Exercise X: combining many options (sequence)
+
+```tut:silent
+def sequence[A](as: List[Option[A]]): Option[List[A]] =
+  traverse(as)(identity)
+```
+
+```tut:silent
+def identity[A](a: A): A = a
+```
+
+--
+
+```tut:silent
+def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] =
+  sequence(as.map(f))
+```
+
+---
+# Option Summary
+
+```haskell
+data Option a = None | Some a
+```
+
+--
+
+Encode a value that can be missing or an error
+
+Force users to deal with failure as opposed to `null` or exception
+
+Cannot describe why a value is missing
+
+--
+
+
+```scala
+flatMap --> map2 --> tuple2
+                 \-> map
+
+traverse <--> sequence
+```
+
+---
 # Either
 
 * An `Either` is a `Left` or a `Right`
