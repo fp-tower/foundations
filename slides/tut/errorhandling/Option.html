@@ -60,6 +60,19 @@ data Option a = None | Some a
 ```
 
 ---
+# Option
+
+```haskell
+data Option a = None | Some a
+```
+
+An `Option` is great way to encode something that can fail for a **SINGLE OBVIOUS** reason.
+
+An `Option` is a safe replacement for **`null`**.
+
+An `Option` **CANNOT** describe in any way why a failure occurred.
+
+---
 # Option in stdlib
 
 ```tut:silent
@@ -74,19 +87,6 @@ case class Some[+A](x: A) extends Option[A]
 Use variance `+A` / `Nothing`
 
 `None` and `Some` are top level
-
----
-# Option usage
-
-An `Option` is great way to encode something that can fail for a **SINGLE OBVIOUS** reason.
-
-An `Option` **CANNOT** describe in any way why a failure occurred.
-
---
-
-## Examples
-
-* lookup something in a data structure / storage
 
 ---
 # Exercise 1: getUser
@@ -550,8 +550,21 @@ def _parseRectangle(width: String, height: String): Option[Rectangle] =
 def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
 ```
 
+such as
+
+```scala
+map2(Some(3), Some(4))((a, b) => a + b) == Some(7)
+map2(Some(3), None   )((a, b) => a + b) == None
+map2(None   , Some(3))((a, b) => a + b) == None
+map2(None   , None   )((a, b) => a + b) == None
+```
+
 ---
 # Exercise 4: Form serialisation (_parseRectangle)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+```
 
 ```tut:silent
 def _parseRectangle(width: String, height: String): Option[Rectangle] = ???
@@ -570,15 +583,6 @@ def _parseRectangle(width: String, height: String): Option[Rectangle] =
 
 ```tut:silent
 def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
-```
-
-such as
-
-```scala
-map2(Some(3), Some(4))((a, b) => a + b) == Some(7)
-map2(Some(3), None   )((a, b) => a + b) == None
-map2(None   , Some(3))((a, b) => a + b) == None
-map2(None   , None   )((a, b) => a + b) == None
 ```
 
 ---
