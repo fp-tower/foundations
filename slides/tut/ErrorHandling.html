@@ -233,9 +233,11 @@ object Form {
   case class Circe(radius: Int) extends Form
 }
 
-def asRectangle(form: Form): Option[Form.Rectangle] = ???
+import Form._
 
-def asCircle(form: Form): Option[Form.Circe] = ???
+def asRectangle(form: Form): Option[Rectangle] = ???
+
+def asCircle(form: Form): Option[Circe] = ???
 ```
 
 ---
@@ -259,6 +261,436 @@ def asCircle(form: Form): Option[Circle] = form match {
   case _: Rectangle => None
   case x: Circle    => Some(x)
 }
+```
+
+---
+# Exercise 4: Form serialisation
+
+```scala
+"Rectangle,10,2"
+"Circle,5"
+```
+
+```tut:silent
+def parseForm(s: String): Option[Form] = ???
+```
+
+---
+# Exercise 4: Form serialisation (parseRectangle / parseCircle)
+
+```scala
+"Rectangle,10,2"
+"Circle,5"
+```
+
+```tut:silent
+def parseForm(s: String): Option[Form] = ???
+
+def parseRectangle(s: String): Option[Rectangle] = ???
+
+def parseCircle(s: String): Option[Rectangle] = ???
+```
+
+---
+# Exercise 4: Form serialisation (parseRectangle / parseCircle)
+
+```tut:silent
+def parseRectangle(s: String): Option[Rectangle] =
+  parseForm(s) match {
+    case None    => None
+    case Some(x) => asRectangle(x)
+  }
+
+def parseCircle(s: String): Option[Circle] =
+  parseForm(s) match {
+    case None    => None
+    case Some(x) => asCircle(x)
+  }
+```
+
+---
+# Exercise 4: Form serialisation (flatMap)
+
+```tut:silent
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+```
+
+--
+
+```tut:silent
+def parseRectangle(s: String): Option[Rectangle] =
+  flatMap(parseForm(s))(asRectangle)
+
+def parseCircle(s: String): Option[Circle] =
+  flatMap(parseForm(s))(asCircle)
+```
+
+---
+# Exercise 4: Form serialisation (flatMap)
+
+// TODO diagram flatMap is sequential composition of Option
+
+---
+# Exercise 4: Form serialisation (flatMap)
+
+```tut:silent
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+```
+
+---
+# Exercise 4: Form serialisation (flatMap)
+
+```tut:silent
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] =
+  fa match {
+    case None    => ???
+    case Some(a) => ???
+  }
+```
+
+---
+# Exercise 4: Form serialisation (flatMap)
+
+```tut:silent
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] =
+  fa match {
+    case None    => None
+    case Some(a) => ???
+  }
+```
+
+---
+# Exercise 4: Form serialisation (flatMap)
+
+```tut:silent
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] =
+  fa match {
+    case None    => None
+    case Some(a) => f(a)
+  }
+```
+
+--
+
+```tut
+flatMap(Some(3))(x => Some(x + 1))
+```
+
+---
+# Exercise 4: Form serialisation (parseForm)
+
+```scala
+"Rectangle,10,2"
+"Circle,5"
+```
+
+```tut:silent
+def parseForm(s: String): Option[Form] = ???
+
+def parseRectangle(s: String): Option[Rectangle] =
+  flatMap(parseForm(s))(asRectangle)
+
+def parseCircle(s: String): Option[Circle] =
+  flatMap(parseForm(s))(asCircle)
+```
+
+---
+# Exercise 4: Form serialisation (_parseCircle)
+
+```scala
+"Circle,5"
+```
+
+```tut:silent
+def _parseCircle(radius: String): Option[Circle] = ???
+```
+
+--
+
+```tut:silent
+import scala.util.Try
+
+def parseInt(s: String): Option[Int] =
+  Try(s.toInt).toOption
+```
+
+---
+# Exercise 4: Form serialisation (_parseCircle)
+
+```tut:silent
+def _parseCircle(radius: String): Option[Circle] =
+  parseInt(radius) match {
+    case None    => None
+    case Some(r) => Some(Circle(r))
+  }
+```
+
+---
+# Exercise 4: Form serialisation (_parseCircle)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+```
+
+```tut:invisible
+def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+  fa.map(f)
+```
+
+```tut
+map(Some(1))(_ + 1)
+map(None: Option[Int])(_ + 1)
+```
+
+
+---
+# Exercise 4: Form serialisation (_parseCircle)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+```
+
+```tut:silent
+def _parseCircle(radius: String): Option[Circle] = ???
+```
+
+---
+# Exercise 4: Form serialisation (_parseCircle)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+```
+
+```tut:silent
+def _parseCircle(radius: String): Option[Circle] =
+  map(parseInt(radius))(r => Circle(r))
+```
+
+---
+# Exercise 4: Option (map)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+```
+
+---
+# Exercise 4: Option (map)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa match {
+  case None    => ???
+  case Some(a) => ???
+}
+```
+
+---
+# Exercise 4: Option (map)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa match {
+  case None    => None
+  case Some(a) => ???
+}
+```
+
+---
+# Exercise 4: Option (map)
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa match {
+  case None    => None
+  case Some(a) => Some(f(a))
+}
+```
+
+---
+# Exercise 4: Option (map)
+
+```tut:silent
+def map    [A, B](fa: Option[A])(f: A =>        B ): Option[B] = ???
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+```
+
+--
+
+```tut:silent
+def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+  flatMap(fa)(a => Some(f(a)))
+```
+
+---
+# Exercise 4: Form serialisation (_parseRectangle)
+
+```tut:silent
+def _parseCircle(radius: String): Option[Circle] =
+  map(parseInt(radius))(r => Circle(r))
+```
+
+```tut:silent
+def _parseRectangle(width: String, height: String): Option[Rectangle] = ???
+```
+
+---
+# Exercise 4: Form serialisation (_parseRectangle)
+
+```tut:silent
+def _parseRectangle(width: String, height: String): Option[Rectangle] =
+  (parseInt(width), parseInt(height)) match {
+    case (Some(w), Some(h)) => Some(Rectangle(w, h))
+    case (None   , Some(_)) => None
+    case (Some(_), None   ) => None
+    case (None   , None   ) => None
+  }
+```
+
+---
+# Exercise 4: Form serialisation (_parseRectangle)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+```
+
+---
+# Exercise 4: Form serialisation (_parseRectangle)
+
+```tut:silent
+def _parseRectangle(width: String, height: String): Option[Rectangle] = ???
+```
+
+---
+# Exercise 4: Form serialisation (_parseRectangle)
+
+```tut:silent
+def _parseRectangle(width: String, height: String): Option[Rectangle] =
+  map2(parseInt(width), parseInt(height))((w, h) => Rectangle(w, h))
+```
+
+---
+# Exercise 4: Form serialisation (map2)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+```
+
+such as
+
+```scala
+map2(Some(3), Some(4))((a, b) => a + b) == Some(7)
+map2(Some(3), None   )((a, b) => a + b) == None
+map2(None   , Some(3))((a, b) => a + b) == None
+map2(None   , None   )((a, b) => a + b) == None
+```
+
+---
+# Exercise 4: Form serialisation (map2)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  (fa, fb) match {
+    case (Some(a), Some(b)) => ???
+    case (None   , Some(b)) => ???
+    case (Some(a), None   ) => ???
+    case (None   , None   ) => ???
+  }
+```
+
+---
+# Exercise 4: Form serialisation (map2)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  (fa, fb) match {
+    case (Some(a), Some(b)) => ???
+    case (None   , Some(_)) => None
+    case (Some(_), None   ) => None
+    case (None   , None   ) => None
+  }
+```
+
+---
+# Exercise 4: Form serialisation (map2)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  (fa, fb) match {
+    case (Some(a), Some(b)) => Some(f(a,b))
+    case (None   , Some(_)) => None
+    case (Some(_), None   ) => None
+    case (None   , None   ) => None
+  }
+```
+
+---
+# Exercise 4: Form serialisation (map2)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+```
+
+---
+# Exercise 4: Form serialisation (map2)
+
+// TODO add map2 / flatMap diagram
+
+---
+# Exercise 4: Form serialisation (map2)
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  flatMap(fa)(a =>
+    map(fb)(b =>
+      f(a, b)
+    )
+  )
+```
+
+--
+
+```tut:silent
+def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] =
+  for {
+    a <- fa
+    b <- fb
+  } yield f(a, b)
+```
+
+---
+# Exercise 4: Form serialisation (parseForm)
+
+```tut:invisible
+def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = fa.flatMap(f)
+
+def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+  flatMap(fa)(a => Some(f(a)))
+
+def _parseCircle(radius: String): Option[Circle] =
+  map(parseInt(radius))(Circle)
+
+def _parseRectangle(width: String, height: String): Option[Rectangle] =
+  map2(parseInt(width), parseInt(width))(Rectangle)
+```
+
+```tut:silent
+def parseForm(s: String): Option[Form] =
+  s.split(',').toList match {
+    case Nil => None
+    case "Rectangle" :: width :: height :: Nil =>
+      _parseRectangle(width, height)
+    case "Circle" :: radius :: Nil =>
+      _parseCircle(radius)
+    case _ => None
+  }
+```
+
+--
+
+```tut
+parseForm("Circle,5")
+parseForm("Rectangle,10,2")
+parseForm("Circle,hello")
+parseForm("Rectangle,2")
+parseForm("Triangle,2")
 ```
 
 ---

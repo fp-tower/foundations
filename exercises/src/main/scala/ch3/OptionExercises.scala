@@ -5,6 +5,8 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric._
 
+import scala.util.Try
+
 object OptionExercises {
 
 
@@ -25,19 +27,80 @@ object OptionExercises {
   // 2c. Implement charToDigit in terms of charToDigit_v2
 
 
-  // 3a. Implement asRectangle and asCircle
+  // 3. Form is a Sum type, currently it is either a Rectangle or a Circle
   sealed trait Form
   object Form {
     case class Rectangle(width: Int, height: Int) extends Form
-    case class Circe(radius: Int) extends Form
+    case class Circle(radius: Int) extends Form
   }
 
   import Form._
 
+  // 3a. Implement asRectangle using pattern matching
   def asRectangle(form: Form): Option[Rectangle] = ???
 
+  // 3b. Implement asRectangle using pattern matching
+  def asCircle(form: Form): Option[Circle] = ???
 
-  def asCircle(form: Form): Option[Circe] = ???
+
+  // 4. The goal of this exercise is to implement parseForm such as
+  // parseForm("Rectangle,10,2") == Some(Rectangle(10, 2))
+  // parseForm("Circle,5")       == Some(Circle(5))
+  def parseForm(s: String): Option[Form] = ???
+
+
+  // 4a. Assume parseForm is implemented
+  // implement parseRectangle and parseCircle using pattern matching
+  def parseRectangle(s: String): Option[Rectangle] = ???
+
+  def parseCircle(s: String): Option[Circle] = ???
+
+
+  // 4b. Assume flatMap is implemented
+  // re-implement parseRectangle and parseCircle using flatMap
+  def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+
+
+  // 4c. Implement flatMap
+
+
+  // bonus question: how many possible implementation of flatMap exist?
+  // what does it mean it terms of unit testing?
+
+
+  // 4d. Implement _parseCircle using parseInt and pattern matching
+  def parseInt(s: String): Option[Int] =
+    Try(s.toInt).toOption
+
+  def _parseCircle(radius: String): Option[Circle] = ???
+
+  // 4e. Assume map is implemented
+  // re-implement _parseCircle using map
+  def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+
+
+  // 4f. Implement map using pattern matching
+
+
+  // 4g. Implement map in terms of flatMap
+
+
+  // 4h. Implement _parseRectangle using parseInt and pattern matching
+  def _parseRectangle(width: String, height: String): Option[Rectangle] = ???
+
+
+  // 4h. Assume map2 is implemented
+  // re-implement _parseRectangle using map2
+  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+
+
+
+  // 4i. Implement map2 using pattern matching
+
+
+
+  // 4j. Re-implement map2 using flatMap
+
 
 
   // 4a. Implement using pattern matching
@@ -45,7 +108,7 @@ object OptionExercises {
 
 
   // 4b. Implement map2
-  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+//  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
 
 
   // 4c. Implement asRectangles using map2
@@ -60,7 +123,7 @@ object OptionExercises {
 
   // 4f. Implement map and flatMap
   def map    [A, B](fa: Option[A])(f: A =>        B ): Option[B] = ???
-  def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+//  def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
 
 
   // 4g. Implement asRectangles using map and flatMap
