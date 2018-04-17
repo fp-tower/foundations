@@ -13,6 +13,14 @@ h1, h2, h3 {
 font-family: 'Yanone Kaffeesatz';
 font-weight: normal;
 }
+.pull-left {
+float: left;
+width: 47%;
+}
+.pull-right {
+float: right;
+width: 47%;
+}
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 </style>
 </head>
@@ -173,6 +181,24 @@ increment("Hello") == "Hello1"
 Let `|A|` be the number of values of type `A`
 
 How to calculate `|A => B|` ? e.g. `|Int => Int|`
+
+---
+# Split screen
+
+.pull-left[
+## Pro
+
+```tut
+2 + 2
+```
+]
+
+.pull-right[
+## Cons
+```tut
+"hello"
+```
+]
 
 ---
 # Exercise 1: How many values of Boolean
