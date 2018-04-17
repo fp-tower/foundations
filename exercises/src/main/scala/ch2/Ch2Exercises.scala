@@ -18,18 +18,15 @@ object Ch2Exercises {
 
   // 1h. How many possible values are of type (Boolean, Char)?
 
-  // 1i. How many possible values are of type String?
+  // 1i. How many possible values are of type List[Unit]?
 
-  // 1j. How many possible values are of type List[Unit]?
+  // 1j. How many possible values are of type String?
 
   // 1k. How many possible values are of type Nothing?
 
   // 1l. How many possible values are of type Option[Nothing]?
 
   // 1m. How many possible values are of type (Boolean, Nothing)?
-
-  // 1n. How many possible values are of type List[Nothing]?
-
 
 
 

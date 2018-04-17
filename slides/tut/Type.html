@@ -203,8 +203,10 @@ How to calculate `|A => B|` ? e.g. `|Int => Int|`
 ---
 # Exercise 1: How many values of Boolean
 
-```scala
-Boolean = True | False
+--
+
+```haskel
+data Boolean = True | False
 ```
 
 --
@@ -214,74 +216,336 @@ Boolean = True | False
 ```
 
 ---
-# Exercise 1: How many values of ...
+# Exercise 1: How many values of Unit
 
 --
 
-* `Boolean` can be `true` or `false`, so it has 2 values
+```scala
+case object Unit
+```
+
+```tut
+Unit
+```
 
 --
 
-* `Unit` has a single value `()`
+```tut
+()
+```
 
 --
 
-* `Char` encode characters with 8 bits, so it has `2^8 - 1 == 255` values
+```scala
+|Unit| = 1
+```
+
+---
+# Exercise 1: How many values of Char
 
 --
 
-* `Int` encode a number with 32 bits, so it has `2^32 - 1 =~ 4.2 Billion` values
+```tut
+'a'
+'8'
+';'
+```
 
 --
 
-* `Option[Unit]` is either a `None` or a `Some(())`, so it has 2 values like Boolean
+
+`Char` encodes characters with 8 bits, so
+
+```scala
+|Char| = 2^8 - 1 == 255
+```
+
+---
+# Exercise 1: How many values of Int
 
 --
 
-* `Option[Boolean]` is either a `None`, `Some(true)`, `Some(false)`, so it has 3 values
+```tut
+0
+Int.MinValue
+Int.MaxValue
+```
 
 --
 
-* `(Boolean, Unit)` is either `(true, ())` or `(false, ())`, so it has 2 values
+`Int` encodes a number with 32 bits, so
+
+```scala
+|Int| = 2^32 - 1 =~ 4.2 Billion
+```
+
+---
+# Exercise 1: How many values of Option[Unit]
+
+```scala
+Option[Unit] = None | Some(())
+```
 
 --
 
-* `(Boolean, Char)` is either `(true, x: Char)` or `(false, x: Char)`, so it has `2 * 255 == 510` values
+```scala
+|Option[Unit]| = 2
+```
+
+`Option[Unit]` is isomorphic to `Boolean`!
 
 
 ---
+# Exercise 1: How many values of Option[Boolean]
 
-# Exercise 1: How many values of ...
-
-
-* `String` is an unbounded sequence of characters, so it would have an **Infinite** number of values
-
---
-
-* `List[Unit]` is an unbounded sequence of `Unit`, so it would have an **Infinite** number of values
+```scala
+Option[Boolean] = None | Some(true) | Some(false)
+```
 
 --
 
-This is not exactly correct, in practice `String` is encoded as an array of `Char` which is limited in size by `Int`
-
+```scala
+|Option[Boolean]| = 3
+```
 
 ---
+# Exercise 1: How many values of (Boolean, Unit)
 
-# Exercise 1: How many values of ...
-
-* `Nothing` is by definition a type with no value, it is impossible to create a value of type `Nothing`!
-
---
-
-* `Option[Nothing]` is either `None` or `Some(???)`, it is impossible to create a `Some` of `Nothing`, so it has a 1 value
+```scala
+(Boolean, Unit) = (true, ()) | (false, ())
+```
 
 --
 
-* `(Boolean, Nothing)` has 0 value, if it had a value then we would be able to extract a value of type `Nothing`
+```scala
+|(Boolean, Unit)| = 2
+```
+
+`(Boolean, Unit)` is isomorphic to `Boolean`!
+
+---
+# Exercise 1: How many values of (Boolean, Char)
 
 --
 
-* `List[Nothing]` is either `Nil` or `(Nothing, List[Nothing])` which is impossible. So it has 1 value
+```scala
+(Boolean, Char) = (true, x: Char) | (false, x: Char)
+```
+
+---
+# Exercise 1: How many values of (Boolean, Char)
+
+```scala
+(Boolean, Char) = (true, x: Char) | (false, x: Char)
+                = 2 * |Char|
+                = 2 * 255
+                = 510
+```
+
+---
+# Exercise 1: How many values of List[Unit]
+
+--
+
+```scala
+List[Unit] = Nil |
+             () :: Nil |
+             () :: () :: Nil |
+             ...
+```
+
+--
+
+`List[Unit]` is like roman numeral limited to `I`, e.g.
+
+```scala
+  I =~ () :: Nil
+III =~ () :: () :: () :: Nil
+```
+
+--
+
+```scala
+|List[Unit]| = ∞
+```
+
+---
+# Exercise 1: How many values of String
+
+--
+
+```tut
+""
+"Hello"
+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+```
+
+--
+
+`String` is equivalent to a `List[Char]` and a `|List[Char]| > |List[Unit]|`, so
+
+```
+|String| = ∞
+```
+
+--
+
+In scala, `String` is encoded as an `Array[Char]` and an `Array` is bounded to `|Int|` elements
+
+---
+# Exercise 1: How many values of Nothing
+
+--
+
+```tut:silent
+sealed trait Nothing
+```
+
+--
+
+```scala
+|Nothing| = 0
+```
+
+---
+# Exercise 1: How many values of Option[Nothing]
+
+--
+
+```scala
+Option[Nothing] = None | Some(x: Nothing)
+```
+
+---
+# Exercise 1: How many values of Option[Nothing]
+
+```scala
+Option[Nothing] = None
+```
+
+```scala
+|Option[Nothing]| = 1
+```
+
+--
+
+`Option[Nothing]` is isomorphic to `Unit`
+
+---
+# Exercise 1: How many values of (Boolean, Nothing)
+
+--
+
+```scala
+(Boolean, Nothing) = (true, x: Nothing) | (false, x: Nothing)
+```
+
+--
+
+```scala
+|(Boolean, Nothing)| = 0
+```
+
+---
+# Exercise 1: How many values of Int => Unit
+
+```tut:silent
+def foo(x: Int): Unit = ???
+```
+
+---
+# Exercise 1: How many values of Int => Unit
+
+```tut:silent
+def foo(x: Int): Unit = ()
+```
+
+--
+
+```scala
+|Int => Unit| = 1
+```
+
+---
+# Exercise 1: How many values of Unit => Int
+
+```tut:silent
+def foo(x: Unit): Int = ???
+```
+
+---
+# Exercise 1: How many values of Unit => Int
+
+```tut:silent
+def foo(x: Unit): Int = Int.MinValue
+def foo(x: Unit): Int = 0
+def foo(x: Unit): Int = Int.MaxValue
+```
+
+--
+
+```scala
+|Unit => Int| = |Int| = 2 ^ 32 - 1
+```
+
+---
+# Exercise 1: How many values of Int => Nothing
+
+```tut:silent
+def foo(x: Int): Nothing = ???
+```
+
+--
+
+```scala
+|Int => Nothing| = 0
+```
+
+---
+# Exercise 1: How many values of Nothing => Int
+
+```tut:silent
+def foo(x: Nothing): Int = ???
+```
+
+--
+
+```scala
+|Nothing => Int| = |Int|
+```
+
+but none of these functions can ever be called!
+
+---
+# Exercise 1: How many values of Point
+
+```tut:silent
+case class Point(x: Int, y: Int)
+```
+
+--
+
+```scala
+Point = (Int, Int)
+```
+
+---
+# Exercise 1: How many values of Point
+
+```tut:silent
+case class Point(x: Int, y: Int)
+```
+
+```scala
+Point = (Int, Int)
+      = (Int.MinValue, x: Int) | (Int.MinValue + 1, x: Int) | ... | (Int.MaxValue, x: Int)
+```
+
+--
+
+```scala
+|Point| = |(Int, Int)| = |Int| * |Int|
+```
 
 ---
 # And (Product)
