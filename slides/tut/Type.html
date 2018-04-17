@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Data</title>
+<title>Types</title>
 <meta charset="utf-8">
 <style>
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -21,11 +21,243 @@ font-weight: normal;
 
 class: center, middle
 
-# Data
+# Types
 `@JulienTruffaut`
 
 ---
+# Type
 
+// TODO diagram type is a set of a values e.g. Boolean, String
+
+---
+# Function
+
+// TODO diagram function with input / output type
+
+---
+# Untyped language (Javascript)
+
+```javascript
+function increment(x){
+  return x + 1;
+}
+```
+
+--
+
+```javascript
+increment(2)
+3
+```
+
+--
+
+```javascript
+increment(1.1)
+2.1
+```
+
+--
+
+```javascript
+increment("hello")
+"hello1"
+```
+
+--
+
+```javascript
+increment('c')
+"c1"
+```
+
+---
+# Typed language (Scala)
+
+```tut:silent
+def increment(x: Int): Int = x + 1
+```
+
+--
+
+```tut
+increment(2)
+```
+
+--
+
+```tut:fail
+increment(1.1)
+increment("hello")
+```
+
+---
+# Typed language (Scala)
+
+```tut:silent
+def increment(x: Int): Int = x + 1
+def increment(x: Double): Double = x + 1
+```
+
+```tut:invisible
+object Increment {
+  def increment(x: Int): Int = x + 1
+  def increment(x: Double): Double = x + 1
+}
+import Increment._
+```
+
+```tut
+increment(1)
+increment(1.1)
+```
+
+---
+# Types Documentation
+
+// TODO tooling like hoogle, IDE, linting
+
+---
+# Types vs Tests
+
+```tut
+increment( 0) ==  1
+increment(-5) == -4
+increment(12) == 13
+```
+
+--
+
+```tut
+increment(Int.MaxValue) == Int.MinValue
+```
+
+--
+
+```tut:fail
+increment("Hello") == "Hello1"
+```
+
+
+---
+# Types
+
+// TODO diagram A is a set of values, e.g. Boolean, String
+
+
+---
+# Functions have types!
+
+// TODO diagram type of A => B
+
+---
+# Unit Tests
+
+// TODO diagram function f(x) = x + 1 with a few dots for point tested
+
+---
+# Unit Tests
+
+// TODO diagram function
+// x <= 0, f(x) = 0
+// x >  0, f(x) = x + 1
+
+---
+# Property Tests
+
+// TODO diagram f(x) > x
+
+---
+# Functions have types!
+
+Let `|A|` be the number of values of type `A`
+
+How to calculate `|A => B|` ? e.g. `|Int => Int|`
+
+---
+# Exercise 1: How many values of Boolean
+
+```scala
+Boolean = True | False
+```
+
+--
+
+```scala
+|Boolean| = 2
+```
+
+---
+# Exercise 1: How many values of ...
+
+--
+
+* `Boolean` can be `true` or `false`, so it has 2 values
+
+--
+
+* `Unit` has a single value `()`
+
+--
+
+* `Char` encode characters with 8 bits, so it has `2^8 - 1 == 255` values
+
+--
+
+* `Int` encode a number with 32 bits, so it has `2^32 - 1 =~ 4.2 Billion` values
+
+--
+
+* `Option[Unit]` is either a `None` or a `Some(())`, so it has 2 values like Boolean
+
+--
+
+* `Option[Boolean]` is either a `None`, `Some(true)`, `Some(false)`, so it has 3 values
+
+--
+
+* `(Boolean, Unit)` is either `(true, ())` or `(false, ())`, so it has 2 values
+
+--
+
+* `(Boolean, Char)` is either `(true, x: Char)` or `(false, x: Char)`, so it has `2 * 255 == 510` values
+
+
+---
+
+# Exercise 1: How many values of ...
+
+
+* `String` is an unbounded sequence of characters, so it would have an **Infinite** number of values
+
+--
+
+* `List[Unit]` is an unbounded sequence of `Unit`, so it would have an **Infinite** number of values
+
+--
+
+This is not exactly correct, in practice `String` is encoded as an array of `Char` which is limited in size by `Int`
+
+
+---
+
+# Exercise 1: How many values of ...
+
+* `Nothing` is by definition a type with no value, it is impossible to create a value of type `Nothing`!
+
+--
+
+* `Option[Nothing]` is either `None` or `Some(???)`, it is impossible to create a `Some` of `Nothing`, so it has a 1 value
+
+--
+
+* `(Boolean, Nothing)` has 0 value, if it had a value then we would be able to extract a value of type `Nothing`
+
+--
+
+* `List[Nothing]` is either `Nil` or `(Nothing, List[Nothing])` which is impossible. So it has 1 value
+
+---
 # And (Product)
 
 a `PersonRow` is an `Int` (id) **AND** a `String` (name)
@@ -136,77 +368,6 @@ data DaysOfWeek = Monday | Tuesday | Wednesday // ...
 * Encoding used for derivation (see later)
 
 * Useful to count possible state
-
----
-
-# Exercise 1: How many values of ...
-
---
-
-* `Boolean` can be `true` or `false`, so it has 2 values
-
---
-
-* `Unit` has a single value `()`
-
---
-
-* `Char` encode characters with 8 bits, so it has `2^8 - 1 == 255` values
-
---
-
-* `Int` encode a number with 32 bits, so it has `2^32 - 1 =~ 4.2 Billion` values
-
---
-
-* `Option[Unit]` is either a `None` or a `Some(())`, so it has 2 values like Boolean
-
---
-
-* `Option[Boolean]` is either a `None`, `Some(true)`, `Some(false)`, so it has 3 values
-
---
-
-* `(Boolean, Unit)` is either `(true, ())` or `(false, ())`, so it has 2 values
-
---
-
-* `(Boolean, Char)` is either `(true, x: Char)` or `(false, x: Char)`, so it has `2 * 255 == 510` values
-
-
----
-
-# Exercise 1: How many values of ...
-
-
-* `String` is an unbounded sequence of characters, so it would have an **Infinite** number of values
-
---
-
-* `List[Unit]` is an unbounded sequence of `Unit`, so it would have an **Infinite** number of values
-
---
-
-This is not exactly correct, in practice `String` is encoded as an array of `Char` which is limited in size by `Int`
-
-
----
-
-# Exercise 1: How many values of ...
-
-* `Nothing` is by definition a type with no value, it is impossible to create a value of type `Nothing`!
-
---
-
-* `Option[Nothing]` is either `None` or `Some(???)`, it is impossible to create a `Some` of `Nothing`, so it has a 1 value
-
---
-
-* `(Boolean, Nothing)` has 0 value, if it had a value then we would be able to extract a value of type `Nothing`
-
---
-
-* `List[Nothing]` is either `Nil` or `(Nothing, List[Nothing])` which is impossible. So it has 1 value
 
 
 ---
