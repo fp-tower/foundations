@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Higher Kinded Type</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.pull-left {
+float: left;
+width: 47%;
+}
+.pull-right {
+float: right;
+width: 47%;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Higher Kinded Type
+`@JulienTruffaut`
+
+---
+
+.pull-left[
+# Types
+
+```scala
+Int
+String
+(Int, Boolean)
+Int => Long
+List[Boolean]
+```
+
+```tut:silent
+def x: Int = ???
+def xs: List[Int] = ???
+```
+]
+
+--
+
+.pull-right[
+# Not Types
+
+```scala
+List
+Option
+Future
+Map
+Function1
+```
+
+```tut:fail
+def xs: List = ???
+
+def ys: Map = ???
+```
+]
+
+---
+# Higher Kinded Type
+
+A higher kinded type is a like a function at the type level
+
+```scala
+List   :: Type => Type
+Future :: Type => Type
+```
+
+--
+
+```scala
+Map    :: (Type, Type) => Type
+Either :: (Type, Type) => Type
+```
+
+--
+
+```scala
+Either[String, ?] :: Type => Type
+```
+
+---
+# Generic
+
+```tut:silent
+def map[A, B](fa: List[A])(f: A => B): List[B] = fa match {
+  case Nil     => Nil
+  case x :: xs => f(x) :: map(xs)(f)
+}
+```
+
+--
+
+```tut
+map(List(1,2,3,4))(_ + 1)
+map(List("Hello", "World"))(_.reverse)
+```
+
+---
+# Higher Kinded Type
+
+```tut:silent
+import scala.concurrent.Future
+
+def map[A, B](fa:   List[A])(f: A => B):   List[B] = ???
+def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
+def map[A, B](fa: Future[A])(f: A => B): Future[B] = ???
+```
+
+--
+
+```tut:silent
+def map[F[_], A, B](fa: F[A])(f: A => B): F[B] = ???
+```
+
+
+---
+# Higher Kinded Type
+
+```tut:silent
+def map[E, A, B](fa: Either[E, A])(f: A => B): Either[E, B] = ???
+def map[K, A, B](fa:    Map[K, A])(f: A => B):    Map[K, B] = ???
+```
+
+--
+
+```scala
+F = Either[E, ?]
+F =    Map[K, ?]
+```
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>
