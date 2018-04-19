@@ -1,21 +1,16 @@
-## Chapter 1: FP Basics / motivation
-Reason about your program
+# Plan
 
-* e.g. new job, large code base, dependencies/mutability everywhere
-* how often have you heard: "it works on my machine", "..."
-* large piece of software is always difficult to maintain, test help but for me fp is the key to write/update code without worry/fear
-* immutability: when I have an object, I can do whatever I want with it. I don't need to worry about other people reference on this object
-* pure function: no need to check result type for null / catch exception, signature do not lie == some documentation for free, memoization/caching
-
-## Chapter 2: Data / Function modelling
-
-## Chapter 3: Error handling
-Option, Either, Validation
-
-## Chapter 4: Data Structure
-List, Vector, NonEmptyList, Map, Set
-
-## Chapter 5: Generic Function
-identity, absurd
-
-## Chapter 6: Typeclasses
+1. Introduction / Motivation
+1. Syntax
+1. Function
+1. Type
+1. Parametricity
+1. Error Handling
+   1. Option
+   1. Either
+   1. Validation
+1. Typeclasses
+   1. Semigroup / Monoid / Order / Show / Equal
+   1. Higher Kinded Type
+   1. Functor / Foldable / Traverse / Applicative / Monad
+1. IO
