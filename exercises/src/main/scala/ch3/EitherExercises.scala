@@ -1,5 +1,6 @@
 package ch3
 
+import cats.data.NonEmptyList
 import ch3.OptionExercises.User
 
 object EitherExercises {
