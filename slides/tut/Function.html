@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Pure Function</title>
+<title>Function</title>
 <meta charset="utf-8">
 <style>
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -21,16 +21,78 @@ font-weight: normal;
 
 class: center, middle
 
-# Pure Function
+# Function
 `@JulienTruffaut`
 
 ---
-# Definition
+# Function
 
-* referentially transparent
+// TODO diagram function with domain / co-domain
+
+---
+# Combine functions
+
+// TODO diagram pipelines
+* sequential: f compose g
+* fork: a => (f(a), g(a))
+* join: (a, b) => f(a, b))
+
+---
+class: center, middle
+
+# A => B
+
+---
+class: center, middle
+
+# Programming function != Math function
+
+---
+# Pure Function
+
+* deterministic
+* no side effect
+* no mutation
 * no exception
 * no null
 * no reflection
+
+---
+# Deterministic
+
+```tut:silent
+def foo(x: Int): Int = ???
+```
+
+--
+
+```tut:invisible
+def foo(x: Int): Int = ((x + 3) * 5) % 2
+```
+
+```tut
+foo(2)
+foo(5)
+foo(2)
+foo(5)
+```
+
+---
+# Side effect
+
+* touch the external world, e.g. read/write a file, http or database call, console output
+* mutation
+* concurrency
+
+--
+
+# A function with no side effect only produce a value!
+
+???
+Things that could be considered as side effects but are often not:
+
+* stack or heap allocation
+* parallelism
 
 ---
 # Referentially transparent
@@ -50,15 +112,27 @@ inc(5)
 ```
 
 ---
+# Pure Function
 
-# Exercise 1: Is it a pure function?
+* deterministic
+* no side effect
+* no mutation
+
+
+* no exception
+* no null
+* no reflection
+
+---
+
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def plus(a: Int, b: Int): Int = a + b
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def div(a: Int, b: Int): Int = {
@@ -78,7 +152,7 @@ div(8, 0)
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 var counterTimes2 = 0
@@ -94,10 +168,11 @@ def times2(i: Int): Int = {
 counterTimes2
 times2(5)
 counterTimes2
+times2(5)
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 import scala.util.Random
@@ -118,7 +193,7 @@ boolToInt(false)
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def mapLookup(map: Map[String, Int], key: String): Int =
@@ -140,7 +215,7 @@ mapLookup(map, "Three")
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def times3(i: Int): Int = {
@@ -159,7 +234,7 @@ times3(5)
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 val pi = 3.14
@@ -169,7 +244,7 @@ def circleArea(radius: Double): Double =
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def inc(xs: Array[Int]): Unit =
@@ -183,7 +258,7 @@ inc(Array(1,2,3))
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def inc_v2(xs: Array[Int]): Unit =
@@ -207,7 +282,7 @@ xs
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def incAll(value: Any): Any = value match {
@@ -230,7 +305,7 @@ incAll("Hello")
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def incAll_v2(value: Any): Any = value match {
@@ -249,7 +324,7 @@ incAll_v2("Hello")
 ```
 
 ---
-# Exercise 1: Is it a pure function?
+# Exercise 1: is it a pure function?
 
 ```tut:silent
 def sum(xs: List[Int]): Int = {
@@ -267,30 +342,22 @@ sum(Nil)
 ```
 
 ---
-# Referential transparency
+class: center, middle
 
-* function only depends on arguments
-* deterministic
-* no side effect
-* only a mapping between input values to output values
-
---
-
-## Side effects
-
-* touch the external world, e.g. read/write a file, http or database call, console output
-* mutation
-* concurrency
-
-???
-Things that could be considered as side effects but are often not:
-
-* stack or heap allocation
-* parallelism
-
+# Why?
 
 ---
-# Why referential transparency? (testing)
+# Function
+
+* deterministic
+* no side effect
+* no mutation
+* no exception
+* no null
+* no reflection
+
+---
+# Testing
 
 ```tut:silent
 var counter: Long = 1
@@ -314,7 +381,7 @@ foo(5,  true) == 10L
 ```
 
 ---
-# Why referential transparency? (testing)
+# Testing
 
 ```tut:silent
 def foo(x: Int, b: Boolean): Long = ???
@@ -339,7 +406,7 @@ foo(5, false) == 0L
 * tests can be run in parallel
 
 ---
-# Why referential transparency? (refactoring / reasoning)
+# Refactoring / Reasoning
 
 ```tut:silent
 def double(x: Int): Int = {
@@ -372,13 +439,53 @@ combine(2, 10)
 ```
 
 ---
-# Why referential transparency? (optimisation)
+# Optimisation
 
 // TODO
 
 
 ---
-# Type system
+# Null
+
+```tut:silent
+def length(s: String): Int = {
+  if(s == null) 0
+  else s.size
+}
+```
+
+--
+
+```tut
+length("Hello")
+length("")
+length(null)
+```
+
+---
+# Exception
+
+```tut:silent
+def head(xs: List[Int]): Int = xs match {
+  case Nil    => sys.error("no head of an empty list")
+  case x :: _ => x
+}
+```
+
+--
+
+```tut:silent
+def xs: List[Int] = List(1,2,3)
+
+try {
+  head(xs)
+} catch {
+  case e: Exception => 0
+}
+```
+
+---
+# Strong type system
 
 * no exception
 * no null
@@ -393,10 +500,15 @@ This means:
 * more informative signature
 
 ---
-# Cost
+# Cost of functional programming
 
-* we lose the ability to affect the external world (so far)
-* we need to reconsider many algorithms an data structures
+--
+
+* lost the ability to affect the external world
+
+--
+
+* reconsider most algorithms an data structures (no mutation)
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
