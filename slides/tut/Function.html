@@ -25,8 +25,7 @@ class: center, middle
 `@JulienTruffaut`
 
 ---
-
-# What is it?
+# Definition
 
 * referentially transparent
 * no exception
@@ -34,7 +33,6 @@ class: center, middle
 * no reflection
 
 ---
-
 # Referentially transparent
 
 A function is referentially transparent if we can replace all the calls of the function by its output without
@@ -60,7 +58,6 @@ def plus(a: Int, b: Int): Int = a + b
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -81,7 +78,6 @@ div(8, 0)
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -101,7 +97,6 @@ counterTimes2
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -123,7 +118,6 @@ boolToInt(false)
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -146,7 +140,6 @@ mapLookup(map, "Three")
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -166,7 +159,6 @@ times3(5)
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -177,7 +169,6 @@ def circleArea(radius: Double): Double =
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -192,7 +183,6 @@ inc(Array(1,2,3))
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -217,7 +207,6 @@ xs
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -241,7 +230,6 @@ incAll("Hello")
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -261,7 +249,6 @@ incAll_v2("Hello")
 ```
 
 ---
-
 # Exercise 1: Is it a pure function?
 
 ```tut:silent
@@ -280,22 +267,6 @@ sum(Nil)
 ```
 
 ---
-
-# Side effects
-
-* touch the external world, e.g. read/write a file, http or database call, console output
-* mutation
-* concurrency
-
---
-
-Things that could be considered as side effects but are often not:
-
-* stack or heap allocation
-* parallelism
-
----
-
 # Referential transparency
 
 * function only depends on arguments
@@ -305,15 +276,108 @@ Things that could be considered as side effects but are often not:
 
 --
 
-This means:
+## Side effects
 
-* Easier to test (no dependency injection or mock)
-* Easier to reason about our code
-* Easier to refactor
-* All functions can be memoized
+* touch the external world, e.g. read/write a file, http or database call, console output
+* mutation
+* concurrency
+
+???
+Things that could be considered as side effects but are often not:
+
+* stack or heap allocation
+* parallelism
+
 
 ---
+# Why referential transparency? (testing)
 
+```tut:silent
+var counter: Long = 1
+
+def foo(x: Int, b: Boolean): Long = {
+  counter += x
+  if(b) counter *= 2
+  else counter = 0
+  counter
+}
+```
+
+--
+
+```tut
+foo(5,  true) == 12L
+
+foo(5, false) == 0L
+
+foo(5,  true) == 10L
+```
+
+---
+# Why referential transparency? (testing)
+
+```tut:silent
+def foo(x: Int, b: Boolean): Long = ???
+```
+
+```tut:invisible
+def foo(x: Int, b: Boolean): Long = 0
+```
+
+--
+
+```tut:silent
+foo(5,  true) == 12L
+
+foo(5, false) == 0L
+```
+
+--
+
+* no setup / dependency injection, `foo` only depends on its inputs
+* order of tests does not matter
+* tests can be run in parallel
+
+---
+# Why referential transparency? (refactoring / reasoning)
+
+```tut:silent
+def double(x: Int): Int = {
+  println(s"Hello $x")
+  x * 2
+}
+
+def combine(x: Int, y: Int): Int = {
+  val a = double(x)
+  val b = double(y)
+  a + b
+}
+```
+
+--
+
+```tut
+combine(2, 10)
+```
+
+--
+
+```tut:silent
+def combine(x: Int, y: Int): Int =
+  x * 2 + y * 2
+```
+
+```tut
+combine(2, 10)
+```
+
+---
+# Why referential transparency? (optimisation)
+
+// TODO
+
+
+---
 # Type system
 
 * no exception
