@@ -9,6 +9,7 @@
    1. Option
    1. Either
    1. Validation
+1. State
 1. Typeclasses
    1. Semigroup / Monoid / Order / Show / Equal
    1. Higher Kinded Type
