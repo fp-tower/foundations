@@ -69,4 +69,36 @@ object Ch1Exercises {
     acc
   }
 
+
+  // 2a. Implement andThen and compose
+  def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
+
+  def compose[A, B, C](f: B => C, g: A => B): A => C = ???
+
+  // 2b. Implement identity
+  def identity[A](x: A): A = ???
+
+  // 2c. Implement join
+  def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
+
+
+  // 2d. Implement getX and getY
+  case class Point(x: Double, y: Double)
+
+  val getX: Point => Double = ???
+  val getY: Point => Double = ???
+
+  // 2e. Implement square
+  val square: Double => Double = ???
+
+  // 2f. Implement sum
+  val sum: (Double, Double) => Double = ???
+
+  // 2g. Implement squareRoot
+  val squareRoot: Double => Double = ???
+
+  // 2g. Implement euclideanDistance such as euclideanDistance(Point(x, y)) = squareRoot(x^2 + y^2)
+  // try to use join, compose, andThen
+  val euclideanDistance: Point => Double = ???
+
 }
