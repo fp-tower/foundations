@@ -43,7 +43,27 @@ class: center, middle
 // TODO diagram function with input / output type
 
 ---
-# Untyped language (Javascript)
+# Increment (typed)
+
+```tut:silent
+def increment(x: Int): Int = x + 1  // Int => Int
+```
+
+--
+
+```tut
+increment(2)
+```
+
+--
+
+```tut:fail
+increment(1.1)
+increment("hello")
+```
+
+---
+# Increment (untyped)
 
 ```javascript
 function increment(x){
@@ -80,27 +100,7 @@ increment('c')
 ```
 
 ---
-# Typed language (Scala)
-
-```tut:silent
-def increment(x: Int): Int = x + 1
-```
-
---
-
-```tut
-increment(2)
-```
-
---
-
-```tut:fail
-increment(1.1)
-increment("hello")
-```
-
----
-# Typed language (Scala)
+# Increment (typed)
 
 ```tut:silent
 def increment(x: Int): Int = x + 1
@@ -126,7 +126,7 @@ increment(1.1)
 // TODO tooling like hoogle, IDE, linting
 
 ---
-# Types vs Tests
+# Types reduce testing
 
 ```tut
 increment( 0) ==  1
@@ -146,17 +146,36 @@ increment(Int.MaxValue) == Int.MinValue
 increment("Hello") == "Hello1"
 ```
 
+---
+class: center, middle
+
+# How much?
+
 
 ---
-# Types
+# Function
 
-// TODO diagram A is a set of values, e.g. Boolean, String
+// TODO diagram function with input / output type
 
+---
+class: center, middle
+
+# A => B
 
 ---
 # Functions have types!
 
-// TODO diagram type of A => B
+// TODO diagram type of Int => Int, e.g. +1, +2, / 4, %2, ...
+
+---
+# Functions are mapping
+
+// TODO diagram mapping Int => Int
+
+---
+class: center, middle
+
+# There are as many implementations of a function than mapping between input and output type
 
 ---
 # Unit Tests
@@ -171,34 +190,26 @@ increment("Hello") == "Hello1"
 // x >  0, f(x) = x + 1
 
 ---
-# Property Tests
+# Tests
 
-// TODO diagram f(x) > x
+// TODO diagram how tests shrink set of possible functions
 
 ---
-# Functions have types!
+# Perfect Tests
+
+// TODO diagram show only one valid value (all other impl have been invalidated by tests)
+
+---
+class: center, middle
+
+# The smaller the types, the less tests are required!
+
+---
+# How to measure types?
 
 Let `|A|` be the number of values of type `A`
 
-How to calculate `|A => B|` ? e.g. `|Int => Int|`
-
----
-# Split screen
-
-.pull-left[
-## Pro
-
-```tut
-2 + 2
-```
-]
-
-.pull-right[
-## Cons
-```tut
-"hello"
-```
-]
+How to calculate `|A => B|` ? e.g. `|Int => Int|`, `|Boolean => Char|`
 
 ---
 # Exercise 1: How many values of Boolean
@@ -744,7 +755,7 @@ type Eight_3 = Branch[Four, Four]
 
 ---
 
-# Exercise 2: Create an 8 value type with Func
+# Exercise 2: Create an 8 value type using Func
 
 ```tut:silent
 sealed trait Zero
@@ -773,7 +784,7 @@ type Eight_4 = Func[Three, Two]
 
 ---
 
-# Exercise 2: Create an 8 value type with Func
+# Exercise 2: Create an 8 value type using Func
 
 TODO add diagram for function mapping
 
