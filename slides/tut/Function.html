@@ -25,21 +25,49 @@ class: center, middle
 `@JulienTruffaut`
 
 ---
-# Function
+class: center, middle
 
-// TODO diagram function with domain / co-domain
+# A => B
 
 ---
-# Combine functions
+background-image: url(img/function.jpg)
 
-// TODO diagram pipelines
-* sequential: f compose g
-* join
+# Function
+
+---
+background-image: url(img/function-mapping-1.jpg)
+
+# Function is a mapping
+
+---
+background-image: url(img/function-mapping-2.jpg)
+
+# Function is a mapping
 
 ---
 class: center, middle
 
-# A => B
+# Why?
+
+---
+background-image: url(img/function-composition-1.jpg)
+
+# Function composition
+
+---
+background-image: url(img/function-composition-2.jpg)
+
+# Function composition
+
+---
+background-image: url(img/function-composition-3.jpg)
+
+# Function composition
+
+---
+background-image: url(img/function-graph.jpg)
+
+# Graph
 
 ---
 class: center, middle
@@ -47,34 +75,29 @@ class: center, middle
 # Programming function != Math function
 
 ---
-# Pure Function
+class: center, middle
 
-* deterministic
-* no side effect
-* no mutation
-* no exception
-* no null
-* no reflection
+# Pure function
 
 ---
-# Deterministic
+background-image: url(img/non-deterministic-function.jpg)
 
-```tut:silent
-def foo(x: Int): Int = ???
-```
+# Non deterministic
 
---
+---
+background-image: url(img/partial-function-1.jpg)
 
-```tut:invisible
-def foo(x: Int): Int = ((x + 3) * 5) % 2
-```
+# Partial function
 
-```tut
-foo(2)
-foo(5)
-foo(2)
-foo(5)
-```
+---
+background-image: url(img/partial-function-2.jpg)
+
+# Partial function
+
+---
+background-image: url(img/function-side-effect.jpg)
+
+# Side effect
 
 ---
 # Side effect
@@ -83,9 +106,10 @@ foo(5)
 * mutation
 * concurrency
 
---
+---
+class: center, middle
 
-# A function with no side effect only produce a value!
+# A function with no side effect does not perform any action!
 
 ???
 Things that could be considered as side effects but are often not:
@@ -96,28 +120,29 @@ Things that could be considered as side effects but are often not:
 ---
 # Referentially transparent
 
+--
+
 A function is referentially transparent if we can replace all the calls of the function by its output without
 changing the behaviour of the program.
 
 --
 
-```tut:silent
-def inc(x: Int): Int = x + 1
+```scala
+bar(foo(42), foo(42))
 ```
 
-```tut
-inc(5)
-6
+```scala
+val x = foo(42)
+bar(x, x)
 ```
 
 ---
 # Pure Function
 
-* deterministic
+* deterministic (not non deterministic)
+* total (not partial)
 * no side effect
 * no mutation
-
-
 * no exception
 * no null
 * no reflection
