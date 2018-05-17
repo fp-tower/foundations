@@ -72,7 +72,9 @@ background-image: url(../img/function-graph.jpg)
 ---
 class: center, middle
 
-# Programming function != Math function
+# Programming function
+# !=
+# Math function
 
 ---
 class: center, middle
@@ -85,6 +87,19 @@ background-image: url(../img/non-deterministic-function.jpg)
 # Non deterministic
 
 ---
+# Non deterministic
+
+```tut:silent
+import scala.util.Random
+```
+
+```tut
+Random.nextInt(10)
+Random.nextInt(10)
+Random.nextInt(10)
+```
+
+---
 background-image: url(../img/partial-function-1.jpg)
 
 # Partial function
@@ -95,9 +110,48 @@ background-image: url(../img/partial-function-2.jpg)
 # Partial function
 
 ---
+# Partial function
+
+```tut:fail
+"Hello".toInt
+```
+
+```tut:fail
+Nil.head
+```
+
+---
 background-image: url(../img/function-side-effect.jpg)
 
 # Side effect
+
+---
+# Side effect
+
+```tut
+println("Hello")
+```
+
+```tut
+scala.io.Source.fromURL("http://google.com").take(100).mkString
+```
+
+--
+
+```tut:silent
+var x: Int = 0
+
+def count(): Int = {
+  x = x + 1
+  x
+}
+```
+
+```tut
+count()
+count()
+count()
+```
 
 ---
 # Side effect
@@ -129,9 +183,7 @@ changing the behaviour of the program.
 
 ```scala
 bar(foo(42), foo(42))
-```
 
-```scala
 val x = foo(42)
 bar(x, x)
 ```
@@ -148,7 +200,10 @@ bar(x, x)
 * no reflection
 
 ---
+class: center, middle
+# Exercise 1: is it a pure function?
 
+---
 # Exercise 1: is it a pure function?
 
 ```tut:silent

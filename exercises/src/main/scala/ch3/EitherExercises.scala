@@ -3,6 +3,8 @@ package ch3
 import cats.data.NonEmptyList
 import ch3.OptionExercises.User
 
+import scala.io.Source
+
 object EitherExercises {
 
 
@@ -13,7 +15,7 @@ object EitherExercises {
 
 
 
-
+  Source.fromURL("http://google.com").take(100).mkString
 
   // 6a. Create PasswordError such as it handle the following cases, a password must have:
   // * has at least 8 characters long
