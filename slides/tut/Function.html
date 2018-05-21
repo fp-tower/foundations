@@ -47,31 +47,6 @@ background-image: url(../img/function-mapping-2.jpg)
 ---
 class: center, middle
 
-# Why?
-
----
-background-image: url(../img/function-composition-1.jpg)
-
-# Function composition
-
----
-background-image: url(../img/function-composition-2.jpg)
-
-# Function composition
-
----
-background-image: url(../img/function-composition-3.jpg)
-
-# Function composition
-
----
-background-image: url(../img/function-graph.jpg)
-
-# Graph
-
----
-class: center, middle
-
 # Programming function
 # !=
 # Math function
@@ -132,11 +107,15 @@ background-image: url(../img/function-side-effect.jpg)
 println("Hello")
 ```
 
+---
+# Side effect
+
 ```tut
 scala.io.Source.fromURL("http://google.com").take(100).mkString
 ```
 
---
+---
+# Side effect
 
 ```tut:silent
 var x: Int = 0
@@ -154,16 +133,9 @@ count()
 ```
 
 ---
-# Side effect
-
-* touch the external world, e.g. read/write a file, http or database call, console output
-* mutation
-* concurrency
-
----
 class: center, middle
 
-# A function with no side effect does not perform any action!
+# A pure function does not perform any action!
 
 ???
 Things that could be considered as side effects but are often not:
@@ -172,27 +144,10 @@ Things that could be considered as side effects but are often not:
 * parallelism
 
 ---
-# Referentially transparent
-
---
-
-A function is referentially transparent if we can replace all the calls of the function by its output without
-changing the behaviour of the program.
-
---
-
-```scala
-bar(foo(42), foo(42))
-
-val x = foo(42)
-bar(x, x)
-```
-
----
 # Pure Function
 
-* deterministic (not non deterministic)
-* total (not partial)
+* not non deterministic (deterministic)
+* not partial (total)
 * no side effect
 * no mutation
 * no exception
@@ -423,17 +378,7 @@ sum(Nil)
 ---
 class: center, middle
 
-# Why?
-
----
-# Function
-
-* deterministic
-* no side effect
-* no mutation
-* no exception
-* no null
-* no reflection
+# Why pure function?
 
 ---
 # Testing
@@ -485,6 +430,29 @@ foo(5, false) == 0L
 * tests can be run in parallel
 
 ---
+class: center, middle
+
+# Referentially transparent
+
+---
+# Referentially transparent
+
+A function is referentially transparent if we can replace all the calls of the function by its output without
+changing the behaviour of the program.
+
+--
+
+```scala
+bar(foo(42), foo(42))
+```
+
+```scala
+val x = foo(42)
+bar(x, x)
+```
+
+
+---
 # Refactoring / Reasoning
 
 ```tut:silent
@@ -520,8 +488,27 @@ combine(2, 10)
 ---
 # Optimisation
 
-// TODO
+```tut:silent
+def fibonacci(x: Int): Int = x match {
+  case 0 | 1 => x
+  case _     => fibonacci(x - 1) + fibonacci(x - 2)
+}
 
+def combine(x: Int, y: Int): Int = {
+  val a = fibonacci(x)
+  val b = fibonacci(y)
+  a + b
+}
+```
+
+--
+
+```tut:silent
+def combine(x: Int, y: Int): Int = {
+  val a = fibonacci(x)
+  if(x == y) 2 * a else a + fibonacci(y)
+}
+```
 
 ---
 # Null
@@ -577,6 +564,33 @@ This means:
 * no hole in the type system
 * less forgettable runtime checks (try/catch, `if(x == null)`)
 * more informative signature
+
+
+---
+class: center, middle
+
+# Why function?
+
+---
+background-image: url(../img/function-composition-1.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-composition-2.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-composition-3.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-graph.jpg)
+
+# Graph
+
 
 ---
 # Cost of functional programming
