@@ -57,12 +57,12 @@ class: center, middle
 # Pure function
 
 ---
-background-image: url(../img/non-deterministic-function.jpg)
+background-image: url(../img/nondeterministic-function.jpg)
 
-# Non deterministic
+# Nondeterministic
 
 ---
-# Non deterministic
+# Nondeterministic
 
 ```tut:silent
 import scala.util.Random
@@ -87,12 +87,109 @@ background-image: url(../img/partial-function-2.jpg)
 ---
 # Partial function
 
-```tut:fail
-"Hello".toInt
+```tut:silent
+def head(xs: List[Int]): Int = xs match {
+  case Nil    => sys.error("Can't access head of empty List")
+  case x :: _ => x
+}
+```
+
+```tut
+head(List(1,2,3))
 ```
 
 ```tut:fail
-Nil.head
+head(Nil)
+```
+
+---
+# Partial function
+
+```tut:silent
+def sum(optX: Option[Int], optY: Option[Int]): Int =
+  optX.get + optY.get
+```
+
+--
+
+```tut
+sum(Some(2), Some(3))
+```
+
+--
+
+```tut:fail
+sum(Some(2), None)
+```
+
+---
+background-image: url(../img/null-function-1.jpg)
+
+# Null
+
+---
+background-image: url(../img/null-function-2.jpg)
+
+# Null
+
+---
+# Null
+
+```tut:silent
+sealed trait Shape
+
+case class Circle(radius: Int) extends Shape
+case class Rectangle(width: Int, height: Int) extends Shape
+case class RightTriangle(width: Int, height: Int) extends Shape
+
+def isCircle(x: Shape): Boolean = x match {
+  case Circle(_)           => true
+  case Rectangle(_, _)     => false
+  case RightTriangle(_, _) => false
+}
+```
+
+```tut
+isCircle(Circle(5))
+isCircle(Rectangle(5, 10))
+```
+
+```tut:fail
+isCircle(null)
+```
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): A = a match {
+  case x: Int    => (x + 1).asInstanceOf[A]
+  case x: String => x.reverse.asInstanceOf[A]
+  case _         => a
+}
+```
+
+--
+
+```tut
+foo(5)
+foo("Hello")
+
+foo(true)
+```
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): A = ???
+```
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): A = a
 ```
 
 ---
@@ -133,26 +230,20 @@ count()
 ```
 
 ---
-class: center, middle
-
-# A pure function does not perform any action!
-
-???
-Things that could be considered as side effects but are often not:
-
-* stack or heap allocation
-* parallelism
-
----
 # Pure Function
 
-* not non deterministic (deterministic)
+* not nondeterministic (deterministic)
 * not partial (total)
-* no side effect
 * no mutation
 * no exception
 * no null
 * no reflection
+* no side effect
+
+---
+class: center, middle
+
+# A pure function does not perform any action!
 
 ---
 class: center, middle

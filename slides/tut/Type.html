@@ -268,7 +268,7 @@ Unit
 `Char` encodes characters with 8 bits, so
 
 ```scala
-|Char| = 2^8 - 1 == 255
+|Char| = 2^8 == 256
 ```
 
 ---
@@ -287,7 +287,7 @@ Int.MaxValue
 `Int` encodes a number with 32 bits, so
 
 ```scala
-|Int| = 2^32 - 1 =~ 4.2 Billion
+|Int| = 2^32 =~ 4.2 Billion
 ```
 
 ---
@@ -496,7 +496,7 @@ def foo(x: Unit): Int = Int.MaxValue
 --
 
 ```scala
-|Unit => Int| = |Int| = 2 ^ 32 - 1
+|Unit => Int| = |Int| = 2 ^ 32
 ```
 
 ---
@@ -961,7 +961,7 @@ def compareInt(x: Int, y: Int): Int = {
 
 --
 
-Output type of `Int` means `2 ^ 32 - 1` possible results but `compareInt` has only possible 3 outcomes!
+Output type of `Int` means `2 ^ 32` possible results but `compareInt` has only possible 3 outcomes!
 
 ---
 
