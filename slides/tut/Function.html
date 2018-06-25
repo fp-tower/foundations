@@ -542,6 +542,28 @@ val x = foo(42)
 bar(x, x)
 ```
 
+---
+# Referentially transparent
+
+```tut:silent
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+for {
+  x <- Future { 2 + 2 }
+  y <- Future { 3 }
+} yield x + y
+```
+
+```tut:silent
+val fx = Future { 2 + 2 }
+val fy = Future { 3 }
+
+for {
+  x <- fx
+  y <- fy
+} yield x + y
+```
 
 ---
 # Refactoring / Reasoning
