@@ -140,12 +140,10 @@ sealed trait Shape
 
 case class Circle(radius: Int) extends Shape
 case class Rectangle(width: Int, height: Int) extends Shape
-case class RightTriangle(width: Int, height: Int) extends Shape
 
 def isCircle(x: Shape): Boolean = x match {
-  case Circle(_)           => true
-  case Rectangle(_, _)     => false
-  case RightTriangle(_, _) => false
+  case Circle(_)       => true
+  case Rectangle(_, _) => false
 }
 ```
 
@@ -546,6 +544,27 @@ bar(x, x)
 # Referentially transparent
 
 ```tut:silent
+def sum(x: Int, y: Int): Int = {
+  println(s"Summing $x and $y")
+  x + y
+}
+```
+
+```tut
+sum(2, 3) + sum(2, 3)
+```
+
+--
+
+```tut
+val x = sum(2, 3)
+x + x
+```
+
+---
+# Referentially transparent
+
+```tut:silent
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -566,123 +585,48 @@ for {
 ```
 
 ---
-# Refactoring / Reasoning
-
-```tut:silent
-def double(x: Int): Int = {
-  println(s"Hello $x")
-  x * 2
-}
-
-def combine(x: Int, y: Int): Int = {
-  val a = double(x)
-  val b = double(y)
-  a + b
-}
-```
-
---
-
-```tut
-combine(2, 10)
-```
-
---
-
-```tut:silent
-def combine(x: Int, y: Int): Int =
-  x * 2 + y * 2
-```
-
-```tut
-combine(2, 10)
-```
-
----
-# Optimisation
+# Memoization
 
 ```tut:silent
 def fibonacci(x: Int): Int = x match {
   case 0 | 1 => x
   case _     => fibonacci(x - 1) + fibonacci(x - 2)
 }
-
-def combine(x: Int, y: Int): Int = {
-  val a = fibonacci(x)
-  val b = fibonacci(y)
-  a + b
-}
 ```
 
---
-
-```tut:silent
-def combine(x: Int, y: Int): Int = {
-  val a = fibonacci(x)
-  if(x == y) 2 * a else a + fibonacci(y)
-}
+```tut
+fibonacci(4)
+fibonacci(10)
 ```
 
 ---
-# Null
+# Memoization
 
 ```tut:silent
-def length(s: String): Int = {
-  if(s == null) 0
-  else s.size
-}
+var cache: Map[Int, Int] = Map.empty  // should be private
+
+def fibonacci(x: Int): Int =
+  cache.get(x) match {
+    case Some(y) => y
+    case None    =>
+      val res = x match {
+        case 0 | 1 => x
+        case _     => fibonacci(x - 1) + fibonacci(x - 2)
+      }
+      cache = cache.updated(x, res)
+      res
+  }
+```
+
+```tut
+fibonacci(4)
 ```
 
 --
 
 ```tut
-length("Hello")
-length("")
-length(null)
+cache
 ```
-
----
-# Exception
-
-```tut:silent
-def head(xs: List[Int]): Int = xs match {
-  case Nil    => sys.error("no head of an empty list")
-  case x :: _ => x
-}
-```
-
---
-
-```tut:silent
-def xs: List[Int] = List(1,2,3)
-
-try {
-  head(xs)
-} catch {
-  case e: Exception => 0
-}
-```
-
----
-# Strong type system
-
-* no exception
-* no null
-* no reflection
-
---
-
-This means:
-
-* no hole in the type system
-* less forgettable runtime checks (try/catch, `if(x == null)`)
-* more informative signature
-
-
----
-class: center, middle
-
-# Why function?
 
 ---
 background-image: url(../img/function-composition-1.jpg)
@@ -706,15 +650,15 @@ background-image: url(../img/function-graph.jpg)
 
 
 ---
-# Cost of functional programming
+# Cost of functional programming (so far)
 
 --
 
-* lost the ability to affect the external world
+* reconsider most algorithms an data structures (no mutation, no state)
 
 --
 
-* reconsider most algorithms an data structures (no mutation)
+* lost the ability to affect the external world (no side effect)
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
