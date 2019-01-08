@@ -78,6 +78,9 @@ object Ch1Exercises {
   // 2b. Implement identity
   def identity[A](x: A): A = ???
 
+  // 2.c Implement const
+  def const[A, B](a: A)(b: B): A = ???
+
   // 2c. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
