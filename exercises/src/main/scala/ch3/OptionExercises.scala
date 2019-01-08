@@ -122,7 +122,7 @@ object OptionExercises {
 
 
   // 4f. Implement map and flatMap
-  def map    [A, B](fa: Option[A])(f: A =>        B ): Option[B] = ???
+//  def map    [A, B](fa: Option[A])(f: A =>        B ): Option[B] = ???
 //  def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
 
 

@@ -24,18 +24,18 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   )
 )
 
-lazy val `fp-basis` = project.in(file("."))
-  .settings(moduleName := "fp-basis")
+lazy val `fp-foundation` = project.in(file("."))
+  .settings(moduleName := "fp-foundation")
   .settings(baseSettings: _*)
   .aggregate(exercises, slides)
   .dependsOn(exercises, slides)
 
 lazy val exercises = project
-  .settings(moduleName := "fp-basis-exercises")
+  .settings(moduleName := "fp-foundation-exercises")
   .settings(baseSettings: _*)
 
 lazy val slides = project
-  .settings(moduleName := "fp-basis-slides")
+  .settings(moduleName := "fp-foundation-slides")
   .settings(baseSettings: _*)
   .settings(
     tutSourceDirectory := baseDirectory.value / "tut",
