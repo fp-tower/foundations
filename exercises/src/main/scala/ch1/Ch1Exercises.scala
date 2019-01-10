@@ -2,7 +2,7 @@ package ch1
 
 import scala.util.Random
 
-object Ch1Exercises {
+object Ch1Exercises extends App {
 
   // 1a. is plus a pure function? why?
   def plus(a: Int, b: Int): Int = a + b
@@ -75,33 +75,75 @@ object Ch1Exercises {
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
+  // Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  val inc   : Int => Int = x => x + 1
+  val double: Int => Int = x => 2 * x
+
+
+
+  // Same for f(x) = 2 * (x + 1)
+
+
+  // Transform triple method (def) into a function (val)
+  def triple(x: Int): Int = x * 3
+
+
   // 2b. Implement identity
   def identity[A](x: A): A = ???
 
+
+  // Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
+
+
+
   // 2.c Implement const
   def const[A, B](a: A)(b: B): A = ???
+
+  // 2.x Implement curry and uncurry
+  def curry[A, B, C](f: (A, B) => C): A => B => C = ???
+
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
   // 2c. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
 
-  // 2d. Implement getX and getY
-  case class Point(x: Double, y: Double)
+  // 3a. Use recursion to implement sumList
+  def sumList(xs: List[Int]): Int = ???
 
-  val getX: Point => Double = ???
-  val getY: Point => Double = ???
 
-  // 2e. Implement square
-  val square: Double => Double = ???
+  // 3b. Run it with different size of list
+  // What happens when the list is big enough? Why?
+  // You can use `to` to generate a List from 1 to x
+  val oneToTen = 1.to(10).toList
 
-  // 2f. Implement sum
-  val sum: (Double, Double) => Double = ???
 
-  // 2g. Implement squareRoot
-  val squareRoot: Double => Double = ???
+  // 3c. Re-write sumList recursively without the same issue
+  def sumList2(xs: List[Int]): Int = ???
+
+
+  // 3d. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
+  def isEven(x: Int): Boolean =
+    if(x > 0) !isOdd(x - 1)
+    else if (x < 0) !isOdd(x + 1)
+    else true
+
+  def isOdd(x: Int): Boolean =
+    if(x > 0) !isEven(x - 1)
+    else if (x < 0) !isEven(x + 1)
+    else false
+
 
   // 2g. Implement euclideanDistance such as euclideanDistance(Point(x, y)) = squareRoot(x^2 + y^2)
   // try to use join, compose, andThen
-  val euclideanDistance: Point => Double = ???
+  case class Point(x: Double, y: Double)
+
+  val getX: Point => Double = _.x
+  val getY: Point => Double = _.y
+  val square: Double => Double = x => x * x
+  val sum: (Double, Double) => Double = (x, y) => x + y
+  val squareRoot: Double => Double = Math.sqrt
+
+//  val euclideanDistance: Point => Double = ???
 
 }
