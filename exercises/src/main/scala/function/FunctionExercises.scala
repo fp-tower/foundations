@@ -1,8 +1,10 @@
-package ch1
+package function
 
 import scala.util.Random
 
-object Ch1Exercises extends App {
+object FunctionExercises extends App {
+
+  // 1. Pure functions
 
   // 1a. is plus a pure function? why?
   def plus(a: Int, b: Int): Int = a + b
@@ -69,44 +71,45 @@ object Ch1Exercises extends App {
     acc
   }
 
+  // 2. higher order functions
 
   // 2a. Implement andThen and compose
   def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 2b. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc   : Int => Int = x => x + 1
   val double: Int => Int = x => 2 * x
 
 
-
-  // Same for f(x) = 2 * (x + 1)
-
-
-  // Transform triple method (def) into a function (val)
-  def triple(x: Int): Int = x * 3
+  // 2c. Same for f(x) = 2 * (x + 1)
 
 
-  // 2b. Implement identity
-  def identity[A](x: A): A = ???
-
-
-  // Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
-
-
-
-  // 2.c Implement const
-  def const[A, B](a: A)(b: B): A = ???
-
-  // 2.x Implement curry and uncurry
+  // 2d. Implement curry and uncurry
   def curry[A, B, C](f: (A, B) => C): A => B => C = ???
 
   def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
-  // 2c. Implement join
+
+  // 2e. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
+  // 2f. Implement identity
+  def identity[A](x: A): A = ???
+
+  // 2g. Implement const
+  def const[A, B](a: A)(b: B): A = ???
+
+  // 2h. Transform triple method (def) into a function (val)
+  def triple(x: Int): Int = x * 3
+
+
+  // 2i. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
+
+
+
+  // 3. Recursion
 
   // 3a. Use recursion to implement sumList
   def sumList(xs: List[Int]): Int = ???
@@ -133,17 +136,17 @@ object Ch1Exercises extends App {
     else if (x < 0) !isEven(x + 1)
     else false
 
+  // 3e. does the commented function below compile? If yes, what happens when you call it
+  // see General recursion
+//  def foo: Int = foo
 
-  // 2g. Implement euclideanDistance such as euclideanDistance(Point(x, y)) = squareRoot(x^2 + y^2)
-  // try to use join, compose, andThen
-  case class Point(x: Double, y: Double)
 
-  val getX: Point => Double = _.x
-  val getY: Point => Double = _.y
-  val square: Double => Double = x => x * x
-  val sum: (Double, Double) => Double = (x, y) => x + y
-  val squareRoot: Double => Double = Math.sqrt
+  // 4a. Implement memoize such as
+  // val cachedInc = memoize((_: Int) + 1)
+  // cachedInc(3) // 4 calculated
+  // cachedInc(3) // from cache
+  def memoize[A, B](f: A => B): A => B = ???
 
-//  val euclideanDistance: Point => Double = ???
+
 
 }

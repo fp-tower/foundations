@@ -1,6 +1,6 @@
-package ch2
+package adt
 
-object Ch2Exercises {
+object ADTExercises {
 
   // 1a. How many possible values are of type Boolean?
 
