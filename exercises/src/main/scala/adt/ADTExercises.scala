@@ -43,7 +43,7 @@ object ADTExercises {
     case class Right[A, B](value: B) extends Branch[A, B]
   }
 
-  // 2b. Create a type containing 2 possible values using all previously defined types
+  // 2b. Create a type containing 3 possible values using all previously defined types
 
 
 
