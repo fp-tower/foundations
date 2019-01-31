@@ -1,7 +1,7 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion       := "2.12.4",
+  scalaVersion       := "2.12.8",
   scalacOptions     ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",
@@ -9,7 +9,6 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-language:higherKinds", "-language:implicitConversions", "-language:existentials",
     "-unchecked",
     "-Yno-adapted-args",
-    //    "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
     "-Xfuture",
     "-Ypartial-unification"
