@@ -17,6 +17,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   libraryDependencies ++= Seq(
     cats,
     refined,
+    typesafeConfig,
     scalaTest % Test
   )
 )
