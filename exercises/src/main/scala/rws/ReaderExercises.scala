@@ -22,12 +22,12 @@ object ReaderExercises extends App {
 
 
 
-  case class Reader[R, A](run: R => A) {
+  case class Reader[E, A](run: E => A) {
     // 2a. Implement map
-    def map[B](f: A => B): Reader[R, B] = ???
+    def map[B](f: A => B): Reader[E, B] = ???
 
     // 2b. Implement flatMap
-    def flatMap[B](f: A => Reader[R, B]): Reader[R, B] = ???
+    def flatMap[B](f: A => Reader[E, B]): Reader[E, B] = ???
   }
 
   // 2c. refactor getInt/String/Boolean to use Reader[Config, ?]
@@ -43,13 +43,13 @@ object ReaderExercises extends App {
 
 
 
-  case class ReaderT[F[_], R, A](run: R => F[A]) {
+  case class ReaderT[F[_], E, A](run: E => F[A]) {
     // 3b. Implement map
     // Why is there a problem?
-    def map[B](f: A => B): ReaderT[F, R, B] = ???
+    def map[B](f: A => B): ReaderT[F, E, B] = ???
 
     // 3c. Implement flatMap
-    def flatMap[B](f: A => ReaderT[F, R, B]): ReaderT[F, R, B] = ???
+    def flatMap[B](f: A => ReaderT[F, E, B]): ReaderT[F, E, B] = ???
   }
 
   // 3d. refactor getInt/String/Boolean to use ReaderT
