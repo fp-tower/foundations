@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Reader Writer State</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Reader Writer State
+`@JulienTruffaut`
+
+---
+class: center, middle
+
+# There 3 different kind of exposed variables
+
+---
+# Read Variables
+
+```tut:silent
+case class Config(feature: Boolean, maxSize: Int)
+
+class Bar(config: Config) {
+
+  def blah(x: Int): List[Int] =
+    if(config.feature) List.fill(x min config.maxSize)(5)
+    else Nil
+
+  def foo(b: Boolean): Int =
+    if(b) 10 else 5
+
+}
+
+val bar1 = new Bar(Config(true , 2))
+val bar2 = new Bar(Config(false, 6))
+```
+
+--
+
+```tut
+bar1.blah(3)
+bar2.blah(3)
+```
+
+---
+# Read Variables
+
+```tut:silent
+def blah(config: Config, x: Int): List[Int] = {
+  if(config.feature)
+    List.fill(x min config.maxSize)(5)
+  else
+     Nil
+}
+
+def foo(b: Boolean): Int =
+  if(b) 10 else 5
+```
+
+--
+
+```tut
+blah(Config(true , 2), 3)
+blah(Config(false, 6), 3)
+```
+
+---
+# Read Variables
+
+```scala
+class OrderRepository(dbConnection: Connection){
+
+  def listOrder: List[Order] = ...
+
+  def deleteOrder(id: Int): Unit = ...
+
+}
+```
+
+--
+
+```scala
+object Main extends App {
+
+  val dbConnection = initialiseConnection
+
+  val orderRepository = new OrderRepository(dbConnection)
+
+  val userRepository  = new UserRepository(dbConnection)
+
+}
+```
+
+---
+# Read Variables != Constants
+
+```tut:silent
+val pi = 3.14
+
+def circleCircumference(radius: Double): Double =
+  2 * pi * radius
+```
+
+--
+
+```tut:silent
+def circleCircumference(radius: Double): Double =
+  2 * pi * 3.14
+```
+
+---
+# Write Variables
+
+```tut:silent
+val log: StringBuffer = new StringBuffer()
+
+def doSomething(x: Int): Int = {
+  log.append(s"called doSomething with $x\n")
+  x % 2
+}
+```
+
+--
+
+```tut
+doSomething(5)
+doSomething(6)
+
+log
+```
+
+---
+# Write Variables
+
+```tut:silent
+var countCall: Int = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+
+def isOdd(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 1
+}
+```
+
+--
+
+```tut
+isEven(5)
+isEven(6)
+isOdd(6)
+
+countCall
+```
+
+---
+# Write Variables
+
+
+```tut:invisible
+countCall = 0
+```
+
+```tut:silent
+val five = isEven(5)
+val six  = isEven(6)
+```
+
+```tut
+countCall
+```
+
+--
+
+```tut:invisible
+countCall = 0
+```
+
+```tut:silent
+val five = isEven(5)
+val six  = !five
+```
+
+```tut
+countCall
+```
+
+---
+# Read / Write Variables
+
+```tut:silent
+var count: Int = 0
+
+def inc(n: Int): Int = {
+  count += n
+  count
+}
+```
+
+--
+
+```tut
+inc(5)
+inc(2)
+inc(5)
+```
+
+---
+# Read / Write Variables
+
+```tut:silent
+var seed: Int = 10
+
+def genInt: Int = {
+  seed = 7 * seed % 11
+  seed
+}
+```
+
+--
+
+```tut
+genInt
+genInt
+genInt
+```
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>

@@ -46,10 +46,10 @@ object ReaderExercises extends App {
   case class ReaderT[F[_], R, A](run: R => F[A]) {
     // 3b. Implement map
     // Why is there a problem?
-    def map[B](f: A => B): ReaderT[F[_], R, B] = ???
+    def map[B](f: A => B): ReaderT[F, R, B] = ???
 
     // 3c. Implement flatMap
-    def flatMap[B](f: A => ReaderT[F, R, B]): ReaderT[F[_], R, B] = ???
+    def flatMap[B](f: A => ReaderT[F, R, B]): ReaderT[F, R, B] = ???
   }
 
   // 3d. refactor getInt/String/Boolean to use ReaderT
