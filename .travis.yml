@@ -2,4 +2,4 @@ language: scala
 scala:
    - 2.12.8
 script:
-   - sbt ++$TRAVIS_SCALA_VERSION test
+   - sbt ++$TRAVIS_SCALA_VERSION test:compile
