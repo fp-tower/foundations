@@ -2,7 +2,15 @@ package function
 
 import scala.util.Random
 
-object FunctionExercises extends App {
+// you can run and print things here
+object FunctionApp extends App {
+  import FunctionExercises._
+
+  println(plus(3, 4))
+
+}
+
+object FunctionExercises {
 
   // 1. Pure functions
 
@@ -92,6 +100,8 @@ object FunctionExercises extends App {
   // 3b. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc   : Int => Int = x => x + 1
   val double: Int => Int = x => 2 * x
+
+  val doubleInc: Int => Int = ???
 
 
   // 3c. Same for f(x) = 2 * (x + 1)
