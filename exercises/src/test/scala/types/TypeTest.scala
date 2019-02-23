@@ -50,7 +50,7 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
   checkAll("(A, Unit) <=> A", IsoLaws(aToAUnit[Int], aUnitToA[Int]))
   checkAll("Either[A, Nothing] <=> A", IsoLaws(aToAOrNothing[Int], aOrNothingToA[Int]))
   checkAll("Option[A] <=> Either[Unit, A]", IsoLaws(optionToEitherUnit[Int], eitherUnitToOption[Int]))
-
+  checkAll("(A, Either[B, C]) <=> Either[(A, B), (A, C)]", IsoLaws(distributeBranchTo[Int, Int, Int], distributeBranchFrom[Int, Int, Int]))
 
 
   implicit def arbAOrNothing[A: Arbitrary]: Arbitrary[Either[A, Nothing]] =

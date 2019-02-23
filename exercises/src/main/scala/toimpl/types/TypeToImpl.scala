@@ -47,4 +47,7 @@ trait TypeToImpl {
   def optionToEitherUnit[A](option: Option[A]): Either[Unit, A]
   def eitherUnitToOption[A](either: Either[Unit, A]): Option[A]
 
+  def distributeBranchTo[A, B, C](value: (A, Either[B, C])): Either[(A, B), (A, C)]
+  def distributeBranchFrom[A, B, C](value: Either[(A, B), (A, C)]): (A, Either[B, C])
+
 }

@@ -113,4 +113,18 @@ object TypeAnswers extends TypeToImpl {
 
   def eitherUnitToOption[A](either: Either[Unit, A]): Option[A] =
     either.fold(_ => None, Some(_))
+
+  def distributeBranchTo[A, B, C](value: (A, Either[B, C])): Either[(A, B), (A, C)] = {
+    val (a, bOrC) = value
+    bOrC.fold(
+      b => Left((a, b)),
+      c => Right((a, c))
+    )
+  }
+
+  def distributeBranchFrom[A, B, C](value: Either[(A, B), (A, C)]): (A, Either[B, C]) =
+    value.fold(
+      { case (a, b) => (a, Left(b)) },
+      { case (a, c) => (a, Right(c)) }
+    )
 }

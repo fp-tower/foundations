@@ -117,14 +117,14 @@ object TypeExercises extends TypeToImpl {
 
 
   // 2j. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
-  // Pair[A, Branch[B, C]] == Branch[Pair[A, B], Pair[A, C]] ?
+  // (A, Either[B, C]) == Either[(A, B), (A, C)] ?
+  def distributeBranchTo[A, B, C](value: (A, Either[B, C])): Either[(A, B), (A, C)] = ???
+
+  def distributeBranchFrom[A, B, C](value: Either[(A, B), (A, C)]): (A, Either[B, C]) = ???
 
 
   // 2k. Can you think of any other properties that types and basic algebra have in common?
   // e.g. What can you say about a + b or a * b
-
-
-  // 2l. What does it mean `|A| == |B|`? What can we say about these two types?
 
 
 
