@@ -139,7 +139,6 @@ object FunctionExercises extends FunctionToImpl {
 
 
   // 4c. Re-write sumList recursively without the same issue
-  def sumList2(xs: List[Int]): Int = ???
 
 
   // 4d. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala

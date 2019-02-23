@@ -17,6 +17,18 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     doubleInc(6) shouldEqual 13
   }
 
+  "curry" in {
+    def plus(x: Int, y: Int): Int = x + y
+
+    curry(plus)(4)(6) shouldEqual 10
+  }
+
+  "uncurry" in {
+    def plus(x: Int)(y: Int): Int = x + y
+
+    uncurry(plus)(4, 6) shouldEqual 10
+  }
+
   "identity" in {
     identity(3) shouldEqual 3
     identity("foo") shouldEqual "foo"
@@ -32,6 +44,17 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     val zeroOne: Boolean => String = x => if(x) "1" else "0"
 
     join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
+  }
+
+  "sumList small" in {
+    sumList(List(1,2,3,10)) shouldEqual 16
+    sumList(Nil) shouldEqual 0
+  }
+
+  "sumList large" in {
+    val xs = 1.to(1000000).toList
+
+    sumList(xs) shouldEqual xs.sum
   }
 
   "memoize" in {

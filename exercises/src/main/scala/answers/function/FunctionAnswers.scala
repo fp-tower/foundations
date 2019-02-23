@@ -38,7 +38,7 @@ object FunctionAnswers extends FunctionToImpl {
     @tailrec
     def _sumList(ys: List[Int], acc: Int): Int =
       ys match {
-        case Nil    => 0
+        case Nil    => acc
         case h :: t => _sumList(t, acc + h)
       }
 
