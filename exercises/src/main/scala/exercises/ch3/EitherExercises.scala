@@ -1,7 +1,7 @@
-package ch3
+package exercises.ch3
 
 import cats.data.NonEmptyList
-import ch3.OptionExercises.User
+import exercises.ch3.OptionExercises.User
 
 import scala.io.Source
 

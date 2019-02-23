@@ -1,4 +1,6 @@
-package function
+package exercises.function
+
+import toimpl.function.FunctionToImpl
 
 import scala.util.Random
 
@@ -10,7 +12,7 @@ object FunctionApp extends App {
 
 }
 
-object FunctionExercises {
+object FunctionExercises extends FunctionToImpl {
 
   // 1. Pure functions
 

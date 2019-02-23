@@ -1,10 +1,16 @@
 package function
 
-import function.FunctionExercises._
+import answers.function.FunctionAnswers
+import exercises.function.FunctionExercises
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
+import toimpl.function.FunctionToImpl
 
-class FunctionExercisesTest extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
+class FunctionAnswersTest extends FunctionToImplTest(FunctionAnswers)
+class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
+
+class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
+  import impl._
 
   "doubleInc" in {
     doubleInc(0) shouldEqual 1

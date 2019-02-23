@@ -1,4 +1,4 @@
-package rws
+package exercises.rws
 
 import com.typesafe.config.{Config, ConfigFactory}
 

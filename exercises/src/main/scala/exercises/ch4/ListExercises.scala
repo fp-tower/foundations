@@ -1,4 +1,4 @@
-package ch4
+package exercises.ch4
 
 object ListExercises {
 

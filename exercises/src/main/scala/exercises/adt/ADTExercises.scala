@@ -1,4 +1,4 @@
-package adt
+package exercises.adt
 
 object ADTExercises {
 
