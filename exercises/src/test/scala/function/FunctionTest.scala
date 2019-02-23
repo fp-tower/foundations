@@ -6,7 +6,7 @@ import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
 import toimpl.function.FunctionToImpl
 
-class FunctionAnswersTest extends FunctionToImplTest(FunctionAnswers)
+class FunctionAnswersTest   extends FunctionToImplTest(FunctionAnswers)
 class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
 
 class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
