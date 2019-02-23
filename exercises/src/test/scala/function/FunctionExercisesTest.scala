@@ -1,9 +1,10 @@
 package function
 
+import function.FunctionExercises._
+import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
-import FunctionExercises._
 
-class FunctionExercisesTest extends FreeSpec with Matchers {
+class FunctionExercisesTest extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   "doubleInc" in {
     doubleInc(0) shouldEqual 1
@@ -25,6 +26,14 @@ class FunctionExercisesTest extends FreeSpec with Matchers {
     val zeroOne: Boolean => String = x => if(x) "1" else "0"
 
     join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
+  }
+
+  "memoize" in {
+    def inc(x: Int): Int = x + 1
+    def circleCircumference(radius: Int): Double = 2 * radius * Math.PI
+
+    forAll((x: Int) => memoize(inc)(x) shouldEqual inc(x))
+    forAll((x: Int) => memoize(circleCircumference)(x) shouldEqual circleCircumference(x))
   }
 
 }
