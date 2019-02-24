@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Function</title>
-<meta charset="utf-8">
-<style>
-@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+  <title>Function</title>
+  <meta charset="utf-8">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-body { font-family: 'Droid Serif'; }
-h1, h2, h3 {
-font-family: 'Yanone Kaffeesatz';
-font-weight: normal;
-}
-.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-.medium { font-size: 28px; }
-.large { font-size: 36px; }
-</style>
+    body { font-family: 'Droid Serif'; }
+    h1, h2, h3 {
+      font-family: 'Yanone Kaffeesatz';
+      font-weight: normal;
+    }
+    .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    .medium { font-size: 28px; }
+    .large { font-size: 36px; }
+  </style>
 </head>
 <body>
 <textarea id="source">
@@ -32,7 +32,7 @@ class: center, middle
 # A => B
 
 ---
-background-image: url(../img/exercises.function.jpg)
+background-image: url(../img/function.jpg)
 
 # Function
 
@@ -59,7 +59,7 @@ class: center, middle
 # Pure function
 
 ---
-background-image: url(../img/nondeterministic-exercises.function.jpg)
+background-image: url(../img/nondeterministic-function.jpg)
 
 # Nondeterministic
 
@@ -178,7 +178,306 @@ def loop(i: Int): Int =
 
 ```tut:silent
 def loop(i: Int): Int =
-  if(i </textarea>
+  if(i <= 0) i else loop(i - 1)
+```
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): A = a match {
+  case x: Int    => (x + 1).asInstanceOf[A]
+  case x: String => x.reverse.asInstanceOf[A]
+  case _         => a
+}
+```
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): A = {
+  if(a.isInstanceOf[Int]) (a.asInstanceOf[Int] + 1).asInstanceOf[A]
+  else if(a.isInstanceOf[String]) a.asInstanceOf[String].reverse.asInstanceOf[A]
+  else a
+}
+```
+
+--
+
+```tut
+foo(5)
+foo("Hello")
+
+foo(true)
+```
+
+---
+# Without Reflection
+
+```tut:silent
+def foo[A](a: A): A = ???
+```
+
+---
+# Without Reflection
+
+```tut:silent
+def foo[A](a: A): A = a
+```
+
+---
+background-image: url(../img/function-side-effect.jpg)
+
+# Side effect
+
+---
+# Side effect
+
+```scala
+def println(message: String): Unit = ...
+```
+
+--
+
+```tut
+val x = println("Hello")
+```
+
+---
+# Side effect
+
+```tut
+scala.io.Source.fromURL("http://google.com").take(100).mkString
+```
+
+---
+# Side effect
+
+```tut:silent
+var x: Int = 0
+
+def count(): Int = {
+  x = x + 1
+  x
+}
+```
+
+```tut
+count()
+count()
+count()
+```
+
+---
+# Pure Function
+
+.large[
+* deterministic (not nondeterministic)
+* total (not partial)
+* no mutation
+* no exception
+* no null
+* terminate
+* no reflection
+* no side effect
+]
+
+---
+class: center, middle
+
+# A pure function does not perform any action!
+
+---
+class: center, middle
+
+# Why pure function?
+
+---
+class: center, middle
+
+# Referential transparency
+
+---
+# Referential transparency
+
+A function is referentially transparent if we can replace all the calls of the function by its output without
+changing the behaviour of the program.
+
+--
+
+```scala
+bar(foo(42), foo(42))
+```
+
+```scala
+val x = foo(42)
+bar(x, x)
+```
+
+---
+# Referential transparency
+
+```tut:silent
+def sum(x: Int, y: Int): Int = {
+  println(s"Summing $x and $y")
+  x + y
+}
+```
+
+```tut
+sum(2, 3) + sum(2, 3)
+```
+
+--
+
+```tut
+val x = sum(2, 3)
+x + x
+```
+
+---
+# Referentially transparent
+
+```tut:silent
+var countCall = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+```
+
+--
+
+```tut
+val five = isEven(5)
+val six  = isEven(6)
+countCall
+```
+
+---
+# Referentially transparent
+
+```tut:silent
+var countCall = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+```
+
+```tut
+val five = isEven(5)
+val six  = !five
+countCall
+```
+
+---
+# Referentially transparent
+
+```tut:silent
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+for {
+  x <- Future { 2 + 2 }
+  y <- Future { 3 }     // starts after x is completed
+} yield x + y
+```
+
+```tut:silent
+val fx = Future { 2 + 2 }
+val fy = Future { 3 }
+
+for {
+  x <- fx
+  y <- fy
+} yield x + y
+```
+
+---
+# Testing
+
+```tut:silent
+var counter: Long = 1
+
+def foo(x: Int, b: Boolean): Long = {
+  counter += x
+  if(b) counter *= 2
+  else counter = 0
+  counter
+}
+```
+
+--
+
+```tut
+foo(5,  true) == 12L
+
+foo(5, false) == 0L
+
+foo(5,  true) == 10L
+```
+
+---
+# Testing
+
+```tut:silent
+def foo(x: Int, b: Boolean): Long = ???
+```
+
+```tut:invisible
+def foo(x: Int, b: Boolean): Long = 0
+```
+
+--
+
+```tut:silent
+foo(5,  true) == 12L
+
+foo(5, false) == 0L
+```
+
+--
+
+.medium[
+* no setup / dependency injection, `foo` only depends on its inputs
+* order of tests does not matter
+* tests can be run in parallel
+]
+
+---
+# Memoization
+
+---
+background-image: url(../img/function-composition-1.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-composition-2.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-composition-3.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-graph.jpg)
+
+# Graph
+
+
+---
+class: center, middle
+
+# A => F[B]
+
+</textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
 </script>
 <script>
