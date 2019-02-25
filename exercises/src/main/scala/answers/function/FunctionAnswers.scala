@@ -1,14 +1,34 @@
 package answers.function
 
+import exercises.function.FunctionExercises.{Person, updateAge}
 import toimpl.function.FunctionToImpl
-import scala.collection.mutable
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 
 object FunctionAnswers extends FunctionToImpl {
 
   def apply[A, B](f: A => B, value: A): B =
     f(value)
+
+  def identity[A](x: A): A = x
+
+  def const[A, B](a: A)(b: B): A = a
+
+  def tripleAge(xs: List[Person]): List[Person] =
+    updateAge(xs, _ * 3)
+
+  def setAge(xs: List[Person], value: Int): List[Person] =
+    updateAge(xs, const(value))
+
+  def noopAge(xs: List[Person]): List[Person] =
+    updateAge(xs, identity)
+
+  def updateAge2(f: Int => Int): List[Person] => List[Person] =
+    xs => updateAge(xs, f)
+
+  def setAge2(value: Int): List[Person] => List[Person] =
+    updateAge2(const(value))
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C =
     a => g(f(a))
@@ -29,10 +49,6 @@ object FunctionAnswers extends FunctionToImpl {
 
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D =
     a => h(f(a), g(a))
-
-  def identity[A](x: A): A = x
-
-  def const[A, B](a: A)(b: B): A = a
 
   def sumList(xs: List[Int]): Int = {
     @tailrec
