@@ -1,5 +1,6 @@
 package answers.types
 
+import exercises.types.{IntOrBoolean, Point}
 import toimpl.types.ACardinality.{Finite, Infinite}
 import exercises.types.TypeExercises.{Branch, Func, One, Pair}
 import toimpl.types.{ACardinality, Cardinality, TypeToImpl}
@@ -31,19 +32,27 @@ object TypeAnswers extends TypeToImpl {
   }
 
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
-    def cardinality: ACardinality = Finite(2)
+    def cardinality: ACardinality = unit.cardinality + Finite(1)
   }
 
-  val optBoolean: Cardinality[Boolean] = new Cardinality[Boolean] {
-    def cardinality: ACardinality = Finite(2)
+  val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
+    def cardinality: ACardinality = boolean.cardinality + Finite(1)
+  }
+
+  val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
+    def cardinality: ACardinality = int.cardinality + boolean.cardinality
   }
 
   val boolUnit: Cardinality[(Boolean, Unit)] = new Cardinality[(Boolean, Unit)] {
-    def cardinality: ACardinality = Finite(2)
+    def cardinality: ACardinality = boolean.cardinality
   }
 
-  val boolChar: Cardinality[(Boolean, Char)] = new Cardinality[(Boolean, Char)] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(17))
+  val boolByte: Cardinality[(Boolean, Byte)] = new Cardinality[(Boolean, Byte)] {
+    def cardinality: ACardinality = boolean.cardinality * byte.cardinality
+  }
+
+  val point: Cardinality[Point] = new Cardinality[Point] {
+    def cardinality: ACardinality = int.cardinality * int.cardinality
   }
 
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
@@ -59,11 +68,11 @@ object TypeAnswers extends TypeToImpl {
   }
 
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
-    def cardinality: ACardinality = Finite(1)
+    def cardinality: ACardinality = nothing.cardinality + Finite(1)
   }
 
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
-    def cardinality: ACardinality = Finite(0)
+    def cardinality: ACardinality = boolean.cardinality * nothing.cardinality
   }
 
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
