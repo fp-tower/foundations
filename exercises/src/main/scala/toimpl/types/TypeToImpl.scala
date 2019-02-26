@@ -1,5 +1,7 @@
 package toimpl.types
 
+import exercises.types.{IntOrBoolean, Point}
+
 trait TypeToImpl {
 
   val boolean: Cardinality[Boolean]
@@ -12,11 +14,15 @@ trait TypeToImpl {
 
   val optUnit: Cardinality[Option[Unit]]
 
-  val optBoolean: Cardinality[Boolean]
+  val optBoolean: Cardinality[Option[Boolean]]
+
+  val intOrBoolean: Cardinality[IntOrBoolean]
 
   val boolUnit: Cardinality[(Boolean, Unit)]
 
-  val boolChar: Cardinality[(Boolean, Char)]
+  val boolByte: Cardinality[(Boolean, Byte)]
+
+  val point: Cardinality[Point]
 
   val listUnit: Cardinality[List[Unit]]
 
