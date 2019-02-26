@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Syntax</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Syntax
+`@JulienTruffaut`
+
+---
+
+# Value
+
+```scala
+val foo = 5
+```
+
+--
+
+```scala
+val foo: Int = 5
+```
+
+---
+
+# Function
+
+```scala
+val inc: Int => Int =
+  x => x + 1
+
+val add: (Int, Int) => Int =
+  (x, y) => x + y
+
+val addCurried: Int => Int => Int =
+  x => y => x + y
+```
+
+--
+
+```scala
+val inc: Int => Int =
+  _ + 1
+
+val add: (Int, Int) => Int =
+  _ + _
+```
+
+
+```scala
+scala> inc(5)
+res0: Int = 6
+
+scala> add(2, 3)
+res1: Int = 5
+
+scala> addCurried(2)(3)
+res2: Int = 5
+```
+
+---
+
+# Method
+
+```scala
+def inc(x: Int): Int = x + 1
+```
+
+--
+
+```scala
+def add(x: Int, y: Int): Int = {
+  val acc = x + y
+  acc
+}
+```
+
+--
+
+```scala
+def identity[A](a: A): A = a
+```
+
+--
+
+```scala
+scala> identity(5)
+res3: Int = 5
+
+scala> identity("foo")
+res4: String = foo
+```
+
+---
+
+# Lazy arguments
+
+```scala
+def or(x: Boolean, y: => Boolean): Boolean =
+  x match {
+    case true  => true
+    case false => y
+  }
+```
+
+--
+
+```scala
+scala> or(true, false)
+res5: Boolean = true
+
+scala> or(false, true)
+res6: Boolean = true
+
+scala> or(true, ???)
+res7: Boolean = true
+```
+
+```scala
+scala> or(false, ???)
+scala.NotImplementedError: an implementation is missing
+  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
+  at .$anonfun$res8$1(<console>:14)
+  at scala.Function0.apply$mcZ$sp(Function0.scala:39)
+  at .or(<console>:15)
+  ... 43 elided
+```
+
+---
+
+# Method =~ Function
+
+```scala
+def incM(x: Int): Int = x + 1
+
+val incF: Int => Int = x => x + 1
+```
+
+--
+
+```scala
+def op(x: Int)(f: Int => Int): Int = f(x)
+```
+
+```scala
+scala> op(5)(incF)
+res9: Int = 6
+```
+
+--
+
+```scala
+scala> op(5)(incM)
+res10: Int = 6
+```
+
+```scala
+val methodToFunction: Int => Int = incM _
+```
+
+---
+
+# Method != Function
+
+```scala
+def identity[A](a: A): A = a
+```
+
+--
+
+```scala
+scala> val identity: A => A = a => a
+<console>:12: error: not found: type A
+       val identity: A => A = a => a
+                     ^
+<console>:12: error: not found: type A
+       val identity: A => A = a => a
+                          ^
+```
+
+```scala
+val identityInt: Int => Int = a => a
+```
+
+---
+
+# Case class
+
+```scala
+case class Person(name: String, age: Int)
+
+val john = Person("John", 23)
+```
+
+--
+
+```scala
+scala> john.name
+res11: String = John
+
+scala> john.age
+res12: Int = 23
+
+scala> john.copy(age = 30)
+res13: Person = Person(John,30)
+```
+
+---
+
+# Sealed trait
+
+```scala
+sealed trait StringOrInt
+
+case class S(value: String) extends StringOrInt
+case class I(value: Int)    extends StringOrInt
+
+val soi: StringOrInt = I(5)
+```
+
+--
+
+```scala
+scala> soi - 2
+<console>:14: error: value - is not a member of StringOrInt
+       soi - 2
+           ^
+```
+
+--
+
+```scala
+scala> soi match {
+     |   case S(x) => 0
+     |   case I(x) => x - 2
+     | }
+res15: Int = 3
+```
+
+---
+
+## Object
+
+```scala
+object Foo {
+  val pi: Double = 3.14
+
+  def inc(x: Int): Int = x + 1
+}
+```
+
+--
+
+```scala
+sealed trait Bar
+
+object Bar {
+  case class Bar1(x: Int) extends Bar
+
+  def apply(x: Int): Bar = Bar1(x)
+}
+```
+
+--
+
+```scala
+scala> Bar.Bar1(5)
+res16: Bar.Bar1 = Bar1(5)
+
+scala> Bar(5)
+res17: Bar = Bar1(5)
+```
+
+---
+
+## Generic
+
+```scala
+case class WithId[A](id: Int, value: A)
+```
+
+```scala
+scala> WithId(5, "foo")
+res18: WithId[String] = WithId(5,foo)
+
+scala> WithId(5, true)
+res19: WithId[Boolean] = WithId(5,true)
+```
+
+--
+
+```scala
+sealed trait Foo[A]
+
+object Foo {
+  case class JustFoo[A](x: A) extends Foo[A]
+  case class NoFoo[A]() extends Foo[A]
+}
+```
+
+```scala
+scala> Foo.JustFoo(5)
+res20: Foo.JustFoo[Int] = JustFoo(5)
+
+scala> Foo.NoFoo()
+res21: Foo.NoFoo[Nothing] = NoFoo()
+```
+
+---
+
+# Type Alias
+
+```scala
+type Age = Int
+
+case class Person(name: String, age: Age)
+
+def getAge(p: Person): Age = p.age
+```
+
+--
+
+```scala
+scala> getAge(Person("John", 25))
+res22: Age = 25
+```
+
+--
+
+```scala
+type Maybe[A] = Option[A]
+
+type Phantom[A] = Int
+```
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>

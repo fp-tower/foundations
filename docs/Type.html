@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Types</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.pull-left {
+float: left;
+width: 47%;
+}
+.pull-right {
+float: right;
+width: 47%;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Types
+`@JulienTruffaut`
+
+---
+background-image: url(../img/types.jpg)
+
+# Types
+
+---
+# Cardinality
+
+---
+background-image: url(../img/function.jpg)
+
+# Function
+
+---
+# Increment (typed)
+
+```scala
+def increment(x: Int): Int = x + 1  // Int => Int
+```
+
+--
+
+```scala
+scala> increment(2)
+res0: Int = 3
+```
+
+--
+
+```scala
+scala> increment(1.1)
+<console>:14: error: type mismatch;
+ found   : Double(1.1)
+ required: Int
+       increment(1.1)
+                 ^
+
+scala> increment("hello")
+<console>:14: error: type mismatch;
+ found   : String("hello")
+ required: Int
+       increment("hello")
+                 ^
+```
+
+---
+# Increment (untyped)
+
+```javascript
+function increment(x){
+  return x + 1;
+}
+```
+
+--
+
+```javascript
+increment(2)
+3
+```
+
+--
+
+```javascript
+increment(1.1)
+2.1
+```
+
+--
+
+```javascript
+increment("hello")
+"hello1"
+```
+
+--
+
+```javascript
+increment('c')
+"c1"
+```
+
+---
+# Increment (typed)
+
+```scala
+def increment(x: Int): Int = x + 1
+def increment(x: Double): Double = x + 1
+```
+
+
+
+
+```scala
+scala> increment(1)
+res3: Int = 2
+
+scala> increment(1.1)
+res4: Double = 2.1
+```
+
+---
+# Types Documentation
+
+// TODO tooling like hoogle, IDE, linting
+
+---
+# Types reduce testing
+
+```scala
+scala> increment( 0) ==  1
+res5: Boolean = true
+
+scala> increment(-5) == -4
+res6: Boolean = true
+
+scala> increment(12) == 13
+res7: Boolean = true
+```
+
+--
+
+```scala
+scala> increment(Int.MaxValue) == Int.MinValue
+res8: Boolean = true
+```
+
+--
+
+```scala
+scala> increment("Hello") == "Hello1"
+<console>:17: error: overloaded method value increment with alternatives:
+  (x: Double)Double <and>
+  (x: Int)Int
+ cannot be applied to (String)
+       increment("Hello") == "Hello1"
+       ^
+```
+
+---
+class: center, middle
+
+# How much?
+
+
+---
+# Function
+
+// TODO diagram function with input / output type
+
+---
+class: center, middle
+
+# A => B
+
+---
+# Functions have types!
+
+// TODO diagram type of Int => Int, e.g. +1, +2, / 4, %2, ...
+
+---
+# Functions are mapping
+
+// TODO diagram mapping Int => Int
+
+---
+class: center, middle
+
+# There are as many implementations of a function than mapping between input and output type
+
+---
+# Unit Tests
+
+// TODO diagram function f(x) = x + 1 with a few dots for point tested
+
+---
+# Unit Tests
+
+// TODO diagram function
+// x <= 0, f(x) = 0
+// x >  0, f(x) = x + 1
+
+---
+# Tests
+
+// TODO diagram how tests shrink set of possible functions
+
+---
+# Perfect Tests
+
+// TODO diagram show only one valid value (all other impl have been invalidated by tests)
+
+---
+class: center, middle
+
+# The smaller the types, the less tests are required!
+
+---
+# How to measure types?
+
+Let `|A|` be the number of values of type `A`
+
+How to calculate `|A => B|` ? e.g. `|Int => Int|`, `|Boolean => Char|`
+
+---
+# Exercise 1: How many values of Boolean
+
+--
+
+```haskel
+data Boolean = True | False
+```
+
+--
+
+```scala
+|Boolean| = 2
+```
+
+---
+# Exercise 1: How many values of Unit
+
+--
+
+```scala
+case object Unit
+```
+
+```scala
+scala> Unit
+res10: Unit.type = object scala.Unit
+```
+
+--
+
+```scala
+scala> ()
+```
+
+--
+
+```scala
+|Unit| = 1
+```
+
+---
+# Exercise 1: How many values of Char
+
+--
+
+```scala
+scala> 'a'
+res12: Char = a
+
+scala> '8'
+res13: Char = 8
+
+scala> ';'
+res14: Char = ;
+```
+
+--
+
+
+`Char` encodes characters with 8 bits, so
+
+```scala
+|Char| = 2^8 == 256
+```
+
+---
+# Exercise 1: How many values of Int
+
+--
+
+```scala
+scala> 0
+res15: Int = 0
+
+scala> Int.MinValue
+res16: Int = -2147483648
+
+scala> Int.MaxValue
+res17: Int = 2147483647
+```
+
+--
+
+`Int` encodes a number with 32 bits, so
+
+```scala
+|Int| = 2^32 =~ 4.2 Billion
+```
+
+---
+# Exercise 1: How many values of Option[Unit]
+
+```scala
+Option[Unit] = None | Some(())
+```
+
+--
+
+```scala
+|Option[Unit]| = 2
+```
+
+`Option[Unit]` is isomorphic to `Boolean`!
+
+
+---
+# Exercise 1: How many values of Option[Boolean]
+
+```scala
+Option[Boolean] = None | Some(true) | Some(false)
+```
+
+--
+
+```scala
+|Option[Boolean]| = 3
+```
+
+---
+# Exercise 1: How many values of (Boolean, Unit)
+
+```scala
+(Boolean, Unit) = (true, ()) | (false, ())
+```
+
+--
+
+```scala
+|(Boolean, Unit)| = 2
+```
+
+`(Boolean, Unit)` is isomorphic to `Boolean`!
+
+---
+# Exercise 1: How many values of (Boolean, Char)
+
+--
+
+```scala
+(Boolean, Char) = (true, x: Char) | (false, x: Char)
+```
+
+---
+# Exercise 1: How many values of (Boolean, Char)
+
+```scala
+(Boolean, Char) = (true, x: Char) | (false, x: Char)
+                = 2 * |Char|
+                = 2 * 255
+                = 510
+```
+
+---
+# Exercise 1: How many values of List[Unit]
+
+--
+
+```scala
+List[Unit] = Nil |
+             () :: Nil |
+             () :: () :: Nil |
+             ...
+```
+
+--
+
+`List[Unit]` is like roman numeral limited to `I`, e.g.
+
+```scala
+  I =~ () :: Nil
+III =~ () :: () :: () :: Nil
+```
+
+--
+
+```scala
+|List[Unit]| = ∞
+```
+
+---
+# Exercise 1: How many values of String
+
+--
+
+```scala
+scala> ""
+res18: String = ""
+
+scala> "Hello"
+res19: String = Hello
+
+scala> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+res20: String = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+```
+
+--
+
+`String` is equivalent to a `List[Char]` and a `|List[Char]| > |List[Unit]|`, so
+
+```
+|String| = ∞
+```
+
+--
+
+In scala, `String` is encoded as an `Array[Char]` and an `Array` is bounded to `|Int|` elements
+
+---
+# Exercise 1: How many values of Nothing
+
+--
+
+```scala
+sealed trait Nothing
+```
+
+--
+
+```scala
+|Nothing| = 0
+```
+
+---
+# Exercise 1: How many values of Option[Nothing]
+
+--
+
+```scala
+Option[Nothing] = None | Some(x: Nothing)
+```
+
+---
+# Exercise 1: How many values of Option[Nothing]
+
+```scala
+Option[Nothing] = None
+```
+
+```scala
+|Option[Nothing]| = 1
+```
+
+--
+
+`Option[Nothing]` is isomorphic to `Unit`
+
+---
+# Exercise 1: How many values of (Boolean, Nothing)
+
+--
+
+```scala
+(Boolean, Nothing) = (true, x: Nothing) | (false, x: Nothing)
+```
+
+--
+
+```scala
+|(Boolean, Nothing)| = 0
+```
+
+---
+# Exercise 1: How many values of Int => Unit
+
+```scala
+def foo(x: Int): Unit = ???
+```
+
+---
+# Exercise 1: How many values of Int => Unit
+
+```scala
+def foo(x: Int): Unit = ()
+```
+
+--
+
+```scala
+|Int => Unit| = 1
+```
+
+---
+# Exercise 1: How many values of Unit => Int
+
+```scala
+def foo(x: Unit): Int = ???
+```
+
+---
+# Exercise 1: How many values of Unit => Int
+
+```scala
+def foo(x: Unit): Int = Int.MinValue
+def foo(x: Unit): Int = 0
+def foo(x: Unit): Int = Int.MaxValue
+```
+
+--
+
+```scala
+|Unit => Int| = |Int| = 2 ^ 32
+```
+
+---
+# Exercise 1: How many values of Int => Nothing
+
+```scala
+def foo(x: Int): Nothing = ???
+```
+
+--
+
+```scala
+|Int => Nothing| = 0
+```
+
+---
+# Exercise 1: How many values of Nothing => Int
+
+```scala
+def foo(x: Nothing): Int = ???
+```
+
+--
+
+```scala
+|Nothing => Int| = |Int|
+```
+
+but none of these functions can ever be called!
+
+---
+# Exercise 1: How many values of Point
+
+```scala
+case class Point(x: Int, y: Int)
+```
+
+--
+
+```scala
+Point = (Int, Int)
+```
+
+---
+# Exercise 1: How many values of Point
+
+```scala
+case class Point(x: Int, y: Int)
+```
+
+```scala
+Point = (Int, Int)
+      = (Int.MinValue, x: Int) | (Int.MinValue + 1, x: Int) | ... | (Int.MaxValue, x: Int)
+```
+
+--
+
+```scala
+|Point| = |(Int, Int)| = |Int| * |Int|
+```
+
+---
+# And (Product)
+
+a `PersonRow` is an `Int` (id) **AND** a `String` (name)
+
+
+--
+
+
+```scala
+case class PersonRow(id: Int, name: String)
+
+type PersonRow = (Int, String)
+```
+
+--
+
+```scala
+val p = PersonRow(5, "John")
+```
+
+```scala
+scala> p.id
+res21: Int = 5
+
+scala> p.name
+res22: String = John
+```
+
+---
+
+# Or (Sum / Coproduct)
+
+a `DayOfWeek` is `Monday` **OR** `Tuesday` **OR** ...
+
+--
+
+```scala
+sealed trait DayOfWeek
+
+object DayOfWeek {
+  case object Monday  extends DayOfWeek
+  case object Tuesday extends DayOfWeek
+  // ...
+}
+```
+
+--
+
+```scala
+def dayToInt(d: DayOfWeek): Int = d match {
+  case DayOfWeek.Monday  => 1
+  case DayOfWeek.Tuesday => 2
+}
+```
+
+---
+
+# And - Or
+
+a `Result` is a `Success` **OR** a `Failure`
+
+a `Success` is a `PersonRow` **AND** a `DayOfWeek`
+
+a `Failure` is a `String`
+
+--
+
+```scala
+sealed trait Result
+
+object Result {
+  case class Success(row: PersonRow, day: DayOfWeek) extends Result
+  case class Failure(message: String) extends Result
+}
+```
+
+---
+
+# And - Or
+
+a `List[A]` is a `Nil` **OR** a `Cons`
+
+a `Cons` is a `A` (head) **AND** a `List[A]` (tail)
+
+--
+
+```scala
+sealed trait List[A]
+
+object List {
+  case class Nil[A]() extends List[A]
+  case class Cons[A](head: A, tail: List[A]) extends List[A]
+}
+```
+
+--
+
+```haskell
+data List a = Nil | Cons a (List a)
+
+data DaysOfWeek = Monday | Tuesday | Wednesday // ...
+```
+
+---
+
+# And - Or
+
+* Almost every type can be encoded as a combination of `Product` and `CoProduct`
+
+* Encoding used for derivation (see later)
+
+* Useful to count possible state
+
+
+---
+
+# Exercise 2: Create a 2 value type
+
+```scala
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+```
+
+--
+
+```scala
+type Two = Branch[One.type, One.type]
+```
+
+`Two` can be either `Left(One)` or `Right(One)`
+
+---
+
+# Exercise 2: Create a 4 value type
+
+```scala
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+```
+
+--
+
+```scala
+type Four = Pair[Two, Two]
+```
+
+`Four` can be either:
+* `Pair( Left(One), Left(One))`
+* `Pair(Right(One), Left(One))`
+* `Pair( Left(One), Right(One))`
+* `Pair(Right(One), Right(One))`
+
+---
+
+# Exercise 2: Create an 8 value type
+
+```scala
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+```
+
+--
+
+```scala
+type Eight_1 = Pair[Four, Two]
+type Eight_2 = Pair[Two , Four]
+type Eight_3 = Branch[Four, Four]
+```
+
+---
+
+# Exercise 2: Create an 8 value type using Func
+
+```scala
+sealed trait Zero
+
+case object One
+
+case class Pair[A, B](_1: A, _2: B)
+
+sealed trait Branch[A, B]
+object Branch {
+  case class Left [A, B](value: A) extends Branch[A, B]
+  case class Right[A, B](value: B) extends Branch[A, B]
+}
+
+trait Func[A, B]{
+  def apply(value: A): B
+}
+```
+
+--
+
+```scala
+type Three   = Branch[One.type, Two]
+type Eight_4 = Func[Three, Two]
+```
+
+---
+
+# Exercise 2: Create an 8 value type using Func
+
+TODO add diagram for function mapping
+
+---
+# Exercise 3: Algebra
+
+Let's define `|A|` as the number of values of type `A`, e.g.
+
+```
+|Nothing| == 0
+
+|Unit| == 1
+
+|Boolean| == 2
+
+|Option[Boolean]| == 3
+
+|(Boolean, Boolean)| == 4
+```
+
+---
+# Exercise 3: Algebra
+
+--
+
+* `|Pair[A,B]| == |A| * |B|`  hence the name Product type
+
+--
+
+* `|Branch[A, B]| == |A| + |B|` hence the name Sum type
+
+--
+
+* `|Func[A, B]| == |B|^|A|`
+
+
+---
+# Exercise 3: Algebra
+
+--
+
+* `|Pair[A, Unit]| == |A|`, this is equivalent to `a * 1 == a`
+
+--
+
+* `|Branch[A, Nothing]| == |A|`, this is equivalent to `a + 0 == a`
+
+--
+
+* `|Pair[A, Branch[B, C]]| == |Pair[Branch[A, B]|, Pair[A, C]]`, this is equivalent to `a * (b + c) == a * b + a * c`
+
+--
+
+* `|Pair[A, Nothing]| == |Nothing|`, this is equivalent to `a * 0 == 0`
+
+* `|Pair[A, B]| == |Pair[B, A]|`, this is equivalent to `a * b == b * a`
+
+* `|Branch[A, B]| == |Branch[B, A]|`, this is equivalent to `a + b == b + a`
+
+
+---
+# Exercise 4: isAdult
+
+```scala
+def isAdult(i: Int): Boolean = ???
+```
+
+---
+# Exercise 4: isAdult
+
+```scala
+def isAdult(i: Int): Boolean = i >= 18
+```
+
+--
+
+```scala
+def isAdult(i: Int): Option[Boolean] =
+  if(i < 0) None else Some(i >= 18)
+```
+
+--
+
+
+```scala
+import eu.timepit.refined._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.auto._
+import eu.timepit.refined.numeric._
+
+def isAdult(i: Int Refined Positive): Boolean =
+  i.value >= 18
+```
+
+--
+
+```scala
+scala> isAdult(11)
+res23: Boolean = false
+```
+
+```scala
+scala> isAdult(-2)
+<console>:28: error: Predicate failed: (-2 > 0).
+       isAdult(-2)
+               ^
+```
+
+---
+
+# Refined
+
+```scala
+val age1: Int = 20
+val age2: Int = -2
+```
+
+```scala
+scala> isAdult(age1)
+<console>:29: error: compile-time refinement only works with literals
+       isAdult(age1)
+               ^
+```
+
+--
+
+```scala
+scala> val agePos = refineV[Positive](age1)
+agePos: Either[String,eu.timepit.refined.api.Refined[Int,eu.timepit.refined.numeric.Positive]] = Right(20)
+
+scala> val ageNeg = refineV[Positive](age2)
+ageNeg: Either[String,eu.timepit.refined.api.Refined[Int,eu.timepit.refined.numeric.Positive]] = Left(Predicate failed: (-2 > 0).)
+```
+
+--
+
+```scala
+scala> refineV[Positive](age1).map(isAdult)
+res26: scala.util.Either[String,Boolean] = Right(true)
+```
+
+---
+# Exercise 4: isAdult
+
+```scala
+Int                  => Option[Boolean]
+
+Int Refined Positive => Boolean
+```
+
+--
+
+```scala
+|A => B| == |B|^|A|
+```
+
+--
+
+```scala
+|Int => Option[Boolean]| == |Option[Boolean]| ^ |Int| == 3 ^ |Int|
+
+
+|Int Refined Positive => Boolean| =~ |Boolean| ^ (|Int| / 2) == 2 ^ (|Int| / 2)
+```
+
+---
+
+# Exercise 5: compareInt
+
+```scala
+def compareInt(x: Int, y: Int): Int = ???
+```
+
+---
+
+# Exercise 5: compareInt
+
+```scala
+def compareInt(x: Int, y: Int): Int = {
+  if(x < y)       -1
+  else if (x > 1)  1
+  else             0
+}
+```
+
+--
+
+Output type of `Int` means `2 ^ 32` possible results but `compareInt` has only possible 3 outcomes!
+
+---
+
+# Exercise 5: compareInt
+
+```scala
+sealed trait Comparison
+
+object Comparison {
+  case object LessThan    extends Comparison
+  case object EqualTo     extends Comparison
+  case object GreaterThan extends Comparison
+}
+
+import Comparison._
+
+def compareInt(x: Int, y: Int): Comparison = {
+  if(x < y)       LessThan
+  else if (x > 1) GreaterThan
+  else            EqualTo
+}
+```
+
+---
+
+# Exercise 6: getCountryDialCode
+
+```scala
+def getCountryDialCode(country: String): Int = ???
+```
+
+---
+
+# Exercise 6: getCountryDialCode
+
+```scala
+def getCountryDialCode(country: String): Int = country match {
+  case "United Kingdom" => 44
+  case "France"         => 33
+  case "Germany"        => 49
+  case other            => ???
+}
+```
+
+--
+
+```scala
+scala> getCountryDialCode("Italy")
+scala.NotImplementedError: an implementation is missing
+  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
+  at .getCountryDialCode(<console>:34)
+  ... 43 elided
+
+scala> getCountryDialCode("france")
+scala.NotImplementedError: an implementation is missing
+  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
+  at .getCountryDialCode(<console>:34)
+  ... 43 elided
+
+scala> getCountryDialCode("Grande Bretagne")
+scala.NotImplementedError: an implementation is missing
+  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
+  at .getCountryDialCode(<console>:34)
+  ... 43 elided
+```
+
+---
+
+# Exercise 6: getCountryDialCode
+
+```scala
+sealed trait Country
+
+object Country {
+  case object UnitedKingdom extends Country
+  case object France        extends Country
+  case object Germany       extends Country
+}
+
+import Country._
+
+def getCountryDialCode(country: Country): Int = country match {
+  case UnitedKingdom => 44
+  case France        => 33
+  case Germany       => 49
+}
+```
+
+---
+
+# Exercise 6: getCountryDialCode
+
+```scala
+sealed abstract class Country(val dialCode: Int)
+
+object Country {
+  case object UnitedKingdom extends Country(44)
+  case object France        extends Country(33)
+  case object Germany       extends Country(49)
+}
+```
+
+```scala
+scala> Country.France.dialCode
+res30: Int = 33
+```
+
+---
+# Why ADT matters?
+
+* automatic derivation of typeclasses
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Function</title>
+  <meta charset="utf-8">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+    body { font-family: 'Droid Serif'; }
+    h1, h2, h3 {
+      font-family: 'Yanone Kaffeesatz';
+      font-weight: normal;
+    }
+    .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    .medium { font-size: 28px; }
+    .large { font-size: 36px; }
+  </style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Function
+`@JulienTruffaut`
+
+---
+class: center, middle
+
+# A => B
+
+---
+background-image: url(../img/function.jpg)
+
+# Function
+
+---
+background-image: url(../img/function-mapping-1.jpg)
+
+# Function is a mapping
+
+---
+background-image: url(../img/function-mapping-2.jpg)
+
+# Function is a mapping
+
+---
+class: center, middle
+
+# Programming function
+# !=
+# Math function
+
+---
+class: center, middle
+
+# Pure function
+
+---
+background-image: url(../img/nondeterministic-function.jpg)
+
+# Nondeterministic
+
+---
+# Nondeterministic
+
+```scala
+import scala.util.Random
+```
+
+```scala
+scala> Random.nextInt(10)
+res0: Int = 3
+
+scala> Random.nextInt(10)
+res1: Int = 6
+
+scala> Random.nextInt(10)
+res2: Int = 2
+```
+
+---
+background-image: url(../img/partial-function-1.jpg)
+
+# Partial function
+
+---
+background-image: url(../img/partial-function-2.jpg)
+
+# Partial function
+
+---
+# Partial function
+
+```scala
+def head(xs: List[Int]): Int = xs match {
+  case Nil    => sys.error("Can't access head of empty List")
+  case x :: _ => x
+}
+```
+
+```scala
+scala> head(List(1,2,3))
+res3: Int = 1
+```
+
+```scala
+scala> head(Nil)
+java.lang.RuntimeException: Can't access head of empty List
+  at scala.sys.package$.error(package.scala:30)
+  at .head(<console>:14)
+  ... 43 elided
+```
+
+---
+# Partial function
+
+```scala
+def sum(optX: Option[Int], optY: Option[Int]): Int =
+  optX.get + optY.get
+```
+
+--
+
+```scala
+scala> sum(Some(2), Some(3))
+res5: Int = 5
+```
+
+--
+
+```scala
+scala> sum(Some(2), None)
+java.util.NoSuchElementException: None.get
+  at scala.None$.get(Option.scala:366)
+  at scala.None$.get(Option.scala:364)
+  at .sum(<console>:14)
+  ... 43 elided
+```
+
+---
+background-image: url(../img/null-function-1.jpg)
+
+# Null
+
+---
+background-image: url(../img/null-function-2.jpg)
+
+# Null
+
+---
+# Null
+
+```scala
+sealed trait Shape
+
+case class Circle(radius: Int) extends Shape
+case class Rectangle(width: Int, height: Int) extends Shape
+
+def isCircle(x: Shape): Boolean = x match {
+  case Circle(_)       => true
+  case Rectangle(_, _) => false
+}
+```
+
+```scala
+scala> isCircle(Circle(5))
+res7: Boolean = true
+
+scala> isCircle(Rectangle(5, 10))
+res8: Boolean = false
+```
+
+```scala
+scala> isCircle(null)
+scala.MatchError: null
+  at .isCircle(<console>:18)
+  ... 43 elided
+```
+
+---
+# General Recursion / Non termination
+
+```scala
+def forever: Int = forever
+```
+
+--
+
+```scala
+def loop(i: Int): Int =
+  loop(i - 1)
+```
+
+--
+
+## Termination Condition
+
+```scala
+def loop(i: Int): Int =
+  if(i <= 0) i else loop(i - 1)
+```
+
+---
+# Reflection
+
+```scala
+def foo[A](a: A): A = a match {
+  case x: Int    => (x + 1).asInstanceOf[A]
+  case x: String => x.reverse.asInstanceOf[A]
+  case _         => a
+}
+```
+
+---
+# Reflection
+
+```scala
+def foo[A](a: A): A = {
+  if(a.isInstanceOf[Int]) (a.asInstanceOf[Int] + 1).asInstanceOf[A]
+  else if(a.isInstanceOf[String]) a.asInstanceOf[String].reverse.asInstanceOf[A]
+  else a
+}
+```
+
+--
+
+```scala
+scala> foo(5)
+res10: Int = 6
+
+scala> foo("Hello")
+res11: String = olleH
+
+scala> foo(true)
+res12: Boolean = true
+```
+
+---
+# Without Reflection
+
+```scala
+def foo[A](a: A): A = ???
+```
+
+---
+# Without Reflection
+
+```scala
+def foo[A](a: A): A = a
+```
+
+---
+background-image: url(../img/function-side-effect.jpg)
+
+# Side effect
+
+---
+# Side effect
+
+```scala
+def println(message: String): Unit = ...
+```
+
+--
+
+```scala
+scala> val x = println("Hello")
+Hello
+x: Unit = ()
+```
+
+---
+# Side effect
+
+```scala
+scala> scala.io.Source.fromURL("http://google.com").take(100).mkString
+java.io.IOException: Server returned HTTP response code: 502 for URL: http://google.com
+  at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1894)
+  at sun.net.www.protocol.http.HttpURLConnection.access$200(HttpURLConnection.java:91)
+  at sun.net.www.protocol.http.HttpURLConnection$9.run(HttpURLConnection.java:1484)
+  at sun.net.www.protocol.http.HttpURLConnection$9.run(HttpURLConnection.java:1482)
+  at java.security.AccessController.doPrivileged(Native Method)
+  at java.security.AccessController.doPrivilegedWithCombiner(AccessController.java:782)
+  at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1481)
+  at java.net.URL.openStream(URL.java:1045)
+  at scala.io.Source$.fromURL(Source.scala:144)
+  at scala.io.Source$.fromURL(Source.scala:134)
+  ... 43 elided
+```
+
+---
+# Side effect
+
+```scala
+var x: Int = 0
+
+def count(): Int = {
+  x = x + 1
+  x
+}
+```
+
+```scala
+scala> count()
+res14: Int = 1
+
+scala> count()
+res15: Int = 2
+
+scala> count()
+res16: Int = 3
+```
+
+---
+# Pure Function
+
+.large[
+* deterministic (not nondeterministic)
+* total (not partial)
+* no mutation
+* no exception
+* no null
+* terminate
+* no reflection
+* no side effect
+]
+
+---
+class: center, middle
+
+# A pure function does not perform any action!
+
+---
+class: center, middle
+
+# Why pure function?
+
+---
+class: center, middle
+
+# Referential transparency
+
+---
+# Referential transparency
+
+A function is referentially transparent if we can replace all the calls of the function by its output without
+changing the behaviour of the program.
+
+--
+
+```scala
+bar(foo(42), foo(42))
+```
+
+```scala
+val x = foo(42)
+bar(x, x)
+```
+
+---
+# Referential transparency
+
+```scala
+def sum(x: Int, y: Int): Int = {
+  println(s"Summing $x and $y")
+  x + y
+}
+```
+
+```scala
+scala> sum(2, 3) + sum(2, 3)
+Summing 2 and 3
+Summing 2 and 3
+res17: Int = 10
+```
+
+--
+
+```scala
+scala> val x = sum(2, 3)
+Summing 2 and 3
+x: Int = 5
+
+scala> x + x
+res18: Int = 10
+```
+
+---
+# Referentially transparent
+
+```scala
+var countCall = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+```
+
+--
+
+```scala
+scala> val five = isEven(5)
+five: Boolean = false
+
+scala> val six  = isEven(6)
+six: Boolean = true
+
+scala> countCall
+res19: Int = 2
+```
+
+---
+# Referentially transparent
+
+```scala
+var countCall = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+```
+
+```scala
+scala> val five = isEven(5)
+five: Boolean = false
+
+scala> val six  = !five
+six: Boolean = true
+
+scala> countCall
+res20: Int = 1
+```
+
+---
+# Referentially transparent
+
+```scala
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+for {
+  x <- Future { 2 + 2 }
+  y <- Future { 3 }     // starts after x is completed
+} yield x + y
+```
+
+```scala
+val fx = Future { 2 + 2 }
+val fy = Future { 3 }
+
+for {
+  x <- fx
+  y <- fy
+} yield x + y
+```
+
+---
+# Testing
+
+```scala
+var counter: Long = 1
+
+def foo(x: Int, b: Boolean): Long = {
+  counter += x
+  if(b) counter *= 2
+  else counter = 0
+  counter
+}
+```
+
+--
+
+```scala
+scala> foo(5,  true) == 12L
+res23: Boolean = true
+
+scala> foo(5, false) == 0L
+res24: Boolean = true
+
+scala> foo(5,  true) == 10L
+res25: Boolean = true
+```
+
+---
+# Testing
+
+```scala
+def foo(x: Int, b: Boolean): Long = ???
+```
+
+
+
+
+--
+
+```scala
+foo(5,  true) == 12L
+
+foo(5, false) == 0L
+```
+
+--
+
+.medium[
+* no setup / dependency injection, `foo` only depends on its inputs
+* order of tests does not matter
+* tests can be run in parallel
+]
+
+---
+# Memoization
+
+---
+background-image: url(../img/function-composition-1.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-composition-2.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-composition-3.jpg)
+
+# Function composition
+
+---
+background-image: url(../img/function-graph.jpg)
+
+# Graph
+
+
+---
+class: center, middle
+
+# A => F[B]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>

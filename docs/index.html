@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Functional Programming Basis</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Functional Programming Basis
+`@JulienTruffaut`
+
+---
+class: center, middle
+
+# Functional Programming
+# +
+# Static Types
+
+---
+# Out of scope
+
+* How to write complete fp application
+* Concurrency
+* Advanced fp or types concepts (optics, monad transformers, ...)
+
+--
+# Scope
+
+* What's the essence of fp
+* what breaks fp
+* How to regain most of our expressive power
+* How to benefit from a strong type system
+
+---
+# Plan
+
+1. Function
+1. Type
+1. Error handling
+1. Functional data structures
+1. State
+1. Typeclasses
+1. Side effect
+
+---
+class: center, middle
+
+# Programming language: Scala
+
+???
+language with function as first class value + strong type systems
+candidates: scala, haskell, purescript
+
+
+---
+class: center, middle
+# Format
+
+???
+* short introduction
+* lots of exercises with solutions discussed in video
+* repetition
+
+---
+
+# Scala safe subset
+
+* no `null`
+* no exception
+* no side effect
+* only use exhaustive matching
+* no type casting
+* no reflection
+* no `equals` / `toString`
+
+???
+Also known as Scalaz subset
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>
