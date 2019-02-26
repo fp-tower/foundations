@@ -2,6 +2,7 @@ package function
 
 import answers.function.FunctionAnswers
 import exercises.function.FunctionExercises
+import exercises.function.FunctionExercises.Person
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
 import toimpl.function.FunctionToImpl
@@ -17,6 +18,10 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     doubleInc(6) shouldEqual 13
   }
 
+  "apply" in {
+    apply((_: Int) + 1, 10) shouldEqual 11
+  }
+
   "identity" in {
     identity(3) shouldEqual 3
     identity("foo") shouldEqual "foo"
@@ -27,15 +32,21 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     const(5)("foo") shouldEqual 5
   }
 
-  "apply" in {
-    apply((_: Int) + 1, 10) shouldEqual 11
+  "tripleAge" in {
+    tripleAge(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 69), Person("Alice", 15))
   }
 
-  "join" in {
-    val reverse: Boolean => Boolean = x => !x
-    val zeroOne: Boolean => String = x => if(x) "1" else "0"
+  "setAge" in {
+    setAge(List(Person("John", 23), Person("Alice", 5)), 10) shouldEqual List(Person("John", 10), Person("Alice", 10))
+  }
 
-    join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
+  "noopAge" in {
+    val xs = List(Person("John", 23), Person("Alice", 5))
+    noopAge(xs) shouldEqual xs
+  }
+
+  "setAge2" in {
+    setAge2(10)(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 10), Person("Alice", 10))
   }
 
   "curry" in {
@@ -48,6 +59,13 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     def plus(x: Int)(y: Int): Int = x + y
 
     uncurry(plus)(4, 6) shouldEqual 10
+  }
+
+  "join" in {
+    val reverse: Boolean => Boolean = x => !x
+    val zeroOne: Boolean => String = x => if(x) "1" else "0"
+
+    join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
   }
 
   "sumList small" in {

@@ -86,43 +86,63 @@ object FunctionExercises extends FunctionToImpl {
   // 2a. Implement apply
   def apply[A, B](f: A => B, value: A): B = ???
 
-  // 2b. Transform triple into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
+  // 2b. Implement identity
+  def identity[A](x: A): A = ???
 
-  // 2c. Transform triple into a function (val)
+  // 2c. Implement const
+  def const[A, B](a: A)(b: B): A = ???
+
+  // 2d. Transform triple into a function (val)
   def triple(x: Int): Int = x * 3
+
+  // 2e. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
 
 
   // 3. higher order functions
+  case class Person(name: String, age: Int)
 
-  // 3a. Implement andThen and compose
+  def updateAge(xs: List[Person], f: Int => Int): List[Person] =
+    xs.map{ p =>
+      p.copy(age = f(p.age))
+    }
+
+  // 3a. implement tripleAge using updateAge
+  def tripleAge(xs: List[Person]): List[Person] = ???
+
+  // 3b. implement setAge using updateAge and one polymorphic function we saw before
+  def setAge(xs: List[Person], value: Int): List[Person] = ???
+
+  // 3c. implement noopAge using updateAge and one polymorphic function we saw before
+  def noopAge(xs: List[Person]): List[Person] = ???
+
+  // 3d. implement updateAge2 and setAge2
+  def updateAge2(f: Int => Int): List[Person] => List[Person] = ???
+
+  def setAge2(value: Int): List[Person] => List[Person] = ???
+
+  // 3e. Implement andThen and compose
   def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 3b. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 3f. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc   : Int => Int = x => x + 1
   val double: Int => Int = x => 2 * x
 
-  val doubleInc: Int => Int = ???
+  val doubleInc: Int => Int = identity
 
 
-  // 3c. Same for f(x) = 2 * (x + 1)
+  // 3g. Same for f(x) = 2 * (x + 1)
 
 
-  // 3d. Implement curry and uncurry
+  // 3h. Implement curry and uncurry
   def curry[A, B, C](f: (A, B) => C): A => B => C = ???
 
   def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
 
-  // 3e. Implement join
+  // 3i. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
-
-  // 3f. Implement identity
-  def identity[A](x: A): A = ???
-
-  // 3g. Implement const
-  def const[A, B](a: A)(b: B): A = ???
 
 
 
