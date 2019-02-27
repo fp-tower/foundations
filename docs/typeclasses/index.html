@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Typeclass</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Typeclass
+`@JulienTruffaut`
+
+---
+
+# Plan
+
+1. FP Basics / motivation
+2. Data / Function modelling
+3. Error handling
+4. Functional Data Structures
+5. Typeclasses
+
+---
+
+# Why functional programming?
+
+* less bug
+* more confidence to update
+* more enjoyable
+
+---
+
+# What's functional programming?
+
+## 1. programming using **PURE** function
+
+--
+
+* deterministic
+* no exception
+* no side effect
+
+--
+
+## 2. composable
+
+---
+
+# Types
+
+## 1. Dynamically typed e.g. Javascript, Clojure
+
+## 2. Statically typed e.g. Scala, Haskell, Purescript
+
+
+---
+
+# Scala safe subset
+
+* no `null`
+* no exception
+* no side effect
+* only use exhaustive matching
+* no type casting
+* no reflection
+* no `equals` / `toString`
+
+???
+Also known as Scalaz subset
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9"
+    });
+</script>
+</body>
+</html>
