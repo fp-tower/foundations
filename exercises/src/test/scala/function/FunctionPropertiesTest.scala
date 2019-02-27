@@ -6,7 +6,7 @@ import org.typelevel.discipline.scalatest.Discipline
 
 import scala.util.Random
 
-class FunctionPropertiesTest extends FunSuite with Discipline with GeneratorDrivenPropertyChecks with Matchers {
+class FunctionPropertiesTest extends FunSuite with GeneratorDrivenPropertyChecks with Matchers with Discipline {
 
   def increment(x: Int): Int = x + 1
 
