@@ -8,9 +8,6 @@ import scala.collection.mutable
 
 object FunctionAnswers extends FunctionToImpl {
 
-  def apply[A, B](f: A => B, value: A): B =
-    f(value)
-
   def identity[A](x: A): A = x
 
   def const[A, B](a: A)(b: B): A = a
@@ -29,6 +26,9 @@ object FunctionAnswers extends FunctionToImpl {
 
   def setAge2(value: Int): List[Person] => List[Person] =
     updateAge2(const(value))
+
+  def apply[A, B](f: A => B, value: A): B =
+    f(value)
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C =
     a => g(f(a))

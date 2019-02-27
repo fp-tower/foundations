@@ -18,10 +18,6 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     doubleInc(6) shouldEqual 13
   }
 
-  "apply" in {
-    apply((_: Int) + 1, 10) shouldEqual 11
-  }
-
   "identity" in {
     identity(3) shouldEqual 3
     identity("foo") shouldEqual "foo"
@@ -47,6 +43,10 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
   "setAge2" in {
     setAge2(10)(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 10), Person("Alice", 10))
+  }
+
+  "apply" in {
+    apply((_: Int) + 1, 10) shouldEqual 11
   }
 
   "curry" in {

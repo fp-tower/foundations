@@ -4,8 +4,6 @@ import exercises.function.FunctionExercises.Person
 
 trait FunctionToImpl {
 
-  def apply[A, B](f: A => B, value: A): B
-
   def identity[A](x: A): A
 
   def const[A, B](a: A)(b: B): A
@@ -19,6 +17,8 @@ trait FunctionToImpl {
   def updateAge2(f: Int => Int): List[Person] => List[Person]
 
   def setAge2(value: Int): List[Person] => List[Person]
+
+  def apply[A, B](f: A => B, value: A): B
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C
 
