@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Functional Programming Basis</title>
+<title>Foundation of Functional Programming</title>
 <meta charset="utf-8">
 <style>
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -14,6 +14,8 @@ font-family: 'Yanone Kaffeesatz';
 font-weight: normal;
 }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+.medium { font-size: 28px; }
+.large { font-size: 36px; }
 </style>
 </head>
 <body>
@@ -21,75 +23,82 @@ font-weight: normal;
 
 class: center, middle
 
-# Functional Programming Basis
+# Foundation of Functional Programming
 `@JulienTruffaut`
 
 ---
-class: center, middle
+# Format
 
-# Functional Programming
-# +
-# Static Types
-
----
-# Out of scope
-
-* How to write complete fp application
-* Concurrency
-* Advanced fp or types concepts (optics, monad transformers, ...)
+.medium[
+* 10 - 12 Workshops
+]
 
 --
-# Scope
 
-* What's the essence of fp
-* what breaks fp
-* How to regain most of our expressive power
-* How to benefit from a strong type system
+.medium[
+* Short introduction to the topic
+]
 
----
-# Plan
+--
 
-1. Function
-1. Type
-1. Error handling
-1. Functional data structures
-1. State
-1. Typeclasses
-1. Side effect
+.medium[
+* Lots of exercises
+]
+
+--
+
+.medium[
+* Optional reading material and exercises between sessions
+]
 
 ---
 class: center, middle
 
 # Programming language: Scala
 
-???
-language with function as first class value + strong type systems
-candidates: scala, haskell, purescript
+---
+# Goals
 
+.medium[
+* **What** is FP about
+]
+
+--
+
+.medium[
+* **Why** FP matters to you, your colleagues and your business
+]
+
+--
+
+.medium[
+* **What** are the basic FP building blocks
+]
+
+---
+# Out of scope
+
+.medium[
+* How to build complete FP application
+]
+
+
+---
+# Plan
+
+1. Function
+1. Type
+1. Typeclasses
+1. IO
+1. Error handling
+1. Reader / Writer / State
+1. ...
 
 ---
 class: center, middle
-# Format
 
-???
-* short introduction
-* lots of exercises with solutions discussed in video
-* repetition
+# [Chapter 1](Function.html#1)
 
----
-
-# Scala safe subset
-
-* no `null`
-* no exception
-* no side effect
-* only use exhaustive matching
-* no type casting
-* no reflection
-* no `equals` / `toString`
-
-???
-Also known as Scalaz subset
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
