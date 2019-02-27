@@ -27,6 +27,10 @@ object TypeAnswers extends TypeToImpl {
     def cardinality: ACardinality = Finite(BigInt(2).pow(8))
   }
 
+  val char: Cardinality[Char] = new Cardinality[Char] {
+    def cardinality: ACardinality = Finite(BigInt(2).pow(16))
+  }
+
   val int: Cardinality[Int] = new Cardinality[Int] {
     def cardinality: ACardinality = Finite(BigInt(2).pow(32))
   }
@@ -57,10 +61,6 @@ object TypeAnswers extends TypeToImpl {
 
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
     def cardinality: ACardinality = Infinite
-  }
-
-  val string: Cardinality[String] = new Cardinality[String] {
-    def cardinality: ACardinality = ???
   }
 
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
@@ -96,6 +96,13 @@ object TypeAnswers extends TypeToImpl {
     new Cardinality[(A, B)] {
       def cardinality: ACardinality = a.cardinality * b.cardinality
     }
+
+  val string: Cardinality[String] = new Cardinality[String] {
+    def cardinality: ACardinality =
+      0.to(Int.MaxValue).foldLeft(Finite(BigInt(0)): ACardinality)((acc, i) =>
+        acc + (char.cardinality * Finite(i))
+      )
+  }
 
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
