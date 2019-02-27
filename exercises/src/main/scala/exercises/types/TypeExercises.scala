@@ -3,6 +3,13 @@ package exercises.types
 import toimpl.types.ACardinality.Finite
 import toimpl.types.{ACardinality, Cardinality, TypeToImpl}
 
+// you can run and print things here
+object TypeApp extends App {
+  import TypeExercises._
+
+  println(boolean.cardinality)
+}
+
 object TypeExercises extends TypeToImpl {
 
   val boolean = new Cardinality[Boolean] {
