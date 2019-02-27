@@ -356,6 +356,12 @@ val six  = isEven(6)
 countCall
 ```
 
+--
+
+```scala
+forAll((x: Int) => !isEven(x + 1) == isEvent(x))
+```
+
 ---
 # Referentially transparent
 
@@ -396,6 +402,24 @@ for {
   y <- fy
 } yield x + y
 ```
+
+---
+class: center, middle
+
+# Referentially transparent
+
+# means
+
+# Fearless refactoring
+
+---
+class: center, middle
+
+# Referentially transparent
+
+# means
+
+# Local reasoning
 
 ---
 # Testing
@@ -451,6 +475,19 @@ foo(5, false) == 0L
 ---
 # Memoization
 
+```tut:silent
+def memoize[A, B](f: A => B): A => B = ???
+
+def expensiveFunc(x: Long): Boolean = ???
+```
+
+--
+
+```scala
+val cachedExpensiveFunc: Long => Boolean =
+  memoize(expensiveFunc)
+```
+
 ---
 background-image: url(img/function-composition-1.jpg)
 
@@ -471,6 +508,25 @@ background-image: url(img/function-graph.jpg)
 
 # Graph
 
+---
+# Downsides
+
+--
+.large[
+* We can't **do** anything
+]
+
+--
+
+.large[
+* We have to re-learn almost everything e.g. state, data structure, error handling
+]
+
+--
+
+.large[
+* Some things used to be easy e.g. logging, db call, http call
+]
 
 ---
 class: center, middle

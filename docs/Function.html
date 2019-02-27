@@ -72,13 +72,13 @@ import scala.util.Random
 
 ```scala
 scala> Random.nextInt(10)
-res0: Int = 4
+res0: Int = 6
 
 scala> Random.nextInt(10)
-res1: Int = 3
+res1: Int = 0
 
 scala> Random.nextInt(10)
-res2: Int = 8
+res2: Int = 6
 ```
 
 ---
@@ -402,6 +402,12 @@ scala> countCall
 res19: Int = 2
 ```
 
+--
+
+```scala
+forAll((x: Int) => !isEven(x + 1) == isEvent(x))
+```
+
 ---
 # Referentially transparent
 
@@ -447,6 +453,24 @@ for {
   y <- fy
 } yield x + y
 ```
+
+---
+class: center, middle
+
+# Referentially transparent
+
+# means
+
+# Fearless refactoring
+
+---
+class: center, middle
+
+# Referentially transparent
+
+# means
+
+# Local reasoning
 
 ---
 # Testing
@@ -504,6 +528,19 @@ foo(5, false) == 0L
 ---
 # Memoization
 
+```scala
+def memoize[A, B](f: A => B): A => B = ???
+
+def expensiveFunc(x: Long): Boolean = ???
+```
+
+--
+
+```scala
+val cachedExpensiveFunc: Long => Boolean =
+  memoize(expensiveFunc)
+```
+
 ---
 background-image: url(img/function-composition-1.jpg)
 
@@ -524,6 +561,25 @@ background-image: url(img/function-graph.jpg)
 
 # Graph
 
+---
+# Downsides
+
+--
+.large[
+* We can't **do** anything
+]
+
+--
+
+.large[
+* We have to re-learn almost everything e.g. state, data structure, error handling
+]
+
+--
+
+.large[
+* Some things used to be easy e.g. logging, db call, http call
+]
 
 ---
 class: center, middle
