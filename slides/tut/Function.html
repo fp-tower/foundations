@@ -105,26 +105,6 @@ head(Nil)
 ```
 
 ---
-# Partial function
-
-```tut:silent
-def sum(optX: Option[Int], optY: Option[Int]): Int =
-  optX.get + optY.get
-```
-
---
-
-```tut
-sum(Some(2), Some(3))
-```
-
---
-
-```tut:fail
-sum(Some(2), None)
-```
-
----
 background-image: url(img/null-function-1.jpg)
 
 # Null
@@ -156,29 +136,6 @@ isCircle(Rectangle(5, 10))
 
 ```tut:fail
 isCircle(null)
-```
-
----
-# General Recursion / Non termination
-
-```tut:silent
-def forever: Int = forever
-```
-
---
-
-```tut:silent
-def loop(i: Int): Int =
-  loop(i - 1)
-```
-
---
-
-## Termination Condition
-
-```tut:silent
-def loop(i: Int): Int =
-  if(i <= 0) i else loop(i - 1)
 ```
 
 ---
@@ -278,7 +235,19 @@ count()
 * no mutation
 * no exception
 * no null
-* terminate
+* no reflection
+* no side effect
+]
+
+---
+# Scalazzi subset
+
+.large[
+* deterministic (not nondeterministic)
+* total (not partial)
+* no mutation
+* no exception
+* no null
 * no reflection
 * no side effect
 ]
@@ -286,7 +255,7 @@ count()
 ---
 class: center, middle
 
-# A pure function does not perform any action!
+# Exercises
 
 ---
 class: center, middle
@@ -380,6 +349,10 @@ val six  = !five
 countCall
 ```
 
+```scala
+forAll((x: Int) => !isEven(x + 1) == isEvent(x))
+```
+
 ---
 # Referentially transparent
 
@@ -401,6 +374,45 @@ for {
   x <- fx
   y <- fy
 } yield x + y
+```
+
+---
+# Referentially transparent
+
+```scala
+def confirm(id: OrderId): Order = {
+  val order  = getOrder(id)
+  val status = updateStatus(id, Confirmed)
+  val log    = audit.info(s"Order $id confirmed")
+  val user   = getUser(order.userId)
+  order
+}
+```
+
+---
+# Referentially transparent
+
+```scala
+def confirm(id: OrderId): Order = {
+  val order  = getOrder(id)
+  val status = updateStatus(id, Confirmed)
+  val log    = audit.info(s"Order $id confirmed")
+  // val user   = getUser(order.userId)
+  order
+}
+```
+
+---
+# Referentially transparent
+
+```scala
+def confirm(id: OrderId): Order = {
+  val order  = getOrder(id)
+  // val status = updateStatus(id, Confirmed)
+  // val log    = audit.info(s"Order $id confirmed")
+  // val user   = getUser(order.userId)
+  order
+}
 ```
 
 ---

@@ -183,6 +183,8 @@ object FunctionExercises extends FunctionToImpl {
   // val cachedInc = memoize((_: Int) + 1)
   // cachedInc(3) // 4 calculated
   // cachedInc(3) // from cache
+  // see https://medium.com/musings-on-functional-programming/scala-optimizing-expensive-functions-with-memoization-c05b781ae826
+  // or https://github.com/scalaz/scalaz/blob/series/7.3.x/tests/src/test/scala/scalaz/MemoTest.scala
   def memoize[A, B](f: A => B): A => B = ???
 
 
