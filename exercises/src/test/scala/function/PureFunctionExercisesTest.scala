@@ -6,7 +6,7 @@ import org.typelevel.discipline.scalatest.Discipline
 
 import scala.util.Random
 
-class FunctionPropertiesTest extends FunSuite with Discipline with GeneratorDrivenPropertyChecks with Matchers {
+class PureFunctionExercisesTest extends FunSuite with GeneratorDrivenPropertyChecks with Matchers with Discipline {
 
   def increment(x: Int): Int = x + 1
 
@@ -23,9 +23,11 @@ class FunctionPropertiesTest extends FunSuite with Discipline with GeneratorDriv
 
   checkAll("increment", PureFunctionLaws(increment))
 
-  checkAll("incrementRandom", PureFunctionLaws(incrementRandom))
+  // Should fail for the functions below
 
-  checkAll("incrementPartial", PureFunctionLaws(incrementPartial))
+//  checkAll("incrementRandom", PureFunctionLaws(incrementRandom))
+
+//  checkAll("incrementPartial", PureFunctionLaws(incrementPartial))
 
 
 }

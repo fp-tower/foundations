@@ -83,19 +83,18 @@ object FunctionExercises extends FunctionToImpl {
 
   // 2. polymorphic functions
 
-  // 2a. Implement apply
-  def apply[A, B](f: A => B, value: A): B = ???
-
-  // 2b. Implement identity
+  // 2a. Implement identity
   def identity[A](x: A): A = ???
 
-  // 2c. Implement const
+  // 2b. Implement const
   def const[A, B](a: A)(b: B): A = ???
 
-  // 2d. Transform triple into a function (val)
+  // 2c. Transform triple method (def) into tripleVal function (val)
   def triple(x: Int): Int = x * 3
 
-  // 2e. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
+  val tripleVal: Int => Int = identity
+
+  // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
 
 
   // 3. higher order functions
@@ -120,28 +119,31 @@ object FunctionExercises extends FunctionToImpl {
 
   def setAge2(value: Int): List[Person] => List[Person] = ???
 
-  // 3e. Implement andThen and compose
+  // 3e. Implement apply
+  def apply[A, B](f: A => B, value: A): B = ???
+
+  // 3f. Implement andThen and compose
   def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 3f. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 3g. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc   : Int => Int = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = identity
 
 
-  // 3g. Same for f(x) = 2 * (x + 1)
+  // 3h. Same for f(x) = 2 * (x + 1)
 
 
-  // 3h. Implement curry and uncurry
+  // 3i. Implement curry and uncurry
   def curry[A, B, C](f: (A, B) => C): A => B => C = ???
 
   def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
 
-  // 3i. Implement join
+  // 3j. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
 
@@ -173,7 +175,7 @@ object FunctionExercises extends FunctionToImpl {
     else false
 
   // 4e. does the commented function below compile? If yes, what happens when you call it
-  // see General recursion
+  // Search for General recursion
   //  def foo: Int = foo
 
 
@@ -184,5 +186,6 @@ object FunctionExercises extends FunctionToImpl {
   def memoize[A, B](f: A => B): A => B = ???
 
 
+  // 5b. How would you adapt memoize to work on recursive function
 
 }

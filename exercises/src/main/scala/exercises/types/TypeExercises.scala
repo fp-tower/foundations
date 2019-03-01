@@ -3,6 +3,13 @@ package exercises.types
 import toimpl.types.ACardinality.Finite
 import toimpl.types.{ACardinality, Cardinality, TypeToImpl}
 
+// you can run and print things here
+object TypeApp extends App {
+  import TypeExercises._
+
+  println(boolean.cardinality)
+}
+
 object TypeExercises extends TypeToImpl {
 
   val boolean = new Cardinality[Boolean] {
@@ -47,31 +54,27 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
+  // 1g. How many possible values are of type Point?
   val point: Cardinality[Point] = new Cardinality[Point] {
     def cardinality: ACardinality = ???
   }
 
-  // 1g. How many possible values are of type List[Unit]?
+  // 1h. How many possible values are of type List[Unit]?
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
     def cardinality: ACardinality = ???
   }
 
-  // 1h. How many possible values are of type String?
-  val string: Cardinality[String] = new Cardinality[String] {
-    def cardinality: ACardinality = ???
-  }
-
-  // 1i. How many possible values are of type Nothing?
+  // 1j. How many possible values are of type Nothing?
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
     def cardinality: ACardinality = ???
   }
 
-  // 1j. How many possible values are of type Option[Nothing]?
+  // 1k. How many possible values are of type Option[Nothing]?
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
     def cardinality: ACardinality = ???
   }
 
-  // 1k. How many possible values are of type (Boolean, Nothing)?
+  // 1l. How many possible values are of type (Boolean, Nothing)?
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
     def cardinality: ACardinality = ???
   }
@@ -99,8 +102,12 @@ object TypeExercises extends TypeToImpl {
       def cardinality: ACardinality = ???
     }
 
+  // 2d. How many possible values are of type String?
+  val string: Cardinality[String] = new Cardinality[String] {
+    def cardinality: ACardinality = ???
+  }
 
-  // 2d. Implement func
+  // 2e. Implement func
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
       def cardinality: ACardinality = ???
