@@ -79,6 +79,11 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
+  // 1m. How many possible values are of type Nothing?
+  val any: Cardinality[Any] = new Cardinality[Any] {
+    def cardinality: ACardinality = ???
+  }
+
   // 2a. Implement option that derives the cardinality of Option[A] from A
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {

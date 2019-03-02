@@ -1,5 +1,6 @@
 package exercises.types
 
+import answers.types.TypeAnswers
 import exercises.types.ACardinality.{Finite, Infinite}
 import exercises.types.TypeExercises.{Branch, Func, One, Pair, Zero}
 
@@ -80,80 +81,65 @@ object Cardinality {
 
 
   implicit def tuple2Cardinality[A: Cardinality, B: Cardinality]: Cardinality[(A, B)] =
-    new Cardinality[(A, B)] {
-      def cardinality: ACardinality = Cardinality.of[A] * Cardinality.of[B]
-    }
+    TypeAnswers.tuple2(implicitly, implicitly)
 
   implicit def eitherCardinality[A: Cardinality, B: Cardinality]: Cardinality[Either[A, B]] =
-    new Cardinality[Either[A, B]] {
-      def cardinality: ACardinality =
-        Cardinality.of[A] + Cardinality.of[B]
-    }
+    TypeAnswers.either(implicitly, implicitly)
 
   implicit def functionCardinality[A: Cardinality, B: Cardinality]: Cardinality[A => B] =
-    new Cardinality[A => B] {
-      def cardinality: ACardinality = Cardinality.of[B] ^ Cardinality.of[A]
-    }
+    TypeAnswers.func(implicitly, implicitly)
 
   implicit def option[A: Cardinality]: Cardinality[Option[A]] =
-    new Cardinality[Option[A]] {
-      def cardinality: ACardinality = Cardinality.of[A] + Finite(1)
-    }
+    TypeAnswers.option(implicitly)
 
-  implicit val booleanCardinality: Cardinality[Boolean] = new Cardinality[Boolean] {
-    def cardinality: ACardinality = Finite(BigInt(2))
-  }
+  implicit val booleanCardinality: Cardinality[Boolean] =
+    TypeAnswers.boolean
 
   implicit val longCardinality: Cardinality[Long] = new Cardinality[Long] {
     def cardinality: ACardinality = Finite(BigInt(2).pow(64))
   }
 
-  implicit val intCardinality: Cardinality[Int] = new Cardinality[Int] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(32))
-  }
+  implicit val intCardinality: Cardinality[Int] =
+    TypeAnswers.int
 
   implicit val shortCardinality: Cardinality[Short] = new Cardinality[Short] {
     def cardinality: ACardinality = Finite(BigInt(2).pow(16))
   }
 
-  implicit val byteCardinality: Cardinality[Byte] = new Cardinality[Byte] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(8))
-  }
+  implicit val byteCardinality: Cardinality[Byte] =
+    TypeAnswers.byte
 
-  implicit val unitCardinality: Cardinality[Unit] = new Cardinality[Unit] {
-    def cardinality: ACardinality = Finite(1)
-  }
+  implicit val unitCardinality: Cardinality[Unit] =
+    TypeAnswers.unit
 
-  implicit val nothingCardinality: Cardinality[Nothing] = new Cardinality[Nothing] {
-    def cardinality: ACardinality = Finite(0)
-  }
+  implicit val nothingCardinality: Cardinality[Nothing] =
+    TypeAnswers.nothing
 
-  implicit val anyCardinality: Cardinality[Any] = new Cardinality[Any] {
-    def cardinality: ACardinality = Infinite
-  }
+  implicit val anyCardinality: Cardinality[Any] =
+    TypeAnswers.any
 
   implicit def pairCardinality[A: Cardinality, B: Cardinality]: Cardinality[Pair[A, B]] =
     new Cardinality[Pair[A, B]] {
-      def cardinality: ACardinality = Cardinality.of[A] * Cardinality.of[B]
+      def cardinality: ACardinality = Cardinality.of[(A, B)]
     }
 
   implicit def branchCardinality[A: Cardinality, B: Cardinality]: Cardinality[Branch[A, B]] =
     new Cardinality[Branch[A, B]] {
-      def cardinality: ACardinality = Cardinality.of[A] + Cardinality.of[B]
+      def cardinality: ACardinality = Cardinality.of[Either[A, B]]
     }
 
   implicit def funcCardinality[A: Cardinality, B: Cardinality]: Cardinality[Func[A, B]] =
     new Cardinality[Func[A, B]] {
-      def cardinality: ACardinality = Cardinality.of[B] ^ Cardinality.of[A]
+      def cardinality: ACardinality = Cardinality.of[A => B]
     }
 
   implicit val zeroCardinality: Cardinality[Zero] =
     new Cardinality[Zero] {
-      def cardinality: ACardinality = Finite(0)
+      def cardinality: ACardinality = Cardinality.of[Nothing]
     }
 
   implicit val oneCardinality: Cardinality[One.type] =
     new Cardinality[One.type] {
-      def cardinality: ACardinality = Finite(1)
+      def cardinality: ACardinality = Cardinality.of[Unit]
     }
 }

@@ -78,6 +78,10 @@ object TypeAnswers extends TypeToImpl {
     def cardinality: ACardinality = boolean.cardinality * nothing.cardinality
   }
 
+  val any: Cardinality[Any] = new Cardinality[Any] {
+    def cardinality: ACardinality = Infinite
+  }
+
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {
       def cardinality: ACardinality = a.cardinality + Finite(1)

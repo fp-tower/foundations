@@ -34,6 +34,8 @@ trait TypeToImpl {
 
   val boolNothing: Cardinality[(Boolean, Nothing)]
 
+  val any: Cardinality[Any]
+
   def option[A](a: Cardinality[A]): Cardinality[Option[A]]
 
   def list[A](a: Cardinality[A]): Cardinality[List[A]]
