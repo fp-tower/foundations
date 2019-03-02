@@ -1,12 +1,12 @@
 package types
 
 import answers.types.TypeAnswers
-import exercises.types.TypeExercises
+import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
-import toimpl.types.ACardinality.{Finite, Infinite}
-import toimpl.types.{Cardinality, TypeToImpl}
+import exercises.types.ACardinality.{Finite, Infinite}
+import toimpl.types.TypeToImpl
 
 class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Matchers {
   import impl._

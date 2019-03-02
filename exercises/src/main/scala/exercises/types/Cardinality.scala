@@ -1,7 +1,7 @@
-package toimpl.types
+package exercises.types
 
+import exercises.types.ACardinality.{Finite, Infinite}
 import exercises.types.TypeExercises.{Branch, Func, One, Pair, Zero}
-import toimpl.types.ACardinality.{Finite, Infinite}
 
 // Inspired from https://typelevel.org/blog/2018/11/02/semirings.html
 trait Cardinality[A] {

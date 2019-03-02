@@ -3,10 +3,10 @@ package answers.types
 import answers.types.Comparison._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
+import exercises.types.ACardinality.{Finite, Infinite}
 import exercises.types.TypeExercises.{Branch, Func, One, Pair}
-import exercises.types.{IntOrBoolean, Iso, Point}
-import toimpl.types.ACardinality.{Finite, Infinite}
-import toimpl.types.{ACardinality, Cardinality, TypeToImpl}
+import exercises.types._
+import toimpl.types.TypeToImpl
 
 object TypeAnswers extends TypeToImpl {
 

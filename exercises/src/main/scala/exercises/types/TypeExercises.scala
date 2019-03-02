@@ -1,7 +1,7 @@
 package exercises.types
 
-import toimpl.types.ACardinality.Finite
-import toimpl.types.{ACardinality, Cardinality, TypeToImpl}
+import ACardinality.Finite
+import toimpl.types.TypeToImpl
 
 // you can run and print things here
 object TypeApp extends App {
