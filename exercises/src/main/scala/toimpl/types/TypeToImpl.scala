@@ -1,6 +1,6 @@
 package toimpl.types
 
-import exercises.types.{IntOrBoolean, Point}
+import exercises.types.{IntOrBoolean, Iso, Point}
 
 trait TypeToImpl {
 
@@ -44,16 +44,16 @@ trait TypeToImpl {
 
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B]
 
-  def aUnitToA[A](tuple: (A, Unit)): A
-  def aToAUnit[A](a: A): (A, Unit)
+  def aUnitToA[A]: Iso[(A, Unit), A]
 
-  def aOrNothingToA[A](either: Either[A, Nothing]): A
-  def aToAOrNothing[A](a: A): Either[A, Nothing]
+  def aOrNothingToA[A]: Iso[Either[A, Nothing], A]
 
-  def optionToEitherUnit[A](option: Option[A]): Either[Unit, A]
-  def eitherUnitToOption[A](either: Either[Unit, A]): Option[A]
+  def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]]
 
-  def distributeBranchTo[A, B, C](value: (A, Either[B, C])): Either[(A, B), (A, C)]
-  def distributeBranchFrom[A, B, C](value: Either[(A, B), (A, C)]): (A, Either[B, C])
+  def distributeEither[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]]
+
+  def isAdult(age: Int): Boolean
+
+  def compareInt(x: Int, y: Int): Int
 
 }

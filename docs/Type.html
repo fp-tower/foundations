@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Types</title>
+<title>Type</title>
 <meta charset="utf-8">
 <style>
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -29,18 +29,95 @@ width: 47%;
 
 class: center, middle
 
-# Types
+# Type
 `@JulienTruffaut`
 
 ---
 background-image: url(img/types-1.jpg)
 
-# Types
+# Type
 
 ---
 background-image: url(img/types-1-bis.jpg)
 
-# Types
+# Type cardinality
+
+---
+# Type too small
+
+## TODO
+
+---
+# Type too big
+
+```scala
+def getCurrency(country: String): String =
+  country match {
+    case "France" | "Germany" => "EUR"
+    case "United Kingdom"     => "GBP"
+    case "Switzerland"        => "CHF"
+    case _                    => ???
+  }
+```
+
+---
+# Type too big
+
+```scala
+def getCurrency(country: String): Option[String] =
+  country match {
+    case "France" | "Germany" => Some("EUR")
+    case "United Kingdom"     => Some("GBP")
+    case "Switzerland"        => Some("CHF")
+    case _                    => None
+  }
+```
+
+---
+# Type just right
+
+```scala
+sealed trait Country
+
+case object France        extends Country
+case object Germany       extends Country
+case object UnitedKingdom extends Country
+case object Switzerland   extends Country
+
+def getCurrency(country: Country): String =
+  country match {
+    case France | Germany => "EUR"
+    case UnitedKingdom    => "GBP"
+    case Switzerland      => "CHF"
+  }
+```
+
+---
+# Type too big
+
+```scala
+case class Person(name: String, streetNumber: Option[Int], streetName: Option[String])
+
+def fullAddress(person: Person): Option[String] = ???
+```
+
+--
+# Type just right
+
+```scala
+case class Address(streetNumber: Int, streetName: String)
+case class Person(name: String, address: Option[Address])
+
+def fullAddress(address: Address): String = ???
+
+def fullPersonAddress(person: Person): Option[String] =
+  person.address.map(fullAddress)
+```
+
+---
+class: center, middle
+
+# Cardinality of a type should **exactly** fit business requirement
 
 ---
 background-image: url(img/function.jpg)
@@ -94,246 +171,27 @@ class: center, middle
 
 # The smaller |A => B|, the better
 
-
 ---
-# Exercise 4: isAdult
+# The smaller |A => B|, the better
 
 ```scala
-def isAdult(i: Int): Boolean = ???
-```
+def getCurrency1(country: String ): Option[String] = ???
 
----
-# Exercise 4: isAdult
-
-```scala
-def isAdult(i: Int): Boolean = i >= 18
+def getCurrency2(country: Country): String = ???
 ```
 
 --
 
 ```scala
-def isAdult(i: Int): Option[Boolean] =
-  if(i < 0) None else Some(i >= 18)
-```
-
---
-
-
-```scala
-import eu.timepit.refined._
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.auto._
-import eu.timepit.refined.numeric._
-
-def isAdult(i: Int Refined Positive): Boolean =
-  i.value >= 18
-```
-
---
-
-```scala
-scala> isAdult(11)
-res0: Boolean = false
-```
-
-```scala
-scala> isAdult(-2)
-<console>:24: error: Predicate failed: (-2 > 0).
-       isAdult(-2)
-               ^
+|getCurrency2| < |getCurrency1|
 ```
 
 ---
+class: center, middle
 
-# Refined
-
-```scala
-val age1: Int = 20
-val age2: Int = -2
-```
-
-```scala
-scala> isAdult(age1)
-<console>:25: error: compile-time refinement only works with literals
-       isAdult(age1)
-               ^
-```
-
---
-
-```scala
-scala> val agePos = refineV[Positive](age1)
-agePos: Either[String,eu.timepit.refined.api.Refined[Int,eu.timepit.refined.numeric.Positive]] = Right(20)
-
-scala> val ageNeg = refineV[Positive](age2)
-ageNeg: Either[String,eu.timepit.refined.api.Refined[Int,eu.timepit.refined.numeric.Positive]] = Left(Predicate failed: (-2 > 0).)
-```
-
---
-
-```scala
-scala> refineV[Positive](age1).map(isAdult)
-res3: scala.util.Either[String,Boolean] = Right(true)
-```
-
----
-# Exercise 4: isAdult
-
-```scala
-Int                  => Option[Boolean]
-
-Int Refined Positive => Boolean
-```
-
---
-
-```scala
-|A => B| == |B|^|A|
-```
-
---
-
-```scala
-|Int => Option[Boolean]| == |Option[Boolean]| ^ |Int| == 3 ^ |Int|
+# How to calculate |A => B| ?
 
 
-|Int Refined Positive => Boolean| =~ |Boolean| ^ (|Int| / 2) == 2 ^ (|Int| / 2)
-```
-
----
-
-# Exercise 5: compareInt
-
-```scala
-def compareInt(x: Int, y: Int): Int = ???
-```
-
----
-
-# Exercise 5: compareInt
-
-```scala
-def compareInt(x: Int, y: Int): Int = {
-  if(x < y)       -1
-  else if (x > 1)  1
-  else             0
-}
-```
-
---
-
-Output type of `Int` means `2 ^ 32` possible results but `compareInt` has only possible 3 outcomes!
-
----
-
-# Exercise 5: compareInt
-
-```scala
-sealed trait Comparison
-
-object Comparison {
-  case object LessThan    extends Comparison
-  case object EqualTo     extends Comparison
-  case object GreaterThan extends Comparison
-}
-
-import Comparison._
-
-def compareInt(x: Int, y: Int): Comparison = {
-  if(x < y)       LessThan
-  else if (x > 1) GreaterThan
-  else            EqualTo
-}
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```scala
-def getCountryDialCode(country: String): Int = ???
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```scala
-def getCountryDialCode(country: String): Int = country match {
-  case "United Kingdom" => 44
-  case "France"         => 33
-  case "Germany"        => 49
-  case other            => ???
-}
-```
-
---
-
-```scala
-scala> getCountryDialCode("Italy")
-scala.NotImplementedError: an implementation is missing
-  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
-  at .getCountryDialCode(<console>:30)
-  ... 43 elided
-
-scala> getCountryDialCode("france")
-scala.NotImplementedError: an implementation is missing
-  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
-  at .getCountryDialCode(<console>:30)
-  ... 43 elided
-
-scala> getCountryDialCode("Grande Bretagne")
-scala.NotImplementedError: an implementation is missing
-  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:288)
-  at .getCountryDialCode(<console>:30)
-  ... 43 elided
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```scala
-sealed trait Country
-
-object Country {
-  case object UnitedKingdom extends Country
-  case object France        extends Country
-  case object Germany       extends Country
-}
-
-import Country._
-
-def getCountryDialCode(country: Country): Int = country match {
-  case UnitedKingdom => 44
-  case France        => 33
-  case Germany       => 49
-}
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```scala
-sealed abstract class Country(val dialCode: Int)
-
-object Country {
-  case object UnitedKingdom extends Country(44)
-  case object France        extends Country(33)
-  case object Germany       extends Country(49)
-}
-```
-
-```scala
-scala> Country.France.dialCode
-res7: Int = 33
-```
-
----
-# Why ADT matters?
-
-* automatic derivation of typeclasses
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">

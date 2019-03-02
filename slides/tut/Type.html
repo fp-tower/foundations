@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Types</title>
+<title>Type</title>
 <meta charset="utf-8">
 <style>
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -29,18 +29,95 @@ width: 47%;
 
 class: center, middle
 
-# Types
+# Type
 `@JulienTruffaut`
 
 ---
 background-image: url(img/types-1.jpg)
 
-# Types
+# Type
 
 ---
 background-image: url(img/types-1-bis.jpg)
 
-# Types
+# Type cardinality
+
+---
+# Type too small
+
+## TODO
+
+---
+# Type too big
+
+```tut:silent
+def getCurrency(country: String): String =
+  country match {
+    case "France" | "Germany" => "EUR"
+    case "United Kingdom"     => "GBP"
+    case "Switzerland"        => "CHF"
+    case _                    => ???
+  }
+```
+
+---
+# Type too big
+
+```tut:silent
+def getCurrency(country: String): Option[String] =
+  country match {
+    case "France" | "Germany" => Some("EUR")
+    case "United Kingdom"     => Some("GBP")
+    case "Switzerland"        => Some("CHF")
+    case _                    => None
+  }
+```
+
+---
+# Type just right
+
+```tut:silent
+sealed trait Country
+
+case object France        extends Country
+case object Germany       extends Country
+case object UnitedKingdom extends Country
+case object Switzerland   extends Country
+
+def getCurrency(country: Country): String =
+  country match {
+    case France | Germany => "EUR"
+    case UnitedKingdom    => "GBP"
+    case Switzerland      => "CHF"
+  }
+```
+
+---
+# Type too big
+
+```tut:silent
+case class Person(name: String, streetNumber: Option[Int], streetName: Option[String])
+
+def fullAddress(person: Person): Option[String] = ???
+```
+
+--
+# Type just right
+
+```tut:silent
+case class Address(streetNumber: Int, streetName: String)
+case class Person(name: String, address: Option[Address])
+
+def fullAddress(address: Address): String = ???
+
+def fullPersonAddress(person: Person): Option[String] =
+  person.address.map(fullAddress)
+```
+
+---
+class: center, middle
+
+# Cardinality of a type should **exactly** fit business requirement
 
 ---
 background-image: url(img/function.jpg)
@@ -94,220 +171,27 @@ class: center, middle
 
 # The smaller |A => B|, the better
 
-
 ---
-# Exercise 4: isAdult
+# The smaller |A => B|, the better
 
 ```tut:silent
-def isAdult(i: Int): Boolean = ???
-```
+def getCurrency1(country: String ): Option[String] = ???
 
----
-# Exercise 4: isAdult
-
-```tut:silent
-def isAdult(i: Int): Boolean = i >= 18
-```
-
---
-
-```tut:silent
-def isAdult(i: Int): Option[Boolean] =
-  if(i < 0) None else Some(i >= 18)
-```
-
---
-
-
-```tut:silent
-import eu.timepit.refined._
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.auto._
-import eu.timepit.refined.numeric._
-
-def isAdult(i: Int Refined Positive): Boolean =
-  i.value >= 18
-```
-
---
-
-```tut
-isAdult(11)
-```
-
-```tut:fail
-isAdult(-2)
-```
-
----
-
-# Refined
-
-```tut:silent
-val age1: Int = 20
-val age2: Int = -2
-```
-
-```tut:fail
-isAdult(age1)
-```
-
---
-
-```tut
-val agePos = refineV[Positive](age1)
-val ageNeg = refineV[Positive](age2)
-```
-
---
-
-```tut
-refineV[Positive](age1).map(isAdult)
-```
-
----
-# Exercise 4: isAdult
-
-```scala
-Int                  => Option[Boolean]
-
-Int Refined Positive => Boolean
+def getCurrency2(country: Country): String = ???
 ```
 
 --
 
 ```scala
-|A => B| == |B|^|A|
-```
-
---
-
-```scala
-|Int => Option[Boolean]| == |Option[Boolean]| ^ |Int| == 3 ^ |Int|
-
-
-|Int Refined Positive => Boolean| =~ |Boolean| ^ (|Int| / 2) == 2 ^ (|Int| / 2)
+|getCurrency2| < |getCurrency1|
 ```
 
 ---
+class: center, middle
 
-# Exercise 5: compareInt
+# How to calculate |A => B| ?
 
-```tut:silent
-def compareInt(x: Int, y: Int): Int = ???
-```
 
----
-
-# Exercise 5: compareInt
-
-```tut:silent
-def compareInt(x: Int, y: Int): Int = {
-  if(x < y)       -1
-  else if (x > 1)  1
-  else             0
-}
-```
-
---
-
-Output type of `Int` means `2 ^ 32` possible results but `compareInt` has only possible 3 outcomes!
-
----
-
-# Exercise 5: compareInt
-
-```tut:silent
-sealed trait Comparison
-
-object Comparison {
-  case object LessThan    extends Comparison
-  case object EqualTo     extends Comparison
-  case object GreaterThan extends Comparison
-}
-
-import Comparison._
-
-def compareInt(x: Int, y: Int): Comparison = {
-  if(x < y)       LessThan
-  else if (x > 1) GreaterThan
-  else            EqualTo
-}
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```tut:silent
-def getCountryDialCode(country: String): Int = ???
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```tut:silent
-def getCountryDialCode(country: String): Int = country match {
-  case "United Kingdom" => 44
-  case "France"         => 33
-  case "Germany"        => 49
-  case other            => ???
-}
-```
-
---
-
-```tut:fail
-getCountryDialCode("Italy")
-getCountryDialCode("france")
-getCountryDialCode("Grande Bretagne")
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```tut:silent
-sealed trait Country
-
-object Country {
-  case object UnitedKingdom extends Country
-  case object France        extends Country
-  case object Germany       extends Country
-}
-
-import Country._
-
-def getCountryDialCode(country: Country): Int = country match {
-  case UnitedKingdom => 44
-  case France        => 33
-  case Germany       => 49
-}
-```
-
----
-
-# Exercise 6: getCountryDialCode
-
-```tut:silent
-sealed abstract class Country(val dialCode: Int)
-
-object Country {
-  case object UnitedKingdom extends Country(44)
-  case object France        extends Country(33)
-  case object Germany       extends Country(49)
-}
-```
-
-```tut
-Country.France.dialCode
-```
-
----
-# Why ADT matters?
-
-* automatic derivation of typeclasses
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">

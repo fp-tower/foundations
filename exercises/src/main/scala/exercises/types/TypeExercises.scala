@@ -117,24 +117,24 @@ object TypeExercises extends TypeToImpl {
   // Is it also true with types?
   // to prove that two types A and B are equivalent you need to provide a pair of functions `to` and `from`
   // such as for all a: A, from(to(a)) == a, and equivalent for B
-  def aUnitToA[A](tuple: (A, Unit)): A = ???
 
-  def aToAUnit[A](a: A): (A, Unit) = ???
+  def aUnitToA[A]: Iso[(A, Unit), A] =
+    Iso[(A, Unit), A](
+      { case (a, b) => ??? },
+      a => ???
+    )
 
-  def aOrNothingToA[A](either: Either[A, Nothing]): A = ???
+  def aOrNothingToA[A]: Iso[Either[A, Nothing], A] =
+    Iso(_ => ???, _ => ???)
 
-  def aToAOrNothing[A](a: A): Either[A, Nothing] = ???
-
-  def optionToEitherUnit[A](option: Option[A]): Either[Unit, A] = ???
-
-  def eitherUnitToOption[A](either: Either[Unit, A]): Option[A] = ???
+  def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
+    Iso(_ => ???, _ => ???)
 
 
   // 2j. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
   // (A, Either[B, C]) == Either[(A, B), (A, C)] ?
-  def distributeBranchTo[A, B, C](value: (A, Either[B, C])): Either[(A, B), (A, C)] = ???
-
-  def distributeBranchFrom[A, B, C](value: Either[(A, B), (A, C)]): (A, Either[B, C]) = ???
+  def distributeEither[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
+    Iso(_ => ???, _ => ???)
 
 
   // 2k. Can you think of any other properties that types and basic algebra have in common?
@@ -180,15 +180,16 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 4a. Implement isAdult
-  def isAdult(i: Int): Boolean = ???
+  // 4a. Implement isAdult such as isAdult return true if age is greater or equal than 18
+  def isAdult(age: Int): Boolean = ???
 
 
 
 
 
   // 4b. What if a user pass a negative number? e.g. isAdult(-5)
-  // how would update the signature and implementation of isAdult
+  // how would update the signature to prevent that
+  def isAdult_v2 = ???
 
 
 
@@ -216,13 +217,13 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 6a. implement getCountryDialCode for UK, France, Germany
-  // UK is country code is 44, France is 33 and Germany is 49
-  def getCountryDialCode(country: String): Int = ???
+  // 6a. implement the cardinality of getCurrency1 and getCurrency2, which one is bigger?
+  def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
+    def cardinality: ACardinality = ???
+  }
 
-
-  // 6b. what happens if someone call getCountryDialCode with "Italy", "france" or "Grande Bretagne" (french version of UK)
-  // change getCountryDialCode to avoid this situation
-
+  def getCurrency2: Cardinality[Country => String] = new Cardinality[Country => String] {
+    def cardinality: ACardinality = ???
+  }
 
 }

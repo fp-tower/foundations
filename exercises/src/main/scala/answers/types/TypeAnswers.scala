@@ -1,8 +1,11 @@
 package answers.types
 
-import exercises.types.{IntOrBoolean, Point}
-import toimpl.types.ACardinality.{Finite, Infinite}
+import answers.types.Comparison._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.numeric._
 import exercises.types.TypeExercises.{Branch, Func, One, Pair}
+import exercises.types.{IntOrBoolean, Iso, Point}
+import toimpl.types.ACardinality.{Finite, Infinite}
 import toimpl.types.{ACardinality, Cardinality, TypeToImpl}
 
 object TypeAnswers extends TypeToImpl {
@@ -109,38 +112,47 @@ object TypeAnswers extends TypeToImpl {
       def cardinality: ACardinality = b.cardinality ^ a.cardinality
     }
 
-  def aUnitToA[A](tuple: (A, Unit)): A = tuple._1
 
-  def aToAUnit[A](a: A): (A, Unit) = (a, ())
+  def aUnitToA[A]: Iso[(A, Unit), A] = Iso(_._1, (_, ()))
 
-  def aOrNothingToA[A](either: Either[A, Nothing]): A =
-    either match {
-      case Left(a)  => a
-      case Right(x) => absurd(x)
-    }
+  def aOrNothingToA[A]: Iso[Either[A, Nothing], A] =
+    Iso(_.fold(identity, absurd), Left(_))
 
   def absurd[A](x: Nothing): A = sys.error("Impossible")
 
-  def aToAOrNothing[A](a: A): Either[A, Nothing] =
-    Left(a)
+  def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
+    Iso(_.toRight(()), _.fold(_ => None, Some(_)))
 
-  def optionToEitherUnit[A](option: Option[A]): Either[Unit, A] =
-    option.toRight(())
 
-  def eitherUnitToOption[A](either: Either[Unit, A]): Option[A] =
-    either.fold(_ => None, Some(_))
-
-  def distributeBranchTo[A, B, C](value: (A, Either[B, C])): Either[(A, B), (A, C)] = {
-    val (a, bOrC) = value
-    bOrC.fold(
-      b => Left((a, b)),
-      c => Right((a, c))
+  def distributeEither[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
+    Iso(
+      {
+        case (a, bOrC) =>
+          bOrC.fold(
+            b => Left((a, b)),
+            c => Right((a, c))
+          )
+      },
+      {
+        case Left((a, b))  => (a, Left(b))
+        case Right((a, c)) => (a, Right(c))
+      }
     )
+
+  def isAdult(age: Int): Boolean = age >= 18
+
+
+  def isAdult_v2(i: Int Refined Positive): Boolean =
+    i.value >= 18
+
+  def compareInt(x: Int, y: Int): Int =
+    if(x < y) -1
+    else if(x > y) 1
+    else 0
+
+  def compareInt_v2(x: Int, y: Int): Comparison = {
+    if(x < y)       LessThan
+    else if (x > y) GreaterThan
+    else            EqualTo
   }
-
-  def distributeBranchFrom[A, B, C](value: Either[(A, B), (A, C)]): (A, Either[B, C]) =
-    value.fold(
-      { case (a, b) => (a, Left(b)) },
-      { case (a, c) => (a, Right(c)) }
-    )
 }
