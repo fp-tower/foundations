@@ -72,13 +72,13 @@ import scala.util.Random
 
 ```scala
 scala> Random.nextInt(10)
-res0: Int = 7
+res0: Int = 0
 
 scala> Random.nextInt(10)
-res1: Int = 6
+res1: Int = 0
 
 scala> Random.nextInt(10)
-res2: Int = 8
+res2: Int = 7
 ```
 
 ---
@@ -115,32 +115,6 @@ java.lang.RuntimeException: Can't access head of empty List
 ```
 
 ---
-# Partial function
-
-```scala
-def sum(optX: Option[Int], optY: Option[Int]): Int =
-  optX.get + optY.get
-```
-
---
-
-```scala
-scala> sum(Some(2), Some(3))
-res5: Int = 5
-```
-
---
-
-```scala
-scala> sum(Some(2), None)
-java.util.NoSuchElementException: None.get
-  at scala.None$.get(Option.scala:366)
-  at scala.None$.get(Option.scala:364)
-  at .sum(<console>:14)
-  ... 43 elided
-```
-
----
 background-image: url(img/null-function-1.jpg)
 
 # Null
@@ -167,10 +141,10 @@ def isCircle(x: Shape): Boolean = x match {
 
 ```scala
 scala> isCircle(Circle(5))
-res7: Boolean = true
+res5: Boolean = true
 
 scala> isCircle(Rectangle(5, 10))
-res8: Boolean = false
+res6: Boolean = false
 ```
 
 ```scala
@@ -178,29 +152,6 @@ scala> isCircle(null)
 scala.MatchError: null
   at .isCircle(<console>:18)
   ... 43 elided
-```
-
----
-# General Recursion / Non termination
-
-```scala
-def forever: Int = forever
-```
-
---
-
-```scala
-def loop(i: Int): Int =
-  loop(i - 1)
-```
-
---
-
-## Termination Condition
-
-```scala
-def loop(i: Int): Int =
-  if(i <= 0) i else loop(i - 1)
 ```
 
 ---
@@ -229,13 +180,13 @@ def foo[A](a: A): A = {
 
 ```scala
 scala> foo(5)
-res10: Int = 6
+res8: Int = 6
 
 scala> foo("Hello")
-res11: String = olleH
+res9: String = olleH
 
 scala> foo(true)
-res12: Boolean = true
+res10: Boolean = true
 ```
 
 ---
@@ -277,7 +228,7 @@ x: Unit = ()
 
 ```scala
 scala> scala.io.Source.fromURL("http://google.com").take(100).mkString
-res13: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en-GB"><head><meta cont
+res11: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en-GB"><head><meta cont
 ```
 
 ---
@@ -294,13 +245,13 @@ def count(): Int = {
 
 ```scala
 scala> count()
-res14: Int = 1
+res12: Int = 1
 
 scala> count()
-res15: Int = 2
+res13: Int = 2
 
 scala> count()
-res16: Int = 3
+res14: Int = 3
 ```
 
 ---
@@ -312,7 +263,19 @@ res16: Int = 3
 * no mutation
 * no exception
 * no null
-* terminate
+* no reflection
+* no side effect
+]
+
+---
+# Scalazzi subset
+
+.large[
+* deterministic (not nondeterministic)
+* total (not partial)
+* no mutation
+* no exception
+* no null
 * no reflection
 * no side effect
 ]
@@ -320,7 +283,7 @@ res16: Int = 3
 ---
 class: center, middle
 
-# A pure function does not perform any action!
+# Exercises
 
 ---
 class: center, middle
@@ -363,7 +326,7 @@ def sum(x: Int, y: Int): Int = {
 scala> sum(2, 3) + sum(2, 3)
 Summing 2 and 3
 Summing 2 and 3
-res17: Int = 10
+res15: Int = 10
 ```
 
 --
@@ -374,7 +337,7 @@ Summing 2 and 3
 x: Int = 5
 
 scala> x + x
-res18: Int = 10
+res16: Int = 10
 ```
 
 ---
@@ -399,7 +362,7 @@ scala> val six  = isEven(6)
 six: Boolean = true
 
 scala> countCall
-res19: Int = 2
+res17: Int = 2
 ```
 
 --
@@ -428,7 +391,11 @@ scala> val six  = !five
 six: Boolean = true
 
 scala> countCall
-res20: Int = 1
+res18: Int = 1
+```
+
+```scala
+forAll((x: Int) => !isEven(x + 1) == isEvent(x))
 ```
 
 ---
@@ -452,6 +419,45 @@ for {
   x <- fx
   y <- fy
 } yield x + y
+```
+
+---
+# Referentially transparent
+
+```scala
+def confirm(id: OrderId): Order = {
+  val order  = getOrder(id)
+  val status = updateStatus(id, Confirmed)
+  val log    = audit.info(s"Order $id confirmed")
+  val user   = getUser(order.userId)
+  order
+}
+```
+
+---
+# Referentially transparent
+
+```scala
+def confirm(id: OrderId): Order = {
+  val order  = getOrder(id)
+  val status = updateStatus(id, Confirmed)
+  val log    = audit.info(s"Order $id confirmed")
+  // val user   = getUser(order.userId)
+  order
+}
+```
+
+---
+# Referentially transparent
+
+```scala
+def confirm(id: OrderId): Order = {
+  val order  = getOrder(id)
+  // val status = updateStatus(id, Confirmed)
+  // val log    = audit.info(s"Order $id confirmed")
+  // val user   = getUser(order.userId)
+  order
+}
 ```
 
 ---
@@ -490,13 +496,13 @@ def foo(x: Int, b: Boolean): Long = {
 
 ```scala
 scala> foo(5,  true) == 12L
-res23: Boolean = true
+res21: Boolean = true
 
 scala> foo(5, false) == 0L
-res24: Boolean = true
+res22: Boolean = true
 
 scala> foo(5,  true) == 10L
-res25: Boolean = true
+res23: Boolean = true
 ```
 
 ---
