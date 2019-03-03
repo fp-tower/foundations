@@ -54,7 +54,7 @@ class: center, middle
 
 # Programming function
 # !=
-# Math function
+# Maths function
 
 ---
 class: center, middle
@@ -288,27 +288,6 @@ bar(x, x)
 ```
 
 ---
-# Referential transparency
-
-```tut:silent
-def sum(x: Int, y: Int): Int = {
-  println(s"Summing $x and $y")
-  x + y
-}
-```
-
-```tut
-sum(2, 3) + sum(2, 3)
-```
-
---
-
-```tut
-val x = sum(2, 3)
-x + x
-```
-
----
 # Referentially transparent
 
 ```tut:silent
@@ -348,6 +327,28 @@ def isEven(x: Int): Boolean = {
 
 ```tut
 val five = isEven(5)
+val six  = !isEven(5)
+countCall
+```
+
+```scala
+forAll((x: Int) => !isEven(x + 1) == isEvent(x))
+```
+
+---
+# Referentially transparent
+
+```tut:silent
+var countCall = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+```
+
+```tut
+val five = isEven(5)
 val six  = !five
 countCall
 ```
@@ -363,15 +364,20 @@ forAll((x: Int) => !isEven(x + 1) == isEvent(x))
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
+def doSomethingExpensive(x: Int): Future[Int] =
+  Future { ??? }
+
 for {
-  x <- Future { 2 + 2 }
-  y <- Future { 3 }     // starts after x is completed
+  x <- doSomethingExpensive(5)
+  y <- doSomethingExpensive(8) // one after the other
 } yield x + y
 ```
 
+--
+
 ```tut:silent
-val fx = Future { 2 + 2 }
-val fy = Future { 3 }
+val fx = doSomethingExpensive(5)
+val fy = doSomethingExpensive(8) // in parallel
 
 for {
   x <- fx
@@ -524,9 +530,19 @@ background-image: url(img/function-graph.jpg)
 # Graph
 
 ---
-# Downsides
+# Advantages of pure function
 
---
+.large[
+* local reasoning
+* faster and more confident refactoring
+* easier to test
+* cachable
+* better documentation in types
+]
+
+---
+# Downsides of pure function
+
 .large[
 * We can't **DO** anything
 ]

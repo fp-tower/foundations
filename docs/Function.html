@@ -54,7 +54,7 @@ class: center, middle
 
 # Programming function
 # !=
-# Math function
+# Maths function
 
 ---
 class: center, middle
@@ -75,13 +75,13 @@ import scala.util.Random
 
 ```scala
 scala> Random.nextInt(10)
-res0: Int = 6
+res0: Int = 0
 
 scala> Random.nextInt(10)
-res1: Int = 1
+res1: Int = 7
 
 scala> Random.nextInt(10)
-res2: Int = 8
+res2: Int = 0
 ```
 
 ---
@@ -316,34 +316,6 @@ bar(x, x)
 ```
 
 ---
-# Referential transparency
-
-```scala
-def sum(x: Int, y: Int): Int = {
-  println(s"Summing $x and $y")
-  x + y
-}
-```
-
-```scala
-scala> sum(2, 3) + sum(2, 3)
-Summing 2 and 3
-Summing 2 and 3
-res15: Int = 10
-```
-
---
-
-```scala
-scala> val x = sum(2, 3)
-Summing 2 and 3
-x: Int = 5
-
-scala> x + x
-res16: Int = 10
-```
-
----
 # Referentially transparent
 
 ```scala
@@ -365,10 +337,37 @@ scala> val six  = isEven(6)
 six: Boolean = true
 
 scala> countCall
-res17: Int = 2
+res15: Int = 2
 ```
 
 --
+
+```scala
+forAll((x: Int) => !isEven(x + 1) == isEvent(x))
+```
+
+---
+# Referentially transparent
+
+```scala
+var countCall = 0
+
+def isEven(x: Int): Boolean = {
+  countCall += 1
+  x % 2 == 0
+}
+```
+
+```scala
+scala> val five = isEven(5)
+five: Boolean = false
+
+scala> val six  = !isEven(5)
+six: Boolean = true
+
+scala> countCall
+res16: Int = 2
+```
 
 ```scala
 forAll((x: Int) => !isEven(x + 1) == isEvent(x))
@@ -394,7 +393,7 @@ scala> val six  = !five
 six: Boolean = true
 
 scala> countCall
-res18: Int = 1
+res17: Int = 1
 ```
 
 ```scala
@@ -408,15 +407,20 @@ forAll((x: Int) => !isEven(x + 1) == isEvent(x))
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
+def doSomethingExpensive(x: Int): Future[Int] =
+  Future { ??? }
+
 for {
-  x <- Future { 2 + 2 }
-  y <- Future { 3 }     // starts after x is completed
+  x <- doSomethingExpensive(5)
+  y <- doSomethingExpensive(8) // one after the other
 } yield x + y
 ```
 
+--
+
 ```scala
-val fx = Future { 2 + 2 }
-val fy = Future { 3 }
+val fx = doSomethingExpensive(5)
+val fy = doSomethingExpensive(8) // in parallel
 
 for {
   x <- fx
@@ -499,13 +503,13 @@ def foo(x: Int, b: Boolean): Long = {
 
 ```scala
 scala> foo(5,  true) == 12L
-res21: Boolean = true
+res20: Boolean = true
 
 scala> foo(5, false) == 0L
-res22: Boolean = true
+res21: Boolean = true
 
 scala> foo(5,  true) == 10L
-res23: Boolean = true
+res22: Boolean = true
 ```
 
 ---
@@ -571,9 +575,19 @@ background-image: url(img/function-graph.jpg)
 # Graph
 
 ---
-# Downsides
+# Advantages of pure function
 
---
+.large[
+* local reasoning
+* faster and more confident refactoring
+* easier to test
+* cachable
+* better documentation in types
+]
+
+---
+# Downsides of pure function
+
 .large[
 * We can't **DO** anything
 ]
