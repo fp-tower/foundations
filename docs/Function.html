@@ -74,14 +74,14 @@ import scala.util.Random
 ```
 
 ```scala
-scala> Random.nextInt(10)
-res0: Int = 0
+scala> Random.nextInt(100)
+res0: Int = 10
 
-scala> Random.nextInt(10)
-res1: Int = 7
+scala> Random.nextInt(100)
+res1: Int = 22
 
-scala> Random.nextInt(10)
-res2: Int = 0
+scala> Random.nextInt(100)
+res2: Int = 34
 ```
 
 ---
@@ -231,7 +231,7 @@ x: Unit = ()
 
 ```scala
 scala> scala.io.Source.fromURL("http://google.com").take(100).mkString
-res11: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en-GB"><head><meta cont
+res11: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="de-CH"><head><meta cont
 ```
 
 ---
@@ -362,7 +362,7 @@ def isEven(x: Int): Boolean = {
 scala> val five = isEven(5)
 five: Boolean = false
 
-scala> val six  = !isEven(5)
+scala> val six  = !isEven(5) // isEven(6)
 six: Boolean = true
 
 scala> countCall
@@ -389,7 +389,7 @@ def isEven(x: Int): Boolean = {
 scala> val five = isEven(5)
 five: Boolean = false
 
-scala> val six  = !five
+scala> val six  = !five // isEven(6)
 six: Boolean = true
 
 scala> countCall
@@ -539,15 +539,17 @@ foo(5, false) == 0L
 ]
 
 ---
-# Cache
+# Caching
 
 ```scala
-def memoize[A, B](f: A => B): A => B = ???
-
 def expensiveFunc(x: Long): Boolean = ???
 ```
 
 --
+
+```scala
+def memoize[A, B](f: A => B): A => B = ???
+```
 
 ```scala
 val cachedExpensiveFunc: Long => Boolean =
@@ -575,18 +577,9 @@ background-image: url(img/function-graph.jpg)
 # Graph
 
 ---
-# Advantages of pure function
-
-.large[
-* local reasoning
-* faster and more confident refactoring
-* easier to test
-* cachable
-* better documentation in types
-]
-
----
 # Downsides of pure function
+
+--
 
 .large[
 * We can't **DO** anything
@@ -595,7 +588,7 @@ background-image: url(img/function-graph.jpg)
 --
 
 .large[
-* We have to re-learn almost everything e.g. state, data structure, error handling
+* We have to re-learn almost everything e.g. error handling, state, data structure
 ]
 
 --

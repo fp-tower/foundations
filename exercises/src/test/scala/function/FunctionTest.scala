@@ -13,11 +13,6 @@ class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
 class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
   import impl._
 
-  "doubleInc" in {
-    doubleInc(0) shouldEqual 1
-    doubleInc(6) shouldEqual 13
-  }
-
   "identity" in {
     identity(3) shouldEqual 3
     identity("foo") shouldEqual "foo"
@@ -47,6 +42,16 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
   "apply" in {
     apply((_: Int) + 1, 10) shouldEqual 11
+  }
+
+  "doubleInc" in {
+    doubleInc(0) shouldEqual 1
+    doubleInc(6) shouldEqual 13
+  }
+
+  "incDouble" in {
+    incDouble(0) shouldEqual 2
+    incDouble(6) shouldEqual 14
   }
 
   "curry" in {

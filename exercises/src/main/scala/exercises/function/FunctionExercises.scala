@@ -135,6 +135,7 @@ object FunctionExercises extends FunctionToImpl {
 
 
   // 3h. Same for f(x) = 2 * (x + 1)
+  val incDouble: Int => Int = identity
 
 
   // 3i. Implement curry and uncurry
@@ -176,6 +177,7 @@ object FunctionExercises extends FunctionToImpl {
 
   // 4e. does the commented function below compile? If yes, what happens when you call it
   // Search for General recursion
+  // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
   //  def foo: Int = foo
 
 
@@ -188,6 +190,7 @@ object FunctionExercises extends FunctionToImpl {
   def memoize[A, B](f: A => B): A => B = ???
 
 
-  // 5b. How would you adapt memoize to work on recursive function
+  // 5b. How would you adapt memoize to work on recursive function e.g. fibonacci
+  // can you generalise the pattern?
 
 }

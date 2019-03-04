@@ -1,6 +1,6 @@
 package answers.function
 
-import exercises.function.FunctionExercises.{Person, updateAge}
+import exercises.function.FunctionExercises.{Person, updateAge, inc, double}
 import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
@@ -36,10 +36,9 @@ object FunctionAnswers extends FunctionToImpl {
   def compose[A, B, C](f: B => C, g: A => B): A => C =
     a => f(g(a))
 
-  val inc   : Int => Int = x => x + 1
-  val double: Int => Int = x => 2 * x
-
   val doubleInc: Int => Int = andThen(double, inc)
+
+  val incDouble: Int => Int = compose(double, inc)
 
   def curry[A, B, C](f: (A, B) => C): A => B => C =
     a => b => f(a, b)

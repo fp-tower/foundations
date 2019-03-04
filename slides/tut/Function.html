@@ -74,9 +74,9 @@ import scala.util.Random
 ```
 
 ```tut
-Random.nextInt(10)
-Random.nextInt(10)
-Random.nextInt(10)
+Random.nextInt(100)
+Random.nextInt(100)
+Random.nextInt(100)
 ```
 
 ---
@@ -327,7 +327,7 @@ def isEven(x: Int): Boolean = {
 
 ```tut
 val five = isEven(5)
-val six  = !isEven(5)
+val six  = !isEven(5) // isEven(6)
 countCall
 ```
 
@@ -349,7 +349,7 @@ def isEven(x: Int): Boolean = {
 
 ```tut
 val five = isEven(5)
-val six  = !five
+val six  = !five // isEven(6)
 countCall
 ```
 
@@ -494,15 +494,17 @@ foo(5, false) == 0L
 ]
 
 ---
-# Cache
+# Caching
 
 ```tut:silent
-def memoize[A, B](f: A => B): A => B = ???
-
 def expensiveFunc(x: Long): Boolean = ???
 ```
 
 --
+
+```tut:silent
+def memoize[A, B](f: A => B): A => B = ???
+```
 
 ```scala
 val cachedExpensiveFunc: Long => Boolean =
@@ -530,18 +532,9 @@ background-image: url(img/function-graph.jpg)
 # Graph
 
 ---
-# Advantages of pure function
-
-.large[
-* local reasoning
-* faster and more confident refactoring
-* easier to test
-* cachable
-* better documentation in types
-]
-
----
 # Downsides of pure function
+
+--
 
 .large[
 * We can't **DO** anything
@@ -550,7 +543,7 @@ background-image: url(img/function-graph.jpg)
 --
 
 .large[
-* We have to re-learn almost everything e.g. state, data structure, error handling
+* We have to re-learn almost everything e.g. error handling, state, data structure
 ]
 
 --
