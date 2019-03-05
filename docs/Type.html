@@ -118,9 +118,100 @@ def fullPersonAddress(person: Person): Option[String] =
 ```
 
 ---
+# Type too big
+
+```scala
+case class Item(id: String, quantity: Int, price: Double)
+
+// order must have at least one item
+case class Order(id: String, items: List[Item]){
+  def total: Double =
+    items.map(i => i.quantity * i.price).sum
+}
+```
+
+--
+
+```scala
+def halfPriceFirstItem(order: Order): Order = {
+  val firstItem = order.items.head
+  val discounted = firstItem.copy(price = firstItem.price * 0.5)
+  order.copy(items = discounted :: order.items.tail)
+}
+```
+
+---
+# Type too big
+
+```scala
+case class Item(id: String, quantity: Int, price: Double)
+
+// order must have at least one item
+case class Order(id: String, items: List[Item]){
+  def total: Double =
+    items.map(i => i.quantity * i.price).sum
+}
+```
+
+```scala
+def halfPriceFirstItem(order: Order): Order = {
+  order.items match {
+    case Nil     => ???
+    case x :: xs =>
+      val discounted = x.copy(price = x.price * 0.5)
+      order.copy(items = discounted :: xs)
+  }
+}
+```
+
+---
+# Type just right
+
+```scala
+import cats.data.NonEmptyList
+import cats.implicits._
+
+case class Item(id: String, quantity: Int, price: Double)
+
+case class Order(id: String, items: NonEmptyList[Item]){
+  def total: Double =
+    items.foldMap(i => i.quantity * i.price)
+}
+```
+
+```scala
+def halfPriceFirstItem(order: Order): Order = {
+  val firstItem  = order.items.head
+  val discounted = firstItem.copy(price = firstItem.price * 0.5)
+  order.copy(items = NonEmptyList(discounted, order.items.tail))
+}
+```
+
+
+---
 # Type too small
 
-## TODO
+```scala
+import java.util.Date
+```
+
+```scala
+scala> val fifthMarch = new Date(1551818168101L) // milliseconds precision
+fifthMarch: java.util.Date = Tue Mar 05 21:36:08 CET 2019
+```
+
+--
+
+```scala
+scala> List(1,2,3,4).size //Int.MaxValue limit
+res2: Int = 4
+```
+
+--
+
+```scala
+def parseJson(json: String): Option[Json] = ??? // no error description
+```
 
 ---
 background-image: url(img/function.jpg)

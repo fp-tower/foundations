@@ -118,9 +118,98 @@ def fullPersonAddress(person: Person): Option[String] =
 ```
 
 ---
+# Type too big
+
+```tut:silent
+case class Item(id: String, quantity: Int, price: Double)
+
+// order must have at least one item
+case class Order(id: String, items: List[Item]){
+  def total: Double =
+    items.map(i => i.quantity * i.price).sum
+}
+```
+
+--
+
+```tut:silent
+def halfPriceFirstItem(order: Order): Order = {
+  val firstItem = order.items.head
+  val discounted = firstItem.copy(price = firstItem.price * 0.5)
+  order.copy(items = discounted :: order.items.tail)
+}
+```
+
+---
+# Type too big
+
+```tut:silent
+case class Item(id: String, quantity: Int, price: Double)
+
+// order must have at least one item
+case class Order(id: String, items: List[Item]){
+  def total: Double =
+    items.map(i => i.quantity * i.price).sum
+}
+```
+
+```tut:silent
+def halfPriceFirstItem(order: Order): Order = {
+  order.items match {
+    case Nil     => ???
+    case x :: xs =>
+      val discounted = x.copy(price = x.price * 0.5)
+      order.copy(items = discounted :: xs)
+  }
+}
+```
+
+---
+# Type just right
+
+```tut:silent
+import cats.data.NonEmptyList
+import cats.implicits._
+
+case class Item(id: String, quantity: Int, price: Double)
+
+case class Order(id: String, items: NonEmptyList[Item]){
+  def total: Double =
+    items.foldMap(i => i.quantity * i.price)
+}
+```
+
+```tut:silent
+def halfPriceFirstItem(order: Order): Order = {
+  val firstItem  = order.items.head
+  val discounted = firstItem.copy(price = firstItem.price * 0.5)
+  order.copy(items = NonEmptyList(discounted, order.items.tail))
+}
+```
+
+
+---
 # Type too small
 
-## TODO
+```tut:silent
+import java.util.Date
+```
+
+```tut
+val fifthMarch = new Date(1551818168101L) // milliseconds precision
+```
+
+--
+
+```tut
+List(1,2,3,4).size //Int.MaxValue limit
+```
+
+--
+
+```scala
+def parseJson(json: String): Option[Json] = ??? // no error description
+```
 
 ---
 background-image: url(img/function.jpg)

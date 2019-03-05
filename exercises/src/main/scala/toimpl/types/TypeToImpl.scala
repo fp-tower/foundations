@@ -52,7 +52,7 @@ trait TypeToImpl {
 
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]]
 
-  def distributeEither[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]]
+  def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]]
 
   def isAdult(age: Int): Boolean
 

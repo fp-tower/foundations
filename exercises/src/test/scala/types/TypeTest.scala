@@ -55,7 +55,7 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
   checkAll("(A, Unit) <=> A", IsoLaws(aUnitToA[Int]))
   checkAll("Either[A, Nothing] <=> A", IsoLaws(aOrNothingToA[Int]))
   checkAll("Option[A] <=> Either[Unit, A]", IsoLaws(optionToEitherUnit[Int]))
-  checkAll("(A, Either[B, C]) <=> Either[(A, B), (A, C)]", IsoLaws(distributeEither[Int, Int, Int]))
+  checkAll("(A, Either[B, C]) <=> Either[(A, B), (A, C)]", IsoLaws(distributeTuple[Int, Int, Int]))
 
   test("isAdult") {
     isAdult(10) shouldBe false

@@ -84,6 +84,8 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
+
+
   // 2a. Implement option that derives the cardinality of Option[A] from A
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {
@@ -118,11 +120,47 @@ object TypeExercises extends TypeToImpl {
       def cardinality: ACardinality = ???
     }
 
-  // 2d. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
+  // 2f. Can you provide two examples of function signature with only one implementation (without type parameter)
+  // i.e. find A1, A2 such as |A1 => A2| = 1
+
+
+
+  // 2g. Can you provide an example of a function signature with no implementation (without type parameter)
+  // i.e. find A1, A2 such as |A1 => A2| = 0
+
+
+
+  // 2h. Given sign type signature and one unit test:
+  // assert(sign(5) = true)
+  // how many valid implementations exist for sign, i.e. how many pass type checker and tests
+  def sign(x: Int): Boolean = ???
+
+
+  // 2i. what if have 3 unit tests
+  // assert(sign(-2) = false)
+  // assert(sign( 0) = true)
+  // assert(sign( 5) = true)
+  // can you generalise for n unit tests?
+
+
+
+  // 2j. How many implementations remain valid if I have the following property
+  // forAll(x: Int => sign(x) == !sign(-x))
+
+
+
+
+  // 2k. Can you think of other ways to reduce the number of valid implementations?
+  // check out the following presentation for more details (shameless self promotion)
+  // https://skillsmatter.com/skillscasts/12648-types-vs-tests
+
+
+
+
+  // 3a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
   // Is it also true with types?
   // to prove that two types A and B are equivalent you need to provide a pair of functions `to` and `from`
   // such as for all a: A, from(to(a)) == a, and equivalent for B
-
   def aUnitToA[A]: Iso[(A, Unit), A] =
     Iso[(A, Unit), A](
       { case (a, b) => ??? },
@@ -136,18 +174,18 @@ object TypeExercises extends TypeToImpl {
     Iso(_ => ???, _ => ???)
 
 
-  // 2j. Is the algebra formed of Pair/Branch distributive? In other words, is it true that
-  // (A, Either[B, C]) == Either[(A, B), (A, C)] ?
-  def distributeEither[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
+  // 3b. Does Tuple distribute over Either? In other words, is it true that
+  // (A, Either[B, C]) =~ Either[(A, B), (A, C)] ?
+  def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(_ => ???, _ => ???)
 
 
-  // 2k. Can you think of any other properties that types and basic algebra have in common?
+  // 3c. Can you think of any other properties that types and basic algebra have in common?
   // e.g. What can you say about a + b or a * b
 
 
 
-  // 3
+  // 4
   sealed trait Zero
 
   case object One
@@ -161,22 +199,22 @@ object TypeExercises extends TypeToImpl {
     case class Right[A, B](value: B) extends Branch[A, B]
   }
 
-  // 3a. Define Two a type containing 2 possible values using Zero, One, Pair and Branch
+  // 4a. Define Two a type containing 2 possible values using Zero, One, Pair and Branch
   type Two = Nothing
 
-  // 3b. Define Three a type containing 3 possible values using all previously defined types
+  // 4b. Define Three a type containing 3 possible values using all previously defined types
   type Three = Nothing
 
 
-  // 3c. Define Four a type containing 4 possible values using all previously defined types
+  // 4c. Define Four a type containing 4 possible values using all previously defined types
   type Four = Nothing
 
 
-  // 3d. Define Five a type containing 8 possible values using all previously defined types
+  // 4d. Define Five a type containing 8 possible values using all previously defined types
   type Five = Nothing
 
 
-  // 3e. Define Eight type containing 8 possible values using Func and all previously defined types
+  // 4e. Define Eight type containing 8 possible values using Func and all previously defined types
   trait Func[A, B]{
     def apply(value: A): B
   }
@@ -185,14 +223,14 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 4a. Implement isAdult such as isAdult return true if age is greater or equal than 18
+  // 5a. Implement isAdult such as isAdult return true if age is greater or equal than 18
   def isAdult(age: Int): Boolean = ???
 
 
 
 
 
-  // 4b. What if a user pass a negative number? e.g. isAdult(-5)
+  // 5b. What if a user pass a negative number? e.g. isAdult(-5)
   // how would update the signature to prevent that
   def isAdult_v2 = ???
 
@@ -200,7 +238,7 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 4c. What is the most precise type? Why?
+  // 5c. What is the most precise type? Why?
   // Int                  => Option[Boolean]
   // Int Refined Positive => Boolean          (see https://github.com/fthomas/refined)
 
@@ -208,7 +246,7 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 5a. Implement compareInt such as it return:
+  // 6a. Implement compareInt such as it return:
   // -1 if x < y
   //  0 if x == y
   //  1 if x > y
@@ -217,12 +255,12 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 5b. why can we say that compareInt is imprecise? Implement a more precise compareInt_v2
+  // 6b. why can we say that compareInt is imprecise? Implement a more precise compareInt_v2
   def compareInt_v2 = ???
 
 
 
-  // 6a. implement the cardinality of getCurrency1 and getCurrency2, which one is bigger?
+  // 7a. implement the cardinality of getCurrency1 and getCurrency2, which one is bigger?
   def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
     def cardinality: ACardinality = ???
   }

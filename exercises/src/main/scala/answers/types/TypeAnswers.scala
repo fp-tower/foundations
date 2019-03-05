@@ -128,7 +128,7 @@ object TypeAnswers extends TypeToImpl {
     Iso(_.toRight(()), _.fold(_ => None, Some(_)))
 
 
-  def distributeEither[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
+  def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(
       {
         case (a, bOrC) =>
