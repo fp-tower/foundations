@@ -92,7 +92,7 @@ object FunctionExercises extends FunctionToImpl {
   // 2c. Transform triple method (def) into tripleVal function (val)
   def triple(x: Int): Int = x * 3
 
-  val tripleVal: Int => Int = identity
+  val tripleVal: Int => Int = identity // ???
 
   // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
 
@@ -166,13 +166,13 @@ object FunctionExercises extends FunctionToImpl {
 
   // 4d. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =
-    if(x > 0) !isOdd(x - 1)
-    else if (x < 0) !isOdd(x + 1)
+    if(x > 0) isOdd(x - 1)
+    else if (x < 0) isOdd(x + 1)
     else true
 
   def isOdd(x: Int): Boolean =
-    if(x > 0) !isEven(x - 1)
-    else if (x < 0) !isEven(x + 1)
+    if(x > 0) isEven(x - 1)
+    else if (x < 0) isEven(x + 1)
     else false
 
   // 4e. does the commented function below compile? If yes, what happens when you call it
