@@ -111,7 +111,7 @@ object FunctionExercises extends FunctionToImpl {
   // 3b. implement setAge using updateAge and one polymorphic function we saw before
   def setAge(xs: List[Person], value: Int): List[Person] = ???
 
-  // 3c. implement noopAge using updateAge and one polymorphic function we saw before
+  // 3c. implement noopAge (do nothing) using updateAge and one polymorphic function we saw before
   def noopAge(xs: List[Person]): List[Person] = ???
 
   // 3d. implement updateAge2 and setAge2
