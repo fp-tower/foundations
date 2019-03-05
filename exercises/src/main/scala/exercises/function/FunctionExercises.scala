@@ -131,11 +131,11 @@ object FunctionExercises extends FunctionToImpl {
   val inc   : Int => Int = x => x + 1
   val double: Int => Int = x => 2 * x
 
-  val doubleInc: Int => Int = identity
+  val doubleInc: Int => Int = identity // ???
 
 
   // 3h. Same for f(x) = 2 * (x + 1)
-  val incDouble: Int => Int = identity
+  val incDouble: Int => Int = identity // ???
 
 
   // 3i. Implement curry and uncurry
