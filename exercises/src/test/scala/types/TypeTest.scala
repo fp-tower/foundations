@@ -52,10 +52,11 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
     func[Int, Nothing](int, nothing).cardinality shouldEqual Finite(0)
   }
 
-  checkAll("(A, Unit) <=> A", IsoLaws(aUnitToA[Int]))
-  checkAll("Either[A, Nothing] <=> A", IsoLaws(aOrNothingToA[Int]))
+  checkAll("a * 1 == a", IsoLaws(aUnitToA[Int]))
+  checkAll("a + 0 == a", IsoLaws(aOrNothingToA[Int]))
   checkAll("Option[A] <=> Either[Unit, A]", IsoLaws(optionToEitherUnit[Int]))
-  checkAll("(A, Either[B, C]) <=> Either[(A, B), (A, C)]", IsoLaws(distributeTuple[Int, Int, Int]))
+//  checkAll("a ^ 1 ==  a", IsoLaws(power1[Int]))
+  checkAll("a * (b + c) == a * b + a * c", IsoLaws(distributeTuple[Int, Int, Int]))
 
   test("isAdult") {
     isAdult(10) shouldBe false

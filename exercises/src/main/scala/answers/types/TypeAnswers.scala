@@ -127,6 +127,8 @@ object TypeAnswers extends TypeToImpl {
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
     Iso(_.toRight(()), _.fold(_ => None, Some(_)))
 
+//  def power1[A]: Iso[Unit => A, A] =
+//    Iso(f => f(()), a => _ => a)
 
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(

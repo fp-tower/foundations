@@ -170,18 +170,18 @@ object TypeExercises extends TypeToImpl {
   def aOrNothingToA[A]: Iso[Either[A, Nothing], A] =
     Iso(_ => ???, _ => ???)
 
+  // 3b. Prove that Option is equivalent to Either[Unit,]
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
     Iso(_ => ???, _ => ???)
 
 
-  // 3b. Does Tuple distribute over Either? In other words, is it true that
+  // 3c. Prove that a * (b + c) = a * b + a * c
   // (A, Either[B, C]) =~ Either[(A, B), (A, C)] ?
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(_ => ???, _ => ???)
 
 
-  // 3c. Can you think of any other properties that types and basic algebra have in common?
-  // e.g. What can you say about a + b or a * b
+  // 3d. Can you think of any other properties that types and algebra have in common?
 
 
 
