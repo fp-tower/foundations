@@ -101,17 +101,24 @@ def getCurrency(country: Country): String =
 ```tut:silent
 case class Person(name: String, streetNumber: Option[Int], streetName: Option[String])
 
-def fullAddress(person: Person): Option[String] = ???
+def fullAddress(person: Person): Option[String] =
+  (person.streetNumber, person.streetName) match {
+    case (Some(x), Some(y)) => Some(s"$x $y")
+    case (Some(x),    None) => ???
+    case (   None, Some(y)) => ???
+    case (None   , None   ) => None
+  }
 ```
 
---
+---
 # Type just right
 
 ```tut:silent
 case class Address(streetNumber: Int, streetName: String)
 case class Person(name: String, address: Option[Address])
 
-def fullAddress(address: Address): String = ???
+def fullAddress(address: Address): String =
+  s"${address.streetNumber} ${address.streetName}"
 
 def fullPersonAddress(person: Person): Option[String] =
   person.address.map(fullAddress)
