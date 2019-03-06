@@ -21,6 +21,15 @@ width: 47%;
 float: right;
 width: 47%;
 }
+table {
+  border-collapse: collapse;
+  display: inline-block;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid black;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 </style>
 </head>
@@ -286,6 +295,54 @@ def getCurrency2(country: Country): String = ???
 ```scala
 |getCurrency2| < |getCurrency1|
 ```
+
+---
+class: center, middle
+
+# Exercises
+
+---
+# Type Algebra
+
+
+.center[
+| Type        | Algebra   |
+|:-----------:| :--------:|
+|Nothing      | 0         |
+|Unit         | 1         |
+|Either[A, B] | A + B     |
+|(A, B)       | A * B     |
+| A => B      | B ^ A     |
+| Isomorphism | A == B    |
+]
+
+---
+# Type Algebra Logic
+
+.center[
+| Type        | Algebra   | Logic                  |
+|:-----------:| :--------:|:----------------------:|
+|Nothing      | 0         | ⊥ (false)              |
+|Unit         | 1         | ⊤ (true)               |
+|Either[A, B] | A + B     | A \/ B (or)            |
+|(A, B)       | A * B     | A /\ B (and)           |
+| A => B      | B ^ A     | B => A (implies)       |
+| Isomorphism | A == B    | A <==> B (equivalence) |
+]
+
+---
+# Type Algebra Logic
+
+.center[
+| Type        | Algebra   | Logic    |
+|:-----------:| :--------:|:--------:|
+|Nothing      | 0         | ⊥        |
+|Unit         | 1         | ⊤        |
+|Either[A, B] | A + B     | A \/ B   |
+|(A, B)       | A * B     | A /\ B   |
+| A => B      | B ^ A     | B => A   |
+| Isomorphism | A == B    | A <==> B |
+]
 
 ---
 class: center, middle
