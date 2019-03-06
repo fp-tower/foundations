@@ -299,6 +299,11 @@ def getCurrency2(country: Country): String = ???
 ---
 class: center, middle
 
+# How to calculate |A => B| ?
+
+---
+class: center, middle
+
 # Exercises
 
 ---
@@ -355,8 +360,28 @@ class: center, middle
 ---
 class: center, middle
 
-# How to calculate |A => B| ?
+```scala
+Either[A, Nothing] == A
+```
 
+--
+
+```scala
+A ∨ ⊥ ⇔ A
+```
+
+---
+class: center, middle
+
+```scala
+(A, Nothing) == Nothing
+```
+
+--
+
+```scala
+A ∧ ⊥ ⇔ ⊥
+```
 
 
 </textarea>
