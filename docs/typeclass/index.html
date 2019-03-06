@@ -279,7 +279,7 @@ plus "Hello" "World"
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res10: Plusable[Int] = $anon$1@42c3e1ae
+res10: Plusable[Int] = $anon$1@1e9958d2
 ```
 
 --
@@ -409,7 +409,7 @@ object Disjunction {
 
 ```scala
 scala> implicitly[Plusable[Disjunction]]
-res20: Plusable[Disjunction] = Disjunction$$anon$1@60a54052
+res20: Plusable[Disjunction] = Disjunction$$anon$1@5cc814f1
 ```
 
 --
@@ -436,7 +436,8 @@ res22: Disjunction = Disjunction(false)
 </script>
 <script>
     var slideshow = remark.create({
-        ratio: "16:9"
+        ratio: "16:9",
+        slideNumberFormat: '%current%'
     });
 </script>
 </body>
