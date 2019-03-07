@@ -79,7 +79,7 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
-  // 1m. How many possible values are of type Nothing?
+  // 1m. How many possible values are of type Any?
   val any: Cardinality[Any] = new Cardinality[Any] {
     def cardinality: ACardinality = ???
   }

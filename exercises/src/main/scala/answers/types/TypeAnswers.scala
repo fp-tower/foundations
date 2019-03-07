@@ -107,7 +107,7 @@ object TypeAnswers extends TypeToImpl {
   val string: Cardinality[String] = new Cardinality[String] {
     def cardinality: ACardinality =
       0.to(Int.MaxValue).foldLeft(Finite(BigInt(0)): ACardinality)((acc, i) =>
-        acc + (char.cardinality * Finite(i))
+        acc + (char.cardinality ^ Finite(i))
       )
   }
 
