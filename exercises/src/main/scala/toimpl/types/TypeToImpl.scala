@@ -52,7 +52,7 @@ trait TypeToImpl {
 
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]]
 
-  def power1[A]: Iso[Unit => A, A]
+//  def power1[A]: Iso[Unit => A, A]
 
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]]
 
