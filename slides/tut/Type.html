@@ -45,6 +45,16 @@ Foundation of Functional Programming
 `@JulienTruffaut`
 
 ---
+class: center, middle
+
+# All dynamic languages are static languages with a **single** type
+
+---
+class: center, middle
+
+# Any => Any
+
+---
 background-image: url(img/types-1.jpg)
 
 # Type
@@ -113,8 +123,8 @@ case class Person(name: String, streetNumber: Option[Int], streetName: Option[St
 def fullAddress(person: Person): Option[String] =
   (person.streetNumber, person.streetName) match {
     case (Some(x), Some(y)) => Some(s"$x $y")
-    case (Some(x),    None) => ???
-    case (   None, Some(y)) => ???
+    case (Some(x), None   ) => ???
+    case (None   , Some(y)) => ???
     case (None   , None   ) => None
   }
 ```
@@ -137,6 +147,7 @@ def fullPersonAddress(person: Person): Option[String] =
 # Type too big
 
 ```tut:silent
+// quantity must be positive
 case class Item(id: String, quantity: Int, price: Double)
 
 // order must have at least one item
@@ -151,7 +162,7 @@ case class Order(id: String, items: List[Item]){
 ```tut:silent
 def halfPriceFirstItem(order: Order): Order = {
   val firstItem = order.items.head
-  val discounted = firstItem.copy(price = firstItem.price * 0.5)
+  val discounted = firstItem.copy(price = firstItem.price / 2)
   order.copy(items = discounted :: order.items.tail)
 }
 ```
@@ -160,6 +171,7 @@ def halfPriceFirstItem(order: Order): Order = {
 # Type too big
 
 ```tut:silent
+// quantity must be positive
 case class Item(id: String, quantity: Int, price: Double)
 
 // order must have at least one item
@@ -174,7 +186,7 @@ def halfPriceFirstItem(order: Order): Order = {
   order.items match {
     case Nil     => ???
     case x :: xs =>
-      val discounted = x.copy(price = x.price * 0.5)
+      val discounted = x.copy(price = x.price / 2)
       order.copy(items = discounted :: xs)
   }
 }
@@ -187,6 +199,7 @@ def halfPriceFirstItem(order: Order): Order = {
 import cats.data.NonEmptyList
 import cats.implicits._
 
+// quantity must be positive
 case class Item(id: String, quantity: Int, price: Double)
 
 case class Order(id: String, items: NonEmptyList[Item]){
@@ -198,7 +211,31 @@ case class Order(id: String, items: NonEmptyList[Item]){
 ```tut:silent
 def halfPriceFirstItem(order: Order): Order = {
   val firstItem  = order.items.head
-  val discounted = firstItem.copy(price = firstItem.price * 0.5)
+  val discounted = firstItem.copy(price = firstItem.price / 2)
+  order.copy(items = NonEmptyList(discounted, order.items.tail))
+}
+```
+
+---
+# Even further
+
+```tut:silent
+import cats.data.NonEmptyList
+import cats.implicits._
+import eu.timepit.refined.types.numeric.PosInt
+
+case class Item(id: String, quantity: PosInt, price: Double)
+
+case class Order(id: String, items: NonEmptyList[Item]){
+  def total: Double =
+    items.foldMap(i => i.quantity.value * i.price)
+}
+```
+
+```tut:silent
+def halfPriceFirstItem(order: Order): Order = {
+  val firstItem  = order.items.head
+  val discounted = firstItem.copy(price = firstItem.price / 2)
   order.copy(items = NonEmptyList(discounted, order.items.tail))
 }
 ```
@@ -212,19 +249,19 @@ import java.util.Date
 ```
 
 ```tut
-val fifthMarch = new Date(1551818168101L) // milliseconds precision
+val fifthMarch = new Date(1551818168101L)
 ```
 
 --
 
 ```tut
-List(1,2,3,4).size //Int.MaxValue limit
+List(1,2,3,4).size
 ```
 
 --
 
 ```scala
-def parseJson(json: String): Option[Json] = ??? // no error description
+def parseJson(json: String): Option[Json] = ???
 ```
 
 ---
@@ -232,10 +269,6 @@ background-image: url(img/function.jpg)
 
 # Function
 
----
-class: center, middle
-
-# A => B
 
 ---
 class: center, middle
@@ -280,7 +313,12 @@ class: center, middle
 # The smaller |A => B|, the better
 
 ---
-# The smaller |A => B|, the better
+class: center, middle
+
+# Ultimate goal |A => B| = 1
+
+---
+# How to calculate |A => B| ?
 
 ```tut:silent
 def getCurrency1(country: String ): Option[String] = ???
@@ -294,10 +332,97 @@ def getCurrency2(country: Country): String = ???
 |getCurrency2| < |getCurrency1|
 ```
 
+
 ---
 class: center, middle
 
-# How to calculate |A => B| ?
+# Exercises
+
+---
+# Sealed trait cardinality
+
+```tut:silent
+sealed trait IntOrBoolean
+
+case class AnInt(value: Int) extends IntOrBoolean
+case class ABoolean(value: Boolean) extends IntOrBoolean
+```
+
+--
+
+```scala
+AnInt(-2 Billions)  // ~ -2 billion
+...
+AnInt(0)
+AnInt(1)
+...
+AnInt(Int.MaxValue) // ~ +2 billion
+```
+
+--
+
+```scala
+ABoolean(false)
+ABoolean(true)
+```
+
+--
+
+```scala
+|IntOrBoolean| = |AnInt| + |ABoolean|
+               = |Int| + |Boolean|
+```
+
+---
+# Case class cardinality
+
+```tut:silent
+case class IntAndBoolean(i: Int, b: Boolean)
+```
+
+--
+
+```scala
+IntAndBoolean(-2 Billions, false)  // ~ -2 billion
+...
+IntAndBoolean(0, false)
+IntAndBoolean(1, false)
+...
+IntAndBoolean(Int.MaxValue, false) // ~ +2 billion
+```
+
+--
+
+```scala
+IntAndBoolean(-2 Billions, true)  // ~ -2 billion
+...
+IntAndBoolean(0, true)
+IntAndBoolean(1, true)
+...
+IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
+```
+
+--
+
+```scala
+|IntAndBoolean| = |Int| * |Boolean|
+```
+
+---
+class: center, middle
+
+# Sealed trait is called a Sum type
+
+--
+
+# Case class is called a Product type
+
+---
+class: center, middle
+
+# Sealed trait is called a Co-Product
+
+# Case class is called a Product
 
 ---
 class: center, middle
@@ -381,6 +506,32 @@ class: center, middle
 A ∧ ⊥ ⇔ ⊥
 ```
 
+---
+# Find the referential that make sense to you
+
+```scala
+Either[Int, String] => Boolean     <==>      (Int => Boolean, String => Boolean)
+```
+
+--
+
+```scala
+Either[A, B] => C                  <==>      (A => C, B => C)
+```
+
+--
+
+```scala
+Either[A, B] => C =~ C ^ (A + B)
+                  =  C ^ A * C ^ B
+                  =~ (A => C, B => C)
+```
+
+```scala
+Either[A, B] => C =~ (A ∨ B) → C
+                  =  (A → C) ∧ (B → C)
+                  =~ (A => C, B => C)
+```
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
