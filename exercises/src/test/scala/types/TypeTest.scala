@@ -30,7 +30,7 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
 
   test("list") {
     list(boolean).cardinality shouldEqual Infinite
-    list[Nothing](nothing).cardinality shouldEqual Finite(0)
+    list[Nothing](nothing).cardinality shouldEqual Finite(1)
   }
 
   test("either") {
@@ -44,12 +44,16 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
     tuple2(boolean, unit).cardinality shouldEqual Finite(2)
     tuple2(byte, boolean).cardinality shouldEqual Finite(512)
     tuple2(byte, boolean).cardinality shouldEqual Finite(512)
+    tuple2[Nothing, List[Boolean]](nothing, list(boolean)).cardinality shouldEqual Finite(0)
+    tuple2[List[Boolean], Nothing](list(boolean), nothing).cardinality shouldEqual Finite(0)
   }
 
   test("func") {
     func(boolean, boolean).cardinality shouldEqual Finite(4)
     func(boolean, unit).cardinality shouldEqual Finite(1)
-    func[Int, Nothing](int, nothing).cardinality shouldEqual Finite(0)
+    func[Nothing, List[Boolean]](nothing, list(boolean)).cardinality shouldEqual Finite(1)
+    func(list(boolean), unit).cardinality shouldEqual Finite(1)
+    func[List[Boolean], Nothing](list(boolean), nothing).cardinality shouldEqual Finite(0)
   }
 
   checkAll("a * 1 == a", IsoLaws(aUnitToA[Int]))

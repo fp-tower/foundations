@@ -16,23 +16,29 @@ object ACardinality {
 
 sealed trait ACardinality {
   def *(other: ACardinality): ACardinality =
-    binOp(other)((a, b) => Finite(a * b))
-
-  def +(other: ACardinality): ACardinality =
-    binOp(other)((a, b) => Finite(a + b))
-
-  def ^(other: ACardinality): ACardinality =
-    binOp(other) { (a, b) =>
-      if(a == 0) Finite(0)
-      else if(a == 1) Finite(a)
-      else if(b.isValidInt) Finite(a.pow(b.toInt))
-      else Infinite // TODO more precise, maybe capture Pow(x, y)
+    (this, other) match {
+      case (Finite(x), Finite(y)) => Finite(x * y)
+      case (Finite(x), Infinite ) => if(x == 0) Finite(0) else Infinite
+      case (Infinite , Finite(x)) => if(x == 0) Finite(0) else Infinite
+      case (Infinite , Infinite ) => Infinite
     }
 
-  private def binOp(other: ACardinality)(f: (BigInt, BigInt) => ACardinality): ACardinality =
+  def +(other: ACardinality): ACardinality =
     (this, other) match {
-      case (Finite(x), Finite(y)) => f(x, y)
+      case (Finite(x), Finite(y)) => Finite(x + y)
       case (Finite(_), Infinite) | (Infinite, Finite(_)) | (Infinite, Infinite) => Infinite
+    }
+
+  def ^(other: ACardinality): ACardinality =
+    (this, other) match {
+      case (Finite(x), Finite(y)) =>
+        if(x == 0 || x == 1) Finite(x)
+        else if(y == 0) Finite(1)
+        else if(y.isValidInt) Finite(x.pow(y.toInt))
+        else Infinite
+      case (Finite(x), Infinite ) => if(x == 0 || x == 1) Finite(x) else Infinite
+      case (Infinite , Finite(x)) => if(x == 0) Finite(1) else Infinite
+      case (Infinite , Infinite ) => Infinite
     }
 
   override def toString: String = this match {

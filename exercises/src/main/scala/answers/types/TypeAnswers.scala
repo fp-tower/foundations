@@ -90,7 +90,7 @@ object TypeAnswers extends TypeToImpl {
   def list[A](a: Cardinality[A]): Cardinality[List[A]] =
     new Cardinality[List[A]] {
       def cardinality: ACardinality =
-        if(a.cardinality == Finite(0)) a.cardinality
+        if(a.cardinality == Finite(0)) Finite(1)
         else Infinite
     }
 
