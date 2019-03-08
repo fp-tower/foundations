@@ -181,7 +181,14 @@ object TypeExercises extends TypeToImpl {
     Iso(_ => ???, _ => ???)
 
 
-  // 3d. Can you think of any other properties that types and algebra have in common?
+  // 3d. Prove that a ^ 1 = a
+  def power1[A]: Iso[Unit => A, A] =
+    new Iso[Unit => A, A](
+      _ => ???, _ => ???
+    )
+
+
+  // 3e. Can you think of any other properties that types and algebra have in common?
 
 
 

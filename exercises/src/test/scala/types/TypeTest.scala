@@ -1,11 +1,13 @@
 package types
 
 import answers.types.TypeAnswers
+import cats.implicits._
+import cats.kernel.Eq
+import exercises.types.ACardinality.{Finite, Infinite}
 import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
-import exercises.types.ACardinality.{Finite, Infinite}
 import toimpl.types.TypeToImpl
 
 class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Matchers {
@@ -59,7 +61,7 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
   checkAll("a * 1 == a", IsoLaws(aUnitToA[Int]))
   checkAll("a + 0 == a", IsoLaws(aOrNothingToA[Int]))
   checkAll("Option[A] <=> Either[Unit, A]", IsoLaws(optionToEitherUnit[Int]))
-//  checkAll("a ^ 1 ==  a", IsoLaws(power1[Int]))
+  checkAll("a ^ 1 ==  a", IsoLaws(power1[Int]))
   checkAll("a * (b + c) == a * b + a * c", IsoLaws(distributeTuple[Int, Int, Int]))
 
   test("isAdult") {
@@ -75,6 +77,12 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
 
   implicit def arbAOrNothing[A: Arbitrary]: Arbitrary[Either[A, Nothing]] =
     Arbitrary(Arbitrary.arbitrary[A].map(Left(_)))
+
+  implicit def eqAOrNothing[A: Eq]: Eq[Either[A, Nothing]] =
+    Eq.by(_.fold(identity, TypeAnswers.absurd))
+
+  implicit def eqUnitToA[A: Eq]: Eq[Unit => A] =
+    Eq.by(_.apply(()))
 }
 
 class TypeExercisesTest extends TypeToImplTest(TypeExercises) {
