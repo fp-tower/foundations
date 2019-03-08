@@ -430,6 +430,164 @@ class: center, middle
 # Exercises
 
 ---
+background-image: url(img/int-to-int-type-1.jpg)
+
+# Function is a set!
+
+---
+background-image: url(img/int-to-int-type-test.jpg)
+
+# Unit Tests
+
+---
+class: center, middle
+
+# Valid Implementation Count (VIC)
+
+---
+class: center, middle
+
+# VIC(f: A => B) = number of impl - impl invalid by tests
+
+---
+background-image: url(img/VIC-increment.jpg)
+
+---
+class: center, middle
+
+# The smaller VIC is, the more constrained is f
+
+---
+background-image: url(img/VIC-1.jpg)
+
+.center[
+# VIC(f) = 1
+]
+
+---
+class: center, middle
+
+# VIC(f: A => B) = <span style="color:blue">**number of impl**</span>  - impl invalid by tests
+
+---
+class: center, middle
+
+# |A => B|
+
+---
+background-image: url(img/function.jpg)
+
+# Function is a mapping
+
+---
+background-image: url(img/function-mapping-1.jpg)
+
+# Function is a mapping
+
+---
+background-image: url(img/count-A-to-B-1.jpg)
+
+# |A => B|
+
+---
+background-image: url(img/count-A-to-B-2.jpg)
+
+# |A => B|
+
+---
+background-image: url(img/count-A-to-B-3.jpg)
+
+# |A => B|
+
+---
+background-image: url(img/count-A-to-B-4.jpg)
+
+# |A => B|
+
+---
+class: center, middle
+
+# VIC(f: A => B) = number of impl - <span style="color:blue">**impl invalid by tests**</span>
+
+---
+# Unit Test
+
+```tut:silent
+sealed trait DayOfWeek
+
+case object Monday  extends DayOfWeek
+case object Tuesday extends DayOfWeek
+// ...
+case object Sunday  extends DayOfWeek
+```
+
+--
+
+```scala
+val f: DayOfWeek => Boolean = ???
+```
+
+such as
+
+```scala
+assert(f(Tuesday) == false)
+```
+
+---
+background-image: url(img/count-day-week-to-boolean-1.jpg)
+
+# Unit Test
+
+---
+background-image: url(img/count-day-week-to-boolean-2.jpg)
+
+# Unit Test
+
+---
+background-image: url(img/count-day-week-to-boolean-3.jpg)
+
+# Unit Test
+
+---
+background-image: url(img/count-day-week-to-boolean-4.jpg)
+
+# Unit Test
+
+---
+# One Unit Test
+
+.center[
+```scala
+VIC(f: A => B) = |B| ^ |A| / |B|
+               = |B| ^ (|A| - 1)
+```
+]
+
+--
+
+# Two Unit Tests
+
+.center[
+```scala
+VIC(f: A => B) = |B| ^ |A| / |B| / |B|
+                 = (|B| ^ |A|) / (|B| ^ 2)
+         = |B| ^ (|A| - 2)
+```
+]
+
+---
+class: center, middle
+
+# `VIC(f: A => B) = |B| ^ (|A| - n)`
+
+### where `n` is the number of unit tests
+
+---
+class: center, middle
+
+# Exercises
+
+---
 # Type Algebra
 
 
