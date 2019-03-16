@@ -63,6 +63,239 @@ res2: String = HelloWorld
 ```
 
 ---
+# Abstraction
+
+```scala
+def sumList(xs: List[Int]   ): Int    = xs.foldLeft(0 )(plus)
+def sumList(xs: List[Long]  ): Long   = xs.foldLeft(0L)(plus)
+def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
+```
+
+
+
+
+```scala
+scala> sumList(List(1,2,3,4))
+res3: Int = 10
+
+scala> sumList(List("Hello", "World"))
+res4: String = HelloWorld
+```
+
+---
+# Abstraction
+
+```scala
+def sumListGen[A](xs: List[A])(zero: A, plus: (A, A) => A): A =
+  xs.foldLeft(zero)(plus)
+```
+
+--
+
+```scala
+def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(0 , plus)
+def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(0L, plus)
+def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
+```
+
+
+
+
+```scala
+scala> sumList(List(1,2,3,4))
+res5: Int = 10
+
+scala> sumList(List("Hello", "World"))
+res6: String = HelloWorld
+```
+
+---
+# Plusable
+
+```scala
+trait Plusable[A]{
+  def plus(a1: A, a2: A): A
+  def zero: A
+}
+```
+
+--
+
+```scala
+val plusableInt: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+
+val plusableLong: Plusable[Long] = new Plusable[Long]{
+  def plus(a1: Long, a2: Long): Long = a1 + a2
+  def zero: Long = 0
+}
+
+val plusableString: Plusable[String] = new Plusable[String]{
+  def plus(a1: String, a2: String): String = a1 + a2
+  def zero: String = ""
+}
+```
+
+---
+# Plusable
+
+```scala
+def sumListGen[A](xs: List[A])(p: Plusable[A]): A =
+  xs.foldLeft(p.zero)(p.plus)
+```
+
+--
+
+```scala
+def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(plusableInt)
+def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(plusableLong)
+def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
+```
+
+
+
+
+```scala
+scala> sumList(List(1,2,3,4))
+res7: Int = 10
+
+scala> sumList(List("Hello", "World"))
+res8: String = HelloWorld
+```
+
+---
+class: center, middle
+
+# Plusable is unique for a type
+
+---
+# Plusable is unique for a type
+
+```scala
+object Global {
+  val plusableMapping: Map[x: Type, Plusable[x]] := Map(
+    Int    -> new Plusable[Int]{...},
+    Long   -> new Plusable[Long]{...},
+    String -> new Plusable[String]{...}
+  )
+}
+```
+
+--
+
+```scala
+def sumList[A](xs: List[A]): A =
+  Global.plusableMapping.get(A) match {
+    case None    => sys.error("compile error")
+    case Some(p) => xs.foldLeft(p.zero)(p.plus)
+  }
+```
+
+---
+# Typeclass
+
+## 1. Interface (the typeclass)
+
+```scala
+trait Plusable[A]{
+  def plus(a1: A, a2: A): A
+  def zero: A
+}
+```
+
+--
+
+## 2. Implicit value (instance of a typeclass)
+
+```scala
+implicit val plusableInt: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+```
+
+---
+# SumList using typeclass
+
+```scala
+def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
+  xs.foldLeft(p.zero)(p.plus)
+```
+
+--
+
+```scala
+scala> sumList(List(1,2,3,4))
+res9: Int = 10
+```
+
+---
+# SumList using typeclass context bound
+
+```scala
+def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
+  xs.foldLeft(p.zero)(p.plus)
+
+def sumList[A: Plusable](xs: List[A]): A = {
+  val p = implicitly[Plusable[A]]
+  xs.foldLeft(p.zero)(p.plus)
+}
+```
+
+```scala
+scala> sumList(List(1,2,3,4))
+res10: Int = 10
+```
+
+---
+class: center, middle
+
+# Uniqueness
+
+---
+# Uniqueness
+
+```scala
+scala> implicitly[Plusable[Int]]
+res11: Plusable[Int] = $anon$1@7343fa54
+```
+
+--
+
+```scala
+implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = (a1 + a2).abs
+  def zero: Int = 0
+}
+```
+
+--
+
+```scala
+scala> implicitly[Plusable[Int]]
+<console>:32: error: ambiguous implicit values:
+ both value plusableInt of type => Plusable[Int]
+ and value plusableInt2 of type => Plusable[Int]
+ match expected type Plusable[Int]
+       implicitly[Plusable[Int]]
+                 ^
+```
+
+--
+
+```scala
+scala> sumList(List(1,2,3,4))
+<console>:32: error: ambiguous implicit values:
+ both value plusableInt of type => Plusable[Int]
+ and value plusableInt2 of type => Plusable[Int]
+ match expected type Plusable[Int]
+       sumList(List(1,2,3,4))
+              ^
+```
+
+---
 # Plusable
 
 ```scala
@@ -97,10 +330,10 @@ def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B =
 
 ```scala
 scala> foldLeft(List(1,2,3), 0)(_ + _)
-res3: Int = 6
+res14: Int = 6
 
 scala> foldLeft(List(1,2,3), 1)(_ * _)
-res4: Int = 6
+res15: Int = 6
 ```
 
 ---
@@ -163,20 +396,20 @@ Plusable := Map(
 
 ```scala
 scala> plus(1, 2)
-res5: Int = 3
+res16: Int = 3
 
 scala> plus(1L, 2L)
-res6: Long = 3
+res17: Long = 3
 
 scala> plus("Hello", "World")
-res7: String = HelloWorld
+res18: String = HelloWorld
 ```
 
 --
 
 ```scala
 scala> plus(true, false)
-<console>:22: error: could not find implicit value for parameter A: Plusable[Boolean]
+<console>:36: error: could not find implicit value for parameter A: Plusable[Boolean]
        plus(true, false)
            ^
 ```
@@ -217,7 +450,7 @@ def sum[A](fa: NonEmptyList[A])(implicit evPlusable: Plusable[A]): A =
 
 ```scala
 scala> sum(NonEmptyList.of(1,3,5,10))
-res9: Int = 19
+res20: Int = 19
 ```
 
 ---
@@ -279,17 +512,17 @@ plus "Hello" "World"
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res10: Plusable[Int] = $anon$1@1e9958d2
+res21: Plusable[Int] = $anon$1@649e6ed1
 ```
 
 --
 
 ```scala
 scala> implicitly[Plusable[Int]].plus(2, 3)
-res11: Int = 5
+res22: Int = 5
 
 scala> implicitly[Plusable[String]].plus("Hello", "World")
-res12: String = HelloWorld
+res23: String = HelloWorld
 ```
 
 ---
@@ -305,10 +538,10 @@ object Plusable {
 
 ```scala
 scala> Plusable[Int].plus(2, 3)
-res13: Int = 5
+res24: Int = 5
 
 scala> Plusable[String].plus("Hello", "World")
-res14: String = HelloWorld
+res25: String = HelloWorld
 ```
 
 ---
@@ -323,10 +556,10 @@ def plus[A: Plusable](a1: A, a2: A): A =
 
 ```scala
 scala> plus(2, 3)
-res15: Int = 5
+res26: Int = 5
 
 scala> plus("Hello", "World")
-res16: String = HelloWorld
+res27: String = HelloWorld
 ```
 
 ---
@@ -342,10 +575,10 @@ implicit class PlusableOps[A](a1: A){
 
 ```scala
 scala> 2.plus(3)
-res17: Int = 5
+res28: Int = 5
 
 scala> "Hello".plus("World")
-res18: String = HelloWorld
+res29: String = HelloWorld
 ```
 
 ---
@@ -367,7 +600,7 @@ implicit val and: Plusable[Boolean] = new Plusable[Boolean]{
 
 ```scala
 scala> implicitly[Plusable[Boolean]]
-<console>:28: error: ambiguous implicit values:
+<console>:42: error: ambiguous implicit values:
  both value or of type => Plusable[Boolean]
  and value and of type => Plusable[Boolean]
  match expected type Plusable[Boolean]
@@ -409,17 +642,17 @@ object Disjunction {
 
 ```scala
 scala> implicitly[Plusable[Disjunction]]
-res20: Plusable[Disjunction] = Disjunction$$anon$1@5cc814f1
+res31: Plusable[Disjunction] = Disjunction$$anon$1@3545a74e
 ```
 
 --
 
 ```scala
 scala> plus(Disjunction(true), Disjunction(false))
-res21: Disjunction = Disjunction(true)
+res32: Disjunction = Disjunction(true)
 
 scala> sum(NonEmptyList.of(Disjunction(false), Disjunction(false), Disjunction(false)))
-res22: Disjunction = Disjunction(false)
+res33: Disjunction = Disjunction(false)
 ```
 
 ---

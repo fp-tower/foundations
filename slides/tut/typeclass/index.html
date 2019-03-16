@@ -64,6 +64,233 @@ plus("Hello", "World")
 ```
 
 ---
+# Abstraction
+
+```tut:silent
+def sumList(xs: List[Int]   ): Int    = xs.foldLeft(0 )(plus)
+def sumList(xs: List[Long]  ): Long   = xs.foldLeft(0L)(plus)
+def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
+```
+
+```tut:invisible
+object PlusableList {
+  def sumList(xs: List[Int]   ): Int    = xs.foldLeft(0 )(plus)
+  def sumList(xs: List[Long]  ): Long   = xs.foldLeft(0L)(plus)
+  def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
+}
+import PlusableList._
+```
+
+```tut
+sumList(List(1,2,3,4))
+sumList(List("Hello", "World"))
+```
+
+---
+# Abstraction
+
+```tut:silent
+def sumListGen[A](xs: List[A])(zero: A, plus: (A, A) => A): A =
+  xs.foldLeft(zero)(plus)
+```
+
+--
+
+```tut:silent
+def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(0 , plus)
+def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(0L, plus)
+def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
+```
+
+```tut:invisible
+object PlusableList {
+  def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(0 , plus)
+  def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(0L, plus)
+  def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
+}
+import PlusableList._
+```
+
+```tut
+sumList(List(1,2,3,4))
+sumList(List("Hello", "World"))
+```
+
+---
+# Plusable
+
+```tut:silent
+trait Plusable[A]{
+  def plus(a1: A, a2: A): A
+  def zero: A
+}
+```
+
+--
+
+```tut:silent
+val plusableInt: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+
+val plusableLong: Plusable[Long] = new Plusable[Long]{
+  def plus(a1: Long, a2: Long): Long = a1 + a2
+  def zero: Long = 0
+}
+
+val plusableString: Plusable[String] = new Plusable[String]{
+  def plus(a1: String, a2: String): String = a1 + a2
+  def zero: String = ""
+}
+```
+
+---
+# Plusable
+
+```tut:silent
+def sumListGen[A](xs: List[A])(p: Plusable[A]): A =
+  xs.foldLeft(p.zero)(p.plus)
+```
+
+--
+
+```tut:silent
+def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(plusableInt)
+def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(plusableLong)
+def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
+```
+
+```tut:invisible
+object PlusableList {
+  def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(plusableInt)
+  def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(plusableLong)
+  def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
+}
+import PlusableList._
+```
+
+```tut
+sumList(List(1,2,3,4))
+sumList(List("Hello", "World"))
+```
+
+---
+class: center, middle
+
+# Plusable is unique for a type
+
+---
+# Plusable is unique for a type
+
+```scala
+object Global {
+  val plusableMapping: Map[x: Type, Plusable[x]] := Map(
+    Int    -> new Plusable[Int]{...},
+    Long   -> new Plusable[Long]{...},
+    String -> new Plusable[String]{...}
+  )
+}
+```
+
+--
+
+```scala
+def sumList[A](xs: List[A]): A =
+  Global.plusableMapping.get(A) match {
+    case None    => sys.error("compile error")
+    case Some(p) => xs.foldLeft(p.zero)(p.plus)
+  }
+```
+
+---
+# Typeclass
+
+## 1. Interface (the typeclass)
+
+```tut:silent
+trait Plusable[A]{
+  def plus(a1: A, a2: A): A
+  def zero: A
+}
+```
+
+--
+
+## 2. Implicit value (instance of a typeclass)
+
+```tut:silent
+implicit val plusableInt: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+```
+
+---
+# SumList using typeclass
+
+```tut:silent
+def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
+  xs.foldLeft(p.zero)(p.plus)
+```
+
+--
+
+```tut
+sumList(List(1,2,3,4))
+```
+
+---
+# SumList using typeclass context bound
+
+```tut:silent
+def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
+  xs.foldLeft(p.zero)(p.plus)
+
+def sumList[A: Plusable](xs: List[A]): A = {
+  val p = implicitly[Plusable[A]]
+  xs.foldLeft(p.zero)(p.plus)
+}
+```
+
+```tut
+sumList(List(1,2,3,4))
+```
+
+---
+class: center, middle
+
+# Uniqueness
+
+---
+# Uniqueness
+
+```tut
+implicitly[Plusable[Int]]
+```
+
+--
+
+```tut:silent
+implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = (a1 + a2).abs
+  def zero: Int = 0
+}
+```
+
+--
+
+```tut:fail
+implicitly[Plusable[Int]]
+```
+
+--
+
+```tut:fail
+sumList(List(1,2,3,4))
+```
+
+---
 # Plusable
 
 ```tut:silent
