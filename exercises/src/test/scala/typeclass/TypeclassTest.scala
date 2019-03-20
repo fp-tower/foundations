@@ -1,8 +1,7 @@
 package typeclass
 
-import org.scalatest.{FreeSpec, FunSuite, Matchers}
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
-import exercises.typeclass.{MyId, Plusable}
+import exercises.typeclass.{LoggedValue, MyId, Plusable}
+import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
 
 class TypeclassTest extends FunSuite with Discipline with Matchers {
@@ -41,6 +40,13 @@ class TypeclassTest extends FunSuite with Discipline with Matchers {
     val p = Plusable[List[Int]]
 
     p.plus(p.plus(List(1,2,3), List(4,5)), p.zero) shouldEqual List(1,2,3,4,5)
+  }
+
+  test("check LoggedValue instance"){
+    import exercises.typeclass.TypeclassExercises._
+    val p = Plusable[LoggedValue[Int]]
+
+    p.plus(p.plus(LoggedValue(1, List("foo")), LoggedValue(5, List("bar"))), p.zero) shouldEqual LoggedValue(6, List("foo", "bar"))
   }
 
   test("check Option instance"){
