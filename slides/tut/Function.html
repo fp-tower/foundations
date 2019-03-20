@@ -30,11 +30,6 @@ Foundation of Functional Programming
 `@JulienTruffaut`
 
 ---
-class: center, middle
-
-# A => B
-
----
 background-image: url(img/function.jpg)
 
 # Function
@@ -152,24 +147,28 @@ def foo[A](a: A): A = a match {
 }
 ```
 
----
-# Reflection
-
-```tut:silent
-def foo[A](a: A): A = {
-  if(a.isInstanceOf[Int]) (a.asInstanceOf[Int] + 1).asInstanceOf[A]
-  else if(a.isInstanceOf[String]) a.asInstanceOf[String].reverse.asInstanceOf[A]
-  else a
-}
-```
-
---
-
 ```tut
 foo(5)
 foo("Hello")
 
 foo(true)
+```
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): Int = a match {
+  case _: List[Int]    => 0
+  case _: List[String] => 1
+  case _               => 2
+}
+```
+
+
+```tut
+foo(List(1,2,3))
+foo(List("abc"))
 ```
 
 ---
@@ -184,6 +183,30 @@ def foo[A](a: A): A = ???
 
 ```tut:silent
 def foo[A](a: A): A = a
+```
+
+---
+# Reflection
+
+```tut:silent
+def bar(a: Any): Any = a match {
+  case x: Int    => x + 1
+  case x: String => x.reverse
+  case _         => a
+}
+```
+
+
+```tut:silent
+trait MyInterface
+case class Impl1(value: Int) extends MyInterface
+case class Impl2(value: String) extends MyInterface
+
+def bar(a: MyInterface): Int = a match {
+  case x: Impl1 => x.value + 1
+  case x: Impl2 => x.value.size
+  case _        => 0
+}
 ```
 
 ---

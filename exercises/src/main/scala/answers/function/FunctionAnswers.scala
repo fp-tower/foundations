@@ -12,6 +12,10 @@ object FunctionAnswers extends FunctionToImpl {
 
   def const[A, B](a: A)(b: B): A = a
 
+  def triple(x: Int): Int = x * 3
+
+  val tripleVal: Int => Int = triple _
+
   def tripleAge(xs: List[Person]): List[Person] =
     updateAge(xs, _ * 3)
 
@@ -49,7 +53,13 @@ object FunctionAnswers extends FunctionToImpl {
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D =
     a => h(f(a), g(a))
 
-  def sumList(xs: List[Int]): Int = {
+  def sumList(xs: List[Int]): Int =
+    xs match {
+      case Nil    => 0
+      case h :: t => h + sumList(t)
+    }
+
+  def sumList2(xs: List[Int]): Int = {
     @tailrec
     def _sumList(ys: List[Int], acc: Int): Int =
       ys match {
@@ -59,6 +69,26 @@ object FunctionAnswers extends FunctionToImpl {
 
     _sumList(xs, 0)
   }
+
+  @tailrec
+  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+    xs match {
+      case Nil    => z
+      case h :: t => foldLeft(t, f(z, h))(f)
+    }
+
+
+  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
+    xs match {
+      case Nil    => z
+      case h :: t => f(h, foldRight(t, z)(f))
+    }
+
+  def find[A](xs: List[A])(p: A => Boolean): Option[A] =
+    foldRight(xs, Option.empty[A]){ case (a, rest) => if(p(a)) Some(a) else rest  }
+
+  def sumList3(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
 
   def memoize[A, B](f: A => B): A => B = {
     val cache = mutable.Map.empty[A, B]

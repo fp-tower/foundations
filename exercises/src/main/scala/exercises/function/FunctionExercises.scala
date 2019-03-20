@@ -97,6 +97,7 @@ object FunctionExercises extends FunctionToImpl {
   // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
 
 
+
   // 3. higher order functions
   case class Person(name: String, age: Int)
 
@@ -161,10 +162,27 @@ object FunctionExercises extends FunctionToImpl {
   val oneToTen = 1.to(10).toList
 
 
-  // 4c. Re-write sumList recursively without the same issue
+  // 4c. implement sumList2 recursively without the same issue
+  def sumList2(xs: List[Int]): Int = ???
 
 
-  // 4d. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
+  // 4d. Implement foldLeft using recursion
+  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B = ???
+
+
+  // 4e. Implement foldRight using recursion
+  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B = ???
+
+
+  // 4f. Implement sumList3 using a fold, which one should you chose?
+  def sumList3(xs: List[Int]): Int = ???
+
+
+  // 4g. Implement find using a fold, which one should you chose?
+  def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
+
+
+  // 4e. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =
     if(x > 0) isOdd(x - 1)
     else if (x < 0) isOdd(x + 1)
@@ -175,7 +193,7 @@ object FunctionExercises extends FunctionToImpl {
     else if (x < 0) isEven(x + 1)
     else false
 
-  // 4e. does the commented function below compile? If yes, what happens when you call it
+  // 4f. does the commented function below compile? If yes, what happens when you call it
   // Search for General recursion
   // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
   //  def foo: Int = foo
@@ -192,5 +210,7 @@ object FunctionExercises extends FunctionToImpl {
 
   // 5b. How would you adapt memoize to work on recursive function e.g. fibonacci
   // can you generalise the pattern?
+  def memoize2 = ???
+
 
 }

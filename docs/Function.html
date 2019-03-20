@@ -30,11 +30,6 @@ Foundation of Functional Programming
 `@JulienTruffaut`
 
 ---
-class: center, middle
-
-# A => B
-
----
 background-image: url(img/function.jpg)
 
 # Function
@@ -75,13 +70,13 @@ import scala.util.Random
 
 ```scala
 scala> Random.nextInt(100)
-res0: Int = 1
+res0: Int = 25
 
 scala> Random.nextInt(100)
-res1: Int = 90
+res1: Int = 18
 
 scala> Random.nextInt(100)
-res2: Int = 66
+res2: Int = 32
 ```
 
 ---
@@ -168,19 +163,6 @@ def foo[A](a: A): A = a match {
 }
 ```
 
----
-# Reflection
-
-```scala
-def foo[A](a: A): A = {
-  if(a.isInstanceOf[Int]) (a.asInstanceOf[Int] + 1).asInstanceOf[A]
-  else if(a.isInstanceOf[String]) a.asInstanceOf[String].reverse.asInstanceOf[A]
-  else a
-}
-```
-
---
-
 ```scala
 scala> foo(5)
 res8: Int = 6
@@ -190,6 +172,26 @@ res9: String = olleH
 
 scala> foo(true)
 res10: Boolean = true
+```
+
+---
+# Reflection
+
+```scala
+def foo[A](a: A): Int = a match {
+  case _: List[Int]    => 0
+  case _: List[String] => 1
+  case _               => 2
+}
+```
+
+
+```scala
+scala> foo(List(1,2,3))
+res11: Int = 0
+
+scala> foo(List("abc"))
+res12: Int = 0
 ```
 
 ---
@@ -204,6 +206,30 @@ def foo[A](a: A): A = ???
 
 ```scala
 def foo[A](a: A): A = a
+```
+
+---
+# Reflection
+
+```scala
+def bar(a: Any): Any = a match {
+  case x: Int    => x + 1
+  case x: String => x.reverse
+  case _         => a
+}
+```
+
+
+```scala
+trait MyInterface
+case class Impl1(value: Int) extends MyInterface
+case class Impl2(value: String) extends MyInterface
+
+def bar(a: MyInterface): Int = a match {
+  case x: Impl1 => x.value + 1
+  case x: Impl2 => x.value.size
+  case _        => 0
+}
 ```
 
 ---
@@ -231,7 +257,7 @@ x: Unit = ()
 
 ```scala
 scala> scala.io.Source.fromURL("http://google.com").take(100).mkString
-res11: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="de-CH"><head><meta cont
+res13: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en-GB"><head><meta cont
 ```
 
 ---
@@ -248,13 +274,13 @@ def count(): Int = {
 
 ```scala
 scala> count()
-res12: Int = 1
+res14: Int = 1
 
 scala> count()
-res13: Int = 2
+res15: Int = 2
 
 scala> count()
-res14: Int = 3
+res16: Int = 3
 ```
 
 ---
@@ -337,7 +363,7 @@ scala> val six  = isEven(6)
 six: Boolean = true
 
 scala> countCall
-res15: Int = 2
+res17: Int = 2
 ```
 
 --
@@ -366,7 +392,7 @@ scala> val six  = !isEven(5) // isEven(6)
 six: Boolean = true
 
 scala> countCall
-res16: Int = 2
+res18: Int = 2
 ```
 
 ```scala
@@ -393,7 +419,7 @@ scala> val six  = !five // isEven(6)
 six: Boolean = true
 
 scala> countCall
-res17: Int = 1
+res19: Int = 1
 ```
 
 ```scala
@@ -503,13 +529,13 @@ def foo(x: Int, b: Boolean): Long = {
 
 ```scala
 scala> foo(5,  true) == 12L
-res20: Boolean = true
+res22: Boolean = true
 
 scala> foo(5, false) == 0L
-res21: Boolean = true
+res23: Boolean = true
 
 scala> foo(5,  true) == 10L
-res22: Boolean = true
+res24: Boolean = true
 ```
 
 ---

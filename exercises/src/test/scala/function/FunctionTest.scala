@@ -7,6 +7,8 @@ import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
 import toimpl.function.FunctionToImpl
 
+import scala.collection.mutable.ListBuffer
+
 class FunctionAnswersTest   extends FunctionToImplTest(FunctionAnswers)
 class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
 
@@ -22,6 +24,11 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     const("foo")(5) shouldEqual "foo"
     const(5)("foo") shouldEqual 5
   }
+
+  "tripleVal" in {
+    tripleVal(5) shouldEqual 15
+  }
+
 
   "tripleAge" in {
     tripleAge(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 69), Person("Alice", 15))
@@ -73,15 +80,30 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
   }
 
-  "sumList small" in {
-    sumList(List(1,2,3,10)) shouldEqual 16
-    sumList(Nil) shouldEqual 0
+  List(sumList _, sumList2 _, sumList3 _).zipWithIndex.foreach{ case (f, i) =>
+    s"sumList $i small" in {
+      f(List(1,2,3,10)) shouldEqual 16
+      f(Nil) shouldEqual 0
+    }
   }
 
-  "sumList large" in {
+  List(sumList2 _, sumList3 _).zipWithIndex.foreach { case (f, i) =>
+    s"sumList $i large" in {
+      val xs = 1.to(1000000).toList
+
+      f(xs) shouldEqual xs.sum
+    }
+  }
+
+  "find" in {
     val xs = 1.to(1000000).toList
 
-    sumList(xs) shouldEqual xs.sum
+    val seen = ListBuffer.empty[Int]
+
+    val res = xs.find{x => seen += x; x > 10}
+
+    res shouldEqual Some(11)
+    seen.size shouldEqual 11
   }
 
   "memoize" in {
