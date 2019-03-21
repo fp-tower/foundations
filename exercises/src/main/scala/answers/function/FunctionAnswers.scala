@@ -79,7 +79,7 @@ object FunctionAnswers extends FunctionToImpl {
     }
 
   def find[A](xs: List[A])(p: A => Boolean): Option[A] =
-    foldRight(xs, Option.empty[A]){ case (a, rest) => if(p(a)) Some(a) else rest  }
+    foldRight(xs, Option.empty[A])((a, rest) => if(p(a)) Some(a) else rest)
 
   def sumList3(xs: List[Int]): Int =
     foldLeft(xs, 0)(_ + _)

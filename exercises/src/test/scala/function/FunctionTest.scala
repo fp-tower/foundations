@@ -3,8 +3,8 @@ package function
 import answers.function.FunctionAnswers
 import exercises.function.FunctionExercises
 import exercises.function.FunctionExercises.Person
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import toimpl.function.FunctionToImpl
 
 import scala.collection.mutable.ListBuffer
@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
 class FunctionAnswersTest   extends FunctionToImplTest(FunctionAnswers)
 class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
 
-class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers with GeneratorDrivenPropertyChecks {
+class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers with ScalaCheckDrivenPropertyChecks {
   import impl._
 
   "identity" in {

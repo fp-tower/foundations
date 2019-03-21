@@ -1,12 +1,13 @@
 package function
 
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FunSuite, Matchers}
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import org.typelevel.discipline.scalatest.Discipline
 
 import scala.util.Random
 
-class PureFunctionExercisesTest extends FunSuite with GeneratorDrivenPropertyChecks with Matchers with Discipline {
+
+class PureFunctionExercisesTest extends FunSuite with ScalaCheckDrivenPropertyChecks with Matchers with Discipline {
 
   def increment(x: Int): Int = x + 1
 
