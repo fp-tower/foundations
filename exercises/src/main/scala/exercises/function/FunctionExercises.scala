@@ -86,7 +86,7 @@ object FunctionExercises extends FunctionToImpl {
   // 2a. Implement identity
   def identity[A](x: A): A = ???
 
-  // 2b. Implement const
+  // 2b. Implement const such as const(5)("foo") == "foo"
   def const[A, B](a: A)(b: B): A = ???
 
   // 2c. Transform triple method (def) into tripleVal function (val)
@@ -115,37 +115,32 @@ object FunctionExercises extends FunctionToImpl {
   // 3c. implement noopAge (do nothing) using updateAge and one polymorphic function we saw before
   def noopAge(xs: List[Person]): List[Person] = ???
 
-  // 3d. implement updateAge2 and setAge2
-  def updateAge2(f: Int => Int): List[Person] => List[Person] = ???
-
-  def setAge2(value: Int): List[Person] => List[Person] = ???
-
-  // 3e. Implement apply
+  // 3d. Implement apply
   def apply[A, B](f: A => B, value: A): B = ???
 
-  // 3f. Implement andThen and compose
+  // 3e. Implement andThen and compose
   def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 3g. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 3f. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc   : Int => Int = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = identity // ???
 
 
-  // 3h. Same for f(x) = 2 * (x + 1)
+  // 3g. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
 
 
-  // 3i. Implement curry and uncurry
+  // 3h. Implement curry and uncurry
   def curry[A, B, C](f: (A, B) => C): A => B => C = ???
 
   def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
 
-  // 3j. Implement join
+  // 3i. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
 
@@ -182,7 +177,7 @@ object FunctionExercises extends FunctionToImpl {
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
 
-  // 4e. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
+  // 4h. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =
     if(x > 0) isOdd(x - 1)
     else if (x < 0) isOdd(x + 1)
@@ -193,7 +188,7 @@ object FunctionExercises extends FunctionToImpl {
     else if (x < 0) isEven(x + 1)
     else false
 
-  // 4f. does the commented function below compile? If yes, what happens when you call it
+  // 4i. does the commented function below compile? If yes, what happens when you call it
   // Search for General recursion
   // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
   //  def foo: Int = foo

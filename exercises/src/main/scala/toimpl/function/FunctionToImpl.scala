@@ -16,10 +16,6 @@ trait FunctionToImpl {
 
   def noopAge(xs: List[Person]): List[Person]
 
-  def updateAge2(f: Int => Int): List[Person] => List[Person]
-
-  def setAge2(value: Int): List[Person] => List[Person]
-
   def apply[A, B](f: A => B, value: A): B
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C

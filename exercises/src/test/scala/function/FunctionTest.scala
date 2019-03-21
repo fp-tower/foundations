@@ -43,10 +43,6 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     noopAge(xs) shouldEqual xs
   }
 
-  "setAge2" in {
-    setAge2(10)(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 10), Person("Alice", 10))
-  }
-
   "apply" in {
     apply((_: Int) + 1, 10) shouldEqual 11
   }
@@ -100,7 +96,7 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
     val seen = ListBuffer.empty[Int]
 
-    val res = xs.find{x => seen += x; x > 10}
+    val res = find(xs){ x => seen += x; x > 10}
 
     res shouldEqual Some(11)
     seen.size shouldEqual 11

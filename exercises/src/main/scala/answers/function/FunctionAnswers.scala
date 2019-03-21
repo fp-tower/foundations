@@ -25,12 +25,6 @@ object FunctionAnswers extends FunctionToImpl {
   def noopAge(xs: List[Person]): List[Person] =
     updateAge(xs, identity)
 
-  def updateAge2(f: Int => Int): List[Person] => List[Person] =
-    xs => updateAge(xs, f)
-
-  def setAge2(value: Int): List[Person] => List[Person] =
-    updateAge2(const(value))
-
   def apply[A, B](f: A => B, value: A): B =
     f(value)
 
