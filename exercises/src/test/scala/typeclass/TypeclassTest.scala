@@ -1,6 +1,6 @@
 package typeclass
 
-import exercises.typeclass.{LoggedValue, MyId, Plusable}
+import exercises.typeclass.{MyId, Plusable}
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
 
@@ -13,26 +13,12 @@ class TypeclassTest extends FunSuite with Discipline with Matchers {
     p.plus(p.plus(2.0, 3.5), p.zero) shouldEqual 3.5
   }
 
-  test("check Float instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Plusable[Float]
-
-    p.plus(p.plus(2.0f, 3.5f), p.zero) shouldEqual 3.5f
-  }
-
 
   test("check MyId instance"){
     import exercises.typeclass.TypeclassExercises._
     val p = Plusable[MyId]
 
     p.plus(p.plus(MyId("foo"), MyId("bar")), p.zero) shouldEqual MyId("foobar")
-  }
-
-  test("check (Int, String) instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Plusable[(Int, String)]
-
-    p.plus(p.plus((3, "Hello"), (5, "World")), p.zero) shouldEqual ((8, "HelloWorld"))
   }
 
   test("check List instance"){
@@ -42,11 +28,18 @@ class TypeclassTest extends FunSuite with Discipline with Matchers {
     p.plus(p.plus(List(1,2,3), List(4,5)), p.zero) shouldEqual List(1,2,3,4,5)
   }
 
-  test("check LoggedValue instance"){
+  test("check (Int, String) instance"){
     import exercises.typeclass.TypeclassExercises._
-    val p = Plusable[LoggedValue[Int]]
+    val p = Plusable[(Int, String)]
 
-    p.plus(p.plus(LoggedValue(1, List("foo")), LoggedValue(5, List("bar"))), p.zero) shouldEqual LoggedValue(6, List("foo", "bar"))
+    p.plus(p.plus((3, "Hello"), (5, "World")), p.zero) shouldEqual ((8, "HelloWorld"))
+  }
+
+  test("check (Int, String) instance"){
+    import exercises.typeclass.TypeclassExercises._
+    val p = Plusable[(Int, Int)]
+
+    p.plus(p.plus((3, 5), (5, 1)), p.zero) shouldEqual ((8, 6))
   }
 
   test("check Option instance"){

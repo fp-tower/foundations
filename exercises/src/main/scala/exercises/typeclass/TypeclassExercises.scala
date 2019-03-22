@@ -19,16 +19,16 @@ object TypeclassExercises {
     def zero: Double = ???
   }
 
-  // 1b. Implement an instance of Plusable for Float
-  implicit val floatPlusable: Plusable[Float] = new Plusable[Float] {
-    def plus(a1: Float, a2: Float): Float = ???
-    def zero: Float = ???
-  }
-
-  // 1c. Implement an instance of Plusable for MyId
+  // 1b. Implement an instance of Plusable for MyId
   implicit val myIdPlusable: Plusable[MyId] = new Plusable[MyId] {
     def plus(a1: MyId, a2: MyId): MyId = ???
     def zero: MyId = ???
+  }
+
+  // 1c. Implement an instance of Plusable for  List
+  implicit def listPlusable[A]: Plusable[List[A]] = new Plusable[List[A]] {
+    def plus(a1: List[A], a2: List[A]): List[A] = ???
+    def zero: List[A] = ???
   }
 
   // 1d. Implement an instance of Plusable for (Int, String)
@@ -37,22 +37,16 @@ object TypeclassExercises {
     def zero: (Int, String) = ???
   }
 
-  // 1e. Implement an instance of Plusable for Either[Int, String]
+  // 1e. Implement an instance of Plusable for (A, B)
+  implicit def tuple2Plusable[A, B]: Plusable[(A, B)] = new Plusable[(A, B)] {
+    def plus(a1: (A, B), a2: (A, B)): (A, B) = ???
+    def zero: (A, B) = ???
+  }
+
+  // 1f. Implement an instance of Plusable for Either[Int, String]
   implicit val intOrStringPlusable: Plusable[Either[Int, String]] = new Plusable[Either[Int, String]] {
     def plus(a1: Either[Int, String], a2: Either[Int, String]): Either[Int, String] = ???
     def zero: Either[Int, String] = ???
-  }
-
-  // 1f. Implement an instance of Plusable for  List
-  implicit def listPlusable[A]: Plusable[List[A]] = new Plusable[List[A]] {
-    def plus(a1: List[A], a2: List[A]): List[A] = ???
-    def zero: List[A] = ???
-  }
-
-  // 1g. Implement an instance of Plusable for LoggedValue
-  implicit def loggedValuePlusable[A]: Plusable[LoggedValue[A]] = new Plusable[LoggedValue[A]] {
-    def plus(a1: LoggedValue[A], a2: LoggedValue[A]): LoggedValue[A] = ???
-    def zero: LoggedValue[A] = ???
   }
 
 
@@ -65,28 +59,39 @@ object TypeclassExercises {
   val words = List("Plusable", "are", "awesome", "!")
   val upTo10 = 0.to(10).toList
 
-  // 2b. Use fold to sum up the even number from 0 and 10
-  def evenFrom0To10: Int = ???
+  // 2b. Use fold to sum up
+  def sum(xs: List[Int]): Int = ???
+
+  // 2c. Use fold with tuple2 to calculate the aver
+  def averageWordLength(xs: List[String]): Double = ???
 
 
-  // 2c. Implement intercalate
+  // 2d. Implement intercalate
   def intercalate[A](xs: List[A], before: A, between: A, after: A)(implicit ev: Plusable[A]): A = ???
 
 
   def intercalate[A](xs: List[A], between: A)(implicit ev: Plusable[A]): A = ???
 
 
-  // 2d. Use intercalate on words to produce "(Plusable_Are_Awesome_!)"
-  def awesomeString: String = ???
+  // 2e. Implement csvFormat using intercalate such as
+  // scsvFormat(List("foo", "bar", "buzz")) == "foo;bar;buzz"
+  def scsvFormat(xs: List[String]): String = ???
 
-  // 2e. Implement folddMap
+  // 2f. Implement tupleFormat using intercalate such as
+  // tupleFormat(List("foo", "bar")) == "(foo,bar)"
+  def tupleFormat(xs: List[String]): String = ???
+
+  // 2g. Implement folddMap
   def foldMap[A, B](xs: List[A])(f: A => B)(implicit ev: Plusable[B]): B = ???
 
 
-  // 2f. Re-implement fold in terms of foldMap
+  // 2h. Implement charSequence such as
+  // charSequence(List("foo", "bar")) == List('f','o','o','b','a','r')
+  def charSequence(xs: List[String]): List[Char] = ???
 
 
-  // 2g. Use foldMap to calculate the average words length in words
+  // 2i. Re-implement fold in terms of foldMap
+  def fold2[A](xs: List[A])(implicit ev: Plusable[A]): A = ???
 
 
   // 3. Typeclass hierarchy
@@ -97,7 +102,9 @@ object TypeclassExercises {
     def zero: NonEmptyList[A] = ???
   }
 
-  // 3b. Create a weaker typeclass such as it is possible to "plus" NonEmptyList
+
+  // 3b. A NonEmptyList can be concat yet we cannot implement a Plusable instance
+  // What can we do to make NonEmptyList fit in?
 
 
   // 4. Advanced instances
@@ -120,11 +127,12 @@ object TypeclassExercises {
     def zero: Map[K, A] = ???
   }
 
-  // 4d. Refactor String instance of Plusable such as plus add a single space in between
-
-
-  // 4e. What properties Plusable have? What can you say about plus and empty for all A?
+  // 4d. What properties Plusable should have? What can you say about plus and empty for all A?
   // Implement these properties to PlusableLaws and check your instances pass those laws
+
+
+  // 4e. Refactor String instance of Plusable such as plus add a single space in between
+  // e.g. plus("foo", "bar") == plus("foo bar")
 
 
   // 4f. What property Plusable[Int] or Plusable[Boolean] have but say Plusable[String] doesn't
