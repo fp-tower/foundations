@@ -7,6 +7,7 @@
 
 ## Chapter 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
 
+## Chapter 3: Typeclasses (WIP)
 
 ## Run tests for one chapter
 
