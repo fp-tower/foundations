@@ -21,6 +21,8 @@ width: 47%;
 float: right;
 width: 47%;
 }
+.medium { font-size: 28px; }
+.large { font-size: 36px; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 </style>
 </head>
@@ -31,6 +33,34 @@ class: center, middle
 
 # Typeclass
 `@JulienTruffaut`
+
+---
+background-image: url(img/typeclass-hierarchy.svg)
+
+???
+Source available at github.com/tpolecat/cats-infographic • Shareable under CC-BY-SA 4.0
+
+---
+# What does it give us?
+
+.large[
+* `map`,  `flatMap`, `flatten`, `sequence`, `traverse`
+]
+
+--
+.large[
+*  `contramap`, `mapN`, `pure`, `void`, `flatTap`, `foldMap`
+]
+
+--
+.large[
+* `|+|`, `*>`, `*<`, `>>`
+]
+
+---
+# Examples
+
+TODO
 
 ---
 # Overloading
@@ -259,7 +289,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res11: Plusable[Int] = $anon$1@2784f94
+res11: Plusable[Int] = $anon$1@f701a7f
 ```
 
 --
@@ -512,7 +542,7 @@ plus "Hello" "World"
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res21: Plusable[Int] = $anon$1@5cec5f52
+res21: Plusable[Int] = $anon$1@63c4710d
 ```
 
 --
@@ -642,7 +672,7 @@ object Disjunction {
 
 ```scala
 scala> implicitly[Plusable[Disjunction]]
-res31: Plusable[Disjunction] = Disjunction$$anon$1@4359dc2b
+res31: Plusable[Disjunction] = Disjunction$$anon$1@63b00a9a
 ```
 
 --
