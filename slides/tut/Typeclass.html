@@ -55,6 +55,8 @@ Source available at github.com/tpolecat/cats-infographic • Shareable under CC-
 --
 .large[
 * `|+|`, `*>`, `*<`, `>>`
+
+* and much more!
 ]
 
 ---
@@ -266,8 +268,30 @@ def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
 
 --
 
+```tut:invisible
+implicit val plusableDouble: Plusable[Double] = new Plusable[Double]{
+  def plus(a1: Double, a2: Double): Double = a1 + a2
+  def zero: Double = 0
+}
+
+implicit val plusableString: Plusable[String] = new Plusable[String]{
+  def plus(a1: String, a2: String): String = a1 + a2
+  def zero: String = ""
+}
+```
+
 ```tut
 sumList(List(1,2,3,4))
+
+sumList(List(1.5, 4.3, 9.0))
+
+sumList(List("Hello", "World"))
+```
+
+--
+
+```tut:fail
+sumList(List(true, true, false))
 ```
 
 ---
@@ -319,6 +343,234 @@ implicitly[Plusable[Int]]
 ```tut:fail
 sumList(List(1,2,3,4))
 ```
+
+---
+class: center, middle
+
+# Non unique instance
+
+---
+# Non unique instance
+
+```tut:silent
+val sumPlusable: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+
+val productPlusable: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 * a2
+  def zero: Int = 1
+}
+```
+
+---
+# Non unique instance: The haskell way (newtype)
+
+```scala
+case class Sum(getSum: Int)
+object Sum {
+  implicit val plusable: Plusable[Sum] = new Plusable[Sum]{
+    def plus(a1: Sum, a2: Sum): Sum = Sum(a1.getSum + a2.getSum)
+    def zero: Sum = Sum(0)
+  }
+}
+
+case class Product(getProduct: Int)
+object Product {
+  implicit val plusable: Plusable[Product] = new Plusable[Product]{
+    def plus(a1: Product, a2: Product): Product = Product(a1.getProduct * a2.getProduct)
+    def zero: Product = Product(1)
+  }
+}
+```
+
+```tut:invisible
+case class Sum(getSum: Int); object Sum {
+  implicit val plusable: Plusable[Sum] = new Plusable[Sum]{
+    def plus(a1: Sum, a2: Sum): Sum = Sum(a1.getSum + a2.getSum)
+    def zero: Sum = Sum(0)
+  }
+}
+
+case class Product(getProduct: Int); object Product {
+  implicit val plusable: Plusable[Product] = new Plusable[Product]{
+    def plus(a1: Product, a2: Product): Product = Product(a1.getProduct * a2.getProduct)
+    def zero: Product = Product(1)
+  }
+}
+```
+
+--
+
+
+```tut:silent
+val xs = List(2, 5, 0)
+```
+
+```tut
+sumList(xs.map(Sum(_))).getSum
+sumList(xs.map(Product(_))).getProduct
+```
+
+---
+# Non unique instance: The scala way (so far)
+
+* Define an instance for the most common case (very dodgy)
+
+```tut:silent
+implicit val intPlusable: Plusable[Int] = new Plusable[Int]{
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+```
+
+---
+class: center, middle
+
+# Where to define instances?
+
+---
+# Where to define instances?
+
+## 1. Companion object of the target type
+
+```scala
+case class Metrics(ordersCreated: Long, ordersDeleted: Long)
+
+object Metrics {
+  implicit val plusable: Plusable[Metrics] = new Plusable[Metrics]{
+    def plus(a1: Metrics, a2: Metrics): Metrics =
+      Metrics(
+        ordersCreated = a1.ordersCreated + a2.ordersCreated,
+        ordersDeleted = a2.ordersDeleted + a2.ordersDeleted
+      )
+
+    def zero: Metrics =
+      Metrics(0, 0)
+  }
+}
+```
+
+---
+# Where to define instances?
+
+## 2. Companion object of typeclass
+
+```tut:silent
+trait Order[A]{
+  def compare(a1: A, a2: A): Int
+}
+
+object Order {
+  implicit val intOrder: Order[Int] = new Order[Int]{
+    def compare(a1: Int, a2: Int): Int =
+      a1.compare(a2) // from std scala
+  }
+
+  import java.time.Instant
+
+  implicit val instantOrder: Ordering[Instant] = new Ordering[Instant]{
+    def compare(x: Instant, y: Instant): Int = x.compareTo(y) // from java.time
+  }
+}
+```
+
+---
+# Where to define instances?
+
+## 3. Ad-hoc object (to avoid as much as possible!)
+
+```tut:silent
+object PlusableInstance {
+  implicit val booleanPlusable: Plusable[Boolean] = new Plusable[Boolean]{
+    def plus(a1: Boolean, a2: Boolean): Boolean = a1 && a2
+    def zero: Boolean = true
+  }
+}
+```
+
+--
+
+```tut:fail
+sumList(List(true, false, false))
+```
+
+--
+
+```tut:silent
+import PlusableInstance._
+```
+
+```tut
+sumList(List(true, false, false))
+```
+
+---
+# Where to define instances?
+
+## 3. Ad-hoc object (to avoid as much as possible!)
+
+```tut:silent
+object OtherPlusableInstance {
+  implicit val booleanPlusable: Plusable[Boolean] = new Plusable[Boolean]{
+    def plus(a1: Boolean, a2: Boolean): Boolean = a1 || a2
+    def zero: Boolean = false
+  }
+}
+```
+
+--
+
+
+```tut:silent
+import PlusableInstance._
+```
+
+```tut
+sumList(List(true, false, false))
+```
+
+--
+
+```tut:silent
+import OtherPlusableInstance._
+```
+
+```tut
+sumList(List(true, false, false))
+```
+
+---
+# When should I use ad-hoc object for typeclass instances
+
+* In libraries when you have a typeclass hierarchy
+
+```scala
+trait Semigroup[A]
+
+object Semigroup {
+  implicit val int: Semigroup[Int] = ...
+}
+
+trait Monoid[A] extends Monoid[A]
+
+object Bar {
+  implicit val int: Monoid[Int] = ...
+}
+
+trait CommutativeMonoid[A] extends Monoid[A]
+
+object CommutativeMonoid {
+  implicit val int: CommutativeMonoid[Int] = ...
+}
+```
+
+* If you control neither the typeclass or the type (Please do PR!)
+
+
+---
+# Clean-up after
 
 ---
 # Plusable

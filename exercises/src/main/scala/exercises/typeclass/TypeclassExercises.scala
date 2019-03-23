@@ -103,7 +103,7 @@ object TypeclassExercises {
   }
 
 
-  // 3b. A NonEmptyList can be concat yet we cannot implement a Plusable instance
+  // 3b. A NonEmptyList can be concatenated yet we cannot implement a Plusable instance
   // What can we do to make NonEmptyList fit in?
 
 
@@ -133,6 +133,7 @@ object TypeclassExercises {
 
   // 4e. Refactor String instance of Plusable such as plus add a single space in between
   // e.g. plus("foo", "bar") == plus("foo bar")
+  // does it respect the PlusableLaws?
 
 
   // 4f. What property Plusable[Int] or Plusable[Boolean] have but say Plusable[String] doesn't
