@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Function Summary</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.pull-left {
+float: left;
+width: 47%;
+}
+.pull-right {
+float: right;
+width: 47%;
+}
+table {
+  border-collapse: collapse;
+  display: inline-block;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid black;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+.large { font-size: 36px; }
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Function Summary
+Foundation of Functional Programming
+<br>
+<br>
+`@JulienTruffaut`
+
+---
+# Pure Function
+
+.large[
+* deterministic (not nondeterministic)
+* total (not partial)
+* no mutation
+* no exception
+* no null
+* no reflection
+* no side effect
+]
+
+---
+# Pros
+
+.large[
+* Easier refactoring
+* Easier to test
+* Easier on-boarding of developers (local reasoning)
+* Can be cached (memoized)
+* No magic
+]
+
+---
+# Cons
+
+.large[
+* Cannot perform any action on external world
+* Need to learn the FP way
+* Some things are more cumbersome but more honest, e.g. logging, mutation
+]
+
+---
+class: center, middle
+
+# [Chapter 2: Type](Type.html)
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '%current%'
+    });
+</script>
+</body>
+</html>
