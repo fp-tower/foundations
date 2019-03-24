@@ -73,6 +73,201 @@ Source available at github.com/tpolecat/cats-infographic • Shareable under CC-
 TODO
 
 ---
+class: center, middle
+
+# Equality
+
+---
+# Equality: Top Level
+
+```tut:silent
+class Object {
+  def equals(other: Object): Boolean = ???
+}
+```
+
+--
+
+```tut:silent
+case class Foo(i: Int, s: String) extends Object {
+  override def equals(obj: Any): Boolean =
+    obj match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
+
+--
+
+```tut
+Foo(5, "Hello") == 7
+```
+
+--
+
+```tut:silent
+val inc1: Int => Int = _ + 1
+val inc2: Int => Int = _ + 1
+```
+
+```tut
+inc1 == inc2
+```
+
+---
+# Equality: Trait
+
+```tut:silent
+trait Eq {
+  def eqv(other: Any): Boolean = ???
+}
+```
+
+--
+
+```tut:silent
+case class Foo(i: Int, s: String) extends Eq {
+  override def eqv(other: Any): Boolean =
+    other match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
+
+---
+# Equality: F-Bounded Trait
+
+
+```tut:silent
+trait Eq[A <: Eq[A]]{
+  def eqv(other: A): Boolean = ???
+  }
+```
+
+--
+
+```tut:silent
+case class Foo(i: Int, s: String) extends Eq[Foo] {
+  override def eqv(other: Foo): Boolean =
+    i == other.i && s == other.s
+}
+```
+
+--
+
+```tut:silent
+def contains[A <: Eq[A]](xs: List[A], value: A): Boolean =
+  xs.foldRight(false)((x, acc) => x.eqv(value) || acc)
+```
+
+```tut
+contains(List(Foo(4, "Hello"), Foo(-1, "")), Foo(-1, ""))
+```
+
+--
+
+```tut:fail
+contains(List(1,2,3,4), 3)
+```
+
+---
+# Equality: Overloading
+
+```scala
+def eqv(x: Int   , y: Int   ): Boolean = x == y
+def eqv(x: String, y: String): Boolean = x == y
+def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
+```
+
+--
+
+```tut:silent
+def contains[A](xs: List[A], value: A): Boolean = ???
+```
+
+---
+# Equality: Overloading
+
+```scala
+def eqv(x: Int   , y: Int   ): Boolean = x == y
+def eqv(x: String, y: String): Boolean = x == y
+def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
+```
+
+```tut:invisible
+object Eqv {
+  def eqv(x: Int   , y: Int   ): Boolean = x == y
+  def eqv(x: String, y: String): Boolean = x == y
+  def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
+}
+
+import Eqv._
+```
+
+```tut:silent
+def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
+  xs.foldRight(false)((x, acc) =>
+    compare(x, value) || acc
+  )
+```
+
+--
+
+```tut
+contains(List(1,2,3,4,5), 4)(eqv)
+
+contains(List("hello","world"), "hi")(eqv)
+```
+
+--
+
+```tut:fail
+contains(List(1,2,3,4,5), "hi")(eqv)
+```
+
+---
+# Equality: Overloading
+
+```tut:silent
+def eqv(x: Double, y: Double): Boolean =
+  x == y
+
+def approx(error: Double)(x: Double, y: Double): Boolean =
+  (x - y).abs < error
+```
+
+--
+
+```tut
+val xs = List(1.0, 2.5, 3.3)
+```
+
+```tut
+contains(xs, 3.2)(eqv)
+contains(xs, 3.2)(approx(0.2))
+contains(xs, 3.2)(approx(0.001))
+```
+
+---
+# Equality: Typeclass
+
+```tut:silent
+trait Eq[A]{
+  def eqv(a1: A, a2: A): Boolean
+}
+```
+
+--
+
+```tut:silent
+implicit val intEq: Eq[Int] = new Eq[Int]{
+  def eqv(a1: Int, a2: Int): Boolean = a1 == a2
+}
+```
+
+---
 # Overloading
 
 ```tut:silent
