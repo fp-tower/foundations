@@ -1,4 +1,4 @@
-package exercises.ch3
+package exercises.errorhandling
 
 import eu.timepit.refined._
 import eu.timepit.refined.api.Refined

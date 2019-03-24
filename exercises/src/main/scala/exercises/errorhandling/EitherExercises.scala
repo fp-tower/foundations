@@ -1,7 +1,7 @@
-package exercises.ch3
+package exercises.errorhandling
 
 import cats.data.NonEmptyList
-import exercises.ch3.OptionExercises.User
+import exercises.errorhandling.OptionExercises.User
 
 import scala.io.Source
 
