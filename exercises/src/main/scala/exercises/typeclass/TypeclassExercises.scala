@@ -1,6 +1,7 @@
 package exercises.typeclass
 
 import cats.data.NonEmptyList
+import cats.kernel.{Monoid, Order}
 
 object TypeclassApp extends App {
   import TypeclassExercises._
@@ -141,7 +142,76 @@ object TypeclassExercises {
 
 
 
-  // 5. move above typeclass instance such as you don't need to import TypeclassExercises._ to access them
+  // 5. higher kinded typeclass
+
+  // 5a. Implement foldMap for Vector
+  def foldMap[A, B](xs: Vector[A])(f: A => B)(implicit ev: Monoid[B]): B = ???
+
+  // 5b. Implement foldMap for Option
+  def foldMap[A, B](xs: Option[A])(f: A => B)(implicit ev: Monoid[B]): B = ???
+
+  // 5c. Implement foldMap for Either
+  def foldMap[E, A, B](xs: Either[E, A])(f: A => B)(implicit ev: Monoid[B]): B = ???
+
+  // 5d. Implement foldMap for Map (keys are not used)
+  def foldMap[K, A, B](xs: Map[K, A])(f: A => B)(implicit ev: Monoid[B]): B = ???
+
+  // 5e. Implement Foldable instance for List
+  implicit val listFoldable: Foldable[List] = new Foldable[List] {
+    def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B = ???
+    def foldRight[A, B](fa: List[A], z: B)(f: (A, => B) => B): B = ???
+  }
+
+  // 5f. Implement Foldable instance for Option
+  implicit val optionFoldable: Foldable[Option] = new Foldable[Option] {
+    def foldLeft[A, B](fa: Option[A], z: B)(f: (B, A) => B): B = ???
+    def foldRight[A, B](fa: Option[A], z: B)(f: (A, => B) => B): B = ???
+  }
+
+  // 5g. Implement Foldable instance for Option
+  implicit def eitherFoldable[E]: Foldable[Either[E, ?]] = new Foldable[Either[E, ?]] {
+    def foldLeft[A, B](fa: Either[E, A], z: B)(f: (B, A) => B): B = ???
+    def foldRight[A, B](fa: Either[E, A], z: B)(f: (A, => B) => B): B = ???
+  }
+
+  // 5h. Implement Foldable instance for Map
+  implicit def mapFoldable[K]: Foldable[Map[K, ?]] = new Foldable[Map[K, ?]] {
+    def foldLeft[A, B](fa: Map[K, A], z: B)(f: (B, A) => B): B = ???
+    def foldRight[A, B](fa: Map[K, A], z: B)(f: (A, => B) => B): B = ???
+  }
+
+  // 5i. Implement isEmpty
+  def isEmpty[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Boolean = ???
+
+  // 5j. Implement size
+  def size[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Int = ???
+
+  // 5k. Implement headOption
+  // try to implement it using foldMap with a newtype
+  def headOption[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Option[A] = ???
+
+  // 5l. Implement find
+  def find[F[_], A](fa: F[A])(implicit foldable: Foldable[F]): Option[A] = ???
+
+  // 5m. Implement minimumOption
+  def minimumOption[F[_], A](fa: F[A])(implicit foldable: Foldable[F], ev: Order[A]): Option[A] = ???
+
+  // 5n. Implement lookup
+  def lookup[F[_], A](fa: F[A], index: Int)(implicit ev: Foldable[F]): Option[A] = ???
+
+
+  // 5o. What is the difference between implementing a function here or inside Foldable trait?
+  // When will it be preferable to do one or the other?
+
+
+  // 5p. Implement splitReduce which:
+  // - split F[A] into several sub-sections then
+  // - reduce each sub-section to single "total" value using A using f then
+  // - reduce each sub-section "total" value using f
+  //
+  // What properties do you from F and A? update the signature if required
+  def splitReduce[F[_], A](fa: F[A])(split: F[A] => List[F[A]])(f: (A, A) => A): A = ???
+
 
 
 }
