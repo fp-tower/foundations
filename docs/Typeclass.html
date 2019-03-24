@@ -309,7 +309,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res14: Plusable[Int] = $anon$1@59c77eb9
+res14: Plusable[Int] = $anon$1@178ebac4
 ```
 
 --
@@ -564,6 +564,115 @@ object CommutativeMonoid {
 ```
 
 * If you control neither the typeclass or the type (Please do PR!)
+
+---
+class: center, middle
+
+# Kinds
+
+---
+# Kinds
+
+```scala
+:k Int
+Int :: Type
+```
+
+--
+
+```scala
+:k String
+String :: Type
+```
+
+--
+
+```scala
+:k List
+List :: Type -> Type
+```
+
+--
+
+```scala
+:k List[Int]
+List[Int] :: Type
+```
+
+--
+
+```scala
+:k Either
+Either :: Type -> Type -> Type
+```
+
+--
+
+```scala
+:k Either[String, ?]
+Either[String, ?] :: Type -> Type
+```
+
+---
+# Kinds
+
+```scala
+trait Semigroup[A]{
+  def combine(a1: A, a2: A): A
+}
+
+implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
+  def combine(a1: Int, a2: Int): Int = ???
+}
+```
+
+--
+
+```scala
+scala> implicit val listSemigroup: Semigroup[List] = ???
+<console>:46: error: type List takes type parameters
+       implicit val listSemigroup: Semigroup[List] = ???
+                                             ^
+```
+
+```scala
+implicit def listSemigroup[A]: Semigroup[List[A]] = new Semigroup[List[A]]{
+  def combine(a1: List[A], a2: List[A]): List[A] = ???
+}
+```
+
+---
+# Foldable
+
+```scala
+trait Foldable[F[_]] {
+
+  def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B
+
+  def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B
+
+}
+```
+
+--
+
+```scala
+implicit val listFoldable: Foldable[List] = new Foldable[List] {
+  def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldRight[A, B](fa: List[A], z: B)(f: (A, => B) => B): B = ???
+}
+```
+
+--
+
+
+```scala
+scala> implicit val intFoldable: Foldable[Int] = ???
+<console>:48: error: Int takes no type parameters, expected: one
+       implicit val intFoldable: Foldable[Int] = ???
+                                          ^
+```
+
 
 
 ---

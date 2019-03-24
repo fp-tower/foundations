@@ -568,6 +568,109 @@ object CommutativeMonoid {
 
 * If you control neither the typeclass or the type (Please do PR!)
 
+---
+class: center, middle
+
+# Kinds
+
+---
+# Kinds
+
+```scala
+:k Int
+Int :: Type
+```
+
+--
+
+```scala
+:k String
+String :: Type
+```
+
+--
+
+```scala
+:k List
+List :: Type -> Type
+```
+
+--
+
+```scala
+:k List[Int]
+List[Int] :: Type
+```
+
+--
+
+```scala
+:k Either
+Either :: Type -> Type -> Type
+```
+
+--
+
+```scala
+:k Either[String, ?]
+Either[String, ?] :: Type -> Type
+```
+
+---
+# Kinds
+
+```tut:silent
+trait Semigroup[A]{
+  def combine(a1: A, a2: A): A
+}
+
+implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
+  def combine(a1: Int, a2: Int): Int = ???
+}
+```
+
+--
+
+```tut:fail
+implicit val listSemigroup: Semigroup[List] = ???
+```
+
+```tut:silent
+implicit def listSemigroup[A]: Semigroup[List[A]] = new Semigroup[List[A]]{
+  def combine(a1: List[A], a2: List[A]): List[A] = ???
+}
+```
+
+---
+# Foldable
+
+```tut:silent
+trait Foldable[F[_]] {
+
+  def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B
+
+  def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B
+
+}
+```
+
+--
+
+```tut:silent
+implicit val listFoldable: Foldable[List] = new Foldable[List] {
+  def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldRight[A, B](fa: List[A], z: B)(f: (A, => B) => B): B = ???
+}
+```
+
+--
+
+
+```tut:fail
+implicit val intFoldable: Foldable[Int] = ???
+```
+
+
 
 ---
 class: center, middle
