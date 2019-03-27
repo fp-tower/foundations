@@ -1,9 +1,10 @@
 package exercises.types
 
 import ACardinality.Finite
+import eu.timepit.refined.types.numeric.PosInt
 import toimpl.types.TypeToImpl
 
-// you can run and print things here
+// You can run and print things here
 object TypeApp extends App {
   import TypeExercises._
 
@@ -19,6 +20,8 @@ object TypeExercises extends TypeToImpl {
   val int: Cardinality[Int] = new Cardinality[Int] {
     def cardinality: ACardinality = Finite(BigInt(2).pow(32))
   }
+
+  // 1. Cardinality
 
   // 1a. How many possible values are of type Unit?
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
@@ -85,6 +88,7 @@ object TypeExercises extends TypeToImpl {
   }
 
 
+  // 1. Advanced Cardinality
 
   // 2a. Implement option that derives the cardinality of Option[A] from A
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
@@ -120,23 +124,51 @@ object TypeExercises extends TypeToImpl {
       def cardinality: ACardinality = ???
     }
 
-  // 2f. Can you provide two examples of function signature with only one implementation (without type parameter)
+  // 2f. Implement isAdult1 and isAdult2, which one is better?
+  def isAdult1: Cardinality[Int => Boolean] = new Cardinality[Int => Boolean] {
+    def cardinality: ACardinality = ???
+  }
+  def isAdult2: Cardinality[PosInt => Boolean] = new Cardinality[PosInt => Boolean] {
+    def cardinality: ACardinality = ???
+  }
+
+  // 2g. Implement getCurrency1 and getCurrency2, which one is better?
+  def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
+    def cardinality: ACardinality = ???
+  }
+
+  def getCurrency2: Cardinality[Country => Currency] = new Cardinality[Country => Currency] {
+    def cardinality: ACardinality = ???
+  }
+
+
+  // 2h How can we make compareInt more precise? Update the signature of compareInt2
+  /** see [[Integer.compare]] */
+  def compareInt1(x: Int, y: Int): Int = x - y
+
+  def compareInt2 = ???
+
+
+
+  // 2i. Can you provide two examples of function signature with only one implementation
   // i.e. find A1, A2 such as |A1 => A2| = 1
 
 
 
-  // 2g. Can you provide an example of a function signature with no implementation (without type parameter)
+  // 2j. Can you provide an example of a function signature with no implementation
   // i.e. find A1, A2 such as |A1 => A2| = 0
 
 
 
-  // 2h. Given sign type signature and one unit test:
+  // 3. Tests
+
+  // 3a. Given sign type signature and one unit test:
   // assert(sign(5) = true)
   // how many valid implementations exist for sign, i.e. how many pass type checker and tests
   def sign(x: Int): Boolean = ???
 
 
-  // 2i. what if have 3 unit tests
+  // 3b. what if have 3 unit tests
   // assert(sign(-2) = false)
   // assert(sign( 0) = true)
   // assert(sign( 5) = true)
@@ -144,20 +176,45 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 2j. How many implementations remain valid if I have the following property
+  // 3c. How many implementations remain valid if I have the following property
   // forAll(x: Int => sign(x) == !sign(-x))
 
 
 
 
-  // 2k. Can you think of other ways to reduce the number of valid implementations?
-  // check out the following presentation for more details (shameless self promotion)
-  // https://skillsmatter.com/skillscasts/12648-types-vs-tests
+  // 3d. Can you think of other ways to reduce the number of valid implementations?
+  // check out the following resources for more details:
+  // Property-Based Testing in a Screencast Editor (by Oskar Wickström): https://wickstrom.tech/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html
+  // Types vs Tests (by Julien Truffaut): https://skillsmatter.com/skillscasts/12648-types-vs-tests
 
 
 
+  // 4. Parametrictity
 
-  // 3a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
+  // 4a. How many implementations exist for id, const (assume we are using scalazzi subset)
+  def id[A](a: A): A = ???
+
+  def const[A, B](a: A)(b: B): A = ???
+
+  // 4b. How many implementations exist for mapOption
+  def mapOption[A, B](opt: Option[A])(f: A => B): Option[B] = ???
+
+  // 4c. How many implementations exist for flatMapOption
+  def flatMapOption[A, B](opt: Option[A])(f: A => Option[B]): Option[B] = ???
+
+  // 4d. How many implementations exist for mapList
+  def mapList[A, B](xs: List[A])(f: A => B): List[B] = ???
+
+
+  // 4e. Can you think of a property that would help reduce the number of implementations of mapList
+  // checkout this article:
+  // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
+
+I
+
+  // 5. Logic
+
+  // 5a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
   // Is it also true with types?
   // to prove that two types A and B are equivalent you need to provide a pair of functions `to` and `from`
   // such as for all a: A, from(to(a)) == a, and equivalent for B
@@ -170,29 +227,28 @@ object TypeExercises extends TypeToImpl {
   def aOrNothingToA[A]: Iso[Either[A, Nothing], A] =
     Iso(_ => ???, _ => ???)
 
-  // 3b. Prove that Option is equivalent to Either[Unit,]
+  // 5b. Prove that Option is equivalent to Either[Unit,]
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
     Iso(_ => ???, _ => ???)
 
 
-  // 3c. Prove that a * (b + c) = a * b + a * c
+  // 5c. Prove that a * (b + c) = a * b + a * c
   // (A, Either[B, C]) =~ Either[(A, B), (A, C)] ?
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(_ => ???, _ => ???)
 
 
-  // 3d. Prove that a ^ 1 = a
+  // 5d. Prove that a ^ 1 = a
   def power1[A]: Iso[Unit => A, A] =
     new Iso[Unit => A, A](
       _ => ???, _ => ???
     )
 
 
-  // 3e. Can you think of any other properties that types and algebra have in common?
+  // 5e. Can you think of any other properties that types and algebra have in common?
 
 
 
-  // 4
   sealed trait Zero
 
   case object One
@@ -206,74 +262,26 @@ object TypeExercises extends TypeToImpl {
     case class Right[A, B](value: B) extends Branch[A, B]
   }
 
-  // 4a. Define Two a type containing 2 possible values using Zero, One, Pair and Branch
-  type Two = Nothing
+  // 6a. Define Two a type containing 2 possible values using Zero, One, Pair and Branch
+  type Two = Nothing // ???
 
-  // 4b. Define Three a type containing 3 possible values using all previously defined types
-  type Three = Nothing
-
-
-  // 4c. Define Four a type containing 4 possible values using all previously defined types
-  type Four = Nothing
+  // 6b. Define Three a type containing 3 possible values using all previously defined types
+  type Three = Nothing // ???
 
 
-  // 4d. Define Five a type containing 8 possible values using all previously defined types
-  type Five = Nothing
+  // 6c. Define Four a type containing 4 possible values using all previously defined types
+  type Four = Nothing // ???
 
 
-  // 4e. Define Eight type containing 8 possible values using Func and all previously defined types
+  // 6d. Define Five a type containing 8 possible values using all previously defined types
+  type Five = Nothing // ???
+
+
+  // 6e. Define Eight type containing 8 possible values using Func and all previously defined types
   trait Func[A, B]{
     def apply(value: A): B
   }
 
-  type Eight = Nothing
-
-
-
-  // 5a. Implement isAdult such as isAdult return true if age is greater or equal than 18
-  def isAdult(age: Int): Boolean = ???
-
-
-
-
-
-  // 5b. What if a user pass a negative number? e.g. isAdult(-5)
-  // how would update the signature to prevent that
-  def isAdult_v2 = ???
-
-
-
-
-
-  // 5c. What is the most precise type? Why?
-  // Int                  => Option[Boolean]
-  // Int Refined Positive => Boolean          (see https://github.com/fthomas/refined)
-
-
-
-
-
-  // 6a. Implement compareInt such as it return:
-  // -1 if x < y
-  //  0 if x == y
-  //  1 if x > y
-  /** see [[Integer.compare]] */
-  def compareInt(x: Int, y: Int): Int = ???
-
-
-
-  // 6b. why can we say that compareInt is imprecise? Implement a more precise compareInt_v2
-  def compareInt_v2 = ???
-
-
-
-  // 7a. implement the cardinality of getCurrency1 and getCurrency2, which one is bigger?
-  def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
-    def cardinality: ACardinality = ???
-  }
-
-  def getCurrency2: Cardinality[Country => String] = new Cardinality[Country => String] {
-    def cardinality: ACardinality = ???
-  }
+  type Eight = Nothing // ???
 
 }

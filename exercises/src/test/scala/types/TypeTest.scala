@@ -64,16 +64,6 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
   checkAll("a ^ 1 ==  a", IsoLaws(power1[Int]))
   checkAll("a * (b + c) == a * b + a * c", IsoLaws(distributeTuple[Int, Int, Int]))
 
-  test("isAdult") {
-    isAdult(10) shouldBe false
-    isAdult(25) shouldBe true
-  }
-
-  test("compareInt") {
-    compareInt(10, 15) shouldBe -1
-    compareInt(10, 10) shouldBe 0
-    compareInt(15, 10) shouldBe 1
-  }
 
   implicit def arbAOrNothing[A: Arbitrary]: Arbitrary[Either[A, Nothing]] =
     Arbitrary(Arbitrary.arbitrary[A].map(Left(_)))

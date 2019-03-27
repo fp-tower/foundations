@@ -30,6 +30,8 @@ th, td {
   border: 1px solid black;
 }
 tr:nth-child(even) {background-color: #f2f2f2;}
+.medium { font-size: 28px; }
+.large { font-size: 36px; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 </style>
 </head>
@@ -52,7 +54,38 @@ class: center, middle
 ---
 class: center, middle
 
+# Any
+
+---
 # Any => Any
+
+```tut:silent
+def inc(value: Any): Any = value match {
+  case x: Int    => x + 1
+  case x: Double => x + 1
+  case x: Char   => x.toString + "1"
+  case x: String => x + "1"
+}
+```
+
+--
+
+```tut
+inc(5)
+inc(10.3)
+inc('c')
+```
+
+--
+
+```tut:fail
+inc(java.time.Instant.ofEpochMilli(0))
+```
+
+---
+class: center, middle
+
+# What types give us?
 
 ---
 background-image: url(img/types-1.jpg)
@@ -62,7 +95,7 @@ background-image: url(img/types-1.jpg)
 ---
 background-image: url(img/types-1-bis.jpg)
 
-# Type cardinality
+# Type
 
 ---
 class: center, middle
@@ -106,11 +139,17 @@ case object Germany       extends Country
 case object UnitedKingdom extends Country
 case object Switzerland   extends Country
 
-def getCurrency(country: Country): String =
+sealed trait Currency
+
+case object EUR extends Currency
+case object GBP extends Currency
+case object CHF extends Currency
+
+def getCurrency(country: Country): Currency =
   country match {
-    case France | Germany => "EUR"
-    case UnitedKingdom    => "GBP"
-    case Switzerland      => "CHF"
+    case France | Germany => EUR
+    case UnitedKingdom    => GBP
+    case Switzerland      => CHF
   }
 ```
 
@@ -323,10 +362,12 @@ class: center, middle
 ```tut:silent
 def getCurrency1(country: String ): Option[String] = ???
 
-def getCurrency2(country: Country): String = ???
+def getCurrency2(country: Country): Currency = ???
 ```
 
 --
+
+## Intuitively
 
 ```scala
 |getCurrency2| < |getCurrency1|
@@ -351,7 +392,7 @@ case class ABoolean(value: Boolean) extends IntOrBoolean
 --
 
 ```scala
-AnInt(-2 Billions)  // ~ -2 billion
+AnInt(Int.MinValue) // ~ -2 billion
 ...
 AnInt(0)
 AnInt(1)
@@ -370,7 +411,7 @@ ABoolean(true)
 
 ```scala
 |IntOrBoolean| = |AnInt| + |ABoolean|
-               = |Int| + |Boolean|
+               = |Int|   + |Boolean|
 ```
 
 ---
@@ -383,7 +424,7 @@ case class IntAndBoolean(i: Int, b: Boolean)
 --
 
 ```scala
-IntAndBoolean(-2 Billions, false)  // ~ -2 billion
+IntAndBoolean(Int.MinValue, false)  // ~ -2 billion
 ...
 IntAndBoolean(0, false)
 IntAndBoolean(1, false)
@@ -394,7 +435,7 @@ IntAndBoolean(Int.MaxValue, false) // ~ +2 billion
 --
 
 ```scala
-IntAndBoolean(-2 Billions, true)  // ~ -2 billion
+IntAndBoolean(Int.MinValue, true)  // ~ -2 billion
 ...
 IntAndBoolean(0, true)
 IntAndBoolean(1, true)
@@ -411,18 +452,58 @@ IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ---
 class: center, middle
 
-# Sealed trait is called a Sum type
+# A sealed trait is called a **Sum** type
 
 --
 
-# Case class is called a Product type
+# A sase class is called a **Product** type
 
 ---
 class: center, middle
 
-# Sealed trait is called a Co-Product
+# A sealed trait is called a Co-Product
 
-# Case class is called a Product
+# A case class is called a Product
+
+---
+class: center, middle
+
+# Exercises
+
+---
+class: center, middle
+
+# |A => B|
+
+---
+background-image: url(img/function.jpg)
+
+# Function is a mapping
+
+---
+background-image: url(img/function-mapping-1.jpg)
+
+# Function is a mapping
+
+---
+background-image: url(img/count-A-to-B-1.jpg)
+
+# |A => B|
+
+---
+background-image: url(img/count-A-to-B-2.jpg)
+
+# |A => B|
+
+---
+background-image: url(img/count-A-to-B-3.jpg)
+
+# |A => B|
+
+---
+background-image: url(img/count-A-to-B-4.jpg)
+
+# |A => B|
 
 ---
 class: center, middle
@@ -472,37 +553,7 @@ class: center, middle
 ---
 class: center, middle
 
-# |A => B|
-
----
-background-image: url(img/function.jpg)
-
-# Function is a mapping
-
----
-background-image: url(img/function-mapping-1.jpg)
-
-# Function is a mapping
-
----
-background-image: url(img/count-A-to-B-1.jpg)
-
-# |A => B|
-
----
-background-image: url(img/count-A-to-B-2.jpg)
-
-# |A => B|
-
----
-background-image: url(img/count-A-to-B-3.jpg)
-
-# |A => B|
-
----
-background-image: url(img/count-A-to-B-4.jpg)
-
-# |A => B|
+# |A => B| = |B| ^ |A|
 
 ---
 class: center, middle
@@ -558,8 +609,9 @@ background-image: url(img/count-day-week-to-boolean-4.jpg)
 
 .center[
 ```scala
-VIC(f: A => B) = |B| ^ |A| / |B|
-               = |B| ^ (|A| - 1)
+VIC(f: A => B) = |A => B| / |B|
+                = |B| ^ |A| / |B|
+                = |B| ^ (|A| - 1)
 ```
 ]
 
@@ -569,9 +621,10 @@ VIC(f: A => B) = |B| ^ |A| / |B|
 
 .center[
 ```scala
-VIC(f: A => B) = |B| ^ |A| / |B| / |B|
-                 = (|B| ^ |A|) / (|B| ^ 2)
-         = |B| ^ (|A| - 2)
+VIC(f: A => B) = |A => B| / |B| / |B|
+                = |B| ^ |A| / |B| / |B|
+                  = (|B| ^ |A|) / (|B| ^ 2)
+          = |B| ^ (|A| - 2)
 ```
 ]
 
@@ -665,38 +718,62 @@ A ∧ ⊥ ⇔ ⊥
 ```
 
 ---
-# Find the referential that make sense to you
+# Find the representation that makes sense to you
 
+<br>
+
+.center[
 ```scala
 Either[Int, String] => Boolean     <==>      (Int => Boolean, String => Boolean)
 ```
+]
 
---
+---
+# Find the representation that makes sense to you
 
+<br>
+
+.center[
 ```scala
-Either[A, B] => C                  <==>      (A => C, B => C)
+Either[A, B] => C   <==>   (A => C, B => C)
 ```
+]
 
 --
+
+.pull-left[
+### Algebra
 
 ```scala
 Either[A, B] => C =~ C ^ (A + B)
                   =  C ^ A * C ^ B
                   =~ (A => C, B => C)
 ```
+]
+
+.pull-right[
+### Logic
 
 ```scala
 Either[A, B] => C =~ (A ∨ B) → C
                   =  (A → C) ∧ (B → C)
                   =~ (A => C, B => C)
 ```
+]
 
 ---
-# Next chapter: Typeclass
+# Summary
 
 .large[
-* Constrained polymorphism
-* ...
+* Cardinality of type matter
+]
+.large[
+* Unit test offer almost no benefit in term of correctness
+]
+.large[
+* Two techniques to achieve correctness:
+   * Property based testing
+   * Parametric polymorphism
 ]
 
 </textarea>

@@ -56,8 +56,4 @@ trait TypeToImpl {
 
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]]
 
-  def isAdult(age: Int): Boolean
-
-  def compareInt(x: Int, y: Int): Int
-
 }

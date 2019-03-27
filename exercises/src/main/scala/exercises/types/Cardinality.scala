@@ -35,7 +35,7 @@ sealed trait ACardinality {
         if(x == 0 || x == 1) Finite(x)
         else if(y == 0) Finite(1)
         else if(y.isValidInt) Finite(x.pow(y.toInt))
-        else Infinite
+        else Infinite // TODO more precise, maybe capture Pow(x, y)
       case (Finite(x), Infinite ) => if(x == 0 || x == 1) Finite(x) else Infinite
       case (Infinite , Finite(x)) => if(x == 0) Finite(1) else Infinite
       case (Infinite , Infinite ) => Infinite
