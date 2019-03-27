@@ -210,7 +210,7 @@ object TypeExercises extends TypeToImpl {
   // checkout this article:
   // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
 
-I
+
 
   // 5. Logic
 
