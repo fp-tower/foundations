@@ -21,6 +21,15 @@ width: 47%;
 float: right;
 width: 47%;
 }
+table {
+  border-collapse: collapse;
+  display: inline-block;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid black;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
@@ -32,15 +41,490 @@ width: 47%;
 class: center, middle
 
 # Typeclass
+Foundation of Functional Programming
+<br>
+<br>
 `@JulienTruffaut`
 
 ---
 # Plan
 
 .large[
-* Define typeclass and compare to other approaches
-* Implement some basic but essential typeclasses
+* Typeclass definition and comparison with other approaches
 ]
+
+.large[
+* Most common usage for **application developers**
+]
+
+.large[
+* Get familiar with typeclass laws and hierarchy
+]
+
+---
+class: center, middle
+
+# Use case: Equality
+
+---
+# Top Level
+
+```scala
+class Object {
+  def equals(other: Any): Boolean =
+    this == other
+}
+```
+
+--
+
+```scala
+case class Foo(i: Int, s: String) extends Object {
+  override def equals(obj: Any): Boolean =
+    obj match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
+
+--
+
+```scala
+scala> 5.equals(6)
+res0: Boolean = false
+
+scala> Foo(5, "Hello").equals(Foo(5, "Hello"))
+res1: Boolean = true
+```
+
+---
+# Top Level
+
+```scala
+class Object {
+  def equals(other: Any): Boolean =
+    this == other
+}
+```
+
+```scala
+case class Foo(i: Int, s: String) extends Object {
+  override def equals(obj: Any): Boolean =
+    obj match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
+
+```scala
+scala> Foo(5, "Hello").equals(3)
+res2: Boolean = false
+```
+
+--
+
+```scala
+val inc1: Int => Int = _ + 1
+val inc2: Int => Int = _ + 1
+```
+
+```scala
+scala> inc1.equals(inc2)
+res3: Boolean = false
+```
+
+---
+# Trait
+
+```scala
+trait Eq {
+  def eqv(other: Any): Boolean
+}
+```
+
+```scala
+case class Foo(i: Int, s: String) extends Eq {
+  def eqv(other: Any): Boolean =
+    other match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
+
+--
+
+```scala
+def contains[A <: Eq](xs: List[A], value: A): Boolean =
+  xs.foldRight(false)((x, acc) => x.eqv(value) || acc)
+```
+
+
+---
+# Trait
+
+```scala
+trait Eq {
+  def eqv(other: Any): Boolean
+}
+```
+
+```scala
+case class Foo(i: Int, s: String) extends Eq {
+  def eqv(other: Any): Boolean =
+    other match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
+
+```scala
+scala> Foo(5, "Hello").eqv(7)
+res4: Boolean = false
+```
+
+--
+
+```scala
+scala> 5.eqv(3)
+<console>:13: error: value eqv is not a member of Int
+       5.eqv(3)
+         ^
+```
+
+---
+# F-Bounded Trait
+
+
+```scala
+trait Eq[A <: Eq[A]]{
+  def eqv(other: A): Boolean
+}
+```
+
+```scala
+case class Foo(i: Int, s: String) extends Eq[Foo] {
+  def eqv(other: Foo): Boolean =
+    i == other.i && s == other.s
+}
+```
+
+--
+
+```scala
+def contains[A <: Eq[A]](xs: List[A], value: A): Boolean =
+  xs.foldRight(false)((x, acc) => x.eqv(value) || acc)
+```
+
+--
+
+```scala
+scala> Foo(5, "Hello").eqv(7)
+<console>:15: error: type mismatch;
+ found   : Int(7)
+ required: Foo
+       Foo(5, "Hello").eqv(7)
+                           ^
+```
+
+---
+# F-Bounded Trait
+
+
+```scala
+trait Eq[A <: Eq[A]]{
+  def eqv(other: A): Boolean
+}
+```
+
+```scala
+case class Foo(i: Int, s: String) extends Eq[Foo] {
+  def eqv(other: Foo): Boolean =
+    i == other.i && s == other.s
+}
+```
+
+
+```scala
+scala> 5.eqv(7)
+<console>:13: error: value eqv is not a member of Int
+       5.eqv(7)
+         ^
+```
+
+---
+# Overloading
+
+```scala
+def eqv(x: Int   , y: Int   ): Boolean = x == y
+def eqv(x: String, y: String): Boolean = x == y
+def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
+```
+
+--
+
+```scala
+def contains[A](xs: List[A], value: A): Boolean = ???
+```
+
+---
+# Overloading
+
+```scala
+def eqv(x: Int   , y: Int   ): Boolean = x == y
+def eqv(x: String, y: String): Boolean = x == y
+def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
+```
+
+
+
+
+```scala
+def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
+  xs.foldRight(false)((x, acc) =>
+    compare(x, value) || acc
+  )
+```
+
+--
+
+```scala
+scala> contains(List(1,2,3,4,5), 6)(eqv)
+res8: Boolean = false
+
+scala> contains(List("hello","world"), "world")(eqv)
+res9: Boolean = true
+```
+
+--
+
+```scala
+scala> contains(List(1,2,3,4,5), "hello")(eqv)
+<console>:18: error: type mismatch;
+ found   : (x: Foo, y: Foo)Boolean <and> (x: String, y: String)Boolean <and> (x: Int, y: Int)Boolean
+ required: (Any, Any) => Boolean
+       contains(List(1,2,3,4,5), "hello")(eqv)
+                                          ^
+```
+
+---
+# Overloading
+
+```scala
+def eqv(x: Double, y: Double): Boolean =
+  x == y
+
+def approx(error: Double)(x: Double, y: Double): Boolean =
+  (x - y).abs < error
+```
+
+--
+
+```scala
+scala> val xs = List(1.0, 2.5, 3.3)
+xs: List[Double] = List(1.0, 2.5, 3.3)
+```
+
+```scala
+scala> contains(xs, 3.2)(eqv)
+res11: Boolean = false
+
+scala> contains(xs, 3.2)(approx(0.2))
+res12: Boolean = true
+
+scala> contains(xs, 3.2)(approx(0.001))
+res13: Boolean = false
+```
+
+---
+# Typeclass
+
+```scala
+trait Eq[A]{
+  def eqv(a1: A, a2: A): Boolean
+}
+```
+
+
+```scala
+implicit val intEq: Eq[Int] = new Eq[Int]{
+  def eqv(a1: Int, a2: Int): Boolean = a1 == a2
+}
+
+implicit val stringEq: Eq[String] = new Eq[String]{
+  def eqv(a1: String, a2: String): Boolean = a1 == a2
+}
+
+implicit val fooEq: Eq[Foo] = new Eq[Foo]{
+  def eqv(a1: Foo, a2: Foo): Boolean =
+    implicitly[Eq[Int]].eqv(a1.i, a2.i) && implicitly[Eq[String]].eqv(a1.s, a2.s)
+}
+```
+
+---
+# Typeclass: Summoning
+
+
+```scala
+trait Eq[A]{
+  def eqv(a1: A, a2: A): Boolean
+}
+```
+
+```scala
+scala> implicitly[Eq[Int]].eqv(5, 6)
+res14: Boolean = false
+
+scala> implicitly[Eq[String]].eqv("Hello", "Hello")
+res15: Boolean = true
+```
+
+--
+
+```scala
+scala> implicitly[Eq[Double]].eqv(5.5, 5.6)
+<console>:21: error: could not find implicit value for parameter e: Eq[Double]
+       implicitly[Eq[Double]].eqv(5.5, 5.6)
+                 ^
+```
+
+--
+
+```scala
+object Global {
+  val eqDictionary: Map[x: Type, Eq[x]] := Map(
+    Int    -> intEq,
+    String -> stringEq,
+    Foo    -> fooEq
+  )
+}
+```
+
+---
+# Typeclass: Higher order function
+
+
+```scala
+trait Eq[A]{
+  def eqv(a1: A, a2: A): Boolean
+}
+```
+
+```scala
+def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
+  xs.foldRight(false)((x, acc) => ev.eqv(x, value) || acc)
+```
+
+--
+
+```scala
+scala> contains(List(1,2,3,4,5), 4)
+res17: Boolean = true
+
+scala> contains(List("hello","world"), "world")
+res18: Boolean = true
+
+scala> contains(List("hello","world"), "foo")
+res19: Boolean = false
+```
+
+--
+
+```scala
+scala> contains(List(1.0, 2.5, 3.3), 3.2)
+<console>:21: error: could not find implicit value for parameter ev: Eq[Double]
+       contains(List(1.0, 2.5, 3.3), 3.2)
+               ^
+```
+
+
+---
+class: center, middle
+
+# Syntactic sugar
+
+---
+# Syntactic sugar: summoning implicit
+
+```scala
+object Eq {
+  def apply[A](implicit ev: Eq[A]): Eq[A] = ev
+}
+```
+
+--
+
+```scala
+scala> Eq[Int]
+res21: Eq[Int] = $anon$1@7c25df59
+
+scala> implicitly[Eq[Int]]
+res22: Eq[Int] = $anon$1@7c25df59
+
+scala> Eq[Int].eqv(5, 5)
+res23: Boolean = true
+```
+
+---
+# Syntactic sugar: context bound
+
+```scala
+def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
+  xs.foldRight(false)((x, acc) => ev.eqv(x, value) || acc)
+
+def contains[A: Eq](xs: List[A], value: A): Boolean =
+  xs.foldRight(false)((x, acc) => Eq[A].eqv(x, value) || acc)
+```
+
+---
+# Syntactic sugar: extension methods
+
+```scala
+implicit class EqSyntax[A](self: A){
+  def eqv(other: A)(implicit ev: Eq[A]): Boolean =
+     ev.eqv(self, other)
+
+  def ===(other: A)(implicit ev: Eq[A]): Boolean =
+     eqv(other)
+}
+```
+
+--
+
+```scala
+scala> 5.eqv(5)
+res24: Boolean = true
+
+scala> 5 === 6
+res25: Boolean = false
+
+scala> "foo" === "hello"
+res26: Boolean = false
+```
+
+--
+
+```scala
+implicit val fooEq: Eq[Foo] = new Eq[Foo]{
+  def eqv(a1: Foo, a2: Foo): Boolean =
+    a1.i === a2.i && a1.s === a2.s
+}
+```
+
+---
+class: center, middle
+
+| Features                   | Top level | Trait  | F-Bounded | Overload | Typeclass |
+|:---------------------------|:---------:|:------:|:---------:|:--------:|:---------:|
+| Same type equality         | ❌        | ❌     | ✅️        | ✅️       | ✅️        |
+| Define comparable type     | ❌        | ✅     | ✅️        | ✅️       | ✅️        |
+| Support foreign type       | ✅        | ❌     | ❌️        | ✅️       | ✅️        |
+| Higher order function      | ❌        | ✅     | ✅️        | ≈        | ✅️        |
+| Customizable call site     | ❌        | ❌     | ❌️        | ✅️       | ❌️        |
+| Code Generation            | ✅        | ❌     | ❌️        | ❌️       | ✅️        |
 
 ---
 background-image: url(img/typeclass-hierarchy.svg)
@@ -67,227 +551,6 @@ Source available at github.com/tpolecat/cats-infographic • Shareable under CC-
 * and much more!
 ]
 
----
-# Examples
-
-TODO
-
----
-class: center, middle
-
-# Equality
-
----
-# Equality: Top Level
-
-```scala
-class Object {
-  def equals(other: Object): Boolean = ???
-}
-```
-
---
-
-```scala
-case class Foo(i: Int, s: String) extends Object {
-  override def equals(obj: Any): Boolean =
-    obj match {
-      case x: Foo => i == x.i && s == x.s
-      case _      => false
-    }
-}
-```
-
---
-
-```scala
-scala> Foo(5, "Hello") == 7
-res0: Boolean = false
-```
-
---
-
-```scala
-val inc1: Int => Int = _ + 1
-val inc2: Int => Int = _ + 1
-```
-
-```scala
-scala> inc1 == inc2
-res1: Boolean = false
-```
-
----
-# Equality: Trait
-
-```scala
-trait Eq {
-  def eqv(other: Any): Boolean = ???
-}
-```
-
---
-
-```scala
-case class Foo(i: Int, s: String) extends Eq {
-  override def eqv(other: Any): Boolean =
-    other match {
-      case x: Foo => i == x.i && s == x.s
-      case _      => false
-    }
-}
-```
-
----
-# Equality: F-Bounded Trait
-
-
-```scala
-trait Eq[A <: Eq[A]]{
-  def eqv(other: A): Boolean = ???
-  }
-```
-
---
-
-```scala
-case class Foo(i: Int, s: String) extends Eq[Foo] {
-  override def eqv(other: Foo): Boolean =
-    i == other.i && s == other.s
-}
-```
-
---
-
-```scala
-def contains[A <: Eq[A]](xs: List[A], value: A): Boolean =
-  xs.foldRight(false)((x, acc) => x.eqv(value) || acc)
-```
-
-```scala
-scala> contains(List(Foo(4, "Hello"), Foo(-1, "")), Foo(-1, ""))
-res2: Boolean = true
-```
-
---
-
-```scala
-scala> contains(List(1,2,3,4), 3)
-<console>:14: error: inferred type arguments [Int] do not conform to method contains's type parameter bounds [A <: Eq[A]]
-       contains(List(1,2,3,4), 3)
-       ^
-<console>:14: error: type mismatch;
- found   : List[Int]
- required: List[A]
-       contains(List(1,2,3,4), 3)
-                    ^
-<console>:14: error: type mismatch;
- found   : Int(3)
- required: A
-       contains(List(1,2,3,4), 3)
-                               ^
-```
-
----
-# Equality: Overloading
-
-```scala
-def eqv(x: Int   , y: Int   ): Boolean = x == y
-def eqv(x: String, y: String): Boolean = x == y
-def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
-```
-
---
-
-```scala
-def contains[A](xs: List[A], value: A): Boolean = ???
-```
-
----
-# Equality: Overloading
-
-```scala
-def eqv(x: Int   , y: Int   ): Boolean = x == y
-def eqv(x: String, y: String): Boolean = x == y
-def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
-```
-
-
-
-
-```scala
-def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
-  xs.foldRight(false)((x, acc) =>
-    compare(x, value) || acc
-  )
-```
-
---
-
-```scala
-scala> contains(List(1,2,3,4,5), 4)(eqv)
-res4: Boolean = true
-
-scala> contains(List("hello","world"), "hi")(eqv)
-res5: Boolean = false
-```
-
---
-
-```scala
-scala> contains(List(1,2,3,4,5), "hi")(eqv)
-<console>:18: error: type mismatch;
- found   : (x: Foo, y: Foo)Boolean <and> (x: String, y: String)Boolean <and> (x: Int, y: Int)Boolean
- required: (Any, Any) => Boolean
-       contains(List(1,2,3,4,5), "hi")(eqv)
-                                       ^
-```
-
----
-# Equality: Overloading
-
-```scala
-def eqv(x: Double, y: Double): Boolean =
-  x == y
-
-def approx(error: Double)(x: Double, y: Double): Boolean =
-  (x - y).abs < error
-```
-
---
-
-```scala
-scala> val xs = List(1.0, 2.5, 3.3)
-xs: List[Double] = List(1.0, 2.5, 3.3)
-```
-
-```scala
-scala> contains(xs, 3.2)(eqv)
-res7: Boolean = false
-
-scala> contains(xs, 3.2)(approx(0.2))
-res8: Boolean = true
-
-scala> contains(xs, 3.2)(approx(0.001))
-res9: Boolean = false
-```
-
----
-# Equality: Typeclass
-
-```scala
-trait Eq[A]{
-  def eqv(a1: A, a2: A): Boolean
-}
-```
-
---
-
-```scala
-implicit val intEq: Eq[Int] = new Eq[Int]{
-  def eqv(a1: Int, a2: Int): Boolean = a1 == a2
-}
-```
 
 ---
 # Overloading
@@ -310,13 +573,13 @@ def plus(a1: String, a2: String): String = a1 + a2
 
 ```scala
 scala> plus(1 , 2)
-res10: Int = 3
+res27: Int = 3
 
 scala> plus(1L, 2L)
-res11: Long = 3
+res28: Long = 3
 
 scala> plus("Hello", "World")
-res12: String = HelloWorld
+res29: String = HelloWorld
 ```
 
 ---
@@ -333,10 +596,10 @@ def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res13: Int = 10
+res30: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res14: String = HelloWorld
+res31: String = HelloWorld
 ```
 
 ---
@@ -360,10 +623,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res15: Int = 10
+res32: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res16: String = HelloWorld
+res33: String = HelloWorld
 ```
 
 ---
@@ -416,10 +679,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res17: Int = 10
+res34: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res18: String = HelloWorld
+res35: String = HelloWorld
 ```
 
 ---
@@ -488,20 +751,20 @@ def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res19: Int = 10
+res36: Int = 10
 
 scala> sumList(List(1.5, 4.3, 9.0))
-res20: Double = 14.8
+res37: Double = 14.8
 
 scala> sumList(List("Hello", "World"))
-res21: String = HelloWorld
+res38: String = HelloWorld
 ```
 
 --
 
 ```scala
 scala> sumList(List(true, true, false))
-<console>:38: error: could not find implicit value for parameter p: Plusable[Boolean]
+<console>:43: error: could not find implicit value for parameter p: Plusable[Boolean]
        sumList(List(true, true, false))
               ^
 ```
@@ -521,7 +784,7 @@ def sumList[A: Plusable](xs: List[A]): A = {
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res23: Int = 10
+res40: Int = 10
 ```
 
 ---
@@ -534,7 +797,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res24: Plusable[Int] = $anon$1@59f3fe93
+res41: Plusable[Int] = $anon$1@481da0f3
 ```
 
 --
@@ -550,7 +813,7 @@ implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
 
 ```scala
 scala> implicitly[Plusable[Int]]
-<console>:39: error: ambiguous implicit values:
+<console>:44: error: ambiguous implicit values:
  both value plusableInt of type => Plusable[Int]
  and value plusableInt2 of type => Plusable[Int]
  match expected type Plusable[Int]
@@ -562,7 +825,7 @@ scala> implicitly[Plusable[Int]]
 
 ```scala
 scala> sumList(List(1,2,3,4))
-<console>:39: error: ambiguous implicit values:
+<console>:44: error: ambiguous implicit values:
  both value plusableInt of type => Plusable[Int]
  and value plusableInt2 of type => Plusable[Int]
  match expected type Plusable[Int]
@@ -623,10 +886,10 @@ val xs = List(2, 5, 0)
 
 ```scala
 scala> sumList(xs.map(Sum(_))).getSum
-res27: Int = 7
+res44: Int = 7
 
 scala> sumList(xs.map(Product(_))).getProduct
-res28: Int = 0
+res45: Int = 0
 ```
 
 ---
@@ -710,7 +973,7 @@ object PlusableInstance {
 
 ```scala
 scala> sumList(List(true, false, false))
-<console>:40: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
+<console>:45: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
        sumList(List(true, false, false))
               ^
 ```
@@ -723,7 +986,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res30: Boolean = false
+res47: Boolean = false
 ```
 
 ---
@@ -749,7 +1012,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res31: Boolean = false
+res48: Boolean = false
 ```
 
 --
@@ -760,7 +1023,7 @@ import OtherPlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res32: Boolean = true
+res49: Boolean = true
 ```
 
 ---
@@ -855,7 +1118,7 @@ implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
 
 ```scala
 scala> implicit val listSemigroup: Semigroup[List] = ???
-<console>:51: error: type List takes type parameters
+<console>:56: error: type List takes type parameters
        implicit val listSemigroup: Semigroup[List] = ???
                                              ^
 ```
@@ -893,7 +1156,7 @@ implicit val listFoldable: Foldable[List] = new Foldable[List] {
 
 ```scala
 scala> implicit val intFoldable: Foldable[Int] = ???
-<console>:53: error: Int takes no type parameters, expected: one
+<console>:58: error: Int takes no type parameters, expected: one
        implicit val intFoldable: Foldable[Int] = ???
                                           ^
 ```
