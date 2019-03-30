@@ -62,6 +62,102 @@ Foundation of Functional Programming
 ]
 
 ---
+# Type and Operations
+
+```scala
+case class Person(name: String, age: Int)
+
+def setAge(p: Person, newAge: Int): Person =
+  p.copy(age = newAge)
+
+def isAdult(p: Person): Boolean =
+  p.age >= 18
+```
+
+---
+class: center, middle
+
+# Polymorphism
+
+---
+# Parametric Polymorphism
+
+```scala
+def headOption[A](xs: List[A]): Option[A] =
+  xs match {
+    case Nil    => None
+    case x :: _ => Some(x)
+  }
+```
+
+```scala
+scala> headOption(List(1,2,3))
+res0: Option[Int] = Some(1)
+
+scala> headOption(List("Hello", "World"))
+res1: Option[String] = Some(Hello)
+```
+
+---
+# Raw Polymorphism
+
+```scala
+case class Person(name: String, age: Int)
+
+case class Employee(name: String, age: Int, companyName: String)
+
+def isAdult(x: {val age: Int}): Boolean =
+  x.age >= 18
+```
+
+--
+
+```scala
+scala> isAdult(Person("John", 26))
+res2: Boolean = true
+
+scala> isAdult(Person("Rob", 11))
+res3: Boolean = false
+
+scala> isAdult(Employee("Eva", 22, "Foo Inc"))
+res4: Boolean = true
+```
+
+---
+# Ad hoc Polymorphism
+
+```scala
+scala> 2 + 3
+res5: Int = 5
+
+scala> 2.0 + 3.0
+res6: Double = 5.0
+
+scala> BigDecimal(2) + BigDecimal(3)
+res7: scala.math.BigDecimal = 5
+```
+
+--
+
+```scala
+scala> List(1,2,3).map(_ + 1)
+res8: List[Int] = List(2, 3, 4)
+
+scala> Vector(1,2,3).map(_ + 1)
+res9: scala.collection.immutable.Vector[Int] = Vector(2, 3, 4)
+```
+
+--
+
+```scala
+scala> Person("John", 34).toString
+res10: String = Person(John,34)
+
+scala> false.toString
+res11: String = false
+```
+
+---
 class: center, middle
 
 # Use case: Equality
@@ -92,10 +188,10 @@ case class Foo(i: Int, s: String) extends Object {
 
 ```scala
 scala> 5.equals(6)
-res0: Boolean = false
+res12: Boolean = false
 
 scala> Foo(5, "Hello").equals(Foo(5, "Hello"))
-res1: Boolean = true
+res13: Boolean = true
 ```
 
 ---
@@ -120,7 +216,7 @@ case class Foo(i: Int, s: String) extends Object {
 
 ```scala
 scala> Foo(5, "Hello").equals(3)
-res2: Boolean = false
+res14: Boolean = false
 ```
 
 --
@@ -132,7 +228,7 @@ val inc2: Int => Int = _ + 1
 
 ```scala
 scala> inc1.equals(inc2)
-res3: Boolean = false
+res15: Boolean = false
 ```
 
 ---
@@ -183,7 +279,7 @@ case class Foo(i: Int, s: String) extends Eq {
 
 ```scala
 scala> Foo(5, "Hello").eqv(7)
-res4: Boolean = false
+res16: Boolean = false
 ```
 
 --
@@ -293,10 +389,10 @@ def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4,5), 6)(eqv)
-res8: Boolean = false
+res20: Boolean = false
 
 scala> contains(List("hello","world"), "world")(eqv)
-res9: Boolean = true
+res21: Boolean = true
 ```
 
 --
@@ -330,13 +426,13 @@ xs: List[Double] = List(1.0, 2.5, 3.3)
 
 ```scala
 scala> contains(xs, 3.2)(exact)
-res11: Boolean = false
+res23: Boolean = false
 
 scala> contains(xs, 3.2)(approx(0.2))
-res12: Boolean = true
+res24: Boolean = true
 
 scala> contains(xs, 3.2)(approx(0.001))
-res13: Boolean = false
+res25: Boolean = false
 ```
 
 ---
@@ -362,10 +458,10 @@ val intEq: Eq[Int] = new Eq[Int]{
 
 ```scala
 scala> fooEq.eqv(Foo(1, "Hello"), Foo(5, "Hi"))
-res14: Boolean = false
+res26: Boolean = false
 
 scala> intEq.eqv(5, 5)
-res15: Boolean = true
+res27: Boolean = true
 ```
 
 --
@@ -397,7 +493,7 @@ def contains[A](xs: List[A], value: A)(eq: Eq[A]): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4), 3)(intEq)
-res17: Boolean = true
+res29: Boolean = true
 ```
 
 ---
@@ -421,13 +517,13 @@ xs: List[Double] = List(1.0, 2.5, 3.3)
 
 ```scala
 scala> contains(xs, 3.2)(exact)
-res18: Boolean = false
+res30: Boolean = false
 
 scala> contains(xs, 3.2)(approx(0.2))
-res19: Boolean = true
+res31: Boolean = true
 
 scala> contains(xs, 3.2)(approx(0.001))
-res20: Boolean = false
+res32: Boolean = false
 ```
 
 ---
@@ -523,10 +619,10 @@ trait Eq[A]{
 
 ```scala
 scala> implicitly[Eq[Int]].eqv(5, 6)
-res23: Boolean = false
+res35: Boolean = false
 
 scala> implicitly[Eq[String]].eqv("Hello", "Hello")
-res24: Boolean = true
+res36: Boolean = true
 ```
 
 --
@@ -569,13 +665,13 @@ def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4,5), 4)
-res26: Boolean = true
+res38: Boolean = true
 
 scala> contains(List("hello","world"), "world")
-res27: Boolean = true
+res39: Boolean = true
 
 scala> contains(List("hello","world"), "foo")
-res28: Boolean = false
+res40: Boolean = false
 ```
 
 --
@@ -606,13 +702,13 @@ object Eq {
 
 ```scala
 scala> Eq[Int]
-res30: Eq[Int] = $anon$1@6f4aa846
+res42: Eq[Int] = $anon$1@1231acf5
 
 scala> implicitly[Eq[Int]]
-res31: Eq[Int] = $anon$1@6f4aa846
+res43: Eq[Int] = $anon$1@1231acf5
 
 scala> Eq[Int].eqv(5, 5)
-res32: Boolean = true
+res44: Boolean = true
 ```
 
 ---
@@ -643,13 +739,13 @@ implicit class EqSyntax[A](self: A){
 
 ```scala
 scala> 5.eqv(5)
-res33: Boolean = true
+res45: Boolean = true
 
 scala> 5 === 6
-res34: Boolean = false
+res46: Boolean = false
 
 scala> "foo" === "hello"
-res35: Boolean = false
+res47: Boolean = false
 ```
 
 --
@@ -783,13 +879,13 @@ def plus(a1: String, a2: String): String = a1 + a2
 
 ```scala
 scala> plus(1 , 2)
-res36: Int = 3
+res48: Int = 3
 
 scala> plus(1L, 2L)
-res37: Long = 3
+res49: Long = 3
 
 scala> plus("Hello", "World")
-res38: String = HelloWorld
+res50: String = HelloWorld
 ```
 
 ---
@@ -806,10 +902,10 @@ def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res39: Int = 10
+res51: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res40: String = HelloWorld
+res52: String = HelloWorld
 ```
 
 ---
@@ -833,10 +929,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res41: Int = 10
+res53: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res42: String = HelloWorld
+res54: String = HelloWorld
 ```
 
 ---
@@ -889,10 +985,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res43: Int = 10
+res55: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res44: String = HelloWorld
+res56: String = HelloWorld
 ```
 
 ---
@@ -961,13 +1057,13 @@ def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res45: Int = 10
+res57: Int = 10
 
 scala> sumList(List(1.5, 4.3, 9.0))
-res46: Double = 14.8
+res58: Double = 14.8
 
 scala> sumList(List("Hello", "World"))
-res47: String = HelloWorld
+res59: String = HelloWorld
 ```
 
 --
@@ -994,7 +1090,7 @@ def sumList[A: Plusable](xs: List[A]): A = {
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res49: Int = 10
+res61: Int = 10
 ```
 
 ---
@@ -1007,7 +1103,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res50: Plusable[Int] = $anon$1@4087af7e
+res62: Plusable[Int] = $anon$1@7f7d1eb4
 ```
 
 --
@@ -1096,10 +1192,10 @@ val xs = List(2, 5, 0)
 
 ```scala
 scala> sumList(xs.map(Sum(_))).getSum
-res53: Int = 7
+res65: Int = 7
 
 scala> sumList(xs.map(Product(_))).getProduct
-res54: Int = 0
+res66: Int = 0
 ```
 
 ---
@@ -1196,7 +1292,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res56: Boolean = false
+res68: Boolean = false
 ```
 
 ---
@@ -1222,7 +1318,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res57: Boolean = false
+res69: Boolean = false
 ```
 
 --
@@ -1233,7 +1329,7 @@ import OtherPlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res58: Boolean = true
+res70: Boolean = true
 ```
 
 ---

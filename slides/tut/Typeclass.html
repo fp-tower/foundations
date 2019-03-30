@@ -62,6 +62,83 @@ Foundation of Functional Programming
 ]
 
 ---
+# Type and Operations
+
+```tut:silent
+case class Person(name: String, age: Int)
+
+def setAge(p: Person, newAge: Int): Person =
+  p.copy(age = newAge)
+
+def isAdult(p: Person): Boolean =
+  p.age >= 18
+```
+
+---
+class: center, middle
+
+# Polymorphism
+
+---
+# Parametric Polymorphism
+
+```tut:silent
+def headOption[A](xs: List[A]): Option[A] =
+  xs match {
+    case Nil    => None
+    case x :: _ => Some(x)
+  }
+```
+
+```tut
+headOption(List(1,2,3))
+headOption(List("Hello", "World"))
+```
+
+---
+# Raw Polymorphism
+
+```tut:silent
+case class Person(name: String, age: Int)
+
+case class Employee(name: String, age: Int, companyName: String)
+
+def isAdult(x: {val age: Int}): Boolean =
+  x.age >= 18
+```
+
+--
+
+```tut
+isAdult(Person("John", 26))
+isAdult(Person("Rob", 11))
+isAdult(Employee("Eva", 22, "Foo Inc"))
+```
+
+---
+# Ad hoc Polymorphism
+
+```tut
+2 + 3
+2.0 + 3.0
+BigDecimal(2) + BigDecimal(3)
+```
+
+--
+
+```tut
+List(1,2,3).map(_ + 1)
+Vector(1,2,3).map(_ + 1)
+```
+
+--
+
+```tut
+Person("John", 34).toString
+false.toString
+```
+
+---
 class: center, middle
 
 # Use case: Equality
