@@ -701,10 +701,10 @@ object Eq {
 
 ```scala
 scala> Eq[Int]
-res42: Eq[Int] = $anon$1@6fdff534
+res42: Eq[Int] = $anon$1@5238ffab
 
 scala> implicitly[Eq[Int]]
-res43: Eq[Int] = $anon$1@6fdff534
+res43: Eq[Int] = $anon$1@5238ffab
 
 scala> Eq[Int].eqv(5, 5)
 res44: Boolean = true
@@ -830,6 +830,39 @@ class: center, middle
   </tr>
 </table>
 
+---
+class: center, middle
+
+# Exercises
+
+---
+# Plusable
+
+```scala
+trait Plusable[A]{
+  def plus(a1: A, a2: A): A
+  def zero: A
+}
+
+implicit val intPlusable: Plusable[Int] = new Plusable[Int] {
+  def plus(a1: Int, a2: Int): Int = a1 + a2
+  def zero: Int = 0
+}
+
+implicit val longPlusable: Plusable[Long] = new Plusable[Long] {
+  def plus(a1: Long, a2: Long): Long = a1 + a2
+  def zero: Long = 0L
+}
+```
+
+--
+
+```scala
+implicit val stringPlusable: Plusable[String] = new Plusable[String] {
+  def plus(a1: String, a2: String): String = a1 + a2
+  def zero: String = ""
+}
+```
 
 ---
 background-image: url(img/typeclass-hierarchy.svg)
@@ -1069,7 +1102,7 @@ res59: String = HelloWorld
 
 ```scala
 scala> sumList(List(true, true, false))
-<console>:47: error: could not find implicit value for parameter p: Plusable[Boolean]
+<console>:50: error: could not find implicit value for parameter p: Plusable[Boolean]
        sumList(List(true, true, false))
               ^
 ```
@@ -1102,7 +1135,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res62: Plusable[Int] = $anon$1@69b8063b
+res62: Plusable[Int] = $anon$1@6d3c0a49
 ```
 
 --
@@ -1118,7 +1151,7 @@ implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
 
 ```scala
 scala> implicitly[Plusable[Int]]
-<console>:48: error: ambiguous implicit values:
+<console>:51: error: ambiguous implicit values:
  both value plusableInt of type => Plusable[Int]
  and value plusableInt2 of type => Plusable[Int]
  match expected type Plusable[Int]
@@ -1130,7 +1163,7 @@ scala> implicitly[Plusable[Int]]
 
 ```scala
 scala> sumList(List(1,2,3,4))
-<console>:48: error: ambiguous implicit values:
+<console>:51: error: ambiguous implicit values:
  both value plusableInt of type => Plusable[Int]
  and value plusableInt2 of type => Plusable[Int]
  match expected type Plusable[Int]
@@ -1278,7 +1311,7 @@ object PlusableInstance {
 
 ```scala
 scala> sumList(List(true, false, false))
-<console>:49: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
+<console>:52: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
        sumList(List(true, false, false))
               ^
 ```
@@ -1423,7 +1456,7 @@ implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
 
 ```scala
 scala> implicit val listSemigroup: Semigroup[List] = ???
-<console>:60: error: type List takes type parameters
+<console>:63: error: type List takes type parameters
        implicit val listSemigroup: Semigroup[List] = ???
                                              ^
 ```
@@ -1461,7 +1494,7 @@ implicit val listFoldable: Foldable[List] = new Foldable[List] {
 
 ```scala
 scala> implicit val intFoldable: Foldable[Int] = ???
-<console>:62: error: Int takes no type parameters, expected: one
+<console>:65: error: Int takes no type parameters, expected: one
        implicit val intFoldable: Foldable[Int] = ???
                                           ^
 ```
