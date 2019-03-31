@@ -529,6 +529,15 @@ res32: Boolean = false
 # Interface
 
 ```scala
+trait Eq[A] {
+  def eqv (a1: A, a2: A): Boolean
+  def neqv(a1: A, a2: A): Boolean = !eqv(a1, a2)
+}
+```
+
+--
+
+```scala
 trait Hash[A] extends Eq[A] {
   def hash(a: A): Int
 }
@@ -543,43 +552,6 @@ val intHash: Hash[Int] = new Hash[Int]{
   def hash(a: Int): Int = a
 }
 ```
-
----
-# Interface
-
-```scala
-trait Hash[A] extends Eq[A] {
-  def hash(a: A): Int
-}
-```
-
-```scala
-import org.scalacheck.Arbitrary
-import org.scalacheck.Prop
-import org.scalacheck.Prop.forAll
-
-def implies(lhs: Boolean, rhs: Boolean): Boolean =
-  !lhs || rhs
-
-def consistentHashEq[A: Arbitrary](x: Hash[A]): Prop =
-  forAll((a1: A, a2: A) =>
-    implies(x.eqv(a1, a2), x.hash(a1) == x.hash(a2))
-  )
-```
-
---
-
-
-
-
-```scala
-scala> consistentHashEq(intHash).check
-+ OK, passed 100 tests.
-
-scala> consistentHashEq(fooHash).check
-+ OK, passed 100 tests.
-```
-
 
 ---
 # Typeclass
@@ -618,17 +590,17 @@ trait Eq[A]{
 
 ```scala
 scala> implicitly[Eq[Int]].eqv(5, 6)
-res35: Boolean = false
+res33: Boolean = false
 
 scala> implicitly[Eq[String]].eqv("Hello", "Hello")
-res36: Boolean = true
+res34: Boolean = true
 ```
 
 --
 
 ```scala
 scala> implicitly[Eq[Double]].eqv(5.5, 5.6)
-<console>:25: error: could not find implicit value for parameter e: Eq[Double]
+<console>:21: error: could not find implicit value for parameter e: Eq[Double]
        implicitly[Eq[Double]].eqv(5.5, 5.6)
                  ^
 ```
@@ -646,7 +618,7 @@ object Global {
 ```
 
 ---
-# Typeclass: Higher order function
+# Typeclass: Constrain
 
 
 ```scala
@@ -664,20 +636,20 @@ def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4,5), 4)
-res38: Boolean = true
+res36: Boolean = true
 
 scala> contains(List("hello","world"), "world")
-res39: Boolean = true
+res37: Boolean = true
 
 scala> contains(List("hello","world"), "foo")
-res40: Boolean = false
+res38: Boolean = false
 ```
 
 --
 
 ```scala
 scala> contains(List(1.0, 2.5, 3.3), 3.2)
-<console>:25: error: could not find implicit value for parameter ev: Eq[Double]
+<console>:21: error: could not find implicit value for parameter ev: Eq[Double]
        contains(List(1.0, 2.5, 3.3), 3.2)
                ^
 ```
@@ -701,13 +673,13 @@ object Eq {
 
 ```scala
 scala> Eq[Int]
-res42: Eq[Int] = $anon$1@5238ffab
+res40: Eq[Int] = $anon$1@67d2c08c
 
 scala> implicitly[Eq[Int]]
-res43: Eq[Int] = $anon$1@5238ffab
+res41: Eq[Int] = $anon$1@67d2c08c
 
 scala> Eq[Int].eqv(5, 5)
-res44: Boolean = true
+res42: Boolean = true
 ```
 
 ---
@@ -738,13 +710,13 @@ implicit class EqSyntax[A](self: A){
 
 ```scala
 scala> 5.eqv(5)
-res45: Boolean = true
+res43: Boolean = true
 
 scala> 5 === 6
-res46: Boolean = false
+res44: Boolean = false
 
 scala> "foo" === "hello"
-res47: Boolean = false
+res45: Boolean = false
 ```
 
 --
@@ -811,7 +783,7 @@ class: center, middle
     <td>U</td>
   </tr>
   <tr>
-    <td align="left">Hierarchy</td>
+    <td align="left">Bundle + Hierarchy</td>
     <td>❌</td>
     <td>✅</td>
     <td>✅</td>
@@ -911,13 +883,13 @@ def plus(a1: String, a2: String): String = a1 + a2
 
 ```scala
 scala> plus(1 , 2)
-res48: Int = 3
+res46: Int = 3
 
 scala> plus(1L, 2L)
-res49: Long = 3
+res47: Long = 3
 
 scala> plus("Hello", "World")
-res50: String = HelloWorld
+res48: String = HelloWorld
 ```
 
 ---
@@ -934,10 +906,10 @@ def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res51: Int = 10
+res49: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res52: String = HelloWorld
+res50: String = HelloWorld
 ```
 
 ---
@@ -961,10 +933,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res53: Int = 10
+res51: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res54: String = HelloWorld
+res52: String = HelloWorld
 ```
 
 ---
@@ -1017,10 +989,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res55: Int = 10
+res53: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res56: String = HelloWorld
+res54: String = HelloWorld
 ```
 
 ---
@@ -1089,20 +1061,20 @@ def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res57: Int = 10
+res55: Int = 10
 
 scala> sumList(List(1.5, 4.3, 9.0))
-res58: Double = 14.8
+res56: Double = 14.8
 
 scala> sumList(List("Hello", "World"))
-res59: String = HelloWorld
+res57: String = HelloWorld
 ```
 
 --
 
 ```scala
 scala> sumList(List(true, true, false))
-<console>:50: error: could not find implicit value for parameter p: Plusable[Boolean]
+<console>:46: error: could not find implicit value for parameter p: Plusable[Boolean]
        sumList(List(true, true, false))
               ^
 ```
@@ -1122,7 +1094,7 @@ def sumList[A: Plusable](xs: List[A]): A = {
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res61: Int = 10
+res59: Int = 10
 ```
 
 ---
@@ -1135,7 +1107,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res62: Plusable[Int] = $anon$1@6d3c0a49
+res60: Plusable[Int] = $anon$1@740e7b7e
 ```
 
 --
@@ -1151,7 +1123,7 @@ implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
 
 ```scala
 scala> implicitly[Plusable[Int]]
-<console>:51: error: ambiguous implicit values:
+<console>:47: error: ambiguous implicit values:
  both value plusableInt of type => Plusable[Int]
  and value plusableInt2 of type => Plusable[Int]
  match expected type Plusable[Int]
@@ -1163,7 +1135,7 @@ scala> implicitly[Plusable[Int]]
 
 ```scala
 scala> sumList(List(1,2,3,4))
-<console>:51: error: ambiguous implicit values:
+<console>:47: error: ambiguous implicit values:
  both value plusableInt of type => Plusable[Int]
  and value plusableInt2 of type => Plusable[Int]
  match expected type Plusable[Int]
@@ -1224,10 +1196,10 @@ val xs = List(2, 5, 0)
 
 ```scala
 scala> sumList(xs.map(Sum(_))).getSum
-res65: Int = 7
+res63: Int = 7
 
 scala> sumList(xs.map(Product(_))).getProduct
-res66: Int = 0
+res64: Int = 0
 ```
 
 ---
@@ -1311,7 +1283,7 @@ object PlusableInstance {
 
 ```scala
 scala> sumList(List(true, false, false))
-<console>:52: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
+<console>:48: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
        sumList(List(true, false, false))
               ^
 ```
@@ -1324,7 +1296,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res68: Boolean = false
+res66: Boolean = false
 ```
 
 ---
@@ -1350,7 +1322,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res69: Boolean = false
+res67: Boolean = false
 ```
 
 --
@@ -1361,7 +1333,7 @@ import OtherPlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res70: Boolean = true
+res68: Boolean = true
 ```
 
 ---
@@ -1456,7 +1428,7 @@ implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
 
 ```scala
 scala> implicit val listSemigroup: Semigroup[List] = ???
-<console>:63: error: type List takes type parameters
+<console>:59: error: type List takes type parameters
        implicit val listSemigroup: Semigroup[List] = ???
                                              ^
 ```
@@ -1494,7 +1466,7 @@ implicit val listFoldable: Foldable[List] = new Foldable[List] {
 
 ```scala
 scala> implicit val intFoldable: Foldable[Int] = ???
-<console>:65: error: Int takes no type parameters, expected: one
+<console>:61: error: Int takes no type parameters, expected: one
        implicit val intFoldable: Foldable[Int] = ???
                                           ^
 ```

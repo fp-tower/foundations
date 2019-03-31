@@ -472,6 +472,15 @@ contains(xs, 3.2)(approx(0.001))
 # Interface
 
 ```tut:silent
+trait Eq[A] {
+  def eqv (a1: A, a2: A): Boolean
+  def neqv(a1: A, a2: A): Boolean = !eqv(a1, a2)
+}
+```
+
+--
+
+```tut:silent
 trait Hash[A] extends Eq[A] {
   def hash(a: A): Int
 }
@@ -486,47 +495,6 @@ val intHash: Hash[Int] = new Hash[Int]{
   def hash(a: Int): Int = a
 }
 ```
-
----
-# Interface
-
-```scala
-trait Hash[A] extends Eq[A] {
-  def hash(a: A): Int
-}
-```
-
-```tut:silent
-import org.scalacheck.Arbitrary
-import org.scalacheck.Prop
-import org.scalacheck.Prop.forAll
-
-def implies(lhs: Boolean, rhs: Boolean): Boolean =
-  !lhs || rhs
-
-def consistentHashEq[A: Arbitrary](x: Hash[A]): Prop =
-  forAll((a1: A, a2: A) =>
-    implies(x.eqv(a1, a2), x.hash(a1) == x.hash(a2))
-  )
-```
-
---
-
-```tut:invisible
-implicit val fooArb: Arbitrary[Foo] =
-   Arbitrary(
-     for {
-       i <- Arbitrary.arbitrary[Int]
-       s <- Arbitrary.arbitrary[String]
-     } yield Foo(i, s)
-   )
-```
-
-```tut
-consistentHashEq(intHash).check
-consistentHashEq(fooHash).check
-```
-
 
 ---
 # Typeclass
@@ -587,7 +555,7 @@ object Global {
 ```
 
 ---
-# Typeclass: Higher order function
+# Typeclass: Constrain
 
 
 ```scala
@@ -738,7 +706,7 @@ class: center, middle
     <td>U</td>
   </tr>
   <tr>
-    <td align="left">Hierarchy</td>
+    <td align="left">Bundle + Hierarchy</td>
     <td>❌</td>
     <td>✅</td>
     <td>✅</td>
