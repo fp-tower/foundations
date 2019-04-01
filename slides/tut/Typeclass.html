@@ -760,6 +760,88 @@ implicit val stringPlusable: Plusable[String] = new Plusable[String] {
 ```
 
 ---
+class: center, middle
+
+# Typeclass Derivation with Generic
+
+---
+# Typeclass Derivation: Product
+
+```tut:silent
+case class Person(name: String, age: Int)
+```
+
+--
+
+```scala
+Person <==> (String, (Int, Unit))
+```
+
+--
+
+```tut:silent
+implicit val intEq   : Eq[Int]    = (a1: Int   , a2: Int   ) => a1 == a2
+implicit val stringEq: Eq[String] = (a1: String, a2: String) => a1 == a2
+implicit val unitEq  : Eq[Unit]   = (a1: Unit  , a2: Unit  ) => true
+```
+
+--
+
+```tut:silent
+implicit def tuple2[A: Eq, B: Eq]: Eq[(A, B)] = new Eq[(A, B)] {
+  def eqv(x: (A, B), y: (A, B)): Boolean =
+    x._1 === y._1 && x._2 === y._2
+}
+```
+
+--
+
+```scala
+Eq[Person] => Eq[(String, (Int, Unit)]
+           => tuple2(Eq[String], Eq[(Int, Unit)])
+           => tuple2(Eq[String], tuple2[Int, Unit])
+           => tuple2(Eq[String], tuple2(Eq[Int], Eq[Unit]))
+```
+
+---
+# Typeclass Derivation: Sum
+
+```tut:silent
+sealed trait Contact
+case class Email(value: String) extends Contact
+case class Address(streetNumber: Int, StreetName: String) extends Contact
+```
+
+--
+
+```scala
+Contact <==> Either[Email, Either[Address, Nothing]]
+```
+
+--
+
+```tut:silent
+implicit val nothingEq: Eq[Nothing] = (a1: Nothing, a2: Nothing) => true
+
+implicit def either[A: Eq, B: Eq]: Eq[Either[A, B]] = new Eq[Either[A, B]] {
+  def eqv(e1: Either[A, B], e2: Either[A, B]): Boolean =
+    (e1, e2) match {
+      case ( Left(a1),  Left(a2)) => a1 === a2
+      case (Right(b1), Right(b2)) => b1 === b2
+      case _                      => false
+    }
+}
+```
+
+--
+
+```scala
+Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
+            => either(Eq[Email], Eq[Either[Address, Nothing]]])
+            => ...
+```
+
+---
 background-image: url(img/typeclass-hierarchy.svg)
 
 ???
