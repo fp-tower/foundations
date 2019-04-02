@@ -731,32 +731,81 @@ class: center, middle
 # Exercises
 
 ---
-# Plusable
+# Folding
 
 ```tut:silent
-trait Plusable[A]{
-  def plus(a1: A, a2: A): A
-  def zero: A
+def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A =
+  fa match {
+    case Nil     => z
+    case x :: xs => monoFoldLeft(xs)(f(z, x))(f)
+  }
+```
+
+--
+
+```tut:silent
+def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A = {
+  var res: A = z
+  val it = fa.iterator
+  while(it.hasNext) res = f(res, it.next())
+  res
+}
+```
+
+---
+# Folding
+
+```tut
+monoFoldLeft(List(1, 2, 3, 4, 5))(0)(_ + _)
+monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))(0.0)(_ + _)
+```
+
+--
+
+
+```tut
+monoFoldLeft(List(1, 2, 3, 4, 5))(1)(_ * _)
+monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MinValue)(_ max _)
+monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MaxValue)(_ min _)
+```
+
+--
+
+```tut
+monoFoldLeft(List("foo", "bar"))("")(_ + _)
+val func = monoFoldLeft(List((_: Int) + 1, (_: Int) * 2))(identity)(_ andThen _)
+func(5)
+```
+
+---
+# Monoid
+
+```tut:silent
+trait Monoid[A]{
+  def combine(a1: A, a2: A): A
+  def empty: A
 }
 
-implicit val intPlusable: Plusable[Int] = new Plusable[Int] {
-  def plus(a1: Int, a2: Int): Int = a1 + a2
-  def zero: Int = 0
+implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
+  def combine(a1: Int, a2: Int): Int = a1 + a2
+  def empty: Int = 0
 }
 
-implicit val longPlusable: Plusable[Long] = new Plusable[Long] {
-  def plus(a1: Long, a2: Long): Long = a1 + a2
-  def zero: Long = 0L
+implicit val longMonoid: Monoid[Long] = new Monoid[Long] {
+  def combine(a1: Long, a2: Long): Long = a1 + a2
+  def empty: Long = 0L
+}
+
+implicit val stringMonoid: Monoid[String] = new Monoid[String] {
+  def combine(a1: String, a2: String): String = a1 + a2
+  def empty: String = ""
 }
 ```
 
 --
 
 ```tut:silent
-implicit val stringPlusable: Plusable[String] = new Plusable[String] {
-  def plus(a1: String, a2: String): String = a1 + a2
-  def zero: String = ""
-}
+def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = ???
 ```
 
 ---
@@ -1202,6 +1251,9 @@ case class Product(getProduct: Int); object Product {
     def zero: Product = Product(1)
   }
 }
+
+def foldMap[A, B](fa: List[A])(f: A => B)(implicit ev: Plusable[B]): B =
+  sumList(fa.map(f))
 ```
 
 --
@@ -1212,8 +1264,8 @@ val xs = List(2, 5, 0)
 ```
 
 ```tut
-sumList(xs.map(Sum(_))).getSum
-sumList(xs.map(Product(_))).getProduct
+foldMap(xs)(Sum(_))
+foldMap(xs)(Product(_))
 ```
 
 ---
