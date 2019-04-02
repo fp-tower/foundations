@@ -91,9 +91,19 @@ scala.MatchError: 1970-01-01T00:00:00Z (of class java.time.Instant)
 ```
 
 ---
-class: center, middle
+# Plan
 
-# What types give us?
+.large[
+* What is the impact of types on our program? How to measure it?
+]
+
+.large[
+* How to select types and tests to write more correct programs
+]
+
+.large[
+* Explore relationship between types, algebra and logic
+]
 
 ---
 background-image: url(img/types-1.jpg)
@@ -174,6 +184,15 @@ def fullAddress(person: Person): Option[String] =
     case (None   , Some(y)) => ???
     case (None   , None   ) => None
   }
+```
+
+
+```scala
+scala> fullAddress(Person("John", Some(108), Some("Canon Street")))
+res4: Option[String] = Some(108 Canon Street)
+
+scala> fullAddress(Person("John", None, None))
+res5: Option[String] = None
 ```
 
 ---
@@ -304,7 +323,7 @@ fifthMarch: java.util.Date = Tue Mar 05 20:36:08 GMT 2019
 
 ```scala
 scala> List(1,2,3,4).size
-res9: Int = 4
+res11: Int = 4
 ```
 
 --
@@ -312,6 +331,11 @@ res9: Int = 4
 ```scala
 def parseJson(json: String): Option[Json] = ???
 ```
+
+---
+class: center, middle
+
+# Function
 
 ---
 background-image: url(img/function.jpg)
@@ -466,7 +490,7 @@ class: center, middle
 
 --
 
-# A case class is called a **Product** type
+# A sase class is called a **Product** type
 
 ---
 class: center, middle
@@ -775,10 +799,13 @@ Either[A, B] => C =~ (A ∨ B) → C
 # Summary
 
 .large[
-* Cardinality of type matter
+* Cardinality of types matter
 ]
 .large[
-* Unit test offer almost no benefit in term of correctness
+* Unit tests offer almost no benefit in term of correctness
+]
+.large[
+* `VIC(f: A => B) = |B| ^ (|A| - n)`
 ]
 .large[
 * Two techniques to achieve correctness:

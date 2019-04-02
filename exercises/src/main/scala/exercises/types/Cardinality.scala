@@ -4,7 +4,7 @@ import answers.types.TypeAnswers
 import exercises.types.ACardinality.{Finite, Infinite}
 import exercises.types.TypeExercises.{Branch, Func, One, Pair, Zero}
 
-// Inspired from https://typelevel.org/blog/2018/11/02/semirings.html
+// Inspired by https://typelevel.org/blog/2018/11/02/semirings.html
 trait Cardinality[A] {
   def cardinality: ACardinality
 }

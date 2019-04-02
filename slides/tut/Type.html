@@ -83,9 +83,19 @@ inc(java.time.Instant.ofEpochMilli(0))
 ```
 
 ---
-class: center, middle
+# Plan
 
-# What types give us?
+.large[
+* What is the impact of types on our program? How to measure it?
+]
+
+.large[
+* How to select types and tests to write more correct programs
+]
+
+.large[
+* Explore relationship between types, algebra and logic
+]
 
 ---
 background-image: url(img/types-1.jpg)
@@ -166,6 +176,12 @@ def fullAddress(person: Person): Option[String] =
     case (None   , Some(y)) => ???
     case (None   , None   ) => None
   }
+```
+
+
+```tut
+fullAddress(Person("John", Some(108), Some("Canon Street")))
+fullAddress(Person("John", None, None))
 ```
 
 ---
@@ -302,6 +318,11 @@ List(1,2,3,4).size
 ```scala
 def parseJson(json: String): Option[Json] = ???
 ```
+
+---
+class: center, middle
+
+# Function
 
 ---
 background-image: url(img/function.jpg)
@@ -765,10 +786,13 @@ Either[A, B] => C =~ (A ∨ B) → C
 # Summary
 
 .large[
-* Cardinality of type matter
+* Cardinality of types matter
 ]
 .large[
-* Unit test offer almost no benefit in term of correctness
+* Unit tests offer almost no benefit in term of correctness
+]
+.large[
+* `VIC(f: A => B) = |B| ^ (|A| - n)`
 ]
 .large[
 * Two techniques to achieve correctness:

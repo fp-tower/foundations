@@ -101,30 +101,30 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
-  // 2b. Implement either
+  // 2c. Implement either
   def either[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[Either[A, B]] =
     new Cardinality[Either[A, B]] {
       def cardinality: ACardinality = ???
     }
 
-  // 2c. Implement tuple2
+  // 2d. Implement tuple2
   def tuple2[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[(A, B)] =
     new Cardinality[(A, B)] {
       def cardinality: ACardinality = ???
     }
 
-  // 2d. How many possible values are of type String?
+  // 2e. How many possible values are of type String?
   val string: Cardinality[String] = new Cardinality[String] {
     def cardinality: ACardinality = ???
   }
 
-  // 2e. Implement func
+  // 2f. Implement func
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
       def cardinality: ACardinality = ???
     }
 
-  // 2f. Implement isAdult1 and isAdult2, which one is better?
+  // 2g. Implement isAdult1 and isAdult2, which one is better?
   def isAdult1: Cardinality[Int => Boolean] = new Cardinality[Int => Boolean] {
     def cardinality: ACardinality = ???
   }
@@ -132,7 +132,7 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
-  // 2g. Implement getCurrency1 and getCurrency2, which one is better?
+  // 2h. Implement getCurrency1 and getCurrency2, which one is better?
   def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
     def cardinality: ACardinality = ???
   }
@@ -142,7 +142,7 @@ object TypeExercises extends TypeToImpl {
   }
 
 
-  // 2h How can we make compareInt more precise? Update the signature of compareInt2
+  // 2i How can we make compareInt more precise? Update the signature of compareInt2
   /** see [[Integer.compare]] */
   def compareInt1(x: Int, y: Int): Int = x - y
 
@@ -150,12 +150,12 @@ object TypeExercises extends TypeToImpl {
 
 
 
-  // 2i. Can you provide two examples of function signature with only one implementation
+  // 2j. Can you provide two examples of function signature with only one implementation
   // i.e. find A1, A2 such as |A1 => A2| = 1
 
 
 
-  // 2j. Can you provide an example of a function signature with no implementation
+  // 2k. Can you provide an example of a function signature with no implementation
   // i.e. find A1, A2 such as |A1 => A2| = 0
 
 
