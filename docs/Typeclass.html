@@ -110,17 +110,13 @@ def isAdult(x: {val age: Int}): Boolean =
   x.age >= 18
 ```
 
---
 
 ```scala
-scala> isAdult(Person("John", 26))
-res2: Boolean = true
-
-scala> isAdult(Person("Rob", 11))
-res3: Boolean = false
+scala> isAdult(Person("John", 14))
+res2: Boolean = false
 
 scala> isAdult(Employee("Eva", 22, "Foo Inc"))
-res4: Boolean = true
+res3: Boolean = true
 ```
 
 ---
@@ -128,33 +124,33 @@ res4: Boolean = true
 
 ```scala
 scala> 2 + 3
-res5: Int = 5
+res4: Int = 5
 
 scala> 2.0 + 3.0
-res6: Double = 5.0
+res5: Double = 5.0
 
 scala> BigDecimal(2) + BigDecimal(3)
-res7: scala.math.BigDecimal = 5
+res6: scala.math.BigDecimal = 5
 ```
 
 --
 
 ```scala
 scala> List(1,2,3).map(_ + 1)
-res8: List[Int] = List(2, 3, 4)
+res7: List[Int] = List(2, 3, 4)
 
 scala> Vector(1,2,3).map(_ + 1)
-res9: scala.collection.immutable.Vector[Int] = Vector(2, 3, 4)
+res8: scala.collection.immutable.Vector[Int] = Vector(2, 3, 4)
 ```
 
 --
 
 ```scala
 scala> Person("John", 34).toString
-res10: String = Person(John,34)
+res9: String = Person(John,34)
 
 scala> false.toString
-res11: String = false
+res10: String = false
 ```
 
 ---
@@ -187,10 +183,10 @@ case class Foo(i: Int, s: String) extends Object {
 
 ```scala
 scala> 5.equals(6)
-res12: Boolean = false
+res11: Boolean = false
 
 scala> Foo(5, "Hello").equals(Foo(5, "Hello"))
-res13: Boolean = true
+res12: Boolean = true
 ```
 
 ---
@@ -215,10 +211,28 @@ case class Foo(i: Int, s: String) extends Object {
 
 ```scala
 scala> Foo(5, "Hello").equals(3)
-res14: Boolean = false
+res13: Boolean = false
 ```
 
---
+---
+# Top Level
+
+```scala
+class Object {
+  def equals(other: Any): Boolean =
+    this == other
+}
+```
+
+```scala
+case class Foo(i: Int, s: String) extends Object {
+  override def equals(obj: Any): Boolean =
+    obj match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
 
 ```scala
 val inc1: Int => Int = _ + 1
@@ -227,7 +241,7 @@ val inc2: Int => Int = _ + 1
 
 ```scala
 scala> inc1.equals(inc2)
-res15: Boolean = false
+res14: Boolean = false
 ```
 
 ---
@@ -278,7 +292,7 @@ case class Foo(i: Int, s: String) extends Eq {
 
 ```scala
 scala> Foo(5, "Hello").eqv(7)
-res16: Boolean = false
+res15: Boolean = false
 ```
 
 --
@@ -388,13 +402,11 @@ def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4,5), 6)(eqv)
-res20: Boolean = false
+res19: Boolean = false
 
 scala> contains(List("hello","world"), "world")(eqv)
-res21: Boolean = true
+res20: Boolean = true
 ```
-
---
 
 ```scala
 scala> contains(List(1,2,3,4,5), "hello")(eqv)
@@ -425,13 +437,13 @@ xs: List[Double] = List(1.0, 2.5, 3.3)
 
 ```scala
 scala> contains(xs, 3.2)(exact)
-res23: Boolean = false
+res22: Boolean = false
 
 scala> contains(xs, 3.2)(approx(0.2))
-res24: Boolean = true
+res23: Boolean = true
 
 scala> contains(xs, 3.2)(approx(0.001))
-res25: Boolean = false
+res24: Boolean = false
 ```
 
 ---
@@ -457,13 +469,11 @@ val intEq: Eq[Int] = new Eq[Int]{
 
 ```scala
 scala> fooEq.eqv(Foo(1, "Hello"), Foo(5, "Hi"))
-res26: Boolean = false
+res25: Boolean = false
 
 scala> intEq.eqv(5, 5)
-res27: Boolean = true
+res26: Boolean = true
 ```
-
---
 
 ```scala
 scala> fooEq.eqv(Foo(1, "Hello"), 3)
@@ -488,11 +498,10 @@ def contains[A](xs: List[A], value: A)(eq: Eq[A]): Boolean =
   xs.foldRight(false)((x, acc) => eq.eqv(x, value) || acc)
 ```
 
---
 
 ```scala
 scala> contains(List(1,2,3,4), 3)(intEq)
-res29: Boolean = true
+res28: Boolean = true
 ```
 
 ---
@@ -516,13 +525,13 @@ xs: List[Double] = List(1.0, 2.5, 3.3)
 
 ```scala
 scala> contains(xs, 3.2)(exact)
-res30: Boolean = false
+res29: Boolean = false
 
 scala> contains(xs, 3.2)(approx(0.2))
-res31: Boolean = true
+res30: Boolean = true
 
 scala> contains(xs, 3.2)(approx(0.001))
-res32: Boolean = false
+res31: Boolean = false
 ```
 
 ---
@@ -590,13 +599,12 @@ trait Eq[A]{
 
 ```scala
 scala> implicitly[Eq[Int]].eqv(5, 6)
-res33: Boolean = false
+res32: Boolean = false
 
 scala> implicitly[Eq[String]].eqv("Hello", "Hello")
-res34: Boolean = true
+res33: Boolean = true
 ```
 
---
 
 ```scala
 scala> implicitly[Eq[Double]].eqv(5.5, 5.6)
@@ -636,16 +644,14 @@ def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4,5), 4)
-res36: Boolean = true
+res35: Boolean = true
 
 scala> contains(List("hello","world"), "world")
-res37: Boolean = true
+res36: Boolean = true
 
 scala> contains(List("hello","world"), "foo")
-res38: Boolean = false
+res37: Boolean = false
 ```
-
---
 
 ```scala
 scala> contains(List(1.0, 2.5, 3.3), 3.2)
@@ -672,14 +678,16 @@ object Eq {
 --
 
 ```scala
-scala> Eq[Int]
-res40: Eq[Int] = $anon$1@1660c64b
-
 scala> implicitly[Eq[Int]]
-res41: Eq[Int] = $anon$1@1660c64b
+res39: Eq[Int] = $anon$1@585b5e2b
 
+scala> Eq[Int]
+res40: Eq[Int] = $anon$1@585b5e2b
+```
+
+```scala
 scala> Eq[Int].eqv(5, 5)
-res42: Boolean = true
+res41: Boolean = true
 ```
 
 ---
@@ -710,13 +718,13 @@ implicit class EqSyntax[A](self: A){
 
 ```scala
 scala> 5.eqv(5)
-res43: Boolean = true
+res42: Boolean = true
 
 scala> 5 === 6
-res44: Boolean = false
+res43: Boolean = false
 
 scala> "foo" === "hello"
-res45: Boolean = false
+res44: Boolean = false
 ```
 
 --
@@ -811,18 +819,18 @@ class: center, middle
 # Folding
 
 ```scala
-def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A =
+def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A =
   fa match {
-    case Nil     => z
-    case x :: xs => monoFoldLeft(xs)(f(z, x))(f)
+    case Nil     => initial
+    case x :: xs => monoFoldLeft(xs)(f(initial, x))(f)
   }
 ```
 
 --
 
 ```scala
-def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A = {
-  var res: A = z
+def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A = {
+  var res: A = initial
   val it = fa.iterator
   while(it.hasNext) res = f(res, it.next())
   res
@@ -834,10 +842,10 @@ def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A = {
 
 ```scala
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))(0)(_ + _)
-res46: Int = 15
+res45: Int = 15
 
 scala> monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))(0.0)(_ + _)
-res47: Double = 16.0
+res46: Double = 16.0
 ```
 
 --
@@ -845,26 +853,26 @@ res47: Double = 16.0
 
 ```scala
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))(1)(_ * _)
-res48: Int = 120
+res47: Int = 120
 
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MinValue)(_ max _)
-res49: Int = 5
+res48: Int = 5
 
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MaxValue)(_ min _)
-res50: Int = 1
+res49: Int = 1
 ```
 
 --
 
 ```scala
 scala> monoFoldLeft(List("foo", "bar"))("")(_ + _)
-res51: String = foobar
+res50: String = foobar
 
 scala> val func = monoFoldLeft(List((_: Int) + 1, (_: Int) * 2))(identity)(_ andThen _)
-func: Int => Int = scala.Function1$$Lambda$3647/585374160@35a8e7e1
+func: Int => Int = scala.Function1$$Lambda$3647/585374160@c3ed659
 
 scala> func(5)
-res52: Int = 12
+res51: Int = 12
 ```
 
 ---
@@ -1027,13 +1035,13 @@ def plus(a1: String, a2: String): String = a1 + a2
 
 ```scala
 scala> plus(1 , 2)
-res53: Int = 3
+res52: Int = 3
 
 scala> plus(1L, 2L)
-res54: Long = 3
+res53: Long = 3
 
 scala> plus("Hello", "World")
-res55: String = HelloWorld
+res54: String = HelloWorld
 ```
 
 ---
@@ -1050,10 +1058,10 @@ def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res56: Int = 10
+res55: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res57: String = HelloWorld
+res56: String = HelloWorld
 ```
 
 ---
@@ -1077,10 +1085,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res58: Int = 10
+res57: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res59: String = HelloWorld
+res58: String = HelloWorld
 ```
 
 ---
@@ -1133,10 +1141,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res60: Int = 10
+res59: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res61: String = HelloWorld
+res60: String = HelloWorld
 ```
 
 ---
@@ -1205,13 +1213,13 @@ def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res62: Int = 10
+res61: Int = 10
 
 scala> sumList(List(1.5, 4.3, 9.0))
-res63: Double = 14.8
+res62: Double = 14.8
 
 scala> sumList(List("Hello", "World"))
-res64: String = HelloWorld
+res63: String = HelloWorld
 ```
 
 --
@@ -1238,7 +1246,7 @@ def sumList[A: Plusable](xs: List[A]): A = {
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res66: Int = 10
+res65: Int = 10
 ```
 
 ---
@@ -1251,7 +1259,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Plusable[Int]]
-res67: Plusable[Int] = $anon$1@94f1968
+res66: Plusable[Int] = $anon$1@5612d585
 ```
 
 --
@@ -1340,10 +1348,10 @@ val xs = List(2, 5, 0)
 
 ```scala
 scala> foldMap(xs)(Sum(_))
-res70: Sum = Sum(7)
+res69: Sum = Sum(7)
 
 scala> foldMap(xs)(Product(_))
-res71: Product = Product(0)
+res70: Product = Product(0)
 ```
 
 ---
@@ -1440,7 +1448,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res73: Boolean = false
+res72: Boolean = false
 ```
 
 ---
@@ -1466,7 +1474,7 @@ import PlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res74: Boolean = false
+res73: Boolean = false
 ```
 
 --
@@ -1477,7 +1485,7 @@ import OtherPlusableInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res75: Boolean = true
+res74: Boolean = true
 ```
 
 ---

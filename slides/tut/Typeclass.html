@@ -107,11 +107,9 @@ def isAdult(x: {val age: Int}): Boolean =
   x.age >= 18
 ```
 
---
 
 ```tut
-isAdult(Person("John", 26))
-isAdult(Person("Rob", 11))
+isAdult(Person("John", 14))
 isAdult(Employee("Eva", 22, "Foo Inc"))
 ```
 
@@ -195,7 +193,25 @@ case class Foo(i: Int, s: String) extends Object {
 Foo(5, "Hello").equals(3)
 ```
 
---
+---
+# Top Level
+
+```scala
+class Object {
+  def equals(other: Any): Boolean =
+    this == other
+}
+```
+
+```tut:silent
+case class Foo(i: Int, s: String) extends Object {
+  override def equals(obj: Any): Boolean =
+    obj match {
+      case x: Foo => i == x.i && s == x.s
+      case _      => false
+    }
+}
+```
 
 ```tut:silent
 val inc1: Int => Int = _ + 1
@@ -363,8 +379,6 @@ contains(List(1,2,3,4,5), 6)(eqv)
 contains(List("hello","world"), "world")(eqv)
 ```
 
---
-
 ```tut:fail
 contains(List(1,2,3,4,5), "hello")(eqv)
 ```
@@ -418,8 +432,6 @@ fooEq.eqv(Foo(1, "Hello"), Foo(5, "Hi"))
 intEq.eqv(5, 5)
 ```
 
---
-
 ```tut:fail
 fooEq.eqv(Foo(1, "Hello"), 3)
 ```
@@ -438,7 +450,6 @@ def contains[A](xs: List[A], value: A)(eq: Eq[A]): Boolean =
   xs.foldRight(false)((x, acc) => eq.eqv(x, value) || acc)
 ```
 
---
 
 ```tut
 contains(List(1,2,3,4), 3)(intEq)
@@ -536,7 +547,6 @@ implicitly[Eq[Int]].eqv(5, 6)
 implicitly[Eq[String]].eqv("Hello", "Hello")
 ```
 
---
 
 ```tut:fail
 implicitly[Eq[Double]].eqv(5.5, 5.6)
@@ -579,8 +589,6 @@ contains(List("hello","world"), "world")
 contains(List("hello","world"), "foo")
 ```
 
---
-
 ```tut:fail
 contains(List(1.0, 2.5, 3.3), 3.2)
 ```
@@ -603,10 +611,11 @@ object Eq {
 --
 
 ```tut
-Eq[Int]
-
 implicitly[Eq[Int]]
+Eq[Int]
+```
 
+```tut
 Eq[Int].eqv(5, 5)
 ```
 
@@ -734,18 +743,18 @@ class: center, middle
 # Folding
 
 ```tut:silent
-def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A =
+def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A =
   fa match {
-    case Nil     => z
-    case x :: xs => monoFoldLeft(xs)(f(z, x))(f)
+    case Nil     => initial
+    case x :: xs => monoFoldLeft(xs)(f(initial, x))(f)
   }
 ```
 
 --
 
 ```tut:silent
-def monoFoldLeft[A](fa: List[A])(z: A)(f: (A, A) => A): A = {
-  var res: A = z
+def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A = {
+  var res: A = initial
   val it = fa.iterator
   while(it.hasNext) res = f(res, it.next())
   res
