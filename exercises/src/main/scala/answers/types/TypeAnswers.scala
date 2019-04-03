@@ -58,8 +58,8 @@ object TypeAnswers extends TypeToImpl {
     def cardinality: ACardinality = boolean.cardinality * byte.cardinality
   }
 
-  val point: Cardinality[Point] = new Cardinality[Point] {
-    def cardinality: ACardinality = int.cardinality * int.cardinality
+  val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
+    def cardinality: ACardinality = int.cardinality * boolean.cardinality
   }
 
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {

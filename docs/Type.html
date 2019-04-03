@@ -49,7 +49,7 @@ Foundation of Functional Programming
 ---
 class: center, middle
 
-# All dynamic languages are static languages with a **single** type
+  # All dynamic languages are static languages with a <span style="color:blue">single</span> type
 
 ---
 class: center, middle
@@ -118,10 +118,10 @@ background-image: url(img/types-1-bis.jpg)
 ---
 class: center, middle
 
-# Cardinality of a type should **exactly** fit business requirement
+  # Cardinality of a type should <span style="color:blue">exactly</span> fit business requirement
 
 ---
-# Type too big: |String| > # Country
+# Type too big
 
 ```scala
 def getCurrency(country: String): String =
@@ -134,7 +134,7 @@ def getCurrency(country: String): String =
 ```
 
 ---
-# Type too big: |String| > # Country
+# Type too big
 
 ```scala
 def getCurrency(country: String): Option[String] =
@@ -486,11 +486,11 @@ IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ---
 class: center, middle
 
-# A sealed trait is called a **Sum** type
+  # A sealed trait is called a <span style="color:blue">Sum</span> type
 
 --
 
-# A sase class is called a **Product** type
+  # A sase class is called a <span style="color:blue">Product</span> type
 
 ---
 class: center, middle
@@ -570,7 +570,7 @@ background-image: url(img/VIC-increment.jpg)
 ---
 class: center, middle
 
-# The smaller VIC is, the more constrained is f
+# The smaller is VIC, the more f is constrained
 
 ---
 background-image: url(img/VIC-1.jpg)
@@ -606,7 +606,6 @@ case object Tuesday extends DayOfWeek
 case object Sunday  extends DayOfWeek
 ```
 
---
 
 ```scala
 val f: DayOfWeek => Boolean = ???
@@ -779,9 +778,9 @@ Either[A, B] => C   <==>   (A => C, B => C)
 ### Algebra
 
 ```scala
-Either[A, B] => C =~ C ^ (A + B)
-                  =  C ^ A * C ^ B
-                  =~ (A => C, B => C)
+Either[A, B] => C = C ^ (A + B)
+                  = C ^ A * C ^ B
+                  = (A => C, B => C)
 ```
 ]
 
@@ -789,9 +788,9 @@ Either[A, B] => C =~ C ^ (A + B)
 ### Logic
 
 ```scala
-Either[A, B] => C =~ (A ∨ B) → C
-                  =  (A → C) ∧ (B → C)
-                  =~ (A => C, B => C)
+Either[A, B] => C = (A ∨ B) → C
+                  = (A → C) ∧ (B → C)
+                  = (A => C, B => C)
 ```
 ]
 
@@ -808,7 +807,7 @@ Either[A, B] => C =~ (A ∨ B) → C
 * `VIC(f: A => B) = |B| ^ (|A| - n)`
 ]
 .large[
-* Two techniques to achieve correctness:
+* Two techniques to achieve correctness
    * Property based testing
    * Parametric polymorphism
 ]

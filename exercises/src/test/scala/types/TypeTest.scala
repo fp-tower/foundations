@@ -21,8 +21,8 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
     intOrBoolean.cardinality shouldEqual Finite(BigInt(2).pow(32) + 2)
   }
 
-  test("point") {
-    point.cardinality shouldEqual Finite(BigInt(2).pow(64))
+  test("intAndBoolean") {
+    intAndBoolean.cardinality shouldEqual Finite(BigInt(2).pow(33))
   }
 
   test("option") {

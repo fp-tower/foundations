@@ -57,8 +57,8 @@ object TypeExercises extends TypeToImpl {
     def cardinality: ACardinality = ???
   }
 
-  // 1g. How many possible values are of type Point?
-  val point: Cardinality[Point] = new Cardinality[Point] {
+  // 1g. How many possible values are of type IntAndBoolean?
+  val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
     def cardinality: ACardinality = ???
   }
 

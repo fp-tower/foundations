@@ -1,6 +1,6 @@
 package toimpl.types
 
-import exercises.types.{Cardinality, IntOrBoolean, Iso, Point}
+import exercises.types.{Cardinality, IntOrBoolean, Iso, IntAndBoolean}
 
 trait TypeToImpl {
 
@@ -22,7 +22,7 @@ trait TypeToImpl {
 
   val boolByte: Cardinality[(Boolean, Byte)]
 
-  val point: Cardinality[Point]
+  val intAndBoolean: Cardinality[IntAndBoolean]
 
   val listUnit: Cardinality[List[Unit]]
 
