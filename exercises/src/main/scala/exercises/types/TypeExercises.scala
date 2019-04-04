@@ -199,15 +199,22 @@ object TypeExercises extends TypeToImpl {
   // 4b. How many implementations exist for mapOption
   def mapOption[A, B](opt: Option[A])(f: A => B): Option[B] = ???
 
-  // 4c. How many implementations exist for flatMapOption
+  // 4c. How many implementations exist for mapOptionIntToBool
+  def mapOptionIntToBool(opt: Option[Int])(f: Int => Boolean): Option[Boolean] = ???
+
+  // 4d. How many implementations exist for flatMapOption
   def flatMapOption[A, B](opt: Option[A])(f: A => Option[B]): Option[B] = ???
 
-  // 4d. How many implementations exist for mapList
+  // 4e. How would you test mapOption and flatMapOption to achieve a VIC of 1
+
+  // 4f. How many implementations exist for mapList
   def mapList[A, B](xs: List[A])(f: A => B): List[B] = ???
 
 
-  // 4e. Can you think of a property that would help reduce the number of implementations of mapList
-  // checkout this article:
+  // 4g. How would you test mapList to achieve a VIC of 1
+
+
+  // Further reading on parametrictity
   // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
 
 
