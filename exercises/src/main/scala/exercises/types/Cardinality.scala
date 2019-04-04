@@ -1,56 +1,78 @@
 package exercises.types
 
+import cats.implicits._
 import answers.types.TypeAnswers
-import exercises.types.ACardinality.{Finite, Infinite}
+import exercises.types.Card._
 import exercises.types.TypeExercises.{Branch, Func, One, Pair, Zero}
 
 // Inspired by https://typelevel.org/blog/2018/11/02/semirings.html
 trait Cardinality[A] {
-  def cardinality: ACardinality
+  def cardinality: Card
 }
 
-object ACardinality {
-  case class Finite(value: BigInt) extends ACardinality
-  case object Infinite extends ACardinality
-}
+sealed trait Card {
 
-sealed trait ACardinality {
-  def *(other: ACardinality): ACardinality =
-    (this, other) match {
-      case (Finite(x), Finite(y)) => Finite(x * y)
-      case (Finite(x), Infinite ) => if(x == 0) Finite(0) else Infinite
-      case (Infinite , Finite(x)) => if(x == 0) Finite(0) else Infinite
-      case (Infinite , Infinite ) => Infinite
+  def +(other: Card): Card = Plus(this, other)
+  def *(other: Card): Card = Times(this, other)
+  def ^(other: Card): Card = Pow(this, other)
+
+  def eval: Option[BigInt] =
+    simplify match {
+      case Lit(x)      => x.some
+      case Plus(x, y)  => (x.eval, y.eval).mapN(_ + _)
+      case Times(x, y) => (x.eval, y.eval).mapN(_ * _)
+      case Pow(x, y)   => (x.eval, y.eval.filter(_.isValidInt).map(_.toInt)).mapN(_ pow _)
+      case Inf         => None
     }
 
-  def +(other: ACardinality): ACardinality =
-    (this, other) match {
-      case (Finite(x), Finite(y)) => Finite(x + y)
-      case (Finite(_), Infinite) | (Infinite, Finite(_)) | (Infinite, Infinite) => Infinite
+  def simplify: Card =
+    this match {
+      case Lit(_)     => this
+      case Plus(x, y) =>
+        val xs = x.simplify
+        val ys = y.simplify
+        if(xs == Lit(0)) ys
+        else if(ys == Lit(0)) xs
+        else if(xs == Inf || ys == Inf) Inf
+        else Plus(xs, ys)
+      case Times(x, y) =>
+        val xs = x.simplify
+        val ys = y.simplify
+        if(xs == Lit(0) || ys == Lit(0)) Lit(0)
+        else if(xs == Lit(1)) ys
+        else if(ys == Lit(1)) xs
+        else if(xs == Inf || ys == Inf) Inf
+        else Times(xs, ys)
+      case Pow(x, y) =>
+        val xs = x.simplify
+        val ys = y.simplify
+        if(ys == Lit(0)) Lit(1)
+        else if(xs == Lit(0) || xs == Lit(1)) xs
+        else if(xs == Inf || ys == Inf) Inf
+        else Pow(xs, ys)
+      case Inf => Inf
     }
 
-  def ^(other: ACardinality): ACardinality =
-    (this, other) match {
-      case (Finite(x), Finite(y)) =>
-        if(x == 0 || x == 1) Finite(x)
-        else if(y == 0) Finite(1)
-        else if(y.isValidInt) Finite(x.pow(y.toInt))
-        else Infinite // TODO more precise, maybe capture Pow(x, y)
-      case (Finite(x), Infinite ) => if(x == 0 || x == 1) Finite(x) else Infinite
-      case (Infinite , Finite(x)) => if(x == 0) Finite(1) else Infinite
-      case (Infinite , Infinite ) => Infinite
-    }
-
-  override def toString: String = this match {
-    case Finite(x) => x.toString()
-    case Infinite  => "∞"
+  override def toString: String = simplify match {
+    case Lit(x)      => x.toString()
+    case Plus(x, y)  => s"($x + $y)"
+    case Times(x, y) => s"($x * $y)"
+    case Pow(x, y)   => s"($x ^ $y)"
+    case Inf         => "∞"
   }
 }
 
+object Card {
+  case class Lit(value: BigInt) extends Card
+  case class Plus(lhs: Card, rhs: Card) extends Card
+  case class Times(lhs: Card, rhs: Card) extends Card
+  case class Pow(lhs: Card, rhs: Card) extends Card
+  case object Inf extends Card
+}
 
 
 object Cardinality {
-  def of[A: Cardinality]: ACardinality = apply[A].cardinality
+  def of[A: Cardinality]: Card = apply[A].cardinality
 
   def apply[A: Cardinality]: Cardinality[A] = implicitly
 
@@ -102,14 +124,14 @@ object Cardinality {
     TypeAnswers.boolean
 
   implicit val longCardinality: Cardinality[Long] = new Cardinality[Long] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(64))
+    def cardinality: Card = Lit(2) ^ Lit(64)
   }
 
   implicit val intCardinality: Cardinality[Int] =
     TypeAnswers.int
 
   implicit val shortCardinality: Cardinality[Short] = new Cardinality[Short] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(16))
+    def cardinality: Card = Lit(2) ^ Lit(16)
   }
 
   implicit val byteCardinality: Cardinality[Byte] =
@@ -126,26 +148,26 @@ object Cardinality {
 
   implicit def pairCardinality[A: Cardinality, B: Cardinality]: Cardinality[Pair[A, B]] =
     new Cardinality[Pair[A, B]] {
-      def cardinality: ACardinality = Cardinality.of[(A, B)]
+      def cardinality: Card = Cardinality.of[(A, B)]
     }
 
   implicit def branchCardinality[A: Cardinality, B: Cardinality]: Cardinality[Branch[A, B]] =
     new Cardinality[Branch[A, B]] {
-      def cardinality: ACardinality = Cardinality.of[Either[A, B]]
+      def cardinality: Card = Cardinality.of[Either[A, B]]
     }
 
   implicit def funcCardinality[A: Cardinality, B: Cardinality]: Cardinality[Func[A, B]] =
     new Cardinality[Func[A, B]] {
-      def cardinality: ACardinality = Cardinality.of[A => B]
+      def cardinality: Card = Cardinality.of[A => B]
     }
 
   implicit val zeroCardinality: Cardinality[Zero] =
     new Cardinality[Zero] {
-      def cardinality: ACardinality = Cardinality.of[Nothing]
+      def cardinality: Card = Cardinality.of[Nothing]
     }
 
   implicit val oneCardinality: Cardinality[One.type] =
     new Cardinality[One.type] {
-      def cardinality: ACardinality = Cardinality.of[Unit]
+      def cardinality: Card = Cardinality.of[Unit]
     }
 }

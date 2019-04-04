@@ -1,7 +1,7 @@
 package exercises.types
 
-import ACardinality.Finite
 import eu.timepit.refined.types.numeric.PosInt
+import exercises.types.Card._
 import toimpl.types.TypeToImpl
 
 // You can run and print things here
@@ -14,77 +14,77 @@ object TypeApp extends App {
 object TypeExercises extends TypeToImpl {
 
   val boolean = new Cardinality[Boolean] {
-    def cardinality: ACardinality = Finite(2)
+    def cardinality: Card = Lit(2)
   }
 
   val int: Cardinality[Int] = new Cardinality[Int] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(32))
+    def cardinality: Card = Lit(2) ^ Lit(32)
   }
 
   // 1. Cardinality
 
   // 1a. How many possible values are of type Unit?
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1b. How many possible values are of type Byte?
   val byte: Cardinality[Byte] = new Cardinality[Byte] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1c. How many possible values are of type Option[Unit]?
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1d. How many possible values are of type Option[Boolean]?
   val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1e. How many possible values are of type (Boolean, Unit)?
   val boolUnit: Cardinality[(Boolean, Unit)] = new Cardinality[(Boolean, Unit)] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1f. How many possible values are of type (Boolean, Byte)?
   val boolByte: Cardinality[(Boolean, Byte)] = new Cardinality[(Boolean, Byte)] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1g. How many possible values are of type IntAndBoolean?
   val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1h. How many possible values are of type List[Unit]?
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1j. How many possible values are of type Nothing?
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1k. How many possible values are of type Option[Nothing]?
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1l. How many possible values are of type (Boolean, Nothing)?
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 1m. How many possible values are of type Any?
   val any: Cardinality[Any] = new Cardinality[Any] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
 
@@ -93,52 +93,52 @@ object TypeExercises extends TypeToImpl {
   // 2a. Implement option that derives the cardinality of Option[A] from A
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {
-      def cardinality: ACardinality = ???
+      def cardinality: Card = ???
     }
 
   // 2b. Implement list
   def list[A](a: Cardinality[A]): Cardinality[List[A]] = new Cardinality[List[A]] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 2c. Implement either
   def either[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[Either[A, B]] =
     new Cardinality[Either[A, B]] {
-      def cardinality: ACardinality = ???
+      def cardinality: Card = ???
     }
 
   // 2d. Implement tuple2
   def tuple2[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[(A, B)] =
     new Cardinality[(A, B)] {
-      def cardinality: ACardinality = ???
+      def cardinality: Card = ???
     }
 
   // 2e. How many possible values are of type String?
   val string: Cardinality[String] = new Cardinality[String] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 2f. Implement func
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
-      def cardinality: ACardinality = ???
+      def cardinality: Card = ???
     }
 
   // 2g. Implement isAdult1 and isAdult2, which one is better?
   def isAdult1: Cardinality[Int => Boolean] = new Cardinality[Int => Boolean] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
   def isAdult2: Cardinality[PosInt => Boolean] = new Cardinality[PosInt => Boolean] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   // 2h. Implement getCurrency1 and getCurrency2, which one is better?
   def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
   def getCurrency2: Cardinality[Country => Currency] = new Cardinality[Country => Currency] {
-    def cardinality: ACardinality = ???
+    def cardinality: Card = ???
   }
 
 

@@ -3,7 +3,7 @@ package answers.types
 import answers.types.Comparison._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
-import exercises.types.ACardinality.{Finite, Infinite}
+import exercises.types.Card._
 import exercises.types.TypeExercises.{Branch, Func, One, Pair}
 import exercises.types._
 import toimpl.types.TypeToImpl
@@ -19,101 +19,101 @@ object TypeAnswers extends TypeToImpl {
   type Eight  = Func[Three, Two]
 
   val boolean: Cardinality[Boolean] = new Cardinality[Boolean] {
-    def cardinality: ACardinality = Finite(2)
+    def cardinality: Card = Lit(2)
   }
 
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
-    def cardinality: ACardinality = Finite(1)
+    def cardinality: Card = Lit(1)
   }
 
   val byte: Cardinality[Byte] = new Cardinality[Byte] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(8))
+    def cardinality: Card = Lit(2) ^ Lit(8)
   }
 
   val char: Cardinality[Char] = new Cardinality[Char] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(16))
+    def cardinality: Card = Lit(2) ^ Lit(16)
   }
 
   val int: Cardinality[Int] = new Cardinality[Int] {
-    def cardinality: ACardinality = Finite(BigInt(2).pow(32))
+    def cardinality: Card = Lit(2) ^ Lit(32)
   }
 
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
-    def cardinality: ACardinality = unit.cardinality + Finite(1)
+    def cardinality: Card = unit.cardinality + Lit(1)
   }
 
   val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
-    def cardinality: ACardinality = boolean.cardinality + Finite(1)
+    def cardinality: Card = boolean.cardinality + Lit(1)
   }
 
   val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
-    def cardinality: ACardinality = int.cardinality + boolean.cardinality
+    def cardinality: Card = int.cardinality + boolean.cardinality
   }
 
   val boolUnit: Cardinality[(Boolean, Unit)] = new Cardinality[(Boolean, Unit)] {
-    def cardinality: ACardinality = boolean.cardinality
+    def cardinality: Card = boolean.cardinality
   }
 
   val boolByte: Cardinality[(Boolean, Byte)] = new Cardinality[(Boolean, Byte)] {
-    def cardinality: ACardinality = boolean.cardinality * byte.cardinality
+    def cardinality: Card = boolean.cardinality * byte.cardinality
   }
 
   val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
-    def cardinality: ACardinality = int.cardinality * boolean.cardinality
+    def cardinality: Card = int.cardinality * boolean.cardinality
   }
 
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
-    def cardinality: ACardinality = Infinite
+    def cardinality: Card = Inf
   }
 
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
-    def cardinality: ACardinality = Finite(0)
+    def cardinality: Card = Lit(0)
   }
 
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
-    def cardinality: ACardinality = nothing.cardinality + Finite(1)
+    def cardinality: Card = nothing.cardinality + Lit(1)
   }
 
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
-    def cardinality: ACardinality = boolean.cardinality * nothing.cardinality
+    def cardinality: Card = boolean.cardinality * nothing.cardinality
   }
 
   val any: Cardinality[Any] = new Cardinality[Any] {
-    def cardinality: ACardinality = Infinite
+    def cardinality: Card = Inf
   }
 
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {
-      def cardinality: ACardinality = a.cardinality + Finite(1)
+      def cardinality: Card = a.cardinality + Lit(1)
     }
 
   def list[A](a: Cardinality[A]): Cardinality[List[A]] =
     new Cardinality[List[A]] {
-      def cardinality: ACardinality =
-        if(a.cardinality == Finite(0)) Finite(1)
-        else Infinite
+      def cardinality: Card =
+        if(a.cardinality == Lit(0)) Lit(1)
+        else Inf
     }
 
   def either[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[Either[A, B]] =
     new Cardinality[Either[A, B]] {
-      def cardinality: ACardinality = a.cardinality + b.cardinality
+      def cardinality: Card = a.cardinality + b.cardinality
     }
 
   def tuple2[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[(A, B)] =
     new Cardinality[(A, B)] {
-      def cardinality: ACardinality = a.cardinality * b.cardinality
+      def cardinality: Card = a.cardinality * b.cardinality
     }
 
   val string: Cardinality[String] = new Cardinality[String] {
-    def cardinality: ACardinality =
-      0.to(Int.MaxValue).foldLeft(Finite(BigInt(0)): ACardinality)((acc, i) =>
-        acc + (char.cardinality ^ Finite(i))
+    def cardinality: Card =
+      0.to(Int.MaxValue).foldLeft(Lit(BigInt(0)): Card)((acc, i) =>
+        acc + (char.cardinality ^ Lit(i))
       )
   }
 
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
-      def cardinality: ACardinality = b.cardinality ^ a.cardinality
+      def cardinality: Card = b.cardinality ^ a.cardinality
     }
 
 

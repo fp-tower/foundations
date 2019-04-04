@@ -3,7 +3,6 @@ package types
 import answers.types.TypeAnswers
 import cats.implicits._
 import cats.kernel.Eq
-import exercises.types.ACardinality.{Finite, Infinite}
 import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
 import org.scalatest.{FunSuite, Matchers}
@@ -14,48 +13,48 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
   import impl._
 
   test("boolean - optUnit") {
-    boolean.cardinality shouldEqual optUnit.cardinality
+    boolean.cardinality.eval shouldEqual optUnit.cardinality.eval
   }
 
   test("intOrBoolean") {
-    intOrBoolean.cardinality shouldEqual Finite(BigInt(2).pow(32) + 2)
+    intOrBoolean.cardinality.eval shouldEqual (BigInt(2).pow(32) + 2).some
   }
 
   test("intAndBoolean") {
-    intAndBoolean.cardinality shouldEqual Finite(BigInt(2).pow(33))
+    intAndBoolean.cardinality.eval shouldEqual BigInt(2).pow(33).some
   }
 
   test("option") {
-    option(boolean).cardinality shouldEqual Finite(3)
-    option(unit).cardinality    shouldEqual Finite(2)
+    option(boolean).cardinality.eval shouldEqual BigInt(3).some
+    option(unit).cardinality.eval    shouldEqual BigInt(2).some
   }
 
   test("list") {
-    list(boolean).cardinality shouldEqual Infinite
-    list[Nothing](nothing).cardinality shouldEqual Finite(1)
+    list(boolean).cardinality.eval shouldEqual None
+    list[Nothing](nothing).cardinality.eval shouldEqual BigInt(1).some
   }
 
   test("either") {
-    either(boolean, unit).cardinality shouldEqual Finite(3)
-    either(byte, boolean).cardinality shouldEqual Finite(258)
-    either(unit, listUnit).cardinality shouldEqual Infinite
-    either[Unit, Nothing](unit, nothing).cardinality shouldEqual Finite(1)
+    either(boolean, unit).cardinality.eval shouldEqual BigInt(3).some
+    either(byte, boolean).cardinality.eval shouldEqual BigInt(258).some
+    either(unit, listUnit).cardinality.eval shouldEqual None
+    either[Unit, Nothing](unit, nothing).cardinality.eval shouldEqual BigInt(1).some
   }
 
   test("tuple2") {
-    tuple2(boolean, unit).cardinality shouldEqual Finite(2)
-    tuple2(byte, boolean).cardinality shouldEqual Finite(512)
-    tuple2(byte, boolean).cardinality shouldEqual Finite(512)
-    tuple2[Nothing, List[Boolean]](nothing, list(boolean)).cardinality shouldEqual Finite(0)
-    tuple2[List[Boolean], Nothing](list(boolean), nothing).cardinality shouldEqual Finite(0)
+    tuple2(boolean, unit).cardinality.eval shouldEqual BigInt(2).some
+    tuple2(byte, boolean).cardinality.eval shouldEqual BigInt(512).some
+    tuple2(byte, boolean).cardinality.eval shouldEqual BigInt(512).some
+    tuple2[Nothing, List[Boolean]](nothing, list(boolean)).cardinality.eval shouldEqual BigInt(0).some
+    tuple2[List[Boolean], Nothing](list(boolean), nothing).cardinality.eval shouldEqual BigInt(0).some
   }
 
   test("func") {
-    func(boolean, boolean).cardinality shouldEqual Finite(4)
-    func(boolean, unit).cardinality shouldEqual Finite(1)
-    func[Nothing, List[Boolean]](nothing, list(boolean)).cardinality shouldEqual Finite(1)
-    func(list(boolean), unit).cardinality shouldEqual Finite(1)
-    func[List[Boolean], Nothing](list(boolean), nothing).cardinality shouldEqual Finite(0)
+    func(boolean, boolean).cardinality.eval shouldEqual BigInt(4).some
+    func(boolean, unit).cardinality.eval shouldEqual BigInt(1).some
+    func[Nothing, List[Boolean]](nothing, list(boolean)).cardinality.eval shouldEqual BigInt(1).some
+    func(list(boolean), unit).cardinality.eval shouldEqual BigInt(1).some
+    func[List[Boolean], Nothing](list(boolean), nothing).cardinality.eval shouldEqual BigInt(0).some
   }
 
   checkAll("a * 1 == a", IsoLaws(aUnitToA[Int]))
@@ -79,23 +78,23 @@ class TypeExercisesTest extends TypeToImplTest(TypeExercises) {
   import TypeExercises._
 
   test("Two") {
-    Cardinality.of[Two] shouldEqual Finite(2)
+    Cardinality.of[Two].eval shouldEqual BigInt(2).some
   }
 
   test("Three") {
-    Cardinality.of[Three] shouldEqual Finite(3)
+    Cardinality.of[Three].eval shouldEqual BigInt(3).some
   }
 
   test("Four") {
-    Cardinality.of[Four] shouldEqual Finite(4)
+    Cardinality.of[Four].eval shouldEqual BigInt(4).some
   }
 
   test("Five") {
-    Cardinality.of[Five] shouldEqual Finite(5)
+    Cardinality.of[Five].eval shouldEqual BigInt(5).some
   }
 
   test("Eight") {
-    Cardinality.of[Eight] shouldEqual Finite(8)
+    Cardinality.of[Eight].eval shouldEqual BigInt(8).some
   }
 
 }
@@ -104,25 +103,25 @@ class TypeAnswersTest extends TypeToImplTest(TypeAnswers) {
   import TypeAnswers._
 
   test("Two") {
-    Cardinality.of[Two] shouldEqual Finite(2)
+    Cardinality.of[Two].eval shouldEqual BigInt(2).some
   }
 
   test("Three") {
-    Cardinality.of[Three] shouldEqual Finite(3)
+    Cardinality.of[Three].eval shouldEqual BigInt(3).some
   }
 
   test("Four") {
-    Cardinality.of[Four_1] shouldEqual Finite(4)
-    Cardinality.of[Four_2] shouldEqual Finite(4)
+    Cardinality.of[Four_1].eval shouldEqual BigInt(4).some
+    Cardinality.of[Four_2].eval shouldEqual BigInt(4).some
   }
 
   test("Five") {
-    Cardinality.of[Five_1] shouldEqual Finite(5)
-    Cardinality.of[Five_2] shouldEqual Finite(5)
+    Cardinality.of[Five_1].eval shouldEqual BigInt(5).some
+    Cardinality.of[Five_2].eval shouldEqual BigInt(5).some
   }
 
   test("Eight") {
-    Cardinality.of[Eight] shouldEqual Finite(8)
+    Cardinality.of[Eight].eval shouldEqual BigInt(8).some
   }
 
 }
