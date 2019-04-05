@@ -679,10 +679,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@585b5e2b
+res39: Eq[Int] = $anon$1@30bf6659
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@585b5e2b
+res40: Eq[Int] = $anon$1@30bf6659
 ```
 
 ```scala
@@ -869,7 +869,7 @@ scala> monoFoldLeft(List("foo", "bar"))("")(_ + _)
 res50: String = foobar
 
 scala> val func = monoFoldLeft(List((_: Int) + 1, (_: Int) * 2))(identity)(_ andThen _)
-func: Int => Int = scala.Function1$$Lambda$3647/585374160@c3ed659
+func: Int => Int = scala.Function1$$Lambda$3647/585374160@66948835
 
 scala> func(5)
 res51: Int = 12
@@ -1092,10 +1092,10 @@ res58: String = HelloWorld
 ```
 
 ---
-# Plusable
+# Monoid
 
 ```scala
-trait Plusable[A]{
+trait Monoid[A]{
   def plus(a1: A, a2: A): A
   def zero: A
 }
@@ -1104,36 +1104,36 @@ trait Plusable[A]{
 --
 
 ```scala
-val plusableInt: Plusable[Int] = new Plusable[Int]{
+val MonoidInt: Monoid[Int] = new Monoid[Int]{
   def plus(a1: Int, a2: Int): Int = a1 + a2
   def zero: Int = 0
 }
 
-val plusableLong: Plusable[Long] = new Plusable[Long]{
+val MonoidLong: Monoid[Long] = new Monoid[Long]{
   def plus(a1: Long, a2: Long): Long = a1 + a2
   def zero: Long = 0
 }
 
-val plusableString: Plusable[String] = new Plusable[String]{
+val MonoidString: Monoid[String] = new Monoid[String]{
   def plus(a1: String, a2: String): String = a1 + a2
   def zero: String = ""
 }
 ```
 
 ---
-# Plusable
+# Monoid
 
 ```scala
-def sumListGen[A](xs: List[A])(p: Plusable[A]): A =
+def sumListGen[A](xs: List[A])(p: Monoid[A]): A =
   xs.foldLeft(p.zero)(p.plus)
 ```
 
 --
 
 ```scala
-def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(plusableInt)
-def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(plusableLong)
-def sumList(xs: List[String]): String = sumListGen(xs)(plusableString)
+def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(MonoidInt)
+def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(MonoidLong)
+def sumList(xs: List[String]): String = sumListGen(xs)(MonoidString)
 ```
 
 
@@ -1150,17 +1150,17 @@ res60: String = HelloWorld
 ---
 class: center, middle
 
-# Plusable is unique for a type
+# Monoid is unique for a type
 
 ---
-# Plusable is unique for a type
+# Monoid is unique for a type
 
 ```scala
 object Global {
-  val plusableMapping: Map[x: Type, Plusable[x]] := Map(
-    Int    -> new Plusable[Int]{...},
-    Long   -> new Plusable[Long]{...},
-    String -> new Plusable[String]{...}
+  val MonoidMapping: Map[x: Type, Monoid[x]] := Map(
+    Int    -> new Monoid[Int]{...},
+    Long   -> new Monoid[Long]{...},
+    String -> new Monoid[String]{...}
   )
 }
 ```
@@ -1169,7 +1169,7 @@ object Global {
 
 ```scala
 def sumList[A](xs: List[A]): A =
-  Global.plusableMapping.get(A) match {
+  Global.MonoidMapping.get(A) match {
     case None    => sys.error("compile error")
     case Some(p) => xs.foldLeft(p.zero)(p.plus)
   }
@@ -1181,7 +1181,7 @@ def sumList[A](xs: List[A]): A =
 ## 1. Interface (the typeclass)
 
 ```scala
-trait Plusable[A]{
+trait Monoid[A]{
   def plus(a1: A, a2: A): A
   def zero: A
 }
@@ -1192,7 +1192,7 @@ trait Plusable[A]{
 ## 2. Implicit value (instance of a typeclass)
 
 ```scala
-implicit val plusableInt: Plusable[Int] = new Plusable[Int]{
+implicit val MonoidInt: Monoid[Int] = new Monoid[Int]{
   def plus(a1: Int, a2: Int): Int = a1 + a2
   def zero: Int = 0
 }
@@ -1202,7 +1202,7 @@ implicit val plusableInt: Plusable[Int] = new Plusable[Int]{
 # SumList using typeclass
 
 ```scala
-def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
+def sumList[A](xs: List[A])(implicit p: Monoid[A]): A =
   xs.foldLeft(p.zero)(p.plus)
 ```
 
@@ -1226,7 +1226,7 @@ res63: String = HelloWorld
 
 ```scala
 scala> sumList(List(true, true, false))
-<console>:52: error: could not find implicit value for parameter p: Plusable[Boolean]
+<console>:52: error: could not find implicit value for parameter p: Monoid[Boolean]
        sumList(List(true, true, false))
               ^
 ```
@@ -1235,11 +1235,11 @@ scala> sumList(List(true, true, false))
 # SumList using typeclass context bound
 
 ```scala
-def sumList[A](xs: List[A])(implicit p: Plusable[A]): A =
+def sumList[A](xs: List[A])(implicit p: Monoid[A]): A =
   xs.foldLeft(p.zero)(p.plus)
 
-def sumList[A: Plusable](xs: List[A]): A = {
-  val p = implicitly[Plusable[A]]
+def sumList[A: Monoid](xs: List[A]): A = {
+  val p = implicitly[Monoid[A]]
   xs.foldLeft(p.zero)(p.plus)
 }
 ```
@@ -1258,14 +1258,14 @@ class: center, middle
 # Uniqueness
 
 ```scala
-scala> implicitly[Plusable[Int]]
-res66: Plusable[Int] = $anon$1@5612d585
+scala> implicitly[Monoid[Int]]
+res66: Monoid[Int] = $anon$1@6a32f664
 ```
 
 --
 
 ```scala
-implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
+implicit val MonoidInt2: Monoid[Int] = new Monoid[Int]{
   def plus(a1: Int, a2: Int): Int = (a1 + a2).abs
   def zero: Int = 0
 }
@@ -1274,12 +1274,12 @@ implicit val plusableInt2: Plusable[Int] = new Plusable[Int]{
 --
 
 ```scala
-scala> implicitly[Plusable[Int]]
+scala> implicitly[Monoid[Int]]
 <console>:53: error: ambiguous implicit values:
- both value plusableInt of type => Plusable[Int]
- and value plusableInt2 of type => Plusable[Int]
- match expected type Plusable[Int]
-       implicitly[Plusable[Int]]
+ both value MonoidInt of type => Monoid[Int]
+ and value MonoidInt2 of type => Monoid[Int]
+ match expected type Monoid[Int]
+       implicitly[Monoid[Int]]
                  ^
 ```
 
@@ -1288,9 +1288,9 @@ scala> implicitly[Plusable[Int]]
 ```scala
 scala> sumList(List(1,2,3,4))
 <console>:53: error: ambiguous implicit values:
- both value plusableInt of type => Plusable[Int]
- and value plusableInt2 of type => Plusable[Int]
- match expected type Plusable[Int]
+ both value MonoidInt of type => Monoid[Int]
+ and value MonoidInt2 of type => Monoid[Int]
+ match expected type Monoid[Int]
        sumList(List(1,2,3,4))
               ^
 ```
@@ -1304,12 +1304,12 @@ class: center, middle
 # Non unique instance
 
 ```scala
-val sumPlusable: Plusable[Int] = new Plusable[Int]{
+val sumMonoid: Monoid[Int] = new Monoid[Int]{
   def plus(a1: Int, a2: Int): Int = a1 + a2
   def zero: Int = 0
 }
 
-val productPlusable: Plusable[Int] = new Plusable[Int]{
+val productMonoid: Monoid[Int] = new Monoid[Int]{
   def plus(a1: Int, a2: Int): Int = a1 * a2
   def zero: Int = 1
 }
@@ -1321,7 +1321,7 @@ val productPlusable: Plusable[Int] = new Plusable[Int]{
 ```scala
 case class Sum(getSum: Int)
 object Sum {
-  implicit val plusable: Plusable[Sum] = new Plusable[Sum]{
+  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
     def plus(a1: Sum, a2: Sum): Sum = Sum(a1.getSum + a2.getSum)
     def zero: Sum = Sum(0)
   }
@@ -1329,7 +1329,7 @@ object Sum {
 
 case class Product(getProduct: Int)
 object Product {
-  implicit val plusable: Plusable[Product] = new Plusable[Product]{
+  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
     def plus(a1: Product, a2: Product): Product = Product(a1.getProduct * a2.getProduct)
     def zero: Product = Product(1)
   }
@@ -1360,7 +1360,7 @@ res70: Product = Product(0)
 * Define an instance for the most common case (very dodgy)
 
 ```scala
-implicit val intPlusable: Plusable[Int] = new Plusable[Int]{
+implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
   def plus(a1: Int, a2: Int): Int = a1 + a2
   def zero: Int = 0
 }
@@ -1380,7 +1380,7 @@ class: center, middle
 case class Metrics(ordersCreated: Long, ordersDeleted: Long)
 
 object Metrics {
-  implicit val plusable: Plusable[Metrics] = new Plusable[Metrics]{
+  implicit val Monoid: Monoid[Metrics] = new Monoid[Metrics]{
     def plus(a1: Metrics, a2: Metrics): Metrics =
       Metrics(
         ordersCreated = a1.ordersCreated + a2.ordersCreated,
@@ -1423,8 +1423,8 @@ object Order {
 ## 3. Ad-hoc object (to avoid as much as possible!)
 
 ```scala
-object PlusableInstance {
-  implicit val booleanPlusable: Plusable[Boolean] = new Plusable[Boolean]{
+object MonoidInstance {
+  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean]{
     def plus(a1: Boolean, a2: Boolean): Boolean = a1 && a2
     def zero: Boolean = true
   }
@@ -1435,7 +1435,7 @@ object PlusableInstance {
 
 ```scala
 scala> sumList(List(true, false, false))
-<console>:54: error: could not find implicit value for evidence parameter of type Plusable[Boolean]
+<console>:54: error: could not find implicit value for evidence parameter of type Monoid[Boolean]
        sumList(List(true, false, false))
               ^
 ```
@@ -1443,7 +1443,7 @@ scala> sumList(List(true, false, false))
 --
 
 ```scala
-import PlusableInstance._
+import MonoidInstance._
 ```
 
 ```scala
@@ -1457,8 +1457,8 @@ res72: Boolean = false
 ## 3. Ad-hoc object (to avoid as much as possible!)
 
 ```scala
-object OtherPlusableInstance {
-  implicit val booleanPlusable: Plusable[Boolean] = new Plusable[Boolean]{
+object OtherMonoidInstance {
+  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean]{
     def plus(a1: Boolean, a2: Boolean): Boolean = a1 || a2
     def zero: Boolean = false
   }
@@ -1469,7 +1469,7 @@ object OtherPlusableInstance {
 
 
 ```scala
-import PlusableInstance._
+import MonoidInstance._
 ```
 
 ```scala
@@ -1480,7 +1480,7 @@ res73: Boolean = false
 --
 
 ```scala
-import OtherPlusableInstance._
+import OtherMonoidInstance._
 ```
 
 ```scala
