@@ -800,7 +800,7 @@ trait Monoid[A]{
 ```
 
 ```tut:silent
-def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
+def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
   var res: A = ev.empty
   val it = fa.iterator
   while(it.hasNext) res = ev.combine(res, it.next())
@@ -811,7 +811,7 @@ def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
 --
 
 ```tut:fail
-fold(List(1, 2, 3, 4, 5))
+monoFoldLeft(List(1, 2, 3, 4, 5))
 ```
 
 ---
@@ -837,9 +837,9 @@ implicit val stringMonoid: Monoid[String] = new Monoid[String] {
 --
 
 ```tut
-fold(List(1, 2, 3, 4, 5))
-fold(List(1.4, 2.3, 3.0, 4.1, 5.2))
-fold(List("foo", "bar"))
+monoFoldLeft(List(1, 2, 3, 4, 5))
+monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))
+monoFoldLeft(List("foo", "bar"))
 ```
 
 ---

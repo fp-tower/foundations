@@ -679,10 +679,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@1a92c0b2
+res39: Eq[Int] = $anon$1@1494351d
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@1a92c0b2
+res40: Eq[Int] = $anon$1@1494351d
 ```
 
 ```scala
@@ -883,7 +883,7 @@ trait Monoid[A]{
 ```
 
 ```scala
-def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
+def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
   var res: A = ev.empty
   val it = fa.iterator
   while(it.hasNext) res = ev.combine(res, it.next())
@@ -894,10 +894,10 @@ def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
 --
 
 ```scala
-scala> fold(List(1, 2, 3, 4, 5))
+scala> monoFoldLeft(List(1, 2, 3, 4, 5))
 <console>:24: error: could not find implicit value for parameter ev: Monoid[Int]
-       fold(List(1, 2, 3, 4, 5))
-           ^
+       monoFoldLeft(List(1, 2, 3, 4, 5))
+                   ^
 ```
 
 ---
@@ -923,13 +923,13 @@ implicit val stringMonoid: Monoid[String] = new Monoid[String] {
 --
 
 ```scala
-scala> fold(List(1, 2, 3, 4, 5))
+scala> monoFoldLeft(List(1, 2, 3, 4, 5))
 res51: Int = 15
 
-scala> fold(List(1.4, 2.3, 3.0, 4.1, 5.2))
+scala> monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))
 res52: Double = 16.0
 
-scala> fold(List("foo", "bar"))
+scala> monoFoldLeft(List("foo", "bar"))
 res53: String = foobar
 ```
 
@@ -1306,7 +1306,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res68: Monoid[Int] = $anon$1@5137a350
+res68: Monoid[Int] = $anon$1@bce5d75
 ```
 
 --
