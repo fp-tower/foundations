@@ -54,7 +54,7 @@ Foundation of Functional Programming
 ]
 
 .large[
-* Most common usage for **application developers**
+  * Most common usage for <span style="color:blue">**application developers**</span>
 ]
 
 .large[
@@ -600,7 +600,7 @@ class: center, middle
 # Syntactic sugar
 
 ---
-# Syntactic sugar: summoning implicit
+# Syntactic sugar: Summoning implicit
 
 ```tut:silent
 object Eq {
@@ -620,7 +620,7 @@ Eq[Int].eqv(5, 5)
 ```
 
 ---
-# Syntactic sugar: context bound
+# Syntactic sugar: Context bound
 
 ```tut:silent
 def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
@@ -631,7 +631,7 @@ def contains[A: Eq](xs: List[A], value: A): Boolean =
 ```
 
 ---
-# Syntactic sugar: extension methods
+# Syntactic sugar: Extension methods
 
 ```tut:silent
 implicit class EqSyntax[A](self: A){
@@ -771,18 +771,21 @@ monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))(0.0)(_ + _)
 
 --
 
-
 ```tut
-monoFoldLeft(List(1, 2, 3, 4, 5))(1)(_ * _)
-monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MinValue)(_ max _)
-monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MaxValue)(_ min _)
+monoFoldLeft(List("foo", "bar"))("")(_ + _)
+monoFoldLeft(List(List(1,2,3), List(4,5)))(Nil)(_ ++ _)
 ```
 
 --
 
+```tut:silent
+val inc   : Int => Int = _ + 1
+val double: Int => Int = _ * 2
+
+val func = monoFoldLeft(List(inc, double))(identity)(_ andThen _)
+```
+
 ```tut
-monoFoldLeft(List("foo", "bar"))("")(_ + _)
-val func = monoFoldLeft(List((_: Int) + 1, (_: Int) * 2))(identity)(_ andThen _)
 func(5)
 ```
 
@@ -794,15 +797,35 @@ trait Monoid[A]{
   def combine(a1: A, a2: A): A
   def empty: A
 }
+```
 
+```tut:silent
+def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
+  var res: A = ev.empty
+  val it = fa.iterator
+  while(it.hasNext) res = ev.combine(res, it.next())
+  res
+}
+```
+
+--
+
+```tut:fail
+fold(List(1, 2, 3, 4, 5))
+```
+
+---
+# Monoid instances
+
+```tut:silent
 implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
   def combine(a1: Int, a2: Int): Int = a1 + a2
   def empty: Int = 0
 }
 
-implicit val longMonoid: Monoid[Long] = new Monoid[Long] {
-  def combine(a1: Long, a2: Long): Long = a1 + a2
-  def empty: Long = 0L
+implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
+  def combine(a1: Double, a2: Double): Double = a1 + a2
+  def empty: Double = 0.0
 }
 
 implicit val stringMonoid: Monoid[String] = new Monoid[String] {
@@ -813,9 +836,16 @@ implicit val stringMonoid: Monoid[String] = new Monoid[String] {
 
 --
 
-```tut:silent
-def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = ???
+```tut
+fold(List(1, 2, 3, 4, 5))
+fold(List(1.4, 2.3, 3.0, 4.1, 5.2))
+fold(List("foo", "bar"))
 ```
+
+---
+class: center, middle
+
+# Exercises
 
 ---
 class: center, middle
@@ -897,6 +927,21 @@ implicit def either[A: Eq, B: Eq]: Eq[Either[A, B]] = new Eq[Either[A, B]] {
 Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
             => either(Eq[Email], Eq[Either[Address, Nothing]]])
             => ...
+```
+
+---
+# TODO add example using magniolia
+
+---
+# Derivation in Haskell
+
+```haskell
+data Person = Person { name :: String
+                     , age :: Int
+                     } deriving (Eq, Show)
+
+data Color = Red | Green | Blue
+             deriving (Eq, Show, Enum)
 ```
 
 ---

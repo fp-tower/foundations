@@ -54,7 +54,7 @@ Foundation of Functional Programming
 ]
 
 .large[
-* Most common usage for **application developers**
+  * Most common usage for <span style="color:blue">**application developers**</span>
 ]
 
 .large[
@@ -667,7 +667,7 @@ class: center, middle
 # Syntactic sugar
 
 ---
-# Syntactic sugar: summoning implicit
+# Syntactic sugar: Summoning implicit
 
 ```scala
 object Eq {
@@ -679,10 +679,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@30bf6659
+res39: Eq[Int] = $anon$1@1a92c0b2
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@30bf6659
+res40: Eq[Int] = $anon$1@1a92c0b2
 ```
 
 ```scala
@@ -691,7 +691,7 @@ res41: Boolean = true
 ```
 
 ---
-# Syntactic sugar: context bound
+# Syntactic sugar: Context bound
 
 ```scala
 def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
@@ -702,7 +702,7 @@ def contains[A: Eq](xs: List[A], value: A): Boolean =
 ```
 
 ---
-# Syntactic sugar: extension methods
+# Syntactic sugar: Extension methods
 
 ```scala
 implicit class EqSyntax[A](self: A){
@@ -850,29 +850,26 @@ res46: Double = 16.0
 
 --
 
-
 ```scala
-scala> monoFoldLeft(List(1, 2, 3, 4, 5))(1)(_ * _)
-res47: Int = 120
+scala> monoFoldLeft(List("foo", "bar"))("")(_ + _)
+res47: String = foobar
 
-scala> monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MinValue)(_ max _)
-res48: Int = 5
-
-scala> monoFoldLeft(List(1, 2, 3, 4, 5))(Int.MaxValue)(_ min _)
-res49: Int = 1
+scala> monoFoldLeft(List(List(1,2,3), List(4,5)))(Nil)(_ ++ _)
+res48: List[Int] = List(1, 2, 3, 4, 5)
 ```
 
 --
 
 ```scala
-scala> monoFoldLeft(List("foo", "bar"))("")(_ + _)
-res50: String = foobar
+val inc   : Int => Int = _ + 1
+val double: Int => Int = _ * 2
 
-scala> val func = monoFoldLeft(List((_: Int) + 1, (_: Int) * 2))(identity)(_ andThen _)
-func: Int => Int = scala.Function1$$Lambda$3647/585374160@66948835
+val func = monoFoldLeft(List(inc, double))(identity)(_ andThen _)
+```
 
+```scala
 scala> func(5)
-res51: Int = 12
+res49: Int = 12
 ```
 
 ---
@@ -883,15 +880,38 @@ trait Monoid[A]{
   def combine(a1: A, a2: A): A
   def empty: A
 }
+```
 
+```scala
+def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
+  var res: A = ev.empty
+  val it = fa.iterator
+  while(it.hasNext) res = ev.combine(res, it.next())
+  res
+}
+```
+
+--
+
+```scala
+scala> fold(List(1, 2, 3, 4, 5))
+<console>:24: error: could not find implicit value for parameter ev: Monoid[Int]
+       fold(List(1, 2, 3, 4, 5))
+           ^
+```
+
+---
+# Monoid instances
+
+```scala
 implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
   def combine(a1: Int, a2: Int): Int = a1 + a2
   def empty: Int = 0
 }
 
-implicit val longMonoid: Monoid[Long] = new Monoid[Long] {
-  def combine(a1: Long, a2: Long): Long = a1 + a2
-  def empty: Long = 0L
+implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
+  def combine(a1: Double, a2: Double): Double = a1 + a2
+  def empty: Double = 0.0
 }
 
 implicit val stringMonoid: Monoid[String] = new Monoid[String] {
@@ -903,8 +923,20 @@ implicit val stringMonoid: Monoid[String] = new Monoid[String] {
 --
 
 ```scala
-def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = ???
+scala> fold(List(1, 2, 3, 4, 5))
+res51: Int = 15
+
+scala> fold(List(1.4, 2.3, 3.0, 4.1, 5.2))
+res52: Double = 16.0
+
+scala> fold(List("foo", "bar"))
+res53: String = foobar
 ```
+
+---
+class: center, middle
+
+# Exercises
 
 ---
 class: center, middle
@@ -989,6 +1021,21 @@ Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
 ```
 
 ---
+# TODO add example using magniolia
+
+---
+# Derivation in Haskell
+
+```haskell
+data Person = Person { name :: String
+                     , age :: Int
+                     } deriving (Eq, Show)
+
+data Color = Red | Green | Blue
+             deriving (Eq, Show, Enum)
+```
+
+---
 background-image: url(img/typeclass-hierarchy.svg)
 
 ???
@@ -1035,13 +1082,13 @@ def plus(a1: String, a2: String): String = a1 + a2
 
 ```scala
 scala> plus(1 , 2)
-res52: Int = 3
+res54: Int = 3
 
 scala> plus(1L, 2L)
-res53: Long = 3
+res55: Long = 3
 
 scala> plus("Hello", "World")
-res54: String = HelloWorld
+res56: String = HelloWorld
 ```
 
 ---
@@ -1058,10 +1105,10 @@ def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res55: Int = 10
+res57: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res56: String = HelloWorld
+res58: String = HelloWorld
 ```
 
 ---
@@ -1085,10 +1132,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res57: Int = 10
+res59: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res58: String = HelloWorld
+res60: String = HelloWorld
 ```
 
 ---
@@ -1141,10 +1188,10 @@ def sumList(xs: List[String]): String = sumListGen(xs)(MonoidString)
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res59: Int = 10
+res61: Int = 10
 
 scala> sumList(List("Hello", "World"))
-res60: String = HelloWorld
+res62: String = HelloWorld
 ```
 
 ---
@@ -1213,13 +1260,13 @@ def sumList[A](xs: List[A])(implicit p: Monoid[A]): A =
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res61: Int = 10
+res63: Int = 10
 
 scala> sumList(List(1.5, 4.3, 9.0))
-res62: Double = 14.8
+res64: Double = 14.8
 
 scala> sumList(List("Hello", "World"))
-res63: String = HelloWorld
+res65: String = HelloWorld
 ```
 
 --
@@ -1246,7 +1293,7 @@ def sumList[A: Monoid](xs: List[A]): A = {
 
 ```scala
 scala> sumList(List(1,2,3,4))
-res65: Int = 10
+res67: Int = 10
 ```
 
 ---
@@ -1259,7 +1306,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res66: Monoid[Int] = $anon$1@6a32f664
+res68: Monoid[Int] = $anon$1@5137a350
 ```
 
 --
@@ -1348,10 +1395,10 @@ val xs = List(2, 5, 0)
 
 ```scala
 scala> foldMap(xs)(Sum(_))
-res69: Sum = Sum(7)
+res71: Sum = Sum(7)
 
 scala> foldMap(xs)(Product(_))
-res70: Product = Product(0)
+res72: Product = Product(0)
 ```
 
 ---
@@ -1448,7 +1495,7 @@ import MonoidInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res72: Boolean = false
+res74: Boolean = false
 ```
 
 ---
@@ -1474,7 +1521,7 @@ import MonoidInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res73: Boolean = false
+res75: Boolean = false
 ```
 
 --
@@ -1485,7 +1532,7 @@ import OtherMonoidInstance._
 
 ```scala
 scala> sumList(List(true, false, false))
-res74: Boolean = true
+res76: Boolean = true
 ```
 
 ---

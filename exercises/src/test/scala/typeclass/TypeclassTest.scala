@@ -1,52 +1,36 @@
 package typeclass
 
-import exercises.typeclass.{MyId, Monoid}
+import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.MyId
+import exercises.typeclass.TypeclassExercises._
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
 
 class TypeclassTest extends FunSuite with Discipline with Matchers {
 
   test("check Double instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Monoid[Double]
-
-    p.plus(p.plus(2.0, 3.5), p.zero) shouldEqual 3.5
+    2.0.combine(3.5).combine(mempty[Double]) shouldEqual 3.5
   }
 
 
   test("check MyId instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Monoid[MyId]
-
-    p.plus(p.plus(MyId("foo"), MyId("bar")), p.zero) shouldEqual MyId("foobar")
+    MyId("foo").combine(MyId("bar")).combine(mempty[MyId]) shouldEqual MyId("foobar")
   }
 
   test("check List instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Monoid[List[Int]]
-
-    p.plus(p.plus(List(1,2,3), List(4,5)), p.zero) shouldEqual List(1,2,3,4,5)
+    List(1,2,3).combine(List(4,5)).combine(mempty[List[Int]]) shouldEqual List(1,2,3,4,5)
   }
 
   test("check (Int, String) instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Monoid[(Int, String)]
-
-    p.plus(p.plus((3, "Hello"), (5, "World")), p.zero) shouldEqual ((8, "HelloWorld"))
+    (3, "Hello").combine((5, "World")).combine(mempty[(Int, String)]) shouldEqual ((8, "HelloWorld"))
   }
 
-  test("check (Int, String) instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Monoid[(Int, Int)]
-
-    p.plus(p.plus((3, 5), (5, 1)), p.zero) shouldEqual ((8, 6))
+  test("check (Int, Int) instance"){
+    (3, 5).combine((5, 1)).combine(mempty[(Int, Int)]) shouldEqual ((8, 6))
   }
 
   test("check Option instance"){
-    import exercises.typeclass.TypeclassExercises._
-    val p = Monoid[Option[Int]]
-
-    p.plus(p.plus(Some(3), Some(4)), p.zero) shouldEqual Some(7)
+    Option(3).combine(Option(4)).combine(mempty[Option[Int]]) shouldEqual Some(7)
   }
 
 
@@ -56,10 +40,6 @@ class TypeclassTest extends FunSuite with Discipline with Matchers {
     "Monoid[Float]" should compile
     "Monoid[MyId]" should compile
     "Monoid[(Int, String)]" should compile
-  }
-
-  test("check String instance insert a single space when plus"){
-    Monoid[String].plus("Hello", "World") shouldEqual "Hello World"
   }
 
   checkAll("Int", MonoidLaws[Int])

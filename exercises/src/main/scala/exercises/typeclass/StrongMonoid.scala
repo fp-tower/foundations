@@ -6,7 +6,7 @@ object StrongMonoid {
   implicit def apply[A](implicit ev: StrongMonoid[A]): StrongMonoid[A] = ev
 
   implicit val int: StrongMonoid[Int] = new StrongMonoid[Int] {
-    def plus(a1: Int, a2: Int): Int = a1 + a2
-    def zero: Int = 0
+    def combine(a1: Int, a2: Int): Int = a1 + a2
+    def empty: Int = 0
   }
 }
