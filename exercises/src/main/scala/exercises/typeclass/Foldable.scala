@@ -1,7 +1,5 @@
 package exercises.typeclass
 
-import cats.kernel.Monoid
-
 trait Foldable[F[_]] {
 
   def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B

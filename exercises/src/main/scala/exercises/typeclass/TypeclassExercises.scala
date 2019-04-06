@@ -3,6 +3,7 @@ package exercises.typeclass
 import cats.data.NonEmptyList
 import cats.kernel.Order
 import Monoid.syntax._
+import toimpl.typeclass.TypeclassToImpl
 
 import scala.annotation.tailrec
 
@@ -13,10 +14,10 @@ object TypeclassApp extends App {
   println("foo" |+| "bar")
 }
 
-object TypeclassExercises {
+object TypeclassExercises extends TypeclassToImpl {
 
   // 1. Basic instances
-  implicit val int: Monoid[Int] = new Monoid[Int] {
+  implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
     def combine(a1: Int, a2: Int): Int = a1 + a2
     def empty: Int = 0
   }
@@ -26,15 +27,15 @@ object TypeclassExercises {
     def empty: Double = 0.0
   }
 
-  implicit val string: Monoid[String] = new Monoid[String] {
+  implicit val stringMonoid: Monoid[String] = new Monoid[String] {
     def combine(a1: String, a2: String): String = a1 + a2
     def empty: String = ""
   }
 
-  // 1a. Implement an instance of Monoid for Long
-  implicit val long: Monoid[Long] = new Monoid[Long] {
-    def combine(a1: Long, a2: Long): Long = ???
-    def empty: Long = ???
+  // 1a. Implement an instance of Monoid for Unit
+  implicit val unitMonoid: Monoid[Unit] = new Monoid[Unit] {
+    def combine(a1: Unit, a2: Unit): Unit = ???
+    def empty: Unit = ???
   }
 
   // 1b. Implement an instance of Monoid for MyId
@@ -51,13 +52,13 @@ object TypeclassExercises {
 
   // 1d. Implement an instance of Monoid for (Int, String)
   implicit val intAndStringMonoid: Monoid[(Int, String)] = new Monoid[(Int, String)] {
-    def combine(a1: (Int, String), a2: (Int, String)): (Int, String) = ???
+    def combine(x: (Int, String), y: (Int, String)): (Int, String) = ???
     def empty: (Int, String) = ???
   }
 
   // 1e. Implement an instance of Monoid for (A, B)
-  implicit def tuple2Monoid[A, B]: Monoid[(A, B)] = new Monoid[(A, B)] {
-    def combine(a1: (A, B), a2: (A, B)): (A, B) = ???
+  implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A, B)] = new Monoid[(A, B)] {
+    def combine(x: (A, B), y: (A, B)): (A, B) = ???
     def empty: (A, B) = ???
   }
 
@@ -69,6 +70,7 @@ object TypeclassExercises {
 
 
   // 2. Monoid usage
+
   def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
     @tailrec
     def loop(xs: List[A], acc: A): A = xs match {
@@ -91,6 +93,24 @@ object TypeclassExercises {
   def averageWordLength(xs: List[String]): Double = ???
 
 
+  // 2c. Implement isEmpty
+  // such as isEmpty(0) == true, isEmpty(5) == false
+  //         isEmpty("") == true, isEmpty("hello") == false
+  def isEmpty[A: Monoid](x: A): Boolean = ???
+
+
+  // 2d. Implement ifEmpty
+  // such as ifEmpty("")("hello") == "hello"
+  //         ifEmpty("bar")("hello") == "bar"
+  def ifEmpty[A: Monoid](x: A)(other: => A): A = ???
+
+
+  // 2e. Implement repeat
+  // such as repeat(3)("hello") == "hellohellohello"
+  //         repeat(0)("hello") == ""
+  def repeat[A: Monoid](n: Int)(x: A): A = ???
+
+
   // 2c. Implement intercalate
   // such as intercalate(List("my", "hello", "world"), "x:", "--", ":x") == "x:my--hello--world:x"
   def intercalate[A](xs: List[A], before: A, between: A, after: A)(implicit ev: Monoid[A]): A = ???
@@ -110,7 +130,7 @@ object TypeclassExercises {
 
 
   // 2g. Implement folddMap
-  // such as folddMap(List("abc", "a", "abcde"))(_.size) == 9
+  // such as foldMap(List("abc", "a", "abcde"))(_.size) == 9
   def foldMap[A, B](xs: List[A])(f: A => B)(implicit ev: Monoid[B]): B = ???
 
 
@@ -123,50 +143,55 @@ object TypeclassExercises {
   def fold2[A](xs: List[A])(implicit ev: Monoid[A]): A = ???
 
 
-  // 3. Typeclass hierarchy
 
-  // 3a. Implement an instance of Monoid for NonEmptyList
+  // 3. Typeclass laws and advanced instances
+
+  // 3a. What properties do you think Monoid should have?
+  // Try to be as restrictive possible
+  // Implement your ideas in MonoidLaws and verify all instances we defined so far are valid
+
+  // 3a. Implement an instance of Monoid for Boolean
+  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
+    def combine(a1: Boolean, a2: Boolean): Boolean = ???
+    def empty: Boolean = ???
+  }
+
+  // 3b. Implement an instance of Monoid for Option
+  implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
+    def combine(a1: Option[A], a2: Option[A]): Option[A] = ???
+    def empty: Option[A] = ???
+  }
+
+  // 3c. Implement an instance of Monoid for Map
+  implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]] = new Monoid[Map[K, A]] {
+    def combine(a1: Map[K, A], a2: Map[K, A]): Map[K, A] = ???
+    def empty: Map[K, A] = ???
+  }
+
+  // 3d. What properties Monoid should have? What can you say about plus and empty for all A?
+  // Implement these properties to MonoidLaws and check your instances pass those laws
+
+
+  // 3e. Refactor String instance of Monoid such as plus add a single space in between
+  // e.g. plus("foo", "bar") == plus("foo bar")
+  // does it respect the MonoidLaws?
+
+
+  // 3f. What property Monoid[Int] or Monoid[Boolean] have but say Monoid[String] doesn't
+  // Add it to StrongMonoidLaws
+
+
+  // 4. Typeclass hierarchy
+
+  // 4a. Implement an instance of Monoid for NonEmptyList
   implicit def nelMonoid[A]: Monoid[NonEmptyList[A]] = new Monoid[NonEmptyList[A]] {
     def combine(a1: NonEmptyList[A], a2: NonEmptyList[A]): NonEmptyList[A] = ???
     def empty: NonEmptyList[A] = ???
   }
 
 
-  // 3b. A NonEmptyList can be concatenated yet we cannot implement a Monoid instance
+  // 4b. A NonEmptyList can be concatenated yet we cannot implement a Monoid instance
   // What can we do to make NonEmptyList fit in?
-
-
-  // 4. Typeclass laws and advanced instances
-
-  // 4a. Implement an instance of Monoid for Boolean
-  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
-    def combine(a1: Boolean, a2: Boolean): Boolean = ???
-    def empty: Boolean = ???
-  }
-
-  // 4b. Implement an instance of Monoid for Option
-  implicit def optionMonoid[A]: Monoid[Option[A]] = new Monoid[Option[A]] {
-    def combine(a1: Option[A], a2: Option[A]): Option[A] = ???
-    def empty: Option[A] = ???
-  }
-
-  // 4c. Implement an instance of Monoid for Map
-  implicit def mapMonoid[K, A]: Monoid[Map[K, A]] = new Monoid[Map[K, A]] {
-    def combine(a1: Map[K, A], a2: Map[K, A]): Map[K, A] = ???
-    def empty: Map[K, A] = ???
-  }
-
-  // 4d. What properties Monoid should have? What can you say about plus and empty for all A?
-  // Implement these properties to MonoidLaws and check your instances pass those laws
-
-
-  // 4e. Refactor String instance of Monoid such as plus add a single space in between
-  // e.g. plus("foo", "bar") == plus("foo bar")
-  // does it respect the MonoidLaws?
-
-
-  // 4f. What property Monoid[Int] or Monoid[Boolean] have but say Monoid[String] doesn't
-  // Add it to StrongMonoidLaws
 
 
 

@@ -19,8 +19,8 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     refined,
     typesafeConfig,
     scalacheck,
-    scalatest  % Test,
-    discipline % Test
+    discipline,
+    scalatest % Test,
   )
 )
 

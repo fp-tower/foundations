@@ -3,9 +3,9 @@ package typeclass
 import exercises.typeclass.{Monoid, StrongMonoid}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Prop._
-import org.typelevel.discipline.Laws
+import toimpl.typeclass.MonoidLawsToImpl
 
-object MonoidLaws extends Laws {
+object MonoidLaws extends MonoidLawsToImpl {
 
   def apply[A: Arbitrary: Monoid]: RuleSet = {
     val p = Monoid[A]
