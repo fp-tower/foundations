@@ -1,8 +1,11 @@
 package typeclass
 
 import answers.typeclass.{MonoidAnswersLaws, TypeclassAnswers}
+import cats.kernel.Eq
+import cats.instances.all._
 import exercises.typeclass.Monoid.syntax._
-import exercises.typeclass.{MyId, TypeclassExercises}
+import exercises.typeclass._
+import org.scalacheck.{Arbitrary, Cogen}
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
 import toimpl.typeclass.{MonoidLawsToImpl, TypeclassToImpl}
@@ -10,7 +13,7 @@ import toimpl.typeclass.{MonoidLawsToImpl, TypeclassToImpl}
 class TypeclassExercisesTest extends TypeclassTest(TypeclassExercises, MonoidLaws)
 class TypeclassAnswersTest extends TypeclassTest(TypeclassAnswers, MonoidAnswersLaws)
 
-class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends FunSuite with Discipline with Matchers{
+class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance{
   import impl._
 
   test("check Double instance"){
@@ -76,10 +79,10 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends
   }
 
   test("check Map instance"){
-    Map(3 -> "three", 4 -> "four").combine(Map(2 -> "deux", 4 -> "quatre")) shouldEqual Map(
-      2 -> "deux",
-      3 -> "three",
-      4 -> "fourquatre"
+    Map("abc" -> 3, "xxx" -> 5).combine(Map("xxx" -> 2, "aaa" -> 1)) shouldEqual Map(
+      "abc" -> 3,
+      "xxx" -> 7,
+      "aaa" -> 1
     )
   }
 
@@ -88,9 +91,31 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends
   checkAll("Unit", monoidLaws[Unit])
   checkAll("String", monoidLaws[String])
   checkAll("List", monoidLaws[List[Boolean]])
+  checkAll("Vector", monoidLaws[Vector[Boolean]])
+  checkAll("Set", monoidLaws[Set[Int]])
   checkAll("Tuple2", monoidLaws[(Int, String)])
+  checkAll("Product", monoidLaws[Product])
+  checkAll("All", monoidLaws[All])
+  checkAll("Endo", monoidLaws[Endo[Int]])
   checkAll("Option", monoidLaws[Option[Int]])
   checkAll("Map", monoidLaws[Map[Int, String]])
 
   checkAll("Int", monoidLaws.strong[Int])
+}
+
+trait TypeclassTestInstance {
+  implicit val arbProduct: Arbitrary[Product] = Arbitrary(Arbitrary.arbitrary[Int].map(Product(_)))
+  implicit val arbAll: Arbitrary[All] = Arbitrary(Arbitrary.arbitrary[Boolean].map(All(_)))
+  implicit def arbEndo[A: Arbitrary: Cogen]: Arbitrary[Endo[A]] = Arbitrary(Arbitrary.arbitrary[A => A].map(Endo(_)))
+  implicit def eqEndo[A: Eq : Arbitrary]: Eq[Endo[A]] =
+    new Eq[Endo[A]] {
+      def eqv(x: Endo[A], y: Endo[A]): Boolean = {
+        val samples = List.fill(50)(Arbitrary.arbitrary[A].sample).collect {
+          case Some(a) => a
+          case None    => sys.error("Could not generate arbitrary values to compare two functions")
+        }
+        samples.forall(s => Eq[A].eqv(x.getEndo(s), y.getEndo(s)))
+      }
+    }
+
 }

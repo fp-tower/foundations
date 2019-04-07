@@ -1,6 +1,7 @@
 package toimpl.typeclass
 
-import exercises.typeclass.{Monoid, MyId, Semigroup}
+import cats.data.NonEmptyList
+import exercises.typeclass._
 
 trait TypeclassToImpl {
   implicit val intMonoid: Monoid[Int]
@@ -9,6 +10,8 @@ trait TypeclassToImpl {
   implicit val unitMonoid: Monoid[Unit]
   implicit val myIdMonoid: Monoid[MyId]
   implicit def listMonoid[A]: Monoid[List[A]]
+  implicit def vectorMonoid[A]: Monoid[Vector[A]]
+  implicit def setMonoid[A]: Monoid[Set[A]]
   implicit val intAndStringMonoid: Monoid[(Int, String)]
   implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A, B)]
 
@@ -27,4 +30,11 @@ trait TypeclassToImpl {
 
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]]
   implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]]
+  implicit val productMonoid: Monoid[Product]
+  implicit val allMonoid: Monoid[All]
+  implicit def endoMonoid[A]: Monoid[Endo[A]]
+  implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]]
+  implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]]
+  implicit def firstSemigroup[A]: Semigroup[First[A]]
+  implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]]
 }

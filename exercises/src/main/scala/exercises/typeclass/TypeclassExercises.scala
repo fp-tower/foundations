@@ -18,36 +18,46 @@ object TypeclassExercises extends TypeclassToImpl {
 
   // 1. Basic instances
   implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
-    def combine(a1: Int, a2: Int): Int = a1 + a2
+    def combine(x: Int, y: Int): Int = x + y
     def empty: Int = 0
   }
 
   implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
-    def combine(a1: Double, a2: Double): Double = a1 + a2
+    def combine(x: Double, y: Double): Double = x + y
     def empty: Double = 0.0
   }
 
   implicit val stringMonoid: Monoid[String] = new Monoid[String] {
-    def combine(a1: String, a2: String): String = a1 + a2
+    def combine(x: String, y: String): String = x + y
     def empty: String = ""
   }
 
   // 1a. Implement an instance of Monoid for Unit
   implicit val unitMonoid: Monoid[Unit] = new Monoid[Unit] {
-    def combine(a1: Unit, a2: Unit): Unit = ???
+    def combine(x: Unit, y: Unit): Unit = ???
     def empty: Unit = ???
   }
 
   // 1b. Implement an instance of Monoid for MyId
   implicit val myIdMonoid: Monoid[MyId] = new Monoid[MyId] {
-    def combine(a1: MyId, a2: MyId): MyId = ???
+    def combine(x: MyId, y: MyId): MyId = ???
     def empty: MyId = ???
   }
 
   // 1c. Implement an instance of Monoid for  List
   implicit def listMonoid[A]: Monoid[List[A]] = new Monoid[List[A]] {
-    def combine(a1: List[A], a2: List[A]): List[A] = ???
+    def combine(x: List[A], y: List[A]): List[A] = ???
     def empty: List[A] = ???
+  }
+
+  implicit def vectorMonoid[A]: Monoid[Vector[A]] = new Monoid[Vector[A]] {
+    def combine(x: Vector[A], y: Vector[A]): Vector[A] = ???
+    def empty: Vector[A] = ???
+  }
+
+  implicit def setMonoid[A]: Monoid[Set[A]] = new Monoid[Set[A]] {
+    def combine(x: Set[A], y: Set[A]): Set[A] = ???
+    def empty: Set[A] = ???
   }
 
   // 1d. Implement an instance of Monoid for (Int, String)
@@ -64,7 +74,7 @@ object TypeclassExercises extends TypeclassToImpl {
 
   // 1f. Implement an instance of Monoid for Either[Int, String]
   implicit val intOrStringMonoid: Monoid[Either[Int, String]] = new Monoid[Either[Int, String]] {
-    def combine(a1: Either[Int, String], a2: Either[Int, String]): Either[Int, String] = ???
+    def combine(x: Either[Int, String], y: Either[Int, String]): Either[Int, String] = ???
     def empty: Either[Int, String] = ???
   }
 
@@ -152,19 +162,46 @@ object TypeclassExercises extends TypeclassToImpl {
 
   // 3a. Implement an instance of Monoid for Boolean
   implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
-    def combine(a1: Boolean, a2: Boolean): Boolean = ???
+    def combine(x: Boolean, y: Boolean): Boolean = ???
     def empty: Boolean = ???
+  }
+
+  implicit val productMonoid: Monoid[Product] = new Monoid[Product] {
+    def combine(x: Product, y: Product): Product = ???
+    def empty: Product = ???
+  }
+
+  implicit val allMonoid: Monoid[All] = new Monoid[All] {
+    def combine(x: All, y: All): All = ???
+    def empty: All = ???
+  }
+
+  implicit def endoMonoid[A]: Monoid[Endo[A]] = new Monoid[Endo[A]] {
+    def combine(x: Endo[A], y: Endo[A]): Endo[A] = ???
+    def empty: Endo[A] = ???
+  }
+
+  implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]] = new Semigroup[Min[A]] {
+    def combine(x: Min[A], y: Min[A]): Min[A] = ???
+  }
+
+  implicit def firstSemigroup[A]: Semigroup[First[A]] = new Semigroup[First[A]] {
+    def combine(x: First[A], y: First[A]): First[A] = ???
+  }
+
+  implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
+    def combine(x: Dual[A], y: Dual[A]): Dual[A] = ???
   }
 
   // 3b. Implement an instance of Monoid for Option
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
-    def combine(a1: Option[A], a2: Option[A]): Option[A] = ???
+    def combine(x: Option[A], y: Option[A]): Option[A] = ???
     def empty: Option[A] = ???
   }
 
   // 3c. Implement an instance of Monoid for Map
   implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]] = new Monoid[Map[K, A]] {
-    def combine(a1: Map[K, A], a2: Map[K, A]): Map[K, A] = ???
+    def combine(x: Map[K, A], y: Map[K, A]): Map[K, A] = ???
     def empty: Map[K, A] = ???
   }
 
@@ -185,7 +222,7 @@ object TypeclassExercises extends TypeclassToImpl {
 
   // 4a. Implement an instance of Monoid for NonEmptyList
   implicit def nelMonoid[A]: Monoid[NonEmptyList[A]] = new Monoid[NonEmptyList[A]] {
-    def combine(a1: NonEmptyList[A], a2: NonEmptyList[A]): NonEmptyList[A] = ???
+    def combine(x: NonEmptyList[A], y: NonEmptyList[A]): NonEmptyList[A] = ???
     def empty: NonEmptyList[A] = ???
   }
 
@@ -194,8 +231,10 @@ object TypeclassExercises extends TypeclassToImpl {
   // What can we do to make NonEmptyList fit in?
 
 
-
   // 5. higher kinded typeclass
+  implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]] = new Semigroup[NonEmptyList[A]] {
+    def combine(x: NonEmptyList[A], y: NonEmptyList[A]): NonEmptyList[A] = ???
+  }
 
   // 5a. Implement foldMap for Vector
   def foldMap[A, B](xs: Vector[A])(f: A => B)(implicit ev: Monoid[B]): B = ???

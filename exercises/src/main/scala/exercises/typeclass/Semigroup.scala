@@ -1,7 +1,7 @@
 package exercises.typeclass
 
 trait Semigroup[A] {
-  def combine(a1: A, a2: A): A
+  def combine(x: A, y: A): A
 }
 
 object Semigroup {
@@ -17,6 +17,6 @@ object Semigroup {
 
   // Should be removed when we make Monoid extends Semigroup in TypeclassExercises
   implicit def fromMonoid[A: Monoid] = new Semigroup[A] {
-    def combine(a1: A, a2: A): A = Monoid[A].combine(a1, a2)
+    def combine(x: A, y: A): A = Monoid[A].combine(x, y)
   }
 }

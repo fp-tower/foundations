@@ -1,7 +1,7 @@
 package exercises.typeclass
 
 trait Monoid[A] {
-  def combine(a1: A, a2: A): A
+  def combine(x: A, y: A): A
   def empty: A
 }
 
