@@ -1,6 +1,7 @@
 package typeclass
 
-import answers.typeclass.{MonoidAnswersLaws, TypeclassAnswers}
+import answers.typeclass.{MonoidAnswersLaws, SemigroupAnswersLaws, TypeclassAnswers}
+import cats.data.NonEmptyList
 import cats.kernel.Eq
 import cats.instances.all._
 import exercises.typeclass.Monoid.syntax._
@@ -8,20 +9,16 @@ import exercises.typeclass._
 import org.scalacheck.{Arbitrary, Cogen}
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
-import toimpl.typeclass.{MonoidLawsToImpl, TypeclassToImpl}
+import toimpl.typeclass.{MonoidLawsToImpl, SemigroupLawsToImpl, TypeclassToImpl}
 
-class TypeclassExercisesTest extends TypeclassTest(TypeclassExercises, MonoidLaws)
-class TypeclassAnswersTest extends TypeclassTest(TypeclassAnswers, MonoidAnswersLaws)
+class TypeclassExercisesTest extends TypeclassTest(TypeclassExercises, MonoidLaws, SemigroupLaws)
+class TypeclassAnswersTest extends TypeclassTest(TypeclassAnswers, MonoidAnswersLaws, SemigroupAnswersLaws)
 
-class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance{
+class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigroupLaws: SemigroupLawsToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance{
   import impl._
 
   test("check Double instance"){
     2.0.combine(3.5).combine(mempty[Double]) shouldEqual 5.5
-  }
-
-  test("check MyId instance"){
-    MyId("foo").combine(MyId("bar")).combine(mempty[MyId]) shouldEqual MyId("foobar")
   }
 
   test("check List instance"){
@@ -41,14 +38,14 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends
   }
 
   test("averageWordLength"){
-    averageWordLength(List("", "ab", "abcd")) shouldEqual 2.0
+    averageWordLength(List("a", "ab", "abcd", "abc")) shouldEqual 2.5
   }
 
   test("isEmpty"){
     isEmpty(0) shouldEqual true
     isEmpty(5) shouldEqual false
-    isEmpty("") shouldEqual true
-    isEmpty("hello") shouldEqual false
+    isEmpty[String]("") shouldEqual true
+    isEmpty[String]("hello") shouldEqual false
   }
 
   test("ifEmpty"){
@@ -86,6 +83,10 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends
     )
   }
 
+  test("String Monoid with space"){
+    stringSpaceMonoid.combine("hello", "world") shouldEqual "hello world"
+  }
+
   checkAll("Int", monoidLaws[Int])
   checkAll("Double", monoidLaws[Double])
   checkAll("Unit", monoidLaws[Unit])
@@ -94,13 +95,51 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl) extends
   checkAll("Vector", monoidLaws[Vector[Boolean]])
   checkAll("Set", monoidLaws[Set[Int]])
   checkAll("Tuple2", monoidLaws[(Int, String)])
-  checkAll("Product", monoidLaws[Product])
-  checkAll("All", monoidLaws[All])
-  checkAll("Endo", monoidLaws[Endo[Int]])
   checkAll("Option", monoidLaws[Option[Int]])
   checkAll("Map", monoidLaws[Map[Int, String]])
 
   checkAll("Int", monoidLaws.strong[Int])
+
+  test("splitFold"){
+    val xs = 1.to(1000).toList
+    splitFold(xs)(_.grouped(100).toList) shouldEqual fold(xs)
+  }
+
+  checkAll("Int product", monoidLaws[Int](implicitly, productIntMonoid, implicitly))
+  checkAll("Boolean", monoidLaws[Boolean](implicitly, booleanMonoid, implicitly))
+
+  checkAll("Product", monoidLaws[Product])
+  checkAll("All", monoidLaws[All])
+  checkAll("Endo", monoidLaws[Endo[Int]])
+
+  test("product") {
+    product(List(1,2,3,4,5)) shouldEqual 120
+  }
+
+  test("forAll") {
+    forAll(List(true, true, false, true)) shouldEqual false
+    forAll(List(true, true, true, true)) shouldEqual true
+  }
+
+  checkAll("NonEmptyList", semigroupLaws[NonEmptyList[Boolean]])
+
+  checkAll("Min", semigroupLaws[Min[Int]])
+  test("minOption") {
+    minOption(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(-1)
+    minOption[Int](Nil) shouldEqual None
+  }
+
+  checkAll("First", semigroupLaws[First[Int]])
+  test("headOption") {
+    headOption(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(5)
+    headOption[Int](Nil) shouldEqual None
+  }
+
+  checkAll("Dual", semigroupLaws[Dual[Int]])
+  test("lastOption") {
+    lastOption(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(12)
+    lastOption[Int](Nil) shouldEqual None
+  }
 }
 
 trait TypeclassTestInstance {
@@ -117,5 +156,13 @@ trait TypeclassTestInstance {
         samples.forall(s => Eq[A].eqv(x.getEndo(s), y.getEndo(s)))
       }
     }
-
+  implicit def arbNel[A: Arbitrary]: Arbitrary[NonEmptyList[A]] = Arbitrary(
+    for {
+      h <- Arbitrary.arbitrary[A]
+      t <- Arbitrary.arbitrary[List[A]]
+    } yield NonEmptyList(h ,t)
+  )
+  implicit def arbMin[A: Arbitrary]: Arbitrary[Min[A]] = Arbitrary(Arbitrary.arbitrary[A].map(Min(_)))
+  implicit def arbFirst[A: Arbitrary]: Arbitrary[First[A]] = Arbitrary(Arbitrary.arbitrary[A].map(First(_)))
+  implicit def arbDual[A: Arbitrary]: Arbitrary[Dual[A]] = Arbitrary(Arbitrary.arbitrary[A].map(Dual(_)))
 }

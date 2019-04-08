@@ -10,7 +10,7 @@ import toimpl.typeclass.MonoidLawsToImpl
 
 object MonoidAnswersLaws extends MonoidLawsToImpl {
 
-  def apply[A: Arbitrary: Monoid: Eq]: RuleSet = {
+  def apply[A: Arbitrary: Monoid: Eq]: RuleSet =
     new SimpleRuleSet("Monoid",
       "associative" ->
         forAll((x: A, y: A, z: A) => ((x |+| y) |+| z) === (x |+| (y |+| z))),
@@ -19,13 +19,11 @@ object MonoidAnswersLaws extends MonoidLawsToImpl {
       "right identity" ->
         forAll((a: A) => (a |+| mempty[A]) === a)
     )
-  }
 
-  def strong[A: Arbitrary: StrongMonoid: Eq]: RuleSet = {
+  def strong[A: Arbitrary: StrongMonoid: Eq]: RuleSet =
     new DefaultRuleSet("StrongMonoid", Some(apply[A]),
       "commutative" ->
         forAll((x: A, y: A) => (x |+| y) === (y |+| x))
     )
-  }
 
 }

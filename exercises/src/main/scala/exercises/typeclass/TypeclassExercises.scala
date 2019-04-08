@@ -1,7 +1,6 @@
 package exercises.typeclass
 
 import cats.data.NonEmptyList
-import cats.kernel.Order
 import Monoid.syntax._
 import toimpl.typeclass.TypeclassToImpl
 
@@ -16,7 +15,10 @@ object TypeclassApp extends App {
 
 object TypeclassExercises extends TypeclassToImpl {
 
-  // 1. Basic instances
+  /////////////////////////////
+  // 1. Monoid Instances
+  /////////////////////////////
+
   implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
     def combine(x: Int, y: Int): Int = x + y
     def empty: Int = 0
@@ -38,13 +40,7 @@ object TypeclassExercises extends TypeclassToImpl {
     def empty: Unit = ???
   }
 
-  // 1b. Implement an instance of Monoid for MyId
-  implicit val myIdMonoid: Monoid[MyId] = new Monoid[MyId] {
-    def combine(x: MyId, y: MyId): MyId = ???
-    def empty: MyId = ???
-  }
-
-  // 1c. Implement an instance of Monoid for  List
+  // 1c. Implement an instance of Monoid for  List, Vector, Set
   implicit def listMonoid[A]: Monoid[List[A]] = new Monoid[List[A]] {
     def combine(x: List[A], y: List[A]): List[A] = ???
     def empty: List[A] = ???
@@ -61,6 +57,7 @@ object TypeclassExercises extends TypeclassToImpl {
   }
 
   // 1d. Implement an instance of Monoid for (Int, String)
+  // such as combine((5, "hello"), (4, "world")) == (9, "helloworld")
   implicit val intAndStringMonoid: Monoid[(Int, String)] = new Monoid[(Int, String)] {
     def combine(x: (Int, String), y: (Int, String)): (Int, String) = ???
     def empty: (Int, String) = ???
@@ -78,8 +75,25 @@ object TypeclassExercises extends TypeclassToImpl {
     def empty: Either[Int, String] = ???
   }
 
+  // 1g. Implement an instance of Monoid for Option
+  // such as combine(Some(3), Some(4)) == Some(7)
+  // but     combine(Some(3), None   ) == None
+  // and     combine(None   , Some(4)) == None
+  implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
+    def combine(x: Option[A], y: Option[A]): Option[A] = ???
+    def empty: Option[A] = ???
+  }
 
+  // 1h. Implement an instance of Monoid for Map
+  // such as combine(Map("abc" -> 3, "xxx" -> 5), Map("xxx" -> 2, "aaa" -> 1)) == Map("abc" -> 3, "xxx" -> 7, "aaa" -> 1)
+  implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]] = new Monoid[Map[K, A]] {
+    def combine(x: Map[K, A], y: Map[K, A]): Map[K, A] = ???
+    def empty: Map[K, A] = ???
+  }
+
+  /////////////////////////////
   // 2. Monoid usage
+  /////////////////////////////
 
   def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
     @tailrec
@@ -99,7 +113,7 @@ object TypeclassExercises extends TypeclassToImpl {
   def sum(xs: List[Int]): Int = ???
 
   // 2b. Use fold to calculate the average word length
-  // e.g. averageWordLength(List("", "ab", "abcd")) == 2.0
+  // e.g. averageWordLength(List("a", "ab", "abcd", "abc")) == 2.5
   def averageWordLength(xs: List[String]): Double = ???
 
 
@@ -118,6 +132,7 @@ object TypeclassExercises extends TypeclassToImpl {
   // 2e. Implement repeat
   // such as repeat(3)("hello") == "hellohellohello"
   //         repeat(0)("hello") == ""
+  //         repeat(2)(3)       == 6
   def repeat[A: Monoid](n: Int)(x: A): A = ???
 
 
@@ -153,157 +168,205 @@ object TypeclassExercises extends TypeclassToImpl {
   def fold2[A](xs: List[A])(implicit ev: Monoid[A]): A = ???
 
 
+  /////////////////////////////
+  // 3. Typeclass laws
+  /////////////////////////////
 
-  // 3. Typeclass laws and advanced instances
+  // 3a. Implement another Monoid for String where combine add an empty space between words
+  // e.g. combine("hello", "world")
+  val stringSpaceMonoid: Monoid[String] = new Monoid[String] {
+    def combine(x: String, y: String): String = ???
+    def empty: String = ???
+  }
 
-  // 3a. What properties do you think Monoid should have?
-  // Try to be as restrictive possible
+  // 3b. What will be the result of foldWords?
+  val foldWords = fold(List("hello", "world", "", ""))
+
+
+  // 3c. Can you think of properties for Monoid that will fail for instances like stringSpaceMonoid
   // Implement your ideas in MonoidLaws and verify all instances we defined so far are valid
+  // Try to be as restrictive possible
 
-  // 3a. Implement an instance of Monoid for Boolean
-  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
+
+  // 3d. combine from Monoid is also associative, x combine (y combine z) == (x combine y) combine z
+  // this property is very useful to split the work in several batches
+  // e.g. fold(List(1,2, ..., 100, 101, ..., 200, 201, ..., 300)) ==
+  //      fold(List(1,2, ..., 100)) combine fold(List(101, ..., 200)) combine fold(List(301, ..., 300))
+  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A = ???
+
+
+  // 3e. Wht other property do you think would be useful to parallelize work?
+  // is it satisfied by any instance defined so far?
+
+  /////////////////////////////
+  // 4. Instance uniqueness
+  /////////////////////////////
+
+  // 4a. Can you implement a lawful Monoid for Int multiplication?
+  // can you think of other lawful Monoid for Int?
+  val productIntMonoid: Monoid[Int] = new Monoid[Int] {
+    def combine(x: Int, y: Int): Int = ???
+    def empty: Int = ???
+  }
+
+  // 4b. Implement a lawful instance of Monoid for Boolean
+  // how many different instances can you think of?
+  val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
     def combine(x: Boolean, y: Boolean): Boolean = ???
     def empty: Boolean = ???
   }
 
+  // 4c. Implement an instance of Monoid for Product
+  // and use it to implement product
   implicit val productMonoid: Monoid[Product] = new Monoid[Product] {
     def combine(x: Product, y: Product): Product = ???
     def empty: Product = ???
   }
 
+  def product(xs: List[Int]): Int = ???
+
+  // 4e. Implement an instance of Monoid for All
+  // and use it to implement forAll
   implicit val allMonoid: Monoid[All] = new Monoid[All] {
     def combine(x: All, y: All): All = ???
     def empty: All = ???
   }
 
+  def forAll(xs: List[Boolean]): Boolean = ???
+
+  // 4f. Implement an instance of Monoid for Endo
+  // and use it to implement pipe
   implicit def endoMonoid[A]: Monoid[Endo[A]] = new Monoid[Endo[A]] {
     def combine(x: Endo[A], y: Endo[A]): Endo[A] = ???
     def empty: Endo[A] = ???
   }
 
-  implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]] = new Semigroup[Min[A]] {
-    def combine(x: Min[A], y: Min[A]): Min[A] = ???
-  }
-
-  implicit def firstSemigroup[A]: Semigroup[First[A]] = new Semigroup[First[A]] {
-    def combine(x: First[A], y: First[A]): First[A] = ???
-  }
-
-  implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
-    def combine(x: Dual[A], y: Dual[A]): Dual[A] = ???
-  }
-
-  // 3b. Implement an instance of Monoid for Option
-  implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
-    def combine(x: Option[A], y: Option[A]): Option[A] = ???
-    def empty: Option[A] = ???
-  }
-
-  // 3c. Implement an instance of Monoid for Map
-  implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]] = new Monoid[Map[K, A]] {
-    def combine(x: Map[K, A], y: Map[K, A]): Map[K, A] = ???
-    def empty: Map[K, A] = ???
-  }
-
-  // 3d. What properties Monoid should have? What can you say about plus and empty for all A?
-  // Implement these properties to MonoidLaws and check your instances pass those laws
+  def pipe[A](xs: List[A => A]): A => A = ???
 
 
-  // 3e. Refactor String instance of Monoid such as plus add a single space in between
-  // e.g. plus("foo", "bar") == plus("foo bar")
-  // does it respect the MonoidLaws?
+  /////////////////////////////
+  // 5. Typeclass hierarchy
+  ////////////////////////////
 
-
-  // 3f. What property Monoid[Int] or Monoid[Boolean] have but say Monoid[String] doesn't
-  // Add it to StrongMonoidLaws
-
-
-  // 4. Typeclass hierarchy
-
-  // 4a. Implement an instance of Monoid for NonEmptyList
+  // 5a. Implement an instance of Monoid for NonEmptyList
   implicit def nelMonoid[A]: Monoid[NonEmptyList[A]] = new Monoid[NonEmptyList[A]] {
     def combine(x: NonEmptyList[A], y: NonEmptyList[A]): NonEmptyList[A] = ???
     def empty: NonEmptyList[A] = ???
   }
 
 
-  // 4b. A NonEmptyList can be concatenated yet we cannot implement a Monoid instance
-  // What can we do to make NonEmptyList fit in?
 
-
-  // 5. higher kinded typeclass
+  // 5b. A NonEmptyList can be concatenated but we cannot implement a Monoid instance
+  // change Monoid to extend Semigroup and implement an instance for NonEmptyList
   implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]] = new Semigroup[NonEmptyList[A]] {
     def combine(x: NonEmptyList[A], y: NonEmptyList[A]): NonEmptyList[A] = ???
   }
 
-  // 5a. Implement foldMap for Vector
+  // 5c. What laws Semigroup should satisfy? Implement them in SemigroupLaws
+
+
+  // 5d. Implement reduceMap
+  // also foldMap(xs)(f) == reduceMap(xs)(f).getOrElse(mempty)
+  def reduceMap[A, B: Semigroup](xs: List[A])(f: A => B): Option[B] = ???
+
+
+  // 5e. Implement an instance of Semigroup for Min
+  // and use it to implement minOption
+  implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]] = new Semigroup[Min[A]] {
+    def combine(x: Min[A], y: Min[A]): Min[A] = ???
+  }
+
+  def minOption[A: Ordering](xs: List[A]): Option[A] = ???
+
+
+  // 5f. Implement an instance of Semigroup for First
+  // and use it to implement headOption
+  implicit def firstSemigroup[A]: Semigroup[First[A]] = new Semigroup[First[A]] {
+    def combine(x: First[A], y: First[A]): First[A] = ???
+  }
+
+  def headOption[A](xs: List[A]): Option[A] = ???
+
+
+  // 5g. Implement an instance of Semigroup for Dual
+  // and use it to implement maxOption and lastOption
+  implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
+    def combine(x: Dual[A], y: Dual[A]): Dual[A] = ???
+  }
+
+  def lastOption[A: Ordering](xs: List[A]): Option[A] = ???
+
+
+
+  // 5h. What would be the effect of foldMap(xs: List[A])(Dual(_))
+  // when A is String?
+  // When A is Int?
+
+
+
+  /////////////////////////////
+  // 6. Higher kinded typeclass
+  ////////////////////////////
+
+
+  // 6a. Implement foldMap for Vector
   def foldMap[A, B](xs: Vector[A])(f: A => B)(implicit ev: Monoid[B]): B = ???
 
-  // 5b. Implement foldMap for Option
+  // 6b. Implement foldMap for Option
   def foldMap[A, B](xs: Option[A])(f: A => B)(implicit ev: Monoid[B]): B = ???
 
-  // 5c. Implement foldMap for Either
+  // 6c. Implement foldMap for Either
   def foldMap[E, A, B](xs: Either[E, A])(f: A => B)(implicit ev: Monoid[B]): B = ???
 
-  // 5d. Implement foldMap for Map (keys are not used)
+  // 6d. Implement foldMap for Map (keys are not used)
   def foldMap[K, A, B](xs: Map[K, A])(f: A => B)(implicit ev: Monoid[B]): B = ???
 
-  // 5e. Implement Foldable instance for List
+  // 6e. Implement Foldable instance for List
   implicit val listFoldable: Foldable[List] = new Foldable[List] {
     def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B = ???
     def foldRight[A, B](fa: List[A], z: B)(f: (A, => B) => B): B = ???
   }
 
-  // 5f. Implement Foldable instance for Option
+  // 6f. Implement Foldable instance for Option
   implicit val optionFoldable: Foldable[Option] = new Foldable[Option] {
     def foldLeft[A, B](fa: Option[A], z: B)(f: (B, A) => B): B = ???
     def foldRight[A, B](fa: Option[A], z: B)(f: (A, => B) => B): B = ???
   }
 
-  // 5g. Implement Foldable instance for Option
+  // 6g. Implement Foldable instance for Option
   implicit def eitherFoldable[E]: Foldable[Either[E, ?]] = new Foldable[Either[E, ?]] {
     def foldLeft[A, B](fa: Either[E, A], z: B)(f: (B, A) => B): B = ???
     def foldRight[A, B](fa: Either[E, A], z: B)(f: (A, => B) => B): B = ???
   }
 
-  // 5h. Implement Foldable instance for Map
+  // 6h. Implement Foldable instance for Map
   implicit def mapFoldable[K]: Foldable[Map[K, ?]] = new Foldable[Map[K, ?]] {
     def foldLeft[A, B](fa: Map[K, A], z: B)(f: (B, A) => B): B = ???
     def foldRight[A, B](fa: Map[K, A], z: B)(f: (A, => B) => B): B = ???
   }
 
-  // 5i. Implement isEmpty
+  // 6i. Implement isEmpty
   def isEmpty[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Boolean = ???
 
-  // 5j. Implement size
+  // 6j. Implement size
   def size[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Int = ???
 
-  // 5k. Implement headOption
+  // 6k. Implement headOption
   // try to implement it using foldMap with a newtype
   def headOption[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Option[A] = ???
 
-  // 5l. Implement find
+  // 6l. Implement find
   def find[F[_], A](fa: F[A])(implicit foldable: Foldable[F]): Option[A] = ???
 
-  // 5m. Implement minimumOption
-  def minimumOption[F[_], A](fa: F[A])(implicit foldable: Foldable[F], ev: Order[A]): Option[A] = ???
+  // 6m. Implement minimumOption
+  def minimumOption[F[_], A](fa: F[A])(implicit foldable: Foldable[F], ev: Ordering[A]): Option[A] = ???
 
-  // 5n. Implement lookup
+  // 6n. Implement lookup
   def lookup[F[_], A](fa: F[A], index: Int)(implicit ev: Foldable[F]): Option[A] = ???
 
 
-  // 5o. What is the difference between implementing a function here or inside Foldable trait?
+  // 6o. What is the difference between implementing a function inside or outside of Foldable trait?
   // When will it be preferable to do one or the other?
-
-
-  // 5p. Implement splitReduce which:
-  // - split F[A] into several sub-sections then
-  // - reduce each sub-section to single "total" value using A using f then
-  // - reduce each sub-section "total" value using f
-  //
-  // What properties do you from F and A? update the signature if required
-  def splitReduce[F[_], A](fa: F[A])(split: F[A] => List[F[A]])(f: (A, A) => A): A = ???
-
 
 
 }
