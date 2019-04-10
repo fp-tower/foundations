@@ -18,11 +18,11 @@ object Foldable {
   def apply[F[_]](implicit ev: Foldable[F]): Foldable[F] = ev
 
   object syntax {
-    implicit class FoldableOps[F[_], A](self: F[A])(implicit ev: Foldable[F]){
-      def foldLeft[B](z: B)(f: (B, A) => B): B = ev.foldLeft(self, z)(f)
-      def foldRight[B](z: B)(f: (A, => B) => B) = ev.foldRight(self, z)(f)
-      def foldMap[B: Monoid](f: A => B): B = ev.foldMap(self)(f)
-      def reduceMap[B: Semigroup](f: A => B): Option[B] = ev.reduceMap(self)(f)
+    implicit class FoldableOps[F[_], A](self: F[A]){
+      def foldLeft[B](z: B)(f: (B, A) => B)(implicit ev: Foldable[F]): B = ev.foldLeft(self, z)(f)
+      def foldRight[B](z: B)(f: (A, => B) => B)(implicit ev: Foldable[F]) = ev.foldRight(self, z)(f)
+      def foldMap[B: Monoid](f: A => B)(implicit ev: Foldable[F]): B = ev.foldMap(self)(f)
+      def reduceMap[B: Semigroup](f: A => B)(implicit ev: Foldable[F]): Option[B] = ev.reduceMap(self)(f)
     }
   }
 }
