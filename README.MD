@@ -11,6 +11,15 @@
 
 ## Chapter 3: Typeclasses (WIP)
 
+## Chapter 4: Functor Typeclasses
+
+## Chapter 5: IO / Effect
+
+## Chapter 6: Error Handling
+
+## Chapter 7: Reader / Writer / State
+
+
 ## Run tests for one chapter
 
 ```bash
