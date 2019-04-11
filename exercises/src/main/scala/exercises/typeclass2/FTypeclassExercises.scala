@@ -55,6 +55,10 @@ object FTypeclassExercises {
   def tupleRight[F[_]: Functor, A, B](fa: F[A])(value: B): F[(A, B)] = ???
 
 
+  // 1f. Implement a Functor instance for Compose
+  implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] = new Functor[Compose[F, G, ?]] {
+    def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] = ???
+  }
 
   ////////////////////////
   // 2. Applicative
@@ -130,7 +134,15 @@ object FTypeclassExercises {
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] = ???
   }
 
-  // 2i. Why does the Applicative instance of List does the cartesian product instead of zip?
+  // 2j. Why does the Applicative instance of List does the cartesian product instead of zip?
+
+
+  // 2k. Implement an Applicative instance for Compose
+  implicit def composeApplicative[F[_]: Applicative, G[_]: Applicative]: Applicative[Compose[F, G, ?]] =
+    new DefaultApplicative[Compose[F, G, ?]] {
+      def pure[A](a: A): Compose[F, G, A] = ???
+      def map2[A, B, C](fa: Compose[F, G, A], fb: Compose[F, G, B])(f: (A, B) => C): Compose[F, G, C] = ???
+    }
 
 
   ////////////////////////
@@ -190,6 +202,14 @@ object FTypeclassExercises {
 
   // 2h. Implement forever
   def forever[F[_]: Monad, A](fa: F[A]): F[Nothing] = ???
+
+
+  // 3i. Implement an Monad instance for Compose
+  implicit def composeMonad[F[_]: Monad, G[_]: Monad]: Monad[Compose[F, G, ?]] =
+    new DefaultMonad[Compose[F, G, ?]] {
+      def pure[A](a: A): Compose[F, G, A] = ???
+      def flatMap[A, B](fa: Compose[F, G, A])(f: A => Compose[F, G, B]): Compose[F, G, B] = ???
+    }
 
 
   ////////////////////////
