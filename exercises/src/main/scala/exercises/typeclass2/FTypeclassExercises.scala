@@ -213,7 +213,7 @@ object FTypeclassExercises {
     def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B = ???
 
     // 4f. Show that foldLeft can be implemented using foldMap
-    def foldRight[A, B](fa: F[A], z: B)(f: (A, B) => B): B = ???
+    def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B = ???
   }
 
   // 4g. Implement the following instance

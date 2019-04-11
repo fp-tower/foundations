@@ -35,6 +35,7 @@ object FLaws extends Laws {
     arbA: Arbitrary[A],
     arbA2B: Arbitrary[A => B],
     arbB2C: Arbitrary[B => C],
+    arbFA2B: Arbitrary[F[A => B]],
     eqFa: Eq[F[A]],
     eqFB: Eq[F[B]],
     eqFc: Eq[F[C]]
