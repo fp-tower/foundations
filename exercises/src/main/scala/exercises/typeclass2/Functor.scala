@@ -40,4 +40,10 @@ object Applicative {
 
 object Monad {
   def apply[F[_]](implicit ev: Monad[F]): Monad[F] = ev
+
+  object syntax {
+    implicit class MonadOps[F[_], A](fa: F[A]){
+      def flatMap[B](f: A => F[B])(implicit ev: Monad[F]): F[B] = ev.flatMap(fa)(f)
+    }
+  }
 }

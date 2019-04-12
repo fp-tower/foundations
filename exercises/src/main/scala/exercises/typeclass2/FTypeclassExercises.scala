@@ -1,8 +1,9 @@
 package exercises.typeclass2
 
 import exercises.typeclass.Monoid
+import toimpl.typeclass2.FTypeclassToImpl
 
-object FTypeclassExercises {
+object FTypeclassExercises extends FTypeclassToImpl {
 
   ////////////////////////
   // 1. Functor
@@ -90,12 +91,17 @@ object FTypeclassExercises {
     def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] = ???
   }
 
+  implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] {
+    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = mapFunctor[K].map(fa)(f)
+    def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] = ???
+  }
+
   implicit val idApplicative: Applicative[Id] = new DefaultApplicative[Id] {
     def pure[A](a: A): Id[A] = ???
     def map2[A, B, C](fa: Id[A], fb: Id[B])(f: (A, B) => C): Id[C] = ???
   }
 
-  implicit def constApplicative[R]: Applicative[Const[R, ?]] = new DefaultApplicative[Const[R, ?]] {
+  implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]] = new DefaultApplicative[Const[R, ?]] {
     def pure[A](a: A): Const[R, A] = ???
     def map2[A, B, C](fa: Const[R, A], fb: Const[R, B])(f: (A, B) => C): Const[R, C] = ???
   }
@@ -135,6 +141,7 @@ object FTypeclassExercises {
   }
 
   // 2j. Why does the Applicative instance of List does the cartesian product instead of zip?
+  // Why most implementations of map2 use flatMap?
 
 
   // 2k. Implement an Applicative instance for Compose
@@ -173,8 +180,8 @@ object FTypeclassExercises {
     def flatMap[A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
   }
 
-  implicit def mapMonad[K]: Monad[Map[K, ?]] = new DefaultMonad[Map[K, ?]] {
-    def pure[A](a: A): Map[K, A] = mapApplicative.pure(a)
+  implicit def mapFlatMap[K]: FlatMap[Map[K, ?]] = new FlatMap[Map[K, ?]] {
+    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = mapFunctor[K].map(fa)(f)
     def flatMap[A, B](fa: Map[K, A])(f: A => Map[K, B]): Map[K, B] = ???
   }
 
@@ -183,8 +190,8 @@ object FTypeclassExercises {
     def flatMap[A, B](fa: Id[A])(f: A => Id[B]): Id[B] = ???
   }
 
-  implicit def constMonad[R]: Monad[Const[R, ?]] = new DefaultMonad[Const[R, ?]] {
-    def pure[A](a: A): Const[R, A] = constApplicative.pure(a)
+  implicit def constMonad[R]: FlatMap[Const[R, ?]] = new FlatMap[Const[R, ?]] {
+    def map[A, B](fa: Const[R, A])(f: A => B): Const[R, B] = constFunctor[R].map(fa)(f)
     def flatMap[A, B](fa: Const[R, A])(f: A => Const[R, B]): Const[R, B] = ???
   }
 
@@ -198,7 +205,7 @@ object FTypeclassExercises {
   def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
 
   // 3g. Implement whileM
-  def whileM[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[A] = ???
+  def whileM_[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[Unit] = ???
 
   // 2h. Implement forever
   def forever[F[_]: Monad, A](fa: F[A]): F[Nothing] = ???
