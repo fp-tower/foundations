@@ -1,10 +1,14 @@
 package toimpl.typeclass
 
 import cats.data.NonEmptyList
-import cats.kernel.Order
 import exercises.typeclass._
 
 trait TypeclassToImpl {
+
+  /////////////////////////////
+  // 1. Monoid Instances
+  /////////////////////////////
+
   implicit val intMonoid: Monoid[Int]
   implicit val doubleMonoid: Monoid[Double]
   implicit val stringMonoid: Monoid[String]
@@ -16,6 +20,10 @@ trait TypeclassToImpl {
   implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A, B)]
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]]
   implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]]
+
+  /////////////////////////////
+  // 2. Monoid usage
+  /////////////////////////////
 
   def fold[A](fa: List[A])(implicit ev: Monoid[A]): A
   def sum(xs: List[Int]): Int
@@ -31,8 +39,18 @@ trait TypeclassToImpl {
   def charSequence(xs: List[String]): List[Char]
   def fold2[A](xs: List[A])(implicit ev: Monoid[A]): A
 
+  /////////////////////////////
+  // 3. Typeclass laws
+  /////////////////////////////
+
   val stringSpaceMonoid: Monoid[String]
   def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A
+
+
+  /////////////////////////////
+  // 4. Instance uniqueness
+  /////////////////////////////
+
   val productIntMonoid: Monoid[Int]
   val booleanMonoid: Monoid[Boolean]
   implicit val productMonoid: Monoid[Product]
@@ -42,6 +60,10 @@ trait TypeclassToImpl {
   implicit def endoMonoid[A]: Monoid[Endo[A]]
   def pipe[A](xs: List[A => A]): A => A
 
+  /////////////////////////////
+  // 5. Typeclass hierarchy
+  ////////////////////////////
+
   implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]]
   def reduceMap[A, B: Semigroup](fa: List[A])(f: A => B): Option[B]
   implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]]
@@ -50,6 +72,10 @@ trait TypeclassToImpl {
   def headOption[A](xs: List[A]): Option[A]
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]]
   def lastOption[A: Ordering](xs: List[A]): Option[A]
+
+  //////////////////////////////
+  // 6. Higher kinded typeclass
+  //////////////////////////////
 
   def foldMap[A, B](xs: Vector[A])(f: A => B)(implicit ev: Monoid[B]): B
   def foldMap[A, B](xs: Option[A])(f: A => B)(implicit ev: Monoid[B]): B
@@ -65,4 +91,6 @@ trait TypeclassToImpl {
   def find[F[_]: Foldable, A](fa: F[A]): Option[A]
   def minimumOption[F[_]: Foldable, A: Ordering](fa: F[A]): Option[A]
   def lookup[F[_]: Foldable, A](fa: F[A], index: Int): Option[A]
+  def foldLeftFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (B, A) => B): B
+  def foldRightFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (A, => B) => B): B
 }

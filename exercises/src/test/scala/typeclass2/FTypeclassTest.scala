@@ -24,7 +24,7 @@ class FTypeclassTest(impl: FTypeclassToImpl) extends FunSuite with Discipline wi
 //  test("void"){
 //    void(List(1,2,3)) shouldEqual List((),(),())
 //  }
-  
+
 }
 
 trait FTypeclassTestInstance {

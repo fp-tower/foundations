@@ -248,4 +248,10 @@ object TypeclassAnswers extends TypeclassToImpl {
     fa.reduceMap(Min(_)).map(_.getMin)
 
   def lookup[F[_]: Foldable, A](fa: F[A], index: Int): Option[A] = ???
+
+  def foldLeftFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (B, A) => B): B =
+    fa.foldMap(a => Endo[B](b => f(b, a))).getEndo(z)
+
+  def foldRightFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (A, => B) => B): B =
+    fa.foldMap(a => Endo[B](b => f(a, b))).getEndo(z)
 }

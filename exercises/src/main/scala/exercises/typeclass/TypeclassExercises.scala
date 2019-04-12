@@ -304,9 +304,9 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
 
-  /////////////////////////////
+  //////////////////////////////
   // 6. Higher kinded typeclass
-  ////////////////////////////
+  //////////////////////////////
 
 
   // 6a. Implement foldMap for Vector
@@ -368,5 +368,12 @@ object TypeclassExercises extends TypeclassToImpl {
   // 6o. What is the difference between implementing a function inside or outside of Foldable trait?
   // When will it be preferable to do one or the other?
 
+
+  // 6p. Implement foldLeft in terms of foldMap
+  def foldLeftFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (B, A) => B): B = ???
+
+  // 6q. Implement foldRight in terms of foldMap
+  // Is foldRight lazy implemented this way? If no, how can you change it?
+  def foldRightFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (A, => B) => B): B = ???
 
 }
