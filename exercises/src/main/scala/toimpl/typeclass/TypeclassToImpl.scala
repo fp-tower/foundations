@@ -67,11 +67,11 @@ trait TypeclassToImpl {
   implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]]
   def reduceMap[A, B: Semigroup](fa: List[A])(f: A => B): Option[B]
   implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]]
-  def minOption[A: Ordering](xs: List[A]): Option[A]
+  def minOptionList[A: Ordering](xs: List[A]): Option[A]
   implicit def firstSemigroup[A]: Semigroup[First[A]]
-  def headOption[A](xs: List[A]): Option[A]
+  def headOptionList[A](xs: List[A]): Option[A]
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]]
-  def lastOption[A: Ordering](xs: List[A]): Option[A]
+  def lastOptionList[A: Ordering](xs: List[A]): Option[A]
 
   //////////////////////////////
   // 6. Higher kinded typeclass
@@ -85,12 +85,12 @@ trait TypeclassToImpl {
   implicit val optionFoldable: Foldable[Option]
   implicit def eitherFoldable[E]: Foldable[Either[E, ?]]
   implicit def mapFoldable[K]: Foldable[Map[K, ?]]
-  def isEmpty[F[_]: Foldable, A](fa: F[A]): Boolean
+  def isEmptyF[F[_]: Foldable, A](fa: F[A]): Boolean
   def size[F[_]: Foldable, A](fa: F[A]): Int
   def headOption[F[_]: Foldable, A](fa: F[A]): Option[A]
-  def find[F[_]: Foldable, A](fa: F[A]): Option[A]
+  def lastOption[F[_]: Foldable, A](fa: F[A]): Option[A]
+  def find[F[_]: Foldable, A](fa: F[A])(p: A => Boolean): Option[A]
   def minimumOption[F[_]: Foldable, A: Ordering](fa: F[A]): Option[A]
-  def lookup[F[_]: Foldable, A](fa: F[A], index: Int): Option[A]
   def foldLeftFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (B, A) => B): B
   def foldRightFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (A, => B) => B): B
 }

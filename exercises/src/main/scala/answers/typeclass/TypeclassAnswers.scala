@@ -180,21 +180,21 @@ object TypeclassAnswers extends TypeclassToImpl {
       if(x.getMin < y.getMin) x else y
   }
 
-  def minOption[A: Ordering](xs: List[A]): Option[A] =
+  def minOptionList[A: Ordering](xs: List[A]): Option[A] =
     reduceMap(xs)(Min(_)).map(_.getMin)
 
   implicit def firstSemigroup[A]: Semigroup[First[A]] = new Semigroup[First[A]] {
     def combine(x: First[A], y: First[A]): First[A] = x
   }
 
-  def headOption[A](xs: List[A]): Option[A] =
+  def headOptionList[A](xs: List[A]): Option[A] =
     reduceMap(xs)(First(_)).map(_.getFirst)
 
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
     def combine(x: Dual[A], y: Dual[A]): Dual[A] = Dual(Semigroup[A].combine(y.getDual, x.getDual))
   }
 
-  def lastOption[A: Ordering](xs: List[A]): Option[A] =
+  def lastOptionList[A: Ordering](xs: List[A]): Option[A] =
     reduceMap(xs)(x => Dual(First(x))).map(_.getDual.getFirst)
 
   def foldMap[A, B: Monoid](xs: Vector[A])(f: A => B) =
@@ -219,8 +219,8 @@ object TypeclassAnswers extends TypeclassToImpl {
   }
 
   implicit val optionFoldable: Foldable[Option] = new Foldable[Option] {
-    def foldLeft[A, B](fa: Option[A], z: B)(f: (B, A) => B): B = fa.foldLeft(z)(f)
-    def foldRight[A, B](fa: Option[A], z: B)(f: (A, => B) => B): B = fa.foldRight(z)(f)
+    def foldLeft[A, B](fa: Option[A], z: B)(f: (B, A) => B): B = fa.fold(z)(f(z, _))
+    def foldRight[A, B](fa: Option[A], z: B)(f: (A, => B) => B): B = fa.fold(z)(f(_, z))
   }
 
   implicit def eitherFoldable[E]: Foldable[Either[E, ?]] = new Foldable[Either[E, ?]] {
@@ -233,21 +233,23 @@ object TypeclassAnswers extends TypeclassToImpl {
     def foldRight[A, B](fa: Map[K, A], z: B)(f: (A, => B) => B): B = listFoldable.foldRight(fa.values.toList, z)(f)
   }
 
-  def isEmpty[F[_]: Foldable, A](fa: F[A]): Boolean =
-    fa.foldRight(false)((_, _) => true)
+  def isEmptyF[F[_]: Foldable, A](fa: F[A]): Boolean =
+    fa.foldMap(_ => All(false)).getAll
 
   def size[F[_]: Foldable, A](fa: F[A]): Int =
-    fa.foldLeft(0)((acc, _) => acc + 1)
+    fa.foldMap(_ => 1)
 
   def headOption[F[_]: Foldable, A](fa: F[A]): Option[A] =
     fa.reduceMap(First(_)).map(_.getFirst)
 
-  def find[F[_]: Foldable, A](fa: F[A]): Option[A] = ???
+  def lastOption[F[_] : Foldable, A](fa: F[A]): Option[A] =
+    fa.reduceMap(x => Dual(First(x))).map(_.getDual.getFirst)
+
+  def find[F[_]: Foldable, A](fa: F[A])(p: A => Boolean): Option[A] =
+    fa.foldMap(a => if(p(a)) Option(First(a)) else None).map(_.getFirst)
 
   def minimumOption[F[_]: Foldable, A: Ordering](fa: F[A]): Option[A] =
     fa.reduceMap(Min(_)).map(_.getMin)
-
-  def lookup[F[_]: Foldable, A](fa: F[A], index: Int): Option[A] = ???
 
   def foldLeftFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (B, A) => B): B =
     fa.foldMap(a => Endo[B](b => f(b, a))).getEndo(z)

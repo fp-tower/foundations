@@ -271,30 +271,30 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
   // 5e. Implement an instance of Semigroup for Min
-  // and use it to implement minOption
+  // and use it to implement minOptionList
   implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]] = new Semigroup[Min[A]] {
     def combine(x: Min[A], y: Min[A]): Min[A] = ???
   }
 
-  def minOption[A: Ordering](xs: List[A]): Option[A] = ???
+  def minOptionList[A: Ordering](xs: List[A]): Option[A] = ???
 
 
   // 5f. Implement an instance of Semigroup for First
-  // and use it to implement headOption
+  // and use it to implement headOptionList
   implicit def firstSemigroup[A]: Semigroup[First[A]] = new Semigroup[First[A]] {
     def combine(x: First[A], y: First[A]): First[A] = ???
   }
 
-  def headOption[A](xs: List[A]): Option[A] = ???
+  def headOptionList[A](xs: List[A]): Option[A] = ???
 
 
   // 5g. Implement an instance of Semigroup for Dual
-  // and use it to implement maxOption and lastOption
+  // and use it to implement maxOption and lastOptionList
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
     def combine(x: Dual[A], y: Dual[A]): Dual[A] = ???
   }
 
-  def lastOption[A: Ordering](xs: List[A]): Option[A] = ???
+  def lastOptionList[A: Ordering](xs: List[A]): Option[A] = ???
 
 
 
@@ -345,24 +345,42 @@ object TypeclassExercises extends TypeclassToImpl {
     def foldRight[A, B](fa: Map[K, A], z: B)(f: (A, => B) => B): B = ???
   }
 
-  // 6i. Implement isEmpty
-  def isEmpty[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Boolean = ???
+  // 6i. Implement isEmptyF
+  // such as isEmptyF(List(1,2,3)) == false
+  //         isEmptyF(Nil) == true
+  // bonus: can you implement it using foldMap?
+  def isEmptyF[F[_]: Foldable, A](fa: F[A]): Boolean = ???
 
   // 6j. Implement size
-  def size[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Int = ???
+  // such as size(Option("hello")) == 1
+  //         size(None) == 0
+  // bonus: can you implement it using foldMap?
+  def size[F[_]: Foldable, A](fa: F[A]): Int = ???
 
   // 6k. Implement headOption
-  // try to implement it using foldMap with a newtype
-  def headOption[F[_], A](fa: F[A])(implicit ev: Foldable[F]): Option[A] = ???
+  // such as headOption(List(1,2,3)) == Some(1)
+  //         headOption(Nil) == None
+  // bonus: can you implement it using foldMap?
+  def headOption[F[_]: Foldable, A](fa: F[A]): Option[A] = ???
 
-  // 6l. Implement find
-  def find[F[_], A](fa: F[A])(implicit foldable: Foldable[F]): Option[A] = ???
+  // 6l. Implement lastOption
+  // such as lastOption(List(1,2,3)) == Some(3)
+  //         lastOption(Nil) == None
+  // bonus: can you implement it using foldMap?
+  def lastOption[F[_]: Foldable, A](fa: F[A]): Option[A] = ???
 
-  // 6m. Implement minimumOption
-  def minimumOption[F[_], A](fa: F[A])(implicit foldable: Foldable[F], ev: Ordering[A]): Option[A] = ???
+  // 6m. Implement find
+  // such as find(List(10, 8, 7, 4, 3))(_ % 2 == 1) == Some(7)
+  //         find(List(10, 8, 6, 4, 2))(_ % 2 == 1) == None
+  //         find(List.empty[Int])(_ % 2 == 1) == None
+  // bonus: can you implement it using foldMap?
+  def find[F[_]: Foldable, A](fa: F[A])(p: A => Boolean): Option[A] = ???
 
-  // 6n. Implement lookup
-  def lookup[F[_], A](fa: F[A], index: Int)(implicit ev: Foldable[F]): Option[A] = ???
+  // 6n. Implement minimumOption
+  // such as minimumOption(List(5, 6, 2, 8, 0, 1)) == Some(0)
+  //         minimumOption(List.empty[Int]) == None
+  // bonus: can you implement it using foldMap?
+  def minimumOption[F[_]: Foldable, A: Ordering](fa: F[A]): Option[A] = ???
 
 
   // 6o. What is the difference between implementing a function inside or outside of Foldable trait?
@@ -370,9 +388,13 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
   // 6p. Implement foldLeft in terms of foldMap
+  // such as foldLeftFromFoldMap(List(1,2,3,4,5), 0)(_ + _) == 15
+  //         foldLeftFromFoldMap(List.empty[Int], 0)(_ + _) == 0
   def foldLeftFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (B, A) => B): B = ???
 
   // 6q. Implement foldRight in terms of foldMap
+  // such as foldRightFromFoldMap(List(1,2,3,4,5), 0)(_ + _) == 15
+  //         foldRightFromFoldMap(List.empty[Int], 0)(_ + _) == 0
   // Is foldRight lazy implemented this way? If no, how can you change it?
   def foldRightFromFoldMap[F[_]: Foldable, A, B](fa: F[A], z: B)(f: (A, => B) => B): B = ???
 

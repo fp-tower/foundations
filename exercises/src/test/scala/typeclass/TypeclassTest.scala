@@ -67,7 +67,7 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigro
   }
 
   test("foldMap"){
-    foldMap(List("abc", "a", "abcde"))(_.length) == 9
+    foldMap(List("abc", "a", "abcde"))(_.length) shouldEqual 9
   }
 
 
@@ -124,22 +124,84 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigro
   checkAll("NonEmptyList", semigroupLaws[NonEmptyList[Boolean]])
 
   checkAll("Min", semigroupLaws[Min[Int]])
-  test("minOption") {
-    minOption(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(-1)
-    minOption[Int](Nil) shouldEqual None
+  test("minOptionList") {
+    minOptionList(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(-1)
+    minOptionList[Int](Nil) shouldEqual None
   }
 
   checkAll("First", semigroupLaws[First[Int]])
-  test("headOption") {
-    headOption(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(5)
-    headOption[Int](Nil) shouldEqual None
+  test("headOptionList") {
+    headOptionList(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(5)
+    headOptionList[Int](Nil) shouldEqual None
   }
 
   checkAll("Dual", semigroupLaws[Dual[Int]])
-  test("lastOption") {
-    lastOption(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(12)
-    lastOption[Int](Nil) shouldEqual None
+  test("lastOptionList") {
+    lastOptionList(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(12)
+    lastOptionList[Int](Nil) shouldEqual None
   }
+
+  test("foldMap Vector"){
+    foldMap(Vector("abc", "a", "abcde"))(_.length) shouldEqual 9
+    foldMap(Vector.empty[String])(_.length) shouldEqual 0
+  }
+
+  test("foldMap Option"){
+    foldMap(Option("abc"))(_.length) shouldEqual 3
+    foldMap(Option.empty[String])(_.length) shouldEqual 0
+  }
+
+  test("foldMap Either"){
+    foldMap(Right("abc"))(_.length) shouldEqual 3
+    foldMap(Left(2): Either[Int, String])(_.length) shouldEqual 0
+  }
+
+  test("foldMap Map"){
+    foldMap(Map(1 -> "abc", 2 -> "hello"))(_.length) shouldEqual 8
+    foldMap(Map.empty[Int, String])(_.length) shouldEqual 0
+  }
+
+  test("isEmptyF"){
+    isEmptyF(List(1,2,3)) shouldEqual false
+    isEmptyF(Nil) shouldEqual true
+  }
+
+  test("size"){
+    impl.size(Option("hello")) shouldEqual 1
+    impl.size(Option.empty) shouldEqual 0
+  }
+
+  test("headOption"){
+    headOption(List(1,2,3)) shouldEqual Some(1)
+    headOption(Nil) shouldEqual None
+  }
+
+  test("lastOption"){
+    lastOption(List(1,2,3)) shouldEqual Some(3)
+    lastOption(Nil) shouldEqual None
+  }
+
+  test("find"){
+    find(List(10, 8, 7, 4, 3))(_ % 2 == 1) shouldEqual Some(7)
+    find(List(10, 8, 6, 4, 2))(_ % 2 == 1) shouldEqual None
+    find(List.empty[Int])(_ % 2 == 1) shouldEqual None
+  }
+
+  test("minimumOption"){
+    minimumOption(List(5, 6, 2, 8, 0, 1)) shouldEqual Some(0)
+    minimumOption(List.empty[Int]) shouldEqual None
+  }
+
+  test("foldLeftFromFoldMap"){
+    foldLeftFromFoldMap(List(1,2,3,4,5), 0)(_ + _) shouldEqual 15
+    foldLeftFromFoldMap(List.empty[Int], 0)(_ + _) shouldEqual 0
+  }
+
+  test("foldRightFromFoldMap"){
+    foldRightFromFoldMap(List(1,2,3,4,5), 0)(_ + _) shouldEqual 15
+    foldRightFromFoldMap(List.empty[Int], 0)(_ + _) shouldEqual 0
+  }
+
 }
 
 trait TypeclassTestInstance {

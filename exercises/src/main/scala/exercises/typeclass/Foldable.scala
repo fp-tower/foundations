@@ -7,10 +7,10 @@ trait Foldable[F[_]] {
   def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B
 
   def foldMap[A, B](fa: F[A])(f: A => B)(implicit ev: Monoid[B]): B =
-    foldLeft(fa, ev.empty)((acc, a) => ev.combine(f(a), acc))
+    foldLeft(fa, ev.empty)((acc, a) => ev.combine(acc, f(a)))
 
   def reduceMap[A, B](fa: F[A])(f: A => B)(implicit ev: Semigroup[B]): Option[B] =
-    foldLeft(fa, Option.empty[B])((acc, a) => Some(acc.fold(f(a))(ev.combine(f(a), _))))
+    foldLeft(fa, Option.empty[B])((acc, a) => Some(acc.fold(f(a))(ev.combine(_, f(a)))))
 
 }
 
