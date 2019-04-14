@@ -693,10 +693,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@216d4bf4
+res39: Eq[Int] = $anon$1@40e6d00b
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@216d4bf4
+res40: Eq[Int] = $anon$1@40e6d00b
 ```
 
 ```scala
@@ -963,7 +963,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res54: Monoid[Int] = $anon$1@348817eb
+res54: Monoid[Int] = $anon$1@1be8bf08
 ```
 
 --
@@ -1115,20 +1115,15 @@ object Metrics {
 ## 2. Companion object of typeclass
 
 ```scala
-trait Order[A]{
-  def compare(x: A, y: A): Int
-}
-
-object Order {
-  implicit val intOrder: Order[Int] = new Order[Int]{
-    def compare(x: Int, y: Int): Int =
-      x.compare(y) // from std scala
+object Monoid {
+  implicit val int: Monoid[Int] = new Monoid[Int] {
+    def combine(x: Int, y: Int): Int = x + y
+    def empty: Int = 0
   }
 
-  import java.time.Instant
-
-  implicit val instantOrder: Ordering[Instant] = new Ordering[Instant]{
-    def compare(x: Instant, y: Instant): Int = x.compareTo(y) // from java.time
+  implicit val string: Monoid[String] = new Monoid[String] {
+    def combine(x: String, y: String): String = x + y
+    def empty: String = ""
   }
 }
 ```
@@ -1193,8 +1188,6 @@ scala> monoFoldLeft(List(true, false, false))
 res61: Boolean = false
 ```
 
---
-
 ```scala
 import OtherMonoidInstance._
 ```
@@ -1229,16 +1222,150 @@ object CommutativeMonoid {
 }
 ```
 
-* If you control neither the typeclass or the type (Please do PR!)
+* If you control neither the typeclass or the type (Please do a PR!)
+
+---
+class: center, middle
+
+# Kinds
+
+---
+# Kinds
+
+```scala
+:k Int
+Int :: Type
+```
+
+--
+
+```scala
+:k String
+String :: Type
+```
+
+--
+
+```scala
+:k List
+List :: Type -> Type
+```
+
+--
+
+```scala
+:k List[Int]
+List[Int] :: Type
+```
+
+--
+
+```scala
+:k Either
+Either :: Type -> Type -> Type
+```
+
+--
+
+```scala
+:k Either[String, ?]
+Either[String, ?] :: Type -> Type
+```
+
+---
+# Kinds
+
+```scala
+trait Semigroup[A]{
+  def combine(x: A, y: A): A
+}
+
+implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
+  def combine(x: Int, y: Int): Int = ???
+}
+```
+
+--
+
+```scala
+scala> implicit val listSemigroup: Semigroup[List] = ???
+<console>:41: error: type List takes type parameters
+       implicit val listSemigroup: Semigroup[List] = ???
+                                             ^
+```
+
+```scala
+implicit def listSemigroup[A]: Semigroup[List[A]] = new Semigroup[List[A]]{
+  def combine(x: List[A], y: List[A]): List[A] = ???
+}
+```
+
+---
+# Foldable
+
+```scala
+trait Foldable[F[_]] {
+
+  def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B
+
+  def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B
+
+}
+```
+
+--
+
+```scala
+implicit val listFoldable: Foldable[List] = new Foldable[List] {
+  def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldRight[A, B](fa: List[A], z: B)(f: (A, => B) => B): B = ???
+}
+```
+
+--
+
+
+```scala
+scala> implicit val intFoldable: Foldable[Int] = ???
+<console>:43: error: Int takes no type parameters, expected: one
+       implicit val intFoldable: Foldable[Int] = ???
+                                          ^
+```
+
 
 
 ---
 class: center, middle
 
-# Typeclass Derivation with Generic
+# Use case: Distributed Map-Reduce
 
 ---
-# Typeclass Derivation: Product
+# Use case: Distributed Map-Reduce
+
+```scala
+class RDD[A]{
+
+  def map[B](f: A => B): RDD[B]
+
+  def reduce(f: (A, A) => A): A
+
+}
+```
+
+--
+
+### Spark Accumulators (aka reduce)
+
+Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
+can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
+
+---
+class: center, middle
+
+# Typeclass abuses
+
+---
+# 1. Typeclass Derivation: Product
 
 ```scala
 case class Person(name: String, age: Int)
@@ -1330,401 +1457,9 @@ data Color = Red | Green | Blue
 ```
 
 ---
-background-image: url(img/typeclass-hierarchy.svg)
+# 2. Better syntax
 
-???
-Source available at github.com/tpolecat/cats-infographic • Shareable under CC-BY-SA 4.0
-
----
-# What does it give us?
-
-.large[
-* `map`,  `flatMap`, `flatten`, `sequence`, `traverse`
-]
-
---
-.large[
-*  `contramap`, `mapN`, `pure`, `void`, `flatTap`, `foldMap`
-]
-
---
-.large[
-* `|+|`, `*>`, `*<`, `>>`
-
-* and much more!
-]
-
-
----
-# Overloading
-
-```scala
-def combine(x:  Int, y:  Int):  Int = x + y
-def combine(x: Long, y: Long): Long = x + y
-```
-
---
-
-```scala
-def combine(x: String, y: String): String = x + y
-```
-
---
-
-
-
-
-```scala
-scala> combine(1 , 2)
-res63: Int = 3
-
-scala> combine(1L, 2L)
-res64: Long = 3
-
-scala> combine("Hello", "World")
-res65: String = HelloWorld
-```
-
----
-# Abstraction
-
-```scala
-def monoFoldLeft(xs: List[Int]   ): Int    = xs.foldLeft(0 )(combine)
-def monoFoldLeft(xs: List[Long]  ): Long   = xs.foldLeft(0L)(combine)
-def monoFoldLeft(xs: List[String]): String = xs.foldLeft("")(combine)
-```
-
-
-
-
-```scala
-scala> monoFoldLeft(List(1,2,3,4))
-res66: Int = 10
-
-scala> monoFoldLeft(List("Hello", "World"))
-res67: String = HelloWorld
-```
-
----
-# Abstraction
-
-```scala
-def monoFoldLeftGen[A](xs: List[A])(empty: A, combine: (A, A) => A): A =
-  xs.foldLeft(empty)(combine)
-```
-
---
-
-```scala
-def monoFoldLeft(xs: List[Int]   ): Int    = monoFoldLeftGen(xs)(0 , combine)
-def monoFoldLeft(xs: List[Long]  ): Long   = monoFoldLeftGen(xs)(0L, combine)
-def monoFoldLeft(xs: List[String]): String = monoFoldLeftGen(xs)("", combine)
-```
-
-
-
-
-```scala
-scala> monoFoldLeft(List(1,2,3,4))
-res68: Int = 10
-
-scala> monoFoldLeft(List("Hello", "World"))
-res69: String = HelloWorld
-```
-
----
-# Monoid
-
-```scala
-trait Monoid[A]{
-  def combine(x: A, y: A): A
-  def empty: A
-}
-```
-
---
-
-```scala
-val MonoidInt: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 0
-}
-
-val MonoidLong: Monoid[Long] = new Monoid[Long]{
-  def combine(x: Long, y: Long): Long = x + y
-  def empty: Long = 0
-}
-
-val MonoidString: Monoid[String] = new Monoid[String]{
-  def combine(x: String, y: String): String = x + y
-  def empty: String = ""
-}
-```
-
----
-# Monoid
-
-```scala
-def monoFoldLeftGen[A](xs: List[A])(p: Monoid[A]): A =
-  xs.foldLeft(p.empty)(p.combine)
-```
-
---
-
-```scala
-def monoFoldLeft(xs: List[Int]   ): Int    = monoFoldLeftGen(xs)(MonoidInt)
-def monoFoldLeft(xs: List[Long]  ): Long   = monoFoldLeftGen(xs)(MonoidLong)
-def monoFoldLeft(xs: List[String]): String = monoFoldLeftGen(xs)(MonoidString)
-```
-
-
-
-
-```scala
-scala> monoFoldLeft(List(1,2,3,4))
-res70: Int = 10
-
-scala> monoFoldLeft(List("Hello", "World"))
-res71: String = HelloWorld
-```
-
----
-class: center, middle
-
-# Monoid is unique for a type
-
----
-# Monoid is unique for a type
-
-```scala
-object Global {
-  val MonoidMapping: Map[x: Type, Monoid[x]] := Map(
-    Int    -> new Monoid[Int]{...},
-    Long   -> new Monoid[Long]{...},
-    String -> new Monoid[String]{...}
-  )
-}
-```
-
---
-
-```scala
-def monoFoldLeft[A](xs: List[A]): A =
-  Global.MonoidMapping.get(A) match {
-    case None    => sys.error("compile error")
-    case Some(p) => xs.foldLeft(p.empty)(p.combine)
-  }
-```
-
----
-# Typeclass
-
-## 1. Interface (the typeclass)
-
-```scala
-trait Monoid[A]{
-  def combine(x: A, y: A): A
-  def empty: A
-}
-```
-
---
-
-## 2. Implicit value (instance of a typeclass)
-
-```scala
-implicit val MonoidInt: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 0
-}
-```
-
----
-# SumList using typeclass
-
-```scala
-def monoFoldLeft[A](xs: List[A])(implicit p: Monoid[A]): A =
-  xs.foldLeft(p.empty)(p.combine)
-```
-
---
-
-
-
-
-```scala
-scala> monoFoldLeft(List(1,2,3,4))
-res72: Int = 10
-
-scala> monoFoldLeft(List(1.5, 4.3, 9.0))
-res73: Double = 14.8
-
-scala> monoFoldLeft(List("Hello", "World"))
-res74: String = HelloWorld
-```
-
---
-
-```scala
-scala> monoFoldLeft(List(true, true, false))
-<console>:66: error: could not find implicit value for parameter p: Monoid[Boolean]
-       monoFoldLeft(List(true, true, false))
-                   ^
-```
-
----
-# SumList using typeclass context bound
-
-```scala
-def monoFoldLeft[A](xs: List[A])(implicit p: Monoid[A]): A =
-  xs.foldLeft(p.empty)(p.combine)
-
-def monoFoldLeft[A: Monoid](xs: List[A]): A = {
-  val p = implicitly[Monoid[A]]
-  xs.foldLeft(p.empty)(p.combine)
-}
-```
-
-```scala
-scala> monoFoldLeft(List(1,2,3,4))
-res76: Int = 10
-```
-
-
----
-class: center, middle
-
-# Kinds
-
----
-# Kinds
-
-```scala
-:k Int
-Int :: Type
-```
-
---
-
-```scala
-:k String
-String :: Type
-```
-
---
-
-```scala
-:k List
-List :: Type -> Type
-```
-
---
-
-```scala
-:k List[Int]
-List[Int] :: Type
-```
-
---
-
-```scala
-:k Either
-Either :: Type -> Type -> Type
-```
-
---
-
-```scala
-:k Either[String, ?]
-Either[String, ?] :: Type -> Type
-```
-
----
-# Kinds
-
-```scala
-trait Semigroup[A]{
-  def combine(x: A, y: A): A
-}
-
-implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
-  def combine(x: Int, y: Int): Int = ???
-}
-```
-
---
-
-```scala
-scala> implicit val listSemigroup: Semigroup[List] = ???
-<console>:66: error: type List takes type parameters
-       implicit val listSemigroup: Semigroup[List] = ???
-                                             ^
-```
-
-```scala
-implicit def listSemigroup[A]: Semigroup[List[A]] = new Semigroup[List[A]]{
-  def combine(x: List[A], y: List[A]): List[A] = ???
-}
-```
-
----
-# Foldable
-
-```scala
-trait Foldable[F[_]] {
-
-  def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B
-
-  def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B
-
-}
-```
-
---
-
-```scala
-implicit val listFoldable: Foldable[List] = new Foldable[List] {
-  def foldLeft[A, B](fa: List[A], z: B)(f: (B, A) => B): B = ???
-  def foldRight[A, B](fa: List[A], z: B)(f: (A, => B) => B): B = ???
-}
-```
-
---
-
-
-```scala
-scala> implicit val intFoldable: Foldable[Int] = ???
-<console>:68: error: Int takes no type parameters, expected: one
-       implicit val intFoldable: Foldable[Int] = ???
-                                          ^
-```
-
-
-
----
-class: center, middle
-
-# Use case: Distributed Map-Reduce
-
----
-# Use case: Distributed Map-Reduce
-
-```scala
-class RDD[A]{
-
-  def map[B](f: A => B): RDD[B]
-
-  def reduce(f: (A, A) => A): A
-
-}
-```
-
---
-
-### Spark Accumulators (aka reduce)
-
-Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
-can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
+TODO
 
 ---
 # Next chapter: Advance Typeclass
