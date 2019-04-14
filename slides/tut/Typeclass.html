@@ -153,6 +153,21 @@ class Object {
 
 
 ```tut:silent
+case class Foo(i: Int, s: String)
+```
+
+---
+# Top Level
+
+```scala
+class Object {
+  def equals(other: Any): Boolean =
+    this == other
+}
+```
+
+
+```tut:silent
 case class Foo(i: Int, s: String) extends Object {
   override def equals(obj: Any): Boolean =
     obj match {
@@ -165,8 +180,8 @@ case class Foo(i: Int, s: String) extends Object {
 --
 
 ```tut
-5.equals(6)
 Foo(5, "Hello").equals(Foo(5, "Hello"))
+5.equals(6)
 ```
 
 ---
@@ -302,12 +317,6 @@ def contains[A <: Eq[A]](xs: List[A], value: A): Boolean =
   xs.foldRight(false)((x, acc) => x.eqv(value) || acc)
 ```
 
---
-
-```tut:fail
-Foo(5, "Hello").eqv(7)
-```
-
 ---
 # F-Bounded Trait
 
@@ -325,6 +334,11 @@ case class Foo(i: Int, s: String) extends Eq[Foo] {
 }
 ```
 
+```tut:fail
+Foo(5, "Hello").eqv(7)
+```
+
+--
 
 ```tut:fail
 5.eqv(7)
@@ -411,17 +425,17 @@ contains(xs, 3.2)(approx(0.001))
 
 ```tut:silent
 trait Eq[A]{
-  def eqv(a1: A, a2: A): Boolean
+  def eqv(x: A, y: A): Boolean
 }
 ```
 
 ```tut:silent
 val fooEq: Eq[Foo] = new Eq[Foo]{
-  def eqv(a1: Foo, a2: Foo): Boolean = a1.i == a2.i && a1.s == a2.s
+  def eqv(x: Foo, y: Foo): Boolean = x.i == y.i && x.s == y.s
 }
 
 val intEq: Eq[Int] = new Eq[Int]{
-  def eqv(a1: Int, a2: Int): Boolean = a1 == a2
+  def eqv(x: Int, y: Int): Boolean = x == y
 }
 ```
 
@@ -439,37 +453,19 @@ fooEq.eqv(Foo(1, "Hello"), 3)
 ---
 # Interface
 
-```scala
-trait Eq[A]{
-  def eqv(a1: A, a2: A): Boolean
-}
-```
-
 ```tut:silent
 def contains[A](xs: List[A], value: A)(eq: Eq[A]): Boolean =
   xs.foldRight(false)((x, acc) => eq.eqv(x, value) || acc)
-```
 
-
-```tut
-contains(List(1,2,3,4), 3)(intEq)
-```
-
----
-# Interface
-
-```tut:silent
 val exact: Eq[Double] = new Eq[Double] {
-  def eqv(a1: Double, a2: Double): Boolean = a1 == a2
+  def eqv(x: Double, y: Double): Boolean = x == y
 }
 
 
 def approx(error: Double): Eq[Double] = new Eq[Double] {
-  def eqv(a1: Double, a2: Double): Boolean = (a1 - a2).abs < error
+  def eqv(x: Double, y: Double): Boolean = (x - y).abs < error
 }
-```
 
-```tut
 val xs = List(1.0, 2.5, 3.3)
 ```
 
@@ -484,8 +480,8 @@ contains(xs, 3.2)(approx(0.001))
 
 ```tut:silent
 trait Eq[A] {
-  def eqv (a1: A, a2: A): Boolean
-  def neqv(a1: A, a2: A): Boolean = !eqv(a1, a2)
+  def eqv (x: A, y: A): Boolean
+  def neqv(x: A, y: A): Boolean = !eqv(x, y)
 }
 ```
 
@@ -497,14 +493,42 @@ trait Hash[A] extends Eq[A] {
 }
 
 val fooHash: Hash[Foo] = new Hash[Foo]{
-  def eqv(a1: Foo, a2: Foo): Boolean = a1.i == a2.i && a1.s == a2.s
+  def eqv(x: Foo, y: Foo): Boolean = x.i == y.i && x.s == y.s
   def hash(a: Foo): Int = a.hashCode
 }
 
 val intHash: Hash[Int] = new Hash[Int]{
-  def eqv(a1: Int, a2: Int): Boolean = a1 == a2
+  def eqv(x: Int, y: Int): Boolean = x == y
   def hash(a: Int): Int = a
 }
+```
+
+---
+# Interface or Record of functions
+
+```tut:silent
+case class Hash[A](
+  eqv: (A, A) => Boolean,
+  hash: A => Int
+)
+
+val hashFoo: Hash[Foo] = Hash[Foo](
+  eqv  = (x, y) => x.i == y.i && x.s == y.s,
+  hash = _.hashCode
+)
+
+val hashInt: Hash[Int] = Hash[Int](
+  eqv  = _ == _,
+  hash = identity
+)
+```
+
+--
+
+```tut:silent
+hashInt.copy(
+  eqv = (x: Int, y: Int) => (x - y).abs < 2
+)
 ```
 
 ---
@@ -512,47 +536,29 @@ val intHash: Hash[Int] = new Hash[Int]{
 
 ```tut:silent
 trait Eq[A]{
-  def eqv(a1: A, a2: A): Boolean
+  def eqv(x: A, y: A): Boolean
 }
 ```
 
 
 ```tut:silent
 implicit val intEq: Eq[Int] = new Eq[Int]{
-  def eqv(a1: Int, a2: Int): Boolean = a1 == a2
+  def eqv(x: Int, y: Int): Boolean = x == y
 }
 
 implicit val stringEq: Eq[String] = new Eq[String]{
-  def eqv(a1: String, a2: String): Boolean = a1 == a2
+  def eqv(x: String, y: String): Boolean = x == y
 }
 
 implicit val fooEq: Eq[Foo] = new Eq[Foo]{
-  def eqv(a1: Foo, a2: Foo): Boolean =
-    implicitly[Eq[Int]].eqv(a1.i, a2.i) && implicitly[Eq[String]].eqv(a1.s, a2.s)
+  def eqv(x: Foo, y: Foo): Boolean =
+    implicitly[Eq[Int]].eqv(x.i, y.i) && implicitly[Eq[String]].eqv(x.s, y.s)
 }
 ```
 
 ---
 # Typeclass: Summoning
 
-
-```scala
-trait Eq[A]{
-  def eqv(a1: A, a2: A): Boolean
-}
-```
-
-```tut
-implicitly[Eq[Int]].eqv(5, 6)
-implicitly[Eq[String]].eqv("Hello", "Hello")
-```
-
-
-```tut:fail
-implicitly[Eq[Double]].eqv(5.5, 5.6)
-```
-
---
 
 ```scala
 object Global {
@@ -564,13 +570,25 @@ object Global {
 }
 ```
 
+--
+
+```tut
+implicitly[Eq[Int]].eqv(5, 6)
+implicitly[Eq[String]].eqv("Hello", "Hello")
+```
+
+
+```tut:fail
+implicitly[Eq[Double]].eqv(5.5, 5.6)
+```
+
 ---
 # Typeclass: Constrain
 
 
 ```scala
 trait Eq[A]{
-  def eqv(a1: A, a2: A): Boolean
+  def eqv(x: A, y: A): Boolean
 }
 ```
 
@@ -607,8 +625,6 @@ object Eq {
   def apply[A](implicit ev: Eq[A]): Eq[A] = ev
 }
 ```
-
---
 
 ```tut
 implicitly[Eq[Int]]
@@ -655,8 +671,8 @@ implicit class EqSyntax[A](self: A){
 
 ```tut:silent
 implicit val fooEq: Eq[Foo] = new Eq[Foo]{
-  def eqv(a1: Foo, a2: Foo): Boolean =
-    a1.i === a2.i && a1.s === a2.s
+  def eqv(x: Foo, y: Foo): Boolean =
+    x.i === y.i && x.s === y.s
 }
 ```
 
@@ -737,7 +753,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercises
+# Folding
 
 ---
 # Folding
@@ -794,10 +810,12 @@ func(5)
 
 ```tut:silent
 trait Monoid[A]{
-  def combine(a1: A, a2: A): A
+  def combine(x: A, y: A): A
   def empty: A
 }
 ```
+
+--
 
 ```tut:silent
 def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
@@ -808,7 +826,6 @@ def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
 }
 ```
 
---
 
 ```tut:fail
 monoFoldLeft(List(1, 2, 3, 4, 5))
@@ -819,17 +836,17 @@ monoFoldLeft(List(1, 2, 3, 4, 5))
 
 ```tut:silent
 implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
-  def combine(a1: Int, a2: Int): Int = a1 + a2
+  def combine(x: Int, y: Int): Int = x + y
   def empty: Int = 0
 }
 
 implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
-  def combine(a1: Double, a2: Double): Double = a1 + a2
+  def combine(x: Double, y: Double): Double = x + y
   def empty: Double = 0.0
 }
 
 implicit val stringMonoid: Monoid[String] = new Monoid[String] {
-  def combine(a1: String, a2: String): String = a1 + a2
+  def combine(x: String, y: String): String = x + y
   def empty: String = ""
 }
 ```
@@ -846,6 +863,279 @@ monoFoldLeft(List("foo", "bar"))
 class: center, middle
 
 # Exercises
+
+---
+class: center, middle
+
+# Uniqueness
+
+---
+# Uniqueness
+
+```tut
+implicitly[Monoid[Int]]
+```
+
+--
+
+```tut:silent
+implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = (x + y).abs
+  def empty: Int = 0
+}
+```
+
+--
+
+```tut:fail
+implicitly[Monoid[Int]]
+```
+
+--
+
+```tut:fail
+monoFoldLeft(List(1,2,3,4))
+```
+
+---
+class: center, middle
+
+# Non unique instance
+
+---
+# Non unique instance
+
+```tut:silent
+val sumMonoid: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 0
+}
+
+val productMonoid: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x * y
+  def empty: Int = 1
+}
+```
+
+---
+# Non unique instance: The haskell way (newtype)
+
+```scala
+case class Sum(getSum: Int)
+object Sum {
+  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
+    def combine(x: Sum, y: Sum): Sum = Sum(x.getSum + y.getSum)
+    def empty: Sum = Sum(0)
+  }
+}
+
+case class Product(getProduct: Int)
+object Product {
+  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
+    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
+    def empty: Product = Product(1)
+  }
+}
+```
+
+```tut:invisible
+case class Sum(getSum: Int); object Sum {
+  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
+    def combine(x: Sum, y: Sum): Sum = Sum(x.getSum + y.getSum)
+    def empty: Sum = Sum(0)
+  }
+}
+
+case class Product(getProduct: Int); object Product {
+  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
+    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
+    def empty: Product = Product(1)
+  }
+}
+
+def foldMap[A, B](fa: List[A])(f: A => B)(implicit ev: Monoid[B]): B =
+  monoFoldLeft(fa.map(f))
+```
+
+--
+
+
+```tut:silent
+val xs = List(2, 5, 0)
+```
+
+```tut
+foldMap(xs)(Sum(_))
+foldMap(xs)(Product(_))
+```
+
+---
+# Non unique instance: The scala way (so far)
+
+* Define an instance for the most common case (how to define ???)
+
+```tut:silent
+implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 0
+}
+```
+
+* Use newtypes for other cases
+
+```scala
+case class Product(getProduct: Int)
+object Product {
+  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
+    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
+    def empty: Product = Product(1)
+  }
+}
+```
+
+---
+class: center, middle
+
+# Where to define instances?
+
+---
+# Where to define instances?
+
+## 1. Companion object of the target type
+
+```scala
+case class Metrics(ordersCreated: Long, ordersDeleted: Long)
+
+object Metrics {
+  implicit val Monoid: Monoid[Metrics] = new Monoid[Metrics]{
+    def combine(x: Metrics, y: Metrics): Metrics =
+      Metrics(
+        ordersCreated = x.ordersCreated + y.ordersCreated,
+        ordersDeleted = y.ordersDeleted + y.ordersDeleted
+      )
+
+    def empty: Metrics =
+      Metrics(0, 0)
+  }
+}
+```
+
+---
+# Where to define instances?
+
+## 2. Companion object of typeclass
+
+```tut:silent
+trait Order[A]{
+  def compare(x: A, y: A): Int
+}
+
+object Order {
+  implicit val intOrder: Order[Int] = new Order[Int]{
+    def compare(x: Int, y: Int): Int =
+      x.compare(y) // from std scala
+  }
+
+  import java.time.Instant
+
+  implicit val instantOrder: Ordering[Instant] = new Ordering[Instant]{
+    def compare(x: Instant, y: Instant): Int = x.compareTo(y) // from java.time
+  }
+}
+```
+
+---
+# Where to define instances?
+
+## 3. Ad-hoc object (to avoid as much as possible!)
+
+```tut:silent
+object MonoidInstance {
+  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean]{
+    def combine(x: Boolean, y: Boolean): Boolean = x && y
+    def empty: Boolean = true
+  }
+}
+```
+
+--
+
+```tut:fail
+monoFoldLeft(List(true, false, false))
+```
+
+--
+
+```tut:silent
+import MonoidInstance._
+```
+
+```tut
+monoFoldLeft(List(true, false, false))
+```
+
+---
+# Where to define instances?
+
+## 3. Ad-hoc object (to avoid as much as possible!)
+
+```tut:silent
+object OtherMonoidInstance {
+  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean]{
+    def combine(x: Boolean, y: Boolean): Boolean = x || y
+    def empty: Boolean = false
+  }
+}
+```
+
+--
+
+
+```tut:silent
+import MonoidInstance._
+```
+
+```tut
+monoFoldLeft(List(true, false, false))
+```
+
+--
+
+```tut:silent
+import OtherMonoidInstance._
+```
+
+```tut
+monoFoldLeft(List(true, false, false))
+```
+
+---
+# When should I use ad-hoc object for typeclass instances
+
+* In libraries when you have a typeclass hierarchy
+
+```scala
+trait Semigroup[A]
+
+object Semigroup {
+  implicit val int: Semigroup[Int] = ...
+}
+
+trait Monoid[A] extends Monoid[A]
+
+object Bar {
+  implicit val int: Monoid[Int] = ...
+}
+
+trait CommutativeMonoid[A] extends Monoid[A]
+
+object CommutativeMonoid {
+  implicit val int: CommutativeMonoid[Int] = ...
+}
+```
+
+* If you control neither the typeclass or the type (Please do PR!)
+
 
 ---
 class: center, middle
@@ -868,9 +1158,9 @@ Person <==> (String, (Int, Unit))
 --
 
 ```tut:silent
-implicit val intEq   : Eq[Int]    = (a1: Int   , a2: Int   ) => a1 == a2
-implicit val stringEq: Eq[String] = (a1: String, a2: String) => a1 == a2
-implicit val unitEq  : Eq[Unit]   = (a1: Unit  , a2: Unit  ) => true
+implicit val intEq   : Eq[Int]    = (x: Int   , y: Int   ) => x == y
+implicit val stringEq: Eq[String] = (x: String, y: String) => x == y
+implicit val unitEq  : Eq[Unit]   = (x: Unit  , y: Unit  ) => true
 ```
 
 --
@@ -909,12 +1199,12 @@ Contact <==> Either[Email, Either[Address, Nothing]]
 --
 
 ```tut:silent
-implicit val nothingEq: Eq[Nothing] = (a1: Nothing, a2: Nothing) => true
+implicit val nothingEq: Eq[Nothing] = (x: Nothing, y: Nothing) => true
 
 implicit def either[A: Eq, B: Eq]: Eq[Either[A, B]] = new Eq[Either[A, B]] {
   def eqv(e1: Either[A, B], e2: Either[A, B]): Boolean =
     (e1, e2) match {
-      case ( Left(a1),  Left(a2)) => a1 === a2
+      case ( Left(x),  Left(y)) => x === y
       case (Right(b1), Right(b2)) => b1 === b2
       case _                      => false
     }
@@ -974,84 +1264,84 @@ Source available at github.com/tpolecat/cats-infographic • Shareable under CC-
 # Overloading
 
 ```tut:silent
-def plus(a1:  Int, a2:  Int):  Int = a1 + a2
-def plus(a1: Long, a2: Long): Long = a1 + a2
+def combine(x:  Int, y:  Int):  Int = x + y
+def combine(x: Long, y: Long): Long = x + y
 ```
 
 --
 
 ```tut:silent
-def plus(a1: String, a2: String): String = a1 + a2
+def combine(x: String, y: String): String = x + y
 ```
 
 --
 
 ```tut:invisible
 object Monoid {
-  def plus(a1:  Int, a2:  Int):  Int = a1 + a2
-  def plus(a1: Long, a2: Long): Long = a1 + a2
-  def plus(a1: String, a2: String): String = a1 + a2
+  def combine(x:  Int, y:  Int):  Int = x + y
+  def combine(x: Long, y: Long): Long = x + y
+  def combine(x: String, y: String): String = x + y
 }
 import Monoid._
 ```
 
 ```tut
-plus(1 , 2)
-plus(1L, 2L)
-plus("Hello", "World")
+combine(1 , 2)
+combine(1L, 2L)
+combine("Hello", "World")
 ```
 
 ---
 # Abstraction
 
 ```tut:silent
-def sumList(xs: List[Int]   ): Int    = xs.foldLeft(0 )(plus)
-def sumList(xs: List[Long]  ): Long   = xs.foldLeft(0L)(plus)
-def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
+def monoFoldLeft(xs: List[Int]   ): Int    = xs.foldLeft(0 )(combine)
+def monoFoldLeft(xs: List[Long]  ): Long   = xs.foldLeft(0L)(combine)
+def monoFoldLeft(xs: List[String]): String = xs.foldLeft("")(combine)
 ```
 
 ```tut:invisible
 object MonoidList {
-  def sumList(xs: List[Int]   ): Int    = xs.foldLeft(0 )(plus)
-  def sumList(xs: List[Long]  ): Long   = xs.foldLeft(0L)(plus)
-  def sumList(xs: List[String]): String = xs.foldLeft("")(plus)
+  def monoFoldLeft(xs: List[Int]   ): Int    = xs.foldLeft(0 )(combine)
+  def monoFoldLeft(xs: List[Long]  ): Long   = xs.foldLeft(0L)(combine)
+  def monoFoldLeft(xs: List[String]): String = xs.foldLeft("")(combine)
 }
 import MonoidList._
 ```
 
 ```tut
-sumList(List(1,2,3,4))
-sumList(List("Hello", "World"))
+monoFoldLeft(List(1,2,3,4))
+monoFoldLeft(List("Hello", "World"))
 ```
 
 ---
 # Abstraction
 
 ```tut:silent
-def sumListGen[A](xs: List[A])(zero: A, plus: (A, A) => A): A =
-  xs.foldLeft(zero)(plus)
+def monoFoldLeftGen[A](xs: List[A])(empty: A, combine: (A, A) => A): A =
+  xs.foldLeft(empty)(combine)
 ```
 
 --
 
 ```tut:silent
-def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(0 , plus)
-def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(0L, plus)
-def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
+def monoFoldLeft(xs: List[Int]   ): Int    = monoFoldLeftGen(xs)(0 , combine)
+def monoFoldLeft(xs: List[Long]  ): Long   = monoFoldLeftGen(xs)(0L, combine)
+def monoFoldLeft(xs: List[String]): String = monoFoldLeftGen(xs)("", combine)
 ```
 
 ```tut:invisible
 object MonoidList {
-  def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(0 , plus)
-  def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(0L, plus)
-  def sumList(xs: List[String]): String = sumListGen(xs)("", plus)
+  def monoFoldLeft(xs: List[Int]   ): Int    = monoFoldLeftGen(xs)(0 , combine)
+  def monoFoldLeft(xs: List[Long]  ): Long   = monoFoldLeftGen(xs)(0L, combine)
+  def monoFoldLeft(xs: List[String]): String = monoFoldLeftGen(xs)("", combine)
 }
 import MonoidList._
 ```
 
 ```tut
-sumList(List(1,2,3,4))
-sumList(List("Hello", "World"))
+monoFoldLeft(List(1,2,3,4))
+monoFoldLeft(List("Hello", "World"))
 ```
 
 ---
@@ -1059,8 +1349,8 @@ sumList(List("Hello", "World"))
 
 ```tut:silent
 trait Monoid[A]{
-  def plus(a1: A, a2: A): A
-  def zero: A
+  def combine(x: A, y: A): A
+  def empty: A
 }
 ```
 
@@ -1068,18 +1358,18 @@ trait Monoid[A]{
 
 ```tut:silent
 val MonoidInt: Monoid[Int] = new Monoid[Int]{
-  def plus(a1: Int, a2: Int): Int = a1 + a2
-  def zero: Int = 0
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 0
 }
 
 val MonoidLong: Monoid[Long] = new Monoid[Long]{
-  def plus(a1: Long, a2: Long): Long = a1 + a2
-  def zero: Long = 0
+  def combine(x: Long, y: Long): Long = x + y
+  def empty: Long = 0
 }
 
 val MonoidString: Monoid[String] = new Monoid[String]{
-  def plus(a1: String, a2: String): String = a1 + a2
-  def zero: String = ""
+  def combine(x: String, y: String): String = x + y
+  def empty: String = ""
 }
 ```
 
@@ -1087,30 +1377,30 @@ val MonoidString: Monoid[String] = new Monoid[String]{
 # Monoid
 
 ```tut:silent
-def sumListGen[A](xs: List[A])(p: Monoid[A]): A =
-  xs.foldLeft(p.zero)(p.plus)
+def monoFoldLeftGen[A](xs: List[A])(p: Monoid[A]): A =
+  xs.foldLeft(p.empty)(p.combine)
 ```
 
 --
 
 ```tut:silent
-def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(MonoidInt)
-def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(MonoidLong)
-def sumList(xs: List[String]): String = sumListGen(xs)(MonoidString)
+def monoFoldLeft(xs: List[Int]   ): Int    = monoFoldLeftGen(xs)(MonoidInt)
+def monoFoldLeft(xs: List[Long]  ): Long   = monoFoldLeftGen(xs)(MonoidLong)
+def monoFoldLeft(xs: List[String]): String = monoFoldLeftGen(xs)(MonoidString)
 ```
 
 ```tut:invisible
 object MonoidList {
-  def sumList(xs: List[Int]   ): Int    = sumListGen(xs)(MonoidInt)
-  def sumList(xs: List[Long]  ): Long   = sumListGen(xs)(MonoidLong)
-  def sumList(xs: List[String]): String = sumListGen(xs)(MonoidString)
+  def monoFoldLeft(xs: List[Int]   ): Int    = monoFoldLeftGen(xs)(MonoidInt)
+  def monoFoldLeft(xs: List[Long]  ): Long   = monoFoldLeftGen(xs)(MonoidLong)
+  def monoFoldLeft(xs: List[String]): String = monoFoldLeftGen(xs)(MonoidString)
 }
 import MonoidList._
 ```
 
 ```tut
-sumList(List(1,2,3,4))
-sumList(List("Hello", "World"))
+monoFoldLeft(List(1,2,3,4))
+monoFoldLeft(List("Hello", "World"))
 ```
 
 ---
@@ -1134,10 +1424,10 @@ object Global {
 --
 
 ```scala
-def sumList[A](xs: List[A]): A =
+def monoFoldLeft[A](xs: List[A]): A =
   Global.MonoidMapping.get(A) match {
     case None    => sys.error("compile error")
-    case Some(p) => xs.foldLeft(p.zero)(p.plus)
+    case Some(p) => xs.foldLeft(p.empty)(p.combine)
   }
 ```
 
@@ -1148,8 +1438,8 @@ def sumList[A](xs: List[A]): A =
 
 ```tut:silent
 trait Monoid[A]{
-  def plus(a1: A, a2: A): A
-  def zero: A
+  def combine(x: A, y: A): A
+  def empty: A
 }
 ```
 
@@ -1159,8 +1449,8 @@ trait Monoid[A]{
 
 ```tut:silent
 implicit val MonoidInt: Monoid[Int] = new Monoid[Int]{
-  def plus(a1: Int, a2: Int): Int = a1 + a2
-  def zero: Int = 0
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 0
 }
 ```
 
@@ -1168,314 +1458,55 @@ implicit val MonoidInt: Monoid[Int] = new Monoid[Int]{
 # SumList using typeclass
 
 ```tut:silent
-def sumList[A](xs: List[A])(implicit p: Monoid[A]): A =
-  xs.foldLeft(p.zero)(p.plus)
+def monoFoldLeft[A](xs: List[A])(implicit p: Monoid[A]): A =
+  xs.foldLeft(p.empty)(p.combine)
 ```
 
 --
 
 ```tut:invisible
 implicit val MonoidDouble: Monoid[Double] = new Monoid[Double]{
-  def plus(a1: Double, a2: Double): Double = a1 + a2
-  def zero: Double = 0
+  def combine(x: Double, y: Double): Double = x + y
+  def empty: Double = 0
 }
 
 implicit val MonoidString: Monoid[String] = new Monoid[String]{
-  def plus(a1: String, a2: String): String = a1 + a2
-  def zero: String = ""
+  def combine(x: String, y: String): String = x + y
+  def empty: String = ""
 }
 ```
 
 ```tut
-sumList(List(1,2,3,4))
+monoFoldLeft(List(1,2,3,4))
 
-sumList(List(1.5, 4.3, 9.0))
+monoFoldLeft(List(1.5, 4.3, 9.0))
 
-sumList(List("Hello", "World"))
+monoFoldLeft(List("Hello", "World"))
 ```
 
 --
 
 ```tut:fail
-sumList(List(true, true, false))
+monoFoldLeft(List(true, true, false))
 ```
 
 ---
 # SumList using typeclass context bound
 
 ```tut:silent
-def sumList[A](xs: List[A])(implicit p: Monoid[A]): A =
-  xs.foldLeft(p.zero)(p.plus)
+def monoFoldLeft[A](xs: List[A])(implicit p: Monoid[A]): A =
+  xs.foldLeft(p.empty)(p.combine)
 
-def sumList[A: Monoid](xs: List[A]): A = {
+def monoFoldLeft[A: Monoid](xs: List[A]): A = {
   val p = implicitly[Monoid[A]]
-  xs.foldLeft(p.zero)(p.plus)
+  xs.foldLeft(p.empty)(p.combine)
 }
 ```
 
 ```tut
-sumList(List(1,2,3,4))
+monoFoldLeft(List(1,2,3,4))
 ```
 
----
-class: center, middle
-
-# Uniqueness
-
----
-# Uniqueness
-
-```tut
-implicitly[Monoid[Int]]
-```
-
---
-
-```tut:silent
-implicit val MonoidInt2: Monoid[Int] = new Monoid[Int]{
-  def plus(a1: Int, a2: Int): Int = (a1 + a2).abs
-  def zero: Int = 0
-}
-```
-
---
-
-```tut:fail
-implicitly[Monoid[Int]]
-```
-
---
-
-```tut:fail
-sumList(List(1,2,3,4))
-```
-
----
-class: center, middle
-
-# Non unique instance
-
----
-# Non unique instance
-
-```tut:silent
-val sumMonoid: Monoid[Int] = new Monoid[Int]{
-  def plus(a1: Int, a2: Int): Int = a1 + a2
-  def zero: Int = 0
-}
-
-val productMonoid: Monoid[Int] = new Monoid[Int]{
-  def plus(a1: Int, a2: Int): Int = a1 * a2
-  def zero: Int = 1
-}
-```
-
----
-# Non unique instance: The haskell way (newtype)
-
-```scala
-case class Sum(getSum: Int)
-object Sum {
-  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
-    def plus(a1: Sum, a2: Sum): Sum = Sum(a1.getSum + a2.getSum)
-    def zero: Sum = Sum(0)
-  }
-}
-
-case class Product(getProduct: Int)
-object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def plus(a1: Product, a2: Product): Product = Product(a1.getProduct * a2.getProduct)
-    def zero: Product = Product(1)
-  }
-}
-```
-
-```tut:invisible
-case class Sum(getSum: Int); object Sum {
-  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
-    def plus(a1: Sum, a2: Sum): Sum = Sum(a1.getSum + a2.getSum)
-    def zero: Sum = Sum(0)
-  }
-}
-
-case class Product(getProduct: Int); object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def plus(a1: Product, a2: Product): Product = Product(a1.getProduct * a2.getProduct)
-    def zero: Product = Product(1)
-  }
-}
-
-def foldMap[A, B](fa: List[A])(f: A => B)(implicit ev: Monoid[B]): B =
-  sumList(fa.map(f))
-```
-
---
-
-
-```tut:silent
-val xs = List(2, 5, 0)
-```
-
-```tut
-foldMap(xs)(Sum(_))
-foldMap(xs)(Product(_))
-```
-
----
-# Non unique instance: The scala way (so far)
-
-* Define an instance for the most common case (very dodgy)
-
-```tut:silent
-implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
-  def plus(a1: Int, a2: Int): Int = a1 + a2
-  def zero: Int = 0
-}
-```
-
----
-class: center, middle
-
-# Where to define instances?
-
----
-# Where to define instances?
-
-## 1. Companion object of the target type
-
-```scala
-case class Metrics(ordersCreated: Long, ordersDeleted: Long)
-
-object Metrics {
-  implicit val Monoid: Monoid[Metrics] = new Monoid[Metrics]{
-    def plus(a1: Metrics, a2: Metrics): Metrics =
-      Metrics(
-        ordersCreated = a1.ordersCreated + a2.ordersCreated,
-        ordersDeleted = a2.ordersDeleted + a2.ordersDeleted
-      )
-
-    def zero: Metrics =
-      Metrics(0, 0)
-  }
-}
-```
-
----
-# Where to define instances?
-
-## 2. Companion object of typeclass
-
-```tut:silent
-trait Order[A]{
-  def compare(a1: A, a2: A): Int
-}
-
-object Order {
-  implicit val intOrder: Order[Int] = new Order[Int]{
-    def compare(a1: Int, a2: Int): Int =
-      a1.compare(a2) // from std scala
-  }
-
-  import java.time.Instant
-
-  implicit val instantOrder: Ordering[Instant] = new Ordering[Instant]{
-    def compare(x: Instant, y: Instant): Int = x.compareTo(y) // from java.time
-  }
-}
-```
-
----
-# Where to define instances?
-
-## 3. Ad-hoc object (to avoid as much as possible!)
-
-```tut:silent
-object MonoidInstance {
-  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean]{
-    def plus(a1: Boolean, a2: Boolean): Boolean = a1 && a2
-    def zero: Boolean = true
-  }
-}
-```
-
---
-
-```tut:fail
-sumList(List(true, false, false))
-```
-
---
-
-```tut:silent
-import MonoidInstance._
-```
-
-```tut
-sumList(List(true, false, false))
-```
-
----
-# Where to define instances?
-
-## 3. Ad-hoc object (to avoid as much as possible!)
-
-```tut:silent
-object OtherMonoidInstance {
-  implicit val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean]{
-    def plus(a1: Boolean, a2: Boolean): Boolean = a1 || a2
-    def zero: Boolean = false
-  }
-}
-```
-
---
-
-
-```tut:silent
-import MonoidInstance._
-```
-
-```tut
-sumList(List(true, false, false))
-```
-
---
-
-```tut:silent
-import OtherMonoidInstance._
-```
-
-```tut
-sumList(List(true, false, false))
-```
-
----
-# When should I use ad-hoc object for typeclass instances
-
-* In libraries when you have a typeclass hierarchy
-
-```scala
-trait Semigroup[A]
-
-object Semigroup {
-  implicit val int: Semigroup[Int] = ...
-}
-
-trait Monoid[A] extends Monoid[A]
-
-object Bar {
-  implicit val int: Monoid[Int] = ...
-}
-
-trait CommutativeMonoid[A] extends Monoid[A]
-
-object CommutativeMonoid {
-  implicit val int: CommutativeMonoid[Int] = ...
-}
-```
-
-* If you control neither the typeclass or the type (Please do PR!)
 
 ---
 class: center, middle
@@ -1530,11 +1561,11 @@ Either[String, ?] :: Type -> Type
 
 ```tut:silent
 trait Semigroup[A]{
-  def combine(a1: A, a2: A): A
+  def combine(x: A, y: A): A
 }
 
 implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
-  def combine(a1: Int, a2: Int): Int = ???
+  def combine(x: Int, y: Int): Int = ???
 }
 ```
 
@@ -1546,7 +1577,7 @@ implicit val listSemigroup: Semigroup[List] = ???
 
 ```tut:silent
 implicit def listSemigroup[A]: Semigroup[List[A]] = new Semigroup[List[A]]{
-  def combine(a1: List[A], a2: List[A]): List[A] = ???
+  def combine(x: List[A], y: List[A]): List[A] = ???
 }
 ```
 

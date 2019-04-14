@@ -1,9 +1,12 @@
 package toimpl.typeclass
 
 import cats.data.NonEmptyList
+import cats.kernel.Eq
 import exercises.typeclass._
+import org.scalacheck.Arbitrary
+import org.typelevel.discipline.Laws
 
-trait TypeclassToImpl {
+trait TypeclassToImpl extends Laws {
 
   /////////////////////////////
   // 1. Monoid Instances
@@ -12,7 +15,7 @@ trait TypeclassToImpl {
   implicit val intMonoid: Monoid[Int]
   implicit val doubleMonoid: Monoid[Double]
   implicit val stringMonoid: Monoid[String]
-  implicit val unitMonoid: Monoid[Unit]
+  implicit val longMonoid: Monoid[Long]
   implicit def listMonoid[A]: Monoid[List[A]]
   implicit def vectorMonoid[A]: Monoid[Vector[A]]
   implicit def setMonoid[A]: Monoid[Set[A]]
@@ -20,6 +23,8 @@ trait TypeclassToImpl {
   implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A, B)]
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]]
   implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]]
+  implicit val unitMonoid: Monoid[Unit]
+  implicit val nothingMonoid: Monoid[Nothing]
 
   /////////////////////////////
   // 2. Monoid usage
@@ -44,8 +49,8 @@ trait TypeclassToImpl {
   /////////////////////////////
 
   val stringSpaceMonoid: Monoid[String]
+  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet
   def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A
-
 
   /////////////////////////////
   // 4. Instance uniqueness
@@ -65,6 +70,7 @@ trait TypeclassToImpl {
   ////////////////////////////
 
   implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]]
+  def semigroupLaws[A: Arbitrary: Semigroup: Eq]: RuleSet
   def reduceMap[A, B: Semigroup](fa: List[A])(f: A => B): Option[B]
   implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]]
   def minOptionList[A: Ordering](xs: List[A]): Option[A]
@@ -72,6 +78,7 @@ trait TypeclassToImpl {
   def headOptionList[A](xs: List[A]): Option[A]
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]]
   def lastOptionList[A: Ordering](xs: List[A]): Option[A]
+  def strongMonoidLaws[A: Arbitrary: StrongMonoid: Eq]: RuleSet
 
   //////////////////////////////
   // 6. Higher kinded typeclass

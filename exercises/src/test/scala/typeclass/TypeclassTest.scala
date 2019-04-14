@@ -1,6 +1,6 @@
 package typeclass
 
-import answers.typeclass.{MonoidAnswersLaws, SemigroupAnswersLaws, TypeclassAnswers}
+import answers.typeclass.TypeclassAnswers
 import cats.data.NonEmptyList
 import cats.kernel.Eq
 import cats.instances.all._
@@ -9,12 +9,12 @@ import exercises.typeclass._
 import org.scalacheck.{Arbitrary, Cogen}
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
-import toimpl.typeclass.{MonoidLawsToImpl, SemigroupLawsToImpl, TypeclassToImpl}
+import toimpl.typeclass.TypeclassToImpl
 
-class TypeclassExercisesTest extends TypeclassTest(TypeclassExercises, MonoidLaws, SemigroupLaws)
-class TypeclassAnswersTest extends TypeclassTest(TypeclassAnswers, MonoidAnswersLaws, SemigroupAnswersLaws)
+class TypeclassExercisesTest extends TypeclassTest(TypeclassExercises)
+class TypeclassAnswersTest extends TypeclassTest(TypeclassAnswers)
 
-class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigroupLaws: SemigroupLawsToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance{
+class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance{
   import impl._
 
   test("check Double instance"){
@@ -25,12 +25,34 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigro
     List(1,2,3).combine(List(4,5)).combine(mempty[List[Int]]) shouldEqual List(1,2,3,4,5)
   }
 
+  test("check Vector instance"){
+    Vector(1,2,3).combine(Vector(4,5)).combine(mempty[Vector[Int]]) shouldEqual Vector(1,2,3,4,5)
+  }
+
+  test("check Set instance"){
+    Set(1,2,3).combine(Set(3,4,5)).combine(mempty[Set[Int]]) shouldEqual Set(1,2,3,4,5)
+  }
+
   test("check (Int, String) instance"){
     (3, "Hello").combine((5, "World")).combine(mempty[(Int, String)]) shouldEqual ((8, "HelloWorld"))
   }
 
   test("check (Int, Int) instance"){
     (3, 5).combine((5, 1)).combine(mempty[(Int, Int)]) shouldEqual ((8, 6))
+  }
+
+  test("check Option instance"){
+    Option(3).combine(Option(4)) shouldEqual Some(7)
+    Option(3).combine(None) shouldEqual Some(3)
+    Option.empty[Int].combine(Option(4)) shouldEqual Some(4)
+  }
+
+  test("check Map instance"){
+    Map("abc" -> 3, "xxx" -> 5).combine(Map("xxx" -> 2, "aaa" -> 1)) shouldEqual Map("abc" -> 3, "xxx" -> 7, "aaa" -> 1)
+  }
+
+  test("check Unit instance"){
+    ().combine(()).combine(mempty[Unit]) shouldEqual (())
   }
 
   test("sum"){
@@ -70,19 +92,6 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigro
     foldMap(List("abc", "a", "abcde"))(_.length) shouldEqual 9
   }
 
-
-  test("check Option instance"){
-    Option(3).combine(Option(4)).combine(mempty[Option[Int]]) shouldEqual Some(7)
-  }
-
-  test("check Map instance"){
-    Map("abc" -> 3, "xxx" -> 5).combine(Map("xxx" -> 2, "aaa" -> 1)) shouldEqual Map(
-      "abc" -> 3,
-      "xxx" -> 7,
-      "aaa" -> 1
-    )
-  }
-
   test("String Monoid with space"){
     stringSpaceMonoid.combine("hello", "world") shouldEqual "hello world"
   }
@@ -98,7 +107,7 @@ class TypeclassTest(impl: TypeclassToImpl, monoidLaws: MonoidLawsToImpl, semigro
   checkAll("Option", monoidLaws[Option[Int]])
   checkAll("Map", monoidLaws[Map[Int, String]])
 
-  checkAll("Int", monoidLaws.strong[Int])
+  checkAll("Int", strongMonoidLaws[Int])
 
   test("splitFold"){
     val xs = 1.to(1000).toList

@@ -9,8 +9,8 @@ object Semigroup {
 
   object syntax {
     implicit class SemigroupOps[A](self: A){
-      def combine(other: A)(implicit ev: Semigroup[A]): A = ev.combine(self, other)
-      def |+|(other: A)(implicit ev: Semigroup[A]): A = combine(other)
+      // should be |+| but I had to use a different symbol because Monoid doesn't extends Semigroup
+      def |++|(other: A)(implicit ev: Semigroup[A]): A = ev.combine(self, other)
     }
   }
 

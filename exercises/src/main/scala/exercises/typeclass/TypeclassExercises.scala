@@ -1,7 +1,10 @@
 package exercises.typeclass
 
 import cats.data.NonEmptyList
-import Monoid.syntax._
+import cats.kernel.Eq
+import cats.syntax.eq._
+import exercises.typeclass.Monoid.syntax._
+import org.scalacheck.{Arbitrary, Prop}
 import toimpl.typeclass.TypeclassToImpl
 
 import scala.annotation.tailrec
@@ -35,60 +38,77 @@ object TypeclassExercises extends TypeclassToImpl {
   }
 
   // 1a. Implement an instance of Monoid for Unit
-  implicit val unitMonoid: Monoid[Unit] = new Monoid[Unit] {
-    def combine(x: Unit, y: Unit): Unit = ???
-    def empty: Unit = ???
+  implicit val longMonoid: Monoid[Long] = new Monoid[Long] {
+    def combine(x: Long, y: Long): Long = ???
+    def empty: Long = ???
   }
 
-  // 1c. Implement an instance of Monoid for  List, Vector, Set
+  // 1b. Implement an instance of Monoid for List
+  // such as combine(List(1,2,3), List(4,5)) == List(1,2,3,4,5)
   implicit def listMonoid[A]: Monoid[List[A]] = new Monoid[List[A]] {
     def combine(x: List[A], y: List[A]): List[A] = ???
     def empty: List[A] = ???
   }
 
+  // 1c. Implement an instance of Monoid for Vector
+  // such as combine(Vector(1,2,3), Vector(4,5)) == Vector(1,2,3,4,5)
   implicit def vectorMonoid[A]: Monoid[Vector[A]] = new Monoid[Vector[A]] {
     def combine(x: Vector[A], y: Vector[A]): Vector[A] = ???
     def empty: Vector[A] = ???
   }
 
+  // 1d Implement an instance of Monoid for Set
+  // such as combine(Set(1,2,3), Set(3,4,5)) == Set(1,2,3,4,5)
   implicit def setMonoid[A]: Monoid[Set[A]] = new Monoid[Set[A]] {
     def combine(x: Set[A], y: Set[A]): Set[A] = ???
     def empty: Set[A] = ???
   }
 
-  // 1d. Implement an instance of Monoid for (Int, String)
+  // 1e. Implement an instance of Monoid for (Int, String)
   // such as combine((5, "hello"), (4, "world")) == (9, "helloworld")
   implicit val intAndStringMonoid: Monoid[(Int, String)] = new Monoid[(Int, String)] {
     def combine(x: (Int, String), y: (Int, String)): (Int, String) = ???
     def empty: (Int, String) = ???
   }
 
-  // 1e. Implement an instance of Monoid for (A, B)
+  // 1f. Implement an instance of Monoid for (A, B)
   implicit def tuple2Monoid[A: Monoid, B: Monoid]: Monoid[(A, B)] = new Monoid[(A, B)] {
     def combine(x: (A, B), y: (A, B)): (A, B) = ???
     def empty: (A, B) = ???
   }
 
-  // 1f. Implement an instance of Monoid for Either[Int, String]
+  // 1g. Implement an instance of Monoid for Either[Int, String]
   implicit val intOrStringMonoid: Monoid[Either[Int, String]] = new Monoid[Either[Int, String]] {
     def combine(x: Either[Int, String], y: Either[Int, String]): Either[Int, String] = ???
     def empty: Either[Int, String] = ???
   }
 
-  // 1g. Implement an instance of Monoid for Option
+  // 1h. Implement an instance of Monoid for Option
   // such as combine(Some(3), Some(4)) == Some(7)
-  // but     combine(Some(3), None   ) == None
-  // and     combine(None   , Some(4)) == None
+  // but     combine(Some(3), None   ) == Some(3)
+  // and     combine(None   , Some(4)) == Some(4)
   implicit def optionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
     def combine(x: Option[A], y: Option[A]): Option[A] = ???
     def empty: Option[A] = ???
   }
 
-  // 1h. Implement an instance of Monoid for Map
+  // 1i. Implement an instance of Monoid for Map
   // such as combine(Map("abc" -> 3, "xxx" -> 5), Map("xxx" -> 2, "aaa" -> 1)) == Map("abc" -> 3, "xxx" -> 7, "aaa" -> 1)
   implicit def mapMonoid[K, A: Semigroup]: Monoid[Map[K, A]] = new Monoid[Map[K, A]] {
     def combine(x: Map[K, A], y: Map[K, A]): Map[K, A] = ???
     def empty: Map[K, A] = ???
+  }
+
+  // 1j. Implement an instance of Monoid for Unit
+  implicit val unitMonoid: Monoid[Unit] = new Monoid[Unit] {
+    def combine(x: Unit, y: Unit): Unit = ???
+    def empty: Unit = ???
+  }
+
+  // 1k. Implement an instance of Monoid for Nothing
+  implicit val nothingMonoid: Monoid[Nothing] = new Monoid[Nothing] {
+    def combine(x: Nothing, y: Nothing): Nothing = ???
+    def empty: Nothing = ???
   }
 
   /////////////////////////////
@@ -184,9 +204,16 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
   // 3c. Can you think of properties for Monoid that will fail for instances like stringSpaceMonoid
-  // Implement your ideas in MonoidLaws and verify all instances we defined so far are valid
+  // Implement your ideas in monoidLaws and verify all instances we defined so far are valid
   // Try to be as restrictive possible
+  def monoidLaws[A: Arbitrary : Monoid : Eq]: RuleSet = {
+    val p = Monoid[A]
 
+    new SimpleRuleSet("Monoid",
+      "example" -> Prop.forAll((a: A) => a === a),
+      "fail" -> Prop.forAll((a: A) => ???),
+    )
+  }
 
   // 3d. combine from Monoid is also associative, x combine (y combine z) == (x combine y) combine z
   // this property is very useful to split the work in several batches
@@ -262,16 +289,25 @@ object TypeclassExercises extends TypeclassToImpl {
     def combine(x: NonEmptyList[A], y: NonEmptyList[A]): NonEmptyList[A] = ???
   }
 
-  // 5c. What laws Semigroup should satisfy? Implement them in SemigroupLaws
+  // 5c. What laws Semigroup should satisfy? Implement them in semigroupLaws
+  def semigroupLaws[A: Arbitrary: Semigroup: Eq]: RuleSet = {
+    val p = Semigroup[A]
+
+    new SimpleRuleSet("Semigroup",
+      "example" -> Prop.forAll((a: A) => a === a),
+      "fail" -> Prop.forAll((a: A) => ???),
+    )
+  }
 
 
   // 5d. Implement reduceMap
-  // also foldMap(xs)(f) == reduceMap(xs)(f).getOrElse(mempty)
+  // such as foldMap(xs)(f) == reduceMap(xs)(f).getOrElse(mempty)
   def reduceMap[A, B: Semigroup](xs: List[A])(f: A => B): Option[B] = ???
 
 
   // 5e. Implement an instance of Semigroup for Min
-  // and use it to implement minOptionList
+  // such as combine(Min(8), Min(0)) == Min(0)
+  // Use Min it to implement minOptionList
   implicit def minSemigroup[A: Ordering]: Semigroup[Min[A]] = new Semigroup[Min[A]] {
     def combine(x: Min[A], y: Min[A]): Min[A] = ???
   }
@@ -280,7 +316,8 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
   // 5f. Implement an instance of Semigroup for First
-  // and use it to implement headOptionList
+  // such as combine(First("hello"), First("world")) == First("hello")
+  // Use First to implement headOptionList
   implicit def firstSemigroup[A]: Semigroup[First[A]] = new Semigroup[First[A]] {
     def combine(x: First[A], y: First[A]): First[A] = ???
   }
@@ -289,7 +326,8 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
   // 5g. Implement an instance of Semigroup for Dual
-  // and use it to implement maxOption and lastOptionList
+  // such as combine(Dual(1), Dual(2)) == Dual(combine(2, 1))
+  // Use Dual to implement maxOption and lastOptionList
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
     def combine(x: Dual[A], y: Dual[A]): Dual[A] = ???
   }
@@ -301,7 +339,14 @@ object TypeclassExercises extends TypeclassToImpl {
   // 5h. What would be the effect of foldMap(xs: List[A])(Dual(_))
   // when A is String?
   // When A is Int?
+  // Encode this specific behaviour to strongMonoidLaws
+  def strongMonoidLaws[A: Arbitrary: StrongMonoid: Eq]: RuleSet = {
+    val p = StrongMonoid[A]
 
+    new DefaultRuleSet("StrongMonoid", Some(monoidLaws[A]),
+      "additional law" -> Prop.forAll((a: A) => ???)
+    )
+  }
 
 
   //////////////////////////////

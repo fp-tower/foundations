@@ -1,15 +1,23 @@
 package answers.typeclass
 
 import cats.data.NonEmptyList
-import exercises.typeclass.Monoid.syntax._
+import cats.kernel.Eq
+import cats.syntax.eq._
 import exercises.typeclass.Foldable.syntax._
+import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.Semigroup.syntax._
 import exercises.typeclass._
+import org.scalacheck.{Arbitrary, Prop}
 import toimpl.typeclass.TypeclassToImpl
 
-import scala.math.Ordering.Implicits._
 import scala.annotation.tailrec
+import scala.math.Ordering.Implicits._
 
 object TypeclassAnswers extends TypeclassToImpl {
+
+  /////////////////////////////
+  // 1. Monoid Instances
+  /////////////////////////////
 
   implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
     def combine(x: Int, y: Int): Int = x + y
@@ -26,9 +34,9 @@ object TypeclassAnswers extends TypeclassToImpl {
     def empty: String = ""
   }
 
-  implicit val unitMonoid: Monoid[Unit] = new Monoid[Unit] {
-    def combine(x: Unit, y: Unit): Unit = ()
-    def empty: Unit = ()
+  implicit val longMonoid: Monoid[Long] = new Monoid[Long] {
+    def combine(x: Long, y: Long): Long = x + y
+    def empty: Long = 0L
   }
 
   implicit def listMonoid[A]: Monoid[List[A]] = new Monoid[List[A]] {
@@ -71,6 +79,20 @@ object TypeclassAnswers extends TypeclassToImpl {
 
     def empty: Map[K, A] = Map.empty
   }
+
+  implicit val unitMonoid: Monoid[Unit] = new Monoid[Unit] {
+    def combine(x: Unit, y: Unit): Unit = ()
+    def empty: Unit = ()
+  }
+
+  implicit val nothingMonoid: Monoid[Nothing] = new Monoid[Nothing] {
+    def combine(x: Nothing, y: Nothing): Nothing = ???
+    def empty: Nothing = ???
+  }
+
+  /////////////////////////////
+  // 2. Monoid usage
+  /////////////////////////////
 
   def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
     @tailrec
@@ -125,14 +147,29 @@ object TypeclassAnswers extends TypeclassToImpl {
   def fold2[A](xs: List[A])(implicit ev: Monoid[A]): A =
     foldMap(xs)(identity)
 
+  /////////////////////////////
+  // 3. Typeclass laws
+  /////////////////////////////
 
   val stringSpaceMonoid: Monoid[String] = new Monoid[String] {
     def combine(x: String, y: String): String = s"$x $y"
     def empty: String = ""
   }
 
+  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet =
+    new DefaultRuleSet("Monoid", Some(semigroupLaws[A]),
+      "left identity" ->
+        Prop.forAll((a: A) => (mempty[A] |+| a) === a),
+      "right identity" ->
+        Prop.forAll((a: A) => (a |+| mempty[A]) === a)
+    )
+
   def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A =
     fold(split(xs).map(fold(_)))
+
+  /////////////////////////////
+  // 4. Instance uniqueness
+  /////////////////////////////
 
   val productIntMonoid: Monoid[Int] = new Monoid[Int] {
     def combine(x: Int, y: Int): Int = x * y
@@ -165,9 +202,19 @@ object TypeclassAnswers extends TypeclassToImpl {
 
   def pipe[A](xs: List[A => A]): A => A = foldMap(xs)(Endo(_)).getEndo
 
+  /////////////////////////////
+  // 5. Typeclass hierarchy
+  ////////////////////////////
+
   implicit def nelSemigroup[A]: Semigroup[NonEmptyList[A]] = new Semigroup[NonEmptyList[A]] {
     def combine(x: NonEmptyList[A], y: NonEmptyList[A]): NonEmptyList[A] = x ::: y
   }
+
+  def semigroupLaws[A: Arbitrary: Semigroup: Eq]: RuleSet =
+    new SimpleRuleSet("Semigroup",
+      "associative" ->
+        Prop.forAll((x: A, y: A, z: A) => ((x |++| y) |++| z) === (x |++| (y |++| z)))
+    )
 
   def reduceMap[A, B: Semigroup](fa: List[A])(f: A => B): Option[B] =
     fa match {
@@ -196,6 +243,16 @@ object TypeclassAnswers extends TypeclassToImpl {
 
   def lastOptionList[A: Ordering](xs: List[A]): Option[A] =
     reduceMap(xs)(x => Dual(First(x))).map(_.getDual.getFirst)
+
+  def strongMonoidLaws[A: Arbitrary : StrongMonoid : Eq]: RuleSet =
+    new DefaultRuleSet("StrongMonoid", Some(monoidLaws[A]),
+      "commutative" ->
+        Prop.forAll((x: A, y: A) => (x |+| y) === (y |+| x))
+    )
+
+  //////////////////////////////
+  // 6. Higher kinded typeclass
+  //////////////////////////////
 
   def foldMap[A, B: Monoid](xs: Vector[A])(f: A => B) =
     xs.foldLeft(Monoid[B].empty)((acc, a) => acc |+| f(a))
