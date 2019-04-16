@@ -129,7 +129,7 @@ object TypeclassExercises extends TypeclassToImpl {
   val words = List("Monoid", "are", "awesome", "!")
   val upTo10 = 0.to(10).toList
 
-  // 2a. Use fold to sum up Int
+  // 2a. Use fold to sum up a List of Int
   def sum(xs: List[Int]): Int = ???
 
   // 2b. Use fold to calculate the average word length
@@ -244,7 +244,8 @@ object TypeclassExercises extends TypeclassToImpl {
   }
 
   // 4c. Implement an instance of Monoid for Product
-  // and use it to implement product
+  // such as combine(Product(2), Product(5)) == Product(15)
+  // Use Product to implement product
   implicit val productMonoid: Monoid[Product] = new Monoid[Product] {
     def combine(x: Product, y: Product): Product = ???
     def empty: Product = ???
@@ -253,7 +254,9 @@ object TypeclassExercises extends TypeclassToImpl {
   def product(xs: List[Int]): Int = ???
 
   // 4e. Implement an instance of Monoid for All
-  // and use it to implement forAll
+  // such as combine(All(true), All(true))  == All(true)
+  //         combine(All(true), All(false)) == All(false)
+  // Use All to implement forAll
   implicit val allMonoid: Monoid[All] = new Monoid[All] {
     def combine(x: All, y: All): All = ???
     def empty: All = ???
@@ -262,7 +265,8 @@ object TypeclassExercises extends TypeclassToImpl {
   def forAll(xs: List[Boolean]): Boolean = ???
 
   // 4f. Implement an instance of Monoid for Endo
-  // and use it to implement pipe
+  // such as combine(inc, double)(5) == inc(double(5))
+  // Use Endo to implement pipe
   implicit def endoMonoid[A]: Monoid[Endo[A]] = new Monoid[Endo[A]] {
     def combine(x: Endo[A], y: Endo[A]): Endo[A] = ???
     def empty: Endo[A] = ???
@@ -301,7 +305,8 @@ object TypeclassExercises extends TypeclassToImpl {
 
 
   // 5d. Implement reduceMap
-  // such as foldMap(xs)(f) == reduceMap(xs)(f).getOrElse(mempty)
+  // such as reduceMap(List("", "Hi", "World"))(_.size) == Some(6)
+  // such as reduceMap(Nil)(_.size) == None
   def reduceMap[A, B: Semigroup](xs: List[A])(f: A => B): Option[B] = ???
 
 
@@ -339,7 +344,7 @@ object TypeclassExercises extends TypeclassToImpl {
   // 5h. What would be the effect of foldMap(xs: List[A])(Dual(_))
   // when A is String?
   // When A is Int?
-  // Encode this specific behaviour to strongMonoidLaws
+  // Encode this specific behaviour in strongMonoidLaws
   def strongMonoidLaws[A: Arbitrary: StrongMonoid: Eq]: RuleSet = {
     val p = StrongMonoid[A]
 
