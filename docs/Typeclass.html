@@ -693,10 +693,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@40e6d00b
+res39: Eq[Int] = $anon$1@c8b06b2
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@40e6d00b
+res40: Eq[Int] = $anon$1@c8b06b2
 ```
 
 ```scala
@@ -963,7 +963,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res54: Monoid[Int] = $anon$1@1be8bf08
+res54: Monoid[Int] = $anon$1@1fcfa39d
 ```
 
 --
@@ -1061,7 +1061,7 @@ res58: Product = Product(0)
 ---
 # Non unique instance: The scala way (so far)
 
-* Define an instance for the most common case (how to define ???)
+* Define an instance for the most common case (how to find out ???)
 
 ```scala
 implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
@@ -1165,7 +1165,7 @@ res60: Boolean = false
 ---
 # Where to define instances?
 
-## 3. Ad-hoc object (to avoid as much as possible!)
+## 3. Ad hoc object (to avoid as much as possible!)
 
 ```scala
 object OtherMonoidInstance {
@@ -1198,7 +1198,7 @@ res62: Boolean = true
 ```
 
 ---
-# When should I use ad-hoc object for typeclass instances
+# When should I use ad hoc object for typeclass instances
 
 * In libraries when you have a typeclass hierarchy
 
@@ -1222,7 +1222,7 @@ object CommutativeMonoid {
 }
 ```
 
-* If you control neither the typeclass or the type (Please do a PR!)
+* If you control neither the typeclass or the type (Please make a PR!)
 
 ---
 class: center, middle
@@ -1365,7 +1365,7 @@ class: center, middle
 # Typeclass abuses
 
 ---
-# 1. Typeclass Derivation: Product
+# Typeclass Derivation: Product
 
 ```scala
 case class Person(name: String, age: Int)
@@ -1442,30 +1442,60 @@ Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
 ```
 
 ---
-# TODO add example using magniolia
-
----
 # Derivation in Haskell
 
 ```haskell
-data Person = Person { name :: String
-                     , age :: Int
-                     } deriving (Eq, Show)
+data Person = Person { name :: String , age :: Int } deriving (Eq, Show)
+```
 
-data Color = Red | Green | Blue
-             deriving (Eq, Show, Enum)
+```haskell
+data  Option a  =  None | Some a deriving (Eq , Ord)
 ```
 
 ---
 # 2. Better syntax
 
-TODO
+```scala
+"foo" === "hello"
+stringEq.eqv("foo", "hello")
+```
+
+```scala
+List("hello", "world", "!").foldMap(_.size)
+foldMap(List("hello", "world", "!"))(_.size)(intMonoid)
+```
+
+--
+
+```scala
+List(Some(3), None, Some(4)).sequence
+sequence(List(Some(3), None, Some(4)))(listTraverse, optionApplicative)
+```
+
+---
+# When to use
+
+## Typeclass
+
+1. If you only one valid implementation for (almost) all types
+2. If you require uniqueness per type e.g. Eq, Hash, Ord
+
+## Interface / Record of functions
+
+1. If you have many valid / interesting implementations per type
+2. If you need to package several functions together
+
+## Overloading
+
+1. If you have many valid / interesting implementations per type
+2. Single function
 
 ---
 # Next chapter: Advance Typeclass
 
 .large[
 * Functor hierarchy
+* Consistency in typeclass hierarchy
 * Traverse, Traverse, Traverse
 ]
 
