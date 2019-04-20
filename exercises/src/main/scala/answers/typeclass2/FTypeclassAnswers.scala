@@ -39,6 +39,10 @@ object FTypeclassAnswers extends FTypeclassToImpl {
     def map[A, B](fa: Const[R, A])(f: A => B): Const[R, B] = fa.as[B]
   }
 
+  implicit def functionFunctor[R]: Functor[Function[R, ?]] = new Functor[Function[R, ?]] {
+    def map[A, B](fa: R => A)(f: A => B): R => B = f compose fa
+  }
+
   def void[F[_]: Functor, A](fa: F[A]): F[Unit] = as(fa)(())
 
   def as[F[_]: Functor, A, B](fa: F[A])(value: B): F[B] = fa.map(_ => value)
@@ -106,6 +110,12 @@ object FTypeclassAnswers extends FTypeclassToImpl {
       Const(fa.getConst |+| fb.getConst)
   }
 
+  implicit def functionApplicative[R]: Applicative[Function[R, ?]] = new DefaultApplicative[Function[R, ?]] {
+    def pure[A](a: A): R => A = _ => a
+    def map2[A, B, C](fa: R => A, fb: R => B)(f: (A, B) => C): R => C =
+      r => f(fa(r), fb(r))
+  }
+
   def map3[F[_]: Applicative, A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] =
     fa.map2(fb)((a, b) => f(a, b, _)).map2(fc)(_(_))
 
@@ -147,17 +157,17 @@ object FTypeclassAnswers extends FTypeclassToImpl {
   }
 
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
-    def pure[A](a: A): List[A] = listApplicative.pure(a)
+    def pure[A](a: A): List[A] = List(a)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = fa.flatMap(f)
   }
 
   implicit val optionMonad: Monad[Option] = new DefaultMonad[Option] {
-    def pure[A](a: A): Option[A] = optionApplicative.pure(a)
+    def pure[A](a: A): Option[A] = Some(a)
     def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = fa.flatMap(f)
   }
 
   implicit def eitherMonad[E]: Monad[Either[E, ?]] = new DefaultMonad[Either[E, ?]] {
-    def pure[A](a: A): Either[E, A] = eitherApplicative.pure(a)
+    def pure[A](a: A): Either[E, A] = Right(a)
     def flatMap[A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = fa.flatMap(f)
   }
 
@@ -168,8 +178,13 @@ object FTypeclassAnswers extends FTypeclassToImpl {
   }
 
   implicit val idMonad: Monad[Id] = new DefaultMonad[Id] {
-    def pure[A](a: A): Id[A] = idApplicative.pure(a)
+    def pure[A](a: A): Id[A] = Id(a)
     def flatMap[A, B](fa: Id[A])(f: A => Id[B]): Id[B] = f(fa.value)
+  }
+
+  implicit def functionMonad[R]: Monad[R => ?] = new DefaultMonad[R => ?] {
+    def pure[A](a: A): R => A = _ => a
+    def flatMap[A, B](fa: R => A)(f: A => R => B): R => B = r => f(fa(r))(r)
   }
 
   def flatten[F[_]: Monad, A](ffa: F[F[A]]): F[A] =

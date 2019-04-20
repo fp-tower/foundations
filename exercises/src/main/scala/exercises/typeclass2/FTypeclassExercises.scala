@@ -34,6 +34,14 @@ object FTypeclassExercises extends FTypeclassToImpl {
     def map[A, B](fa: Const[R, A])(f: A => B): Const[R, B] = ???
   }
 
+  implicit def functionFunctor[R]: Functor[R => ?] = new Functor[Function[R, ?]] {
+    def map[A, B](fa: R => A)(f: A => B): R => B = ???
+  }
+
+  implicit def stringEncoder: Functor[StringEncoder] = new Functor[StringEncoder] {
+    def map[A, B](fa: StringEncoder[A])(f: A => B): StringEncoder[B] = ???
+  }
+
   // 1b. Implement void
   // such as void(List(1,2,3)) == List((),(),())
   def void[F[_]: Functor, A](fa: F[A]): F[Unit] = ???
@@ -104,6 +112,11 @@ object FTypeclassExercises extends FTypeclassToImpl {
   implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]] = new DefaultApplicative[Const[R, ?]] {
     def pure[A](a: A): Const[R, A] = ???
     def map2[A, B, C](fa: Const[R, A], fb: Const[R, B])(f: (A, B) => C): Const[R, C] = ???
+  }
+
+  implicit def functionApplicative[R]: Applicative[R => ?] = new DefaultApplicative[R => ?] {
+    def pure[A](a: A): R => A = ???
+    def map2[A, B, C](fa: R => A, fb: R => B)(f: (A, B) => C): R => C = ???
   }
 
   // 2c. Implement map3
@@ -193,6 +206,12 @@ object FTypeclassExercises extends FTypeclassToImpl {
   implicit def constMonad[R]: FlatMap[Const[R, ?]] = new FlatMap[Const[R, ?]] {
     def map[A, B](fa: Const[R, A])(f: A => B): Const[R, B] = constFunctor[R].map(fa)(f)
     def flatMap[A, B](fa: Const[R, A])(f: A => Const[R, B]): Const[R, B] = ???
+  }
+
+
+  implicit def functionMonad[R]: Monad[Function[R, ?]] = new DefaultMonad[Function[R, ?]] {
+    def pure[A](a: A): Function[R, A] = functionApplicative.pure(a)
+    def flatMap[A, B](fa: Function[R, A])(f: A => Function[R, B]): Function[R, B] = ???
   }
 
   // 3d. Implement flatten

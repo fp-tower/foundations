@@ -2,6 +2,7 @@ package typeclass2
 
 import answers.typeclass2.FTypeclassAnswers
 import cats.instances.all._
+import cats.kernel.Eq
 import exercises.typeclass.Monoid
 import exercises.typeclass2.{Const, FLaws, FTypeclassExercises, Id}
 import org.scalacheck.Arbitrary
@@ -20,6 +21,7 @@ class FTypeclassTest(impl: FTypeclassToImpl) extends FunSuite with Discipline wi
   checkAll("Either", FLaws.monad[Either[Boolean, ?], Int])
   checkAll("Id", FLaws.monad[Id, Int])
   checkAll("Const", FLaws.applicative[Const[Int, ?], Boolean])
+  checkAll("Function", FLaws.monad[Int => ?, Boolean])
 
 //  test("void"){
 //    void(List(1,2,3)) shouldEqual List((),(),())
@@ -35,4 +37,15 @@ trait FTypeclassTestInstance {
     def combine(x: Int, y: Int): Int = x + y
     def empty: Int = 0
   }
+
+  implicit def eqFunction[A: Arbitrary, B: Eq]: Eq[A => B] =
+    new Eq[A => B] {
+      def eqv(x: A => B, y: A => B): Boolean = {
+        val samples = List.fill(50)(Arbitrary.arbitrary[A].sample).collect {
+          case Some(a) => a
+          case None    => sys.error("Could not generate arbitrary values to compare two functions")
+        }
+        samples.forall(a => Eq[B].eqv(x(a), y(a)))
+      }
+    }
 }

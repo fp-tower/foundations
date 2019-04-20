@@ -15,6 +15,7 @@ trait FTypeclassToImpl {
   implicit def mapFunctor[K]: Functor[Map[K, ?]]
   implicit val idFunctor: Functor[Id]
   implicit def constFunctor[R]: Functor[Const[R, ?]]
+  implicit def functionFunctor[R]: Functor[R => ?]
 
   def void[F[_]: Functor, A](fa: F[A]): F[Unit]
   def as[F[_]: Functor, A, B](fa: F[A])(value: B): F[B]
@@ -33,8 +34,9 @@ trait FTypeclassToImpl {
   implicit def mapApply[K]: Apply[Map[K, ?]]
   implicit val idApplicative: Applicative[Id]
   implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]]
-  def map3[F[_]: Applicative, A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D]
+  implicit def functionApplicative[R]: Applicative[R => ?]
 
+  def map3[F[_]: Applicative, A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D]
   def tuple2[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[(A, B)]
   def productL[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[A]
   def productR[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[B]
@@ -52,6 +54,7 @@ trait FTypeclassToImpl {
   implicit def eitherMonad[E]: Monad[Either[E, ?]]
   implicit def mapFlatMap[K]: FlatMap[Map[K, ?]]
   implicit val idMonad: Monad[Id]
+  implicit def functionMonad[R]: Monad[R => ?]
 
   def flatten[F[_]: Monad, A](ffa: F[F[A]]): F[A]
   def flatTap[F[_]: Monad, A, B](fa: F[A])(f: A => F[B]): F[A]
