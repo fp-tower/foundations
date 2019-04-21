@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Functors</title>
+<meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif'; }
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.pull-left {
+float: left;
+width: 47%;
+}
+.pull-right {
+float: right;
+width: 47%;
+}
+table {
+  border-collapse: collapse;
+  display: inline-block;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid black;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+.medium { font-size: 28px; }
+.large { font-size: 36px; }
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+</style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Functors
+Foundation of Functional Programming
+<br>
+<br>
+`@JulienTruffaut`
+
+---
+# Plan
+
+.large[
+* Functor hierarchy
+]
+
+.large[
+* Typeclass Consistency
+]
+
+---
+background-image: url(img/fp-foundation/functors-chapter.jpg)
+
+???
+Strongly inspired by https://github.com/tpolecat/cats-infographic
+
+---
+# Functor
+
+```scala
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+```
+
+## Laws
+
+```scala
+forAll(fa: F[A] => map(fa)(identity) == fa)
+```
+
+???
+* we don't know how to get `A` out of `F[A]`
+* we don't know if `F` contains some `A`
+* we know that all `A` inside of `F` context will become `B` using `f`
+* A Functor can be think as containing values or producing values
+
+---
+# Other Functors
+
+```scala
+trait InvariantFunctor[F[_]]{
+  def imap[A, B](fa: F[A])(f: A => B)(g: B => A): F[B]
+}
+
+trait ContravariantFunctor[F[_]] extends InvariantFunctor[F] {
+  def contramap[A, B](fa: F[A])(f: B => A): F[B]
+}
+
+trait Functor[F[_]]extends InvariantFunctor[F] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+```
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '%current%'
+    });
+</script>
+</body>
+</html>

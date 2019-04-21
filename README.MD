@@ -11,7 +11,7 @@
 
 ## Chapter 3: Typeclasses (WIP)
 
-## Chapter 4: Functor Typeclasses
+## Chapter 4: Functors
 
 ## Chapter 5: IO / Effect
 
