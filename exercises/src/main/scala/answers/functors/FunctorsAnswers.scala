@@ -1,15 +1,15 @@
-package answers.typeclass2
+package answers.functors
 
 import answers.typeclass.TypeclassAnswers._
 import exercises.typeclass.Monoid.syntax._
 import exercises.typeclass.{Endo, Monoid}
-import exercises.typeclass2.Applicative.syntax._
-import exercises.typeclass2.Functor.syntax._
-import exercises.typeclass2.Monad.syntax._
-import exercises.typeclass2._
-import toimpl.typeclass2.FTypeclassToImpl
+import exercises.functors.Applicative.syntax._
+import exercises.functors.Functor.syntax._
+import exercises.functors.Monad.syntax._
+import exercises.functors._
+import toimpl.functors.FunctorsToImpl
 
-object FTypeclassAnswers extends FTypeclassToImpl {
+object FunctorsAnswers extends FunctorsToImpl {
 
   ////////////////////////
   // 1. Functor

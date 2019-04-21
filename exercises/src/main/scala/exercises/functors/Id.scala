@@ -1,4 +1,4 @@
-package exercises.typeclass2
+package exercises.functors
 
 import cats.Eq
 

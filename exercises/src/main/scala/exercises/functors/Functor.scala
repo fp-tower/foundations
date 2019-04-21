@@ -1,4 +1,4 @@
-package exercises.typeclass2
+package exercises.functors
 
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]

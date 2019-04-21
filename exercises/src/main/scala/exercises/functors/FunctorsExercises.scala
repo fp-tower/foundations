@@ -1,9 +1,9 @@
-package exercises.typeclass2
+package exercises.functors
 
 import exercises.typeclass.Monoid
-import toimpl.typeclass2.FTypeclassToImpl
+import toimpl.functors.FunctorsToImpl
 
-object FTypeclassExercises extends FTypeclassToImpl {
+object FunctorsExercises extends FunctorsToImpl {
 
   ////////////////////////
   // 1. Functor

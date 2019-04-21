@@ -1,9 +1,9 @@
-package toimpl.typeclass2
+package toimpl.functors
 
 import exercises.typeclass.Monoid
-import exercises.typeclass2.{Applicative, Apply, Compose, Const, FlatMap, Functor, Id, Monad, Traverse, ZipList}
+import exercises.functors.{Applicative, Apply, Compose, Const, FlatMap, Functor, Id, Monad, Traverse, ZipList}
 
-trait FTypeclassToImpl {
+trait FunctorsToImpl {
 
   ////////////////////////
   // 1. Functor

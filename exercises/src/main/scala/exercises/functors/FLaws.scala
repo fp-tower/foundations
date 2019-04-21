@@ -1,10 +1,10 @@
-package exercises.typeclass2
+package exercises.functors
 
 import cats.kernel.Eq
 import cats.syntax.eq._
-import exercises.typeclass2.Functor.syntax._
-import exercises.typeclass2.Applicative.syntax._
-import exercises.typeclass2.Monad.syntax._
+import exercises.functors.Functor.syntax._
+import exercises.functors.Applicative.syntax._
+import exercises.functors.Monad.syntax._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Prop.forAll
 import org.typelevel.discipline.Laws

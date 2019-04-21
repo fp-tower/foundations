@@ -1,19 +1,19 @@
-package typeclass2
+package functors
 
-import answers.typeclass2.FTypeclassAnswers
+import answers.functors.FunctorsAnswers
 import cats.instances.all._
 import cats.kernel.Eq
 import exercises.typeclass.Monoid
-import exercises.typeclass2.{Const, FLaws, FTypeclassExercises, Id}
+import exercises.functors.{Const, FLaws, FunctorsExercises, Id}
 import org.scalacheck.Arbitrary
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
-import toimpl.typeclass2.FTypeclassToImpl
+import toimpl.functors.FunctorsToImpl
 
-class FTypeclassExercisesTest extends FTypeclassTest(FTypeclassExercises)
-class FTypeclassAnswersTest extends FTypeclassTest(FTypeclassAnswers)
+class FunctorsExercisesTest extends FunctorsTest(FunctorsExercises)
+class FunctorsAnswersTest extends FunctorsTest(FunctorsAnswers)
 
-class FTypeclassTest(impl: FTypeclassToImpl) extends FunSuite with Discipline with Matchers with FTypeclassTestInstance {
+class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with Matchers with FunctorsTestInstance {
   import impl._
 
   checkAll("List", FLaws.monad[List, Int])
@@ -29,7 +29,7 @@ class FTypeclassTest(impl: FTypeclassToImpl) extends FunSuite with Discipline wi
 
 }
 
-trait FTypeclassTestInstance {
+trait FunctorsTestInstance {
   implicit def arbId[A: Arbitrary]: Arbitrary[Id[A]] = Arbitrary(Arbitrary.arbitrary[A].map(Id(_)))
   implicit def arbConst[A: Arbitrary, B]: Arbitrary[Const[A, B]] = Arbitrary(Arbitrary.arbitrary[A].map(Const(_).as[B]))
 
