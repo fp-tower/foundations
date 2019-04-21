@@ -9,7 +9,7 @@
 
 ## Chapter 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
 
-## Chapter 3: Typeclasses (WIP)
+## Chapter 3: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
 
 ## Chapter 4: Functors
 
