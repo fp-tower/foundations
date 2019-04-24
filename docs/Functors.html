@@ -58,7 +58,10 @@ Foundation of Functional Programming
 ]
 
 ---
-background-image: url(img/fp-foundation/functors-chapter.jpg)
+background-image: url(img/functors/plan.jpg)
+
+# Plan
+
 
 ???
 Strongly inspired by https://github.com/tpolecat/cats-infographic
@@ -75,7 +78,13 @@ trait Functor[F[_]] {
 ## Laws
 
 ```scala
-forAll(fa: F[A] => map(fa)(identity) == fa)
+forAll((fa: F[A]) =>
+  fa.map(identity) == fa
+)
+
+forAll((fa: F[A], f: A => B, g: B => C) =>
+  fa.map(f).map(g) == fa.map(f andThen g)
+)
 ```
 
 ???
@@ -96,11 +105,25 @@ trait ContravariantFunctor[F[_]] extends InvariantFunctor[F] {
   def contramap[A, B](fa: F[A])(f: B => A): F[B]
 }
 
-trait Functor[F[_]]extends InvariantFunctor[F] {
+trait Functor[F[_]]extends InvariantFunctor[F] { // CovariantFunctor
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }
 ```
 
+---
+class: center, middle
+
+# Granularity
+
+---
+background-image: url(img/functors/cats-semigroup.jpg)
+
+# Semigroups
+
+---
+background-image: url(img/functors/cats-functor.jpg)
+
+# Functors
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
