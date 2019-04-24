@@ -99,7 +99,7 @@ res1: Option[String] = Some(Hello)
 ```
 
 ---
-# Raw Polymorphism
+# Row Polymorphism
 
 ```scala
 case class Person(name: String, age: Int)
@@ -693,10 +693,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@c8b06b2
+res39: Eq[Int] = $anon$1@32e95d5
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@c8b06b2
+res40: Eq[Int] = $anon$1@32e95d5
 ```
 
 ```scala
@@ -963,7 +963,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res54: Monoid[Int] = $anon$1@1fcfa39d
+res54: Monoid[Int] = $anon$1@38e05b76
 ```
 
 --
