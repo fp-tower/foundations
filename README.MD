@@ -1,4 +1,4 @@
-# Foundation of Functional Programming Course
+![FP Foundation Logo](logo/Foundation.png)<br>
 
 [![Join the chat at https://gitter.im/julien-truffaut/fp-foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)](https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
