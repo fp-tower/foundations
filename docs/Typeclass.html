@@ -693,10 +693,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@32e95d5
+res39: Eq[Int] = $anon$1@43f30ffc
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@32e95d5
+res40: Eq[Int] = $anon$1@43f30ffc
 ```
 
 ```scala
@@ -963,7 +963,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res54: Monoid[Int] = $anon$1@38e05b76
+res54: Monoid[Int] = $anon$1@4ce61614
 ```
 
 --
@@ -1059,7 +1059,7 @@ res58: Product = Product(0)
 ```
 
 ---
-# Non unique instance: The scala way (so far)
+# Non unique instance: The Scala way (so far)
 
 * Define an instance for the most common case (how to find out ???)
 
@@ -1477,7 +1477,7 @@ sequence(List(Some(3), None, Some(4)))(listTraverse, optionApplicative)
 
 ## Typeclass
 
-1. If you only one valid implementation for (almost) all types
+1. If you have only one valid implementation for (almost) all types
 2. If you require uniqueness per type e.g. Eq, Hash, Ord
 
 ## Interface / Record of functions
