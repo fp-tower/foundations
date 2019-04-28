@@ -8,14 +8,16 @@
     @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
     @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-    body { font-family: 'Droid Serif'; }
-    h1, h2, h3 {
-      font-family: 'Yanone Kaffeesatz';
-      font-weight: normal;
-    }
+    body { font-family: 'Droid Serif'; color: #333333; }
+    h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
+    h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
     .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     .medium { font-size: 28px; }
     .large { font-size: 36px; }
+    .pull-left { float: left; width: 47%; }
+    .pull-right { float: right; width: 47%; }
+    .footer { position: absolute; bottom: 12px; left: 45px }
+
   </style>
 </head>
 <body>
@@ -23,11 +25,25 @@
 
 class: center, middle
 
+<img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
+
+<br>
+<br>
+
+
 # Function
-Foundation of Functional Programming
+
 <br>
 <br>
-`@JulienTruffaut`
+
+### https://github.com/julien-truffaut/fp-foundation
+
+---
+layout: true
+
+<div class="footer">
+  <img src="img/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
+</div>
 
 ---
 background-image: url(img/function.jpg)
@@ -253,7 +269,7 @@ count()
 ```
 
 ---
-# Pure Function
+.h1[# Pure Function]
 
 .large[
 * deterministic (not nondeterministic)
@@ -266,7 +282,7 @@ count()
 ]
 
 ---
-# Scalazzi subset
+.h1[# Scalazzi subset]
 
 .large[
 * deterministic (not nondeterministic)
@@ -508,13 +524,12 @@ foo(5,  true) == 12L
 foo(5, false) == 0L
 ```
 
---
+???
 
-.medium[
 * no setup / dependency injection, `foo` only depends on its inputs
 * order of tests does not matter
 * tests can be run in parallel
-]
+
 
 ---
 # Caching
@@ -555,9 +570,7 @@ background-image: url(img/function-graph.jpg)
 # Graph
 
 ---
-# Downsides of pure function
-
---
+.h1[# Downsides of pure function]
 
 .large[
 * We can't **DO** anything
@@ -581,12 +594,15 @@ class: center, middle
 # A => F[B]
 
 ---
-# Next chapter: Type
+.h1[# Next chapter: Type]
 
 .large[
 * Cardinality
+
 * How to write bug-free functions
+
 * Parametricity
+
 * Relationship between Algebra, Types, and Logic
 ]
 

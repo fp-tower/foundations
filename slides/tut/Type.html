@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Type</title>
-<meta charset="utf-8">
-<style>
-@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+  <title>Type</title>
+  <meta charset="utf-8">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-body { font-family: 'Droid Serif'; }
-h1, h2, h3 {
-font-family: 'Yanone Kaffeesatz';
-font-weight: normal;
-}
-.pull-left {
-float: left;
-width: 47%;
-}
-.pull-right {
-float: right;
-width: 47%;
-}
-table {
-  border-collapse: collapse;
-  display: inline-block;
-}
-th, td {
-  padding: 10px;
-  border: 1px solid black;
-}
-tr:nth-child(even) {background-color: #f2f2f2;}
-.medium { font-size: 28px; }
-.large { font-size: 36px; }
-.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-</style>
+    body { font-family: 'Droid Serif'; color: #333333; }
+    h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
+    h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
+    .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    .medium { font-size: 28px; }
+    .large { font-size: 36px; }
+    .pull-left { float: left; width: 47%; }
+    .pull-right { float: right; width: 47%; }
+    .footer { position: absolute; bottom: 12px; left: 45px }
+    table { border-collapse: collapse; display: inline-block; }
+    th, td { padding: 10px; border: 1px solid black; }
+    tr:nth-child(even) {background-color: #f2f2f2;}
+
+  </style>
 </head>
 <body>
 <textarea id="source">
 
 class: center, middle
 
+<img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
+
+<br>
+<br>
+
+
 # Type
-Foundation of Functional Programming
+
 <br>
 <br>
-`@JulienTruffaut`
+
+### https://github.com/julien-truffaut/fp-foundation
+
+---
+layout: true
+
+<div class="footer">
+  <img src="img/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
+</div>
 
 ---
 class: center, middle
@@ -83,7 +85,7 @@ inc(java.time.Instant.ofEpochMilli(0))
 ```
 
 ---
-# Plan
+.h1[# Plan]
 
 .large[
 * What is the impact of types on our program? How to measure it?
@@ -473,11 +475,11 @@ IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ---
 class: center, middle
 
-  # A sealed trait is called a <span style="color:blue">Sum</span> type
+# A sealed trait is called a <span style="color:blue">Sum</span> type
 
 --
 
-  # A case class is called a <span style="color:blue">Product</span> type
+# A case class is called a <span style="color:blue">Product</span> type
 
 ---
 class: center, middle
@@ -625,7 +627,7 @@ background-image: url(img/count-day-week-to-boolean-4.jpg)
 # Unit Test
 
 ---
-# One Unit Test
+.h1[# One Unit Test]
 
 .center[
 ```scala
@@ -661,7 +663,7 @@ class: center, middle
 # Exercises
 
 ---
-# Type Algebra
+.h1[# Type Algebra]
 
 
 .center[
@@ -684,7 +686,7 @@ class: center, middle
 
 
 ---
-# Type Algebra Logic
+.h1[# Type Algebra Logic]
 
 .center[
 | Type        | Algebra   | Logic                 |
@@ -698,7 +700,7 @@ class: center, middle
 ]
 
 ---
-# Type Algebra Logic
+.h1[# Type Algebra Logic]
 
 .center[
 | Type        | Algebra   | Logic |
@@ -738,7 +740,7 @@ A ∧ ⊥ ⇔ ⊥
 ```
 
 ---
-# Find the representation that makes sense to you
+.h1[# Find the representation that makes sense to you]
 
 <br>
 
@@ -749,7 +751,7 @@ Either[Int, String] => Boolean     <==>      (Int => Boolean, String => Boolean)
 ]
 
 ---
-# Find the representation that makes sense to you
+.h1[# Find the representation that makes sense to you]
 
 <br>
 
@@ -782,18 +784,15 @@ Either[A, B] => C = (A ∨ B) → C
 ]
 
 ---
-# Summary
+.h1[# Summary]
 
 .large[
 * Cardinality of types matter
-]
-.large[
+
 * Unit tests offer almost no benefit in term of correctness
-]
-.large[
+
 * `VIC(f: A => B) = |B| ^ (|A| - n)`
-]
-.large[
+
 * Two techniques to achieve correctness
    * Property based testing
    * Parametric polymorphism
