@@ -35,6 +35,7 @@ lazy val exercises = project
   .settings(baseSettings: _*)
 
 lazy val slides = project
+  .dependsOn(exercises)
   .settings(moduleName := "fp-foundation-slides")
   .settings(baseSettings: _*)
   .settings(

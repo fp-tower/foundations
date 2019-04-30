@@ -206,6 +206,120 @@ implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
 ]
 
 ---
+# Applicative
+
+```tut:silent
+trait Applicative[F[_]] extends Functor[F] {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+}
+```
+
+---
+# Applicative
+
+```tut:silent
+trait Applicative[F[_]] extends Functor[F] {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+  // alias *<
+  def productL[A, B](fa: F[A], fb: F[B]): F[A] = ???
+
+  // alias *>
+  def productR[A, B](fa: F[A], fb: F[B]): F[B] = ???
+}
+```
+
+## Laws
+
+```scala
+forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
+forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+```
+
+---
+# Applicative is a Monoidal Functor
+
+```scala
+combine  ::   A  =>   A  =>   A
+
+productL :: F[A] => F[B] => F[A]
+```
+
+```scala
+empty ::        A
+pure  :: A => F[A]
+```
+
+### Laws
+
+```scala
+forAll((a: A)           => a       |+| empty  == a)
+forAll((a: A)           => empty   |+| a      == a)
+
+forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
+forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+```
+
+---
+# Applicative combine effects: Failure
+
+```tut:reset:invisible
+import exercises.functors.Applicative.syntax._
+import answers.functors.FunctorsAnswers.optionMonad
+import answers.functors.FunctorsAnswers.listMonad
+```
+
+```tut
+Option(1).map2(Option(2))(_ + _)
+Option(1).map2(Option.empty[Int])(_ + _)
+Option.empty[Int].map2(Option(2))(_ + _)
+```
+
+```tut
+10.pure[Option]
+Option(1).map2(10.pure[Option])(_ + _)
+```
+
+---
+# Applicative combine effects: Nondeterminism
+
+
+```tut
+List(1,2,3).map2(List(5,8))(_ + _)
+List(1,2,3).map2(List.empty[Int])(_ + _)
+```
+
+```tut
+10.pure[List]
+List(1,2,3).map2(10.pure[List])(_ + _)
+```
+
+---
+.h1[# Applicative combine effects]
+
+.large[
+* Side effect
+
+* Dependency injection
+
+* Mutable state
+
+* ...
+]
+
+---
+class: center, middle
+
+# Exercise 2
+
+---
 background-image: url(img/functors/review.svg)
 
 # Review

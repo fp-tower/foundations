@@ -205,6 +205,131 @@ implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
 ]
 
 ---
+# Applicative
+
+```scala
+trait Applicative[F[_]] extends Functor[F] {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+}
+```
+
+---
+# Applicative
+
+```scala
+trait Applicative[F[_]] extends Functor[F] {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+  // alias *<
+  def productL[A, B](fa: F[A], fb: F[B]): F[A] = ???
+
+  // alias *>
+  def productR[A, B](fa: F[A], fb: F[B]): F[B] = ???
+}
+```
+
+## Laws
+
+```scala
+forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
+forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+```
+
+---
+# Applicative is a Monoidal Functor
+
+```scala
+combine  ::   A  =>   A  =>   A
+
+productL :: F[A] => F[B] => F[A]
+```
+
+```scala
+empty ::        A
+pure  :: A => F[A]
+```
+
+### Laws
+
+```scala
+forAll((a: A)           => a       |+| empty  == a)
+forAll((a: A)           => empty   |+| a      == a)
+
+forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
+forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+```
+
+---
+# Applicative combine effects: Failure
+
+
+
+
+```scala
+scala> Option(1).map2(Option(2))(_ + _)
+res0: Option[Int] = Some(3)
+
+scala> Option(1).map2(Option.empty[Int])(_ + _)
+res1: Option[Int] = None
+
+scala> Option.empty[Int].map2(Option(2))(_ + _)
+res2: Option[Int] = None
+```
+
+```scala
+scala> 10.pure[Option]
+res3: Option[Int] = Some(10)
+
+scala> Option(1).map2(10.pure[Option])(_ + _)
+res4: Option[Int] = Some(11)
+```
+
+---
+# Applicative combine effects: Nondeterminism
+
+
+```scala
+scala> List(1,2,3).map2(List(5,8))(_ + _)
+res5: List[Int] = List(6, 9, 7, 10, 8, 11)
+
+scala> List(1,2,3).map2(List.empty[Int])(_ + _)
+res6: List[Int] = List()
+```
+
+```scala
+scala> 10.pure[List]
+res7: List[Int] = List(10)
+
+scala> List(1,2,3).map2(10.pure[List])(_ + _)
+res8: List[Int] = List(11, 12, 13)
+```
+
+---
+.h1[# Applicative combine effects]
+
+.large[
+* Side effect
+
+* Dependency injection
+
+* Mutable state
+
+* ...
+]
+
+---
+class: center, middle
+
+# Exercise 2
+
+---
 background-image: url(img/functors/review.svg)
 
 # Review
