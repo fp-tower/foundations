@@ -93,7 +93,38 @@ forAll((fa: F[A], f: A => B, g: B => C) =>
 * A Functor can be think as containing values or producing values
 
 ---
-# Other Functors
+class: center, middle
+
+# Exercise 1
+
+---
+# Functor
+
+### ✅ ADT and Function result
+
+```tut:silent
+case class Foo[A](i: Int, a: A)
+
+sealed trait Bar[A]
+case class Bar1[A](i: Int    , a: A) extends Bar[A]
+case class Bar2[A](b: Boolean, a: A) extends Bar[A]
+case class Bar3[A](s: String       ) extends Bar[A]
+```
+
+```tut:silent
+case class Producer[A](func: Int => A)
+```
+
+### ❌ Function input
+
+```tut:silent
+case class Predicate[A](func: A => Boolean)
+```
+
+---
+# Functors
+
+.center[![Functors](img/functors/functor-variance.svg)]
 
 ```tut:silent
 trait InvariantFunctor[F[_]]{
@@ -104,10 +135,68 @@ trait ContravariantFunctor[F[_]] extends InvariantFunctor[F] {
   def contramap[A, B](fa: F[A])(f: B => A): F[B]
 }
 
-trait Functor[F[_]]extends InvariantFunctor[F] { // CovariantFunctor
+trait Functor[F[_]] extends InvariantFunctor[F] { // CovariantFunctor
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }
 ```
+
+---
+# Functors example
+
+```tut:invisible
+type Json = String
+```
+
+```tut:silent
+trait JsonDecoder[A]{
+  def decode(value: Json): A
+}
+
+trait JsonEncoder[A]{
+  def encode(value: A): Json
+}
+
+trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
+```
+
+--
+
+```scala
+implicit val decoderFunctor: Functor[JsonDecoder] = ???
+
+implicit val encoderFunctor: ContravariantFunctor[JsonEncoder] = ???
+
+implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
+```
+
+---
+.h1[# Variance]
+
+<br>
+<br>
+<br>
+
+.center[
+|  Type        | A             | B         |
+|:------------:|:-------------:|:---------:|
+| (A, B)       | Covariant     | Covariant |
+| Either[A, B] | Covariant     | Covariant |
+| A => B       | Contravariant | Covariant |
+| A => A       | Invariant     | N/A       |
+]
+
+---
+.h1[# Variance]
+
+<br>
+<br>
+<br>
+
+.center[
+| Type          | A             | B             | C        |
+|:-------------:|:-------------:|:-------------:|:---------:|
+| (A => B) => C | Covariant     | Contravariant |Covariant |
+]
 
 ---
 background-image: url(img/functors/review.svg)
@@ -132,7 +221,8 @@ background-image: url(img/functors/cats-functor.svg)
 ---
 # Resources
 
-* [cats infographic](https://github.com/tpolecat/cats-infographic)
+* [Cats infographic](https://github.com/tpolecat/cats-infographic): typeclass diagrams for cats
+* [Thinking with types](https://leanpub.com/thinking-with-types): variance
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">

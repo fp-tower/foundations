@@ -9,7 +9,7 @@ object FunctorsExercises extends FunctorsToImpl {
   // 1. Functor
   ////////////////////////
 
-  // 1a. Implement the following instance
+  // 1a. Implement the following instances
   implicit val listFunctor: Functor[List] = new Functor[List] {
     def map[A, B](fa: List[A])(f: A => B): List[B] = ???
   }
@@ -36,10 +36,6 @@ object FunctorsExercises extends FunctorsToImpl {
 
   implicit def functionFunctor[R]: Functor[R => ?] = new Functor[Function[R, ?]] {
     def map[A, B](fa: R => A)(f: A => B): R => B = ???
-  }
-
-  implicit def stringEncoder: Functor[StringEncoder] = new Functor[StringEncoder] {
-    def map[A, B](fa: StringEncoder[A])(f: A => B): StringEncoder[B] = ???
   }
 
   // 1b. Implement void
@@ -69,6 +65,18 @@ object FunctorsExercises extends FunctorsToImpl {
     def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] = ???
   }
 
+  // 1g. Implement a Functor instance for Predicate
+  implicit def predicateFunctor: Functor[Predicate] = new Functor[Predicate] {
+    def map[A, B](fa: Predicate[A])(f: A => B): Predicate[B] = ???
+  }
+
+  // 1h. Implement a Functor instance for StringEncoder
+  implicit def stringEncoderFunctor: Functor[StringEncoder] = new Functor[StringEncoder] {
+    def map[A, B](fa: StringEncoder[A])(f: A => B): StringEncoder[B] = ???
+  }
+
+
+
   ////////////////////////
   // 2. Applicative
   ////////////////////////
@@ -78,7 +86,7 @@ object FunctorsExercises extends FunctorsToImpl {
     def map[A, B](fa: F[A])(f: A => B): F[B] = ???
   }
 
-  // 2b. Implement the following instance
+  // 2b. Implement the following instances
   implicit val listApplicative: Applicative[List] = new DefaultApplicative[List] {
     def pure[A](a: A): List[A] = ???
     def map2[A, B, C](fa: List[A], fb: List[B])(f: (A, B) => C): List[C] = ???
@@ -177,7 +185,7 @@ object FunctorsExercises extends FunctorsToImpl {
     def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = ???
   }
 
-  // 3c. Implement the following instance
+  // 3c. Implement the following instances
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
     def pure[A](a: A): List[A] = listApplicative.pure(a)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = ???
