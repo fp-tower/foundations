@@ -15,3 +15,7 @@ project/project/
 _site/
 
 fast.html
+
+## Metals files to ignore
+.metals/
+.bloop/
