@@ -11,7 +11,7 @@
 
 ## Chapter 3: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
 
-## Chapter 4: Functors
+## Chapter 4: Functors [WIP](https://julien-truffaut.github.io/fp-foundation/Functors#1)
 
 ## Chapter 5: IO / Effect
 
