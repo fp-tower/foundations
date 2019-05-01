@@ -3,3 +3,4 @@ scala:
    - 2.12.8
 script:
    - sbt ++$TRAVIS_SCALA_VERSION "testOnly *AnswersTest"
+   - sbt ++$TRAVIS_SCALA_VERSION tut
