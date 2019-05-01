@@ -28,9 +28,7 @@
 class: center, middle
 
 <a href="https://github.com/julien-truffaut/fp-foundation">
-  <a href="https://github.com/julien-truffaut/fp-foundation">
-    <img src="img/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
-  </a>
+  <img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
 </a>
 
 <br>
@@ -694,10 +692,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@619b717
+res39: Eq[Int] = $anon$1@5f649599
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@619b717
+res40: Eq[Int] = $anon$1@5f649599
 ```
 
 ```scala
@@ -952,7 +950,7 @@ res53: String = foobar
 ---
 class: center, middle
 
-# Exercises
+# Exercises 1, 2, 3 and 4
 
 ---
 class: center, middle
@@ -964,7 +962,7 @@ class: center, middle
 
 ```scala
 scala> implicitly[Monoid[Int]]
-res54: Monoid[Int] = $anon$1@7dbea6d3
+res54: Monoid[Int] = $anon$1@badfd4d
 ```
 
 --
@@ -1333,7 +1331,10 @@ scala> implicit val intFoldable: Foldable[Int] = ???
                                           ^
 ```
 
+---
+class: center, middle
 
+# Exercises 6
 
 ---
 class: center, middle
@@ -1492,15 +1493,14 @@ sequence(List(Some(3), None, Some(4)))(listTraverse, optionApplicative)
 2. Single function
 
 ---
-.h1[# Next chapter: Advance Typeclass]
+# Summary
 
-.large[
-* Functor hierarchy
+### TODO
 
-* Consistency in typeclass hierarchy
+---
+class: center, middle
 
-* Traverse, Traverse, Traverse
-]
+# [Chapter 3: Functors](Functors.html#1)
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">

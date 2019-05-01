@@ -17,9 +17,9 @@
 ### Chapter 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
 *   Cardinality
 *   Algebra of types
-*   Valid Implementation Count (VIC)
+*   Types and Tests, Valid Implementation Count (VIC)
 *   Parametricity
-*   Relation between type, algebra and logic
+*   Logic and types
 
 ### Chapter 3: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
 *   Different techniques to implement ad-hoc polymorphism with Eq
@@ -29,6 +29,7 @@
 *   Typeclass hierarchy with Semigroup, CommutativeMonoid
 *   Use case with distributed computing (e.g. Spark)
 *   Higher kinded typeclass with Foldable
+*   Typeclass abuses
 
 ### Chapter 4: Functors [WIP](https://julien-truffaut.github.io/fp-foundation/Functors#1)
 *   Functor, Applicative, Monad

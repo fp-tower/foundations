@@ -14,7 +14,9 @@ object FunctionApp extends App {
 
 object FunctionExercises extends FunctionToImpl {
 
+  ////////////////////////
   // 1. Pure functions
+  ////////////////////////
 
   // 1a. is plus a pure function? why?
   def plus(a: Int, b: Int): Int = a + b
@@ -81,7 +83,9 @@ object FunctionExercises extends FunctionToImpl {
     acc
   }
 
+  ////////////////////////////
   // 2. polymorphic functions
+  ////////////////////////////
 
   // 2a. Implement identity
   def identity[A](x: A): A = ???
@@ -97,8 +101,10 @@ object FunctionExercises extends FunctionToImpl {
   // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
 
 
-
+  /////////////////////////////
   // 3. higher order functions
+  /////////////////////////////
+
   case class Person(name: String, age: Int)
 
   def updateAge(xs: List[Person], f: Int => Int): List[Person] =
@@ -144,8 +150,9 @@ object FunctionExercises extends FunctionToImpl {
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
 
-
+  ////////////////////////
   // 4. Recursion
+  ////////////////////////
 
   // 4a. Use recursion to implement sumList
   def sumList(xs: List[Int]): Int = ???
@@ -193,6 +200,9 @@ object FunctionExercises extends FunctionToImpl {
   // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
   //  def foo: Int = foo
 
+  ////////////////////////
+  // 5. Memoization
+  ////////////////////////
 
   // 5a. Implement memoize such as
   // val cachedInc = memoize((_: Int) + 1)

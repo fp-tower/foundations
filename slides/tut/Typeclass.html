@@ -28,9 +28,7 @@
 class: center, middle
 
 <a href="https://github.com/julien-truffaut/fp-foundation">
-  <a href="https://github.com/julien-truffaut/fp-foundation">
-    <img src="img/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
-  </a>
+  <img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
 </a>
 
 <br>
@@ -863,7 +861,7 @@ monoFoldLeft(List("foo", "bar"))
 ---
 class: center, middle
 
-# Exercises
+# Exercises 1, 2, 3 and 4
 
 ---
 class: center, middle
@@ -1232,7 +1230,10 @@ implicit val listFoldable: Foldable[List] = new Foldable[List] {
 implicit val intFoldable: Foldable[Int] = ???
 ```
 
+---
+class: center, middle
 
+# Exercises 6
 
 ---
 class: center, middle
@@ -1391,15 +1392,14 @@ sequence(List(Some(3), None, Some(4)))(listTraverse, optionApplicative)
 2. Single function
 
 ---
-.h1[# Next chapter: Advance Typeclass]
+# Summary
 
-.large[
-* Functor hierarchy
+### TODO
 
-* Consistency in typeclass hierarchy
+---
+class: center, middle
 
-* Traverse, Traverse, Traverse
-]
+# [Chapter 3: Functors](Functors.html#1)
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">

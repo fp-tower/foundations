@@ -21,7 +21,9 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = Lit(2) ^ Lit(32)
   }
 
+  ////////////////////////
   // 1. Cardinality
+  ////////////////////////
 
   // 1a. How many possible values are of type Unit?
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
@@ -87,8 +89,9 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = ???
   }
 
-
-  // 1. Advanced Cardinality
+  ///////////////////////////
+  // 2. Advanced Cardinality
+  ///////////////////////////
 
   // 2a. Implement option that derives the cardinality of Option[A] from A
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
@@ -158,9 +161,9 @@ object TypeExercises extends TypeToImpl {
   // 2k. Can you provide an example of a function signature with no implementation
   // i.e. find A1, A2 such as |A1 => A2| = 0
 
-
-
+  ////////////////////////
   // 3. Tests
+  ////////////////////////
 
   // 3a. Given sign type signature and one unit test:
   // assert(sign(5) = true)
@@ -188,8 +191,9 @@ object TypeExercises extends TypeToImpl {
   // Types vs Tests (by Julien Truffaut): https://skillsmatter.com/skillscasts/12648-types-vs-tests
 
 
-
+  ////////////////////////
   // 4. Parametrictity
+  ////////////////////////
 
   // 4a. How many implementations exist for id, const (assume we are using scalazzi subset)
   def id[A](a: A): A = ???
@@ -218,8 +222,9 @@ object TypeExercises extends TypeToImpl {
   // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
 
 
-
+  ////////////////////////
   // 5. Logic
+  ////////////////////////
 
   // 5a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
   // Is it also true with types?
@@ -254,7 +259,9 @@ object TypeExercises extends TypeToImpl {
 
   // 5e. Can you think of any other properties that types and algebra have in common?
 
-
+  ////////////////////////
+  // 6. Extra Cardinality
+  ////////////////////////
 
   sealed trait Zero
 
