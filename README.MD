@@ -38,7 +38,7 @@
 *   Traverse
 *   Typeclass granularity
 
-### Chapter 5: IO / Effect
+### Chapter 5: IO / Effects
 
 ### Chapter 6: Error Handling
 
