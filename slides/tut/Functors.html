@@ -179,7 +179,7 @@ case class JsonDecoder[A](decode: Json => A)
 
 case class JsonEncoder[A](encode: A    => Json)
 
-case JsonCodec[A](
+case class JsonCodec[A](
   decode: Json => A,
   encode: A    => Json
 )
