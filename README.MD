@@ -77,5 +77,8 @@ Yes, the material is open source and it uses a permissive licence [CC-BY-SA-4.0]
 However, the slides and exercises are currently made to be run by a trainer. Eventually, we aim to make this course
 self-study with online videos but it is not likely to happen before mid 2020.
 
+We do encourage people who enjoyed the course to make a donation using [patreon][patreon].
+
 [gitter]: https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+[patreon]: https://www.patreon.com/bePatron?u=10482033
