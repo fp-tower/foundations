@@ -1,6 +1,13 @@
 package exercises.functors
 
 import exercises.typeclass.Monoid
+import exercises.functors.Applicative.syntax._
+import exercises.functors.Functor.syntax._
+import exercises.functors.Monad.syntax._
+import exercises.functors.Traverse.syntax._
+import exercises.functors._
+import exercises.typeclass.Foldable.syntax._
+import exercises.typeclass.Monoid.syntax._
 import toimpl.functors.FunctorsToImpl
 
 object FunctorsExercises extends FunctorsToImpl {
@@ -131,9 +138,13 @@ object FunctorsExercises extends FunctorsToImpl {
   def map3[F[_]: Applicative, A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] = ???
 
   // 2d. Implement tuple2
+  // such as tuple2(List(1,2,3), List('a','b')) == List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
   def tuple2[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[(A, B)] = ???
 
   // 2e. Implement productL, productR
+  // such as productL(Option(1), Option("hello")) == Some(1)
+  //         productR(Option(1), Option("hello")) == Some("hello")
+  // but     productR(Option(1), None)            == None
   def productL[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[A] = ???
   def productR[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[B] = ???
 
@@ -143,6 +154,8 @@ object FunctorsExercises extends FunctorsToImpl {
 
 
   // 2f. Implement unit
+  // such as unit[List] == List(())
+  //         unit[Either[String, ?]] == Right(())
   def unit[F[_]: Applicative]: F[Unit] = ???
 
 
@@ -216,25 +229,31 @@ object FunctorsExercises extends FunctorsToImpl {
     def flatMap[A, B](fa: Const[R, A])(f: A => Const[R, B]): Const[R, B] = ???
   }
 
-
   implicit def functionMonad[R]: Monad[Function[R, ?]] = new DefaultMonad[Function[R, ?]] {
     def pure[A](a: A): Function[R, A] = functionApplicative.pure(a)
     def flatMap[A, B](fa: Function[R, A])(f: A => Function[R, B]): Function[R, B] = ???
   }
 
   // 3d. Implement flatten
+  // such as flatten(List(List(1,2), List(3,4,5)))  == List(1,2,3,4,5)
+  //         flatten((x: Int) => (y: Int) => x + y) == (x: Int) => x + x
   def flatten[F[_]: Monad, A](ffa: F[F[A]]): F[A] = ???
 
   // 3e. Implement flatTap
+  // such as flatTap(Option(10))(x => if(x > 0) unit[Option] else None) == Some(10)
+  //         flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) == None
   def flatTap[F[_]: Monad, A, B](fa: F[A])(f: A => F[B]): F[A] = ???
 
   // 3f. Implement ifM
+  // such as val func = ifM((x: Int) => x > 0)(_ * 2, _.abs)
+  //         func(-10) == 10
+  //         func(  3) == 6
   def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
 
   // 3g. Implement whileM
   def whileM_[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[Unit] = ???
 
-  // 2h. Implement forever
+  // 3h. Implement forever
   def forever[F[_]: Monad, A](fa: F[A]): F[Nothing] = ???
 
 
@@ -295,4 +314,29 @@ object FunctorsExercises extends FunctorsToImpl {
     override def traverse[G[_]: Applicative, A, B](fa: Const[R, A])(f: A => G[B]): G[Const[R, B]] = ???
   }
 
+  // 4h. Implement parseNumber, try to use traverse and parseDigit
+  // such as parseNumber("1052") == Some(1052)
+  //         parseNumber("hello") == None
+  def parseNumber(value: String): Option[BigInt] = ???
+
+  def parseDigit(value: Char): Option[Int] =
+    value match {
+      case '0' => Some(0)
+      case '1' => Some(1)
+      case '2' => Some(2)
+      case '3' => Some(3)
+      case '4' => Some(4)
+      case '5' => Some(5)
+      case '6' => Some(6)
+      case '7' => Some(7)
+      case '8' => Some(8)
+      case '9' => Some(9)
+      case _   => None
+    }
+
+  // 4i. Implement an Traverse instance for Compose
+  implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
+    new DefaultTraverse[Compose[F, G, ?]] {
+      override def traverse[H[_] : Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] = ???
+    }
 }

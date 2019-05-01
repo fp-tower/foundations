@@ -3,7 +3,7 @@ package toimpl.functors
 import exercises.typeclass.Monoid
 import exercises.functors.{Applicative, Apply, Compose, Const, FlatMap, Functor, Id, Monad, Traverse, ZipList}
 
-trait FunctorsToImpl {
+trait FunctorsToImpl extends FunctorsToImplLowLevel {
 
   ////////////////////////
   // 1. Functor
@@ -61,8 +61,9 @@ trait FunctorsToImpl {
   def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A]
   def whileM_[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[Unit]
   def forever[F[_]: Monad, A](fa: F[A]): F[Nothing]
+}
 
-
+trait FunctorsToImplLowLevel {
   ////////////////////////
   // 4. Traverse
   ////////////////////////
@@ -74,4 +75,7 @@ trait FunctorsToImpl {
   implicit val idTraverse: Traverse[Id]
   implicit def constTraverse[R]: Traverse[Const[R, ?]]
 
+  def parseNumber(value: String): Option[BigInt]
+
+  implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]]
 }

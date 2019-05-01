@@ -1,12 +1,14 @@
 package answers.functors
 
 import answers.typeclass.TypeclassAnswers._
-import exercises.typeclass.Monoid.syntax._
-import exercises.typeclass.{Endo, Monoid}
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Monad.syntax._
+import exercises.functors.Traverse.syntax._
 import exercises.functors._
+import exercises.typeclass.Foldable.syntax._
+import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.{Endo, Monoid}
 import toimpl.functors.FunctorsToImpl
 
 object FunctorsAnswers extends FunctorsToImpl {
@@ -258,5 +260,38 @@ object FunctorsAnswers extends FunctorsToImpl {
     override def traverse[G[_]: Applicative, A, B](fa: Const[R, A])(f: A => G[B]): G[Const[R, B]] =
       fa.as[B].pure[G]
   }
+
+  implicit val bigIntMonoid: Monoid[BigInt] = new Monoid[BigInt] {
+    def combine(x: BigInt, y: BigInt): BigInt = x + y
+    def empty: BigInt = BigInt(0)
+  }
+
+  def parseNumber(value: String): Option[BigInt] =
+    value.toList.traverse(parseDigit).map(digits =>
+      digits.reverse.zipWithIndex.foldMap{ case (digit, index) =>
+        digit * BigInt(10).pow(index)
+      }
+    )
+
+  def parseDigit(value: Char): Option[Int] =
+    value match {
+      case '0' => Some(0)
+      case '1' => Some(1)
+      case '2' => Some(2)
+      case '3' => Some(3)
+      case '4' => Some(4)
+      case '5' => Some(5)
+      case '6' => Some(6)
+      case '7' => Some(7)
+      case '8' => Some(8)
+      case '9' => Some(9)
+      case _   => None
+    }
+
+  implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
+    new DefaultTraverse[Compose[F, G, ?]] {
+      override def traverse[H[_] : Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] =
+        fa.getCompose.traverse(_.traverse(f)).map(Compose(_))
+    }
 
 }
