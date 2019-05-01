@@ -8,35 +8,35 @@
 ### [Introduction](https://julien-truffaut.github.io/fp-foundation/index.html#1)
 
 ### Chapter 1: [Function](https://julien-truffaut.github.io/fp-foundation/Function#1)
-*  Pure functions
-*  Polymorphic functions
-*  Higher-order functions
-*  Recursion
-*  Memoization
+* Pure functions
+* Polymorphic functions
+* Higher-order functions
+* Recursion
+* Memoization
 
 ### Chapter 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
-*   Cardinality
-*   Algebra of types
-*   Types and Tests, Valid Implementation Count (VIC)
-*   Parametricity
-*   Logic and types
+* Cardinality
+* Algebra of types
+* Types and Tests, Valid Implementation Count (VIC)
+* Parametricity
+* Logic and types
 
 ### Chapter 3: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
-*   Different techniques to implement ad-hoc polymorphism with Eq
-*   Monoid
-*   Typeclass laws
-*   Instance uniqueness, location
-*   Typeclass hierarchy with Semigroup, CommutativeMonoid
-*   Use case with distributed computing (e.g. Spark)
-*   Higher kinded typeclass with Foldable
-*   Typeclass abuses
+* Different techniques to implement ad-hoc polymorphism with Eq
+* Monoid
+* Typeclass laws
+* Instance uniqueness, location
+* Typeclass hierarchy with Semigroup, CommutativeMonoid
+* Use case with distributed computing (e.g. Spark)
+* Higher kinded typeclass with Foldable
+* Typeclass abuses
 
 ### Chapter 4: Functors [WIP](https://julien-truffaut.github.io/fp-foundation/Functors#1)
-*   Functor, Applicative, Monad
-*   Combining effects
-*   Typeclass consistency
-*   Traverse
-*   Typeclass granularity
+* Functor, Applicative, Monad
+* Combining effects
+* Typeclass consistency
+* Traverse
+* Typeclass granularity
 
 ### Chapter 5: IO / Effects
 
