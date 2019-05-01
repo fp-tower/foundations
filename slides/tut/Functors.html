@@ -74,7 +74,7 @@ trait Functor[F[_]] {
 }
 ```
 
-## Laws
+### Laws
 
 ```scala
 forAll((fa: F[A]) =>
@@ -98,6 +98,11 @@ background-image: url(img/functors/map-example.svg)
 # Functor
 
 ### TODO find better examples preferably not related to containers
+
+---
+background-image: url(img/functors/map-example-2.svg)
+
+# Functor
 
 ---
 class: center, middle
@@ -237,24 +242,25 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```tut:silent
 trait Applicative[F[_]] extends Functor[F] {
-
   def pure[A](a: A): F[A]
-
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
 
+  def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)]
+
   // alias *<
-  def productL[A, B](fa: F[A], fb: F[B]): F[A] = ???
+  def productL[A, B](fa: F[A], fb: F[B]): F[A]
 
   // alias *>
-  def productR[A, B](fa: F[A], fb: F[B]): F[B] = ???
+  def productR[A, B](fa: F[A], fb: F[B]): F[B]
 }
 ```
 
-## Laws
+### Laws
 
 ```scala
 forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
 forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+forAll((a: a, b: B)     => tuple2(pure(a), pure(b)) == pure((a,b)))
 ```
 
 ---
@@ -262,7 +268,6 @@ forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
 
 ```scala
 combine  ::   A  =>   A  =>   A
-
 productL :: F[A] => F[B] => F[A]
 ```
 
@@ -282,6 +287,16 @@ forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
 ```
 
 ---
+background-image: url(img/functors/tuple2.svg)
+
+# Applicative combine effects
+
+---
+background-image: url(img/functors/tupleN.svg)
+
+# Applicative combine effects
+
+---
 # Applicative combine effects: Failure
 
 ```tut:reset:invisible
@@ -296,6 +311,8 @@ Option(1).map2(Option.empty[Int])(_ + _)
 Option.empty[Int].map2(Option(2))(_ + _)
 ```
 
+--
+
 ```tut
 10.pure[Option]
 Option(1).map2(10.pure[Option])(_ + _)
@@ -307,8 +324,9 @@ Option(1).map2(10.pure[Option])(_ + _)
 
 ```tut
 List(1,2,3).map2(List(5,8))(_ + _)
-List(1,2,3).map2(List.empty[Int])(_ + _)
 ```
+
+--
 
 ```tut
 10.pure[List]
@@ -325,7 +343,9 @@ List(1,2,3).map2(10.pure[List])(_ + _)
 
 * Mutable state
 
-* ...
+* Logging
+
+* Your custom effects ...
 ]
 
 ---

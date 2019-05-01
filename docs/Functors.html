@@ -74,7 +74,7 @@ trait Functor[F[_]] {
 }
 ```
 
-## Laws
+### Laws
 
 ```scala
 forAll((fa: F[A]) =>
@@ -98,6 +98,11 @@ background-image: url(img/functors/map-example.svg)
 # Functor
 
 ### TODO find better examples preferably not related to containers
+
+---
+background-image: url(img/functors/map-example-2.svg)
+
+# Functor
 
 ---
 class: center, middle
@@ -236,24 +241,25 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 trait Applicative[F[_]] extends Functor[F] {
-
   def pure[A](a: A): F[A]
-
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
 
+  def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)]
+
   // alias *<
-  def productL[A, B](fa: F[A], fb: F[B]): F[A] = ???
+  def productL[A, B](fa: F[A], fb: F[B]): F[A]
 
   // alias *>
-  def productR[A, B](fa: F[A], fb: F[B]): F[B] = ???
+  def productR[A, B](fa: F[A], fb: F[B]): F[B]
 }
 ```
 
-## Laws
+### Laws
 
 ```scala
 forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
 forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+forAll((a: a, b: B)     => tuple2(pure(a), pure(b)) == pure((a,b)))
 ```
 
 ---
@@ -261,7 +267,6 @@ forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
 
 ```scala
 combine  ::   A  =>   A  =>   A
-
 productL :: F[A] => F[B] => F[A]
 ```
 
@@ -281,6 +286,16 @@ forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
 ```
 
 ---
+background-image: url(img/functors/tuple2.svg)
+
+# Applicative combine effects
+
+---
+background-image: url(img/functors/tupleN.svg)
+
+# Applicative combine effects
+
+---
 # Applicative combine effects: Failure
 
 
@@ -297,6 +312,8 @@ scala> Option.empty[Int].map2(Option(2))(_ + _)
 res2: Option[Int] = None
 ```
 
+--
+
 ```scala
 scala> 10.pure[Option]
 res3: Option[Int] = Some(10)
@@ -312,17 +329,16 @@ res4: Option[Int] = Some(11)
 ```scala
 scala> List(1,2,3).map2(List(5,8))(_ + _)
 res5: List[Int] = List(6, 9, 7, 10, 8, 11)
-
-scala> List(1,2,3).map2(List.empty[Int])(_ + _)
-res6: List[Int] = List()
 ```
+
+--
 
 ```scala
 scala> 10.pure[List]
-res7: List[Int] = List(10)
+res6: List[Int] = List(10)
 
 scala> List(1,2,3).map2(10.pure[List])(_ + _)
-res8: List[Int] = List(11, 12, 13)
+res7: List[Int] = List(11, 12, 13)
 ```
 
 ---
@@ -335,7 +351,9 @@ res8: List[Int] = List(11, 12, 13)
 
 * Mutable state
 
-* ...
+* Logging
+
+* Your custom effects ...
 ]
 
 ---
