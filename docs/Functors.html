@@ -165,6 +165,20 @@ trait JsonEncoder[A]{
 trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
 ```
 
+---
+# Functors example
+
+```scala
+case class JsonDecoder[A](decode: Json => A)
+
+case class JsonEncoder[A](encode: A    => Json)
+
+case JsonCodec[A](
+  decode: Json => A,
+  encode: A    => Json
+)
+```
+
 --
 
 ```scala
