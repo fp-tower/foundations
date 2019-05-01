@@ -1,6 +1,6 @@
 ![FP Foundation Logo](logo/Foundation.png)<br>
 
-[![Join the chat at https://gitter.im/julien-truffaut/fp-foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)](https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/julien-truffaut/fp-foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)][gitter]
 <span class="badge-patreon"><a href="https://www.patreon.com/bePatron?u=10482033" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
 
 ## Synopsis
@@ -47,7 +47,19 @@
 
 ## FAQ
 
-### How to run tests?
+### Where should I start?
+
+Each chapter has:
+* a set of slides (linked above) located at `docs/$chapter.html`
+* a scala object containing all exercises located at `exercises/src/main/scala/exercises/$chapter/$chapterExercises.scala`
+* a scala object containing all answers located at `exercises/src/main/scala/answers/$chapter/$chapterAnswers.scala`
+* two test suites (one for exercises, one for answers) located at `exercises/src/test/scala/exercises/$chapter/$chapterTest.scala`
+
+Start each chapter with the slides, at some point you will be prompted to work on some exercises. 
+Do the exercises and check your answers are correct by running the tests for this chapter.
+Finally, go back to the slides and repeat the process. If you have any question, please ask them on [gitter][gitter] 
+
+### How to run the tests?
 
 ```bash
 sbt "testOnly $CHAPTER*ExercisesTest"
@@ -58,3 +70,5 @@ For example for chapter 1
 ```bash
 sbt "testOnly function*ExercisesTest"
 ```
+
+[gitter]: https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
