@@ -123,17 +123,17 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   checkAll("Id"      , FLaws.monad[Id, Int])
   checkAll("Function", FLaws.monad[Int => ?, Boolean])
 
-  test("flatten") {
+  test("flatten"){
     flatten(List(List(1,2), List(3,4,5))) shouldEqual List(1,2,3,4,5)
     flatten((x: Int) => (y: Int) => x + y).apply(4) shouldEqual 8
   }
 
-  test("flatTap") {
+  test("flatTap"){
     flatTap(Option(10))(x => if(x > 0) unit[Option] else None) shouldEqual Some(10)
     flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) shouldEqual None
   }
 
-  test("ifM") {
+  test("ifM"){
     val func = ifM((x: Int) => x > 0)(_ * 2, _.abs)
 
     func(-10) shouldEqual 10

@@ -198,12 +198,6 @@ object FunctorsAnswers extends FunctorsToImpl {
   def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] =
     cond.flatMap(if(_) ifTrue else ifFalse)
 
-  def whileM_[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[Unit] =
-    ifM(cond)(productR(fa, whileM_(cond)(fa)), unit[F])  // check
-
-  def forever[F[_]: Monad, A](fa: F[A]): F[Nothing] =
-    productR[F, A, Nothing](fa, forever(fa))
-
 
   ////////////////////////
   // 4. Traverse

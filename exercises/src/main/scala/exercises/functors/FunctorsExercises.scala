@@ -250,14 +250,8 @@ object FunctorsExercises extends FunctorsToImpl {
   //         func(  3) == 6
   def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
 
-  // 3g. Implement whileM
-  def whileM_[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[Unit] = ???
 
-  // 3h. Implement forever
-  def forever[F[_]: Monad, A](fa: F[A]): F[Nothing] = ???
-
-
-  // 3i. Implement an Monad instance for Compose
+  // 3g. Implement an Monad instance for Compose
   implicit def composeMonad[F[_]: Monad, G[_]: Monad]: Monad[Compose[F, G, ?]] =
     new DefaultMonad[Compose[F, G, ?]] {
       def pure[A](a: A): Compose[F, G, A] = ???

@@ -59,8 +59,6 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   def flatten[F[_]: Monad, A](ffa: F[F[A]]): F[A]
   def flatTap[F[_]: Monad, A, B](fa: F[A])(f: A => F[B]): F[A]
   def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A]
-  def whileM_[F[_]: Monad, A](cond: F[Boolean])(fa: => F[A]): F[Unit]
-  def forever[F[_]: Monad, A](fa: F[A]): F[Nothing]
 }
 
 trait FunctorsToImplLowLevel {
