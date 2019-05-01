@@ -71,4 +71,11 @@ For example for chapter 1
 sbt "testOnly function*ExercisesTest"
 ```
 
+### Is this course free?
+
+Yes, the material is open source and it uses a permissive licence [CC-BY-SA-4.0][licence].
+However, the slides and exercises are currently made to be run by a trainer. Eventually, we aim to make this course
+self-study with online videos but it is not likely to happen before mid 2020.
+
 [gitter]: https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
