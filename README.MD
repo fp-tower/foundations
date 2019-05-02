@@ -22,8 +22,8 @@
 * Logic and types
 
 ### Chapter 3: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
-* Different techniques to implement ad-hoc polymorphism with Eq
-* Monoid
+* Different implementations of ad-hoc polymorphism
+* Eq, Monoid
 * Typeclass laws
 * Instance uniqueness, location
 * Typeclass hierarchy with Semigroup, CommutativeMonoid
