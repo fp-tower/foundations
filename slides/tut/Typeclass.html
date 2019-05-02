@@ -57,7 +57,7 @@ layout: true
 
 * Most common usage for <span style="color:blue">**application developers**</span>
 
-* Get familiar with typeclass laws and hierarchy
+* Use case: folding data
 ]
 
 ---
@@ -808,7 +808,7 @@ func(5)
 # Monoid
 
 ```tut:silent
-trait Monoid[A]{
+trait Monoid[A] {
   def combine(x: A, y: A): A
   def empty: A
 }
@@ -839,34 +839,75 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
   def empty: Int = 0
 }
 
-implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
-  def combine(x: Double, y: Double): Double = x + y
-  def empty: Double = 0.0
-}
-
 implicit val stringMonoid: Monoid[String] = new Monoid[String] {
   def combine(x: String, y: String): String = x + y
   def empty: String = ""
 }
 ```
 
---
-
 ```tut
 monoFoldLeft(List(1, 2, 3, 4, 5))
-monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))
 monoFoldLeft(List("foo", "bar"))
 ```
 
 ---
 class: center, middle
 
-# Exercises 1, 2, 3 and 4
+# Exercises 1 and 2
+
+---
+# Laws
+
+```scala
+trait Monoid[A] {
+  def combine(x: A, y: A): A
+  def empty: A
+}
+```
+
+--
+
+```tut:silent
+val instance1: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x % y
+  def empty: Int = 0
+}
+
+val instance2: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 2
+}
+
+val instance3: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x
+  def empty: Int = 99
+}
+```
 
 ---
 class: center, middle
 
-# Uniqueness
+# Exercise 3
+
+---
+# Use case: Distributed Map-Reduce
+
+```scala
+class RDD[A]{
+
+  def map[B](f: A => B): RDD[B]
+
+  def reduce(f: (A, A) => A): A
+
+}
+```
+
+--
+
+### Spark Accumulators (aka reduce)
+
+Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
+can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
 
 ---
 # Uniqueness
@@ -899,22 +940,7 @@ monoFoldLeft(List(1,2,3,4))
 ---
 class: center, middle
 
-# Non unique instance
-
----
-# Non unique instance
-
-```tut:silent
-val sumMonoid: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 0
-}
-
-val productMonoid: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x * y
-  def empty: Int = 1
-}
-```
+# Exercises 4
 
 ---
 # Non unique instance: The haskell way (newtype)
@@ -958,20 +984,15 @@ def foldMap[A, B](fa: List[A])(f: A => B)(implicit ev: Monoid[B]): B =
 
 --
 
-
-```tut:silent
-val xs = List(2, 5, 0)
-```
-
 ```tut
-foldMap(xs)(Sum(_))
-foldMap(xs)(Product(_))
+foldMap(List(2, 5, 0))(Sum(_))
+foldMap(List(2, 5, 0))(Product(_))
 ```
 
 ---
 # Non unique instance: The Scala way (so far)
 
-* Define an instance for the most common case (how to find out ???)
+* Define an instance for the most common case (difficult to define what is "common")
 
 ```tut:silent
 implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
@@ -1238,32 +1259,17 @@ class: center, middle
 ---
 class: center, middle
 
-# Use case: Distributed Map-Reduce
-
----
-# Use case: Distributed Map-Reduce
-
-```scala
-class RDD[A]{
-
-  def map[B](f: A => B): RDD[B]
-
-  def reduce(f: (A, A) => A): A
-
-}
-```
-
---
-
-### Spark Accumulators (aka reduce)
-
-Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
-can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
+# Typeclass abuses
 
 ---
 class: center, middle
 
-# Typeclass abuses
+# Typeclass abuses: Derivation
+
+---
+background-image: url(img/typeclass/product-derivation.svg)
+
+# Typeclass Derivation: Product
 
 ---
 # Typeclass Derivation: Product
@@ -1303,6 +1309,11 @@ Eq[Person] => Eq[(String, (Int, Unit)]
            => tuple2(Eq[String], tuple2[Int, Unit])
            => tuple2(Eq[String], tuple2(Eq[Int], Eq[Unit]))
 ```
+
+---
+background-image: url(img/typeclass/sum-derivation.svg)
+
+# Typeclass Derivation: Sum
 
 ---
 # Typeclass Derivation: Sum
@@ -1346,7 +1357,7 @@ Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
 # Derivation in Haskell
 
 ```haskell
-data Person = Person { name :: String , age :: Int } deriving (Eq, Show)
+data Person = Person { name :: String , age :: Int } deriving Eq
 ```
 
 ```haskell
@@ -1354,7 +1365,12 @@ data  Option a  =  None | Some a deriving (Eq , Ord)
 ```
 
 ---
-# 2. Better syntax
+class: center, middle
+
+# Typeclass abuses: Better syntax
+
+---
+# Better syntax
 
 ```tut:silent
 "foo" === "hello"
@@ -1374,27 +1390,34 @@ sequence(List(Some(3), None, Some(4)))(listTraverse, optionApplicative)
 ```
 
 ---
-# When to use
 
-## Typeclass
+## Use Typeclass when
 
-1. If you have only one valid implementation for (almost) all types
-2. If you require uniqueness per type e.g. Eq, Hash, Ord
+1. You have only one valid implementation for (almost) all types
+2. You require uniqueness per type e.g. Eq, Hash, Ord
 
-## Interface / Record of functions
+## Use Interface / Record of functions when
 
-1. If you have many valid / interesting implementations per type
-2. If you need to package several functions together
+1. You have many valid / interesting implementations per type
+2. You need to package several functions together
 
-## Overloading
+## Use  Overloading when
 
-1. If you have many valid / interesting implementations per type
+1. You have many valid / interesting implementations per type
 2. Single function
 
 ---
-# Summary
+.h1[# Summary]
 
-### TODO
+.large[
+* Ad hoc polymorphism implementations
+
+* Eq, Monoid, Semigroup, Foldable
+
+* Instance location and uniqueness
+
+* Typeclass laws, hierarchy, abuses
+]
 
 ---
 class: center, middle

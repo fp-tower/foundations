@@ -222,8 +222,10 @@ object TypeclassExercises extends TypeclassToImpl {
   def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A = ???
 
 
-  // 3e. Wht other property do you think would be useful to parallelize work?
+  // 3e. What other property do you think would be useful to parallelize work?
   // is it satisfied by any instance defined so far?
+
+
 
   /////////////////////////////
   // 4. Instance uniqueness
