@@ -57,7 +57,7 @@ Each chapter has:
 
 Start each chapter with the slides, at some point you will be prompted to work on some exercises. 
 Do the exercises and check your answers are correct by running the tests for this chapter.
-Finally, go back to the slides and repeat the process. If you have any question, please ask them on [gitter][gitter] 
+Finally, go back to the slides and repeat the process. If you have any question, please ask them on [gitter][gitter].
 
 ### How to run the tests?
 
@@ -77,7 +77,7 @@ Yes, the material is open source and it uses a permissive licence [CC-BY-SA-4.0]
 However, the slides and exercises are currently made to be run by a trainer. Eventually, we aim to make this course
 self-study with online videos but it is not likely to happen before mid 2020.
 
-We do encourage people who enjoyed the course to make a donation using [patreon][patreon].
+We do encourage people who enjoy the course to make a donation using [patreon][patreon].
 
 [gitter]: https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
