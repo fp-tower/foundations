@@ -176,11 +176,11 @@ object FunctionExercises extends FunctionToImpl {
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B = ???
 
 
-  // 4f. Implement sumList3 using a fold, which one should you chose?
+  // 4f. Implement sumList3 using a fold, which one should you choose?
   def sumList3(xs: List[Int]): Int = ???
 
 
-  // 4g. Implement find using a fold, which one should you chose?
+  // 4g. Implement find using a fold, which one should you choose?
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
 
