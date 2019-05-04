@@ -192,7 +192,7 @@ object TypeExercises extends TypeToImpl {
 
 
   ////////////////////////
-  // 4. Parametrictity
+  // 4. Parametricity
   ////////////////////////
 
   // 4a. How many implementations exist for id, const (assume we are using scalazzi subset)
@@ -218,12 +218,12 @@ object TypeExercises extends TypeToImpl {
   // 4g. How would you test mapList to achieve a VIC of 1
 
 
-  // Further reading on parametrictity
+  // Further reading on parametricity
   // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
 
 
   ////////////////////////
-  // 5. Logic
+  // 5. Algebra
   ////////////////////////
 
   // 5a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
