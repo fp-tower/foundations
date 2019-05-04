@@ -37,7 +37,7 @@ object TypeclassExercises extends TypeclassToImpl {
     def empty: String = ""
   }
 
-  // 1a. Implement an instance of Monoid for Unit
+  // 1a. Implement an instance of Monoid for Long
   implicit val longMonoid: Monoid[Long] = new Monoid[Long] {
     def combine(x: Long, y: Long): Long = ???
     def empty: Long = ???
@@ -174,7 +174,7 @@ object TypeclassExercises extends TypeclassToImpl {
   def tupleFormat(xs: List[String]): String = ???
 
 
-  // 2g. Implement folddMap
+  // 2g. Implement foldMap
   // such as foldMap(List("abc", "a", "abcde"))(_.size) == 9
   def foldMap[A, B](xs: List[A])(f: A => B)(implicit ev: Monoid[B]): B = ???
 
