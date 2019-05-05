@@ -4,6 +4,7 @@ import cats.data.NonEmptyList
 import cats.kernel.Eq
 import cats.syntax.eq._
 import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.Foldable.syntax._
 import org.scalacheck.{Arbitrary, Prop}
 import toimpl.typeclass.TypeclassToImpl
 
