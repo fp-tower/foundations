@@ -246,7 +246,7 @@ object TypeclassExercises extends TypeclassToImpl {
   }
 
   // 4c. Implement an instance of Monoid for Product
-  // such as combine(Product(2), Product(5)) == Product(15)
+  // such as combine(Product(3), Product(5)) == Product(15)
   // Use Product to implement product
   implicit val productMonoid: Monoid[Product] = new Monoid[Product] {
     def combine(x: Product, y: Product): Product = ???
