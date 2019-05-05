@@ -418,7 +418,7 @@ object TypeclassExercises extends TypeclassToImpl {
   // 6l. Implement lastOption
   // such as lastOption(List(1,2,3)) == Some(3)
   //         lastOption(Nil) == None
-  // bonus: can you implement it using foldMap?
+  // bonus: can you implement it using reduceMap?
   def lastOption[F[_]: Foldable, A](fa: F[A]): Option[A] = ???
 
   // 6m. Implement find
