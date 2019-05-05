@@ -17,11 +17,6 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit def constFunctor[R]: Functor[Const[R, ?]]
   implicit def functionFunctor[R]: Functor[R => ?]
 
-  def void[F[_]: Functor, A](fa: F[A]): F[Unit]
-  def as[F[_]: Functor, A, B](fa: F[A])(value: B): F[B]
-  def widen[F[_]: Functor, A, B >: A](fa: F[A]): F[B]
-  def tupleLeft [F[_]: Functor, A, B](fa: F[A])(value: B): F[(B, A)]
-  def tupleRight[F[_]: Functor, A, B](fa: F[A])(value: B): F[(A, B)]
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]]
 
   ////////////////////////
@@ -35,12 +30,6 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit val idApplicative: Applicative[Id]
   implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]]
   implicit def functionApplicative[R]: Applicative[R => ?]
-
-  def map3[F[_]: Applicative, A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D]
-  def tuple2[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[(A, B)]
-  def productL[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[A]
-  def productR[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[B]
-  def unit[F[_]: Applicative]: F[Unit]
 
   implicit val zipListApply: Apply[ZipList]
   implicit def composeApplicative[F[_]: Applicative, G[_]: Applicative]: Applicative[Compose[F, G, ?]]
@@ -56,12 +45,11 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit val idMonad: Monad[Id]
   implicit def functionMonad[R]: Monad[R => ?]
 
-  def flatten[F[_]: Monad, A](ffa: F[F[A]]): F[A]
-  def flatTap[F[_]: Monad, A, B](fa: F[A])(f: A => F[B]): F[A]
-  def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A]
 }
 
+// trick to avoid implicit ambiguity because Monad and Traverse both extends Functor
 trait FunctorsToImplLowLevel {
+
   ////////////////////////
   // 4. Traverse
   ////////////////////////

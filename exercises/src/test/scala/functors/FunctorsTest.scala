@@ -3,6 +3,9 @@ package functors
 import answers.functors.FunctorsAnswers
 import cats.instances.all._
 import cats.kernel.Eq
+import exercises.functors.Applicative.syntax._
+import exercises.functors.Functor.syntax._
+import exercises.functors.Monad.syntax._
 import exercises.functors._
 import exercises.typeclass.Monoid
 import org.scalacheck.Arbitrary
@@ -29,11 +32,11 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   checkAll("Function", FLaws.functor[Int => ?, Boolean])
 
   test("void"){
-    void(List(1,2,3)) shouldEqual List((),(),())
+    List(1,2,3).void shouldEqual List((),(),())
   }
 
   test("as"){
-    as(List(1,2,3))(0) shouldEqual List(0,0,0)
+    List(1,2,3).as(0) shouldEqual List(0,0,0)
   }
 
   test("widen"){
@@ -44,17 +47,17 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
     val circles: List[Circle] = List(Circle(1.2), Circle(5))
     val shapes : List[Shape]  = List(Circle(1.2), Circle(5))
 
-    widen[List, Circle, Shape](circles) shouldEqual shapes
+    circles.widen[Shape] shouldEqual shapes
   }
 
   test("tupleLeft"){
-    tupleLeft(Option(4))("hello")    shouldEqual Some(("hello", 4))
-    tupleLeft(Option.empty)("hello") shouldEqual None
+    Option(4).tupleLeft("hello")    shouldEqual Some(("hello", 4))
+    Option.empty.tupleLeft("hello") shouldEqual None
   }
 
   test("tupleRight"){
-    tupleRight(Option(4))("hello")    shouldEqual Some((4, "hello"))
-    tupleRight(Option.empty)("hello") shouldEqual None
+    Option(4).tupleRight("hello")    shouldEqual Some((4, "hello"))
+    Option.empty.tupleRight("hello") shouldEqual None
   }
 
   // Not sure why this instance is ambiguous
@@ -79,24 +82,24 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   }
 
   test("map3"){
-    map3(Option(1), Option(2), Option(3))(_ + _ + _) shouldEqual Some(6)
-    map3(Option(1), None     , Option(3))(_ + _ + _) shouldEqual None
+    Option(1).map3(Option(2), Option(3))(_ + _ + _) shouldEqual Some(6)
+    Option(1).map3(None     , Option(3))(_ + _ + _) shouldEqual None
   }
 
   test("tuple2"){
-    tuple2(List(1,2,3), List('a', 'b')) shouldEqual List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
+    List(1,2,3).tuple2(List('a', 'b')) shouldEqual List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
   }
 
   test("productL"){
-    productL(Option(1), Option("hello")) shouldEqual Some(1)
-    productL(None     , Option("hello")) shouldEqual None
-    productL(Option(1), None           ) shouldEqual None
+    Option(1) <* Option("hello") shouldEqual Some(1)
+    Option.empty <* Option("hello") shouldEqual None
+    Option(1) <* None shouldEqual None
   }
 
   test("productR"){
-    productR(Option(1), Option("hello")) shouldEqual Some("hello")
-    productR(None     , Option("hello")) shouldEqual None
-    productR(Option(1), None           ) shouldEqual None
+    Option(1) *> Option("hello") shouldEqual Some("hello")
+    Option.empty *> Option("hello") shouldEqual None
+    Option(1) *> None shouldEqual None
   }
 
   test("unit"){
@@ -124,17 +127,17 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   checkAll("Function", FLaws.monad[Int => ?, Boolean])
 
   test("flatten"){
-    flatten(List(List(1,2), List(3,4,5))) shouldEqual List(1,2,3,4,5)
-    flatten((x: Int) => (y: Int) => x + y).apply(4) shouldEqual 8
+    List(List(1,2), List(3,4,5)).flatten shouldEqual List(1,2,3,4,5)
+    ((x: Int) => (y: Int) => x + y).flatten.apply(4) shouldEqual 8
   }
 
   test("flatTap"){
-    flatTap(Option(10))(x => if(x > 0) unit[Option] else None) shouldEqual Some(10)
-    flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) shouldEqual None
+    Option(10).flatTap(x => if(x > 0) unit[Option] else None) shouldEqual Some(10)
+    Option(-5).flatTap(x => if(x > 0) unit[Option] else None) shouldEqual None
   }
 
   test("ifM"){
-    val func = ifM((x: Int) => x > 0)(_ * 2, _.abs)
+    val func = ((x: Int) => x > 0).ifM(_ * 2, _.abs)
 
     func(-10) shouldEqual 10
     func(  3) shouldEqual 6

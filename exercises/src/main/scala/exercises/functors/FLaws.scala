@@ -13,8 +13,8 @@ object FLaws extends Laws {
 
   def functor[F[_]: Functor, A](
     implicit arbFa: Arbitrary[F[A]],
-    arbA2B: Arbitrary[A => A],
-    eqFa: Eq[F[A]]
+             arbA2B: Arbitrary[A => A],
+             eqFa: Eq[F[A]]
   ): RuleSet = functor[F, A, A, A]
 
   def functor[F[_]: Functor, A, B, C](
@@ -33,48 +33,48 @@ object FLaws extends Laws {
 
   def applicative[F[_]: Applicative, A](
      implicit arbFa: Arbitrary[F[A]],
-     arbA: Arbitrary[A],
-     arbA2A: Arbitrary[A => A],
-     arbFA2A: Arbitrary[F[A => A]],
-     eqFa: Eq[F[A]]
+              arbA2B: Arbitrary[A => A],
+              arbA: Arbitrary[A],
+              eqFa: Eq[F[A]],
+              eqFaa: Eq[F[(A, A)]]
   ): RuleSet = applicative[F, A, A, A]
 
   def applicative[F[_]: Applicative, A, B, C](
     implicit arbFa: Arbitrary[F[A]],
-    arbA: Arbitrary[A],
-    arbA2B: Arbitrary[A => B],
-    arbB2C: Arbitrary[B => C],
-    arbFA2B: Arbitrary[F[A => B]],
-    eqFa: Eq[F[A]],
-    eqFB: Eq[F[B]],
-    eqFc: Eq[F[C]]
+             arbA2B: Arbitrary[A => B],
+             arbB2C: Arbitrary[B => C],
+             arbA: Arbitrary[A],
+             arbB: Arbitrary[B],
+             eqFa: Eq[F[A]],
+             eqFc: Eq[F[C]],
+             eqFab: Eq[F[(A, B)]]
   ): RuleSet =
     new DefaultRuleSet("Applicative", Some(functor[F, A, B, C]),
-      "identity" ->
-        forAll((fa: F[A]) => (identity[A] _).pure[F].map2(fa)((f, a) => f(a)) === fa),
-        "homomorphism" ->
-          forAll((a: A, f: A => B) => f.pure[F].map2(a.pure[F])(_(_)) === f(a).pure[F]),
-      "interchange" ->
-        forAll((a: A, ff: F[A => B]) => ff.map2(a.pure[F])(_(_)) === ((f: A => B) => f(a)).pure[F].map2(ff)(_(_))),
+      "pure left" ->
+        forAll((fa: F[A], b: B) => (b.pure[F] *> fa) === fa),
+      "pure right" ->
+        forAll((fa: F[A], b: B) => (fa <* b.pure[F]) === fa),
+      "tuple2" ->
+        forAll((a: A, b: B) => a.pure[F].tuple2(b.pure[F]) === (a,b).pure[F] )
     )
 
   def monad[F[_]: Monad, A](
     implicit arbFa: Arbitrary[F[A]],
-    arbA: Arbitrary[A],
-    arbA2A: Arbitrary[A => A],
-    arbFA2A: Arbitrary[F[A => A]],
-    eqFa: Eq[F[A]]
+             arbA2B: Arbitrary[A => A],
+             arbA: Arbitrary[A],
+             eqFa: Eq[F[A]],
+             eqFaa: Eq[F[(A, A)]]
   ): RuleSet = monad[F, A, A, A]
 
   def monad[F[_]: Monad, A, B, C](
     implicit arbFa: Arbitrary[F[A]],
-    arbA: Arbitrary[A],
-    arbA2B: Arbitrary[A => B],
-    arbB2C: Arbitrary[B => C],
-    arbFA2B: Arbitrary[F[A => B]],
-    eqFa: Eq[F[A]],
-    eqFB: Eq[F[B]],
-    eqFc: Eq[F[C]]
+             arbA2B: Arbitrary[A => B],
+             arbB2C: Arbitrary[B => C],
+             arbA: Arbitrary[A],
+             arbB: Arbitrary[B],
+             eqFa: Eq[F[A]],
+             eqFc: Eq[F[C]],
+             eqFab: Eq[F[(A, B)]]
   ): RuleSet =
     new DefaultRuleSet("Monad", Some(applicative[F, A, B, C]),
       "flatMap - pure" -> forAll((fa: F[A]) => fa.flatMap(_.pure[F]) === fa)

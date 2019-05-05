@@ -3,7 +3,6 @@ package answers.functors
 import answers.typeclass.TypeclassAnswers._
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
-import exercises.functors.Monad.syntax._
 import exercises.functors.Traverse.syntax._
 import exercises.functors._
 import exercises.typeclass.Foldable.syntax._
@@ -17,44 +16,47 @@ object FunctorsAnswers extends FunctorsToImpl {
   // 1. Functor
   ////////////////////////
 
-  implicit val listFunctor: Functor[List] = new Functor[List] {
+  trait DefaultFunctor[F[_]] extends Functor[F] {
+    def void[A](fa: F[A]): F[Unit] = as(fa)(())
+
+    def as[A, B](fa: F[A])(value: B): F[B] = map(fa)(_ => value)
+
+    def widen[A, B >: A](fa: F[A]): F[B] = map(fa)(identity)
+
+    def tupleLeft [A, B](fa: F[A])(value: B): F[(B, A)] = map(fa)(value -> _)
+    def tupleRight[A, B](fa: F[A])(value: B): F[(A, B)] = map(fa)(_ -> value)
+  }
+
+  implicit val listFunctor: Functor[List] = new DefaultFunctor[List] {
     def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
   }
 
-  implicit val optionFunctor: Functor[Option] = new Functor[Option] {
+  implicit val optionFunctor: Functor[Option] = new DefaultFunctor[Option] {
     def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa.map(f)
   }
 
-  implicit def eitherFunctor[E]: Functor[Either[E, ?]] = new Functor[Either[E, ?]] {
+  implicit def eitherFunctor[E]: Functor[Either[E, ?]] = new DefaultFunctor[Either[E, ?]] {
     def map[A, B](fa: Either[E, A])(f: A => B): Either[E, B] = fa.map(f)
   }
 
-  implicit def mapFunctor[K]: Functor[Map[K, ?]] = new Functor[Map[K, ?]] {
+  implicit def mapFunctor[K]: Functor[Map[K, ?]] = new DefaultFunctor[Map[K, ?]] {
     def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map{ case (k, v) => k -> f(v) }
   }
 
-  implicit val idFunctor: Functor[Id] = new Functor[Id] {
+  implicit val idFunctor: Functor[Id] = new DefaultFunctor[Id] {
     def map[A, B](fa: Id[A])(f: A => B): Id[B] = Id(f(fa.value))
   }
 
-  implicit def constFunctor[R]: Functor[Const[R, ?]] = new Functor[Const[R, ?]] {
+  implicit def constFunctor[R]: Functor[Const[R, ?]] = new DefaultFunctor[Const[R, ?]] {
     def map[A, B](fa: Const[R, A])(f: A => B): Const[R, B] = fa.as[B]
   }
 
-  implicit def functionFunctor[R]: Functor[Function[R, ?]] = new Functor[Function[R, ?]] {
+  implicit def functionFunctor[R]: Functor[Function[R, ?]] = new DefaultFunctor[Function[R, ?]] {
     def map[A, B](fa: R => A)(f: A => B): R => B = f compose fa
   }
 
-  def void[F[_]: Functor, A](fa: F[A]): F[Unit] = as(fa)(())
 
-  def as[F[_]: Functor, A, B](fa: F[A])(value: B): F[B] = fa.map(_ => value)
-
-  def widen[F[_]: Functor, A, B >: A](fa: F[A]): F[B] = fa.map(identity)
-
-  def tupleLeft [F[_]: Functor, A, B](fa: F[A])(value: B): F[(B, A)] = fa.map(value -> _)
-  def tupleRight[F[_]: Functor, A, B](fa: F[A])(value: B): F[(A, B)] = fa.map(_ -> value)
-
-  implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] = new Functor[Compose[F, G, ?]] {
+  implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] = new DefaultFunctor[Compose[F, G, ?]] {
     def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] =
       Compose(fa.getCompose.map(_.map(f)))
   }
@@ -63,8 +65,19 @@ object FunctorsAnswers extends FunctorsToImpl {
   // 2. Applicative
   ////////////////////////
 
-  trait DefaultApplicative[F[_]] extends Applicative[F] {
+  trait DefaultApplicative[F[_]] extends Applicative[F] with DefaultFunctor[F] {
     def map[A, B](fa: F[A])(f: A => B): F[B] = map2(fa, pure(()))((a, _) => f(a))
+
+    def map3[A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] =
+      map2(map2(fa, fb)((a, b) => f(a, b, _)), fc)(_(_))
+
+    def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)] =
+      map2(fa, fb)((_,_))
+
+    def productL[A, B](fa: F[A], fb: F[B]): F[A] = map2(fa, fb)((a, _) => a)
+    def productR[A, B](fa: F[A], fb: F[B]): F[B] = map2(fa, fb)((_, b) => b)
+
+    def unit: F[Unit] = pure(())
   }
 
   // 2b. Implement the following instance
@@ -95,7 +108,7 @@ object FunctorsAnswers extends FunctorsToImpl {
       } yield f(a, b)
   }
 
-  implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] {
+  implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
     def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map{ case (k, v) => k -> f(v) }
     def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] =
       fa.flatMap{ case (k, a) => fb.get(k).map(b => k -> f(a, b)) }
@@ -118,18 +131,7 @@ object FunctorsAnswers extends FunctorsToImpl {
       r => f(fa(r), fb(r))
   }
 
-  def map3[F[_]: Applicative, A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] =
-    fa.map2(fb)((a, b) => f(a, b, _)).map2(fc)(_(_))
-
-  def tuple2[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[(A, B)] =
-    fa.map2(fb)((_,_))
-
-  def productL[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[A] = fa.map2(fb)((a, _) => a)
-  def productR[F[_]: Applicative, A, B](fa: F[A], fb: F[B]): F[B] = fa.map2(fb)((_, b) => b)
-
-  def unit[F[_]: Applicative]: F[Unit] = ().pure[F]
-
-  implicit val zipListApply: Apply[ZipList] = new Apply[ZipList]{
+  implicit val zipListApply: Apply[ZipList] = new Apply[ZipList] with DefaultFunctor[ZipList] {
     def map[A, B](fa: ZipList[A])(f: A => B): ZipList[B] = ZipList(fa.getZipList.map(f))
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] =
       ZipList(fa.getZipList.zip(fb.getZipList).map{ case (a, b) => f(a, b) })
@@ -150,12 +152,21 @@ object FunctorsAnswers extends FunctorsToImpl {
   // 3. Monad
   ////////////////////////
 
-  trait DefaultMonad[F[_]] extends Monad[F] {
-    def map[A, B](fa: F[A])(f: A => B): F[B] =
+  trait DefaultMonad[F[_]] extends Monad[F] with DefaultApplicative[F] {
+    override def map[A, B](fa: F[A])(f: A => B): F[B] =
       flatMap(fa)(a => pure(f(a)))
 
     def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] =
       flatMap(fa)(a => map(fb)(f(a, _)))
+
+    def flatten[A](ffa: F[F[A]]): F[A] =
+      flatMap(ffa)(identity)
+
+    def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A] =
+      flatMap(fa)(a => as(f(a))(a))
+
+    def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] =
+      flatMap(cond)(if(_) ifTrue else ifFalse)
   }
 
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
@@ -173,7 +184,7 @@ object FunctorsAnswers extends FunctorsToImpl {
     def flatMap[A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = fa.flatMap(f)
   }
 
-  implicit def mapFlatMap[K]: FlatMap[Map[K, ?]] = new FlatMap[Map[K, ?]] {
+  implicit def mapFlatMap[K]: FlatMap[Map[K, ?]] = new FlatMap[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
     def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = mapFunctor[K].map(fa)(f)
     def flatMap[A, B](fa: Map[K, A])(f: A => Map[K, B]): Map[K, B] =
       fa.flatMap{ case (k, a) => f(a).get(k).map(k -> _) }
@@ -189,28 +200,19 @@ object FunctorsAnswers extends FunctorsToImpl {
     def flatMap[A, B](fa: R => A)(f: A => R => B): R => B = r => f(fa(r))(r)
   }
 
-  def flatten[F[_]: Monad, A](ffa: F[F[A]]): F[A] =
-    ffa.flatMap(identity)
-
-  def flatTap[F[_]: Monad, A, B](fa: F[A])(f: A => F[B]): F[A] =
-    fa.flatMap(a => f(a).map(_ => a))
-
-  def ifM[F[_]: Monad, A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] =
-    cond.flatMap(if(_) ifTrue else ifFalse)
-
 
   ////////////////////////
   // 4. Traverse
   ////////////////////////
 
-  trait DefaultTraverse[F[_]] extends Traverse[F] {
+  trait DefaultTraverse[F[_]] extends Traverse[F] with DefaultFunctor[F] {
     def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]] =
       sequence(map(fa)(f))
 
     def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] =
       traverse(fga)(identity)
 
-    def map[A, B](fa: F[A])(f: A => B): F[B] =
+    override def map[A, B](fa: F[A])(f: A => B): F[B] =
       traverse(fa)(a => Id(f(a))).value
 
     override def foldMap[A, B: Monoid](fa: F[A])(f: A => B): B =
