@@ -334,7 +334,7 @@ object TypeclassExercises extends TypeclassToImpl {
 
   // 5g. Implement an instance of Semigroup for Dual
   // such as combine(Dual(1), Dual(2)) == Dual(combine(2, 1))
-  // Use Dual to implement maxOption and lastOptionList
+  // Use Dual to implement lastOptionList
   implicit def dualSemigroup[A: Semigroup]: Semigroup[Dual[A]] = new Semigroup[Dual[A]] {
     def combine(x: Dual[A], y: Dual[A]): Dual[A] = ???
   }
