@@ -66,6 +66,11 @@ background-image: url(img/functors/plan.svg)
 # Plan
 
 ---
+class: center, middle
+
+# Functor
+
+---
 # Functor
 
 ```tut:silent
@@ -107,12 +112,41 @@ background-image: url(img/functors/map-example-2.svg)
 ---
 class: center, middle
 
+# Effects
+
+---
+# Effects: `F[A]` is an `A` with an effect `F`
+
+```scala
+type Failure[A] = Option[A] or Either[String, A]
+
+type Nondeterminism[A] = List[A] or Vector[A]
+
+type SideEffect[A] = IO[A]
+
+type MutableState[A] = State[Int, A]
+
+type ImmutableState[A] = Reader[Int, A]
+
+type Console[A] = ...
+
+type Logger[A] = ...
+```
+
+--
+
+### A Functor is an abstraction allowing to update an effectful value **without** altering its effect
+
+---
+class: center, middle
+
 # Exercise 1
 
 ---
-# Functor
+.h1[# Functor]
 
-### ✅ ADT and Function result
+.pull-left[
+### ✅ ADT
 
 ```tut:silent
 case class Foo[A](i: Int, a: A)
@@ -123,18 +157,23 @@ case class Bar2[A](b: Boolean, a: A) extends Bar[A]
 case class Bar3[A](s: String       ) extends Bar[A]
 ```
 
-```tut:silent
-case class Producer[A](func: Int => A)
-```
-
 ### ❌ Function input
 
 ```tut:silent
 case class Predicate[A](func: A => Boolean)
 ```
+]
+
+.pull-right[
+### ✅ Function result
+
+```tut:silent
+case class Producer[A](func: Int => A)
+```
+]
 
 ---
-# Functors
+# Functor variance
 
 .center[![Functors](img/functors/functor-variance.svg)]
 
@@ -153,7 +192,7 @@ trait Functor[F[_]] extends InvariantFunctor[F] { // CovariantFunctor
 ```
 
 ---
-# Functors example
+# Functor variance
 
 ```tut:invisible
 type Json = String
@@ -172,7 +211,7 @@ trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
 ```
 
 ---
-# Functors example
+# Functor variance
 
 ```tut:silent
 case class JsonDecoder[A](decode: Json => A)
@@ -222,7 +261,17 @@ implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
 | Type          | A             | B             | C        |
 |:-------------:|:-------------:|:-------------:|:---------:|
 | (A => B) => C | Covariant     | Contravariant |Covariant |
+
+<br>
+<br>
+
+[Thinking with types](https://leanpub.com/thinking-with-types) by Sandy Maguire
 ]
+
+---
+class: center, middle
+
+# Applicative
 
 ---
 # Applicative
