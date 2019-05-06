@@ -1,7 +1,5 @@
 package exercises.typeclass
 
-import cats.kernel.Eq
-
 case class First[A](getFirst: A)
 
 object First {

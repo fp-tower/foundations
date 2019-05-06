@@ -1,6 +1,6 @@
 package exercises.functors
 
-import cats.Eq
+import exercises.typeclass.Eq
 
 case class Id[A](value: A)
 

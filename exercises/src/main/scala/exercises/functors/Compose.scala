@@ -1,6 +1,6 @@
 package exercises.functors
 
-import cats.Eq
+import exercises.typeclass.Eq
 
 case class Compose[F[_], G[_], A](getCompose: F[G[A]])
 

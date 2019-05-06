@@ -1,8 +1,5 @@
 package exercises.typeclass
 
-import cats.kernel.Eq
-import cats.implicits._
-
 case class All(getAll: Boolean)
 
 object All {

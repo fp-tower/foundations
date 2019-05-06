@@ -2,7 +2,7 @@ package types
 
 import answers.types.TypeAnswers
 import cats.implicits._
-import cats.kernel.Eq
+import exercises.typeclass.Eq
 import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
 import org.scalatest.{FunSuite, Matchers}

@@ -1,7 +1,7 @@
 package exercises.functors
 
-import cats.kernel.Eq
-import cats.syntax.eq._
+import exercises.typeclass.Eq
+import Eq.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Monad.syntax._
