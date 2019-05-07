@@ -2,7 +2,7 @@ package typeclass
 
 import answers.typeclass.TypeclassAnswers
 import cats.data.NonEmptyList
-import cats.kernel.Eq
+import exercises.typeclass.Eq
 import cats.instances.all._
 import exercises.typeclass.Monoid.syntax._
 import exercises.typeclass._

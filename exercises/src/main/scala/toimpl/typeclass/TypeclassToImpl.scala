@@ -1,7 +1,6 @@
 package toimpl.typeclass
 
 import cats.data.NonEmptyList
-import cats.kernel.Eq
 import exercises.typeclass._
 import org.scalacheck.Arbitrary
 import org.typelevel.discipline.Laws

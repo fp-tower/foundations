@@ -1,8 +1,8 @@
 package exercises.functors
 
-import cats.kernel.Eq
+import exercises.typeclass.Eq
 
-case class Const[A, B](getConst: A){
+case class Const[A, B](getConst: A) {
   def as[C]: Const[A, C] = Const(getConst)
 }
 

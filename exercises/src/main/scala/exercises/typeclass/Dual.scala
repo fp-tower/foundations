@@ -1,7 +1,5 @@
 package exercises.typeclass
 
-import cats.kernel.Eq
-
 case class Dual[A](getDual: A)
 
 object Dual {

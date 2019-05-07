@@ -1,8 +1,7 @@
 package answers.typeclass
 
 import cats.data.NonEmptyList
-import cats.kernel.Eq
-import cats.syntax.eq._
+import exercises.typeclass.Eq.syntax._
 import exercises.typeclass.Foldable.syntax._
 import exercises.typeclass.Monoid.syntax._
 import exercises.typeclass.Semigroup.syntax._

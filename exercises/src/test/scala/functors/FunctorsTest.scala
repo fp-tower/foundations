@@ -1,8 +1,8 @@
 package functors
 
 import answers.functors.FunctorsAnswers
+import exercises.typeclass.Eq
 import cats.instances.all._
-import cats.kernel.Eq
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Monad.syntax._
