@@ -12,9 +12,9 @@ trait Eq[A] {
 object Eq {
   def apply[A](implicit ev: Eq[A]): Eq[A] = ev
 
-  def by[@specialized A, @specialized B](f: A => B)(implicit ev: Eq[B]): Eq[A] =
+  def by[A, B](f: A => B)(implicit ev: Eq[B]): Eq[A] =
     new Eq[A] {
-      def eqv(x: A, y: A) = ev.eqv(f(x), f(y))
+      def eqv(x: A, y: A): Boolean = ev.eqv(f(x), f(y))
     }
 
   object syntax {
@@ -37,29 +37,21 @@ object Eq {
   }
 
   implicit def listEq[A: Eq]: Eq[List[A]] = new Eq[List[A]] {
-    def eqv(x: List[A], y: List[A]): Boolean = x == y
+    def eqv(xs: List[A], ys: List[A]): Boolean =
+      xs.size === ys.size && xs.zip(ys).forall{ case (x, y) => x === y }
   }
 
-  implicit def nelistEq[A: Eq]: Eq[NonEmptyList[A]] = new Eq[NonEmptyList[A]] {
-    def eqv(x: NonEmptyList[A], y: NonEmptyList[A]): Boolean = (x, y) match {
-      case (NonEmptyList(h1, t1), NonEmptyList(h2, t2)) =>
-        h1 === h2 && t1 === t2
-    }
-  }
+  implicit def neltEq[A: Eq]: Eq[NonEmptyList[A]] =
+    by(_.toList)
 
-  implicit def optionEq[A: Eq]: Eq[Option[A]] = new Eq[Option[A]] {
-    def eqv(x: Option[A], y: Option[A]): Boolean = (x, y) match {
-      case (Some(a), Some(b)) => a === b
-      case (None, None) => true
-      case _ => false
-    }
-  }
+  implicit def optionEq[A: Eq]: Eq[Option[A]] =
+    by(_.toList)
 
   implicit def eitherEq[A: Eq, B: Eq]: Eq[Either[A, B]] = new Eq[Either[A, B]] {
     def eqv(x: Either[A, B], y: Either[A, B]): Boolean = (x, y) match {
-      case (Left(a), Left(b)) => a === b
+      case (Left(a), Left(b))   => a === b
       case (Right(a), Right(b)) => a === b
-      case _ => false
+      case _                    => false
     }
   }
 
@@ -68,16 +60,18 @@ object Eq {
       x._1 === y._1 && x._2 === y._2
   }
 
-  implicit def setEq[A: Eq]: Eq[Set[A]] = new Eq[Set[A]] {
+  implicit def setEq[A]: Eq[Set[A]] = new Eq[Set[A]] {
     def eqv(x: Set[A], y: Set[A]): Boolean = x == y
   }
 
-  implicit def vectorEq[A: Eq]: Eq[Vector[A]] = new Eq[Vector[A]] {
-    def eqv(x: Vector[A], y: Vector[A]): Boolean = x == y
-  }
+  implicit def vectorEq[A: Eq]: Eq[Vector[A]] =
+    by(_.toList)
 
-  implicit def mapEq[A: Eq, B: Eq]: Eq[Map[A, B]] = new Eq[Map[A, B]] {
-    def eqv(x: Map[A, B], y: Map[A, B]): Boolean = x == y
+  implicit def mapEq[A, B: Eq]: Eq[Map[A, B]] = new Eq[Map[A, B]] {
+    def eqv(x: Map[A, B], y: Map[A, B]): Boolean =
+      x.size == y.size && x.forall {
+        case (k, v1) => y.get(k).fold(false)(v1 === _)
+      }
   }
 
   implicit val dblEq: Eq[Double] = new Eq[Double] {
