@@ -34,47 +34,45 @@ object FLaws extends Laws {
   def applicative[F[_]: Applicative, A](
      implicit arbFa: Arbitrary[F[A]],
               arbA2B: Arbitrary[A => A],
-              arbA: Arbitrary[A],
               eqFa: Eq[F[A]],
-              eqFaa: Eq[F[(A, A)]]
+              eqFaaa: Eq[F[((A, A), A)]]
   ): RuleSet = applicative[F, A, A, A]
 
   def applicative[F[_]: Applicative, A, B, C](
     implicit arbFa: Arbitrary[F[A]],
+             arbFb: Arbitrary[F[B]],
+             arbFc: Arbitrary[F[C]],
              arbA2B: Arbitrary[A => B],
              arbB2C: Arbitrary[B => C],
-             arbA: Arbitrary[A],
-             arbB: Arbitrary[B],
              eqFa: Eq[F[A]],
              eqFc: Eq[F[C]],
-             eqFab: Eq[F[(A, B)]]
+             eqFabc: Eq[F[((A, B), C)]]
   ): RuleSet =
     new DefaultRuleSet("Applicative", Some(functor[F, A, B, C]),
-      "pure left" ->
-        forAll((fa: F[A], b: B) => (b.pure[F] *> fa) === fa),
-      "pure right" ->
-        forAll((fa: F[A], b: B) => (fa <* b.pure[F]) === fa),
-      "tuple2" ->
-        forAll((a: A, b: B) => a.pure[F].tuple2(b.pure[F]) === (a,b).pure[F] )
+      "left identity" ->
+        forAll((fa: F[A]) => (unit[F] *> fa) === fa),
+      "right identity" ->
+        forAll((fa: F[A]) => (fa <* unit[F]) === fa),
+      "associativity" ->
+        forAll((fa: F[A], fb: F[B], fc: F[C]) => fa.tuple2(fb).tuple2(fc) === fa.tuple2(fb.tuple2(fc)).map { case (a, (b, c)) => ((a, b), c) } )
     )
 
   def monad[F[_]: Monad, A](
     implicit arbFa: Arbitrary[F[A]],
              arbA2B: Arbitrary[A => A],
-             arbA: Arbitrary[A],
              eqFa: Eq[F[A]],
-             eqFaa: Eq[F[(A, A)]]
+             eqFaaa: Eq[F[((A, A), A)]]
   ): RuleSet = monad[F, A, A, A]
 
   def monad[F[_]: Monad, A, B, C](
     implicit arbFa: Arbitrary[F[A]],
+             arbFb: Arbitrary[F[B]],
+             arbFc: Arbitrary[F[C]],
              arbA2B: Arbitrary[A => B],
              arbB2C: Arbitrary[B => C],
-             arbA: Arbitrary[A],
-             arbB: Arbitrary[B],
              eqFa: Eq[F[A]],
              eqFc: Eq[F[C]],
-             eqFab: Eq[F[(A, B)]]
+             eqFabc: Eq[F[((A, B), C)]]
   ): RuleSet =
     new DefaultRuleSet("Monad", Some(applicative[F, A, B, C]),
       "flatMap - pure" -> forAll((fa: F[A]) => fa.flatMap(_.pure[F]) === fa)

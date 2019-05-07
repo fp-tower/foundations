@@ -295,20 +295,20 @@ trait Applicative[F[_]] extends Functor[F] {
 
   def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)]
 
-  // alias *<
-  def productL[A, B](fa: F[A], fb: F[B]): F[A]
+  def productL[A, B](fa: F[A], fb: F[B]): F[A] // alias <*
+  def productR[A, B](fa: F[A], fb: F[B]): F[B] // alias *>
 
-  // alias *>
-  def productR[A, B](fa: F[A], fb: F[B]): F[B]
+  def unit: F[Unit]
 }
 ```
 
 ### Laws
 
 ```scala
-forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
-forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
-forAll((a: a, b: B)     => tuple2(pure(a), pure(b)) == pure((a,b)))
+forAll(fa: F[A] => fa   <* unit == fa)
+forAll(fa: F[A] => unit *> fa   == fa)
+
+forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa, tuple2(fb, fc)))
 ```
 
 ---
@@ -327,11 +327,14 @@ pure  :: A => F[A]
 ### Laws
 
 ```scala
-forAll((a: A)           => a       |+| empty  == a)
-forAll((a: A)           => empty   |+| a      == a)
+forAll(a: A     => a     |+| empty == a)
+forAll(a: A     => empty |+| a     == a)
 
-forAll((fa: F[A], b: B) => fa      <* pure(b) == fa)
-forAll((fa: F[A], b: B) => pure(b) *> fa      == fa)
+forAll(fa: F[A] => fa     <* unit  == fa)
+forAll(fa: F[A] => unit   *> fa    == fa)
+
+forAll(( a: A   ,  b: B   ,  c: C)    => combine(combine(a, b), c)  == combine(a, combine(b, c)))
+forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa, tuple2(fb, fc)))
 ```
 
 ---
