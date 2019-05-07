@@ -1,6 +1,27 @@
 language: scala
+
 scala:
    - 2.12.8
+
+jdk:
+   - oraclejdk8
+   - oraclejdk11
+
+
+cache:
+   directories:
+      - $HOME/.sbt/1.0/dependency
+      - $HOME/.sbt/boot/scala*
+      - $HOME/.sbt/launchers
+      - $HOME/.m2
+      - $HOME/.ivy2/cache
+      - $HOME/.coursier
+
+before_cache:
+   - find $HOME/.sbt -name "*.lock" -type f -delete
+   - find $HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
+   - rm -rf $HOME/.ivy2/local
+
 script:
    - sbt ++$TRAVIS_SCALA_VERSION "testOnly *AnswersTest"
    - sbt ++$TRAVIS_SCALA_VERSION tut
