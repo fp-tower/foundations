@@ -449,6 +449,35 @@ forAll((fa: F[A], f: A => B) =>
 ```
 
 ---
+class: center, middle
+
+# Monad
+
+---
+# Monad
+
+```scala
+trait Monad[F[_]] extends Applicative[F] {
+
+  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
+  def flatten[A](ffa: F[F[A]]): F[A]
+
+}
+```
+
+### Laws
+
+```scala
+forAll(fa: F[A]             => fa.flatMap(pure)   == fa)
+forAll((a: A, f: A => F[B]) => pure(a).flatMap(f) == f(a))
+
+forAll((fa: fA, f: A => F[B], g: B => F[C]) =>
+  fa.flatMap(f).flatMap(g) == fa.flatMap(a => f(a).flatMap(g))
+)
+```
+
+---
 background-image: url(img/functors/review.svg)
 
 # Review
