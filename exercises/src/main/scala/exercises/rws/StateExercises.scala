@@ -28,5 +28,4 @@ object StateExercises extends StateToImpl {
     instructionLines: List[List[Instruction]]
   ): List[KeyPad] = ???
 
-
 }

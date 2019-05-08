@@ -90,7 +90,7 @@ object TypeAnswers extends TypeToImpl {
   def list[A](a: Cardinality[A]): Cardinality[List[A]] =
     new Cardinality[List[A]] {
       def cardinality: Card =
-        if(a.cardinality == Lit(0)) Lit(1)
+        if (a.cardinality == Lit(0)) Lit(1)
         else Inf
     }
 
@@ -106,16 +106,13 @@ object TypeAnswers extends TypeToImpl {
 
   val string: Cardinality[String] = new Cardinality[String] {
     def cardinality: Card =
-      0.to(Int.MaxValue).foldLeft(Lit(BigInt(0)): Card)((acc, i) =>
-        acc + (char.cardinality ^ Lit(i))
-      )
+      0.to(Int.MaxValue).foldLeft(Lit(BigInt(0)): Card)((acc, i) => acc + (char.cardinality ^ Lit(i)))
   }
 
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
       def cardinality: Card = b.cardinality ^ a.cardinality
     }
-
 
   def aUnitToA[A]: Iso[(A, Unit), A] = Iso(_._1, (_, ()))
 
@@ -138,8 +135,7 @@ object TypeAnswers extends TypeToImpl {
             b => Left((a, b)),
             c => Right((a, c))
           )
-      },
-      {
+      }, {
         case Left((a, b))  => (a, Left(b))
         case Right((a, c)) => (a, Right(c))
       }
@@ -147,18 +143,16 @@ object TypeAnswers extends TypeToImpl {
 
   def isAdult(age: Int): Boolean = age >= 18
 
-
   def isAdult_v2(i: Int Refined Positive): Boolean =
     i.value >= 18
 
   def compareInt(x: Int, y: Int): Int =
-    if(x < y) -1
-    else if(x > y) 1
+    if (x < y) -1
+    else if (x > y) 1
     else 0
 
-  def compareInt_v2(x: Int, y: Int): Comparison = {
-    if(x < y)       LessThan
+  def compareInt_v2(x: Int, y: Int): Comparison =
+    if (x < y) LessThan
     else if (x > y) GreaterThan
-    else            EqualTo
-  }
+    else EqualTo
 }

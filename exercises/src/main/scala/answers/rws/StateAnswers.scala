@@ -2,7 +2,7 @@ package answers.rws
 
 import cats.data.State
 import cats.implicits._
-import exercises.rws.BathroomSecurity.{Instruction, KeyPad, move}
+import exercises.rws.BathroomSecurity.{move, Instruction, KeyPad}
 import toimpl.rws.StateToImpl
 
 object StateAnswers extends StateToImpl {
@@ -11,7 +11,8 @@ object StateAnswers extends StateToImpl {
     startingPoint: KeyPad,
     instructionLines: List[List[Instruction]]
   ): List[KeyPad] =
-    instructionLines.traverse(moveLine)
+    instructionLines
+      .traverse(moveLine)
       .runA(startingPoint)
       .value
 

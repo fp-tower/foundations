@@ -38,7 +38,7 @@ object Eq {
 
   implicit def listEq[A: Eq]: Eq[List[A]] = new Eq[List[A]] {
     def eqv(xs: List[A], ys: List[A]): Boolean =
-      xs.size === ys.size && xs.zip(ys).forall{ case (x, y) => x === y }
+      xs.size === ys.size && xs.zip(ys).forall { case (x, y) => x === y }
   }
 
   implicit def neltEq[A: Eq]: Eq[NonEmptyList[A]] =

@@ -12,9 +12,10 @@ object IsoLaws extends Laws {
   def apply[A: Arbitrary: Eq, B: Arbitrary: Eq](iso: Iso[A, B]): RuleSet = {
     import iso._
 
-    new SimpleRuleSet("Iso",
-    "round trip one way" -> forAll((a: A) => to(from(a)) === a),
-    "round trip other way" -> forAll((b: B) => from(to(b)) === b)
+    new SimpleRuleSet(
+      "Iso",
+      "round trip one way"   -> forAll((a: A) => to(from(a)) === a),
+      "round trip other way" -> forAll((b: B) => from(to(b)) === b)
     )
   }
 }

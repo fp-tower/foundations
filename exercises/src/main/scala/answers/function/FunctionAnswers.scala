@@ -1,6 +1,6 @@
 package answers.function
 
-import exercises.function.FunctionExercises.{Person, updateAge, inc, double}
+import exercises.function.FunctionExercises.{double, inc, updateAge, Person}
 import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
@@ -71,7 +71,6 @@ object FunctionAnswers extends FunctionToImpl {
       case h :: t => foldLeft(t, f(z, h))(f)
     }
 
-
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
     xs match {
       case Nil    => z
@@ -79,7 +78,7 @@ object FunctionAnswers extends FunctionToImpl {
     }
 
   def find[A](xs: List[A])(p: A => Boolean): Option[A] =
-    foldRight(xs, Option.empty[A])((a, rest) => if(p(a)) Some(a) else rest)
+    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
 
   def sumList3(xs: List[Int]): Int =
     foldLeft(xs, 0)(_ + _)
@@ -88,8 +87,8 @@ object FunctionAnswers extends FunctionToImpl {
     val cache = mutable.Map.empty[A, B]
     (a: A) => {
       cache.get(a) match {
-        case Some(b) => b    // cache succeeds
-        case None    =>
+        case Some(b) => b // cache succeeds
+        case None =>
           val b = f(a)
           cache.update(a, b) // update cache
           b

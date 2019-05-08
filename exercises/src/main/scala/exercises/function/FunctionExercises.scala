@@ -23,7 +23,7 @@ object FunctionExercises extends FunctionToImpl {
 
   // 1b. is div a pure function? why?
   def div(a: Int, b: Int): Int =
-    if(b == 0) sys.error("Cannot divide by 0")
+    if (b == 0) sys.error("Cannot divide by 0")
     else a / b
 
   // 1c. is times2 a pure function? why?
@@ -35,7 +35,7 @@ object FunctionExercises extends FunctionToImpl {
 
   // 1d. is boolToInt a pure function? why?
   def boolToInt(b: Boolean): Int =
-    if(b) 5
+    if (b) 5
     else Random.nextInt() / 2
 
   // 1e. is mapLookup a pure function? why?
@@ -59,7 +59,6 @@ object FunctionExercises extends FunctionToImpl {
 
   def inc_v2(xs: Array[Int]): Unit =
     for { i <- xs.indices } xs(i) = xs(i) + 1
-
 
   // 1i. is incAll a pure function? why?
   def incAll(value: Any): Any = value match {
@@ -100,7 +99,6 @@ object FunctionExercises extends FunctionToImpl {
 
   // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
 
-
   /////////////////////////////
   // 3. higher order functions
   /////////////////////////////
@@ -108,7 +106,7 @@ object FunctionExercises extends FunctionToImpl {
   case class Person(name: String, age: Int)
 
   def updateAge(xs: List[Person], f: Int => Int): List[Person] =
-    xs.map{ p =>
+    xs.map { p =>
       p.copy(age = f(p.age))
     }
 
@@ -130,25 +128,21 @@ object FunctionExercises extends FunctionToImpl {
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
   // 3f. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
-  val inc   : Int => Int = x => x + 1
+  val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = identity // ???
 
-
   // 3g. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
-
 
   // 3h. Implement curry and uncurry
   def curry[A, B, C](f: (A, B) => C): A => B => C = ???
 
   def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
-
   // 3i. Implement join
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
-
 
   ////////////////////////
   // 4. Recursion
@@ -157,41 +151,34 @@ object FunctionExercises extends FunctionToImpl {
   // 4a. Use recursion to implement sumList
   def sumList(xs: List[Int]): Int = ???
 
-
   // 4b. Run it with different size of list
   // What happens when the list is big enough? Why?
   // You can use `to` to generate a List from 1 to x
   val oneToTen = 1.to(10).toList
 
-
   // 4c. implement sumList2 recursively without the same issue
   def sumList2(xs: List[Int]): Int = ???
-
 
   // 4d. Implement foldLeft using recursion
   def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B = ???
 
-
   // 4e. Implement foldRight using recursion
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B = ???
-
 
   // 4f. Implement sumList3 using a fold, which one should you choose?
   def sumList3(xs: List[Int]): Int = ???
 
-
   // 4g. Implement find using a fold, which one should you choose?
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
-
   // 4h. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =
-    if(x > 0) isOdd(x - 1)
+    if (x > 0) isOdd(x - 1)
     else if (x < 0) isOdd(x + 1)
     else true
 
   def isOdd(x: Int): Boolean =
-    if(x > 0) isEven(x - 1)
+    if (x > 0) isEven(x - 1)
     else if (x < 0) isEven(x + 1)
     else false
 
@@ -212,10 +199,8 @@ object FunctionExercises extends FunctionToImpl {
   // or https://github.com/scalaz/scalaz/blob/series/7.3.x/tests/src/test/scala/scalaz/MemoTest.scala
   def memoize[A, B](f: A => B): A => B = ???
 
-
   // 5b. How would you adapt memoize to work on recursive function e.g. fibonacci
   // can you generalise the pattern?
   def memoize2 = ???
-
 
 }

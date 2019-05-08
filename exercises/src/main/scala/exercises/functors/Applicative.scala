@@ -12,7 +12,6 @@ trait Applicative[F[_]] extends Functor[F] {
   def productL[A, B](fa: F[A], fb: F[B]): F[A]
   def productR[A, B](fa: F[A], fb: F[B]): F[B]
 
-
   def unit: F[Unit]
 }
 
@@ -20,7 +19,7 @@ object Applicative {
   def apply[F[_]](implicit ev: Applicative[F]): Applicative[F] = ev
 
   object syntax {
-    implicit class ApplicativeOps[F[_], A](fa: F[A]){
+    implicit class ApplicativeOps[F[_], A](fa: F[A]) {
       def map2[B, C](fb: F[B])(f: (A, B) => C)(implicit ev: Applicative[F]): F[C] =
         ev.map2(fa, fb)(f)
 
@@ -43,7 +42,7 @@ object Applicative {
         productR(fb)
     }
 
-    implicit class ApplicativeOps2[A](a: A){
+    implicit class ApplicativeOps2[A](a: A) {
       def pure[F[_]](implicit ev: Applicative[F]): F[A] = ev.pure(a)
     }
 

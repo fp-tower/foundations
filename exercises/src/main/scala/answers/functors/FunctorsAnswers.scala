@@ -23,8 +23,8 @@ object FunctorsAnswers extends FunctorsToImpl {
 
     def widen[A, B >: A](fa: F[A]): F[B] = map(fa)(identity)
 
-    def tupleLeft [A, B](fa: F[A])(value: B): F[(B, A)] = map(fa)(value -> _)
-    def tupleRight[A, B](fa: F[A])(value: B): F[(A, B)] = map(fa)(_ -> value)
+    def tupleLeft[A, B](fa: F[A])(value: B): F[(B, A)]  = map(fa)(value -> _)
+    def tupleRight[A, B](fa: F[A])(value: B): F[(A, B)] = map(fa)(_     -> value)
   }
 
   implicit val listFunctor: Functor[List] = new DefaultFunctor[List] {
@@ -40,7 +40,7 @@ object FunctorsAnswers extends FunctorsToImpl {
   }
 
   implicit def mapFunctor[K]: Functor[Map[K, ?]] = new DefaultFunctor[Map[K, ?]] {
-    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map{ case (k, v) => k -> f(v) }
+    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map { case (k, v) => k -> f(v) }
   }
 
   implicit val idFunctor: Functor[Id] = new DefaultFunctor[Id] {
@@ -64,14 +64,15 @@ object FunctorsAnswers extends FunctorsToImpl {
     def imap[A, B](fa: StringCodec[A])(f: A => B)(g: B => A): StringCodec[B] =
       StringCodec(
         mkString = g andThen fa.mkString,
-        parse    = fa.parse(_).map(f)
+        parse = fa.parse(_).map(f)
       )
   }
 
-  implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] = new DefaultFunctor[Compose[F, G, ?]] {
-    def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] =
-      Compose(fa.getCompose.map(_.map(f)))
-  }
+  implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] =
+    new DefaultFunctor[Compose[F, G, ?]] {
+      def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] =
+        Compose(fa.getCompose.map(_.map(f)))
+    }
 
   ////////////////////////
   // 2. Applicative
@@ -84,7 +85,7 @@ object FunctorsAnswers extends FunctorsToImpl {
       map2(map2(fa, fb)((a, b) => f(a, b, _)), fc)(_(_))
 
     def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)] =
-      map2(fa, fb)((_,_))
+      map2(fa, fb)((_, _))
 
     def productL[A, B](fa: F[A], fb: F[B]): F[A] = map2(fa, fb)((a, _) => a)
     def productR[A, B](fa: F[A], fb: F[B]): F[B] = map2(fa, fb)((_, b) => b)
@@ -121,13 +122,13 @@ object FunctorsAnswers extends FunctorsToImpl {
   }
 
   implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
-    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map{ case (k, v) => k -> f(v) }
+    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map { case (k, v) => k -> f(v) }
     def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] =
-      fa.flatMap{ case (k, a) => fb.get(k).map(b => k -> f(a, b)) }
+      fa.flatMap { case (k, a) => fb.get(k).map(b => k -> f(a, b)) }
   }
 
   implicit val idApplicative: Applicative[Id] = new DefaultApplicative[Id] {
-    def pure[A](a: A): Id[A] = Id(a)
+    def pure[A](a: A): Id[A]                                       = Id(a)
     def map2[A, B, C](fa: Id[A], fb: Id[B])(f: (A, B) => C): Id[C] = Id(f(fa.value, fb.value))
   }
 
@@ -146,9 +147,8 @@ object FunctorsAnswers extends FunctorsToImpl {
   implicit val zipListApply: Apply[ZipList] = new Apply[ZipList] with DefaultFunctor[ZipList] {
     def map[A, B](fa: ZipList[A])(f: A => B): ZipList[B] = ZipList(fa.getZipList.map(f))
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] =
-      ZipList(fa.getZipList.zip(fb.getZipList).map{ case (a, b) => f(a, b) })
+      ZipList(fa.getZipList.zip(fb.getZipList).map { case (a, b) => f(a, b) })
   }
-
 
   implicit def composeApplicative[F[_]: Applicative, G[_]: Applicative]: Applicative[Compose[F, G, ?]] =
     new DefaultApplicative[Compose[F, G, ?]] {
@@ -158,7 +158,6 @@ object FunctorsAnswers extends FunctorsToImpl {
           fa.getCompose.map2(fb.getCompose)((ga, gb) => ga.map2(gb)(f))
         )
     }
-
 
   ////////////////////////
   // 3. Monad
@@ -178,40 +177,39 @@ object FunctorsAnswers extends FunctorsToImpl {
       flatMap(fa)(a => as(f(a))(a))
 
     def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] =
-      flatMap(cond)(if(_) ifTrue else ifFalse)
+      flatMap(cond)(if (_) ifTrue else ifFalse)
   }
 
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
-    def pure[A](a: A): List[A] = List(a)
+    def pure[A](a: A): List[A]                               = List(a)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = fa.flatMap(f)
   }
 
   implicit val optionMonad: Monad[Option] = new DefaultMonad[Option] {
-    def pure[A](a: A): Option[A] = Some(a)
+    def pure[A](a: A): Option[A]                                   = Some(a)
     def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = fa.flatMap(f)
   }
 
   implicit def eitherMonad[E]: Monad[Either[E, ?]] = new DefaultMonad[Either[E, ?]] {
-    def pure[A](a: A): Either[E, A] = Right(a)
+    def pure[A](a: A): Either[E, A]                                         = Right(a)
     def flatMap[A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = fa.flatMap(f)
   }
 
   implicit def mapFlatMap[K]: FlatMap[Map[K, ?]] = new FlatMap[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
     def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = mapFunctor[K].map(fa)(f)
     def flatMap[A, B](fa: Map[K, A])(f: A => Map[K, B]): Map[K, B] =
-      fa.flatMap{ case (k, a) => f(a).get(k).map(k -> _) }
+      fa.flatMap { case (k, a) => f(a).get(k).map(k -> _) }
   }
 
   implicit val idMonad: Monad[Id] = new DefaultMonad[Id] {
-    def pure[A](a: A): Id[A] = Id(a)
+    def pure[A](a: A): Id[A]                           = Id(a)
     def flatMap[A, B](fa: Id[A])(f: A => Id[B]): Id[B] = f(fa.value)
   }
 
   implicit def functionMonad[R]: Monad[R => ?] = new DefaultMonad[R => ?] {
-    def pure[A](a: A): R => A = _ => a
+    def pure[A](a: A): R => A                             = _ => a
     def flatMap[A, B](fa: R => A)(f: A => R => B): R => B = r => f(fa(r))(r)
   }
-
 
   ////////////////////////
   // 4. Traverse
@@ -239,7 +237,7 @@ object FunctorsAnswers extends FunctorsToImpl {
 
   implicit val listTraverse: Traverse[List] = new DefaultTraverse[List] {
     override def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A => G[B]): G[List[B]] =
-      fa.foldRight(List.empty[B].pure[G])((a, acc) => f(a).map2(acc)(_ :: _) )
+      fa.foldRight(List.empty[B].pure[G])((a, acc) => f(a).map2(acc)(_ :: _))
   }
 
   implicit val optionTraverse: Traverse[Option] = new DefaultTraverse[Option] {
@@ -250,17 +248,17 @@ object FunctorsAnswers extends FunctorsToImpl {
   implicit def eitherTraverse[E]: Traverse[Either[E, ?]] = new DefaultTraverse[Either[E, ?]] {
     override def traverse[G[_]: Applicative, A, B](fa: Either[E, A])(f: A => G[B]): G[Either[E, B]] =
       fa.fold(
-        e => (Left(e) : Either[E, B]).pure[G],
+        e => (Left(e): Either[E, B]).pure[G],
         a => f(a).map(Right(_))
       )
   }
 
   implicit def mapTraverse[K]: Traverse[Map[K, ?]] = new DefaultTraverse[Map[K, ?]] {
-    override def traverse[G[_] : Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] = ???
+    override def traverse[G[_]: Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] = ???
   }
 
   implicit val idTraverse: Traverse[Id] = new DefaultTraverse[Id] {
-    override def traverse[G[_] : Applicative, A, B](fa: Id[A])(f: A => G[B]): G[Id[B]] =
+    override def traverse[G[_]: Applicative, A, B](fa: Id[A])(f: A => G[B]): G[Id[B]] =
       f(fa.value).map(Id(_))
   }
 
@@ -271,15 +269,19 @@ object FunctorsAnswers extends FunctorsToImpl {
 
   implicit val bigIntMonoid: Monoid[BigInt] = new Monoid[BigInt] {
     def combine(x: BigInt, y: BigInt): BigInt = x + y
-    def empty: BigInt = BigInt(0)
+    def empty: BigInt                         = BigInt(0)
   }
 
   def parseNumber(value: String): Option[BigInt] =
-    value.toList.traverse(parseDigit).map(digits =>
-      digits.reverse.zipWithIndex.foldMap{ case (digit, index) =>
-        digit * BigInt(10).pow(index)
-      }
-    )
+    value.toList
+      .traverse(parseDigit)
+      .map(
+        digits =>
+          digits.reverse.zipWithIndex.foldMap {
+            case (digit, index) =>
+              digit * BigInt(10).pow(index)
+          }
+      )
 
   def parseDigit(value: Char): Option[Int] =
     value match {
@@ -298,7 +300,7 @@ object FunctorsAnswers extends FunctorsToImpl {
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {
-      override def traverse[H[_] : Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] =
+      override def traverse[H[_]: Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] =
         fa.getCompose.traverse(_.traverse(f)).map(Compose(_))
     }
 

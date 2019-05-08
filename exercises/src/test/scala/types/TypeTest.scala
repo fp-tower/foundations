@@ -25,7 +25,7 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
 
   test("option") {
     option(boolean).cardinality.eval shouldEqual Some(BigInt(3))
-    option(unit).cardinality.eval    shouldEqual Some(BigInt(2))
+    option(unit).cardinality.eval shouldEqual Some(BigInt(2))
   }
 
   test("list") {
@@ -61,7 +61,6 @@ class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Mat
   checkAll("Option[A] <=> Either[Unit, A]", IsoLaws(optionToEitherUnit[Int]))
   checkAll("a ^ 1 ==  a", IsoLaws(power1[Int]))
   checkAll("a * (b + c) == a * b + a * c", IsoLaws(distributeTuple[Int, Int, Int]))
-
 
   implicit def arbAOrNothing[A: Arbitrary]: Arbitrary[Either[A, Nothing]] =
     Arbitrary(Arbitrary.arbitrary[A].map(Left(_)))

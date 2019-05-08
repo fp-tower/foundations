@@ -8,10 +8,7 @@ import org.typelevel.discipline.Laws
 
 object PureFunctionLaws extends Laws {
 
-  def apply[A: Arbitrary , B: Eq](f: A => B): RuleSet = {
-    new SimpleRuleSet("Function",
-    "deterministic & total" -> forAll((a: A) => f(a) === f(a))
-    )
-  }
+  def apply[A: Arbitrary, B: Eq](f: A => B): RuleSet =
+    new SimpleRuleSet("Function", "deterministic & total" -> forAll((a: A) => f(a) === f(a)))
 
 }

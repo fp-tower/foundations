@@ -11,7 +11,7 @@ object ContravariantFunctor {
   def apply[F[_]](implicit ev: ContravariantFunctor[F]): ContravariantFunctor[F] = ev
 
   object syntax {
-    implicit class ContravariantFunctorOps[F[_], A](fa: F[A]){
+    implicit class ContravariantFunctorOps[F[_], A](fa: F[A]) {
       def contramap[B](f: B => A)(implicit ev: ContravariantFunctor[F]): F[B] =
         ev.contramap(fa)(f)
     }

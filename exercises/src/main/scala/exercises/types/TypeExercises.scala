@@ -144,19 +144,14 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = ???
   }
 
-
   // 2i How can we make compareInt more precise? Update the signature of compareInt2
   /** see [[Integer.compare]] */
   def compareInt1(x: Int, y: Int): Int = x - y
 
   def compareInt2 = ???
 
-
-
   // 2j. Can you provide two examples of function signature with only one implementation
   // i.e. find A1, A2 such as |A1 => A2| = 1
-
-
 
   // 2k. Can you provide an example of a function signature with no implementation
   // i.e. find A1, A2 such as |A1 => A2| = 0
@@ -170,26 +165,19 @@ object TypeExercises extends TypeToImpl {
   // how many valid implementations exist for sign, i.e. how many pass type checker and tests
   def sign(x: Int): Boolean = ???
 
-
   // 3b. what if have 3 unit tests
   // assert(sign(-2) = false)
   // assert(sign( 0) = true)
   // assert(sign( 5) = true)
   // can you generalise for n unit tests?
 
-
-
   // 3c. How many implementations remain valid if I have the following property
   // forAll(x: Int => sign(x) == !sign(-x))
-
-
-
 
   // 3d. Can you think of other ways to reduce the number of valid implementations?
   // check out the following resources for more details:
   // Property-Based Testing in a Screencast Editor (by Oskar Wickström): https://wickstrom.tech/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html
   // Types vs Tests (by Julien Truffaut): https://skillsmatter.com/skillscasts/12648-types-vs-tests
-
 
   ////////////////////////
   // 4. Parametricity
@@ -214,13 +202,10 @@ object TypeExercises extends TypeToImpl {
   // 4f. How many implementations exist for mapList
   def mapList[A, B](xs: List[A])(f: A => B): List[B] = ???
 
-
   // 4g. How would you test mapList to achieve a VIC of 1
-
 
   // Further reading on parametricity
   // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
-
 
   ////////////////////////
   // 5. Algebra
@@ -243,19 +228,17 @@ object TypeExercises extends TypeToImpl {
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
     Iso(_ => ???, _ => ???)
 
-
   // 5c. Prove that a * (b + c) = a * b + a * c
   // (A, Either[B, C]) =~ Either[(A, B), (A, C)] ?
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(_ => ???, _ => ???)
 
-
   // 5d. Prove that a ^ 1 = a
   def power1[A]: Iso[Unit => A, A] =
     new Iso[Unit => A, A](
-      _ => ???, _ => ???
+      _ => ???,
+      _ => ???
     )
-
 
   // 5e. Can you think of any other properties that types and algebra have in common?
 
@@ -272,7 +255,7 @@ object TypeExercises extends TypeToImpl {
 
   sealed trait Branch[A, B]
   object Branch {
-    case class Left [A, B](value: A) extends Branch[A, B]
+    case class Left[A, B](value: A)  extends Branch[A, B]
     case class Right[A, B](value: B) extends Branch[A, B]
   }
 
@@ -282,17 +265,14 @@ object TypeExercises extends TypeToImpl {
   // 6b. Define Three a type containing 3 possible values using all previously defined types
   type Three = Nothing // ???
 
-
   // 6c. Define Four a type containing 4 possible values using all previously defined types
   type Four = Nothing // ???
-
 
   // 6d. Define Five a type containing 8 possible values using all previously defined types
   type Five = Nothing // ???
 
-
   // 6e. Define Eight type containing 8 possible values using Func and all previously defined types
-  trait Func[A, B]{
+  trait Func[A, B] {
     def apply(value: A): B
   }
 

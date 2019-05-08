@@ -1,6 +1,6 @@
 package toimpl.types
 
-import exercises.types.{Cardinality, IntOrBoolean, Iso, IntAndBoolean}
+import exercises.types.{Cardinality, IntAndBoolean, IntOrBoolean, Iso}
 
 trait TypeToImpl {
 

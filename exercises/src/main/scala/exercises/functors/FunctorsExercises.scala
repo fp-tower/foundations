@@ -33,7 +33,7 @@ object FunctorsExercises extends FunctorsToImpl {
     //         tupleRight(Some(4))("hello") == Some((4, "hello"))
     // but     tupleLeft(None)("hello")  == None
     //         tupleRight(None)("hello") == None
-    def tupleLeft[A, B](fa: F[A])(value: B): F[(B, A)] = ???
+    def tupleLeft[A, B](fa: F[A])(value: B): F[(B, A)]  = ???
     def tupleRight[A, B](fa: F[A])(value: B): F[(A, B)] = ???
   }
 
@@ -92,7 +92,6 @@ object FunctorsExercises extends FunctorsToImpl {
       def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] = ???
     }
 
-
   ////////////////////////
   // 2. Applicative
   ////////////////////////
@@ -124,42 +123,42 @@ object FunctorsExercises extends FunctorsToImpl {
 
   // 2f. Implement the following instances
   implicit val listApplicative: Applicative[List] = new DefaultApplicative[List] {
-    def pure[A](a: A): List[A] = ???
+    def pure[A](a: A): List[A]                                           = ???
     def map2[A, B, C](fa: List[A], fb: List[B])(f: (A, B) => C): List[C] = ???
   }
 
   implicit val optionApplicative: Applicative[Option] = new DefaultApplicative[Option] {
-    def pure[A](a: A): Option[A] = ???
+    def pure[A](a: A): Option[A]                                               = ???
     def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
   }
 
   implicit def eitherApplicative[E]: Applicative[Either[E, ?]] = new DefaultApplicative[Either[E, ?]] {
-    def pure[A](a: A): Either[E, A] = ???
+    def pure[A](a: A): Either[E, A]                                                     = ???
     def map2[A, B, C](fa: Either[E, A], fb: Either[E, B])(f: (A, B) => C): Either[E, C] = ???
   }
 
   implicit def mapApplicative[K]: Applicative[Map[K, ?]] = new DefaultApplicative[Map[K, ?]] {
-    def pure[A](a: A): Map[K, A] = ???
+    def pure[A](a: A): Map[K, A]                                               = ???
     def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] = ???
   }
 
   implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
-    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = mapFunctor[K].map(fa)(f)
+    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B]                         = mapFunctor[K].map(fa)(f)
     def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] = ???
   }
 
   implicit val idApplicative: Applicative[Id] = new DefaultApplicative[Id] {
-    def pure[A](a: A): Id[A] = ???
+    def pure[A](a: A): Id[A]                                       = ???
     def map2[A, B, C](fa: Id[A], fb: Id[B])(f: (A, B) => C): Id[C] = ???
   }
 
   implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]] = new DefaultApplicative[Const[R, ?]] {
-    def pure[A](a: A): Const[R, A] = ???
+    def pure[A](a: A): Const[R, A]                                                   = ???
     def map2[A, B, C](fa: Const[R, A], fb: Const[R, B])(f: (A, B) => C): Const[R, C] = ???
   }
 
   implicit def functionApplicative[R]: Applicative[R => ?] = new DefaultApplicative[R => ?] {
-    def pure[A](a: A): R => A = ???
+    def pure[A](a: A): R => A                                         = ???
     def map2[A, B, C](fa: R => A, fb: R => B)(f: (A, B) => C): R => C = ???
   }
 
@@ -168,27 +167,24 @@ object FunctorsExercises extends FunctorsToImpl {
   // e.g. map2(ZipList(1,2,3), ZipList(2,2,2))(_ + _) == ZipList(3,4,5)
   implicit val zipListApplicative: Applicative[ZipList] = new DefaultApplicative[ZipList] {
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] = ???
-    def pure[A](a: A): ZipList[A] = ???
+    def pure[A](a: A): ZipList[A]                                                 = ???
   }
-
 
   // 2i. Implement an Apply instance for ZipList
   implicit val zipListApply: Apply[ZipList] = new Apply[ZipList] with DefaultFunctor[ZipList] {
-    def map[A, B](fa: ZipList[A])(f: A => B): ZipList[B] = ???
+    def map[A, B](fa: ZipList[A])(f: A => B): ZipList[B]                          = ???
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] = ???
   }
 
   // 2j. Why does the Applicative instance of List do the cartesian product instead of zip?
   // Why most implementations of map2 use flatMap?
 
-
   // 2k. Implement an Applicative instance for Compose
   implicit def composeApplicative[F[_]: Applicative, G[_]: Applicative]: Applicative[Compose[F, G, ?]] =
     new DefaultApplicative[Compose[F, G, ?]] {
-      def pure[A](a: A): Compose[F, G, A] = ???
+      def pure[A](a: A): Compose[F, G, A]                                                             = ???
       def map2[A, B, C](fa: Compose[F, G, A], fb: Compose[F, G, B])(f: (A, B) => C): Compose[F, G, C] = ???
     }
-
 
   ////////////////////////
   // 3. Monad
@@ -220,47 +216,46 @@ object FunctorsExercises extends FunctorsToImpl {
 
   // 3f. Implement the following instances
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
-    def pure[A](a: A): List[A] = listApplicative.pure(a)
+    def pure[A](a: A): List[A]                               = listApplicative.pure(a)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = ???
   }
 
   implicit val optionMonad: Monad[Option] = new DefaultMonad[Option] {
-    def pure[A](a: A): Option[A] = optionApplicative.pure(a)
+    def pure[A](a: A): Option[A]                                   = optionApplicative.pure(a)
     def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
   }
 
   implicit def eitherMonad[E]: Monad[Either[E, ?]] = new DefaultMonad[Either[E, ?]] {
-    def pure[A](a: A): Either[E, A] = eitherApplicative.pure(a)
+    def pure[A](a: A): Either[E, A]                                         = eitherApplicative.pure(a)
     def flatMap[A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
   }
 
   implicit def mapFlatMap[K]: FlatMap[Map[K, ?]] = new FlatMap[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
-    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = mapFunctor[K].map(fa)(f)
+    def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B]             = mapFunctor[K].map(fa)(f)
     def flatMap[A, B](fa: Map[K, A])(f: A => Map[K, B]): Map[K, B] = ???
   }
 
   implicit val idMonad: Monad[Id] = new DefaultMonad[Id] {
-    def pure[A](a: A): Id[A] = idApplicative.pure(a)
+    def pure[A](a: A): Id[A]                           = idApplicative.pure(a)
     def flatMap[A, B](fa: Id[A])(f: A => Id[B]): Id[B] = ???
   }
 
-  implicit def constMonad[R]: Monad[Const[R, ?]] = new DefaultMonad[Const[R, ?]]  {
-    def pure[A](a: A): Const[R, A] = ???
+  implicit def constMonad[R]: Monad[Const[R, ?]] = new DefaultMonad[Const[R, ?]] {
+    def pure[A](a: A): Const[R, A]                                       = ???
     def flatMap[A, B](fa: Const[R, A])(f: A => Const[R, B]): Const[R, B] = ???
   }
 
   implicit def functionMonad[R]: Monad[Function[R, ?]] = new DefaultMonad[Function[R, ?]] {
-    def pure[A](a: A): Function[R, A] = functionApplicative.pure(a)
+    def pure[A](a: A): Function[R, A]                                             = functionApplicative.pure(a)
     def flatMap[A, B](fa: Function[R, A])(f: A => Function[R, B]): Function[R, B] = ???
   }
 
   // 3g. Implement an Monad instance for Compose
   implicit def composeMonad[F[_]: Monad, G[_]: Monad]: Monad[Compose[F, G, ?]] =
     new DefaultMonad[Compose[F, G, ?]] {
-      def pure[A](a: A): Compose[F, G, A] = ???
+      def pure[A](a: A): Compose[F, G, A]                                                 = ???
       def flatMap[A, B](fa: Compose[F, G, A])(f: A => Compose[F, G, B]): Compose[F, G, B] = ???
     }
-
 
   ////////////////////////
   // 4. Traverse
@@ -300,11 +295,11 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   implicit def mapTraverse[K]: Traverse[Map[K, ?]] = new DefaultTraverse[Map[K, ?]] {
-    override def traverse[G[_] : Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] = ???
+    override def traverse[G[_]: Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] = ???
   }
 
   implicit val idTraverse: Traverse[Id] = new DefaultTraverse[Id] {
-    override def traverse[G[_] : Applicative, A, B](fa: Id[A])(f: A => G[B]): G[Id[B]] = ???
+    override def traverse[G[_]: Applicative, A, B](fa: Id[A])(f: A => G[B]): G[Id[B]] = ???
   }
 
   implicit def constTraverse[R]: Traverse[Const[R, ?]] = new DefaultTraverse[Const[R, ?]] {
@@ -334,6 +329,6 @@ object FunctorsExercises extends FunctorsToImpl {
   // 4i. Implement an Traverse instance for Compose
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {
-      override def traverse[H[_] : Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] = ???
+      override def traverse[H[_]: Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] = ???
     }
 }

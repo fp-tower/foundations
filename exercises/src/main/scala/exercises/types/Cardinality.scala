@@ -27,28 +27,28 @@ sealed trait Card {
 
   def simplify: Card =
     this match {
-      case Lit(_)     => this
+      case Lit(_) => this
       case Plus(x, y) =>
         val xs = x.simplify
         val ys = y.simplify
-        if(xs == Lit(0)) ys
-        else if(ys == Lit(0)) xs
-        else if(xs == Inf || ys == Inf) Inf
+        if (xs == Lit(0)) ys
+        else if (ys == Lit(0)) xs
+        else if (xs == Inf || ys == Inf) Inf
         else Plus(xs, ys)
       case Times(x, y) =>
         val xs = x.simplify
         val ys = y.simplify
-        if(xs == Lit(0) || ys == Lit(0)) Lit(0)
-        else if(xs == Lit(1)) ys
-        else if(ys == Lit(1)) xs
-        else if(xs == Inf || ys == Inf) Inf
+        if (xs == Lit(0) || ys == Lit(0)) Lit(0)
+        else if (xs == Lit(1)) ys
+        else if (ys == Lit(1)) xs
+        else if (xs == Inf || ys == Inf) Inf
         else Times(xs, ys)
       case Pow(x, y) =>
         val xs = x.simplify
         val ys = y.simplify
-        if(ys == Lit(0)) Lit(1)
-        else if(xs == Lit(0) || xs == Lit(1)) xs
-        else if(xs == Inf || ys == Inf) Inf
+        if (ys == Lit(0)) Lit(1)
+        else if (xs == Lit(0) || xs == Lit(1)) xs
+        else if (xs == Inf || ys == Inf) Inf
         else Pow(xs, ys)
       case Inf => Inf
     }
@@ -63,20 +63,17 @@ sealed trait Card {
 }
 
 object Card {
-  case class Lit(value: BigInt) extends Card
-  case class Plus(lhs: Card, rhs: Card) extends Card
+  case class Lit(value: BigInt)          extends Card
+  case class Plus(lhs: Card, rhs: Card)  extends Card
   case class Times(lhs: Card, rhs: Card) extends Card
-  case class Pow(lhs: Card, rhs: Card) extends Card
-  case object Inf extends Card
+  case class Pow(lhs: Card, rhs: Card)   extends Card
+  case object Inf                        extends Card
 }
-
 
 object Cardinality {
   def of[A: Cardinality]: Card = apply[A].cardinality
 
   def apply[A: Cardinality]: Cardinality[A] = implicitly
-
-
 
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
@@ -91,22 +88,6 @@ object Cardinality {
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   implicit def tuple2Cardinality[A: Cardinality, B: Cardinality]: Cardinality[(A, B)] =
     TypeAnswers.tuple2(implicitly, implicitly)

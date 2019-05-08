@@ -29,7 +29,6 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     tripleVal(5) shouldEqual 15
   }
 
-
   "tripleAge" in {
     tripleAge(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 69), Person("Alice", 15))
   }
@@ -71,24 +70,26 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
   "join" in {
     val reverse: Boolean => Boolean = x => !x
-    val zeroOne: Boolean => String = x => if(x) "1" else "0"
+    val zeroOne: Boolean => String  = x => if (x) "1" else "0"
 
     join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
   }
 
-  List(sumList _, sumList2 _, sumList3 _).zipWithIndex.foreach{ case (f, i) =>
-    s"sumList $i small" in {
-      f(List(1,2,3,10)) shouldEqual 16
-      f(Nil) shouldEqual 0
-    }
+  List(sumList _, sumList2 _, sumList3 _).zipWithIndex.foreach {
+    case (f, i) =>
+      s"sumList $i small" in {
+        f(List(1, 2, 3, 10)) shouldEqual 16
+        f(Nil) shouldEqual 0
+      }
   }
 
-  List(sumList2 _, sumList3 _).zipWithIndex.foreach { case (f, i) =>
-    s"sumList $i large" in {
-      val xs = 1.to(1000000).toList
+  List(sumList2 _, sumList3 _).zipWithIndex.foreach {
+    case (f, i) =>
+      s"sumList $i large" in {
+        val xs = 1.to(1000000).toList
 
-      f(xs) shouldEqual xs.sum
-    }
+        f(xs) shouldEqual xs.sum
+      }
   }
 
   "find" in {
@@ -96,14 +97,16 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
     val seen = ListBuffer.empty[Int]
 
-    val res = find(xs){ x => seen += x; x > 10}
+    val res = find(xs) { x =>
+      seen += x; x > 10
+    }
 
     res shouldEqual Some(11)
     seen.size shouldEqual 11
   }
 
   "memoize" in {
-    def inc(x: Int): Int = x + 1
+    def inc(x: Int): Int                         = x + 1
     def circleCircumference(radius: Int): Double = 2 * radius * Math.PI
 
     forAll((x: Int) => memoize(inc)(x) shouldEqual inc(x))

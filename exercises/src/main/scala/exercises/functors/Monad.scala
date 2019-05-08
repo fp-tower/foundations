@@ -16,18 +16,18 @@ object Monad {
   def apply[F[_]](implicit ev: Monad[F]): Monad[F] = ev
 
   object syntax {
-    implicit class MonadOps[F[_], A](fa: F[A]){
+    implicit class MonadOps[F[_], A](fa: F[A]) {
       def flatMap[B](f: A => F[B])(implicit ev: Monad[F]): F[B] = ev.flatMap(fa)(f)
 
       def flatTap[B](f: A => F[B])(implicit ev: Monad[F]): F[A] =
         ev.flatTap(fa)(f)
     }
 
-    implicit class MonadOps2[F[_], A](fa: F[F[A]]){
+    implicit class MonadOps2[F[_], A](fa: F[F[A]]) {
       def flatten(implicit ev: Monad[F]): F[A] = ev.flatten(fa)
     }
 
-    implicit class MonadOps3[F[_], A](cond: F[Boolean]){
+    implicit class MonadOps3[F[_], A](cond: F[Boolean]) {
       def ifM(ifTrue: => F[A], ifFalse: => F[A])(implicit ev: Monad[F]): F[A] =
         ev.ifM(cond)(ifTrue, ifFalse)
     }

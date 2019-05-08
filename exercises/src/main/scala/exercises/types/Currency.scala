@@ -7,4 +7,3 @@ object Currency {
   case object GBP extends Currency
   case object CHF extends Currency
 }
-

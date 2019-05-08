@@ -20,8 +20,6 @@ object ReaderExercises extends App {
 
   def getDatabase(config: Config, path: String): DatabaseConfig = ???
 
-
-
   case class Reader[E, A](run: E => A) {
     // 2a. Implement map
     def map[B](f: A => B): Reader[E, B] = ???
@@ -33,15 +31,10 @@ object ReaderExercises extends App {
   // 2c. refactor getInt/String/Boolean to use Reader[Config, ?]
   def getInt2(path: String): Reader[Config, Int] = ???
 
-
   // 2d. refactor getDatabase to use Reader[Config, ?]
-
-
 
   // 3a. Introduce error handling for getInt/String/Boolean
   // How does it affect getDatabase?
-
-
 
   case class ReaderT[F[_], E, A](run: E => F[A]) {
     // 3b. Implement map
@@ -54,9 +47,6 @@ object ReaderExercises extends App {
 
   // 3d. refactor getInt/String/Boolean to use ReaderT
   def getInt3(path: String): ReaderT[Option, Config, Int] = ???
-
-
   // 3e. refactor getDatabase to use ReaderT
-
 
 }
