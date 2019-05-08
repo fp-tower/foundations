@@ -57,7 +57,7 @@ layout: true
 .large[
 * Functor hierarchy
 
-* Typeclass consistency
+* Typeclass coherence
 ]
 
 ---
@@ -417,7 +417,7 @@ trait Applicative[F[_]] extends Functor[F] {
 }
 ```
 
-### Consistency Law
+### Coherence Law
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
@@ -435,7 +435,7 @@ trait Applicative[F[_]] extends Functor[F] {
 }
 ```
 
-### Consistency Law
+### Coherence Law
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
@@ -469,6 +469,51 @@ forAll((a: A, f: A => F[B]) => pure(a).flatMap(f) == f(a))
 
 forAll((fa: fA, f: A => F[B], g: B => F[C]) =>
   fa.flatMap(f).flatMap(g) == fa.flatMap(a => f(a).flatMap(g))
+)
+```
+
+---
+# Monad is an Applicative
+
+```tut:silent
+trait Monad[F[_]] extends Applicative[F] {
+
+  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
+  def flatten[A](ffa: F[F[A]]): F[A]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], fb: F[B]) =>
+  fa.flatMap(a => fb.map(b => (a, b))) == fa.tuple2(fb)
+)
+```
+
+---
+# Monad is an Applicative
+
+```tut:silent
+trait Monad[F[_]] extends Applicative[F] {
+
+  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
+  def flatten[A](ffa: F[F[A]]): F[A]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], fb: F[B]) =>
+  (for {
+    a <- fa
+    b <- fb
+  } yield (a, b)) == fa.tuple2(fb)
 )
 ```
 
