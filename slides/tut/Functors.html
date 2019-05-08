@@ -290,10 +290,6 @@ trait Applicative[F[_]] extends Functor[F] {
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
 
   def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)]
-
-  def productL[A, B](fa: F[A], fb: F[B]): F[A] // alias <*
-  def productR[A, B](fa: F[A], fb: F[B]): F[B] // alias *>
-
   def unit: F[Unit]
 }
 ```
@@ -301,33 +297,38 @@ trait Applicative[F[_]] extends Functor[F] {
 ### Laws
 
 ```scala
-forAll(fa: F[A] => fa   <* unit == fa)
-forAll(fa: F[A] => unit *> fa   == fa)
+forAll(fa: F[A] => tuple2(fa  , unit) =~ fa)
+forAll(fa: F[A] => tuple2(unit, fa  ) =~ fa)
 
 forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa, tuple2(fb, fc)))
 ```
+
+???
+`=~` because `a` is isomorphic to `(a, ())` and `((), a)`
+
+same for `(a, (b, c))` and `((a, b), c)`
 
 ---
 # Applicative is a Monoidal Functor
 
 ```scala
-combine  ::   A  =>   A  =>   A
-productL :: F[A] => F[B] => F[A]
+combine  :: A    => A    => A
+tuple2   :: F[A] => F[B] => F[(A, B)]
 ```
 
 ```scala
-empty ::        A
+empty ::      A
 pure  :: A => F[A]
 ```
 
 ### Laws
 
 ```scala
-forAll(a: A     => a     |+| empty == a)
-forAll(a: A     => empty |+| a     == a)
+forAll(a:  A    => combine(a, empty) == a )
+forAll(fa: F[A] => tuple2(fa, unit ) =~ fa)
 
-forAll(fa: F[A] => fa     <* unit  == fa)
-forAll(fa: F[A] => unit   *> fa    == fa)
+forAll(a:  A    => combine(empty, a ) == a )
+forAll(fa: F[A] => tuple2(unit  , fa) =~ fa)
 
 forAll(( a: A   ,  b: B   ,  c: C)    => combine(combine(a, b), c)  == combine(a, combine(b, c)))
 forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa, tuple2(fb, fc)))
