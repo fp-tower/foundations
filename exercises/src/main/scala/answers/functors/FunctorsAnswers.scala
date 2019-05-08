@@ -55,6 +55,18 @@ object FunctorsAnswers extends FunctorsToImpl {
     def map[A, B](fa: R => A)(f: A => B): R => B = f compose fa
   }
 
+  implicit val predicateContravariantFunctor: ContravariantFunctor[Predicate] = new ContravariantFunctor[Predicate] {
+    def contramap[A, B](fa: Predicate[A])(f: B => A): Predicate[B] =
+      Predicate(f andThen fa.condition)
+  }
+
+  implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec] = new InvariantFunctor[StringCodec] {
+    def imap[A, B](fa: StringCodec[A])(f: A => B)(g: B => A): StringCodec[B] =
+      StringCodec(
+        mkString = g andThen fa.mkString,
+        parse    = fa.parse(_).map(f)
+      )
+  }
 
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] = new DefaultFunctor[Compose[F, G, ?]] {
     def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] =

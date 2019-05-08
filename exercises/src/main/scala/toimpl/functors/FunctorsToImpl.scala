@@ -1,7 +1,7 @@
 package toimpl.functors
 
 import exercises.typeclass.Monoid
-import exercises.functors.{Applicative, Apply, Compose, Const, FlatMap, Functor, Id, Monad, Traverse, ZipList}
+import exercises.functors._
 
 trait FunctorsToImpl extends FunctorsToImplLowLevel {
 
@@ -16,7 +16,8 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit val idFunctor: Functor[Id]
   implicit def constFunctor[R]: Functor[Const[R, ?]]
   implicit def functionFunctor[R]: Functor[R => ?]
-
+  implicit val predicateContravariantFunctor: ContravariantFunctor[Predicate]
+  implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec]
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]]
 
   ////////////////////////

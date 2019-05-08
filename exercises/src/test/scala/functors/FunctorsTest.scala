@@ -1,17 +1,19 @@
 package functors
 
 import answers.functors.FunctorsAnswers
-import exercises.typeclass.Eq
-import cats.instances.all._
 import exercises.functors.Applicative.syntax._
+import exercises.functors.ContravariantFunctor.syntax._
+import exercises.functors.InvariantFunctor.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Monad.syntax._
 import exercises.functors._
-import exercises.typeclass.Monoid
+import exercises.typeclass.{Eq, Monoid}
 import org.scalacheck.Arbitrary
 import org.scalatest.{FunSuite, Matchers}
 import org.typelevel.discipline.scalatest.Discipline
 import toimpl.functors.FunctorsToImpl
+
+import scala.util.Try
 
 class FunctorsExercisesTest extends FunctorsTest(FunctorsExercises)
 class FunctorsAnswersTest extends FunctorsTest(FunctorsAnswers)
@@ -22,14 +24,6 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   ////////////////////////
   // 1. Functor
   ////////////////////////
-
-  checkAll("List"    , FLaws.functor[List, Int])
-  checkAll("Option"  , FLaws.functor[Option, Int])
-  checkAll("Either"  , FLaws.functor[Either[Boolean, ?], Int])
-  checkAll("Map"     , FLaws.functor[Map[Int, ?], Int])
-  checkAll("Id"      , FLaws.functor[Id, Int])
-  checkAll("Const"   , FLaws.functor[Const[Int, ?], Boolean])
-  checkAll("Function", FLaws.functor[Int => ?, Boolean])
 
   test("void"){
     List(1,2,3).void shouldEqual List((),(),())
@@ -58,6 +52,35 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   test("tupleRight"){
     Option(4).tupleRight("hello")    shouldEqual Some((4, "hello"))
     Option.empty.tupleRight("hello") shouldEqual None
+  }
+
+  checkAll("List"    , FLaws.functor[List, Int])
+  checkAll("Option"  , FLaws.functor[Option, Int])
+  checkAll("Either"  , FLaws.functor[Either[Boolean, ?], Int])
+  checkAll("Map"     , FLaws.functor[Map[Int, ?], Int])
+  checkAll("Id"      , FLaws.functor[Id, Int])
+  checkAll("Const"   , FLaws.functor[Const[Int, ?], Boolean])
+  checkAll("Function", FLaws.functor[Int => ?, Boolean])
+
+  test("Predicate"){
+    case class Person(name: String, age: Int)
+    val isAdult: Predicate[Int] = Predicate(_ >= 18)
+    val lifted: Predicate[Person] = isAdult.contramap(_.age)
+
+    lifted.condition(Person("John", 23)) shouldEqual true
+    lifted.condition(Person("John", 15)) shouldEqual false
+  }
+
+  test("StringCodec"){
+    val bool = StringCodec[Boolean](_.toString, s => Try(s.toBoolean).toOption)
+    val optUnit = bool.imap(if(_) Some(()) else None)(_.fold(false)(_ => true))
+
+    optUnit.mkString(Some(())) shouldEqual "true"
+    optUnit.mkString(None) shouldEqual "false"
+
+    optUnit.parse("true") shouldEqual Some(Some(()))
+    optUnit.parse("false") shouldEqual Some(None)
+    optUnit.parse("foo") shouldEqual None
   }
 
   // Not sure why this instance is ambiguous

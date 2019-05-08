@@ -100,7 +100,7 @@ forAll((fa: F[A], f: A => B, g: B => C) =>
 ---
 background-image: url(img/functors/map-example.svg)
 
-# Functor
+# F as a box or container
 
 ### TODO find better examples preferably not related to containers
 
@@ -110,12 +110,7 @@ background-image: url(img/functors/map-example-2.svg)
 # Functor
 
 ---
-class: center, middle
-
-# Effects
-
----
-# Effects: `F[A]` is an `A` with an effect `F`
+# F as an effect
 
 ```scala
 type Failure[A] = Option[A] or Either[String, A]

@@ -66,22 +66,31 @@ object FunctorsExercises extends FunctorsToImpl {
     def map[A, B](fa: R => A)(f: A => B): R => B = ???
   }
 
+  // 1f. Implement a Functor instance for Predicate
+  implicit val predicateFunctor: Functor[Predicate] = new DefaultFunctor[Predicate] {
+    def map[A, B](fa: Predicate[A])(f: A => B): Predicate[B] = ???
+  }
 
-  // 1f. Implement a Functor instance for Compose
+  // or
+  implicit val predicateContravariantFunctor: ContravariantFunctor[Predicate] = new ContravariantFunctor[Predicate] {
+    def contramap[A, B](fa: Predicate[A])(f: B => A): Predicate[B] = ???
+  }
+
+  // 1g. Implement a Functor instance for StringCodec
+  implicit def stringCodecFunctor: Functor[StringCodec] = new DefaultFunctor[StringCodec] {
+    def map[A, B](fa: StringCodec[A])(f: A => B): StringCodec[B] = ???
+  }
+
+  // or
+  implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec] = new ContravariantFunctor[StringCodec] {
+    def contramap[A, B](fa: StringCodec[A])(f: B => A): StringCodec[B] = ???
+  }
+
+  // 1h. Implement a Functor instance for Compose
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] =
     new DefaultFunctor[Compose[F, G, ?]] {
       def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] = ???
     }
-
-  // 1g. Implement a Functor instance for Predicate
-  implicit def predicateFunctor: Functor[Predicate] = new DefaultFunctor[Predicate] {
-    def map[A, B](fa: Predicate[A])(f: A => B): Predicate[B] = ???
-  }
-
-  // 1h. Implement a Functor instance for StringEncoder
-  implicit def stringEncoderFunctor: Functor[StringEncoder] = new DefaultFunctor[StringEncoder] {
-    def map[A, B](fa: StringEncoder[A])(f: A => B): StringEncoder[B] = ???
-  }
 
 
   ////////////////////////
