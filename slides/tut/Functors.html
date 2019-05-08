@@ -402,6 +402,42 @@ class: center, middle
 # Exercise 2
 
 ---
+# Applicative is a Functor
+
+```tut:silent
+trait Applicative[F[_]] extends Functor[F] {
+  def pure[A](a: A): F[A]
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+}
+```
+
+### Consistency Law
+
+```scala
+forAll((fa: F[A], f: A => B) =>
+  fa.map(f) == fa.map2(pure(())){ case (a, _) => f(a) }
+)
+```
+
+---
+# Applicative is a Functor
+
+```tut:silent
+trait Applicative[F[_]] extends Functor[F] {
+  def pure[A](a: A): F[A]
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+}
+```
+
+### Consistency Law
+
+```scala
+forAll((fa: F[A], f: A => B) =>
+  fa.map(f) == fa.map2(unit){ case (a, _) => f(a) }
+)
+```
+
+---
 background-image: url(img/functors/review.svg)
 
 # Review
