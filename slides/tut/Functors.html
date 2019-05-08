@@ -404,6 +404,12 @@ class: center, middle
 ---
 # Applicative is a Functor
 
+```tut:invisible
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+```
+
 ```tut:silent
 trait Applicative[F[_]] extends Functor[F] {
   def pure[A](a: A): F[A]
