@@ -3,8 +3,10 @@ package exercises.functors
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Monad.syntax._
-import exercises.typeclass.Eq
+import exercises.functors.Traverse.syntax._
 import exercises.typeclass.Eq.syntax._
+import exercises.typeclass.Foldable.syntax._
+import exercises.typeclass.{Eq, Monoid}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Prop.forAll
 import org.typelevel.discipline.Laws
@@ -85,5 +87,34 @@ object FLaws extends Laws {
       Some(applicative[F, A, B, C]),
       "flatMap - pure" -> forAll((fa: F[A]) => fa.flatMap(_.pure[F]) === fa)
     )
+
+  def traverse[F[_]: Traverse, A: Monoid: Eq](
+    implicit arbFa: Arbitrary[F[A]],
+    arbA2B: Arbitrary[A => A],
+    eqFa: Eq[F[A]]
+  ): RuleSet = traverse[F, A, A, A, A]
+
+  def traverse[F[_]: Traverse, A, B, C, M: Monoid: Eq](
+    implicit arbFa: Arbitrary[F[A]],
+    arbA2B: Arbitrary[A => B],
+    arbB2C: Arbitrary[B => C],
+    arbA2M: Arbitrary[A => M],
+    eqFa: Eq[F[A]],
+    eqFB: Eq[F[B]],
+    eqFc: Eq[F[C]]
+  ): RuleSet = {
+    import answers.functors.FunctorsAnswers.{constApplicative, idApplicative}
+
+    new DefaultRuleSet(
+      "Traverse",
+      Some(functor[F, A, B, C]),
+      "Identity" ->
+        forAll((fa: F[A]) => fa.traverse(Id(_)).value === fa),
+      "map coherence" ->
+        forAll((fa: F[A], f: A => B) => fa.traverse(a => Id(f(a))).value === fa.map(f)),
+      "foldMap coherence" ->
+        forAll((fa: F[A], f: A => M) => fa.traverse(a => Const[M, A](f(a))).getConst === fa.foldMap(f))
+    )
+  }
 
 }

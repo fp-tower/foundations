@@ -467,7 +467,7 @@ trait Monad[F[_]] extends Applicative[F] {
 forAll(fa: F[A]             => fa.flatMap(pure)   == fa)
 forAll((a: A, f: A => F[B]) => pure(a).flatMap(f) == f(a))
 
-forAll((fa: fA, f: A => F[B], g: B => F[C]) =>
+forAll((fa: F[A], f: A => F[B], g: B => F[C]) =>
   fa.flatMap(f).flatMap(g) == fa.flatMap(a => f(a).flatMap(g))
 )
 ```
@@ -515,6 +515,110 @@ forAll((fa: F[A], fb: F[B]) =>
     b <- fb
   } yield (a, b)) == fa.tuple2(fb)
 )
+```
+
+---
+class: center, middle
+
+# Traverse
+
+---
+# Traverse
+
+```tut:invisible
+import exercises.typeclass.Foldable
+```
+
+```tut:silent
+trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+
+  def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
+
+  def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
+
+}
+```
+
+### Law
+
+```scala
+forAll(fa: F[A] => fa.traverse(Id(_)).value == fa)
+```
+
+---
+# Traverse is a Functor
+
+```tut:silent
+trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+
+  def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
+
+  def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], f: A => B) => fa.traverse(a => Id(f(a))).value == fa.map(f))
+```
+
+---
+# Traverse is a Foldable
+
+```tut:silent
+trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+
+  def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
+
+  def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], f: A => B) => fa.traverse(a => Const(f(a))).value == fa.foldMap(f))
+```
+
+
+---
+# Default implementation
+
+```scala
+traverse > foldMap > size
+```
+
+--
+
+```scala
+def sizeDefault[F[_]: Traverse, A](fa: F[A]): Int =
+  fa.traverse(_ => Const(1)).getConst
+```
+
+--
+
+```scala
+vectorSize := (Const(1) |+| Const(1) |+| ... |+| Const(1)).getConst
+```
+
+--
+
+```scala
+val vectorTraverse: Traverse[Vector] = new Traverse[Vector] {
+  def traverse[G[_]: Applicative, A, B](fa: Vector[A])(f: A => G[B]): G[Vector[B]] = ???
+  def size[A](fa: Vector[A]): Int = fa.size
+}
+```
+
+--
+
+### Coherence law
+
+```scala
+forAll(fa: F[A] => sizeDefault(fa) == fa.size)
 ```
 
 ---

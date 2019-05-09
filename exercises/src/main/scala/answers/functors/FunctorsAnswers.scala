@@ -254,7 +254,10 @@ object FunctorsAnswers extends FunctorsToImpl {
   }
 
   implicit def mapTraverse[K]: Traverse[Map[K, ?]] = new DefaultTraverse[Map[K, ?]] {
-    override def traverse[G[_]: Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] = ???
+    override def traverse[G[_]: Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] =
+      fa.foldLeft(
+        Map.empty[K, B].pure[G]
+      ){ case (acc, (k, a)) => acc.map2(f(a))((m, b) => m + (k -> b)) }
   }
 
   implicit val idTraverse: Traverse[Id] = new DefaultTraverse[Id] {

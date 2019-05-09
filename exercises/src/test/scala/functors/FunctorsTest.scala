@@ -173,6 +173,13 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   // 4. Traverse
   ////////////////////////
 
+  checkAll("List", FLaws.traverse[List, Int])
+  checkAll("Option", FLaws.traverse[Option, Int])
+  checkAll("Either", FLaws.traverse[Either[Boolean, ?], Int])
+  checkAll("Map", FLaws.traverse[Map[Int, ?], Int])
+  checkAll("Id", FLaws.traverse[Id, Int])
+  checkAll("Const", FLaws.traverse[Const[Int, ?], Int])
+
   test("parseNumber") {
     parseNumber("1052") shouldEqual Some(BigInt(1052))
     parseNumber("hello") shouldEqual None
