@@ -82,10 +82,15 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // or
-  implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec] = new ContravariantFunctor[StringCodec] {
+  implicit val stringCodecContravariantFunctor: ContravariantFunctor[StringCodec] = new ContravariantFunctor[StringCodec] {
     def contramap[A, B](fa: StringCodec[A])(f: B => A): StringCodec[B] = ???
   }
 
+  // or
+  implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec] = new InvariantFunctor[StringCodec] {
+    def imap[A, B](fa: StringCodec[A])(f: A => B)(g: B => A): StringCodec[B] = ???
+  }
+  
   // 1h. Implement a Functor instance for Compose
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] =
     new DefaultFunctor[Compose[F, G, ?]] {
