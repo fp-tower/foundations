@@ -14,7 +14,7 @@
     </marker>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-11 16:05:29 +0000</dc:date>
+    <dc:date>2019-05-11 16:56:34 +0000</dc:date>
   </metadata>
   <g id="map-example-2" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
     <title>map-example-2</title>
@@ -95,10 +95,10 @@
         </text>
       </g>
       <g id="Line_81">
-        <line x1="118.95327" y1="207" x2="45.9" y2="207" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="531" y1="514" x2="604.0533" y2="514" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_82">
-        <text transform="translate(68 185)" fill="black">
+        <text transform="translate(563 491)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">like</tspan>
         </text>
       </g>
