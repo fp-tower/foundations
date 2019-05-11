@@ -91,11 +91,31 @@ forAll((fa: F[A], f: A => B, g: B => C) =>
 )
 ```
 
-???
-* we don't know how to get `A` out of `F[A]`
-* we don't know if `F` contains some `A`
-* we know that all `A` inside of `F` context will become `B` using `f`
-* A Functor can be think as containing values or producing values
+---
+# Infix syntax
+
+```tut:silent
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+
+object syntax {
+  implicit class FunctorOps[F[_], A](fa: F[A]){
+    def map[B](f: A => B)(implicit ev: Functor[F]): F[B] =
+      ev.map(fa)(f)
+  }
+}
+```
+
+```tut:silent
+import syntax._
+
+def succF[F[_]: Functor](fi: F[Int]): F[Int] =
+  fi.map(_ + 1)
+
+def succF[F[_]](fi: F[Int])(implicit ev: Functor[F]): F[Int] =
+  ev.map(fi)(_ + 1)
+```
 
 ---
 background-image: url(img/functors/map-example.svg)
