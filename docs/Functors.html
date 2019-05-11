@@ -435,8 +435,11 @@ class: center, middle
 
 ```scala
 trait Applicative[F[_]] extends Functor[F] {
+
   def pure[A](a: A): F[A]
+
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
 }
 ```
 
@@ -444,7 +447,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map(f) == fa.map2(pure(())){ case (a, _) => f(a) }
+  fa.map2(pure(())){ case (a, _) => f(a) } == fa.map(f)
 )
 ```
 
@@ -453,8 +456,11 @@ forAll((fa: F[A], f: A => B) =>
 
 ```scala
 trait Applicative[F[_]] extends Functor[F] {
+
   def pure[A](a: A): F[A]
+
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
 }
 ```
 
@@ -462,7 +468,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map(f) == fa.map2(unit){ case (a, _) => f(a) }
+  fa.map2(unit){ case (a, _) => f(a) } == fa.map(f)
 )
 ```
 
