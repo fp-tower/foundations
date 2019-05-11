@@ -19,3 +19,6 @@ fast.html
 ## Metals files to ignore
 .metals/
 .bloop/
+
+## Mac
+.DS_Store
