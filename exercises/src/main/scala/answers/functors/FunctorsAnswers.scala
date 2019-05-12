@@ -7,7 +7,7 @@ import exercises.functors.Traverse.syntax._
 import exercises.functors._
 import exercises.typeclass.Foldable.syntax._
 import exercises.typeclass.Monoid.syntax._
-import exercises.typeclass.{Endo, Monoid}
+import exercises.typeclass.{Dual, Endo, Monoid}
 import toimpl.functors.FunctorsToImpl
 
 object FunctorsAnswers extends FunctorsToImpl {
@@ -240,7 +240,7 @@ object FunctorsAnswers extends FunctorsToImpl {
       traverse(fa)(a => Const(f(a)).as[B]).getConst
 
     def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B =
-      foldMap(fa)(a => Endo[B](b => f(b, a))).getEndo(z)
+      foldMap(fa)(a => Dual(Endo[B](b => f(b, a)))).getDual.getEndo(z)
 
     def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B =
       foldMap(fa)(a => Endo[B](b => f(a, b))).getEndo(z)

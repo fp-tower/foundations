@@ -243,6 +243,11 @@ object TypeclassAnswers extends TypeclassToImpl {
     def combine(x: Dual[A], y: Dual[A]): Dual[A] = Dual(Semigroup[A].combine(y.getDual, x.getDual))
   }
 
+  implicit def dualMonoid[A: Monoid]: Monoid[Dual[A]] = new Monoid[Dual[A]] {
+    def empty: Dual[A]                           = Dual(Monoid[A].empty)
+    def combine(x: Dual[A], y: Dual[A]): Dual[A] = Dual(Semigroup[A].combine(y.getDual, x.getDual))
+  }
+
   def lastOptionList[A: Ordering](xs: List[A]): Option[A] =
     reduceMap(xs)(x => Dual(First(x))).map(_.getDual.getFirst)
 
