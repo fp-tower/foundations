@@ -495,6 +495,14 @@ forAll((fa: F[A], f: A => F[B], g: B => F[C]) =>
 ```
 
 ---
+background-image: url(img/functors/monad-api-law.svg)
+
+---
+class: center, middle
+
+# Exercise 3
+
+---
 # Monad is an Applicative
 
 ```tut:silent
@@ -568,6 +576,11 @@ forAll(fa: F[A] => fa.traverse(Id(_)).value == fa)
 ```
 
 ---
+class: center, middle
+
+# Exercise 4
+
+---
 # Traverse is a Functor
 
 ```tut:silent
@@ -602,7 +615,7 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 ### Coherence Law
 
 ```scala
-forAll((fa: F[A], f: A => B) => fa.traverse(a => Const(f(a))).value == fa.foldMap(f))
+forAll((fa: F[A], f: A => B) => fa.traverse(a => Const(f(a))).getConst == fa.foldMap(f))
 ```
 
 
