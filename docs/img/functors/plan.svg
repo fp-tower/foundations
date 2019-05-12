@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 973 361" width="973" height="361">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="197 53 776 308" width="776" height="308">
   <defs>
     <font-face font-family="Helvetica" font-size="19" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="700">
       <font-face-src>
@@ -29,10 +29,11 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-04-30 09:39:46 +0000</dc:date>
+    <dc:date>2019-05-12 19:00:49 +0000</dc:date>
   </metadata>
-  <g id="plan" fill-opacity="1" stroke="none" stroke-dasharray="none" fill="none" stroke-opacity="1">
+  <g id="plan" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
     <title>plan</title>
+    <rect fill="white" x="197" y="53" width="776" height="308"/>
     <g id="plan: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_10">
@@ -131,8 +132,8 @@
         <line x1="780.4993" y1="324" x2="860.5993" y2="324" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
       </g>
       <g id="Graphic_34">
-        <text transform="translate(797 304)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="12" font-weight="400" fill="black" x="0" y="11">Used by</tspan>
+        <text transform="translate(805.784 304)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="12" font-weight="400" fill="black" x="8881784e-20" y="11">Uses</tspan>
         </text>
       </g>
       <g id="Line_35">
