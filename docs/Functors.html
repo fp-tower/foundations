@@ -82,13 +82,32 @@ trait Functor[F[_]] {
 ### Laws
 
 ```scala
-forAll((fa: F[A]) =>
-  fa.map(identity) == fa
-)
+forAll(fa: F[A] => fa.map(identity) == fa)
 
-forAll((fa: F[A], f: A => B, g: B => C) =>
-  fa.map(f).map(g) == fa.map(f andThen g)
-)
+forAll((fa: F[A], f: A => B, g: B => C) => fa.map(f).map(g) == fa.map(f andThen g))
+```
+
+---
+# Functor
+
+```scala
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+
+  def as[A, B](fa: F[A])(value: B): F[B]
+  def void[A](fa: F[A]): F[Unit]
+  def tupleL[A, B](fa: F[A])(value: B): F[(B, A)]
+  def tupleR[A, B](fa: F[A])(value: B): F[(A, B)]
+  def lift[A, B](f: A => B): F[A] => F[B]
+}
+```
+
+### Laws
+
+```scala
+forAll(fa: F[A] => fa.map(identity) == fa)
+
+forAll((fa: F[A], f: A => B, g: B => C) => fa.map(f).map(g) == fa.map(f andThen g))
 ```
 
 ---
@@ -125,8 +144,6 @@ background-image: url(img/functors/map-example.svg)
 ---
 background-image: url(img/functors/map-example-2.svg)
 
-# Functor
-
 ---
 # F as an effect
 
@@ -149,6 +166,9 @@ type Logger[A] = ...
 --
 
 ### A Functor is an abstraction allowing to update an effectful value **without** altering its effect
+
+---
+background-image: url(img/functors/functor-api-law.svg)
 
 ---
 class: center, middle

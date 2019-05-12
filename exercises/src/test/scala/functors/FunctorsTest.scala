@@ -44,12 +44,12 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
     circles.widen[Shape] shouldEqual shapes
   }
 
-  test("tupleLeft") {
+  test("tupleL") {
     Option(4).tupleLeft("hello") shouldEqual Some(("hello", 4))
     Option.empty.tupleLeft("hello") shouldEqual None
   }
 
-  test("tupleRight") {
+  test("tupleR") {
     Option(4).tupleRight("hello") shouldEqual Some((4, "hello"))
     Option.empty.tupleRight("hello") shouldEqual None
   }

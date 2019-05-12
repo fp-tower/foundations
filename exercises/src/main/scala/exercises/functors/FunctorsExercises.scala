@@ -17,24 +17,27 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultFunctor[F[_]] extends Functor[F] {
-    // 1a. Implement void
-    // such as void(List(1,2,3)) == List((),(),())
-    def void[A](fa: F[A]): F[Unit] = ???
-
-    // 1b. Implement as
+    // 1a. Implement as
     // such as as(List(1,2,3))(0) == List(0,0,0)
     def as[A, B](fa: F[A])(value: B): F[B] = ???
+
+    // 1b. Implement void
+    // such as void(List(1,2,3)) == List((),(),())
+    def void[A](fa: F[A]): F[Unit] = ???
 
     // 1c. Implement widen
     def widen[A, B >: A](fa: F[A]): F[B] = ???
 
-    // 1d. Implement tupleLeft
-    // such as tupleLeft(Some(4))("hello")  == Some(("hello", 4))
-    //         tupleRight(Some(4))("hello") == Some((4, "hello"))
-    // but     tupleLeft(None)("hello")  == None
-    //         tupleRight(None)("hello") == None
-    def tupleLeft[A, B](fa: F[A])(value: B): F[(B, A)]  = ???
-    def tupleRight[A, B](fa: F[A])(value: B): F[(A, B)] = ???
+    // 1d. Implement tupleL
+    // such as tupleL(Some(4))("hello")  == Some(("hello", 4))
+    //         tupleR(Some(4))("hello") == Some((4, "hello"))
+    // but     tupleL(None)("hello")  == None
+    //         tupleR(None)("hello") == None
+    def tupleL[A, B](fa: F[A])(value: B): F[(B, A)]  = ???
+    def tupleR[A, B](fa: F[A])(value: B): F[(A, B)] = ???
+
+    // 1e. implement lift
+    def lift[A, B](f: A => B): F[A] => F[B] = ???
   }
 
   // 1e. Implement the following instances
@@ -90,7 +93,7 @@ object FunctorsExercises extends FunctorsToImpl {
   implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec] = new InvariantFunctor[StringCodec] {
     def imap[A, B](fa: StringCodec[A])(f: A => B)(g: B => A): StringCodec[B] = ???
   }
-  
+
   // 1h. Implement a Functor instance for Compose
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] =
     new DefaultFunctor[Compose[F, G, ?]] {

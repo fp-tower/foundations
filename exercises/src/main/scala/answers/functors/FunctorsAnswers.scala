@@ -17,14 +17,16 @@ object FunctorsAnswers extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultFunctor[F[_]] extends Functor[F] {
-    def void[A](fa: F[A]): F[Unit] = as(fa)(())
-
     def as[A, B](fa: F[A])(value: B): F[B] = map(fa)(_ => value)
+
+    def void[A](fa: F[A]): F[Unit] = as(fa)(())
 
     def widen[A, B >: A](fa: F[A]): F[B] = map(fa)(identity)
 
-    def tupleLeft[A, B](fa: F[A])(value: B): F[(B, A)]  = map(fa)(value -> _)
-    def tupleRight[A, B](fa: F[A])(value: B): F[(A, B)] = map(fa)(_     -> value)
+    def tupleL[A, B](fa: F[A])(value: B): F[(B, A)]  = map(fa)(value -> _)
+    def tupleR[A, B](fa: F[A])(value: B): F[(A, B)] = map(fa)(_     -> value)
+
+    def lift[A, B](f: A => B): F[A] => F[B] = map(_)(f)
   }
 
   implicit val listFunctor: Functor[List] = new DefaultFunctor[List] {
