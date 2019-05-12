@@ -439,8 +439,8 @@ trait Applicative[F[_]] extends Functor[F] {
 ### Coherence Law
 
 ```scala
-forAll((fa: F[A], f: A => B) =>
-  fa.map2(pure(())){ case (a, _) => f(a) } == fa.map(f)
+forAll((fa: F[A], b: B, f: A => B) =>
+  fa.map2(pure(b))((a, _) => a) == fa.map(f)
 )
 ```
 
@@ -461,7 +461,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map2(unit){ case (a, _) => f(a) } == fa.map(f)
+  fa.map2(unit)((a, _) => a) == fa.map(f)
 )
 ```
 

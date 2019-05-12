@@ -48,21 +48,21 @@ object FLaws extends Laws {
     arbA2B: Arbitrary[A => B],
     arbB2C: Arbitrary[B => C],
     eqFa: Eq[F[A]],
+    eqFB: Eq[F[B]],
     eqFc: Eq[F[C]],
     eqFabc: Eq[F[((A, B), C)]]
   ): RuleSet =
     new DefaultRuleSet(
       "Applicative",
       Some(functor[F, A, B, C]),
-      "left identity" ->
-        forAll((fa: F[A]) => (unit[F] *> fa) === fa),
-      "right identity" ->
-        forAll((fa: F[A]) => (fa <* unit[F]) === fa),
+      "left identity"  -> forAll((fa: F[A]) => (unit[F] *> fa) === fa),
+      "right identity" -> forAll((fa: F[A]) => (fa <* unit[F]) === fa),
       "associativity" ->
         forAll(
           (fa: F[A], fb: F[B], fc: F[C]) =>
             fa.tuple2(fb).tuple2(fc) === fa.tuple2(fb.tuple2(fc)).map { case (a, (b, c)) => ((a, b), c) }
-        )
+        ),
+      "map coherence" -> forAll((fa: F[A], f: A => B) => fa.map2(unit[F])((a, _) => f(a)) === fa.map(f))
     )
 
   def monad[F[_]: Monad, A: Arbitrary](
@@ -70,6 +70,7 @@ object FLaws extends Laws {
     arbA2A: Arbitrary[A => A],
     arbA2FA: Arbitrary[A => F[A]],
     eqFa: Eq[F[A]],
+    eqFaa: Eq[F[(A, A)]],
     eqFaaa: Eq[F[((A, A), A)]]
   ): RuleSet = monad[F, A, A, A]
 
@@ -83,13 +84,16 @@ object FLaws extends Laws {
     eqFa: Eq[F[A]],
     eqFB: Eq[F[B]],
     eqFc: Eq[F[C]],
+    eqFab: Eq[F[(A, B)]],
     eqFabc: Eq[F[((A, B), C)]]
   ): RuleSet =
     new DefaultRuleSet(
       "Monad",
       Some(applicative[F, A, B, C]),
-      "left identity" -> forAll((a: A, f: A => F[B]) => a.pure[F].flatMap(f) === f(a)),
-      "right identity" -> forAll((fa: F[A]) => fa.flatMap(_.pure[F]) === fa)
+      "left identity"    -> forAll((a: A, f: A => F[B]) => a.pure[F].flatMap(f) === f(a)),
+      "right identity"   -> forAll((fa: F[A]) => fa.flatMap(_.pure[F]) === fa),
+      "map coherence"    -> forAll((fa: F[A], f: A => B) => fa.flatMap(f(_).pure[F]) === fa.map(f)),
+      "tuple2 coherence" -> forAll((fa: F[A], fb: F[B]) => fa.flatMap(fb.tupleLeft) === fa.tuple2(fb))
     )
 
   def traverse[F[_]: Traverse, A: Monoid: Eq](
@@ -112,12 +116,11 @@ object FLaws extends Laws {
     new DefaultRuleSet(
       "Traverse",
       Some(functor[F, A, B, C]),
-      "identity" ->
-        forAll((fa: F[A]) => fa.traverse(Id(_)).value === fa),
-      "map coherence" ->
-        forAll((fa: F[A], f: A => B) => fa.traverse(a => Id(f(a))).value === fa.map(f)),
-      "foldMap coherence" ->
-        forAll((fa: F[A], f: A => M) => fa.traverse(a => Const[M, A](f(a))).getConst === fa.foldMap(f))
+      "identity"      -> forAll((fa: F[A]) => fa.traverse(Id(_)).value === fa),
+      "map coherence" -> forAll((fa: F[A], f: A => B) => fa.traverse(a => Id(f(a))).value === fa.map(f)),
+      "foldMap coherence" -> forAll(
+        (fa: F[A], f: A => M) => fa.traverse(a => Const[M, A](f(a))).getConst === fa.foldMap(f)
+      )
     )
   }
 
