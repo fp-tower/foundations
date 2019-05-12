@@ -8,6 +8,12 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 
   def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
 
+  def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit]
+
+  def flatSequence[G[_]: Applicative, A](fgfa: F[G[F[A]]])(implicit ev: Monad[F]): G[F[A]]
+
+  def flatTraverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[F[B]])(implicit ev: Monad[F]): G[F[B]]
+
 }
 
 object Traverse {
@@ -15,7 +21,14 @@ object Traverse {
 
   object syntax {
     implicit class TraverseOps[F[_], A](fa: F[A]) {
-      def traverse[G[_]: Applicative, B](f: A => G[B])(implicit ev: Traverse[F]): G[F[B]] = ev.traverse(fa)(f)
+      def traverse[G[_]: Applicative, B](f: A => G[B])(implicit ev: Traverse[F]): G[F[B]] =
+        ev.traverse(fa)(f)
+
+      def traverse_[G[_]: Applicative, B](f: A => G[B])(implicit ev: Traverse[F]): G[Unit] =
+        ev.traverse_(fa)(f)
+
+      def flatTraverse[G[_]: Applicative, B](f: A => G[F[B]])(implicit evT: Traverse[F], evM: Monad[F]): G[F[B]] =
+        evT.flatTraverse(fa)(f)
     }
 
     implicit class TraverseOps2[F[_], G[_], A](fa: F[G[A]]) {

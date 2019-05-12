@@ -277,22 +277,33 @@ object FunctorsExercises extends FunctorsToImpl {
     // 4b. Show that traverse can be implemented using sequence
     def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] = ???
 
-    // 4c. Show that map can be implemented using traverse
+    // 4c. Implement traverse_
+    // List(1,3,5).traverse_(a => if(a % 2 == 1) Some(a) else None) == Some(())
+    // List(1,2,5).traverse_(a => if(a % 2 == 1) Some(a) else None) == None
+    // bonus: try to implement this method using only Foldable methods
+    def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit] = ???
+
+    // 4d. Implement flatSequence and flatTraverse
+    def flatSequence[G[_]: Applicative, A](fgfa: F[G[F[A]]])(implicit ev: Monad[F]): G[F[A]] = ???
+
+    def flatTraverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[F[B]])(implicit ev: Monad[F]): G[F[B]] = ???
+
+    // 4e. Show that map can be implemented using traverse
     def map[A, B](fa: F[A])(f: A => B): F[B] = ???
 
-    // 4d. Show that foldMap can be implemented using traverse
+    // 4f. Show that foldMap can be implemented using traverse
     override def foldMap[A, B: Monoid](fa: F[A])(f: A => B): B = ???
 
-    // 4e. Show that foldLeft can be implemented using foldMap
+    // 4g. Show that foldLeft can be implemented using foldMap
     // hint: try to use a newtype we saw in chapter 3
     def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B = ???
 
-    // 4f. Show that foldLeft can be implemented using foldMap
+    // 4h. Show that foldLeft can be implemented using foldMap
     // hint: try to use a newtype we saw in chapter 3
     def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B = ???
   }
 
-  // 4g. Implement the following instance
+  // 4i. Implement the following instance
   implicit val listTraverse: Traverse[List] = new DefaultTraverse[List] {
     override def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A => G[B]): G[List[B]] = ???
   }
@@ -317,7 +328,7 @@ object FunctorsExercises extends FunctorsToImpl {
     override def traverse[G[_]: Applicative, A, B](fa: Const[R, A])(f: A => G[B]): G[Const[R, B]] = ???
   }
 
-  // 4h. Implement parseNumber, try to use traverse and parseDigit
+  // 4j. Implement parseNumber, try to use traverse and parseDigit
   // such as parseNumber("1052") == Some(1052)
   //         parseNumber("hello") == None
   def parseNumber(value: String): Option[BigInt] = ???
@@ -337,7 +348,14 @@ object FunctorsExercises extends FunctorsToImpl {
       case _   => None
     }
 
-  // 4i. Implement an Traverse instance for Compose
+  // 4k. Implement checkAllUsersAdult, try to use traverse_
+  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit] = {
+    import CountryUsers._
+
+    ???
+  }
+
+  // 4l. Implement an Traverse instance for Compose
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {
       override def traverse[H[_]: Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] = ???

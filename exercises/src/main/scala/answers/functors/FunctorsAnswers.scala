@@ -23,7 +23,7 @@ object FunctorsAnswers extends FunctorsToImpl {
 
     def widen[A, B >: A](fa: F[A]): F[B] = map(fa)(identity)
 
-    def tupleL[A, B](fa: F[A])(value: B): F[(B, A)]  = map(fa)(value -> _)
+    def tupleL[A, B](fa: F[A])(value: B): F[(B, A)] = map(fa)(value -> _)
     def tupleR[A, B](fa: F[A])(value: B): F[(A, B)] = map(fa)(_     -> value)
 
     def lift[A, B](f: A => B): F[A] => F[B] = map(_)(f)
@@ -224,6 +224,15 @@ object FunctorsAnswers extends FunctorsToImpl {
     def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] =
       traverse(fga)(identity)
 
+    def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit] =
+      foldRight(fa, unit[G])((a, acc) => f(a) *> acc)
+
+    def flatSequence[G[_]: Applicative, A](fgfa: F[G[F[A]]])(implicit ev: Monad[F]): G[F[A]] =
+      sequence(fgfa).map(ev.flatten)
+
+    def flatTraverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[F[B]])(implicit ev: Monad[F]): G[F[B]] =
+      traverse(fa)(f).map(ev.flatten)
+
     override def map[A, B](fa: F[A])(f: A => B): F[B] =
       traverse(fa)(a => Id(f(a))).value
 
@@ -259,7 +268,7 @@ object FunctorsAnswers extends FunctorsToImpl {
     override def traverse[G[_]: Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] =
       fa.foldLeft(
         Map.empty[K, B].pure[G]
-      ){ case (acc, (k, a)) => acc.map2(f(a))((m, b) => m + (k -> b)) }
+      ) { case (acc, (k, a)) => acc.map2(f(a))((m, b) => m + (k -> b)) }
   }
 
   implicit val idTraverse: Traverse[Id] = new DefaultTraverse[Id] {
@@ -285,7 +294,7 @@ object FunctorsAnswers extends FunctorsToImpl {
           digits.reverse.zipWithIndex.foldMap {
             case (digit, index) =>
               digit * BigInt(10).pow(index)
-          }
+        }
       )
 
   def parseDigit(value: Char): Option[Int] =
@@ -302,6 +311,12 @@ object FunctorsAnswers extends FunctorsToImpl {
       case '9' => Some(9)
       case _   => None
     }
+
+  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit] = {
+    import CountryUsers._
+
+    getUsers(country).flatMap(_.traverse_(checkAdult))
+  }
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {

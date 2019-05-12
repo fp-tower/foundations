@@ -63,6 +63,7 @@ trait FunctorsToImplLowLevel {
   implicit def constTraverse[R]: Traverse[Const[R, ?]]
 
   def parseNumber(value: String): Option[BigInt]
+  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit]
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]]
 }

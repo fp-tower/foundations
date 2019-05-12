@@ -3,9 +3,11 @@ package functors
 import answers.functors.FunctorsAnswers
 import exercises.functors.Applicative.syntax._
 import exercises.functors.ContravariantFunctor.syntax._
+import exercises.functors.CountryUsers.{France, Germany, UK}
 import exercises.functors.InvariantFunctor.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Monad.syntax._
+import exercises.functors.Traverse.syntax._
 import exercises.functors._
 import exercises.typeclass.{Eq, Monoid}
 import org.scalacheck.Arbitrary
@@ -180,9 +182,25 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   checkAll("Id", FLaws.traverse[Id, Int])
   checkAll("Const", FLaws.traverse[Const[Int, ?], Int])
 
+  test("foldLeft same as List") {
+    val xs = List(1, 2, 3, 4)
+    Traverse[List].foldLeft(xs, List.empty[Int])((acc, a) => a :: acc) shouldEqual xs.reverse
+  }
+
+  test("traverse_") {
+    List(1, 3, 5).traverse_(a => if (a % 2 == 1) Some(a) else None) shouldEqual Some(())
+    List(1, 2, 5).traverse_(a => if (a % 2 == 1) Some(a) else None) shouldEqual None
+  }
+
   test("parseNumber") {
     parseNumber("1052") shouldEqual Some(BigInt(1052))
     parseNumber("hello") shouldEqual None
+  }
+
+  test("checkAllUsersAdult") {
+    checkAllUsersAdult(UK) shouldEqual Left("Unsupported: Brexit")
+    checkAllUsersAdult(France) shouldEqual Left("Yves is not an adult")
+    checkAllUsersAdult(Germany) shouldEqual Right(())
   }
 
 }
