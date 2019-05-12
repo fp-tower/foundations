@@ -51,7 +51,7 @@
     <linearGradient id="Obj_Gradient_8" xl:href="#Gradient_3" gradientTransform="translate(738 189) scale(54)"/>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-12 13:33:51 +0000</dc:date>
+    <dc:date>2019-05-12 14:05:09 +0000</dc:date>
   </metadata>
   <g id="applicative-api-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
     <title>applicative-api-law</title>
@@ -494,8 +494,8 @@
         <path d="M 467.544 427.5 L 479.544 414 L 479.544 420.75 L 518.544 420.75 L 518.544 414 L 530.544 427.5 L 518.544 441 L 518.544 434.25 L 479.544 434.25 L 479.544 441 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_479">
-        <text transform="translate(464 383)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">left identity</tspan>
+        <text transform="translate(458.96 383)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="781597e-19" y="15">right identity</tspan>
         </text>
       </g>
       <g id="Graphic_481">
