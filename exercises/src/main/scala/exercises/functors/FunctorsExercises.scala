@@ -33,7 +33,7 @@ object FunctorsExercises extends FunctorsToImpl {
     //         tupleR(Some(4))("hello") == Some((4, "hello"))
     // but     tupleL(None)("hello")  == None
     //         tupleR(None)("hello") == None
-    def tupleL[A, B](fa: F[A])(value: B): F[(B, A)]  = ???
+    def tupleL[A, B](fa: F[A])(value: B): F[(B, A)] = ???
     def tupleR[A, B](fa: F[A])(value: B): F[(A, B)] = ???
 
     // 1e. implement lift
@@ -85,9 +85,10 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // or
-  implicit val stringCodecContravariantFunctor: ContravariantFunctor[StringCodec] = new ContravariantFunctor[StringCodec] {
-    def contramap[A, B](fa: StringCodec[A])(f: B => A): StringCodec[B] = ???
-  }
+  implicit val stringCodecContravariantFunctor: ContravariantFunctor[StringCodec] =
+    new ContravariantFunctor[StringCodec] {
+      def contramap[A, B](fa: StringCodec[A])(f: B => A): StringCodec[B] = ???
+    }
 
   // or
   implicit val stringCodecInvariantFunctor: InvariantFunctor[StringCodec] = new InvariantFunctor[StringCodec] {
@@ -283,9 +284,11 @@ object FunctorsExercises extends FunctorsToImpl {
     override def foldMap[A, B: Monoid](fa: F[A])(f: A => B): B = ???
 
     // 4e. Show that foldLeft can be implemented using foldMap
+    // hint: try to use a newtype we saw in chapter 3
     def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B = ???
 
     // 4f. Show that foldLeft can be implemented using foldMap
+    // hint: try to use a newtype we saw in chapter 3
     def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B = ???
   }
 
