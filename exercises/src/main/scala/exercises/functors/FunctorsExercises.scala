@@ -248,7 +248,7 @@ object FunctorsExercises extends FunctorsToImpl {
     def flatMap[A, B](fa: Id[A])(f: A => Id[B]): Id[B] = ???
   }
 
-  implicit def constMonad[R]: Monad[Const[R, ?]] = new DefaultMonad[Const[R, ?]] {
+  implicit def constMonad[R: Monoid]: Monad[Const[R, ?]] = new DefaultMonad[Const[R, ?]] {
     def pure[A](a: A): Const[R, A]                                       = ???
     def flatMap[A, B](fa: Const[R, A])(f: A => Const[R, B]): Const[R, B] = ???
   }
