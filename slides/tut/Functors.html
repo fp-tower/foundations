@@ -376,16 +376,6 @@ forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa,
 ```
 
 ---
-background-image: url(img/functors/tuple2.svg)
-
-# Applicative combine effects
-
----
-background-image: url(img/functors/tupleN.svg)
-
-# Applicative combine effects
-
----
 # Applicative combine effects: Failure
 
 ```tut:reset:invisible
@@ -395,16 +385,16 @@ import answers.functors.FunctorsAnswers.listMonad
 ```
 
 ```tut
-Option(1).map2(Option(2))(_ + _)
-Option(1).map2(Option.empty[Int])(_ + _)
-Option.empty[Int].map2(Option(2))(_ + _)
+Option(1).tuple2(Option("hello"))
+Option(1).tuple2(None)
+None.tuple2(Some(2))
 ```
 
 --
 
 ```tut
 10.pure[Option]
-Option(1).map2(10.pure[Option])(_ + _)
+1.pure[Option].map2(10.pure[Option])(_ + _)
 ```
 
 ---
@@ -412,7 +402,7 @@ Option(1).map2(10.pure[Option])(_ + _)
 
 
 ```tut
-List(1,2,3).map2(List(5,8))(_ + _)
+List(1,2,3).tuple2(List("foo", "bar"))
 ```
 
 --
@@ -421,21 +411,6 @@ List(1,2,3).map2(List(5,8))(_ + _)
 10.pure[List]
 List(1,2,3).map2(10.pure[List])(_ + _)
 ```
-
----
-.h1[# Applicative combine effects]
-
-.large[
-* Side effect
-
-* Dependency injection
-
-* Mutable state
-
-* Logging
-
-* Your custom effects ...
-]
 
 ---
 class: center, middle
