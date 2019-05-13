@@ -503,7 +503,7 @@ val intHash: Hash[Int] = new Hash[Int]{
 ```
 
 ---
-# Interface or Record of functions
+# Interface or record of functions
 
 ```tut:silent
 case class Hash[A](
@@ -526,7 +526,7 @@ val hashInt: Hash[Int] = Hash[Int](
 
 ```tut:silent
 hashInt.copy(
-  eqv = (x: Int, y: Int) => (x - y).abs < 2
+  hash = (x: Int) => -x
 )
 ```
 
@@ -781,7 +781,6 @@ def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A = {
 
 ```tut
 monoFoldLeft(List(1, 2, 3, 4, 5))(0)(_ + _)
-monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))(0.0)(_ + _)
 ```
 
 --
@@ -809,8 +808,11 @@ func(5)
 
 ```tut:silent
 trait Monoid[A] {
+
   def combine(x: A, y: A): A
+
   def empty: A
+
 }
 ```
 
@@ -823,11 +825,6 @@ def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
   while(it.hasNext) res = ev.combine(res, it.next())
   res
 }
-```
-
-
-```tut:fail
-monoFoldLeft(List(1, 2, 3, 4, 5))
 ```
 
 ---
@@ -850,44 +847,78 @@ monoFoldLeft(List(1, 2, 3, 4, 5))
 monoFoldLeft(List("foo", "bar"))
 ```
 
+--
+
+```tut:fail
+monoFoldLeft(List(true, true, false))
+```
+
 ---
 class: center, middle
 
 # Exercises 1 and 2
 
 ---
-# Laws
+# Uniqueness
 
-```scala
-trait Monoid[A] {
-  def combine(x: A, y: A): A
-  def empty: A
+```tut:silent
+implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 0
 }
 ```
 
---
+```tut
+intMonoid
+
+implicitly[Monoid[Int]]
+```
+
+---
+# Uniqueness
 
 ```tut:silent
-val instance1: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x % y
+implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = (x + y).abs
   def empty: Int = 0
 }
 
-val instance2: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 2
-}
-
-val instance3: Monoid[Int] = new Monoid[Int]{
+implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
   def combine(x: Int, y: Int): Int = x
   def empty: Int = 99
 }
 ```
 
+--
+
+```tut:fail
+implicitly[Monoid[Int]]
+```
+
+---
+# Uniqueness
+
+
+```tut:silent
+implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = (x + y).abs
+  def empty: Int = 0
+}
+
+implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x
+  def empty: Int = 99
+}
+```
+
+```tut:fail
+monoFoldLeft(List(1,2,3,4))
+```
+
 ---
 class: center, middle
 
-# Exercise 3
+# Exercises 3 and 4
 
 ---
 # Use case: Distributed Map-Reduce
@@ -908,111 +939,7 @@ class RDD[A]{
 
 Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
 can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
-
----
-# Uniqueness
-
-```tut
-implicitly[Monoid[Int]]
-```
-
---
-
-```tut:silent
-implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = (x + y).abs
-  def empty: Int = 0
-}
-```
-
---
-
-```tut:fail
-implicitly[Monoid[Int]]
-```
-
---
-
-```tut:fail
-monoFoldLeft(List(1,2,3,4))
-```
-
----
-class: center, middle
-
-# Exercises 4
-
----
-# Non unique instance: The haskell way (newtype)
-
-```scala
-case class Sum(getSum: Int)
-object Sum {
-  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
-    def combine(x: Sum, y: Sum): Sum = Sum(x.getSum + y.getSum)
-    def empty: Sum = Sum(0)
-  }
-}
-
-case class Product(getProduct: Int)
-object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
-    def empty: Product = Product(1)
-  }
-}
-```
-
-```tut:invisible
-case class Sum(getSum: Int); object Sum {
-  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
-    def combine(x: Sum, y: Sum): Sum = Sum(x.getSum + y.getSum)
-    def empty: Sum = Sum(0)
-  }
-}
-
-case class Product(getProduct: Int); object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
-    def empty: Product = Product(1)
-  }
-}
-
-def foldMap[A, B](fa: List[A])(f: A => B)(implicit ev: Monoid[B]): B =
-  monoFoldLeft(fa.map(f))
-```
-
---
-
-```tut
-foldMap(List(2, 5, 0))(Sum(_))
-foldMap(List(2, 5, 0))(Product(_))
-```
-
----
-# Non unique instance: The Scala way (so far)
-
-* Define an instance for the most common case (difficult to define what is "common")
-
-```tut:silent
-implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 0
-}
-```
-
-* Use newtypes for other cases
-
-```scala
-case class Product(getProduct: Int)
-object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
-    def empty: Product = Product(1)
-  }
-}
-```
-
+    
 ---
 class: center, middle
 

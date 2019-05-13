@@ -556,7 +556,7 @@ val intHash: Hash[Int] = new Hash[Int]{
 ```
 
 ---
-# Interface or Record of functions
+# Interface or record of functions
 
 ```scala
 case class Hash[A](
@@ -579,7 +579,7 @@ val hashInt: Hash[Int] = Hash[Int](
 
 ```scala
 hashInt.copy(
-  eqv = (x: Int, y: Int) => (x - y).abs < 2
+  hash = (x: Int) => -x
 )
 ```
 
@@ -692,10 +692,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@4f1ed951
+res39: Eq[Int] = $anon$1@619c71f8
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@4f1ed951
+res40: Eq[Int] = $anon$1@619c71f8
 ```
 
 ```scala
@@ -856,19 +856,16 @@ def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A = {
 ```scala
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))(0)(_ + _)
 res45: Int = 15
-
-scala> monoFoldLeft(List(1.4, 2.3, 3.0, 4.1, 5.2))(0.0)(_ + _)
-res46: Double = 16.0
 ```
 
 --
 
 ```scala
 scala> monoFoldLeft(List("foo", "bar"))("")(_ + _)
-res47: String = foobar
+res46: String = foobar
 
 scala> monoFoldLeft(List(List(1,2,3), List(4,5)))(Nil)(_ ++ _)
-res48: List[Int] = List(1, 2, 3, 4, 5)
+res47: List[Int] = List(1, 2, 3, 4, 5)
 ```
 
 --
@@ -882,7 +879,7 @@ val func = monoFoldLeft(List(inc, double))(identity)(_ andThen _)
 
 ```scala
 scala> func(5)
-res49: Int = 12
+res48: Int = 12
 ```
 
 ---
@@ -890,8 +887,11 @@ res49: Int = 12
 
 ```scala
 trait Monoid[A] {
+
   def combine(x: A, y: A): A
+
   def empty: A
+
 }
 ```
 
@@ -904,14 +904,6 @@ def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
   while(it.hasNext) res = ev.combine(res, it.next())
   res
 }
-```
-
-
-```scala
-scala> monoFoldLeft(List(1, 2, 3, 4, 5))
-<console>:24: error: could not find implicit value for parameter ev: Monoid[Int]
-       monoFoldLeft(List(1, 2, 3, 4, 5))
-                   ^
 ```
 
 ---
@@ -931,10 +923,19 @@ implicit val stringMonoid: Monoid[String] = new Monoid[String] {
 
 ```scala
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))
-res51: Int = 15
+res49: Int = 15
 
 scala> monoFoldLeft(List("foo", "bar"))
-res52: String = foobar
+res50: String = foobar
+```
+
+--
+
+```scala
+scala> monoFoldLeft(List(true, true, false))
+<console>:26: error: could not find implicit value for parameter ev: Monoid[Boolean]
+       monoFoldLeft(List(true, true, false))
+                   ^
 ```
 
 ---
@@ -943,38 +944,80 @@ class: center, middle
 # Exercises 1 and 2
 
 ---
-# Laws
+# Uniqueness
 
 ```scala
-trait Monoid[A] {
-  def combine(x: A, y: A): A
-  def empty: A
+implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
+  def combine(x: Int, y: Int): Int = x + y
+  def empty: Int = 0
+}
+```
+
+```scala
+scala> intMonoid
+res52: Monoid[Int] = $anon$1@76fc10b2
+
+scala> implicitly[Monoid[Int]]
+res53: Monoid[Int] = $anon$1@76fc10b2
+```
+
+---
+# Uniqueness
+
+```scala
+implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = (x + y).abs
+  def empty: Int = 0
+}
+
+implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = x
+  def empty: Int = 99
 }
 ```
 
 --
 
 ```scala
-val instance1: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x % y
+scala> implicitly[Monoid[Int]]
+<console>:30: error: ambiguous implicit values:
+ both value intMonoid of type => Monoid[Int]
+ and value intMonoid2 of type => Monoid[Int]
+ match expected type Monoid[Int]
+       implicitly[Monoid[Int]]
+                 ^
+```
+
+---
+# Uniqueness
+
+
+```scala
+implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
+  def combine(x: Int, y: Int): Int = (x + y).abs
   def empty: Int = 0
 }
 
-val instance2: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 2
-}
-
-val instance3: Monoid[Int] = new Monoid[Int]{
+implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
   def combine(x: Int, y: Int): Int = x
   def empty: Int = 99
 }
 ```
 
+```scala
+scala> monoFoldLeft(List(1,2,3,4))
+<console>:33: error: ambiguous implicit values:
+ both value intMonoid of type => Monoid[Int]
+ and value intMonoid2 of type => Monoid[Int]
+ match expected type Monoid[Int]
+       monoFoldLeft(List(1,2,3,4))
+                   ^
+```
+
 ---
 class: center, middle
 
-# Exercise 3
+# Exercises 3 and 4
 
 ---
 # Use case: Distributed Map-Reduce
@@ -995,111 +1038,7 @@ class RDD[A]{
 
 Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
 can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
-
----
-# Uniqueness
-
-```scala
-scala> implicitly[Monoid[Int]]
-res53: Monoid[Int] = $anon$1@3eba37ac
-```
-
---
-
-```scala
-implicit val intMonoid2: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = (x + y).abs
-  def empty: Int = 0
-}
-```
-
---
-
-```scala
-scala> implicitly[Monoid[Int]]
-<console>:27: error: ambiguous implicit values:
- both value intMonoid of type => Monoid[Int]
- and value intMonoid2 of type => Monoid[Int]
- match expected type Monoid[Int]
-       implicitly[Monoid[Int]]
-                 ^
-```
-
---
-
-```scala
-scala> monoFoldLeft(List(1,2,3,4))
-<console>:27: error: ambiguous implicit values:
- both value intMonoid of type => Monoid[Int]
- and value intMonoid2 of type => Monoid[Int]
- match expected type Monoid[Int]
-       monoFoldLeft(List(1,2,3,4))
-                   ^
-```
-
----
-class: center, middle
-
-# Exercises 4
-
----
-# Non unique instance: The haskell way (newtype)
-
-```scala
-case class Sum(getSum: Int)
-object Sum {
-  implicit val Monoid: Monoid[Sum] = new Monoid[Sum]{
-    def combine(x: Sum, y: Sum): Sum = Sum(x.getSum + y.getSum)
-    def empty: Sum = Sum(0)
-  }
-}
-
-case class Product(getProduct: Int)
-object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
-    def empty: Product = Product(1)
-  }
-}
-```
-
-
-
-
---
-
-```scala
-scala> foldMap(List(2, 5, 0))(Sum(_))
-res56: Sum = Sum(7)
-
-scala> foldMap(List(2, 5, 0))(Product(_))
-res57: Product = Product(0)
-```
-
----
-# Non unique instance: The Scala way (so far)
-
-* Define an instance for the most common case (difficult to define what is "common")
-
-```scala
-implicit val intMonoid: Monoid[Int] = new Monoid[Int]{
-  def combine(x: Int, y: Int): Int = x + y
-  def empty: Int = 0
-}
-```
-
-* Use newtypes for other cases
-
-```scala
-case class Product(getProduct: Int)
-object Product {
-  implicit val Monoid: Monoid[Product] = new Monoid[Product]{
-    def combine(x: Product, y: Product): Product = Product(x.getProduct * y.getProduct)
-    def empty: Product = Product(1)
-  }
-}
-```
-
+    
 ---
 class: center, middle
 
@@ -1164,7 +1103,7 @@ object MonoidInstance {
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-<console>:29: error: could not find implicit value for parameter ev: Monoid[Boolean]
+<console>:33: error: could not find implicit value for parameter ev: Monoid[Boolean]
        monoFoldLeft(List(true, false, false))
                    ^
 ```
@@ -1177,7 +1116,7 @@ import MonoidInstance._
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-res59: Boolean = false
+res57: Boolean = false
 ```
 
 ---
@@ -1203,7 +1142,7 @@ import MonoidInstance._
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-res60: Boolean = false
+res58: Boolean = false
 ```
 
 ```scala
@@ -1212,7 +1151,7 @@ import OtherMonoidInstance._
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-res61: Boolean = true
+res59: Boolean = true
 ```
 
 ---
@@ -1307,7 +1246,7 @@ implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
 
 ```scala
 scala> implicit val listSemigroup: Semigroup[List] = ???
-<console>:40: error: type List takes type parameters
+<console>:44: error: type List takes type parameters
        implicit val listSemigroup: Semigroup[List] = ???
                                              ^
 ```
@@ -1345,7 +1284,7 @@ implicit val listFoldable: Foldable[List] = new Foldable[List] {
 
 ```scala
 scala> implicit val intFoldable: Foldable[Int] = ???
-<console>:42: error: Int takes no type parameters, expected: one
+<console>:46: error: Int takes no type parameters, expected: one
        implicit val intFoldable: Foldable[Int] = ???
                                           ^
 ```

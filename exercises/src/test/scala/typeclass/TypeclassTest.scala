@@ -17,6 +17,10 @@ class TypeclassAnswersTest   extends TypeclassTest(TypeclassAnswers)
 class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance {
   import impl._
 
+  /////////////////////////////
+  // 1. Monoid Instances
+  /////////////////////////////
+
   test("check Double instance") {
     2.0.combine(3.5).combine(mempty[Double]) shouldEqual 5.5
   }
@@ -55,6 +59,10 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
     ().combine(()).combine(mempty[Unit]) shouldEqual (())
   }
 
+  /////////////////////////////
+  // 2. Monoid usage
+  /////////////////////////////
+
   test("sum") {
     sum(List(1, 2, 3, 4)) shouldEqual 10
   }
@@ -92,6 +100,23 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
     foldMap(List("abc", "a", "abcde"))(_.length) shouldEqual 9
   }
 
+  /////////////////////////////
+  // 3. Instance uniqueness
+  /////////////////////////////
+
+  test("product") {
+    product(List(1, 2, 3, 4, 5)) shouldEqual 120
+  }
+
+  test("forAll") {
+    forAll(List(true, true, false, true)) shouldEqual false
+    forAll(List(true, true, true, true)) shouldEqual true
+  }
+
+  /////////////////////////////
+  // 4. Typeclass laws
+  /////////////////////////////
+
   test("String Monoid with space") {
     stringSpaceMonoid.combine("hello", "world") shouldEqual "hello world"
   }
@@ -106,49 +131,51 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
   checkAll("Tuple2", monoidLaws[(Int, String)])
   checkAll("Option", monoidLaws[Option[Int]])
   checkAll("Map", monoidLaws[Map[Int, String]])
-
-  checkAll("Int", strongMonoidLaws[Int])
+  checkAll("Int product", monoidLaws[Int](implicitly, productIntMonoid, implicitly))
+  checkAll("Boolean", monoidLaws[Boolean](implicitly, booleanMonoid, implicitly))
+  checkAll("Product", monoidLaws[Product])
+  checkAll("All", monoidLaws[All])
+  checkAll("Endo", monoidLaws[Endo[Int]])
 
   test("splitFold") {
     val xs = 1.to(1000).toList
     splitFold(xs)(_.grouped(100).toList) shouldEqual fold(xs)
   }
 
-  checkAll("Int product", monoidLaws[Int](implicitly, productIntMonoid, implicitly))
-  checkAll("Boolean", monoidLaws[Boolean](implicitly, booleanMonoid, implicitly))
-
-  checkAll("Product", monoidLaws[Product])
-  checkAll("All", monoidLaws[All])
-  checkAll("Endo", monoidLaws[Endo[Int]])
-
-  test("product") {
-    product(List(1, 2, 3, 4, 5)) shouldEqual 120
-  }
-
-  test("forAll") {
-    forAll(List(true, true, false, true)) shouldEqual false
-    forAll(List(true, true, true, true)) shouldEqual true
-  }
+  /////////////////////////////
+  // 5. Typeclass hierarchy
+  ////////////////////////////
 
   checkAll("NonEmptyList", semigroupLaws[NonEmptyList[Boolean]])
-
   checkAll("Min", semigroupLaws[Min[Int]])
+  checkAll("First", semigroupLaws[First[Int]])
+  checkAll("Dual", semigroupLaws[Dual[Int]])
+
+  test("reduceMap") {
+    reduceMap(List("", "Hi", "World"))(_.size) shouldEqual Some(7)
+    reduceMap(List.empty[String])(_.size) shouldEqual None
+  }
+
   test("minOptionList") {
     minOptionList(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(-1)
     minOptionList[Int](Nil) shouldEqual None
   }
 
-  checkAll("First", semigroupLaws[First[Int]])
   test("headOptionList") {
     headOptionList(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(5)
     headOptionList[Int](Nil) shouldEqual None
   }
 
-  checkAll("Dual", semigroupLaws[Dual[Int]])
   test("lastOptionList") {
     lastOptionList(List(5, 7, 2, -1, 10, 34, 12)) shouldEqual Some(12)
     lastOptionList[Int](Nil) shouldEqual None
   }
+
+  checkAll("Int", strongMonoidLaws[Int])
+
+  //////////////////////////////
+  // 6. Higher kinded typeclass
+  //////////////////////////////
 
   test("foldMap Vector") {
     foldMap(Vector("abc", "a", "abcde"))(_.length) shouldEqual 9

@@ -147,29 +147,7 @@ object TypeclassAnswers extends TypeclassToImpl {
     foldMap(xs)(identity)
 
   /////////////////////////////
-  // 3. Typeclass laws
-  /////////////////////////////
-
-  val stringSpaceMonoid: Monoid[String] = new Monoid[String] {
-    def combine(x: String, y: String): String = s"$x $y"
-    def empty: String                         = ""
-  }
-
-  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet =
-    new DefaultRuleSet(
-      "Monoid",
-      Some(semigroupLaws[A]),
-      "left identity" ->
-        Prop.forAll((a: A) => (mempty[A] |+| a) === a),
-      "right identity" ->
-        Prop.forAll((a: A) => (a |+| mempty[A]) === a)
-    )
-
-  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A =
-    fold(split(xs).map(fold(_)))
-
-  /////////////////////////////
-  // 4. Instance uniqueness
+  // 3. Instance uniqueness
   /////////////////////////////
 
   val productIntMonoid: Monoid[Int] = new Monoid[Int] {
@@ -202,6 +180,28 @@ object TypeclassAnswers extends TypeclassToImpl {
   }
 
   def pipe[A](xs: List[A => A]): A => A = foldMap(xs)(Endo(_)).getEndo
+
+  /////////////////////////////
+  // 4. Typeclass laws
+  /////////////////////////////
+
+  val stringSpaceMonoid: Monoid[String] = new Monoid[String] {
+    def combine(x: String, y: String): String = s"$x $y"
+    def empty: String                         = ""
+  }
+
+  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet =
+    new DefaultRuleSet(
+      "Monoid",
+      Some(semigroupLaws[A]),
+      "left identity" ->
+        Prop.forAll((a: A) => (mempty[A] |+| a) === a),
+      "right identity" ->
+        Prop.forAll((a: A) => (a |+| mempty[A]) === a)
+    )
+
+  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A =
+    fold(split(xs).map(fold(_)))
 
   /////////////////////////////
   // 5. Typeclass hierarchy

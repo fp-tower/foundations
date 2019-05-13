@@ -44,15 +44,7 @@ trait TypeclassToImpl extends Laws {
   def fold2[A](xs: List[A])(implicit ev: Monoid[A]): A
 
   /////////////////////////////
-  // 3. Typeclass laws
-  /////////////////////////////
-
-  val stringSpaceMonoid: Monoid[String]
-  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet
-  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A
-
-  /////////////////////////////
-  // 4. Instance uniqueness
+  // 3. Instance uniqueness
   /////////////////////////////
 
   val productIntMonoid: Monoid[Int]
@@ -63,6 +55,14 @@ trait TypeclassToImpl extends Laws {
   def forAll(xs: List[Boolean]): Boolean
   implicit def endoMonoid[A]: Monoid[Endo[A]]
   def pipe[A](xs: List[A => A]): A => A
+
+  /////////////////////////////
+  // 4. Typeclass laws
+  /////////////////////////////
+
+  val stringSpaceMonoid: Monoid[String]
+  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet
+  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A
 
   /////////////////////////////
   // 5. Typeclass hierarchy
