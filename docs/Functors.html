@@ -337,7 +337,7 @@ trait Applicative[F[_]] extends Functor[F] {
 forAll(fa: F[A] => tuple2(fa  , unit) =~ fa)
 forAll(fa: F[A] => tuple2(unit, fa  ) =~ fa)
 
-forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa, tuple2(fb, fc)))
+forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple2(fa, tuple2(fb, fc)))
 ```
 
 ???
@@ -445,7 +445,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], b: B, f: A => B) =>
-  fa.map2(pure(b))((a, _) => a) == fa.map(f)
+  fa.map2(pure(b))((a, _) => f(a)) == fa.map(f)
 )
 ```
 
@@ -466,7 +466,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map2(unit)((a, _) => a) == fa.map(f)
+  fa.map2(unit)((a, _) => f(a)) == fa.map(f)
 )
 ```
 
