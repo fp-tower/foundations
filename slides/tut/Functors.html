@@ -639,7 +639,7 @@ def sizeDefault[F[_]: Traverse, A](fa: F[A]): Int =
 --
 
 ```scala
-vectorSize := (Const(1) |+| Const(1) |+| ... |+| Const(1)).getConst
+sizeDefault = (Const(1) |+| Const(1) |+| ... |+| Const(1)).getConst
 ```
 
 --
@@ -656,7 +656,7 @@ val vectorTraverse: Traverse[Vector] = new Traverse[Vector] {
 ### Coherence law
 
 ```scala
-forAll(fa: F[A] => sizeDefault(fa) == fa.size)
+forAll(vec: Vector[A] => sizeDefault(vec) == vec.size)
 ```
 
 ---
