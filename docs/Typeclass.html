@@ -692,10 +692,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@619c71f8
+res39: Eq[Int] = $anon$1@23b7b9ab
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@619c71f8
+res40: Eq[Int] = $anon$1@23b7b9ab
 ```
 
 ```scala
@@ -955,10 +955,10 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
 
 ```scala
 scala> intMonoid
-res52: Monoid[Int] = $anon$1@76fc10b2
+res52: Monoid[Int] = $anon$1@6808608
 
 scala> implicitly[Monoid[Int]]
-res53: Monoid[Int] = $anon$1@76fc10b2
+res53: Monoid[Int] = $anon$1@6808608
 ```
 
 ---
@@ -1038,7 +1038,7 @@ class RDD[A]{
 
 Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
 can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
-    
+
 ---
 class: center, middle
 
@@ -1168,7 +1168,7 @@ object Semigroup {
 
 trait Monoid[A] extends Monoid[A]
 
-object Bar {
+object Monoid {
   implicit val int: Monoid[Int] = ...
 }
 

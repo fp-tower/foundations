@@ -939,7 +939,7 @@ class RDD[A]{
 
 Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
 can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
-    
+
 ---
 class: center, middle
 
@@ -1063,7 +1063,7 @@ object Semigroup {
 
 trait Monoid[A] extends Monoid[A]
 
-object Bar {
+object Monoid {
   implicit val int: Monoid[Int] = ...
 }
 
