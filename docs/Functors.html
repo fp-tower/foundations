@@ -459,13 +459,13 @@ forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa,
 
 
 ```scala
-scala> Option(1).tuple2(Option("hello"))
+scala> (Option(1), Option("hello")).tuple2
 res0: Option[(Int, String)] = Some((1,hello))
 
-scala> Option(1).tuple2(None)
+scala> (Option(1), None).tuple2
 res1: Option[(Int, Nothing)] = None
 
-scala> None.tuple2(Some(2))
+scala> (None, Some(2)).tuple2
 res2: Option[(Nothing, Int)] = None
 ```
 
@@ -475,7 +475,7 @@ res2: Option[(Nothing, Int)] = None
 scala> 10.pure[Option]
 res3: Option[Int] = Some(10)
 
-scala> 1.pure[Option].map2(10.pure[Option])(_ + _)
+scala> (1.pure[Option], 10.pure[Option]).map2(_ + _)
 res4: Option[Int] = Some(11)
 ```
 
@@ -484,7 +484,7 @@ res4: Option[Int] = Some(11)
 
 
 ```scala
-scala> List(1,2,3).tuple2(List("foo", "bar"))
+scala> (List(1,2,3), List("foo", "bar")).tuple2
 res5: List[(Int, String)] = List((1,foo), (1,bar), (2,foo), (2,bar), (3,foo), (3,bar))
 ```
 
@@ -494,7 +494,7 @@ res5: List[(Int, String)] = List((1,foo), (1,bar), (2,foo), (2,bar), (3,foo), (3
 scala> 10.pure[List]
 res6: List[Int] = List(10)
 
-scala> List(1,2,3).map2(10.pure[List])(_ + _)
+scala> (List(1,2,3), 10.pure[List]).map2(_ + _)
 res7: List[Int] = List(11, 12, 13)
 ```
 
@@ -524,7 +524,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map2(pure(()))((a, _) => f(a)) == fa.map(f)
+  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
 )
 ```
 ]
@@ -585,7 +585,7 @@ trait Monad[F[_]] extends Applicative[F] {
 
 ```scala
 forAll((fa: F[A], fb: F[B]) =>
-  fa.flatMap(a => fb.map(b => (a, b))) == fa.tuple2(fb)
+  fa.flatMap(a => fb.map(b => (a, b))) == (fa, fb).tuple2
 )
 ```
 
@@ -609,7 +609,7 @@ forAll((fa: F[A], fb: F[B]) =>
   (for {
     a <- fa
     b <- fb
-  } yield (a, b)) == fa.tuple2(fb)
+  } yield (a, b)) == (fa, fb).tuple2
 )
 ```
 

@@ -463,16 +463,16 @@ import answers.functors.FunctorsAnswers.listMonad
 ```
 
 ```tut
-Option(1).tuple2(Option("hello"))
-Option(1).tuple2(None)
-None.tuple2(Some(2))
+(Option(1), Option("hello")).tuple2
+(Option(1), None).tuple2
+(None, Some(2)).tuple2
 ```
 
 --
 
 ```tut
 10.pure[Option]
-1.pure[Option].map2(10.pure[Option])(_ + _)
+(1.pure[Option], 10.pure[Option]).map2(_ + _)
 ```
 
 ---
@@ -480,14 +480,14 @@ None.tuple2(Some(2))
 
 
 ```tut
-List(1,2,3).tuple2(List("foo", "bar"))
+(List(1,2,3), List("foo", "bar")).tuple2
 ```
 
 --
 
 ```tut
 10.pure[List]
-List(1,2,3).map2(10.pure[List])(_ + _)
+(List(1,2,3), 10.pure[List]).map2(_ + _)
 ```
 
 ---
@@ -519,7 +519,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map2(pure(()))((a, _) => f(a)) == fa.map(f)
+  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
 )
 ```
 ]
@@ -580,7 +580,7 @@ trait Monad[F[_]] extends Applicative[F] {
 
 ```scala
 forAll((fa: F[A], fb: F[B]) =>
-  fa.flatMap(a => fb.map(b => (a, b))) == fa.tuple2(fb)
+  fa.flatMap(a => fb.map(b => (a, b))) == (fa, fb).tuple2
 )
 ```
 
@@ -604,7 +604,7 @@ forAll((fa: F[A], fb: F[B]) =>
   (for {
     a <- fa
     b <- fb
-  } yield (a, b)) == fa.tuple2(fb)
+  } yield (a, b)) == (fa, fb).tuple2
 )
 ```
 

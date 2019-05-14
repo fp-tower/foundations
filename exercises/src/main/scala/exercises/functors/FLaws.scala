@@ -60,9 +60,9 @@ object FLaws extends Laws {
       "associativity" ->
         forAll(
           (fa: F[A], fb: F[B], fc: F[C]) =>
-            fa.tuple2(fb).tuple2(fc) === fa.tuple2(fb.tuple2(fc)).map { case (a, (b, c)) => ((a, b), c) }
+            ((fa, fb).tuple2, fc).tuple2 === (fa, (fb, fc).tuple2).tuple2.map { case (a, (b, c)) => ((a, b), c) }
         ),
-      "map coherence" -> forAll((fa: F[A], f: A => B) => fa.map2(unit[F])((a, _) => f(a)) === fa.map(f))
+      "map coherence" -> forAll((fa: F[A], f: A => B) => (fa, unit).map2((a, _) => f(a)) === fa.map(f))
     )
 
   def monad[F[_]: Monad, A: Arbitrary](
@@ -93,7 +93,7 @@ object FLaws extends Laws {
       "left identity"    -> forAll((a: A, f: A => F[B]) => a.pure[F].flatMap(f) === f(a)),
       "right identity"   -> forAll((fa: F[A]) => fa.flatMap(_.pure[F]) === fa),
       "map coherence"    -> forAll((fa: F[A], f: A => B) => fa.flatMap(f(_).pure[F]) === fa.map(f)),
-      "tuple2 coherence" -> forAll((fa: F[A], fb: F[B]) => fa.flatMap(fb.tupleLeft) === fa.tuple2(fb))
+      "tuple2 coherence" -> forAll((fa: F[A], fb: F[B]) => fa.flatMap(fb.tupleLeft) === (fa, fb).tuple2)
     )
 
   def traverse[F[_]: Traverse, A: Monoid: Eq](

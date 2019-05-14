@@ -157,7 +157,7 @@ object FunctorsAnswers extends FunctorsToImpl {
       def pure[A](a: A): Compose[F, G, A] = Compose(a.pure[G].pure[F])
       def map2[A, B, C](fa: Compose[F, G, A], fb: Compose[F, G, B])(f: (A, B) => C): Compose[F, G, C] =
         Compose(
-          fa.getCompose.map2(fb.getCompose)((ga, gb) => ga.map2(gb)(f))
+          (fa.getCompose, fb.getCompose).map2((ga, gb) => (ga, gb).map2(f))
         )
     }
 
@@ -248,7 +248,7 @@ object FunctorsAnswers extends FunctorsToImpl {
 
   implicit val listTraverse: Traverse[List] = new DefaultTraverse[List] {
     override def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A => G[B]): G[List[B]] =
-      fa.foldRight(List.empty[B].pure[G])((a, acc) => f(a).map2(acc)(_ :: _))
+      fa.foldRight(List.empty[B].pure[G])((a, acc) => (f(a), acc).map2(_ :: _))
   }
 
   implicit val optionTraverse: Traverse[Option] = new DefaultTraverse[Option] {
@@ -268,7 +268,7 @@ object FunctorsAnswers extends FunctorsToImpl {
     override def traverse[G[_]: Applicative, A, B](fa: Map[K, A])(f: A => G[B]): G[Map[K, B]] =
       fa.foldLeft(
         Map.empty[K, B].pure[G]
-      ) { case (acc, (k, a)) => acc.map2(f(a))((m, b) => m + (k -> b)) }
+      ) { case (acc, (k, a)) => (acc, f(a)).map2((m, b) => m + (k -> b)) }
   }
 
   implicit val idTraverse: Traverse[Id] = new DefaultTraverse[Id] {

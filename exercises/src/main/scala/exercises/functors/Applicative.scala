@@ -20,15 +20,6 @@ object Applicative {
 
   object syntax {
     implicit class ApplicativeOps[F[_], A](fa: F[A]) {
-      def map2[B, C](fb: F[B])(f: (A, B) => C)(implicit ev: Applicative[F]): F[C] =
-        ev.map2(fa, fb)(f)
-
-      def map3[B, C, D](fb: F[B], fc: F[C])(f: (A, B, C) => D)(implicit ev: Applicative[F]): F[D] =
-        ev.map3(fa, fb, fc)(f)
-
-      def tuple2[B](fb: F[B])(implicit ev: Applicative[F]): F[(A, B)] =
-        ev.tuple2(fa, fb)
-
       def productL[B](fb: F[B])(implicit ev: Applicative[F]): F[A] =
         ev.productL(fa, fb)
 
@@ -44,6 +35,19 @@ object Applicative {
 
     implicit class ApplicativeOps2[A](a: A) {
       def pure[F[_]](implicit ev: Applicative[F]): F[A] = ev.pure(a)
+    }
+
+    implicit class ApplicativeTuple2Ops[F[_], A, B](self: (F[A], F[B])) {
+      def map2[C](f: (A, B) => C)(implicit ev: Applicative[F]): F[C] =
+        ev.map2(self._1, self._2)(f)
+
+      def tuple2(implicit ev: Applicative[F]): F[(A, B)] =
+        ev.tuple2(self._1, self._2)
+    }
+
+    implicit class ApplicativeTuple3Ops[F[_], A, B, C](self: (F[A], F[B], F[C])) {
+      def map3[D](f: (A, B, C) => D)(implicit ev: Applicative[F]): F[D] =
+        ev.map3(self._1, self._2, self._3)(f)
     }
 
     def unit[F[_]](implicit ev: Applicative[F]): F[Unit] = ev.unit

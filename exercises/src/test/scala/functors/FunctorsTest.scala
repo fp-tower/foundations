@@ -110,12 +110,12 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   }
 
   test("map3") {
-    Option(1).map3(Option(2), Option(3))(_ + _ + _) shouldEqual Some(6)
-    Option(1).map3(None, Option(3))(_ + _ + _) shouldEqual None
+    (Option(1), Option(2), Option(3)).map3(_ + _ + _) shouldEqual Some(6)
+    (Option(1), Option.empty[Int], Option(3)).map3(_ + _ + _) shouldEqual None
   }
 
   test("tuple2") {
-    List(1, 2, 3).tuple2(List('a', 'b')) shouldEqual List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
+    (List(1, 2, 3), List('a', 'b')).tuple2 shouldEqual List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
   }
 
   test("productL") {
