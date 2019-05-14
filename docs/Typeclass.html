@@ -692,10 +692,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@23b7b9ab
+res39: Eq[Int] = $anon$1@58c8ff23
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@23b7b9ab
+res40: Eq[Int] = $anon$1@58c8ff23
 ```
 
 ```scala
@@ -955,10 +955,10 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
 
 ```scala
 scala> intMonoid
-res52: Monoid[Int] = $anon$1@6808608
+res52: Monoid[Int] = $anon$1@73627aef
 
 scala> implicitly[Monoid[Int]]
-res53: Monoid[Int] = $anon$1@6808608
+res53: Monoid[Int] = $anon$1@73627aef
 ```
 
 ---
@@ -1295,14 +1295,31 @@ class: center, middle
 # Exercises 6
 
 ---
-class: center, middle
 
-# Typeclass abuses
+## Use Typeclass when
+
+1. You have only one valid implementation for (almost) all types
+2. You require uniqueness per type e.g. Eq, Hash, Ord
+
+## Use Interface / Record of functions when
+
+1. You have many valid / interesting implementations per type
+2. You need to package several functions together
+
+## Use  Overloading when
+
+1. You have many valid / interesting implementations per type
+2. Single function
 
 ---
 class: center, middle
 
-# Typeclass abuses: Derivation
+# Two reasons why typeclasses are overused
+
+---
+class: center, middle
+
+# 1. Typeclass Derivation
 
 ---
 background-image: url(img/typeclass/product-derivation.svg)
@@ -1316,13 +1333,10 @@ background-image: url(img/typeclass/product-derivation.svg)
 case class Person(name: String, age: Int)
 ```
 
---
-
 ```scala
 Person <==> (String, (Int, Unit))
 ```
 
---
 
 ```scala
 implicit val intEq   : Eq[Int]    = (x: Int   , y: Int   ) => x == y
@@ -1330,7 +1344,6 @@ implicit val stringEq: Eq[String] = (x: String, y: String) => x == y
 implicit val unitEq  : Eq[Unit]   = (x: Unit  , y: Unit  ) => true
 ```
 
---
 
 ```scala
 implicit def tuple2[A: Eq, B: Eq]: Eq[(A, B)] = new Eq[(A, B)] {
@@ -1339,7 +1352,6 @@ implicit def tuple2[A: Eq, B: Eq]: Eq[(A, B)] = new Eq[(A, B)] {
 }
 ```
 
---
 
 ```scala
 Eq[Person] => Eq[(String, (Int, Unit)]
@@ -1362,13 +1374,9 @@ case class Email(value: String) extends Contact
 case class Address(streetNumber: Int, StreetName: String) extends Contact
 ```
 
---
-
 ```scala
 Contact <==> Either[Email, Either[Address, Nothing]]
 ```
-
---
 
 ```scala
 implicit val nothingEq: Eq[Nothing] = (x: Nothing, y: Nothing) => true
@@ -1382,8 +1390,6 @@ implicit def either[A: Eq, B: Eq]: Eq[Either[A, B]] = new Eq[Either[A, B]] {
     }
 }
 ```
-
---
 
 ```scala
 Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
@@ -1405,7 +1411,7 @@ data  Option a  =  None | Some a deriving (Eq , Ord)
 ---
 class: center, middle
 
-# Typeclass abuses: Better syntax
+# 2. Better syntax
 
 ---
 # Better syntax
@@ -1420,47 +1426,33 @@ List("hello", "world", "!").foldMap(_.size)
 foldMap(List("hello", "world", "!"))(_.size)(intMonoid)
 ```
 
---
-
 ```scala
-List(Some(3), None, Some(4)).sequence
-sequence(List(Some(3), None, Some(4)))(listTraverse, optionApplicative)
+val json = """{ "name" : "John", "age"  : 34 }"""
+
+json.as[Person]
+Person.restJsonDecoder.parse(json)
 ```
 
 ---
+# Future
 
-## Use Typeclass when
+```scala
+List(1,2,3,4,5).fold (@via Sum)     // 15
+List(1,2,3,4,5).fold (@via Product) // 120
+```
 
-1. You have only one valid implementation for (almost) all types
-2. You require uniqueness per type e.g. Eq, Hash, Ord
-
-## Use Interface / Record of functions when
-
-1. You have many valid / interesting implementations per type
-2. You need to package several functions together
-
-## Use  Overloading when
-
-1. You have many valid / interesting implementations per type
-2. Single function
+See [@Iceland_jack](https://twitter.com/Iceland_jack) work on #DerivingVia for Haskell
 
 ---
-.h1[# Summary]
+background-image: url(img/typeclass/review.svg)
 
-.large[
-* Ad hoc polymorphism implementations
-
-* Eq, Monoid, Semigroup, Foldable
-
-* Instance location and uniqueness
-
-* Typeclass laws, hierarchy, abuses
-]
+# Review
 
 ---
-class: center, middle
+background-image: url(img/functors/plan.svg)
 
 # [Chapter 4: Functors](Functors.html#1)
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
