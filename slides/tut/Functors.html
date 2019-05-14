@@ -690,17 +690,15 @@ forAll((fa: F[A], f: A => B) => fa.traverse(a => Const(f(a))).getConst == fa.fol
 traverse > foldMap > size
 ```
 
---
 
 ```scala
 def sizeDefault[F[_]: Traverse, A](fa: F[A]): Int =
   fa.traverse(_ => Const(1)).getConst
 ```
 
---
 
 ```scala
-sizeDefault = (Const(1) |+| Const(1) |+| ... |+| Const(1)).getConst
+sizeDefault = (Const(1) |+| Const(1) |+| ... |+| Const(1)).getConst  // O(n)
 ```
 
 --
@@ -708,7 +706,7 @@ sizeDefault = (Const(1) |+| Const(1) |+| ... |+| Const(1)).getConst
 ```scala
 val vectorTraverse: Traverse[Vector] = new Traverse[Vector] {
   def traverse[G[_]: Applicative, A, B](fa: Vector[A])(f: A => G[B]): G[Vector[B]] = ???
-  def size[A](fa: Vector[A]): Int = fa.size
+  overload def size[A](fa: Vector[A]): Int = fa.size // O(1)
 }
 ```
 
@@ -717,7 +715,7 @@ val vectorTraverse: Traverse[Vector] = new Traverse[Vector] {
 ### Coherence law
 
 ```scala
-forAll(vec: Vector[A] => sizeDefault(vec) == vec.size)
+forAll(fa: F[A] => fa.size == sizeDefault(fa))
 ```
 
 ---
