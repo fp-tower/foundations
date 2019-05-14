@@ -18,6 +18,7 @@
     .pull-right { float: right; width: 47%; }
     .large-left { float: left; width: 57%; }
     .small-right { float: right; width: 27%; }
+    .medium-right { float: right; width: 37%; }
     .footer { position: absolute; bottom: 12px; left: 45px }
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
@@ -503,32 +504,12 @@ class: center, middle
 # Exercise 2
 
 ---
-# Applicative is a Functor
+.h1[# Applicative is a Functor]
 
 
 
 
-```scala
-trait Applicative[F[_]] extends Functor[F] {
-
-  def pure[A](a: A): F[A]
-
-  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
-
-}
-```
-
-### Coherence Law
-
-```scala
-forAll((fa: F[A], b: B, f: A => B) =>
-  fa.map2(pure(b))((a, _) => f(a)) == fa.map(f)
-)
-```
-
----
-# Applicative is a Functor
-
+.large-left[
 ```scala
 trait Applicative[F[_]] extends Functor[F] {
 
@@ -543,9 +524,12 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ```scala
 forAll((fa: F[A], f: A => B) =>
-  fa.map2(unit)((a, _) => f(a)) == fa.map(f)
+  fa.map2(pure(()))((a, _) => f(a)) == fa.map(f)
 )
 ```
+]
+
+.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
 
 ---
 class: center, middle
