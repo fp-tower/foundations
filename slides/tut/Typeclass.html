@@ -379,9 +379,7 @@ import Eqv._
 
 ```tut:silent
 def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
-  xs.foldRight(false)((x, acc) =>
-    compare(x, value) || acc
-  )
+  xs.foldRight(false)((x, acc) => compare(x, value) || acc)
 ```
 
 --
@@ -445,6 +443,25 @@ fooEq.eqv(Foo(1, "Hello"), Foo(5, "Hi"))
 intEq.eqv(5, 5)
 ```
 
+---
+# Interface
+
+```tut:silent
+trait Eq[A]{
+  def eqv(x: A, y: A): Boolean
+}
+```
+
+```tut:silent
+val fooEq: Eq[Foo] = new Eq[Foo]{
+  def eqv(x: Foo, y: Foo): Boolean = x.i == y.i && x.s == y.s
+}
+
+val intEq: Eq[Int] = new Eq[Int]{
+  def eqv(x: Int, y: Int): Boolean = x == y
+}
+```
+
 ```tut:fail
 fooEq.eqv(Foo(1, "Hello"), 3)
 ```
@@ -459,7 +476,6 @@ def contains[A](xs: List[A], value: A)(eq: Eq[A]): Boolean =
 val exact: Eq[Double] = new Eq[Double] {
   def eqv(x: Double, y: Double): Boolean = x == y
 }
-
 
 def approx(error: Double): Eq[Double] = new Eq[Double] {
   def eqv(x: Double, y: Double): Boolean = (x - y).abs < error
@@ -516,19 +532,65 @@ val hashFoo: Hash[Foo] = Hash[Foo](
   hash = _.hashCode
 )
 
-val hashInt: Hash[Int] = Hash[Int](
+val intHash: Hash[Int] = Hash[Int](
   eqv  = _ == _,
   hash = identity
 )
 ```
 
---
+---
+.h1[# Interface or record of functions]
 
+.pull-left[
 ```tut:silent
-hashInt.copy(
-  hash = (x: Int) => -x
-)
+trait Eq[A] {
+  def eqv (x: A, y: A): Boolean
+  def neqv(x: A, y: A): Boolean = !eqv(x, y)
+}
+
+trait Hash[A] extends Eq[A] {
+  def hash(a: A): Int
+}
+
+val intHash: Hash[Int] = new Hash[Int]{
+  def eqv(x: Int, y: Int): Boolean = x == y
+  def hash(a: Int): Int = a
+}
+
+def hashToEq[A](hash: Hash[A]): Eq[A] = hash
+
+def reverseHash[A](current: Hash[A]): Hash[A] =
+  new Hash[A]{
+    def eqv(x: A, y: A): Boolean = current.eqv(x, y)
+    def hash(a: A): Int = - current.hash(a)
+  }
 ```
+]
+
+.pull-right[
+```tut:silent
+case class Eq[A](
+  eqv: (A, A) => Boolean
+)
+
+case class Hash[A](
+  eqv: (A, A) => Boolean,
+  hash: A => Int
+)
+
+val intHash: Hash[Int] = Hash[Int](
+  eqv  = _ == _,
+  hash = identity
+)
+
+def hashToEq[A](hash: Hash[A]): Eq[A] = Eq(hash.eqv)
+
+def reverseHash[A](current: Hash[A]): Hash[A] =
+  current.copy(
+    hash = (x: A) => - current.hash(x)
+  )
+```
+]
 
 ---
 # Typeclass

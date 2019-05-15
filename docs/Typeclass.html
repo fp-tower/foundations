@@ -406,9 +406,7 @@ def eqv(x: Foo   , y: Foo   ): Boolean = eqv(x.i, x.i) && eqv(x.s, y.s)
 
 ```scala
 def contains[A](xs: List[A], value: A)(compare: (A, A) => Boolean): Boolean =
-  xs.foldRight(false)((x, acc) =>
-    compare(x, value) || acc
-  )
+  xs.foldRight(false)((x, acc) => compare(x, value) || acc)
 ```
 
 --
@@ -488,6 +486,25 @@ scala> intEq.eqv(5, 5)
 res26: Boolean = true
 ```
 
+---
+# Interface
+
+```scala
+trait Eq[A]{
+  def eqv(x: A, y: A): Boolean
+}
+```
+
+```scala
+val fooEq: Eq[Foo] = new Eq[Foo]{
+  def eqv(x: Foo, y: Foo): Boolean = x.i == y.i && x.s == y.s
+}
+
+val intEq: Eq[Int] = new Eq[Int]{
+  def eqv(x: Int, y: Int): Boolean = x == y
+}
+```
+
 ```scala
 scala> fooEq.eqv(Foo(1, "Hello"), 3)
 <console>:20: error: type mismatch;
@@ -507,7 +524,6 @@ def contains[A](xs: List[A], value: A)(eq: Eq[A]): Boolean =
 val exact: Eq[Double] = new Eq[Double] {
   def eqv(x: Double, y: Double): Boolean = x == y
 }
-
 
 def approx(error: Double): Eq[Double] = new Eq[Double] {
   def eqv(x: Double, y: Double): Boolean = (x - y).abs < error
@@ -569,19 +585,65 @@ val hashFoo: Hash[Foo] = Hash[Foo](
   hash = _.hashCode
 )
 
-val hashInt: Hash[Int] = Hash[Int](
+val intHash: Hash[Int] = Hash[Int](
   eqv  = _ == _,
   hash = identity
 )
 ```
 
---
+---
+.h1[# Interface or record of functions]
 
+.pull-left[
 ```scala
-hashInt.copy(
-  hash = (x: Int) => -x
-)
+trait Eq[A] {
+  def eqv (x: A, y: A): Boolean
+  def neqv(x: A, y: A): Boolean = !eqv(x, y)
+}
+
+trait Hash[A] extends Eq[A] {
+  def hash(a: A): Int
+}
+
+val intHash: Hash[Int] = new Hash[Int]{
+  def eqv(x: Int, y: Int): Boolean = x == y
+  def hash(a: Int): Int = a
+}
+
+def hashToEq[A](hash: Hash[A]): Eq[A] = hash
+
+def reverseHash[A](current: Hash[A]): Hash[A] =
+  new Hash[A]{
+    def eqv(x: A, y: A): Boolean = current.eqv(x, y)
+    def hash(a: A): Int = - current.hash(a)
+  }
 ```
+]
+
+.pull-right[
+```scala
+case class Eq[A](
+  eqv: (A, A) => Boolean
+)
+
+case class Hash[A](
+  eqv: (A, A) => Boolean,
+  hash: A => Int
+)
+
+val intHash: Hash[Int] = Hash[Int](
+  eqv  = _ == _,
+  hash = identity
+)
+
+def hashToEq[A](hash: Hash[A]): Eq[A] = Eq(hash.eqv)
+
+def reverseHash[A](current: Hash[A]): Hash[A] =
+  current.copy(
+    hash = (x: A) => - current.hash(x)
+  )
+```
+]
 
 ---
 # Typeclass
@@ -626,10 +688,10 @@ object Global {
 
 ```scala
 scala> implicitly[Eq[Int]].eqv(5, 6)
-res32: Boolean = false
+res31: Boolean = false
 
 scala> implicitly[Eq[String]].eqv("Hello", "Hello")
-res33: Boolean = true
+res32: Boolean = true
 ```
 
 
@@ -659,13 +721,13 @@ def contains[A](xs: List[A], value: A)(implicit ev: Eq[A]): Boolean =
 
 ```scala
 scala> contains(List(1,2,3,4,5), 4)
-res35: Boolean = true
+res34: Boolean = true
 
 scala> contains(List("hello","world"), "world")
-res36: Boolean = true
+res35: Boolean = true
 
 scala> contains(List("hello","world"), "foo")
-res37: Boolean = false
+res36: Boolean = false
 ```
 
 ```scala
@@ -692,15 +754,15 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res39: Eq[Int] = $anon$1@58c8ff23
+res38: Eq[Int] = $anon$1@6d63442
 
 scala> Eq[Int]
-res40: Eq[Int] = $anon$1@58c8ff23
+res39: Eq[Int] = $anon$1@6d63442
 ```
 
 ```scala
 scala> Eq[Int].eqv(5, 5)
-res41: Boolean = true
+res40: Boolean = true
 ```
 
 ---
@@ -731,13 +793,13 @@ implicit class EqSyntax[A](self: A){
 
 ```scala
 scala> 5.eqv(5)
-res42: Boolean = true
+res41: Boolean = true
 
 scala> 5 === 6
-res43: Boolean = false
+res42: Boolean = false
 
 scala> "foo" === "hello"
-res44: Boolean = false
+res43: Boolean = false
 ```
 
 --
@@ -855,17 +917,17 @@ def monoFoldLeft[A](fa: List[A])(initial: A)(f: (A, A) => A): A = {
 
 ```scala
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))(0)(_ + _)
-res45: Int = 15
+res44: Int = 15
 ```
 
 --
 
 ```scala
 scala> monoFoldLeft(List("foo", "bar"))("")(_ + _)
-res46: String = foobar
+res45: String = foobar
 
 scala> monoFoldLeft(List(List(1,2,3), List(4,5)))(Nil)(_ ++ _)
-res47: List[Int] = List(1, 2, 3, 4, 5)
+res46: List[Int] = List(1, 2, 3, 4, 5)
 ```
 
 --
@@ -879,7 +941,7 @@ val func = monoFoldLeft(List(inc, double))(identity)(_ andThen _)
 
 ```scala
 scala> func(5)
-res48: Int = 12
+res47: Int = 12
 ```
 
 ---
@@ -923,10 +985,10 @@ implicit val stringMonoid: Monoid[String] = new Monoid[String] {
 
 ```scala
 scala> monoFoldLeft(List(1, 2, 3, 4, 5))
-res49: Int = 15
+res48: Int = 15
 
 scala> monoFoldLeft(List("foo", "bar"))
-res50: String = foobar
+res49: String = foobar
 ```
 
 --
@@ -955,10 +1017,10 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
 
 ```scala
 scala> intMonoid
-res52: Monoid[Int] = $anon$1@73627aef
+res51: Monoid[Int] = $anon$1@3cf364d7
 
 scala> implicitly[Monoid[Int]]
-res53: Monoid[Int] = $anon$1@73627aef
+res52: Monoid[Int] = $anon$1@3cf364d7
 ```
 
 ---
@@ -1116,7 +1178,7 @@ import MonoidInstance._
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-res57: Boolean = false
+res56: Boolean = false
 ```
 
 ---
@@ -1142,7 +1204,7 @@ import MonoidInstance._
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-res58: Boolean = false
+res57: Boolean = false
 ```
 
 ```scala
@@ -1151,7 +1213,7 @@ import OtherMonoidInstance._
 
 ```scala
 scala> monoFoldLeft(List(true, false, false))
-res59: Boolean = true
+res58: Boolean = true
 ```
 
 ---
