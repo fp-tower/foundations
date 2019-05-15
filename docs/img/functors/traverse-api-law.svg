@@ -24,7 +24,7 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-12 14:57:24 +0000</dc:date>
+    <dc:date>2019-05-14 13:06:51 +0000</dc:date>
   </metadata>
   <g id="traverse-api-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
     <title>traverse-api-law</title>
@@ -151,7 +151,7 @@
         <path d="M 610.04 271.93356 C 601.3125 270 604.7928 253.7226 618.7151 256.5 C 620.00676 251.08596 636.1965 251.96472 636.09066 256.5 C 646.2421 250.69932 659.2151 262.26576 650.5135 268.06644 C 660.95496 270.87876 650.38176 286.03116 641.8125 283.5 C 641.1267 287.71884 625.80744 289.1952 624.46284 283.5 C 615.7883 289.5822 597.70044 280.23048 610.04 271.93356 Z" fill="url(#Obj_Gradient)"/>
         <path d="M 610.04 271.93356 C 601.3125 270 604.7928 253.7226 618.7151 256.5 C 620.00676 251.08596 636.1965 251.96472 636.09066 256.5 C 646.2421 250.69932 659.2151 262.26576 650.5135 268.06644 C 660.95496 270.87876 650.38176 286.03116 641.8125 283.5 C 641.1267 287.71884 625.80744 289.1952 624.46284 283.5 C 615.7883 289.5822 597.70044 280.23048 610.04 271.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(616.1 260)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.156" y="15">b</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.604" y="15">a</tspan>
         </text>
       </g>
       <g id="Graphic_573">
@@ -194,8 +194,7 @@
         <path d="M 70.03998 640.93356 C 61.3125 639 64.7928 622.7226 78.71508 625.5 C 80.00676 620.08596 96.1965 620.9647 96.09066 625.5 C 106.24212 619.6993 119.21508 631.26576 110.51352 637.06644 C 120.95496 639.87876 110.38176 655.03116 101.8125 652.5 C 101.1267 656.71884 85.80744 658.1952 84.46284 652.5 C 75.78828 658.5822 57.70044 649.2305 70.03998 640.93356 Z" fill="#599a9e"/>
         <path d="M 70.03998 640.93356 C 61.3125 639 64.7928 622.7226 78.71508 625.5 C 80.00676 620.08596 96.1965 620.9647 96.09066 625.5 C 106.24212 619.6993 119.21508 631.26576 110.51352 637.06644 C 120.95496 639.87876 110.38176 655.03116 101.8125 652.5 C 101.1267 656.71884 85.80744 658.1952 84.46284 652.5 C 75.78828 658.5822 57.70044 649.2305 70.03998 640.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(76.1 629)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="6.788" y="15">a</tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" y="15">*</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="6.788" y="15">a*</tspan>
         </text>
       </g>
       <g id="Graphic_579">
