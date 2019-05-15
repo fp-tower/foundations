@@ -6,7 +6,7 @@ import exercises.functors.Functor.syntax._
 import exercises.functors.Traverse.syntax._
 import exercises.functors._
 import exercises.typeclass.Foldable.syntax._
-import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.Semigroup.syntax._
 import exercises.typeclass.{Dual, Endo, Monoid}
 import toimpl.functors.FunctorsToImpl
 

@@ -5,6 +5,7 @@ import cats.data.NonEmptyList
 import exercises.typeclass.Eq
 import cats.instances.all._
 import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.Semigroup.syntax._
 import exercises.typeclass._
 import org.scalacheck.{Arbitrary, Cogen}
 import org.scalatest.{FunSuite, Matchers}

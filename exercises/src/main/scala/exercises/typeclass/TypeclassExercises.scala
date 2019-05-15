@@ -1,9 +1,10 @@
 package exercises.typeclass
 
 import cats.data.NonEmptyList
-import exercises.typeclass.Monoid.syntax._
 import exercises.typeclass.Eq.syntax._
 import exercises.typeclass.Foldable.syntax._
+import exercises.typeclass.Monoid.syntax._
+import exercises.typeclass.Semigroup.syntax._
 import org.scalacheck.{Arbitrary, Prop}
 import toimpl.typeclass.TypeclassToImpl
 

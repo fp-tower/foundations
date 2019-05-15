@@ -918,6 +918,43 @@ monoFoldLeft(List(true, true, false))
 ---
 class: center, middle
 
+# Exercises 1 (up to 1f)
+
+---
+# Semigroup
+
+```tut:silent
+trait Semigroup[A] {
+  def combine(x: A, y: A): A
+}
+
+trait Monoid[A] extends Semigroup[A] {
+  def empty: A
+}
+```
+
+--
+
+```tut:silent
+import cats.data.NonEmptyList
+
+def fold[A: Monoid](fa: List[A]): A = ???
+
+def reduce[A: Semigroup](fa: NonEmptyList[A]): A = ???
+```
+
+```tut:invisible
+def fold[A](fa: List[A])(implicit ev: Monoid[A]): A = {
+  var res: A = ev.empty
+  val it = fa.iterator
+  while(it.hasNext) res = ev.combine(res, it.next())
+  res
+}
+```
+
+---
+class: center, middle
+
 # Exercises 1 and 2
 
 ---
@@ -974,7 +1011,7 @@ implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
 ```
 
 ```tut:fail
-monoFoldLeft(List(1,2,3,4))
+fold(List(1,2,3,4))
 ```
 
 ---
@@ -1086,7 +1123,7 @@ object MonoidInstance {
 --
 
 ```tut:fail
-monoFoldLeft(List(true, false, false))
+fold(List(true, false, false))
 ```
 
 --
@@ -1096,7 +1133,7 @@ import MonoidInstance._
 ```
 
 ```tut
-monoFoldLeft(List(true, false, false))
+fold(List(true, false, false))
 ```
 
 ---
@@ -1121,7 +1158,7 @@ import MonoidInstance._
 ```
 
 ```tut
-monoFoldLeft(List(true, false, false))
+fold(List(true, false, false))
 ```
 
 ```tut:silent
@@ -1129,7 +1166,7 @@ import OtherMonoidInstance._
 ```
 
 ```tut
-monoFoldLeft(List(true, false, false))
+fold(List(true, false, false))
 ```
 
 ---

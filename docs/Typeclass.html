@@ -754,10 +754,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res38: Eq[Int] = $anon$1@2b46be47
+res38: Eq[Int] = $anon$1@5b304056
 
 scala> Eq[Int]
-res39: Eq[Int] = $anon$1@2b46be47
+res39: Eq[Int] = $anon$1@5b304056
 ```
 
 ```scala
@@ -1003,6 +1003,37 @@ scala> monoFoldLeft(List(true, true, false))
 ---
 class: center, middle
 
+# Exercises 1 (up to 1f)
+
+---
+# Semigroup
+
+```scala
+trait Semigroup[A] {
+  def combine(x: A, y: A): A
+}
+
+trait Monoid[A] extends Semigroup[A] {
+  def empty: A
+}
+```
+
+--
+
+```scala
+import cats.data.NonEmptyList
+
+def fold[A: Monoid](fa: List[A]): A = ???
+
+def reduce[A: Semigroup](fa: NonEmptyList[A]): A = ???
+```
+
+
+
+
+---
+class: center, middle
+
 # Exercises 1 and 2
 
 ---
@@ -1017,10 +1048,10 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
 
 ```scala
 scala> intMonoid
-res51: Monoid[Int] = $anon$1@4d3ddeb9
+res51: Monoid[Int] = $anon$1@620289e8
 
 scala> implicitly[Monoid[Int]]
-res52: Monoid[Int] = $anon$1@4d3ddeb9
+res52: Monoid[Int] = $anon$1@620289e8
 ```
 
 ---
@@ -1042,7 +1073,7 @@ implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
 
 ```scala
 scala> implicitly[Monoid[Int]]
-<console>:30: error: ambiguous implicit values:
+<console>:31: error: ambiguous implicit values:
  both value intMonoid of type => Monoid[Int]
  and value intMonoid2 of type => Monoid[Int]
  match expected type Monoid[Int]
@@ -1067,13 +1098,13 @@ implicit val intMonoid3: Monoid[Int] = new Monoid[Int]{
 ```
 
 ```scala
-scala> monoFoldLeft(List(1,2,3,4))
-<console>:33: error: ambiguous implicit values:
+scala> fold(List(1,2,3,4))
+<console>:34: error: ambiguous implicit values:
  both value intMonoid of type => Monoid[Int]
  and value intMonoid2 of type => Monoid[Int]
  match expected type Monoid[Int]
-       monoFoldLeft(List(1,2,3,4))
-                   ^
+       fold(List(1,2,3,4))
+           ^
 ```
 
 ---
@@ -1185,10 +1216,10 @@ object MonoidInstance {
 --
 
 ```scala
-scala> monoFoldLeft(List(true, false, false))
-<console>:33: error: could not find implicit value for parameter ev: Monoid[Boolean]
-       monoFoldLeft(List(true, false, false))
-                   ^
+scala> fold(List(true, false, false))
+<console>:34: error: could not find implicit value for parameter ev: Monoid[Boolean]
+       fold(List(true, false, false))
+           ^
 ```
 
 --
@@ -1198,7 +1229,7 @@ import MonoidInstance._
 ```
 
 ```scala
-scala> monoFoldLeft(List(true, false, false))
+scala> fold(List(true, false, false))
 res56: Boolean = false
 ```
 
@@ -1224,7 +1255,7 @@ import MonoidInstance._
 ```
 
 ```scala
-scala> monoFoldLeft(List(true, false, false))
+scala> fold(List(true, false, false))
 res57: Boolean = false
 ```
 
@@ -1233,7 +1264,7 @@ import OtherMonoidInstance._
 ```
 
 ```scala
-scala> monoFoldLeft(List(true, false, false))
+scala> fold(List(true, false, false))
 res58: Boolean = true
 ```
 
@@ -1329,7 +1360,7 @@ implicit val intSemigroup: Semigroup[Int] = new Semigroup[Int]{
 
 ```scala
 scala> implicit val listSemigroup: Semigroup[List] = ???
-<console>:44: error: type List takes type parameters
+<console>:45: error: type List takes type parameters
        implicit val listSemigroup: Semigroup[List] = ???
                                              ^
 ```
@@ -1367,7 +1398,7 @@ implicit val listFoldable: Foldable[List] = new Foldable[List] {
 
 ```scala
 scala> implicit val intFoldable: Foldable[Int] = ???
-<console>:46: error: Int takes no type parameters, expected: one
+<console>:47: error: Int takes no type parameters, expected: one
        implicit val intFoldable: Foldable[Int] = ???
                                           ^
 ```

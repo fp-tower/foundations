@@ -210,7 +210,7 @@ object TypeclassAnswers extends TypeclassToImpl {
     new SimpleRuleSet(
       "Semigroup",
       "associative" ->
-        Prop.forAll((x: A, y: A, z: A) => ((x |++| y) |++| z) === (x |++| (y |++| z)))
+        Prop.forAll((x: A, y: A, z: A) => ((x |+| y) |+| z) === (x |+| (y |+| z)))
     )
 
   def reduceMap[A, B: Semigroup](fa: List[A])(f: A => B): Option[B] =
