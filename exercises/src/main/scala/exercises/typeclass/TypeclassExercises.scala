@@ -186,6 +186,7 @@ object TypeclassExercises extends TypeclassToImpl {
 
   // 3b. Implement a lawful instance of Monoid for Boolean
   // how many different instances can you think of?
+  // what about Option?
   val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
     def combine(x: Boolean, y: Boolean): Boolean = ???
     def empty: Boolean                           = ???
