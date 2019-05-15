@@ -21,8 +21,8 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
   // 1. Monoid Instances
   /////////////////////////////
 
-  test("check Double instance") {
-    2.0.combine(3.5).combine(mempty[Double]) shouldEqual 5.5
+  test("check Int instance") {
+    2.combine(3).combine(mempty[Int]) shouldEqual 5
   }
 
   test("check List instance") {
@@ -122,7 +122,6 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
   }
 
   checkAll("Int", monoidLaws[Int])
-  checkAll("Double", monoidLaws[Double])
   checkAll("Unit", monoidLaws[Unit])
   checkAll("String", monoidLaws[String])
   checkAll("List", monoidLaws[List[Boolean]])

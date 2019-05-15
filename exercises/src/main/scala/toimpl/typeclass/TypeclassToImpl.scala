@@ -12,7 +12,6 @@ trait TypeclassToImpl extends Laws {
   /////////////////////////////
 
   implicit val intMonoid: Monoid[Int]
-  implicit val doubleMonoid: Monoid[Double]
   implicit val stringMonoid: Monoid[String]
   implicit val longMonoid: Monoid[Long]
   implicit def listMonoid[A]: Monoid[List[A]]

@@ -23,11 +23,6 @@ object TypeclassAnswers extends TypeclassToImpl {
     def empty: Int                   = 0
   }
 
-  implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
-    def combine(x: Double, y: Double): Double = x + y
-    def empty: Double                         = 0.0
-  }
-
   implicit val stringMonoid: Monoid[String] = new Monoid[String] {
     def combine(x: String, y: String): String = x + y
     def empty: String                         = ""

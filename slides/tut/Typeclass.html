@@ -1003,6 +1003,27 @@ Accumulators are variables that are only “added” to through an **associative
 can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
 
 ---
+background-image: url(img/typeclass/monoid-laws.svg)
+
+---
+# Monoid Laws
+
+```scala
+- Double.Monoid.associative *** FAILED ***
+   GeneratorDrivenPropertyCheckFailedException was thrown during property evaluation.
+    (Discipline.scala:14)
+     Falsified after 8 successful property evaluations.
+     Location: (Discipline.scala:14)
+     Occurred when passed generated values (
+       arg0 = -4.498344780314773E208,
+       arg1 = -5.116678570398714E199,
+       arg2 = -1.0056301257545645E214
+     )
+```
+
+### Failed after two weeks of CI build
+
+---
 class: center, middle
 
 # Where to define instances?

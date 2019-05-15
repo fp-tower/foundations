@@ -12,7 +12,7 @@ import scala.annotation.tailrec
 object TypeclassApp extends App {
   import TypeclassExercises._
 
-  println(0.3.combine(10.7))
+  println(2.combine(10))
   println("foo" |+| "bar")
 }
 
@@ -25,11 +25,6 @@ object TypeclassExercises extends TypeclassToImpl {
   implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
     def combine(x: Int, y: Int): Int = x + y
     def empty: Int                   = 0
-  }
-
-  implicit val doubleMonoid: Monoid[Double] = new Monoid[Double] {
-    def combine(x: Double, y: Double): Double = x + y
-    def empty: Double                         = 0.0
   }
 
   implicit val stringMonoid: Monoid[String] = new Monoid[String] {

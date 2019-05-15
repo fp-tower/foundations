@@ -754,10 +754,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res38: Eq[Int] = $anon$1@6d63442
+res38: Eq[Int] = $anon$1@2b46be47
 
 scala> Eq[Int]
-res39: Eq[Int] = $anon$1@6d63442
+res39: Eq[Int] = $anon$1@2b46be47
 ```
 
 ```scala
@@ -1017,10 +1017,10 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
 
 ```scala
 scala> intMonoid
-res51: Monoid[Int] = $anon$1@3cf364d7
+res51: Monoid[Int] = $anon$1@4d3ddeb9
 
 scala> implicitly[Monoid[Int]]
-res52: Monoid[Int] = $anon$1@3cf364d7
+res52: Monoid[Int] = $anon$1@4d3ddeb9
 ```
 
 ---
@@ -1100,6 +1100,27 @@ class RDD[A]{
 
 Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
 can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
+
+---
+background-image: url(img/typeclass/monoid-laws.svg)
+
+---
+# Monoid Laws
+
+```scala
+- Double.Monoid.associative *** FAILED ***
+   GeneratorDrivenPropertyCheckFailedException was thrown during property evaluation.
+    (Discipline.scala:14)
+     Falsified after 8 successful property evaluations.
+     Location: (Discipline.scala:14)
+     Occurred when passed generated values (
+       arg0 = -4.498344780314773E208,
+       arg1 = -5.116678570398714E199,
+       arg2 = -1.0056301257545645E214
+     )
+```
+
+### Failed after two weeks of CI build
 
 ---
 class: center, middle
