@@ -174,17 +174,51 @@ object TypeclassExercises extends TypeclassToImpl {
   def fold2[A](xs: List[A])(implicit ev: Monoid[A]): A = ???
 
   /////////////////////////////
-  // 3. Instance uniqueness
+  // 3. Typeclass laws
   /////////////////////////////
 
-  // 3a. Can you implement a lawful Monoid for Int multiplication?
+  // 3a. Implement another Monoid for String where combine add an empty space between words
+  // e.g. combine("hello", "world")
+  val stringSpaceMonoid: Monoid[String] = new Monoid[String] {
+    def combine(x: String, y: String): String = ???
+    def empty: String                         = ???
+  }
+
+  // 3b. What will be the result of foldWords?
+  val foldWords = fold(List("hello", "world", "", ""))
+
+  // 3c. Can you think of properties for Monoid that will fail for instances like stringSpaceMonoid
+  // Implement your ideas in monoidLaws and verify all instances we defined so far are valid
+  // Try to be as restrictive possible
+  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet = {
+    val p = Monoid[A]
+
+    new SimpleRuleSet("Monoid",
+                      "associative" -> Prop.forAll((x: A, y: A, z: A) => ((x |+| y) |+| z) === (x |+| (y |+| z))),
+                      "fail"        -> Prop.forAll((a: A) => ???))
+  }
+
+  // 3d. combine from Monoid is also associative, x combine (y combine z) == (x combine y) combine z
+  // this property is very useful to split the work in several batches
+  // e.g. fold(List(1,2, ..., 100, 101, ..., 200, 201, ..., 300)) ==
+  //      fold(List(1,2, ..., 100)) combine fold(List(101, ..., 200)) combine fold(List(301, ..., 300))
+  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A = ???
+
+  // 3e. What other property do you think would be useful to parallelize work?
+  // is it satisfied by any instance defined so far?
+
+  /////////////////////////////
+  // 4. Instance uniqueness
+  /////////////////////////////
+
+  // 4a. Can you implement a lawful Monoid for Int multiplication?
   // can you think of other lawful Monoid for Int?
   val productIntMonoid: Monoid[Int] = new Monoid[Int] {
     def combine(x: Int, y: Int): Int = ???
     def empty: Int                   = ???
   }
 
-  // 3b. Implement a lawful instance of Monoid for Boolean
+  // 4b. Implement a lawful instance of Monoid for Boolean
   // how many different instances can you think of?
   // what about Option?
   val booleanMonoid: Monoid[Boolean] = new Monoid[Boolean] {
@@ -192,7 +226,7 @@ object TypeclassExercises extends TypeclassToImpl {
     def empty: Boolean                           = ???
   }
 
-  // 3c. Implement an instance of Monoid for Product
+  // 4c. Implement an instance of Monoid for Product
   // such as combine(Product(3), Product(5)) == Product(15)
   // Use Product to implement product
   implicit val productMonoid: Monoid[Product] = new Monoid[Product] {
@@ -202,7 +236,7 @@ object TypeclassExercises extends TypeclassToImpl {
 
   def product(xs: List[Int]): Int = ???
 
-  // 3e. Implement an instance of Monoid for All
+  // 4e. Implement an instance of Monoid for All
   // such as combine(All(true), All(true))  == All(true)
   //         combine(All(true), All(false)) == All(false)
   // Use All to implement forAll
@@ -213,8 +247,8 @@ object TypeclassExercises extends TypeclassToImpl {
 
   def forAll(xs: List[Boolean]): Boolean = ???
 
-  // 3f. Implement an instance of Monoid for Endo
-  // such as combine(inc, double)(5) == inc(double(5))
+  // 4f. Implement an instance of Monoid for Endo
+  // such as combine(inc, double)(5) == 11
   // Use Endo to implement pipe
   implicit def endoMonoid[A]: Monoid[Endo[A]] = new Monoid[Endo[A]] {
     def combine(x: Endo[A], y: Endo[A]): Endo[A] = ???
@@ -222,38 +256,6 @@ object TypeclassExercises extends TypeclassToImpl {
   }
 
   def pipe[A](xs: List[A => A]): A => A = ???
-
-  /////////////////////////////
-  // 4. Typeclass laws
-  /////////////////////////////
-
-  // 4a. Implement another Monoid for String where combine add an empty space between words
-  // e.g. combine("hello", "world")
-  val stringSpaceMonoid: Monoid[String] = new Monoid[String] {
-    def combine(x: String, y: String): String = ???
-    def empty: String                         = ???
-  }
-
-  // 4b. What will be the result of foldWords?
-  val foldWords = fold(List("hello", "world", "", ""))
-
-  // 4c. Can you think of properties for Monoid that will fail for instances like stringSpaceMonoid
-  // Implement your ideas in monoidLaws and verify all instances we defined so far are valid
-  // Try to be as restrictive possible
-  def monoidLaws[A: Arbitrary: Monoid: Eq]: RuleSet = {
-    val p = Monoid[A]
-
-    new SimpleRuleSet("Monoid", "example" -> Prop.forAll((a: A) => a === a), "fail" -> Prop.forAll((a: A) => ???))
-  }
-
-  // 4d. combine from Monoid is also associative, x combine (y combine z) == (x combine y) combine z
-  // this property is very useful to split the work in several batches
-  // e.g. fold(List(1,2, ..., 100, 101, ..., 200, 201, ..., 300)) ==
-  //      fold(List(1,2, ..., 100)) combine fold(List(101, ..., 200)) combine fold(List(301, ..., 300))
-  def splitFold[A: Monoid](xs: List[A])(split: List[A] => List[List[A]]): A = ???
-
-  // 4e. What other property do you think would be useful to parallelize work?
-  // is it satisfied by any instance defined so far?
 
   /////////////////////////////
   // 5. Typeclass hierarchy

@@ -918,7 +918,7 @@ monoFoldLeft(List(true, true, false))
 ---
 class: center, middle
 
-# Exercises 1 (up to 1f)
+# Exercises 1 (up to 1h)
 
 ---
 # Semigroup
@@ -1015,32 +1015,21 @@ fold(List(1,2,3,4))
 ```
 
 ---
-class: center, middle
+.h1[# How to ensure uniqueness?]
 
-# Exercises 3 and 4
-
----
-# Use case: Distributed Map-Reduce
+### 1. Parametricity
 
 ```scala
-class RDD[A]{
-
-  def map[B](f: A => B): RDD[B]
-
-  def reduce(f: (A, A) => A): A
-
-}
+def map[F[_], A, B](fa: F[A])(f: A => B): F[B]
 ```
 
---
+### 2. Laws
 
-### Spark Accumulators (aka reduce)
-
-Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
-can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
-
----
-background-image: url(img/typeclass/monoid-laws.svg)
+```scala
+"Monoid: combine is associative" in {
+  forAll((x: A, y: A, z: A) => ((x |+| y) |+| z) === (x |+| (y |+| z)))
+}
+```
 
 ---
 # Monoid Laws
@@ -1059,6 +1048,37 @@ background-image: url(img/typeclass/monoid-laws.svg)
 ```
 
 ### Failed after two weeks of CI build
+
+---
+class: center, middle
+
+# Exercises 3
+
+---
+background-image: url(img/typeclass/monoid-laws.svg)
+
+---
+# Use case: Distributed Map-Reduce
+
+```scala
+class RDD[A]{
+
+  def map[B](f: A => B): RDD[B]
+
+  def reduce(f: (A, A) => A): A
+
+}
+```
+
+### Spark Accumulators (aka reduce)
+
+Accumulators are variables that are only “added” to through an **associative** and **commutative** operation and
+can therefore be efficiently supported in parallel. They can be used to implement counters (as in MapReduce) or sums.
+
+---
+class: center, middle
+
+# Exercises 4
 
 ---
 class: center, middle
@@ -1195,6 +1215,21 @@ object CommutativeMonoid {
 ```
 
 * If you control neither the typeclass or the type (Please make a PR!)
+
+---
+class: center, middle
+
+# Exercises 5
+
+---
+background-image: url(img/typeclass/semigroup.svg)
+
+# Semigroups
+
+---
+background-image: url(img/typeclass/cats-semigroup.svg)
+
+# Semigroups in Cats
 
 ---
 class: center, middle

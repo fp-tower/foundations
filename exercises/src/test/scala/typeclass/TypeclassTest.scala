@@ -102,20 +102,7 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
   }
 
   /////////////////////////////
-  // 3. Instance uniqueness
-  /////////////////////////////
-
-  test("product") {
-    product(List(1, 2, 3, 4, 5)) shouldEqual 120
-  }
-
-  test("forAll") {
-    forAll(List(true, true, false, true)) shouldEqual false
-    forAll(List(true, true, true, true)) shouldEqual true
-  }
-
-  /////////////////////////////
-  // 4. Typeclass laws
+  // 3. Typeclass laws
   /////////////////////////////
 
   test("String Monoid with space") {
@@ -140,6 +127,25 @@ class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with
   test("splitFold") {
     val xs = 1.to(1000).toList
     splitFold(xs)(_.grouped(100).toList) shouldEqual fold(xs)
+  }
+
+  /////////////////////////////
+  // 4. Instance uniqueness
+  /////////////////////////////
+
+  test("product") {
+    product(List(1, 2, 3, 4, 5)) shouldEqual 120
+  }
+
+  test("forAll") {
+    forAll(List(true, true, false, true)) shouldEqual false
+    forAll(List(true, true, true, true)) shouldEqual true
+  }
+
+  test("pipe") {
+    val inc: Int => Int    = _ + 1
+    val double: Int => Int = _ * 2
+    pipe(List(inc, double))(5) shouldEqual 11
   }
 
   /////////////////////////////
