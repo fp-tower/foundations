@@ -1442,14 +1442,28 @@ Eq[Contact] => Eq[Either[Email, Either[Address, Nothing]]]
 ```
 
 ---
-# Derivation in Haskell
+# Derivation is a recursive function (pseudo code)
 
-```haskell
-data Person = Person { name :: String , age :: Int } deriving Eq
+```scala
+object Global {
+  val eqDictionary: Map[x: Type, Eq[x]] := Map(
+    Int          -> intEq,
+    String       -> stringEq,
+    (A, B)       -> tuple2(eqDictionary(A), eqDictionary(B)),
+    Either[A, B] -> either(eqDictionary(A), eqDictionary(B))
+  )
+}
 ```
 
-```haskell
-data  Option a  =  None | Some a deriving (Eq , Ord)
+```scala
+case class Person(name: String, age: Int)
+
+object Person {
+  implicit val localIntEq: Eq[Int] = // local mutation of eqDictionary
+    (x: Int, y: Int) => (x - y).abs < 2
+
+  implicit val personEq: Eq[Person] = derive
+}
 ```
 
 ---
