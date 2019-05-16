@@ -450,7 +450,7 @@ forAll(a:  A    => combine(empty, a ) == a )
 forAll(fa: F[A] => tuple2(unit  , fa) =~ fa)
 
 forAll(( a: A   ,  b: B   ,  c: C)    => combine(combine(a, b), c)  == combine(a, combine(b, c)))
-forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple(fa, tuple2(fb, fc)))
+forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple2(fa, tuple2(fb, fc)))
 ```
 
 ---
