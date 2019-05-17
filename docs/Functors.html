@@ -176,18 +176,6 @@ type Logger[A] = ...
 background-image: url(img/functors/functor-api-law.svg)
 
 ---
-# FunctorOf
-
-```haskell
-Functor              = FunctorOf (->) (->)
-ContravariantFunctor = FunctorOf (<-) (->)
-InvariantFunctor     = FunctorOf Iso Iso
-Profunctor           = FunctorOf (<-) (~>)
-```
-
-See [Functor-Of](https://cvlad.info/functor-of/) from Vladimir Ciobanu and @Iceland_jack
-
----
 class: center, middle
 
 # Exercise 1
@@ -316,6 +304,18 @@ implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
 
 [Thinking with types](https://leanpub.com/thinking-with-types) by Sandy Maguire
 ]
+
+---
+# Generalising Functor
+
+```haskell
+Functor              = FunctorOf (->) (->)
+ContravariantFunctor = FunctorOf (<-) (->)
+InvariantFunctor     = FunctorOf Iso Iso
+Profunctor           = FunctorOf (<-) (~>)
+```
+
+See [Functor-Of](https://cvlad.info/functor-of/) from Vladimir Ciobanu and @Iceland_jack
 
 ---
 class: center, middle
