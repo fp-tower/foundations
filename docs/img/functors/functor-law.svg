@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="-.5 2.5 330.636 403" width="330.636" height="403">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-05-17 15:54:25 +0000</dc:date>
+  </metadata>
+  <g id="functor-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+    <title>functor-law</title>
+    <rect fill="white" x="0" y="2.5" width="330.136" height="403"/>
+    <g id="functor-law: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_142">
+        <path d="M 31.5 234 L 40.5 234 L 40.5 259 L 45 259 L 36 270 L 27 259 L 31.5 259 Z" fill="#acbdd0"/>
+        <path d="M 31.5 234 L 40.5 234 L 40.5 259 L 45 259 L 36 270 L 27 259 L 31.5 259 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_141">
+        <text transform="translate(45.408 239)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="1314504e-19" y="15">map f</tspan>
+        </text>
+      </g>
+      <g id="Graphic_140">
+        <path d="M 16.03998 298.93356 C 7.3125 297 10.7928 280.7226 24.71508 283.5 C 26.00676 278.08596 42.1965 278.96472 42.09066 283.5 C 52.24212 277.69932 65.21508 289.26576 56.51352 295.06644 C 66.95496 297.87876 56.38176 313.03116 47.8125 310.5 C 47.1267 314.71884 31.80744 316.1952 30.46284 310.5 C 21.78828 316.5822 3.70044 307.23048 16.03998 298.93356 Z" fill="#599a9e"/>
+        <path d="M 16.03998 298.93356 C 7.3125 297 10.7928 280.7226 24.71508 283.5 C 26.00676 278.08596 42.1965 278.96472 42.09066 283.5 C 52.24212 277.69932 65.21508 289.26576 56.51352 295.06644 C 66.95496 297.87876 56.38176 313.03116 47.8125 310.5 C 47.1267 314.71884 31.80744 316.1952 30.46284 310.5 C 21.78828 316.5822 3.70044 307.23048 16.03998 298.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(22.1 287)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.092" y="15">f(a)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_139">
+        <path d="M 16.03998 208.93356 C 7.3125 207 10.7928 190.7226 24.71508 193.5 C 26.00676 188.08596 42.1965 188.96472 42.09066 193.5 C 52.24212 187.69932 65.21508 199.26576 56.51352 205.06644 C 66.95496 207.87876 56.38176 223.03116 47.8125 220.5 C 47.1267 224.71884 31.80744 226.1952 30.46284 220.5 C 21.78828 226.5822 3.70044 217.23048 16.03998 208.93356 Z" fill="#599a9e"/>
+        <path d="M 16.03998 208.93356 C 7.3125 207 10.7928 190.7226 24.71508 193.5 C 26.00676 188.08596 42.1965 188.96472 42.09066 193.5 C 52.24212 187.69932 65.21508 199.26576 56.51352 205.06644 C 66.95496 207.87876 56.38176 223.03116 47.8125 220.5 C 47.1267 224.71884 31.80744 226.1952 30.46284 220.5 C 21.78828 226.5822 3.70044 217.23048 16.03998 208.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(22.1 197)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.604" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_149">
+        <path d="M 31.5 324 L 40.5 324 L 40.5 349 L 45 349 L 36 360 L 27 349 L 31.5 349 Z" fill="#acbdd0"/>
+        <path d="M 31.5 324 L 40.5 324 L 40.5 349 L 45 349 L 36 360 L 27 349 L 31.5 349 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_148">
+        <text transform="translate(43.184 329)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="29132252e-20" y="15">map g</tspan>
+        </text>
+      </g>
+      <g id="Graphic_147">
+        <path d="M 9.558728 388.93356 C -2.29125 387 2.434224 370.7226 21.337586 373.5 C 23.0914 368.08596 45.07347 368.9647 44.929763 373.5 C 58.71319 367.6993 76.32759 379.26576 64.5128 385.06644 C 78.68996 387.87876 64.3339 403.03116 52.69875 400.5 C 51.767586 404.71884 30.967435 406.1952 29.141767 400.5 C 17.363642 406.5822 -7.195625 397.2305 9.558728 388.93356 Z" fill="#599a9e"/>
+        <path d="M 9.558728 388.93356 C -2.29125 387 2.434224 370.7226 21.337586 373.5 C 23.0914 368.08596 45.07347 368.9647 44.929763 373.5 C 58.71319 367.6993 76.32759 379.26576 64.5128 385.06644 C 78.68996 387.87876 64.3339 403.03116 52.69875 400.5 C 51.767586 404.71884 30.967435 406.1952 29.141767 400.5 C 17.363642 406.5822 -7.195625 397.2305 9.558728 388.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(15.998 377)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="1.118" y="15">g(f(a))</tspan>
+        </text>
+      </g>
+      <g id="Graphic_153">
+        <path d="M 203.74398 208.93356 C 195.0165 207 198.4968 190.7226 212.41908 193.5 C 213.71076 188.08596 229.9005 188.96472 229.79466 193.5 C 239.94612 187.69932 252.91908 199.26576 244.21752 205.06644 C 254.65896 207.87876 244.08576 223.03116 235.5165 220.5 C 234.8307 224.71884 219.51144 226.1952 218.16684 220.5 C 209.49228 226.5822 191.40444 217.23048 203.74398 208.93356 Z" fill="#599a9e"/>
+        <path d="M 203.74398 208.93356 C 195.0165 207 198.4968 190.7226 212.41908 193.5 C 213.71076 188.08596 229.9005 188.96472 229.79466 193.5 C 239.94612 187.69932 252.91908 199.26576 244.21752 205.06644 C 254.65896 207.87876 244.08576 223.03116 235.5165 220.5 C 234.8307 224.71884 219.51144 226.1952 218.16684 220.5 C 209.49228 226.5822 191.40444 217.23048 203.74398 208.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(209.804 197)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.604" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_152">
+        <path d="M 220.5 234 L 229.5 234 L 229.5 259 L 234 259 L 225 270 L 216 259 L 220.5 259 Z" fill="#acbdd0"/>
+        <path d="M 220.5 234 L 229.5 234 L 229.5 259 L 234 259 L 225 270 L 216 259 L 220.5 259 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_151">
+        <text transform="translate(239.776 230)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="26.816" y="15">map </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2842171e-19" y="33.448">f andThen g</tspan>
+        </text>
+      </g>
+      <g id="Graphic_150">
+        <path d="M 198.55873 298.93356 C 186.70875 297 191.43422 280.7226 210.33759 283.5 C 212.0914 278.08596 234.07347 278.96472 233.92976 283.5 C 247.7132 277.69932 265.3276 289.26576 253.5128 295.06644 C 267.68996 297.87876 253.3339 313.03116 241.69875 310.5 C 240.7676 314.71884 219.96744 316.1952 218.14177 310.5 C 206.36364 316.5822 181.80438 307.23048 198.55873 298.93356 Z" fill="#599a9e"/>
+        <path d="M 198.55873 298.93356 C 186.70875 297 191.43422 280.7226 210.33759 283.5 C 212.0914 278.08596 234.07347 278.96472 233.92976 283.5 C 247.7132 277.69932 265.3276 289.26576 253.5128 295.06644 C 267.68996 297.87876 253.3339 313.03116 241.69875 310.5 C 240.7676 314.71884 219.96744 316.1952 218.14177 310.5 C 206.36364 316.5822 181.80438 307.23048 198.55873 298.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(204.998 287)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="1.118" y="15">g(f(a))</tspan>
+        </text>
+      </g>
+      <g id="Graphic_154">
+        <path d="M 99 292.5 L 111 279 L 111 285.75 L 159 285.75 L 159 279 L 171 292.5 L 159 306 L 159 299.25 L 111 299.25 L 111 306 Z" fill="#acbdd0"/>
+        <path d="M 99 292.5 L 111 279 L 111 285.75 L 159 285.75 L 159 279 L 171 292.5 L 159 306 L 159 299.25 L 111 299.25 L 111 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_155">
+        <text transform="translate(113.736 254)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">fusion</tspan>
+        </text>
+      </g>
+      <g id="Graphic_159">
+        <path d="M 31.5 48 L 40.5 48 L 40.5 73 L 45 73 L 36 84 L 27 73 L 31.5 73 Z" fill="#acbdd0"/>
+        <path d="M 31.5 48 L 40.5 48 L 40.5 73 L 45 73 L 36 84 L 27 73 L 31.5 73 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_158">
+        <text transform="translate(48.696 53)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">map identity</tspan>
+        </text>
+      </g>
+      <g id="Graphic_157">
+        <path d="M 16.03998 112.93356 C 7.3125 111 10.7928 94.7226 24.71508 97.5 C 26.00676 92.08596 42.1965 92.96472 42.09066 97.5 C 52.24212 91.69932 65.21508 103.26576 56.51352 109.06644 C 66.95496 111.87876 56.38176 127.03116 47.8125 124.5 C 47.1267 128.71884 31.80744 130.1952 30.46284 124.5 C 21.78828 130.5822 3.70044 121.23048 16.03998 112.93356 Z" fill="#599a9e"/>
+        <path d="M 16.03998 112.93356 C 7.3125 111 10.7928 94.7226 24.71508 97.5 C 26.00676 92.08596 42.1965 92.96472 42.09066 97.5 C 52.24212 91.69932 65.21508 103.26576 56.51352 109.06644 C 66.95496 111.87876 56.38176 127.03116 47.8125 124.5 C 47.1267 128.71884 31.80744 130.1952 30.46284 124.5 C 21.78828 130.5822 3.70044 121.23048 16.03998 112.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(22.1 101)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.604" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_156">
+        <path d="M 16.03998 22.93356 C 7.3125 21 10.7928 4.7226 24.71508 7.5 C 26.00676 2.08596 42.1965 2.96472 42.09066 7.5 C 52.24212 1.69932 65.21508 13.26576 56.51352 19.06644 C 66.95496 21.87876 56.38176 37.03116 47.8125 34.5 C 47.1267 38.71884 31.80744 40.1952 30.46284 34.5 C 21.78828 40.5822 3.70044 31.23048 16.03998 22.93356 Z" fill="#599a9e"/>
+        <path d="M 16.03998 22.93356 C 7.3125 21 10.7928 4.7226 24.71508 7.5 C 26.00676 2.08596 42.1965 2.96472 42.09066 7.5 C 52.24212 1.69932 65.21508 13.26576 56.51352 19.06644 C 66.95496 21.87876 56.38176 37.03116 47.8125 34.5 C 47.1267 38.71884 31.80744 40.1952 30.46284 34.5 C 21.78828 40.5822 3.70044 31.23048 16.03998 22.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(22.1 11)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.604" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_165">
+        <path d="M 154.32 67.5 L 166.32 54 L 166.32 60.75 L 213 60.75 L 213 54 L 225 67.5 L 213 81 L 213 74.25 L 166.32 74.25 L 166.32 81 Z" fill="#acbdd0"/>
+        <path d="M 154.32 67.5 L 166.32 54 L 166.32 60.75 L 213 60.75 L 213 54 L 225 67.5 L 213 81 L 213 74.25 L 166.32 74.25 L 166.32 81 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_164">
+        <text transform="translate(158.84 23)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">identity</tspan>
+        </text>
+      </g>
+      <g id="Graphic_166">
+        <path d="M 242.35998 64.93356 C 233.6325 63 237.1128 46.7226 251.03508 49.5 C 252.32676 44.08596 268.5165 44.96472 268.41066 49.5 C 278.56212 43.69932 291.53508 55.26576 282.83352 61.06644 C 293.27496 63.87876 282.70176 79.03116 274.1325 76.5 C 273.4467 80.71884 258.12744 82.1952 256.78284 76.5 C 248.10828 82.5822 230.02044 73.23048 242.35998 64.93356 Z" fill="#599a9e"/>
+        <path d="M 242.35998 64.93356 C 233.6325 63 237.1128 46.7226 251.03508 49.5 C 252.32676 44.08596 268.5165 44.96472 268.41066 49.5 C 278.56212 43.69932 291.53508 55.26576 282.83352 61.06644 C 293.27496 63.87876 282.70176 79.03116 274.1325 76.5 C 273.4467 80.71884 258.12744 82.1952 256.78284 76.5 C 248.10828 82.5822 230.02044 73.23048 242.35998 64.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(248.42 53)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.604" y="15">a</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

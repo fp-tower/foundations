@@ -60,6 +60,8 @@ layout: true
 .large[
 * Functor hierarchy
 
+* 20+ generic functions
+
 * Typeclass coherence
 ]
 
@@ -172,6 +174,18 @@ type Logger[A] = ...
 
 ---
 background-image: url(img/functors/functor-api-law.svg)
+
+---
+# FunctorOf
+
+```haskell
+Functor              = FunctorOf (->) (->)
+ContravariantFunctor = FunctorOf (<-) (->)
+InvariantFunctor     = FunctorOf Iso Iso
+Profunctor           = FunctorOf (<-) (~>)
+```
+
+See [Functor-Of](https://cvlad.info/functor-of/) from Vladimir Ciobanu and @Iceland_jack
 
 ---
 class: center, middle
