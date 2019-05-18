@@ -221,6 +221,10 @@ object FunctorsExercises extends FunctorsToImpl {
     //         func(-10) == 10
     //         func(  3) == 6
     def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
+
+    // 3f. Implement forever
+    // such as forever(Stream(1)) == Stream(1,1,1,1,1,1,1,1,...)
+    def forever[A](fa: F[A]): F[Nothing] = ???
   }
 
   // 3f. Implement the following instances
@@ -257,6 +261,11 @@ object FunctorsExercises extends FunctorsToImpl {
   implicit def functionMonad[R]: Monad[Function[R, ?]] = new DefaultMonad[Function[R, ?]] {
     def pure[A](a: A): Function[R, A]                                             = functionApplicative.pure(a)
     def flatMap[A, B](fa: Function[R, A])(f: A => Function[R, B]): Function[R, B] = ???
+  }
+
+  implicit val streamMonad: Monad[Stream] = new DefaultMonad[Stream] {
+    def pure[A](a: A): Stream[A]                                   = ???
+    def flatMap[A, B](fa: Stream[A])(f: A => Stream[B]): Stream[B] = ???
   }
 
   // 3g. Implement an Monad instance for Compose

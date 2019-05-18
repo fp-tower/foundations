@@ -10,6 +10,8 @@ trait Monad[F[_]] extends Applicative[F] {
 
   def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A]
 
+  def forever[A](fa: F[A]): F[Nothing]
+
 }
 
 object Monad {
@@ -21,6 +23,9 @@ object Monad {
 
       def flatTap[B](f: A => F[B])(implicit ev: Monad[F]): F[A] =
         ev.flatTap(fa)(f)
+
+      def forever(implicit ev: Monad[F]): F[Nothing] =
+        ev.forever(fa)
     }
 
     implicit class MonadOps2[F[_], A](fa: F[F[A]]) {

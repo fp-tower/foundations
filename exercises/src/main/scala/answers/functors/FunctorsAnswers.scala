@@ -180,6 +180,9 @@ object FunctorsAnswers extends FunctorsToImpl {
 
     def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] =
       flatMap(cond)(if (_) ifTrue else ifFalse)
+
+    def forever[A](fa: F[A]): F[Nothing] =
+      flatMap[A, Nothing](fa)(_ => forever(fa))
   }
 
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
@@ -211,6 +214,11 @@ object FunctorsAnswers extends FunctorsToImpl {
   implicit def functionMonad[R]: Monad[R => ?] = new DefaultMonad[R => ?] {
     def pure[A](a: A): R => A                             = _ => a
     def flatMap[A, B](fa: R => A)(f: A => R => B): R => B = r => f(fa(r))(r)
+  }
+
+  implicit val streamMonad: Monad[Stream] = new DefaultMonad[Stream] {
+    def pure[A](a: A): Stream[A]                                   = Stream(a)
+    def flatMap[A, B](fa: Stream[A])(f: A => Stream[B]): Stream[B] = fa.flatMap(f)
   }
 
   ////////////////////////
