@@ -29,11 +29,16 @@
     </linearGradient>
     <linearGradient id="Obj_Gradient_4" xl:href="#Gradient_3" gradientTransform="translate(558 648) scale(54)"/>
     <linearGradient id="Obj_Gradient_5" xl:href="#Gradient_3" gradientTransform="translate(792 648) scale(54)"/>
-    <linearGradient id="Obj_Gradient_6" xl:href="#Gradient_3" gradientTransform="translate(792 513) scale(54)"/>
+    <linearGradient x1="0" x2="1" id="Gradient_4" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#599a9e"/>
+      <stop offset=".49" stop-color="#649fbb"/>
+      <stop offset="1" stop-color="#70a3d7"/>
+    </linearGradient>
+    <linearGradient id="Obj_Gradient_6" xl:href="#Gradient_4" gradientTransform="translate(792 513) scale(54)"/>
     <linearGradient id="Obj_Gradient_7" xl:href="#Gradient" gradientTransform="translate(549.448 189) scale(54)"/>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-18 20:56:39 +0000</dc:date>
+    <dc:date>2019-05-18 20:59:18 +0000</dc:date>
   </metadata>
   <g id="monad-api-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
     <title>monad-api-law</title>
