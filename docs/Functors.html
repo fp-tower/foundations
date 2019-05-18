@@ -622,6 +622,71 @@ forAll((fa: F[A], f: A => F[B], g: B => F[C]) =>
 background-image: url(img/functors/monad-api-law.svg)
 
 ---
+# For comprehension
+
+```scala
+scala> for {
+     |   n <- List(1,2,3)
+     |   s <- List("foo", "bar")
+     | } yield List.fill(n)(s).mkString
+res14: List[String] = List(foo, bar, foofoo, barbar, foofoofoo, barbarbar)
+```
+
+### TODO find example with non container
+
+---
+.h1[# For comprehension]
+
+```scala
+val res: F[D] =
+  for {
+    a: A <- fa: F[A]
+    b: B <- fb: F[B]
+    c: C <- fb: F[C]
+  } yield f(a,b,c): D
+```
+
+---
+.h1[# For comprehension]
+
+.scala[.remark-code[
+```scala
+val res: F[D] =
+  for {
+    a: A <- fa: F[A]
+    b: B <- fb: F[B]
+    c: C <- fb: F[C]
+  } yield f(a,b,c): D
+```
+]]
+
+.pull-left[
+### Using Monad
+
+```scala
+val res =
+  fa.flatMap(a =>
+    fb.flatMap(b =>
+      fc.flatMap(c =>
+        f(a,b,c).pure[F]
+      )))
+```
+]
+
+.pull-right[
+### Using FlatMap
+
+```scala
+val res =
+  fa.flatMap(a =>
+    fb.flatMap(b =>
+      fc.map(c =>
+        f(a,b,c)
+      )))
+```
+]
+
+---
 class: center, middle
 
 # Exercise 3
