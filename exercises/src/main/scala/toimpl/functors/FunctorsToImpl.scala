@@ -5,6 +5,9 @@ import exercises.functors._
 
 trait FunctorsToImpl extends FunctorsToImplLowLevel {
 
+  def right[A, E](a: A): Either[E, A] = Right(a)
+  def left[A, E](e: E): Either[E, A]  = Left(e)
+
   ////////////////////////
   // 1. Functor
   ////////////////////////
