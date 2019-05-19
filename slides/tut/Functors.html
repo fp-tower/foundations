@@ -623,8 +623,8 @@ trait Monad[F[_]] extends Applicative[F] {
 # Monad identity laws
 
 ```scala
-forAll(fa: F[A] => fa.pure.flatten == fa)
-forAll(fa: F[A] => fa.map(_.pure).flatten == f(a))
+forAll(fa: F[A] => fa.pure[F].flatten == fa)
+forAll(fa: F[A] => fa.map(_.pure[F]).flatten == fa)
 ```
 
 .center[![Monad law](img/functors/monad-identity-law.svg)]

@@ -635,8 +635,8 @@ trait Monad[F[_]] extends Applicative[F] {
 # Monad identity laws
 
 ```scala
-forAll(fa: F[A] => fa.pure.flatten == fa)
-forAll(fa: F[A] => fa.map(_.pure).flatten == f(a))
+forAll(fa: F[A] => fa.pure[F].flatten == fa)
+forAll(fa: F[A] => fa.map(_.pure[F]).flatten == fa)
 ```
 
 .center[![Monad law](img/functors/monad-identity-law.svg)]
@@ -811,6 +811,11 @@ scala>   for {
      |   } yield s
 res16: List[String] = List(hello, world, foo, foo)
 ```
+
+---
+# Coherence implication
+
+### TODO explain consequence on Applicative[F] when F is a Monad
 
 ---
 background-image: url(img/functors/monad-do-not-compose.svg)
