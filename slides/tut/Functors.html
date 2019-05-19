@@ -708,39 +708,21 @@ val res =
 ]
 
 ---
-class: center, middle
-
-# Why Monads are so important?
-
----
-# Imperative code is Monadic
+# For comprehension is for a single Monad
 
 ```scala
-def getOrderTotal(userId: Int, orderId: Int): Double = {
-  log.trace(s"User $userId get order total for order $orderId"): Unit
-  val hasAccess = canUserCanAccessOrder(userId, orderId): Boolean
-  if(! hasAccess)
-    throw new Exception(s"User $userId does not have access to order $orderId")
-  else {
-    val order = getOrder(orderId): Order
-    order.total: Double
-  }
-}
+for {
+  a: A <- fa: F[A]
+  b: B <- fb: G[B] ❌
+  c: C <- fb: H[C] ❌
+} yield f(a,b,c)
 ```
 
---
-
-```scala
-type MyEffect[+A] = ... // Log + DB + Error with Exception
-
-def getOrderTotal(userId: Int, orderId: Int): MyEffect[Double] =
-  for {
-    _         <- log.trace(s"User $userId get order total for order $orderId"): MyEffect[Unit]
-    hasAccess <- canUserCanAccessOrder(userId, orderId): MyEffect[Boolean]
-    _         <- if(hasAccess) unit: MyEffect[Unit]
-                 else fail(new Exception(s"User $userId does not have access to order $orderId")): MyEffect[Nothing]
-    order     <- getOrder(orderId): MyEffect[Order]
-  } yield order.total: Double
+```tut:fail
+for {
+  i <- List(1,2,3)
+  e <- if(i == 1) Right("One") else Left("Expected 1")
+} yield i
 ```
 
 ---
@@ -786,10 +768,7 @@ trait Monad[F[_]] extends Applicative[F] {
 
 ```scala
 forAll((fa: F[A], fb: F[B]) =>
-  (for {
-    a <- fa
-    b <- fb
-  } yield (a, b)) == (fa, fb).tuple2
+  (for { a <- fa; b <- fb } yield (a, b)) == (fa, fb).tuple2
 )
 ```
 
@@ -815,6 +794,50 @@ val res: F[C] =
 ```
 
 ---
+# Coherence implication
+
+### TODO explain consequence on Applicative[F] when F is a Monad
+
+---
+background-image: url(img/functors/monad-do-not-compose.svg)
+
+# Monads curse
+
+---
+class: center, middle
+
+# If you can combine effects then ...
+
+---
+# Imperative code is Monadic
+
+```scala
+def getOrderTotal(userId: Int, orderId: Int): Double = {
+  log.trace(s"User $userId get order total for order $orderId"): Unit
+  val hasAccess = canUserCanAccessOrder(userId, orderId): Boolean
+  if(! hasAccess)
+    throw new Exception(s"User $userId does not have access to order $orderId")
+  else {
+    val order = getOrder(orderId): Order
+    order.total: Double
+  }
+}
+```
+
+--
+
+```scala
+type MyEffect[+A] = ... // Log + DB + Error with Exception
+
+def getOrderTotal(userId: Int, orderId: Int): MyEffect[Double] =
+  for {
+    _         <- log.trace(s"User $userId get order total for order $orderId"): MyEffect[Unit]
+    hasAccess <- canUserCanAccessOrder(userId, orderId): MyEffect[Boolean]
+    _         <- if(hasAccess) unit: MyEffect[Unit]
+                 else fail(new Exception(s"User $userId does not have access to order $orderId")): MyEffect[Nothing]
+    order     <- getOrder(orderId): MyEffect[Order]
+  } yield order.total: Double
+```
 
 ---
 class: center, middle
