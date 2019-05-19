@@ -197,6 +197,11 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
     List(1, 2, 5).traverse_(a => if (a % 2 == 1) Some(a) else None) shouldEqual None
   }
 
+  test("foldMapM") {
+    List(1, 3, 5).foldMapM(a => if (a % 2 == 1) Some(a) else None) shouldEqual Some(9)
+    List(1, 2, 5).foldMapM(a => if (a % 2 == 1) Some(a) else None) shouldEqual None
+  }
+
   test("parseNumber") {
     parseNumber("1052") shouldEqual Some(BigInt(1052))
     parseNumber("hello") shouldEqual None

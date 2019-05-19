@@ -4,6 +4,7 @@ import answers.typeclass.TypeclassAnswers._
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Traverse.syntax._
+import exercises.typeclass.Monoid.syntax._
 import exercises.functors._
 import exercises.typeclass.Foldable.syntax._
 import exercises.typeclass.Semigroup.syntax._
@@ -234,6 +235,9 @@ object FunctorsAnswers extends FunctorsToImpl {
 
     def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit] =
       foldRight(fa, unit[G])((a, acc) => f(a) *> acc)
+
+    def foldMapM[G[_]: Applicative, A, B: Monoid](fa: F[A])(f: A => G[B]): G[B] =
+      foldRight(fa, mempty[B].pure[G])((a, acc) => (f(a), acc).map2(_ |+| _))
 
     def flatSequence[G[_]: Applicative, A](fgfa: F[G[F[A]]])(implicit ev: Monad[F]): G[F[A]] =
       sequence(fgfa).map(ev.flatten)

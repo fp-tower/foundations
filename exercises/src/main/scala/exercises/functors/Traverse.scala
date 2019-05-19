@@ -1,6 +1,6 @@
 package exercises.functors
 
-import exercises.typeclass.Foldable
+import exercises.typeclass.{Foldable, Monoid}
 
 trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 
@@ -9,6 +9,8 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
   def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
 
   def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit]
+
+  def foldMapM[G[_]: Applicative, A, B: Monoid](fa: F[A])(f: A => G[B]): G[B]
 
   def flatSequence[G[_]: Applicative, A](fgfa: F[G[F[A]]])(implicit ev: Monad[F]): G[F[A]]
 
@@ -26,6 +28,9 @@ object Traverse {
 
       def traverse_[G[_]: Applicative, B](f: A => G[B])(implicit ev: Traverse[F]): G[Unit] =
         ev.traverse_(fa)(f)
+
+      def foldMapM[G[_]: Applicative, B: Monoid](f: A => G[B])(implicit ev: Traverse[F]): G[B] =
+        ev.foldMapM(fa)(f)
 
       def flatTraverse[G[_]: Applicative, B](f: A => G[F[B]])(implicit evT: Traverse[F], evM: Monad[F]): G[F[B]] =
         evT.flatTraverse(fa)(f)

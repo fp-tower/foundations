@@ -848,7 +848,7 @@ class: center, middle
 # Traverse
 
 ```tut:invisible
-import exercises.typeclass.Foldable
+import exercises.typeclass.{Monoid, Foldable}
 ```
 
 ```tut:silent
@@ -861,11 +861,36 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 }
 ```
 
-### Law
+.center[![Traverse main](img/functors/traverse-main.svg)]
+
+---
+# Traverse
+
+
+```tut:silent
+trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+
+  def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
+
+  def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit]
+
+  def foldMapM[G[_]: Applicative, A, B: Monoid](fa: F[A])(f: A => G[B]): G[B]
+
+}
+```
+
+.center[![Traverse variants](img/functors/traverse-variants.svg)]
+
+---
+# Traverse Law
 
 ```scala
-forAll(fa: F[A] => fa.traverse(Id(_)).value == fa)
+forAll(fa: F[A] => fa.map(Id(_)).sequence.value == fa)
 ```
+
+<br>
+
+.center[![Traverse law](img/functors/traverse-law.svg)]
 
 ---
 background-image: url(img/functors/traverse-api-law.svg)
