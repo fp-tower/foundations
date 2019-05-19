@@ -38,7 +38,7 @@
     <linearGradient id="Obj_Gradient_7" xl:href="#Gradient" gradientTransform="translate(549.448 189) scale(54)"/>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-18 20:59:18 +0000</dc:date>
+    <dc:date>2019-05-19 14:44:52 +0000</dc:date>
   </metadata>
   <g id="monad-api-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
     <title>monad-api-law</title>
@@ -305,8 +305,9 @@
         <path d="M 814.5 403.5 L 823.5 403.5 L 823.5 419.5 L 828 419.5 L 819 430.5 L 810 419.5 L 814.5 419.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_546">
-        <text transform="translate(833 408.5)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="15987212e-20" y="15">flatten</tspan>
+        <text transform="translate(833 400.052)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="6.36" y="15">map</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="15987212e-20" y="33.448">flatten</tspan>
         </text>
       </g>
       <g id="Graphic_555">
