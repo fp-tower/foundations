@@ -89,7 +89,7 @@ object FunctionExercises extends FunctionToImpl {
   // 2a. Implement identity
   def identity[A](x: A): A = ???
 
-  // 2b. Implement const such as const(5)("foo") == "foo"
+  // 2b. Implement const such as const(5)("foo") == 5
   def const[A, B](a: A)(b: B): A = ???
 
   // 2c. Transform triple method (def) into tripleVal function (val)
