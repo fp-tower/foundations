@@ -4,24 +4,36 @@ import eu.timepit.refined._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric._
+import toimpl.errorhandling.OptionToImpl
 
 import scala.util.Try
 
-object OptionExercises {
+object OptionExercises extends OptionToImpl {
+
+  ////////////////////////
+  // 1.
+  ////////////////////////
 
   // 1a. Implement getUser such as it returns the first user matching the id
+  // such as getUser(123, List(User(222, "paul"), User(123, "john"))) == Some(User(123, "john"))
+  // but getUser(111, List(User(222, "paul"), User(123, "john"))) == None
   case class User(id: Int, name: String)
   def getUser(id: Int, users: List[User]): Option[User] = ???
 
-  // 2a. Implement charToDigit such as it returns 0 for '0', 1 for '1', ..., 9 for '9'
+  // 1b. Implement charToDigit such as it returns 0 for '0', 1 for '1', ..., 9 for '9'
   def charToDigit(c: Char): Option[Int] = ???
 
-  // 2b. Implement charToDigit_v2
-  def charToDigit_v2(c: Char): Option[Int Refined Interval.Closed[W.`0`.T, W.`9`.T]] = ???
+  // 1c. Implement refinedCharToDigit
+  type Digit = Int Refined Interval.Closed[W.`0`.T, W.`9`.T]
+  def refinedCharToDigit(c: Char): Option[Digit] = ???
 
-  // 2c. Implement charToDigit in terms of charToDigit_v2
+  // 1d. Implement charToDigit in terms of charToDigit_v2
 
-  // 3. Form is a Sum type, currently it is either a Rectangle or a Circle
+  ////////////////////////
+  // 2. Composing errors
+  ////////////////////////
+
+  // Form is a Sum type, currently it is either a Rectangle or a Circle
   sealed trait Form
   object Form {
     case class Rectangle(width: Int, height: Int) extends Form
@@ -30,18 +42,18 @@ object OptionExercises {
 
   import Form._
 
-  // 3a. Implement asRectangle using pattern matching
+  // 2a. Implement asRectangle using pattern matching
   def asRectangle(form: Form): Option[Rectangle] = ???
 
-  // 3b. Implement asRectangle using pattern matching
+  // 2b. Implement asRectangle using pattern matching
   def asCircle(form: Form): Option[Circle] = ???
 
-  // 4. The goal of this exercise is to implement parseForm such as
+  // 2c. The goal of this exercise is to implement parseForm such as
   // parseForm("Rectangle,10,2") == Some(Rectangle(10, 2))
   // parseForm("Circle,5")       == Some(Circle(5))
   def parseForm(s: String): Option[Form] = ???
 
-  // 4a. Assume parseForm is implemented
+  // 2d. Assume parseForm is implemented
   // implement parseRectangle and parseCircle using pattern matching
   def parseRectangle(s: String): Option[Rectangle] = ???
 
