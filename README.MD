@@ -7,21 +7,31 @@
 
 ### [Introduction](https://julien-truffaut.github.io/fp-foundation/index.html#1)
 
-### Chapter 1: [Function](https://julien-truffaut.github.io/fp-foundation/Function#1)
+### Module 1: [Function](https://julien-truffaut.github.io/fp-foundation/Function#1)
 * Pure functions
 * Polymorphic functions
 * Higher-order functions
 * Recursion
 * Memoization
 
-### Chapter 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
+### Module 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
 * Cardinality
 * Algebra of types
 * Types and Tests, Valid Implementation Count (VIC)
 * Parametricity
 * Logic and types
 
-### Chapter 3: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
+### Module 3: Error Handling
+* Compare error types: Option, Either, Validated, Try
+* ADT similarities
+
+### Module 4: Reader / Writer / State
+
+### Module 5: IO / Effects
+
+### Part 3: Abstractions
+
+### Module 6: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
 * Different implementations of ad-hoc polymorphism
 * Eq, Monoid
 * Typeclass laws
@@ -31,41 +41,35 @@
 * Higher kinded typeclass with Foldable
 * Typeclass abuses
 
-### Chapter 4: Functors [WIP](https://julien-truffaut.github.io/fp-foundation/Functors#1)
+### Module 7: [Functors](https://julien-truffaut.github.io/fp-foundation/Functors#1)
 * Functor, Applicative, Monad
 * Combining effects
 * Typeclass consistency
 * Traverse
 * Typeclass granularity
 
-### Chapter 5: IO / Effects
-
-### Chapter 6: Error Handling
-
-### Chapter 7: Reader / Writer / State
-
 
 ## FAQ
 
 ### Where should I start?
 
-Each chapter has:
-* a set of slides (linked above) located at `docs/$chapter.html`
-* a scala object containing all exercises located at `exercises/src/main/scala/exercises/$chapter/$chapterExercises.scala`
-* a scala object containing all answers located at `exercises/src/main/scala/answers/$chapter/$chapterAnswers.scala`
-* two test suites (one for exercises, one for answers) located at `exercises/src/test/scala/exercises/$chapter/$chapterTest.scala`
+Each module has:
+* a set of slides (linked above) located at `docs/$module.html`
+* a scala object containing all exercises located at `exercises/src/main/scala/exercises/$module/$moduleExercises.scala`
+* a scala object containing all answers located at `exercises/src/main/scala/answers/$module/$moduleAnswers.scala`
+* two test suites (one for exercises, one for answers) located at `exercises/src/test/scala/exercises/$module/$moduleTest.scala`
 
-Start each chapter with the slides, at some point you will be prompted to work on some exercises. 
-Do the exercises and check your answers are correct by running the tests for this chapter.
+Start each module with the slides, at some point you will be prompted to work on some exercises. 
+Do the exercises and check your answers are correct by running the tests for this module.
 Finally, go back to the slides and repeat the process. If you have any question, please ask them on [gitter][gitter].
 
 ### How to run the tests?
 
 ```bash
-sbt "testOnly $CHAPTER*ExercisesTest"
+sbt "testOnly ${MODULE}*ExercisesTest"
 ```
 
-For example for chapter 1
+For example for module 1
 
 ```bash
 sbt "testOnly function*ExercisesTest"
