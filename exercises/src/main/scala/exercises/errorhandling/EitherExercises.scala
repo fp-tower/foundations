@@ -49,7 +49,7 @@ object EitherExercises extends EitherToImpl {
 
   // 2b. Implement tuple2 using pattern matching
   // such as tuple2(Right(1), Right("foo")) == Right((1, "foo"))
-  // bur     tuple2(Left("error1"), Left("error2")) == Left("error1")
+  // but     tuple2(Left("error1"), Left("error2")) == Left("error1")
   def tuple2[E, A, B](fa: Either[E, A], fb: Either[E, B]): Either[E, (A, B)] = ???
 
   // 2c. Implement tuple3, tuple4 using tuple2
