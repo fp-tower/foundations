@@ -1191,7 +1191,7 @@ object Metrics {
     def combine(x: Metrics, y: Metrics): Metrics =
       Metrics(
         ordersCreated = x.ordersCreated + y.ordersCreated,
-        ordersDeleted = y.ordersDeleted + y.ordersDeleted
+        ordersDeleted = x.ordersDeleted + y.ordersDeleted
       )
 
     def empty: Metrics =
