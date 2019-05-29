@@ -75,28 +75,184 @@ background-image: url(img/errorhandling/function-debit-card-safe.svg)
 # Error handling
 
 ---
-.h1[# Mainly 3 failure effects]
+.h1[# Failure types]
 
 .large[
 * `Option`
 
 * `Either`
 
-* `Validated`
+* `Try`
+]
+
+--
+
+.large[
+* `Future`
+]
+
+--
+
+.large[
+* `Validated` (from cats / scalaz)
 ]
 
 ---
-# Option
+.h1[# Failure types]
 
+.large[
+* **`Option`**
+
+* **`Either`**
+
+* `Try`
+
+
+* `Future`
+
+* **`Validated`** (from cats / scalaz)
+]
+
+
+---
+.h1[# Option]
+
+.pull-left[
 ```scala
 sealed trait Option[+A]
 
 object Option {
-  case object None extends Option[Nothing]
+
   case class Some[+A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
+}
+```
+]
+
+.pull-right[![Option](img/errorhandling/option.svg)]
+
+---
+.h1[# Option]
+
+.pull-left[
+```scala
+sealed trait Option[+A]
+
+object Option {
+
+  case class Some[+A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
+}
+```
+]
+
+.pull-right[![Option](img/errorhandling/option-unwrapped.svg)]
+
+
+---
+.h1[# Option variance]
+
+.pull-left[
+```scala
+sealed trait Option[`+A`]
+
+object Option {
+  case class Some[`+A`](value: A) extends Option[A]
+  case object None extends Option[`Nothing`]
+}
+```
+]
+
+.pull-right[
+```scala
+sealed trait Option[`A`]
+
+object Option {
+  case class Some[A](value: A) extends Option[A]
+  case class None`[A]()` extends Option[`A`]
+}
+```
+]
+
+---
+# Option variance
+
+```scala
+sealed trait Shape extends Product with Serializable
+
+object Shape {
+  case class Circle(radius: Double) extends Shape
+  case class Rectangle(width: Double, height: Double) extends Shape
 }
 ```
 
+---
+.h1[# Option variance]
+
+.pull-left[
+```scala
+sealed trait Option[`+A`]
+
+object Option {
+  case class Some[`+A`](value: A) extends Option[A]
+  case object None extends Option[`Nothing`]
+}
+```
+
+
+
+
+```scala
+scala> Some(Circle(5.2)).orElse(Some(Rectangle(4,2)))
+res0: Option[Shape] = Some(Circle(5.2))
+```
+
+```scala
+scala> Some(Circle(5.2)).orElse(Some("foo"))
+res1: Option[java.io.Serializable] = Some(Circle(5.2))
+```
+]
+
+.pull-right[
+```scala
+sealed trait Option[`A`]
+
+object Option {
+  case class Some[A](value: A) extends Option[A]
+  case class None`[A]()` extends Option[`A`]
+}
+```
+
+
+
+
+
+
+
+```scala
+scala> Some(Circle(5.2): Shape).orElse(
+     |   Some(Rectangle(4,2): Shape))
+res2: Option[Shape] = Some(Circle(5.2))
+```
+
+```scala
+scala> Some(Circle(5.2)).orElse(Some("foo"))
+<console>:23: error: type mismatch;
+ found   : String("foo")
+ required: Shape.Circle
+       Some(Circle(5.2)).orElse(Some("foo"))
+                                     ^
+```
+]
+
+---
+class: center, middle
+
+# Option Exercises
 
 ---
 # Either
@@ -141,7 +297,9 @@ data Validated e a = Invalid e | Valid a
     var slideshow = remark.create({
         ratio: "16:9",
         slideNumberFormat: '%current%',
-        highlightLines: true
+        // highlightStyle: "github",
+        highlightLines: true,
+        highlightSpans: true,
     });
 </script>
 </body>

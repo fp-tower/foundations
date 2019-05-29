@@ -75,28 +75,209 @@ background-image: url(img/errorhandling/function-debit-card-safe.svg)
 # Error handling
 
 ---
-.h1[# Mainly 3 failure effects]
+.h1[# Failure types]
 
 .large[
 * `Option`
 
 * `Either`
 
-* `Validated`
+* `Try`
+]
+
+--
+
+.large[
+* `Future`
+]
+
+--
+
+.large[
+* `Validated` (from cats / scalaz)
 ]
 
 ---
-# Option
+.h1[# Failure types]
 
+.large[
+* **`Option`**
+
+* **`Either`**
+
+* `Try`
+
+
+* `Future`
+
+* **`Validated`** (from cats / scalaz)
+]
+
+
+---
+.h1[# Option]
+
+.pull-left[
 ```tut:silent
 sealed trait Option[+A]
 
 object Option {
-  case object None extends Option[Nothing]
+
   case class Some[+A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
+}
+```
+]
+
+.pull-right[![Option](img/errorhandling/option.svg)]
+
+---
+.h1[# Option]
+
+.pull-left[
+```tut:silent
+sealed trait Option[+A]
+
+object Option {
+
+  case class Some[+A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
+}
+```
+]
+
+.pull-right[![Option](img/errorhandling/option-unwrapped.svg)]
+
+
+---
+.h1[# Option variance]
+
+.pull-left[
+```scala
+sealed trait Option[`+A`]
+
+object Option {
+  case class Some[`+A`](value: A) extends Option[A]
+  case object None extends Option[`Nothing`]
+}
+```
+]
+
+.pull-right[
+```scala
+sealed trait Option[`A`]
+
+object Option {
+  case class Some[A](value: A) extends Option[A]
+  case class None`[A]()` extends Option[`A`]
+}
+```
+]
+
+---
+# Option variance
+
+```tut:silent
+sealed trait Shape extends Product with Serializable
+
+object Shape {
+  case class Circle(radius: Double) extends Shape
+  case class Rectangle(width: Double, height: Double) extends Shape
 }
 ```
 
+---
+.h1[# Option variance]
+
+.pull-left[
+```scala
+sealed trait Option[`+A`]
+
+object Option {
+  case class Some[`+A`](value: A) extends Option[A]
+  case object None extends Option[`Nothing`]
+}
+```
+
+```tut:invisible
+sealed trait Option[+A]
+
+object Option {
+  case class Some[+A](value: A) extends Option[A]
+  case object None extends Option[Nothing]
+}
+
+implicit class OptionOps[A](self: Option[A]){
+  def orElse[B >: A](other: => Option[B]): Option[B] =
+    self match {
+      case Option.None    => other
+      case Option.Some(_) => self
+    }
+}
+
+import Option.{Some, None}
+import Shape.{Circle, Rectangle}
+```
+
+```tut
+Some(Circle(5.2)).orElse(Some(Rectangle(4,2)))
+```
+
+```tut
+Some(Circle(5.2)).orElse(Some("foo"))
+```
+]
+
+.pull-right[
+```scala
+sealed trait Option[`A`]
+
+object Option {
+  case class Some[A](value: A) extends Option[A]
+  case class None`[A]()` extends Option[`A`]
+}
+```
+
+```tut:invisible
+sealed trait Option[A]
+
+object Option {
+  case class Some[A](value: A) extends Option[A]
+  case class None[A]() extends Option[A]
+}
+```
+
+```tut:invisible
+implicit class OptionOps[A](self: Option[A]){
+  def orElse(other: => Option[A]): Option[A] =
+    self match {
+      case Option.None()  => other
+      case Option.Some(_) => self
+    }
+}
+
+import Option.{Some, None}
+import Shape.{Circle, Rectangle}
+```
+
+```tut
+Some(Circle(5.2): Shape).orElse(
+  Some(Rectangle(4,2): Shape))
+```
+
+```tut:fail
+Some(Circle(5.2)).orElse(Some("foo"))
+```
+]
+
+---
+class: center, middle
+
+# Option Exercises
 
 ---
 # Either
@@ -141,7 +322,9 @@ data Validated e a = Invalid e | Valid a
     var slideshow = remark.create({
         ratio: "16:9",
         slideNumberFormat: '%current%',
-        highlightLines: true
+        // highlightStyle: "github",
+        highlightLines: true,
+        highlightSpans: true,
     });
 </script>
 </body>
