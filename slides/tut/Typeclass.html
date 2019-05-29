@@ -50,17 +50,6 @@ layout: true
 </div>
 
 ---
-.h1[# Plan]
-
-.large[
-* Typeclass definition and comparison with other approaches
-
-* Most common usage for <span style="color:blue">**application developers**</span>
-
-* Use case: folding data
-]
-
----
 # Type and Operations
 
 ```tut:silent
@@ -77,6 +66,23 @@ def isAdult(p: Person): Boolean =
 class: center, middle
 
 # Polymorphism(s)
+
+---
+# Inheritance
+
+```tut:silent
+sealed trait Shape
+
+case class Circle(radius: Double) extends Shape
+case class Rectangle(width: Double, height: Double) extends Shape
+
+def double(shape: Shape): Shape =
+  shape match {
+    case Circle(x)       => Circle(2 * x)
+    case Rectangle(w, h) => Rectangle(2 * w, 2 * h)
+  }
+```
+
 
 ---
 # Parametric Polymorphism
@@ -121,19 +127,28 @@ isAdult(Employee("Eva", 22, "Foo Inc"))
 BigDecimal(2) + BigDecimal(3)
 ```
 
---
 
 ```tut
 List(1,2,3).map(_ + 1)
 Vector(1,2,3).map(_ + 1)
 ```
 
---
 
 ```tut
 Person("John", 34).toString
 false.toString
 ```
+
+---
+.h1[# Plan]
+
+.large[
+* Typeclass definition and comparison with other approaches
+
+* Most common usage for <span style="color:blue">**application developers**</span>
+
+* Use case: folding data
+]
 
 ---
 class: center, middle
@@ -728,8 +743,6 @@ implicit class EqSyntax[A](self: A){
 "foo" === "hello"
 ```
 
---
-
 ```tut:silent
 implicit val fooEq: Eq[Foo] = new Eq[Foo]{
   def eqv(x: Foo, y: Foo): Boolean =
@@ -877,8 +890,6 @@ trait Monoid[A] {
 
 }
 ```
-
---
 
 ```tut:silent
 def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {

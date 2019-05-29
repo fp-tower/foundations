@@ -50,17 +50,6 @@ layout: true
 </div>
 
 ---
-.h1[# Plan]
-
-.large[
-* Typeclass definition and comparison with other approaches
-
-* Most common usage for <span style="color:blue">**application developers**</span>
-
-* Use case: folding data
-]
-
----
 # Type and Operations
 
 ```scala
@@ -77,6 +66,23 @@ def isAdult(p: Person): Boolean =
 class: center, middle
 
 # Polymorphism(s)
+
+---
+# Inheritance
+
+```scala
+sealed trait Shape
+
+case class Circle(radius: Double) extends Shape
+case class Rectangle(width: Double, height: Double) extends Shape
+
+def double(shape: Shape): Shape =
+  shape match {
+    case Circle(x)       => Circle(2 * x)
+    case Rectangle(w, h) => Rectangle(2 * w, 2 * h)
+  }
+```
+
 
 ---
 # Parametric Polymorphism
@@ -132,7 +138,6 @@ scala> BigDecimal(2) + BigDecimal(3)
 res6: scala.math.BigDecimal = 5
 ```
 
---
 
 ```scala
 scala> List(1,2,3).map(_ + 1)
@@ -142,7 +147,6 @@ scala> Vector(1,2,3).map(_ + 1)
 res8: scala.collection.immutable.Vector[Int] = Vector(2, 3, 4)
 ```
 
---
 
 ```scala
 scala> Person("John", 34).toString
@@ -151,6 +155,17 @@ res9: String = Person(John,34)
 scala> false.toString
 res10: String = false
 ```
+
+---
+.h1[# Plan]
+
+.large[
+* Typeclass definition and comparison with other approaches
+
+* Most common usage for <span style="color:blue">**application developers**</span>
+
+* Use case: folding data
+]
 
 ---
 class: center, middle
@@ -754,10 +769,10 @@ object Eq {
 
 ```scala
 scala> implicitly[Eq[Int]]
-res38: Eq[Int] = $anon$1@1bd7309b
+res38: Eq[Int] = $anon$1@5f79e50f
 
 scala> Eq[Int]
-res39: Eq[Int] = $anon$1@1bd7309b
+res39: Eq[Int] = $anon$1@5f79e50f
 ```
 
 ```scala
@@ -801,8 +816,6 @@ res42: Boolean = false
 scala> "foo" === "hello"
 res43: Boolean = false
 ```
-
---
 
 ```scala
 implicit val fooEq: Eq[Foo] = new Eq[Foo]{
@@ -957,8 +970,6 @@ trait Monoid[A] {
 }
 ```
 
---
-
 ```scala
 def monoFoldLeft[A](fa: List[A])(implicit ev: Monoid[A]): A = {
   var res: A = ev.empty
@@ -1048,10 +1059,10 @@ implicit val intMonoid: Monoid[Int] = new Monoid[Int] {
 
 ```scala
 scala> intMonoid
-res51: Monoid[Int] = $anon$1@2ec2ffa5
+res51: Monoid[Int] = $anon$1@639bb1ab
 
 scala> implicitly[Monoid[Int]]
-res52: Monoid[Int] = $anon$1@2ec2ffa5
+res52: Monoid[Int] = $anon$1@639bb1ab
 ```
 
 ---
