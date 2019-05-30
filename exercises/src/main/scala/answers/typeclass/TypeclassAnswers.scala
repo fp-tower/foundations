@@ -100,8 +100,10 @@ object TypeclassAnswers extends TypeclassToImpl {
 
   def sum(xs: List[Int]): Int = fold(xs)
 
-  def averageWordLength(xs: List[String]): Double =
-    if (xs.isEmpty) 0.0 else fold(xs.map(_.length)) / xs.size.toDouble
+  def averageWordLength(xs: List[String]): Double = {
+    val (total, wordCount) = foldMap(xs)(x => (x.length, 1))
+    if (wordCount == 0) 0.0 else total.toDouble / wordCount
+  }
 
   def isEmpty[A: Monoid](x: A): Boolean =
     Monoid[A].empty == x
