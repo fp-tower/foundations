@@ -1,6 +1,6 @@
 package exercises.errorhandling
 
-import exercises.errorhandling.OptionExercises.User
+import exercises.errorhandling.OptionExercises.Order
 import toimpl.errorhandling.EitherToImpl
 
 import scala.util.Try
@@ -11,17 +11,17 @@ object EitherExercises extends EitherToImpl {
   // 1. Error ADT
   ////////////////////////
 
-  // 1a. Implement getUser
-  // such as getUser(123, List(User(222, "paul"), User(123, "john"))) == Right(User(123, "john"))
-  // but getUser(111, List(User(222, "paul"), User(123, "john"))) == Left(UserNotFound)
-  //     getUser(123, List(User(123, "paul"), User(123, "john"))) == Left(NonUniqueUserId)
-  sealed trait GetUserError
-  object GetUserError {
-    case object UserNotFound    extends GetUserError
-    case object NonUniqueUserId extends GetUserError
+  // 1a. Implement getOrder
+  // such as getOrder(123, List(Order(222, "paul"), Order(123, "john"))) == Right(Order(123, "john"))
+  // but getOrder(111, List(Order(222, "paul"), Order(123, "john"))) == Left(OrderNotFound)
+  //     getOrder(123, List(Order(123, "paul"), Order(123, "john"))) == Left(NonUniqueOrderId)
+  sealed trait GetOrderError
+  object GetOrderError {
+    case object OrderNotFound    extends GetOrderError
+    case object NonUniqueOrderId extends GetOrderError
   }
 
-  def getUser(id: Int, users: List[User]): Either[GetUserError, User] = ???
+  def getOrder(id: Int, users: List[Order]): Either[GetOrderError, Order] = ???
 
   // 1b. Implement validatePassword such as a password must:
   // * be at least 8 characters long
@@ -54,10 +54,12 @@ object EitherExercises extends EitherToImpl {
 
   // 2c. Implement tuple3, tuple4 using tuple2
   def tuple3[E, A, B, C](fa: Either[E, A], fb: Either[E, B], fc: Either[E, C]): Either[E, (A, B, C)] = ???
-  def tuple4[E, A, B, C, D](fa: Either[E, A],
-                            fb: Either[E, B],
-                            fc: Either[E, C],
-                            fd: Either[E, D]): Either[E, (A, B, C, D)] = ???
+  def tuple4[E, A, B, C, D](
+    fa: Either[E, A],
+    fb: Either[E, B],
+    fc: Either[E, C],
+    fd: Either[E, D]
+  ): Either[E, (A, B, C, D)] = ???
 
   // 2d. Implement validatePassword_v2 using tuple4
   def validatePassword_v2(s: String): Either[PasswordError, Unit] = ???

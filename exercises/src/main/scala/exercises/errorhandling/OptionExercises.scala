@@ -1,121 +1,112 @@
 package exercises.errorhandling
 
-import eu.timepit.refined._
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.auto._
-import eu.timepit.refined.numeric._
+import exercises.errorhandling.Country._
 import toimpl.errorhandling.OptionToImpl
-
-import scala.util.Try
 
 object OptionExercises extends OptionToImpl {
 
   ////////////////////////
-  // 1.
+  // 1. Use cases
   ////////////////////////
 
   // 1a. Implement getUser such as it returns the first user matching the id
   // such as getUser(123, List(User(222, "paul"), User(123, "john"))) == Some(User(123, "john"))
   // but getUser(111, List(User(222, "paul"), User(123, "john"))) == None
-  case class User(id: Int, name: String)
-  def getUser(id: Int, users: List[User]): Option[User] = ???
+  case class Order(id: Int, name: String)
+  def getOrder(id: Int, users: List[Order]): Option[Order] = ???
 
   // 1b. Implement charToDigit such as it returns 0 for '0', 1 for '1', ..., 9 for '9'
   def charToDigit(c: Char): Option[Int] = ???
 
-  // 1c. Implement refinedCharToDigit
-  type Digit = Int Refined Interval.Closed[W.`0`.T, W.`9`.T]
-  def refinedCharToDigit(c: Char): Option[Digit] = ???
+  // 1c. Implement isValidateUsername such as a userName:
+  // * is at least 3 characters long
+  // * contains only letter, digits or the following special characters: "_-"
+  def isValidateUsername(userName: String): Boolean = ???
 
-  // 1d. Implement charToDigit in terms of charToDigit_v2
+  // 1d. Implement validateUsername such as it trims the input username and then validate it
+  // such as validateUsername("foo") == Some(UserName("foo"))
+  //         validateUsername("  foo ") == Some(UserName("foo"))
+  // but     validateUsername("abc!@£") == None
+  //         validateUsername(" yo")    == None
+  def validateUsername(userName: String): Option[UserName] = ???
+
+  // 1e. Implement validateCountry such as it parses a 3 letter country code into a Country enumeration
+  // see https://www.iban.com/country-codes
+  // e.g. validateCountry("FRA") == Some(France)
+  //      validateCountry("foo") == None
+  //      validateCountry("FRANCE") == None
+  //      validateCountry("DZA") a valid alpha 3 but not supported
+  def validateCountry(country: String): Option[Country] = ???
+
+  // 1f. Implement validateUser that validates both username and country
+  // Use pattern matching for this implementation
+  def validateUser(username: String, country: String): Option[User] = ???
 
   ////////////////////////
-  // 2. Composing errors
+  // 2. Composing Option
   ////////////////////////
 
-  // Form is a Sum type, currently it is either a Rectangle or a Circle
-  sealed trait Form
-  object Form {
-    case class Rectangle(width: Int, height: Int) extends Form
-    case class Circle(radius: Int)                extends Form
-  }
-
-  import Form._
-
-  // 2a. Implement asRectangle using pattern matching
-  def asRectangle(form: Form): Option[Rectangle] = ???
-
-  // 2b. Implement asRectangle using pattern matching
-  def asCircle(form: Form): Option[Circle] = ???
-
-  // 2c. The goal of this exercise is to implement parseForm such as
-  // parseForm("Rectangle,10,2") == Some(Rectangle(10, 2))
-  // parseForm("Circle,5")       == Some(Circle(5))
-  def parseForm(s: String): Option[Form] = ???
-
-  // 2d. Assume parseForm is implemented
-  // implement parseRectangle and parseCircle using pattern matching
-  def parseRectangle(s: String): Option[Rectangle] = ???
-
-  def parseCircle(s: String): Option[Circle] = ???
-
-  // 4b. Assume flatMap is implemented
-  // re-implement parseRectangle and parseCircle using flatMap
-  def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
-
-  // 4c. Implement flatMap
-
-  // bonus question: how many possible implementation of flatMap exist?
-  // what does it mean it terms of unit testing?
-
-  // 4d. Implement _parseCircle using parseInt and pattern matching
-  def parseInt(s: String): Option[Int] =
-    Try(s.toInt).toOption
-
-  def _parseCircle(radius: String): Option[Circle] = ???
-
-  // 4e. Assume map is implemented
-  // re-implement _parseCircle using map
-  def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
-
-  // 4f. Implement map using pattern matching
-
-  // 4g. Implement map in terms of flatMap
-
-  // 4h. Implement _parseRectangle using parseInt and pattern matching
-  def _parseRectangle(width: String, height: String): Option[Rectangle] = ???
-
-  // 4h. Assume map2 is implemented
-  // re-implement _parseRectangle using map2
-  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
-
-  // 4i. Implement map2 using pattern matching
-
-  // 4j. Re-implement map2 using flatMap
-
-  // 4a. Implement using pattern matching
-  def asRectangles(f1: Form, f2: Form): Option[(Rectangle, Rectangle)] = ???
-
-  // 4b. Implement map2
-//  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
-
-  // 4c. Implement asRectangles using map2
-
-  // 4d. Implement tuple2 using map2
+  // 2a. Implement tuple2 using pattern matching such as
+  // tuple2(Some(1), Some("hello")) == Some((1, "hello"))
+  // tuple2(Some(1), None) == None
+  // bonus: how many implementations of tuple2 would compile?
   def tuple2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] = ???
 
-  // 4e. Implement asRectangles using tuple2
+  // 2b. Implement map2 using pattern matching such as
+  // map2(Some(1), Some(2))(_ + _) == Some(3)
+  // map2(Some(1), Option.empty[Int])(_ + _) == None
+  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
 
-  // 4f. Implement map and flatMap
-//  def map    [A, B](fa: Option[A])(f: A =>        B ): Option[B] = ???
-//  def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
+  // 2c. Re-implement map2 using tuple2 and tuple2 using map2
+  // which would you prefer? Why?
+  def map2FromTuple2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+  def tuple2FromMap2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)]               = ???
 
-  // 4g. Implement asRectangles using map and flatMap
+  // 2d. Re-implement validateUser using tuple2 or map2
+  def validateUser_v2(username: String, country: String): Option[User] = ???
 
-  // 4h. Implement map using flatMap
+  // 2e. Re-implement validateUser using flatMap
+  // which way do you prefer? Why?
+  def validateUser_v3(username: String, country: String): Option[User] = ???
 
-  // 4i. Implement map2 using flatMap
+  // 2f. Implement validateUsernames such as it returns a list of Username if all inputs are valid
+  // e.g. validateUsernames(List("  foo", "Foo123", "Foo1-2_3")) == Some(List(UserName("foo"), UserName("Foo123"), UserName("Foo1-2_3")))
+  // e.g. validateUsernames(List("  foo", "x", "Foo1-2_3")) == None
+  // Use recursion or fold
+  def validateUsernames(userNames: List[String]): Option[List[UserName]] = ???
 
-  // 4j. Implement map using map2
+  // 2g. Implement sequence using recursion or fold
+  // such as sequence(List(Some(1), Some(5), Some(8))) == Some(List(1, 5, 8))
+  //         sequence(Nil) == Some(Nil)
+  // but     sequence(List(Some(1), None, Some(8))) == None
+  def sequence[A](fa: List[Option[A]]): Option[List[A]] = ???
+
+  // 2h. Re-implement validateUsernames using sequence
+  def validateUsernames_v2(userNames: List[String]): Option[List[UserName]] = ???
+
+  // 2i. Implement traverse using recursion or fold
+  // such as traverse(List(1, 5, 9))(x => if(isEven(x)) Some(x) else None) == Some(List(1, 5, 9))
+  //         traverse(List.empty[Int])(x => if(isEven(x)) Some(x) else None) == Some(Nil)
+  // but     traverse(List(1, 4, 9))(x => if(isEven(x)) Some(x) else None) == None
+  def traverse[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] = ???
+
+  // 2j. Re-implement validateUsernames using traverse
+  def validateUsernames_v3(userNames: List[String]): Option[List[UserName]] = ???
+
+  // 2k. Re-implement traverse using sequence and sequence using traverse
+  // which would you prefer? Why?
+  def traverseFromSequence[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  def sequenceFromTraverse[A](fa: List[Option[A]]): Option[List[A]]               = ???
+
+  ////////////////////////
+  // 3. Error message
+  ////////////////////////
+
+  // 3a. Implement validateUserMessage such as:
+  // * if the inputs are valid, it display the User (e.g. user.toString)
+  // * if the inputs are invalid, it display an error message
+  def validateUserMessage(username: String, country: String): String = ???
+
+  // 3b. What is the problem with validateUserMessage? How would you fix it?
 
 }

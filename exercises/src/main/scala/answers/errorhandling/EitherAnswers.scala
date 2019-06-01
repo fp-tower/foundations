@@ -1,17 +1,17 @@
 package answers.errorhandling
 
 import exercises.errorhandling.EitherExercises.PasswordError.{NoDigit, NoLowerCase, NoUpperCase, TooSmall}
-import exercises.errorhandling.EitherExercises.{GetUserError, PasswordError}
-import exercises.errorhandling.OptionExercises.User
+import exercises.errorhandling.EitherExercises.{GetOrderError, PasswordError}
+import exercises.errorhandling.OptionExercises.Order
 import toimpl.errorhandling.EitherToImpl
 
 object EitherAnswers extends EitherToImpl {
 
-  def getUser(id: Int, users: List[User]): Either[GetUserError, User] =
+  def getOrder(id: Int, users: List[Order]): Either[GetOrderError, Order] =
     users.filter(_.id == id) match {
-      case Nil      => Left(GetUserError.UserNotFound)
+      case Nil      => Left(GetOrderError.OrderNotFound)
       case x :: Nil => Right(x)
-      case _ :: _   => Left(GetUserError.NonUniqueUserId)
+      case _ :: _   => Left(GetOrderError.NonUniqueOrderId)
     }
 
   def checkSize(s: String): Either[TooSmall.type, Unit] =
@@ -54,10 +54,12 @@ object EitherAnswers extends EitherToImpl {
   def tuple3[E, A, B, C](fa: Either[E, A], fb: Either[E, B], fc: Either[E, C]): Either[E, (A, B, C)] =
     tuple2(tuple2(fa, fb), fc).map { case ((a, b), c) => (a, b, c) }
 
-  def tuple4[E, A, B, C, D](fa: Either[E, A],
-                            fb: Either[E, B],
-                            fc: Either[E, C],
-                            fd: Either[E, D]): Either[E, (A, B, C, D)] =
+  def tuple4[E, A, B, C, D](
+    fa: Either[E, A],
+    fb: Either[E, B],
+    fc: Either[E, C],
+    fd: Either[E, D]
+  ): Either[E, (A, B, C, D)] =
     tuple2(tuple2(fa, fb), tuple2(fc, fd)).map { case ((a, b), (c, d)) => (a, b, c, d) }
 
   def validatePassword_v2(s: String): Either[PasswordError, Unit] =

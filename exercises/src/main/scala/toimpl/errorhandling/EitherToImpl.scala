@@ -1,7 +1,7 @@
 package toimpl.errorhandling
 
-import exercises.errorhandling.EitherExercises.{GetUserError, PasswordError}
-import exercises.errorhandling.OptionExercises.User
+import exercises.errorhandling.EitherExercises.{GetOrderError, PasswordError}
+import exercises.errorhandling.OptionExercises.Order
 
 trait EitherToImpl {
 
@@ -9,7 +9,7 @@ trait EitherToImpl {
   // 1. Error ADT
   ////////////////////////
 
-  def getUser(id: Int, users: List[User]): Either[GetUserError, User]
+  def getOrder(id: Int, users: List[Order]): Either[GetOrderError, Order]
 
   def validatePassword(s: String): Either[PasswordError, Unit]
 
@@ -23,10 +23,12 @@ trait EitherToImpl {
 
   def tuple3[E, A, B, C](fa: Either[E, A], fb: Either[E, B], fc: Either[E, C]): Either[E, (A, B, C)]
 
-  def tuple4[E, A, B, C, D](fa: Either[E, A],
-                            fb: Either[E, B],
-                            fc: Either[E, C],
-                            fd: Either[E, D]): Either[E, (A, B, C, D)]
+  def tuple4[E, A, B, C, D](
+    fa: Either[E, A],
+    fb: Either[E, B],
+    fc: Either[E, C],
+    fd: Either[E, D]
+  ): Either[E, (A, B, C, D)]
 
   def validatePassword_v2(s: String): Either[PasswordError, Unit]
 

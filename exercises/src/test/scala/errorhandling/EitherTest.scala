@@ -2,10 +2,10 @@ package errorhandling
 
 import answers.errorhandling.EitherAnswers
 import exercises.errorhandling.EitherExercises
-import exercises.errorhandling.EitherExercises.GetUserError.{NonUniqueUserId, UserNotFound}
+import exercises.errorhandling.EitherExercises.GetOrderError.{NonUniqueOrderId, OrderNotFound}
 import exercises.errorhandling.EitherExercises.{parseStringToInt, PasswordError}
 import exercises.errorhandling.EitherExercises.PasswordError.{NoDigit, NoLowerCase, NoUpperCase, TooSmall}
-import exercises.errorhandling.OptionExercises.User
+import exercises.errorhandling.OptionExercises.Order
 import org.scalatest.{FunSuite, Matchers}
 import toimpl.errorhandling.EitherToImpl
 
@@ -19,10 +19,10 @@ class EitherTest(impl: EitherToImpl) extends FunSuite with Matchers {
   // 1. Error ADT
   ////////////////////////
 
-  test("getUser") {
-    getUser(123, List(User(222, "paul"), User(123, "john"))) shouldEqual Right(User(123, "john"))
-    getUser(111, List(User(222, "paul"), User(123, "john"))) shouldEqual Left(UserNotFound)
-    getUser(123, List(User(123, "paul"), User(123, "john"))) shouldEqual Left(NonUniqueUserId)
+  test("getOrder") {
+    getOrder(123, List(Order(222, "paul"), Order(123, "john"))) shouldEqual Right(Order(123, "john"))
+    getOrder(111, List(Order(222, "paul"), Order(123, "john"))) shouldEqual Left(OrderNotFound)
+    getOrder(123, List(Order(123, "paul"), Order(123, "john"))) shouldEqual Left(NonUniqueOrderId)
   }
 
   validatePasswordTest("validatePassword")(validatePassword)

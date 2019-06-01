@@ -1,11 +1,9 @@
 package errorhandling
 
 import answers.errorhandling.OptionAnswers
-import eu.timepit.refined.W
-import eu.timepit.refined.refineMV
-import eu.timepit.refined.numeric.Interval
-import exercises.errorhandling.OptionExercises
-import exercises.errorhandling.OptionExercises.User
+import exercises.errorhandling.Country.{France, Switzerland}
+import exercises.errorhandling.{OptionExercises, User, UserName}
+import exercises.errorhandling.OptionExercises.Order
 import org.scalatest.{FunSuite, Matchers}
 import toimpl.errorhandling.OptionToImpl
 
@@ -15,9 +13,13 @@ class OptionAnswersTest   extends OptionTest(OptionAnswers)
 class OptionTest(impl: OptionToImpl) extends FunSuite with Matchers {
   import impl._
 
-  test("getUser") {
-    getUser(123, List(User(222, "paul"), User(123, "john"))) shouldEqual Some(User(123, "john"))
-    getUser(111, List(User(222, "paul"), User(123, "john"))) shouldEqual None
+  ////////////////////////
+  // 1. Use cases
+  ////////////////////////
+
+  test("getOrder") {
+    getOrder(123, List(Order(222, "paul"), Order(123, "john"))) shouldEqual Some(Order(123, "john"))
+    getOrder(111, List(Order(222, "paul"), Order(123, "john"))) shouldEqual None
   }
 
   test("charToDigit") {
@@ -25,11 +27,79 @@ class OptionTest(impl: OptionToImpl) extends FunSuite with Matchers {
     charToDigit('A') shouldEqual None
   }
 
-  test("refinedCharToDigit") {
-    type ZeroToNine = Interval.Closed[W.`0`.T, W.`9`.T]
-    refinedCharToDigit('0') shouldEqual Some(refineMV[ZeroToNine](0))
-    refinedCharToDigit('4') shouldEqual Some(refineMV[ZeroToNine](4))
-    refinedCharToDigit('A') shouldEqual None
+  test("isValidateUsername") {
+    isValidateUsername("foo") shouldEqual true
+    isValidateUsername("abc_1-2-3") shouldEqual true
+    isValidateUsername("abc!@£") shouldEqual false
+    isValidateUsername(" yo") shouldEqual false
   }
 
+  test("validateUsername") {
+    validateUsername("foo") shouldEqual Some(UserName("foo"))
+    validateUsername("  foo ") shouldEqual Some(UserName("foo"))
+    validateUsername("abc!@£") shouldEqual None
+    validateUsername(" yo") shouldEqual None
+  }
+
+  test("validateCountry") {
+    validateCountry("FRA") shouldEqual Some(France)
+    validateCountry("foo") shouldEqual None
+    validateCountry("FRANCE") shouldEqual None
+    validateCountry("DZA") shouldEqual None // not supported
+  }
+
+  validateUserTest(1)(validateUser)
+
+  ////////////////////////
+  // 2. Composing Option
+  ////////////////////////
+
+  test("tuple2") {
+    tuple2(Some(1), Some("hello")) shouldEqual Some((1, "hello"))
+    tuple2(Some(1), None) shouldEqual None
+  }
+
+  test("map2") {
+    map2(Some(1), Some(2))(_ + _) shouldEqual Some(3)
+    map2(Some(1), Option.empty[Int])(_ + _) shouldEqual None
+  }
+
+  validateUserTest(2)(validateUser_v2)
+
+  validateUserTest(3)(validateUser_v3)
+
+  validateUsernamesTest(1)(validateUsernames)
+
+  test("sequence") {
+    sequence(List(Some(1), Some(5), Some(8))) shouldEqual Some(List(1, 5, 8))
+    sequence(Nil) shouldEqual Some(Nil)
+    sequence(List(Some(1), None, Some(8))) shouldEqual None
+  }
+
+  validateUsernamesTest(2)(validateUsernames_v2)
+
+  test("traverse") {
+    def checkEven(x: Int): Option[Int] = if (x % 2 == 1) Some(x) else None
+    traverse(List(1, 5, 9))(checkEven) shouldEqual Some(List(1, 5, 9))
+    traverse(List.empty[Int])(checkEven) shouldEqual Some(Nil)
+    traverse(List(1, 4, 9))(checkEven) shouldEqual None
+  }
+
+  validateUsernamesTest(3)(validateUsernames_v3)
+
+  def validateUserTest(count: Int)(f: (String, String) => Option[User]) =
+    test(s"validateUser $count") {
+      validateUser("foo", "FRA") shouldEqual Some(User(UserName("foo"), France))
+      validateUser("Foo1-2-3", "CHE") shouldEqual Some(User(UserName("Foo1-2-3"), Switzerland))
+      validateUser("aa", "CHE") shouldEqual None
+      validateUser("foo", "123") shouldEqual None
+    }
+
+  def validateUsernamesTest(count: Int)(f: List[String] => Option[List[UserName]]) =
+    test(s"validateUsernames $count") {
+      f(List("  foo", "Foo123", "Foo1-2_3")) shouldEqual Some(
+        List(UserName("foo"), UserName("Foo123"), UserName("Foo1-2_3"))
+      )
+      f(List("  foo", "x", "Foo1-2_3")) shouldEqual None
+    }
 }
