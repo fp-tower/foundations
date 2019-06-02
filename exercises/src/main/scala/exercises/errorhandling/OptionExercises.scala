@@ -18,17 +18,17 @@ object OptionExercises extends OptionToImpl {
   // 1b. Implement charToDigit such as it returns 0 for '0', 1 for '1', ..., 9 for '9'
   def charToDigit(c: Char): Option[Int] = ???
 
-  // 1c. Implement isValidateUsername such as a userName:
+  // 1c. Implement isValidUsername such as a username:
   // * is at least 3 characters long
   // * contains only letter, digits or the following special characters: "_-"
-  def isValidateUsername(userName: String): Boolean = ???
+  def isValidUsername(username: String): Boolean = ???
 
   // 1d. Implement validateUsername such as it trims the input username and then validate it
   // such as validateUsername("foo") == Some(UserName("foo"))
   //         validateUsername("  foo ") == Some(UserName("foo"))
   // but     validateUsername("abc!@£") == None
   //         validateUsername(" yo")    == None
-  def validateUsername(userName: String): Option[UserName] = ???
+  def validateUsername(username: String): Option[Username] = ???
 
   // 1e. Implement validateCountry such as it parses a 3 letter country code into a Country enumeration
   // see https://www.iban.com/country-codes
@@ -73,7 +73,7 @@ object OptionExercises extends OptionToImpl {
   // e.g. validateUsernames(List("  foo", "Foo123", "Foo1-2_3")) == Some(List(UserName("foo"), UserName("Foo123"), UserName("Foo1-2_3")))
   // e.g. validateUsernames(List("  foo", "x", "Foo1-2_3")) == None
   // Use recursion or fold
-  def validateUsernames(userNames: List[String]): Option[List[UserName]] = ???
+  def validateUsernames(usernames: List[String]): Option[List[Username]] = ???
 
   // 2g. Implement sequence using recursion or fold
   // such as sequence(List(Some(1), Some(5), Some(8))) == Some(List(1, 5, 8))
@@ -82,7 +82,7 @@ object OptionExercises extends OptionToImpl {
   def sequence[A](fa: List[Option[A]]): Option[List[A]] = ???
 
   // 2h. Re-implement validateUsernames using sequence
-  def validateUsernames_v2(userNames: List[String]): Option[List[UserName]] = ???
+  def validateUsernames_v2(usernames: List[String]): Option[List[Username]] = ???
 
   // 2i. Implement traverse using recursion or fold
   // such as traverse(List(1, 5, 9))(x => if(isEven(x)) Some(x) else None) == Some(List(1, 5, 9))
@@ -91,7 +91,7 @@ object OptionExercises extends OptionToImpl {
   def traverse[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] = ???
 
   // 2j. Re-implement validateUsernames using traverse
-  def validateUsernames_v3(userNames: List[String]): Option[List[UserName]] = ???
+  def validateUsernames_v3(usernames: List[String]): Option[List[Username]] = ???
 
   // 2k. Re-implement traverse using sequence and sequence using traverse
   // which would you prefer? Why?

@@ -17,8 +17,10 @@ object ValidatedAnswers extends ValidatedToImpl {
       case (Invalid(e1), Invalid(e2)) => Invalid(combineError(e1, e2))
     }
 
-  def map2[E, A, B, C](fa: Validated[E, A], fb: Validated[E, B])(combineSuccess: (A, B) => C,
-                                                                 combineError: (E, E) => E): Validated[E, C] =
+  def map2[E, A, B, C](
+    fa: Validated[E, A],
+    fb: Validated[E, B]
+  )(combineSuccess: (A, B) => C, combineError: (E, E) => E): Validated[E, C] =
     (fa, fb) match {
       case (Valid(a), Valid(b))       => Valid(combineSuccess(a, b))
       case (Valid(_), Invalid(e))     => Invalid(e)
@@ -32,5 +34,5 @@ object ValidatedAnswers extends ValidatedToImpl {
   def map2Nel[E, A, B, C](fa: ValidatedNel[E, A], fb: ValidatedNel[E, B])(f: (A, B) => C): ValidatedNel[E, C] =
     map2(fa, fb)(f, _ ::: _)
 
-  def validatePassword(s: String): Validated[EitherExercises.PasswordError, Unit] = ???
+  def validatePassword(s: String): Validated[EitherExercises.UsernameError, Unit] = ???
 }

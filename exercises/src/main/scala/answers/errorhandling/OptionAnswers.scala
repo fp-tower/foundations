@@ -2,7 +2,7 @@ package answers.errorhandling
 
 import exercises.errorhandling.Country._
 import exercises.errorhandling.OptionExercises.Order
-import exercises.errorhandling.{Country, User, UserName}
+import exercises.errorhandling.{Country, User, Username}
 import toimpl.errorhandling.OptionToImpl
 
 object OptionAnswers extends OptionToImpl {
@@ -29,13 +29,15 @@ object OptionAnswers extends OptionToImpl {
       case _   => None
     }
 
-  def isValidateUsername(userName: String): Boolean =
-    userName.length >= 3 &&
-      userName.toList.forall(c => c.isLetter || c.isDigit || c == '_' || c == '-')
+  def isValidUsername(username: String): Boolean =
+    username.length >= 3 && username.forall(isValidUsernameCharacter)
 
-  def validateUsername(userName: String): Option[UserName] = {
-    val trimmed = userName.trim
-    if (isValidateUsername(trimmed)) Some(UserName(trimmed))
+  def isValidUsernameCharacter(c: Char): Boolean =
+    c.isLetter || c.isDigit || c == '_' || c == '-'
+
+  def validateUsername(username: String): Option[Username] = {
+    val trimmed = username.trim
+    if (isValidUsername(trimmed)) Some(Username(trimmed))
     else None
   }
 
@@ -94,9 +96,9 @@ object OptionAnswers extends OptionToImpl {
       country  <- validateCountry(countryStr)
     } yield User(username, country)
 
-  def validateUsernames(userNames: List[String]): Option[List[UserName]] =
-    userNames.foldRight(Option(List.empty[UserName]))(
-      (userName, acc) => map2(validateUsername(userName), acc)(_ :: _)
+  def validateUsernames(usernames: List[String]): Option[List[Username]] =
+    usernames.foldRight(Option(List.empty[Username]))(
+      (username, acc) => map2(validateUsername(username), acc)(_ :: _)
     )
 
   def sequence[A](fa: List[Option[A]]): Option[List[A]] =
@@ -104,16 +106,16 @@ object OptionAnswers extends OptionToImpl {
       (a, acc) => map2(a, acc)(_ :: _)
     )
 
-  def validateUsernames_v2(userNames: List[String]): Option[List[UserName]] =
-    sequence(userNames.map(validateUsername))
+  def validateUsernames_v2(usernames: List[String]): Option[List[Username]] =
+    sequence(usernames.map(validateUsername))
 
   def traverse[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] =
     fa.foldRight(Option(List.empty[B]))(
       (a, acc) => map2(f(a), acc)(_ :: _)
     )
 
-  def validateUsernames_v3(userNames: List[String]): Option[List[UserName]] =
-    traverse(userNames)(validateUsername)
+  def validateUsernames_v3(usernames: List[String]): Option[List[Username]] =
+    traverse(usernames)(validateUsername)
 
   def traverseFromSequence[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] =
     sequence(fa.map(f))

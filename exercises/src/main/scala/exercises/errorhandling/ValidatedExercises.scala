@@ -1,7 +1,7 @@
 package exercises.errorhandling
 
 import cats.data.NonEmptyList
-import exercises.errorhandling.EitherExercises.PasswordError
+import exercises.errorhandling.EitherExercises.UsernameError
 import exercises.errorhandling.Validated.{Invalid, Valid}
 import toimpl.errorhandling.ValidatedToImpl
 
@@ -29,8 +29,10 @@ object ValidatedExercises extends ValidatedToImpl {
   // such as map2(Valid(3), Valid(2))(_ * _, ???) == Valid(6)
   // but     map2(Invalid(1), Valid("foo"))(???, ???) == Invalid(1)
   // but     map2(Invalid("error1"), Invalid("error2"))(???, _ ++ _) == Invalid("error1error2")
-  def map2[E, A, B, C](fa: Validated[E, A], fb: Validated[E, B])(combineSuccess: (A, B) => C,
-                                                                 combineError: (E, E) => E): Validated[E, C] = ???
+  def map2[E, A, B, C](fa: Validated[E, A], fb: Validated[E, B])(
+    combineSuccess: (A, B) => C,
+    combineError: (E, E) => E
+  ): Validated[E, C] = ???
 
   // 1c. Implement tuple2Nel
   // such as tuple2Nel(Valid(1), Valid("foo")) == Valid((1, "foo"))
@@ -44,6 +46,6 @@ object ValidatedExercises extends ValidatedToImpl {
   def map2Nel[E, A, B, C](fa: ValidatedNel[E, A], fb: ValidatedNel[E, B])(f: (A, B) => C): ValidatedNel[E, C] = ???
 
   // 2a. Implement validatePassword
-  def validatePassword(s: String): Validated[PasswordError, Unit] = ???
+  def validatePassword(s: String): Validated[UsernameError, Unit] = ???
 
 }

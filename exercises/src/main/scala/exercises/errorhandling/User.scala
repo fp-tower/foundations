@@ -1,8 +1,8 @@
 package exercises.errorhandling
 
-case class User(userName: UserName, country: Country)
+case class User(userName: Username, country: Country)
 
-case class UserName(value: String)
+case class Username(value: String)
 
 sealed trait Country
 

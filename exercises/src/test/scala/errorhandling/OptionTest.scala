@@ -2,7 +2,7 @@ package errorhandling
 
 import answers.errorhandling.OptionAnswers
 import exercises.errorhandling.Country.{France, Switzerland}
-import exercises.errorhandling.{OptionExercises, User, UserName}
+import exercises.errorhandling.{OptionExercises, User, Username}
 import exercises.errorhandling.OptionExercises.Order
 import org.scalatest.{FunSuite, Matchers}
 import toimpl.errorhandling.OptionToImpl
@@ -27,16 +27,16 @@ class OptionTest(impl: OptionToImpl) extends FunSuite with Matchers {
     charToDigit('A') shouldEqual None
   }
 
-  test("isValidateUsername") {
-    isValidateUsername("foo") shouldEqual true
-    isValidateUsername("abc_1-2-3") shouldEqual true
-    isValidateUsername("abc!@£") shouldEqual false
-    isValidateUsername(" yo") shouldEqual false
+  test("isValidUsername") {
+    isValidUsername("foo") shouldEqual true
+    isValidUsername("abc_1-2-3") shouldEqual true
+    isValidUsername("abc!@£") shouldEqual false
+    isValidUsername(" yo") shouldEqual false
   }
 
   test("validateUsername") {
-    validateUsername("foo") shouldEqual Some(UserName("foo"))
-    validateUsername("  foo ") shouldEqual Some(UserName("foo"))
+    validateUsername("foo") shouldEqual Some(Username("foo"))
+    validateUsername("  foo ") shouldEqual Some(Username("foo"))
     validateUsername("abc!@£") shouldEqual None
     validateUsername(" yo") shouldEqual None
   }
@@ -89,16 +89,16 @@ class OptionTest(impl: OptionToImpl) extends FunSuite with Matchers {
 
   def validateUserTest(count: Int)(f: (String, String) => Option[User]) =
     test(s"validateUser $count") {
-      validateUser("foo", "FRA") shouldEqual Some(User(UserName("foo"), France))
-      validateUser("Foo1-2-3", "CHE") shouldEqual Some(User(UserName("Foo1-2-3"), Switzerland))
+      validateUser("foo", "FRA") shouldEqual Some(User(Username("foo"), France))
+      validateUser("Foo1-2-3", "CHE") shouldEqual Some(User(Username("Foo1-2-3"), Switzerland))
       validateUser("aa", "CHE") shouldEqual None
       validateUser("foo", "123") shouldEqual None
     }
 
-  def validateUsernamesTest(count: Int)(f: List[String] => Option[List[UserName]]) =
+  def validateUsernamesTest(count: Int)(f: List[String] => Option[List[Username]]) =
     test(s"validateUsernames $count") {
       f(List("  foo", "Foo123", "Foo1-2_3")) shouldEqual Some(
-        List(UserName("foo"), UserName("Foo123"), UserName("Foo1-2_3"))
+        List(Username("foo"), Username("Foo123"), Username("Foo1-2_3"))
       )
       f(List("  foo", "x", "Foo1-2_3")) shouldEqual None
     }

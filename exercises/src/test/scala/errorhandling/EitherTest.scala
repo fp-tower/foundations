@@ -1,10 +1,11 @@
 package errorhandling
 
 import answers.errorhandling.EitherAnswers
-import exercises.errorhandling.EitherExercises
+import exercises.errorhandling.{EitherExercises, Username}
 import exercises.errorhandling.EitherExercises.GetOrderError.{NonUniqueOrderId, OrderNotFound}
-import exercises.errorhandling.EitherExercises.{parseStringToInt, PasswordError}
-import exercises.errorhandling.EitherExercises.PasswordError.{NoDigit, NoLowerCase, NoUpperCase, TooSmall}
+import exercises.errorhandling.EitherExercises.{parseStringToInt, UsernameError}
+import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacter, TooSmall}
+import exercises.errorhandling.EitherExercises.UsernameError.InvalidCharacter
 import exercises.errorhandling.OptionExercises.Order
 import org.scalatest.{FunSuite, Matchers}
 import toimpl.errorhandling.EitherToImpl
@@ -16,7 +17,7 @@ class EitherTest(impl: EitherToImpl) extends FunSuite with Matchers {
   import impl._
 
   ////////////////////////
-  // 1. Error ADT
+  // 1. Use cases
   ////////////////////////
 
   test("getOrder") {
@@ -25,19 +26,42 @@ class EitherTest(impl: EitherToImpl) extends FunSuite with Matchers {
     getOrder(123, List(Order(123, "paul"), Order(123, "john"))) shouldEqual Left(NonUniqueOrderId)
   }
 
-  validatePasswordTest("validatePassword")(validatePassword)
+  test("validateUsernameSize") {
+    validateUsernameSize("moreThan3Char") == Right(())
+    validateUsernameSize("foo") == Right(())
+    validateUsernameSize("fo") == Left(TooSmall)
+  }
 
-  def validatePasswordTest(name: String)(f: String => Either[PasswordError, Unit]) =
-    test(name) {
-      validatePassword("Foobar12") shouldEqual Right(())
-      validatePassword("foo") shouldEqual Left(TooSmall)
-      validatePassword("foobar12") shouldEqual Left(NoUpperCase)
-      validatePassword("FOOBAR12") shouldEqual Left(NoLowerCase)
-      validatePassword("Foobarxx") shouldEqual Left(NoDigit)
+  test("validateUsernameCharacter") {
+    validateUsernameCharacter('a') shouldEqual Right(())
+    validateUsernameCharacter('B') shouldEqual Right(())
+    validateUsernameCharacter('3') shouldEqual Right(())
+    validateUsernameCharacter('-') shouldEqual Right(())
+    validateUsernameCharacter('_') shouldEqual Right(())
+    validateUsernameCharacter('!') shouldEqual Left(InvalidCharacter('!'))
+    validateUsernameCharacter('@') shouldEqual Left(InvalidCharacter('@'))
+  }
+
+  validateUsernameContentTest(1)(validateUsernameContent)
+
+  validateUsernameTest(1)(validateUsername)
+
+  def validateUsernameContentTest(count: Int)(f: String => Either[InvalidCharacter, Unit]) =
+    test(s"validateUsernameContent $count") {
+      validateUsernameContent("Foo1-2_") shouldEqual Right(())
+      validateUsernameContent("!(Foo)") shouldEqual Left(InvalidCharacter('!'))
+    }
+
+  def validateUsernameTest(count: Int)(f: String => Either[UsernameError, Username]) =
+    test(s"validateUsername $count") {
+      validateUsername("foo") shouldEqual Right(Username("foo"))
+      validateUsername("  foo ") shouldEqual Right(Username("foo"))
+      validateUsername("abc!@£") shouldEqual Left(InvalidCharacter('!'))
+      validateUsername(" yo") shouldEqual Left(TooSmall)
     }
 
   ////////////////////////
-  // 2. Composing errors
+  // 2. Composing Either
   ////////////////////////
 
   test("leftMap") {
@@ -49,34 +73,21 @@ class EitherTest(impl: EitherToImpl) extends FunSuite with Matchers {
     tuple2(Left("error1"), Left("error2")) shouldEqual Left("error1")
   }
 
-  test("tuple3") {
-    tuple3(Right(1), Right("foo"), Right(true)) shouldEqual Right((1, "foo", true))
-    tuple3(Left("error1"), Right(5), Left("error2")) shouldEqual Left("error1")
-  }
-
-  test("tuple5") {
-    tuple4(Right(1), Right("foo"), Right(true), Right('c')) shouldEqual Right((1, "foo", true, 'c'))
-    tuple4(Left("error1"), Right(5), Left("error2"), Right('c')) shouldEqual Left("error1")
-  }
-
-  validatePasswordTest("validatePassword_v2")(validatePassword_v2)
-
   test("map2") {
     map2(Right(1), Right("foo"))(_.toString + _) shouldEqual Right("1foo")
     map2(Left("error1"), Right("error2"))(_.toString + _) shouldEqual Left("error1")
   }
 
-  test("tuple2_v2") {
-    tuple2_v2(Right(1), Right("foo")) shouldEqual Right((1, "foo"))
-    tuple2_v2(Left("error1"), Left("error2")) shouldEqual Left("error1")
-  }
+  validateUsernameTest(2)(validateUsername_v2)
+
+  validateUsernameTest(3)(validateUsername_v3)
 
   test("sequence") {
     sequence(List(Right(1), Right(5), Right(12))) shouldEqual Right(List(1, 5, 12))
     sequence(List(Right(1), Left("error"), Right(12))) shouldEqual Left("error")
   }
 
-  validatePasswordTest("validatePassword_v3")(validatePassword_v3)
+  validateUsernameContentTest(2)(validateUsernameContent_v2)
 
   test("traverse") {
     traverse(List("1", "23", "54"))(parseStringToInt) shouldEqual Right(List(1, 23, 54))
@@ -84,13 +95,13 @@ class EitherTest(impl: EitherToImpl) extends FunSuite with Matchers {
     traverse(List("1", "hello", "54"))(parseStringToInt).isLeft shouldEqual true
   }
 
-  validatePasswordTest("validatePassword_v4")(validatePassword_v4)
+  validateUsernameContentTest(3)(validateUsernameContent_v3)
 
   test("traverse_") {
-    traverse_(List("FooBar12", "FooBar34"))(validatePassword) shouldEqual Right(())
-    traverse_(List("FooBar12", "123"))(validatePassword).isLeft shouldEqual true
+    traverse_(List("1", "23", "54"))(parseStringToInt) shouldEqual Right(())
+    traverse_(List("1", "hello", "54"))(validateUsername).isLeft shouldEqual true
   }
 
-  validatePasswordTest("validatePassword_v5")(validatePassword_v5)
+  validateUsernameContentTest(4)(validateUsernameContent_v4)
 
 }

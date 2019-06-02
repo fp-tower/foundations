@@ -1,7 +1,7 @@
 package toimpl.errorhandling
 
 import exercises.errorhandling.OptionExercises.Order
-import exercises.errorhandling.{Country, User, UserName}
+import exercises.errorhandling.{Country, User, Username}
 
 trait OptionToImpl {
 
@@ -13,9 +13,9 @@ trait OptionToImpl {
 
   def charToDigit(c: Char): Option[Int]
 
-  def isValidateUsername(userName: String): Boolean
+  def isValidUsername(username: String): Boolean
 
-  def validateUsername(userName: String): Option[UserName]
+  def validateUsername(username: String): Option[Username]
 
   def validateCountry(country: String): Option[Country]
 
@@ -36,15 +36,15 @@ trait OptionToImpl {
 
   def validateUser_v3(username: String, country: String): Option[User]
 
-  def validateUsernames(userNames: List[String]): Option[List[UserName]]
+  def validateUsernames(usernames: List[String]): Option[List[Username]]
 
   def sequence[A](fa: List[Option[A]]): Option[List[A]]
 
-  def validateUsernames_v2(userNames: List[String]): Option[List[UserName]]
+  def validateUsernames_v2(usernames: List[String]): Option[List[Username]]
 
   def traverse[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]]
 
-  def validateUsernames_v3(userNames: List[String]): Option[List[UserName]]
+  def validateUsernames_v3(usernames: List[String]): Option[List[Username]]
 
   def traverseFromSequence[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]]
   def sequenceFromTraverse[A](fa: List[Option[A]]): Option[List[A]]
