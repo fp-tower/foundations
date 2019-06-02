@@ -150,7 +150,7 @@ object Option {
 ```
 ]
 
-.pull-right[![Option](img/errorhandling/option-unwrapped.svg)]
+.pull-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
 
 
 ---
@@ -280,8 +280,9 @@ class: center, middle
 # Option Exercises
 
 ---
-# Either
+.h1[# Either]
 
+.large-left[
 ```tut:silent
 sealed trait Either[+E, +A]
 
@@ -290,7 +291,30 @@ object Either {
   case class Right[+A](value: A) extends Either[Nothing, A]
 }
 ```
+]
 
+.medium-right[![Either](img/errorhandling/either.svg)]
+
+---
+.h1[# Either]
+
+.large-left[
+```tut:silent
+sealed trait Either[+E, +A]
+
+object Either {
+  case class  Left[+E](value: E) extends Either[E, Nothing]
+  case class Right[+A](value: A) extends Either[Nothing, A]
+}
+```
+]
+
+.medium-right[![Either unwrapped](img/errorhandling/either-unwrapped.svg)]
+
+---
+class: center, middle
+
+# Either Exercises
 
 ---
 # Validated
