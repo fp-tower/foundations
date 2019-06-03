@@ -52,30 +52,73 @@ layout: true
 ---
 class: center, middle
 
-# 7 - 8 workshops
-
----
-class: center, middle
-
-# End of 2019: intensive 2-day training
-
----
-class: center, middle
-
-# 2020: MOOC
-
----
-.h1[
 # Goals
+
+---
+.h1[# Develop your FP intuition]
+
+<br>
+
+.center[
+### Implement an algorithm to reverse a String
 ]
 
-.large[
-* **What** is FP about
+--
 
-* **Why** FP matters to you, your colleagues and your business
+```tut:silent
+def reverseString(x: String): String = {
+  val charArray   = x.toCharArray
+  val lastIndex   = x.length - 1
+  val middleIndex = x.length / 2
 
-* **Understand** FP basic building blocks
+  for (i <- 0 until middleIndex) {
+    val tmp = charArray(i)
+    charArray(i) = charArray(lastIndex - i)
+    charArray(lastIndex - i) = tmp
+  }
+
+  String.valueOf(charArray)
+}
+```
+
+---
+.h1[# Develop your FP intuition]
+
+<br>
+
+.center[
+### Implement an algorithm to reverse a String
 ]
+
+```tut:silent
+def reverseString(x: String): String =
+  x.foldLeft(List.empty[Char])((acc, c) => c :: acc).mkString
+```
+
+--
+
+```tut:silent
+def reverseString(x: String): String =
+  x.foldLeft(new StringBuffer(x.length))(_.insert(0, _)).toString
+```
+
+---
+# Get familiar with Typed FP building blocks
+
+### Pure function, Recursion, Lazyness
+
+### Algebraic Data Type (ADT)
+
+### Either, Option, Validated
+
+### Reader, State, IO
+
+### Typeclasses, Monoid, Functor, Applicative, Traverse
+
+---
+class: center, middle
+
+# Why FP matters to you, your colleagues and your business
 
 ---
 .h1[
@@ -97,30 +140,66 @@ class: center, middle
 ]
 
 ---
+# Course main features
+
+<br>
+
+### Original diagrams
+
+
+---
+background-image: url(img/VIC-increment.jpg)
+
+---
+background-image: url(img/functors/applicative-api-law.svg)
+
+---
+# Course main features
+
+<br>
+
+### Original diagrams
+
+### Lots of exercises (200+) with tests and answers
+
+--
+
+### An active online community ready to answer your questions (gitter)
+
+--
+
+### Expert trainers with experience teaching FP at all level
+
+---
 .h1[
-# Provisional Plan
+# Plan
 ]
 
 .large[
 1. [Function](Function.html#1)
 1. [Type](Type.html#1)
-1. [Typeclass](Typeclass.html#1)
-1. Functors
-1. IO / Effect
 1. Error handling
 1. Reader / Writer / State
+1. IO / Effect
+1. [Typeclass](Typeclass.html#1)
+1. [Functors](Functors.html#1)
 ]
 
 ---
-# Contact
+.h1[# Contact]
 
 <br>
+<br>
 
-### https://www.patreon.com/julien_truffaut
 
-### https://twitter.com/JulienTruffaut
+### Sponsoring: https://www.patreon.com/julien_truffaut
 
-### julien@fp-tower.com
+### Twitter: https://twitter.com/TheFpTower
+
+### Chat: https://gitter.im/julien-truffaut/fp-foundation
+
+### Email: info@fp-tower.com
+
 
 ---
 class: center, middle
