@@ -6,16 +6,23 @@ import examples.Introduction._
 
 class IntroductionTest extends FunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
-  test("reverseString Imperative") {
-    forAll((x: String) => x.reverse shouldEqual reverseStringImperative(x))
-  }
+  reverseString("imperative")(reverseStringImperative)
+  reverseString("functional")(reverseStringFunctional)
+  reverseString("functional 2")(reverseStringFunctional2)
 
-  test("reverseString Functional") {
-    forAll((x: String) => x.reverse shouldEqual reverseStringFunctional(x))
-  }
+  def reverseString(name: String)(f: String => String) =
+    test("reverseString " + name) {
+      forAll((x: String) => x.reverse shouldEqual f(x))
+    }
 
-  test("reverseString2 Functional") {
-    forAll((x: String) => x.reverse shouldEqual reverseStringFunctional2(x))
-  }
+  validateUserNames("imperative")(validateUsernamesImperative)
+  validateUserNames("functional")(validateUsernamesFunctional)
+
+  def validateUserNames(name: String)(f: List[String] => String) =
+    test("validate usernames  " + name) {
+      f(Nil) shouldEqual "no username"
+      f(List("foo", "bar")) shouldEqual "all username are valid"
+      f(List("foo", "a", "abc123", "bar", "@)01223")) shouldEqual s"Found 3 invalid username"
+    }
 
 }
