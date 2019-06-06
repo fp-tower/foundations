@@ -18,14 +18,20 @@ object FunctorsExercises extends FunctorsToImpl {
 
   trait DefaultFunctor[F[_]] extends Functor[F] {
     // 1a. Implement as
-    // such as as(List(1,2,3))(0) == List(0,0,0)
+    // such as List(1,2,3).as(0) == List(0,0,0)
     def as[A, B](fa: F[A])(value: B): F[B] = ???
 
     // 1b. Implement void
     // such as void(List(1,2,3)) == List((),(),())
+    // use case:
+    // val response: IO[Response] = post(Request(...))
+    // response.void: IO[Unit]
     def void[A](fa: F[A]): F[Unit] = ???
 
     // 1c. Implement widen
+    // use case:
+    // val circles: List[Circle] = List(Circle(4), Circle(10))
+    // val shapes: List[Shape] = circles.widen
     def widen[A, B >: A](fa: F[A]): F[B] = ???
 
     // 1d. Implement tupleL
@@ -33,10 +39,18 @@ object FunctorsExercises extends FunctorsToImpl {
     //         tupleR(Some(4))("hello") == Some((4, "hello"))
     // but     tupleL(None)("hello")  == None
     //         tupleR(None)("hello") == None
+    // use case:
+    // getUser(UserId(123)).flatMap(user =>
+    //   getAccount(user.accountId).tupleL(user)
+    // )
     def tupleL[A, B](fa: F[A])(value: B): F[(B, A)] = ???
     def tupleR[A, B](fa: F[A])(value: B): F[(A, B)] = ???
 
     // 1e. implement lift
+    // use case:
+    // val inc = (x: Int) => x + 1
+    // inc.lift[List]: List[Int] => List[Int]
+    // inc.lift[Either[String, ?]]: Either[String, Int] => Either[String, Int]
     def lift[A, B](f: A => B): F[A] => F[B] = ???
   }
 
