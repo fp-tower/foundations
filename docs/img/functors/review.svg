@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="8 8 965 353" width="965" height="353">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="8 8 965 353" width="965" height="353">
   <defs>
     <font-face font-family="Helvetica" font-size="19" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="700">
       <font-face-src>
@@ -29,11 +29,10 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-14 13:06:51 +0000</dc:date>
+    <dc:date>2019-06-06 09:40:39 +0000</dc:date>
   </metadata>
-  <g id="review" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+  <g id="review" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>review</title>
-    <rect fill="white" x="8" y="8" width="965" height="353"/>
     <g id="review: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_10">
@@ -84,7 +83,7 @@
         <line x1="436.67754" y1="206.49127" x2="309.84564" y2="131.54515" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_21">
-        <path d="M 657 54 L 765 54 C 774.9411 54 783 62.058875 783 72 L 783 72 C 783 81.94113 774.9411 90 765 90 L 657 90 C 647.0589 90 639 81.94113 639 72 L 639 72 C 639 62.058875 647.0589 54 657 54 Z" fill="#ff7f7f"/>
+        <path d="M 657 54 L 765 54 C 774.9411 54 783 62.058875 783 72 L 783 72 C 783 81.94113 774.9411 90 765 90 L 657 90 C 647.0589 90 639 81.94113 639 72 L 639 72 C 639 62.058875 647.0589 54 657 54 Z" fill="#ffc0c0"/>
         <path d="M 657 54 L 765 54 C 774.9411 54 783 62.058875 783 72 L 783 72 C 783 81.94113 774.9411 90 765 90 L 657 90 C 647.0589 90 639 81.94113 639 72 L 639 72 C 639 62.058875 647.0589 54 657 54 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
         <text transform="translate(644 60.5)" fill="#343434">
           <tspan font-family="Helvetica" font-size="19" font-weight="700" fill="#343434" x="17.384766" y="19">Semigroup</tspan>

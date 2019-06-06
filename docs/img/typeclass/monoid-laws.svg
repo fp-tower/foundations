@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 622 648" width="622" height="648">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 622 648" width="622" height="648">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -14,9 +14,9 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-15 20:14:06 +0000</dc:date>
+    <dc:date>2019-06-06 09:43:02 +0000</dc:date>
   </metadata>
-  <g id="monoid-laws" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+  <g id="monoid-laws" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>monoid-laws</title>
     <g id="monoid-laws: Layer 1">
       <title>Layer 1</title>
@@ -246,37 +246,36 @@
       </g>
       <g id="Graphic_520">
         <text transform="translate(4.834 5)" fill="#074548">
-          <tspan font-family="Helvetica Neue" font-size="28" font-weight="700" fill="#074548" x="0" y="27">Monoid </tspan>
-          <tspan font-family="Helvetica Neue" font-size="28" font-weight="700" fill="#074548" y="27">Laws</tspan>
+          <tspan font-family="Helvetica Neue" font-size="28" font-weight="700" fill="#074548" x="0" y="27">Monoid Laws</tspan>
         </text>
       </g>
       <g id="Graphic_532">
-        <path d="M 346.4847 616.7755 L 346.4847 611.2653 L 388.54273 611.2653 L 388.54273 608.5102 L 399.54273 614.0204 L 388.54273 619.5306 L 388.54273 616.7755 Z" fill="#acbdd0"/>
-        <path d="M 346.4847 616.7755 L 346.4847 611.2653 L 388.54273 611.2653 L 388.54273 608.5102 L 399.54273 614.0204 L 388.54273 619.5306 L 388.54273 616.7755 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 355.4847 616.7755 L 355.4847 611.2653 L 397.54273 611.2653 L 397.54273 608.5102 L 408.54273 614.0204 L 397.54273 619.5306 L 397.54273 616.7755 Z" fill="#acbdd0"/>
+        <path d="M 355.4847 616.7755 L 355.4847 611.2653 L 397.54273 611.2653 L 397.54273 608.5102 L 408.54273 614.0204 L 397.54273 619.5306 L 397.54273 616.7755 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_531">
-        <path d="M 346.4847 641.5714 L 358.4847 636.0612 L 358.4847 638.8163 L 387.54273 638.8163 L 387.54273 636.0612 L 399.54273 641.5714 L 387.54273 647.0816 L 387.54273 644.3265 L 358.4847 644.3265 L 358.4847 647.0816 Z" fill="#acbdd0"/>
-        <path d="M 346.4847 641.5714 L 358.4847 636.0612 L 358.4847 638.8163 L 387.54273 638.8163 L 387.54273 636.0612 L 399.54273 641.5714 L 387.54273 647.0816 L 387.54273 644.3265 L 358.4847 644.3265 L 358.4847 647.0816 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 355.4847 641.5714 L 367.4847 636.0612 L 367.4847 638.8163 L 396.54273 638.8163 L 396.54273 636.0612 L 408.54273 641.5714 L 396.54273 647.0816 L 396.54273 644.3265 L 367.4847 644.3265 L 367.4847 647.0816 Z" fill="#acbdd0"/>
+        <path d="M 355.4847 641.5714 L 367.4847 636.0612 L 367.4847 638.8163 L 396.54273 638.8163 L 396.54273 636.0612 L 408.54273 641.5714 L 396.54273 647.0816 L 396.54273 644.3265 L 367.4847 644.3265 L 367.4847 647.0816 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_530">
-        <text transform="translate(414.35306 602.1837)" fill="black">
+        <text transform="translate(423.35306 602.1837)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="6394885e-19" y="15">function</tspan>
         </text>
       </g>
       <g id="Graphic_529">
-        <text transform="translate(412.1791 627.89796)" fill="black">
+        <text transform="translate(421.1791 627.89796)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="48316906e-20" y="15">equivalence</tspan>
         </text>
       </g>
       <g id="Graphic_528">
-        <text transform="translate(200.44827 620.1837)" fill="black">
+        <text transform="translate(209.44827 620.1837)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">value of type A</tspan>
         </text>
       </g>
       <g id="Graphic_527">
-        <rect x="134.192" y="621" width="45" height="18" fill="#599b9f"/>
-        <rect x="134.192" y="621" width="45" height="18" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(139.192 620)" fill="white">
+        <rect x="143.192" y="621" width="45" height="18" fill="#599b9f"/>
+        <rect x="143.192" y="621" width="45" height="18" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(148.192 620)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.164" y="15">abc</tspan>
         </text>
       </g>

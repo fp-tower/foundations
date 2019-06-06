@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 586 253" width="586" height="253">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 586 253" width="586" height="253">
   <defs>
     <font-face font-family="Helvetica" font-size="19" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="700">
       <font-face-src>
@@ -29,11 +29,11 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-14 20:05:56 +0000</dc:date>
+    <dc:date>2019-06-06 09:43:02 +0000</dc:date>
   </metadata>
-  <g id="Canvas_3" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+  <g id="review" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>review</title>
-    <g id="Canvas_3: Layer 1">
+    <g id="review: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_6">
         <path d="M 27.28138 46.283557 L 135.28138 46.283557 C 145.2225 46.283557 153.28138 54.34243 153.28138 64.28356 L 153.28138 64.28356 C 153.28138 74.22468 145.2225 82.28356 135.28138 82.28356 L 27.28138 82.28356 C 17.340256 82.28356 9.281381 74.22468 9.281381 64.28356 L 9.281381 64.28356 C 9.281381 54.34243 17.340256 46.283557 27.28138 46.283557 Z" fill="#77afff"/>
@@ -43,7 +43,7 @@
         </text>
       </g>
       <g id="Graphic_21">
-        <path d="M 270 9 L 378 9 C 387.94113 9 396 17.058875 396 27 L 396 27 C 396 36.941125 387.94113 45 378 45 L 270 45 C 260.05887 45 252 36.941125 252 27 L 252 27 C 252 17.058875 260.05887 9 270 9 Z" fill="#ff7f7f"/>
+        <path d="M 270 9 L 378 9 C 387.94113 9 396 17.058875 396 27 L 396 27 C 396 36.941125 387.94113 45 378 45 L 270 45 C 260.05887 45 252 36.941125 252 27 L 252 27 C 252 17.058875 260.05887 9 270 9 Z" fill="#ffc0c0"/>
         <path d="M 270 9 L 378 9 C 387.94113 9 396 17.058875 396 27 L 396 27 C 396 36.941125 387.94113 45 378 45 L 270 45 C 260.05887 45 252 36.941125 252 27 L 252 27 C 252 17.058875 260.05887 9 270 9 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
         <text transform="translate(257 15.5)" fill="#343434">
           <tspan font-family="Helvetica" font-size="19" font-weight="700" fill="#343434" x="17.384766" y="19">Semigroup</tspan>

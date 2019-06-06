@@ -55,6 +55,36 @@ layout: true
 </div>
 
 ---
+background-image: url(img/typeclass/review.svg)
+
+# Previously
+
+---
+background-image: url(img/functors/plan.svg)
+
+# Plan
+
+---
+class: center, middle
+
+# Why Functors?
+
+# Where are they used?
+
+---
+# Where are Functors used?
+
+<br>
+
+### Data structures: List, Vector, Map, Set, Graph
+
+### Error handling: Option, Either, Validated
+
+### Async: IO, Future
+
+### Parsing, Serialisation, Configuration, etc ...
+
+---
 .h1[# Plan]
 
 .large[
@@ -65,10 +95,6 @@ layout: true
 * Typeclass coherence
 ]
 
----
-background-image: url(img/functors/plan.svg)
-
-# Plan
 
 ---
 class: center, middle
@@ -78,6 +104,17 @@ class: center, middle
 ---
 # Functor
 
+
+```tut:silent
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+```
+
+---
+.h1[# Functor]
+
+.large-left[
 ```tut:silent
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
@@ -89,57 +126,39 @@ trait Functor[F[_]] {
 ```scala
 forAll(fa: F[A] => fa.map(identity) == fa)
 
-forAll((fa: F[A], f: A => B, g: B => C) => fa.map(f).map(g) == fa.map(f andThen g))
+forAll((fa: F[A], f: A => B, g: B => C) =>
+  fa.map(f).map(g) == fa.map(f andThen g)
+)
 ```
+]
+
+.medium-right[![Functor law](img/functors/functor-law.svg)]
 
 ---
-# Functor
+# Functor API
 
 ```tut:silent
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 
   def as[A, B](fa: F[A])(value: B): F[B]
-  def void[A](fa: F[A]): F[Unit]
+  def void[A] (fa: F[A]): F[Unit]
+
   def tupleL[A, B](fa: F[A])(value: B): F[(B, A)]
   def tupleR[A, B](fa: F[A])(value: B): F[(A, B)]
+
   def lift[A, B](f: A => B): F[A] => F[B]
 }
 ```
 
-### Laws
+<br>
 
-```scala
-forAll(fa: F[A] => fa.map(identity) == fa)
-
-forAll((fa: F[A], f: A => B, g: B => C) => fa.map(f).map(g) == fa.map(f andThen g))
-```
+.center[![Functor API](img/functors/functor-api.svg)]
 
 ---
-# Infix syntax
+class: center, middle
 
-```tut:silent
-trait Functor[F[_]] {
-  def map[A, B](fa: F[A])(f: A => B): F[B]
-}
-
-object syntax {
-  implicit class FunctorOps[F[_], A](fa: F[A]){
-    def map[B](f: A => B)(implicit ev: Functor[F]): F[B] =
-      ev.map(fa)(f)
-  }
-}
-```
-
-```tut:silent
-import syntax._
-
-def succF[F[_]: Functor](fi: F[Int]): F[Int] =
-  fi.map(_ + 1)
-
-def succF[F[_]](fi: F[Int])(implicit ev: Functor[F]): F[Int] =
-  ev.map(fi)(_ + 1)
-```
+# What is F[_]?
 
 ---
 background-image: url(img/functors/map-example.svg)
@@ -168,9 +187,8 @@ type Console[A] = ...
 type Logger[A] = ...
 ```
 
---
 
-### A Functor is an abstraction allowing to update an effectful value **without** altering its effect
+### A Functor is an abstraction which updates an effectful value **without** altering its effect
 
 ---
 background-image: url(img/functors/functor-api-law.svg)

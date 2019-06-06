@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 343 217" width="343" height="217">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 343 217" width="343" height="217">
   <defs>
     <font-face font-family="Helvetica" font-size="19" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="700">
       <font-face-src>
@@ -29,14 +29,14 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-16 15:56:25 +0000</dc:date>
+    <dc:date>2019-06-06 09:43:02 +0000</dc:date>
   </metadata>
-  <g id="semigroups" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
-    <title>semigroups</title>
-    <g id="semigroups: Layer 1">
+  <g id="semigroup" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>semigroup</title>
+    <g id="semigroup: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_21">
-        <path d="M 27 9 L 135 9 C 144.94113 9 153 17.058875 153 27 L 153 27 C 153 36.941125 144.94113 45 135 45 L 27 45 C 17.058875 45 9 36.941125 9 27 L 9 27 C 9 17.058875 17.058875 9 27 9 Z" fill="#ff7f7f"/>
+        <path d="M 27 9 L 135 9 C 144.94113 9 153 17.058875 153 27 L 153 27 C 153 36.941125 144.94113 45 135 45 L 27 45 C 17.058875 45 9 36.941125 9 27 L 9 27 C 9 17.058875 17.058875 9 27 9 Z" fill="#ffc0c0"/>
         <path d="M 27 9 L 135 9 C 144.94113 9 153 17.058875 153 27 L 153 27 C 153 36.941125 144.94113 45 135 45 L 27 45 C 17.058875 45 9 36.941125 9 27 L 9 27 C 9 17.058875 17.058875 9 27 9 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
         <text transform="translate(14 15.5)" fill="#343434">
           <tspan font-family="Helvetica" font-size="19" font-weight="700" fill="#343434" x="17.384766" y="19">Semigroup</tspan>

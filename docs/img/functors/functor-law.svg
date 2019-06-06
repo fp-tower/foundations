@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="-.5 2.5 330.636 403" width="330.636" height="403">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="-.5 2.5 330.636 403" width="330.636" height="403">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -9,11 +9,10 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-17 15:54:25 +0000</dc:date>
+    <dc:date>2019-06-06 11:46:19 +0000</dc:date>
   </metadata>
-  <g id="functor-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+  <g id="functor-law" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>functor-law</title>
-    <rect fill="white" x="0" y="2.5" width="330.136" height="403"/>
     <g id="functor-law: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_142">
@@ -112,8 +111,8 @@
         </text>
       </g>
       <g id="Graphic_165">
-        <path d="M 154.32 67.5 L 166.32 54 L 166.32 60.75 L 213 60.75 L 213 54 L 225 67.5 L 213 81 L 213 74.25 L 166.32 74.25 L 166.32 81 Z" fill="#acbdd0"/>
-        <path d="M 154.32 67.5 L 166.32 54 L 166.32 60.75 L 213 60.75 L 213 54 L 225 67.5 L 213 81 L 213 74.25 L 166.32 74.25 L 166.32 81 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 154.32 67.5 L 166.32 54 L 166.32 60.75 L 204 60.75 L 204 54 L 216 67.5 L 204 81 L 204 74.25 L 166.32 74.25 L 166.32 81 Z" fill="#acbdd0"/>
+        <path d="M 154.32 67.5 L 166.32 54 L 166.32 60.75 L 204 60.75 L 204 54 L 216 67.5 L 204 81 L 204 74.25 L 166.32 74.25 L 166.32 81 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_164">
         <text transform="translate(158.84 23)" fill="black">
