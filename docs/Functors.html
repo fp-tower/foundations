@@ -453,7 +453,7 @@ trait Applicative[F[_]] extends Functor[F] {
 .small-right[![Applicative main methods](img/functors/applicative-main.svg)]
 
 ---
-.h1[# Applicative alternative definition]
+.h1[# Applicative alternative encoding]
 
 .large-left[
 ```scala
@@ -714,39 +714,36 @@ class: center, middle
 
 
 
+<br>
+
 .large-left[
 ```scala
 trait Monad[F[_]] extends Applicative[F] {
 
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 
-  def flatten[A](ffa: F[F[A]]): F[A]
-
 }
 ```
 ]
 
-.small-right[![Monad main](img/functors/monad-main.svg)]
+.small-right[![Monad flatMap](img/functors/monad-flatMap.svg)]
 
 ---
-.h1[# Monad]
+.h1[# Monad alternative encoding]
+
+<br>
 
 .large-left[
 ```scala
 trait Monad[F[_]] extends Applicative[F] {
-  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
   def flatten[A](ffa: F[F[A]]): F[A]
 
-
-  def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A]
-
-
-  def forever[A](fa: F[A]): F[Nothing]
 }
 ```
 ]
 
-.small-right[![Monad main](img/functors/monad-flatTap-forever.svg)]
+.small-right[![Monad flatten](img/functors/monad-flatten.svg)]
 
 ---
 # Monad identity laws
@@ -770,6 +767,26 @@ forAll(fffa: F[F[F[A]]] =>
 .center[![Monad law](img/functors/monad-associativity-law.svg)]
 
 ---
+.h1[# Monad API]
+
+.large-left[
+```scala
+trait Monad[F[_]] extends Applicative[F] {
+  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+  def flatten[A](ffa: F[F[A]]): F[A]
+
+
+  def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A]
+
+
+  def forever[A](fa: F[A]): F[Nothing]
+}
+```
+]
+
+.small-right[![Monad main](img/functors/monad-flatTap-forever.svg)]
+
+---
 background-image: url(img/functors/monad-api-law.svg)
 
 ---
@@ -783,7 +800,18 @@ scala> for {
 res13: List[String] = List(foo, bar, foofoo, barbar, foofoofoo, barbarbar)
 ```
 
-### TODO find example with non container
+--
+
+<br>
+
+```scala
+def sendStatement(userId: UserId): IO[Unit] =
+  for {
+    user    <- getUser(userId)
+    account <- getAccount(user.accountId)
+    _       <- sendStatement(user.email, account.statement)
+  } yield ()
+```
 
 ---
 .h1[# For comprehension]
@@ -853,7 +881,7 @@ scala> for {
      |   i <- List(1,2,3)
      |   e <- if(i == 1) Right("One") else Left("Expected 1")
      | } yield i
-<console>:31: error: type mismatch;
+<console>:32: error: type mismatch;
  found   : scala.util.Either[String,Int]
  required: scala.collection.GenTraversableOnce[?]
          e <- if(i == 1) Right("One") else Left("Expected 1")
@@ -866,14 +894,34 @@ class: center, middle
 # Exercise 3
 
 ---
+# Monad is for sequential composition of effects
+
+```scala
+val res =
+  for {
+    a <- fa
+    b <- foo(`a`)
+  } yield f(a,b)
+```
+
+--
+
+```scala
+def sendStatement(userId: UserId): IO[Unit] =
+  for {
+    user    <- getUser(userId)
+    account <- getAccount(`user.accountId`)
+    _       <- sendStatement(`user.email, account.statement`)
+  } yield ()
+```
+
+---
 # Monad is an Applicative
 
 ```scala
-trait Monad[F[_]] extends Applicative[F] {
+trait Monad[F[_]] `extends Applicative[F]` {
 
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
-
-  def flatten[A](ffa: F[F[A]]): F[A]
 
 }
 ```
@@ -890,11 +938,9 @@ forAll((fa: F[A], fb: F[B]) =>
 # Monad is an Applicative
 
 ```scala
-trait Monad[F[_]] extends Applicative[F] {
+trait Monad[F[_]] `extends Applicative[F]` {
 
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
-
-  def flatten[A](ffa: F[F[A]]): F[A]
 
 }
 ```
@@ -902,42 +948,121 @@ trait Monad[F[_]] extends Applicative[F] {
 ### Coherence Law
 
 ```scala
-forAll((fa: F[A], fb: F[B]) =>
-  (for { a <- fa; b <- fb } yield (a, b)) == (fa, fb).tuple2
-)
+forAll{ (fa: F[A], fb: F[B]) =>
+
+  val combinedFor = for {
+     a <- fa
+     b <- fb
+  } yield (a, b)
+
+  combinedFor == (fa, fb).tuple2
+}
 ```
 
 ---
-# Monad implies sequential composition of effects
+class: center, middle
+
+# Monad is for sequential composition
+
+# &
+
+# Applicative must be coherent with Monad
+
+---
+class: center, middle
+
+# All Monadic effects must have a sequential Applicative
+
+---
+# Coherence implication
+
+
+
 
 ```scala
-val res: F[C] =
-  for {
-    a: A <- fa    : F[A]
-*   b: B <- foo(a): F[B]
-  } yield f(a,b): C
-```
+import exercises.errorhandling.{Country, User, Username}
+import answers.functors.FunctorsAnswers.DefaultMonad
 
---
+def validateUsername(x: String): ValidatedNel[String, Username] = {
+  if(x.length > 5) valid(Username(x))
+  else invalidNel(s"Username $x too short")
+}
 
-```scala
-scala>   for {
-     |     i <- List(1,2,3)
-     |     s <- if(i == 1) List("hello", "world")
-     |          else List("foo")
-     |   } yield s
-res15: List[String] = List(hello, world, foo, foo)
+def validateCountry(x: String): ValidatedNel[String, Country] =
+  x match {
+    case "FRA" => valid(Country.France)
+    case _     => invalidNel(s"Unsupported country $x")
+  }
+
+implicit def validatedMonad[E]: Monad[Validated[E, ?]] = new DefaultMonad[Validated[E, ?]] {
+    def pure[A](a: A): Validated[E, A] = Valid(a)
+
+    def flatMap[A, B](fa: Validated[E, A])(f: A => Validated[E, B]): Validated[E, B] =
+      fa match {
+        case Invalid(e) => Invalid(e)
+        case Valid(a)   => f(a)
+      }
+  }
 ```
 
 ---
 # Coherence implication
 
-### TODO explain consequence on Applicative[F] when F is a Monad
+```scala
+val combinedFor: ValidatedNel[String, User] = for {
+  username <- validateUsername("foo")
+  country  <- validateCountry("UK")
+} yield User(username, country)
+```
+
+```scala
+scala> println(combinedFor)
+Invalid(NonEmptyList(Username foo too short))
+```
+
+--
+
+```scala
+def map2[E: Semigroup, A, B, C](fa: Validated[E, A], fb: Validated[E, B])(f: (A, B) => C): Validated[E, C] =
+  (fa, fb) match {
+    case (Valid(a), Valid(b))       => Valid(f(a, b))
+    case (Invalid(e), Valid(_))     => Invalid(e)
+    case (Valid(_), Invalid(e))     => Invalid(e)
+    case (Invalid(e1), Invalid(e2)) => Invalid(e1 |+| e2)
+  }
+val combinedMap2 = map2(validateUsername("foo"), validateCountry("UK"))(User(_, _))
+```
+
+```scala
+scala> println(combinedMap2)
+Invalid(NonEmptyList(Username foo too short, Unsupported country UK))
+```
+
+---
+class: center, middle
+
+# Validated cannot be a Monad
+
+---
+class: center, middle
+
+# IO cannot be combined in parallel (but IO.Par can)
+
+---
+# Nesting
+
+### if F and G is a Functor then F[G[_]] is a Functor
+
+### if F and G is an Applicative then F[G[_]] is an Applicative
+
+--
+
+### but if F and G is an Monad then F[G[_]] is not necessarily a Monad
 
 ---
 background-image: url(img/functors/monad-do-not-compose.svg)
 
-# Monads curse
+# Nesting
 
 ---
 class: center, middle

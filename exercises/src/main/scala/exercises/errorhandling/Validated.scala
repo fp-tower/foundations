@@ -13,6 +13,8 @@ sealed trait Validated[+E, +A] {
 }
 
 object Validated {
+  type ValidatedNel[+E, +A] = Validated[NonEmptyList[E], A]
+
   case class Invalid[+E](value: E) extends Validated[E, Nothing]
   case class Valid[+A](value: A)   extends Validated[Nothing, A]
 
