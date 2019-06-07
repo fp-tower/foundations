@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="17.5 8.5 523 226" width="523" height="226">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="17.5 8.5 523 226" width="523" height="226">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -9,11 +9,10 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-05-19 16:41:38 +0000</dc:date>
+    <dc:date>2019-06-07 15:19:33 +0000</dc:date>
   </metadata>
-  <g id="traverse-law" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+  <g id="traverse-law" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>traverse-law</title>
-    <rect fill="white" x="17.5" y="8.5" width="523" height="226"/>
     <g id="traverse-law: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_573">
@@ -35,8 +34,8 @@
         </text>
       </g>
       <g id="Graphic_576">
-        <path d="M 90 58.5 L 90 49.5 L 115 49.5 L 115 45 L 126 54 L 115 63 L 115 58.5 Z" fill="#acbdd0"/>
-        <path d="M 90 58.5 L 90 49.5 L 115 49.5 L 115 45 L 126 54 L 115 63 L 115 58.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 90 58.5 L 90 49.5 L 124 49.5 L 124 45 L 135 54 L 124 63 L 124 58.5 Z" fill="#acbdd0"/>
+        <path d="M 90 58.5 L 90 49.5 L 124 49.5 L 124 45 L 135 54 L 124 63 L 124 58.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_575">
         <text transform="translate(85.372 23)" fill="black">
@@ -62,8 +61,8 @@
         </text>
       </g>
       <g id="Graphic_626">
-        <path d="M 261.628 58.5 L 261.628 49.5 L 286.628 49.5 L 286.628 45 L 297.628 54 L 286.628 63 L 286.628 58.5 Z" fill="#acbdd0"/>
-        <path d="M 261.628 58.5 L 261.628 49.5 L 286.628 49.5 L 286.628 45 L 297.628 54 L 286.628 63 L 286.628 58.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 261.628 58.5 L 261.628 49.5 L 295 49.5 L 295 45 L 306 54 L 295 63 L 295 58.5 Z" fill="#acbdd0"/>
+        <path d="M 261.628 58.5 L 261.628 49.5 L 295 49.5 L 295 45 L 306 54 L 295 63 L 295 58.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_625">
         <text transform="translate(249.304 23)" fill="black">
@@ -78,11 +77,11 @@
         </text>
       </g>
       <g id="Graphic_631">
-        <path d="M 431.324 58.5 L 431.324 49.5 L 456.324 49.5 L 456.324 45 L 467.324 54 L 456.324 63 L 456.324 58.5 Z" fill="#acbdd0"/>
-        <path d="M 431.324 58.5 L 431.324 49.5 L 456.324 49.5 L 456.324 45 L 467.324 54 L 456.324 63 L 456.324 58.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 431.324 58.5 L 431.324 49.5 L 466 49.5 L 466 45 L 477 54 L 466 63 L 466 58.5 Z" fill="#acbdd0"/>
+        <path d="M 431.324 58.5 L 431.324 49.5 L 466 49.5 L 466 45 L 477 54 L 466 63 L 466 58.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_630">
-        <text transform="translate(428 23)" fill="black">
+        <text transform="translate(437 23)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="71409545e-20" y="15">value</tspan>
         </text>
       </g>

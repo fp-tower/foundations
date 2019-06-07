@@ -1051,13 +1051,13 @@ class: center, middle
 ---
 # Nesting
 
-### if F and G is a Functor then F[G[_]] is a Functor
+### if F and G are a Functor then F[G[_]] is a Functor
 
-### if F and G is an Applicative then F[G[_]] is an Applicative
+### if F and G are an Applicative then F[G[_]] is an Applicative
 
 --
 
-### but if F and G is an Monad then F[G[_]] is not necessarily a Monad
+### but if F and G are a Monad then F[G[_]] is not necessarily a Monad
 
 ---
 background-image: url(img/functors/monad-do-not-compose.svg)
@@ -1116,15 +1116,41 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 
   def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
 
+}
+```
+
+<br>
+
+.center[![Traverse](img/functors/traverse.svg)]
+
+---
+# Traverse alternative encoding
+
+```scala
+trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+
   def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
 
 }
 ```
 
-.center[![Traverse main](img/functors/traverse-main.svg)]
+<br>
+
+.center[![Traverse main](img/functors/traverse-sequence.svg)]
 
 ---
-# Traverse
+# Traverse Law
+
+```scala
+forAll(fa: F[A] => fa.map(Id(_)).sequence.value == fa)
+```
+
+<br>
+
+.center[![Traverse law](img/functors/traverse-law.svg)]
+
+---
+# Traverse API
 
 
 ```scala
@@ -1142,17 +1168,6 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 .center[![Traverse variants](img/functors/traverse-variants.svg)]
 
 ---
-# Traverse Law
-
-```scala
-forAll(fa: F[A] => fa.map(Id(_)).sequence.value == fa)
-```
-
-<br>
-
-.center[![Traverse law](img/functors/traverse-law.svg)]
-
----
 background-image: url(img/functors/traverse-api-law.svg)
 
 ---
@@ -1164,11 +1179,9 @@ class: center, middle
 # Traverse is a Functor
 
 ```scala
-trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+trait Traverse[F[_]] `extends Functor[F]` with Foldable[F] {
 
   def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
-
-  def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
 
 }
 ```
@@ -1183,11 +1196,9 @@ forAll((fa: F[A], f: A => B) => fa.traverse(a => Id(f(a))).value == fa.map(f))
 # Traverse is a Foldable
 
 ```scala
-trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
+trait Traverse[F[_]] extends Functor[F] `with Foldable[F]` {
 
   def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]]
-
-  def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]]
 
 }
 ```
@@ -1197,6 +1208,9 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] {
 ```scala
 forAll((fa: F[A], f: A => B) => fa.traverse(a => Const(f(a))).getConst == fa.foldMap(f))
 ```
+
+---
+background-image: url(img/functors/traverse-derivation.svg)
 
 
 ---
