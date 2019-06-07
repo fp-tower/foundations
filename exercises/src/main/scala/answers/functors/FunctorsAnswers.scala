@@ -247,11 +247,6 @@ object FunctorsAnswers extends FunctorsToImpl {
     def flatMap[A, B](fa: R => A)(f: A => R => B): R => B = r => f(fa(r))(r)
   }
 
-  implicit val streamMonad: Monad[Stream] = new DefaultMonad[Stream] {
-    def pure[A](a: A): Stream[A]                                   = Stream(a)
-    def flatMap[A, B](fa: Stream[A])(f: A => Stream[B]): Stream[B] = fa.flatMap(f)
-  }
-
   ////////////////////////
   // 4. Traverse
   ////////////////////////

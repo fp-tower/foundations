@@ -236,10 +236,10 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultMonad[F[_]] extends Monad[F] with DefaultApplicative[F] {
-    // 3a. Show that map can be implemented using Monad using flatMap
+    // 3a. Implement map using flatMap
     override def map[A, B](fa: F[A])(f: A => B): F[B] = ???
 
-    // 3b. Show that map2 can be implemented using Monad using flatMap
+    // 3b. Implement map2 using flatMap
     def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = ???
 
     // 3c. Implement flatten
@@ -250,16 +250,31 @@ object FunctorsExercises extends FunctorsToImpl {
     // 3d. Implement flatTap
     // such as flatTap(Option(10))(x => if(x > 0) unit[Option] else None) == Some(10)
     //         flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) == None
+    // use case:
+    // getUser(userId).flatTap(user => log.info(s"Fetched $user")): IO[User]
     def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A] = ???
 
     // 3e. Implement ifM
     // such as val func = ifM((x: Int) => x > 0)(_ * 2, _.abs)
     //         func(-10) == 10
     //         func(  3) == 6
+    // use case:
+    // checkUserAccess(userId).ifM(
+    //   getUserAccount(userId),
+    //   IO.raiseError(new Exception("Insufficient access"))
+    // )
     def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
 
     // 3f. Implement forever
-    // such as forever(Stream(1)) == Stream(1,1,1,1,1,1,1,1,...)
+    // use case:
+    // (getCurrentTime.flatMap(log.info) <* sleep(2.seconds)).forever
+    //
+    // (for {
+    //   req <- pullRequest
+    //   res <- handleRequest(req)
+    //   _   <- pushResponse(res)
+    // yield ()).forever
+    //
     def forever[A](fa: F[A]): F[Nothing] = ???
   }
 
@@ -303,11 +318,6 @@ object FunctorsExercises extends FunctorsToImpl {
   implicit def functionMonad[R]: Monad[Function[R, ?]] = new DefaultMonad[Function[R, ?]] {
     def pure[A](a: A): Function[R, A]                                             = functionApplicative.pure(a)
     def flatMap[A, B](fa: Function[R, A])(f: A => Function[R, B]): Function[R, B] = ???
-  }
-
-  implicit val streamMonad: Monad[Stream] = new DefaultMonad[Stream] {
-    def pure[A](a: A): Stream[A]                                   = ???
-    def flatMap[A, B](fa: Stream[A])(f: A => Stream[B]): Stream[B] = ???
   }
 
   // 3g. Implement an Monad instance for Compose

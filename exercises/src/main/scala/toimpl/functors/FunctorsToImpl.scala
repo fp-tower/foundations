@@ -51,7 +51,6 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit def mapFlatMap[K]: FlatMap[Map[K, ?]]
   implicit val idMonad: Monad[Id]
   implicit def functionMonad[R]: Monad[R => ?]
-  implicit val streamMonad: Monad[Stream]
 
 }
 

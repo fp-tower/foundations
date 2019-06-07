@@ -174,11 +174,6 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
     func(3) shouldEqual 6
   }
 
-// TODO fix
-//  test("forever") {
-//    Stream(1).forever.take(10) shouldEqual Stream.fill(10)(1)
-//  }
-
   ////////////////////////
   // 4. Traverse
   ////////////////////////
