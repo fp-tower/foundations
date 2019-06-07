@@ -1,6 +1,7 @@
 package answers.functors
 
 import answers.typeclass.TypeclassAnswers._
+import exercises.errorhandling.Validated
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Traverse.syntax._
@@ -8,7 +9,7 @@ import exercises.typeclass.Monoid.syntax._
 import exercises.functors._
 import exercises.typeclass.Foldable.syntax._
 import exercises.typeclass.Semigroup.syntax._
-import exercises.typeclass.{Dual, Endo, Monoid}
+import exercises.typeclass.{Dual, Endo, Monoid, Semigroup}
 import toimpl.functors.FunctorsToImpl
 
 object FunctorsAnswers extends FunctorsToImpl {
@@ -123,6 +124,20 @@ object FunctorsAnswers extends FunctorsToImpl {
         b <- fb
       } yield f(a, b)
   }
+
+  implicit def validatedApplicative[E: Semigroup]: Applicative[Validated[E, ?]] =
+    new DefaultApplicative[Validated[E, ?]] {
+      import Validated._
+      def pure[A](a: A): Validated[E, A] = valid(a)
+
+      def map2[A, B, C](fa: Validated[E, A], fb: Validated[E, B])(f: (A, B) => C): Validated[E, C] =
+        (fa, fb) match {
+          case (Valid(a), Valid(b))       => Valid(f(a, b))
+          case (Invalid(e), Valid(_))     => Invalid(e)
+          case (Valid(_), Invalid(e))     => Invalid(e)
+          case (Invalid(e1), Invalid(e2)) => Invalid(e1 |+| e2)
+        }
+    }
 
   implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
     def map[A, B](fa: Map[K, A])(f: A => B): Map[K, B] = fa.map { case (k, v) => k -> f(v) }
@@ -306,7 +321,7 @@ object FunctorsAnswers extends FunctorsToImpl {
           digits.reverse.zipWithIndex.foldMap {
             case (digit, index) =>
               digit * BigInt(10).pow(index)
-        }
+          }
       )
 
   def parseDigit(value: Char): Option[Int] =

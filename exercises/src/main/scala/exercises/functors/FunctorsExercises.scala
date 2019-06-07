@@ -120,28 +120,36 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultApplicative[F[_]] extends Applicative[F] with DefaultFunctor[F] {
-    // 2a. Show that map can be implemented using Applicative using map2
+    // 2a. Implement map using map2
     def map[A, B](fa: F[A])(f: A => B): F[B] = ???
+
+    // 2b. Implement tuple2
+    // such as tuple2(List(1,2,3), List('a','b')) == List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
+    def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)] = ???
+
+    // 2c. Implement unit
+    // such as unit[List] == List(())
+    //         unit[Either[String, ?]] == Right(())
+    // use case:
+    // optUser match {
+    //   case None       => unit
+    //   case Some(user) => saveUser(user)
+    // }
+    def unit: F[Unit] = ???
 
     // 2b. Implement map3
     def map3[A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] = ???
-
-    // 2c. Implement tuple2
-    // such as tuple2(List(1,2,3), List('a','b')) == List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
-    def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)] = ???
 
     // 2d. Implement productL, productR
     // such as productL(Option(1), Option("hello")) == Some(1)
     //         productR(Option(1), Option("hello")) == Some("hello")
     // but     productL(Option(1), None)            == None
     //         productR(Option(1), None)            == None
+    // use cases:
+    // parseSpaces(2) *> parseInt <* newLine would parse successfully "  123\n" to 123
+    // getUser(userId) <* log.info(s"Got user $userId") would call getUser then log and return the fetched user
     def productL[A, B](fa: F[A], fb: F[B]): F[A] = ???
     def productR[A, B](fa: F[A], fb: F[B]): F[B] = ???
-
-    // 2e. Implement unit
-    // such as unit[List] == List(())
-    //         unit[Either[String, ?]] == Right(())
-    def unit: F[Unit] = ???
   }
 
   // 2f. Implement the following instances

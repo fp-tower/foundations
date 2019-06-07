@@ -188,7 +188,7 @@ type Logger[A] = ...
 ```
 
 
-### A Functor is an abstraction which updates an effectful value **without** altering its effect
+### A Functor is an abstraction to update an effectful value **without** altering its effect
 
 ---
 background-image: url(img/functors/functor-api-law.svg)
@@ -197,6 +197,30 @@ background-image: url(img/functors/functor-api-law.svg)
 class: center, middle
 
 # Exercise 1
+
+---
+.h1[# Functor]
+
+.pull-left[
+### ✅ ADT
+
+```scala
+case class Foo[A](i: Int, a: A)
+
+sealed trait Bar[A]
+case class Bar1[A](i: Int    , a: A) extends Bar[A]
+case class Bar2[A](b: Boolean, a: A) extends Bar[A]
+case class Bar3[A](s: String       ) extends Bar[A]
+```
+]
+
+.pull-right[
+### ✅ Function result
+
+```scala
+case class Producer[A](func: Int => A)
+```
+]
 
 ---
 .h1[# Functor]
@@ -265,28 +289,79 @@ trait JsonEncoder[A]{
 trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
 ```
 
+<br>
+
+
+### What kind of Functor is JsonDecoder, JsonEncoder and JsonCodec?
+
 ---
 # Functor variance
 
 ```scala
-case class JsonDecoder[A](decode: Json => A)
-
-case class JsonEncoder[A](encode: A    => Json)
-
-case class JsonCodec[A](
-  decode: Json => A,
-  encode: A    => Json
-)
+trait JsonDecoder[A]{
+  def decode(value: Json): A
+}
 ```
 
 --
 
+### is equivalent to
+
 ```scala
-implicit val decoderFunctor: Functor[JsonDecoder] = ???
+case class JsonDecoder[A](decode: Json => `A`)
+```
 
-implicit val encoderFunctor: ContravariantFunctor[JsonEncoder] = ???
+### hence
 
-implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
+```scala
+implicit val functor: `Functor`[JsonDecoder] = ???
+```
+
+---
+# Functor variance
+
+```scala
+trait JsonEncoder[A]{
+  def encode(value: A): Json
+}
+```
+
+--
+
+### is equivalent to
+
+```scala
+case class JsonEncoder[A](encode: `A` => Json)
+```
+
+### hence
+
+```scala
+implicit val functor: `ContravariantFunctor`[JsonEncoder] = ???
+```
+
+---
+# Functor variance
+
+```scala
+trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
+```
+
+--
+
+### is equivalent to
+
+```scala
+case class JsonCodec[A](
+  decode: Json => `A`,
+  encode: `A` => Json
+)
+```
+
+### hence
+
+```scala
+implicit val functor: InvariantFunctor[JsonCodec] = ???
 ```
 
 ---
@@ -297,12 +372,12 @@ implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
 <br>
 
 .center[
-|  Type        | A             | B         |
-|:------------:|:-------------:|:---------:|
-| (A, B)       | Covariant     | Covariant |
-| Either[A, B] | Covariant     | Covariant |
-| A => B       | Contravariant | Covariant |
-| A => A       | Invariant     | N/A       |
+| Type          |  Example     | A             | B         |
+|:-------------:|:------------:|:-------------:|:---------:|
+| Product       | (A, B)       | Covariant     | Covariant |
+| Sum           | Either[A, B] | Covariant     | Covariant |
+| Function      | A => B       | Contravariant | Covariant |
+| Endo Function | A => A       | Invariant     | N/A       |
 ]
 
 ---
@@ -330,10 +405,27 @@ implicit val codecFunctor  : InvariantFunctor[JsonCodec] = ???
 Functor              = FunctorOf (->) (->)
 ContravariantFunctor = FunctorOf (<-) (->)
 InvariantFunctor     = FunctorOf Iso Iso
-Profunctor           = FunctorOf (<-) (~>)
+Bifunctor
+Profunctor
+...
 ```
 
 See [Functor-Of](https://cvlad.info/functor-of/) from Vladimir Ciobanu and @Iceland_jack
+
+---
+class: center, middle
+
+# A Functor is an abstraction to update an effectful value without altering its effect
+
+---
+class: center, middle
+
+# What if we have more than 1 effect?
+
+---
+class: center, middle
+
+# How can we combine effects? e.g. F[A] and F[B]
 
 ---
 class: center, middle
@@ -361,19 +453,18 @@ trait Applicative[F[_]] extends Functor[F] {
 .small-right[![Applicative main methods](img/functors/applicative-main.svg)]
 
 ---
-.h1[# Applicative]
+.h1[# Applicative alternative definition]
 
 .large-left[
 ```scala
 trait Applicative[F[_]] extends Functor[F] {
-  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
-  def pure[A](a: A): F[A]
 
 
   def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)]
 
 
   def unit: F[Unit]
+
 
 }
 ```
@@ -382,30 +473,28 @@ trait Applicative[F[_]] extends Functor[F] {
 .small-right[![Applicative tuple2 unit](img/functors/applicative-tuple2-unit.svg)]
 
 ---
-.h1[# Applicative]
+.h1[# Applicative laws]
 
-.large-left[
 ```scala
-trait Applicative[F[_]] extends Functor[F] {
-  def pure[A](a: A): F[A]
-  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+forAll(fa: F[A] => tuple2(pure(()), fa  )     == fa)    // equalities hold if we flatten tuples,
+forAll(fa: F[A] => tuple2(fa      , pure(())) == fa)    // e.g. (a, ()) == a == ((), a)
 
-
-  // <*
-  def productL[A, B](fa: F[A], fb: F[B]): F[A]
-
-
-  // *>
-  def productR[A, B](fa: F[A], fb: F[B]): F[B]
-
-}
+forAll((fa: F[A], fb: F[A], fc: F[C]) =>
+  tuple2(tuple2(fa, fb), fc) == tuple2(fa, tuple2(fb, fc)) // ((a, b), c) == (a, b, c) == (a, (b, c))
+)
 ```
-]
 
-.small-right[![Applicative product L and R](img/functors/applicative-productL-productR.svg)]
+<br>
+
+.center[![Applicative laws](img/functors/applicative-law.svg)]
 
 ---
-.h1[# Applicative]
+class: center, middle
+
+# An Applicative combines 2 effects associatively and it creates a NOOP effect
+
+---
+.h1[# Applicative API]
 
 .large-left[
 ```scala
@@ -427,66 +516,42 @@ trait Applicative[F[_]] extends Functor[F] {
 .small-right[![Applicative map3 tuple3](img/functors/applicative-map3-tuple3.svg)]
 
 ---
-# Applicative
+.h1[# Applicative API]
 
+.large-left[
 ```scala
 trait Applicative[F[_]] extends Functor[F] {
   def pure[A](a: A): F[A]
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
 
-  def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)]
-  def unit: F[Unit]
+
+  // alias to <*
+  def productL[A, B](fa: F[A], fb: F[B]): F[A]
+
+
+  // alias to *>
+  def productR[A, B](fa: F[A], fb: F[B]): F[B]
+
 }
 ```
+]
 
-### Laws
+.small-right[![Applicative product L and R](img/functors/applicative-productL-productR.svg)]
 
-```scala
-forAll(fa: F[A] => tuple2(unit, fa  ) == fa)
-forAll(fa: F[A] => tuple2(fa  , unit) == fa)
-
-forAll((fa: F[A], fb: F[A], fc: F[C]) =>
-  tuple2(tuple2(fa, fb), fc) == tuple2(fa, tuple2(fb, fc))
-)
-
-// equalities hold if we flatten tuples, e.g. (a, ()) == a == ((), a)
-```
-
-???
-`=~` because `a` is isomorphic to `(a, ())` and `((), a)`
-
-same for `(a, (b, c))` and `((a, b), c)`
 
 ---
 background-image: url(img/functors/applicative-api-law.svg)
 
 ---
-# Applicative combine effects: Failure
+class: center, middle
 
-
-
-
-```scala
-scala> (Option(1), Option("hello")).tuple2
-res0: Option[(Int, String)] = Some((1,hello))
-
-scala> (Option(1), None).tuple2
-res1: Option[(Int, Nothing)] = None
-
-scala> (None, Some(2)).tuple2
-res2: Option[(Nothing, Int)] = None
-```
-
-```scala
-scala> 10.pure[Option]
-res3: Option[Int] = Some(10)
-
-scala> (1.pure[Option], 10.pure[Option]).map2(_ + _)
-res4: Option[Int] = Some(11)
-```
+# Exercise 2
 
 ---
 # Applicative combine effects: Failure
+
+
+
 
 ```scala
 def right[A, E](a: A): Either[E, A] = Right(a)
@@ -495,19 +560,42 @@ def left [A, E](e: E): Either[E, A] = Left(e)
 
 ```scala
 scala> (right(1), right("hello")).tuple2
-res5: Either[Nothing,(Int, String)] = Right((1,hello))
+res0: Either[Nothing,(Int, String)] = Right((1,hello))
 
 scala> (right(1), left("an error")).tuple2
-res6: Either[String,(Int, Nothing)] = Left(an error)
+res1: Either[String,(Int, Nothing)] = Left(an error)
 
 scala> (left("oops"), right(2)).tuple2
-res7: Either[String,(Nothing, Int)] = Left(oops)
+res2: Either[String,(Nothing, Int)] = Left(oops)
 ```
 
 
 ```scala
 scala> (left("oops"), left("an error")).tuple2
-res8: Either[String,(Nothing, Nothing)] = Left(oops)
+res3: Either[String,(Nothing, Nothing)] = Left(oops)
+```
+
+---
+# Applicative combine effects: Failure
+
+
+
+
+```scala
+scala> (validNel(1), validNel("hello")).tuple2
+res4: exercises.errorhandling.Validated[cats.data.NonEmptyList[Nothing],(Int, String)] = Valid((1,hello))
+
+scala> (validNel(1), invalidNel("an error")).tuple2
+res5: exercises.errorhandling.Validated[cats.data.NonEmptyList[String],(Int, Nothing)] = Invalid(NonEmptyList(an error))
+
+scala> (invalidNel("oops"), validNel(2)).tuple2
+res6: exercises.errorhandling.Validated[cats.data.NonEmptyList[String],(Nothing, Int)] = Invalid(NonEmptyList(oops))
+```
+
+
+```scala
+scala> (invalidNel("oops"), invalidNel("an error")).tuple2
+res7: exercises.errorhandling.Validated[cats.data.NonEmptyList[String],(Nothing, Nothing)] = Invalid(NonEmptyList(oops, an error))
 ```
 
 ---
@@ -516,16 +604,16 @@ res8: Either[String,(Nothing, Nothing)] = Left(oops)
 
 ```scala
 scala> (List(1,2,3), List("foo", "bar")).tuple2
-res9: List[(Int, String)] = List((1,foo), (1,bar), (2,foo), (2,bar), (3,foo), (3,bar))
+res8: List[(Int, String)] = List((1,foo), (1,bar), (2,foo), (2,bar), (3,foo), (3,bar))
 ```
 
 
 ```scala
 scala> 10.pure[List]
-res10: List[Int] = List(10)
+res9: List[Int] = List(10)
 
 scala> (List(1,2,3), 10.pure[List]).map2(_ + _)
-res11: List[Int] = List(11, 12, 13)
+res10: List[Int] = List(11, 12, 13)
 ```
 
 ---
@@ -542,10 +630,10 @@ val listSize: State => Int = state => if(state.useLargeList) 100 else 10
 
 ```scala
 scala> (greet, listSize).tuple2.apply(State("John Doe", true))
-res12: (String, Int) = (Welcome John Doe,100)
+res11: (String, Int) = (Welcome John Doe,100)
 
 scala> (greet, listSize).tuple2.apply(State("Lena Doe", false))
-res13: (String, Int) = (Welcome Lena Doe,10)
+res12: (String, Int) = (Welcome Lena Doe,10)
 ```
 
 ---
@@ -573,11 +661,6 @@ forAll(fa: F[A] => tuple2(fa, unit ) =~ fa)
 forAll(( a: A   ,  b: B   ,  c: C)    => combine(combine(a, b), c)  == combine(a, combine(b, c)))
 forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple2(fa, tuple2(fb, fc)))
 ```
-
----
-class: center, middle
-
-# Exercise 2
 
 ---
 .h1[# Applicative is a Functor]
@@ -681,7 +764,7 @@ scala> for {
      |   n <- List(1,2,3)
      |   s <- List("foo", "bar")
      | } yield List.fill(n)(s).mkString
-res14: List[String] = List(foo, bar, foofoo, barbar, foofoofoo, barbarbar)
+res13: List[String] = List(foo, bar, foofoo, barbar, foofoofoo, barbarbar)
 ```
 
 ### TODO find example with non container
@@ -754,7 +837,7 @@ scala> for {
      |   i <- List(1,2,3)
      |   e <- if(i == 1) Right("One") else Left("Expected 1")
      | } yield i
-<console>:22: error: type mismatch;
+<console>:29: error: type mismatch;
  found   : scala.util.Either[String,Int]
  required: scala.collection.GenTraversableOnce[?]
          e <- if(i == 1) Right("One") else Left("Expected 1")
@@ -827,7 +910,7 @@ scala>   for {
      |     s <- if(i == 1) List("hello", "world")
      |          else List("foo")
      |   } yield s
-res16: List[String] = List(hello, world, foo, foo)
+res15: List[String] = List(hello, world, foo, foo)
 ```
 
 ---
@@ -1048,7 +1131,8 @@ class: center, middle
     var slideshow = remark.create({
         ratio: "16:9",
         slideNumberFormat: '%current%',
-        highlightLines: true
+        highlightLines: true,
+        highlightSpans: true,
     });
 </script>
 </body>
