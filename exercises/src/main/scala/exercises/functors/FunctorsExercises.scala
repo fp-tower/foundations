@@ -1,6 +1,8 @@
 package exercises.functors
 
-import exercises.typeclass.Monoid
+import exercises.errorhandling.Validated
+import exercises.errorhandling.Validated._
+import exercises.typeclass.{Monoid, Semigroup}
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Monad.syntax._
@@ -55,6 +57,7 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // 1e. Implement the following instances
+  // you can reuse methods from the standard library
   implicit val listFunctor: Functor[List] = new DefaultFunctor[List] {
     def map[A, B](fa: List[A])(f: A => B): List[B] = ???
   }
@@ -65,6 +68,10 @@ object FunctorsExercises extends FunctorsToImpl {
 
   implicit def eitherFunctor[E]: Functor[Either[E, ?]] = new DefaultFunctor[Either[E, ?]] {
     def map[A, B](fa: Either[E, A])(f: A => B): Either[E, B] = ???
+  }
+
+  implicit def validatedFunctor[E]: Functor[Validated[E, ?]] = new DefaultFunctor[Validated[E, ?]] {
+    def map[A, B](fa: Validated[E, A])(f: A => B): Validated[E, B] = ???
   }
 
   implicit def mapFunctor[K]: Functor[Map[K, ?]] = new DefaultFunctor[Map[K, ?]] {
@@ -153,6 +160,7 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // 2f. Implement the following instances
+  // you can reuse methods from the standard library
   implicit val listApplicative: Applicative[List] = new DefaultApplicative[List] {
     def pure[A](a: A): List[A]                                           = ???
     def map2[A, B, C](fa: List[A], fb: List[B])(f: (A, B) => C): List[C] = ???
@@ -167,6 +175,12 @@ object FunctorsExercises extends FunctorsToImpl {
     def pure[A](a: A): Either[E, A]                                                     = ???
     def map2[A, B, C](fa: Either[E, A], fb: Either[E, B])(f: (A, B) => C): Either[E, C] = ???
   }
+
+  implicit def validatedApplicative[E: Semigroup]: Applicative[Validated[E, ?]] =
+    new DefaultApplicative[Validated[E, ?]] {
+      def pure[A](a: A): Validated[E, A]                                                           = ???
+      def map2[A, B, C](fa: Validated[E, A], fb: Validated[E, B])(f: (A, B) => C): Validated[E, C] = ???
+    }
 
   implicit def mapApplicative[K]: Applicative[Map[K, ?]] = new DefaultApplicative[Map[K, ?]] {
     def pure[A](a: A): Map[K, A]                                               = ???
@@ -250,6 +264,7 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // 3f. Implement the following instances
+  // you can reuse methods from the standard library
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
     def pure[A](a: A): List[A]                               = listApplicative.pure(a)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = ???
@@ -263,6 +278,11 @@ object FunctorsExercises extends FunctorsToImpl {
   implicit def eitherMonad[E]: Monad[Either[E, ?]] = new DefaultMonad[Either[E, ?]] {
     def pure[A](a: A): Either[E, A]                                         = eitherApplicative.pure(a)
     def flatMap[A, B](fa: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
+  }
+
+  implicit def validatedMonad[E: Semigroup]: Monad[Validated[E, ?]] = new DefaultMonad[Validated[E, ?]] {
+    def pure[A](a: A): Validated[E, A]                                               = validatedApplicative.pure(a)
+    def flatMap[A, B](fa: Validated[E, A])(f: A => Validated[E, B]): Validated[E, B] = ???
   }
 
   implicit def mapFlatMap[K]: FlatMap[Map[K, ?]] = new FlatMap[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {

@@ -1,6 +1,7 @@
 package functors
 
 import answers.functors.FunctorsAnswers
+import exercises.errorhandling.Validated
 import exercises.functors.Applicative.syntax._
 import exercises.functors.ContravariantFunctor.syntax._
 import exercises.functors.CountryUsers.{France, Germany, UK}
@@ -59,6 +60,7 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   checkAll("List", FLaws.functor[List, Int])
   checkAll("Option", FLaws.functor[Option, Int])
   checkAll("Either", FLaws.functor[Either[Boolean, ?], Int])
+  checkAll("Validated", FLaws.functor[Validated[Boolean, ?], Int])
   checkAll("Map", FLaws.functor[Map[Int, ?], Int])
   checkAll("Id", FLaws.functor[Id, Int])
   checkAll("Const", FLaws.functor[Const[Int, ?], Boolean])
@@ -98,6 +100,7 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   checkAll("List", FLaws.applicative[List, Int])
   checkAll("Option", FLaws.applicative[Option, Int])
   checkAll("Either", FLaws.applicative[Either[Boolean, ?], Int])
+  checkAll("Validated", FLaws.applicative[Validated[Int, ?], Boolean])
   checkAll("Id", FLaws.applicative[Id, Int])
   checkAll("Const", FLaws.applicative[Const[Int, ?], Boolean])
   checkAll("Function", FLaws.applicative[Int => ?, Boolean])
@@ -220,6 +223,8 @@ trait FunctorsTestInstance {
   implicit def arbConst[A: Arbitrary, B]: Arbitrary[Const[A, B]] = Arbitrary(Arbitrary.arbitrary[A].map(Const(_).as[B]))
   implicit def composeArbitrary[F[_], G[_], A](implicit ev: Arbitrary[F[G[A]]]): Arbitrary[Compose[F, G, A]] =
     Arbitrary(ev.arbitrary.map(Compose(_)))
+  implicit def validatedArb[E: Arbitrary, A: Arbitrary]: Arbitrary[Validated[E, A]] =
+    Arbitrary(Arbitrary.arbitrary[Either[E, A]].map(Validated.fromEither))
 
   implicit val monoidInt: Monoid[Int] = new Monoid[Int] {
     def combine(x: Int, y: Int): Int = x + y

@@ -1,6 +1,7 @@
 package toimpl.functors
 
-import exercises.typeclass.Monoid
+import exercises.errorhandling.Validated
+import exercises.typeclass.{Monoid, Semigroup}
 import exercises.functors._
 
 trait FunctorsToImpl extends FunctorsToImplLowLevel {
@@ -15,6 +16,7 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit val listFunctor: Functor[List]
   implicit val optionFunctor: Functor[Option]
   implicit def eitherFunctor[E]: Functor[Either[E, ?]]
+  implicit def validatedFunctor[E]: Functor[Validated[E, ?]]
   implicit def mapFunctor[K]: Functor[Map[K, ?]]
   implicit val idFunctor: Functor[Id]
   implicit def constFunctor[R]: Functor[Const[R, ?]]
@@ -30,6 +32,7 @@ trait FunctorsToImpl extends FunctorsToImplLowLevel {
   implicit val listApplicative: Applicative[List]
   implicit val optionApplicative: Applicative[Option]
   implicit def eitherApplicative[E]: Applicative[Either[E, ?]]
+  implicit def validatedApplicative[E: Semigroup]: Applicative[Validated[E, ?]]
   implicit def mapApply[K]: Apply[Map[K, ?]]
   implicit val idApplicative: Applicative[Id]
   implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]]

@@ -549,6 +549,37 @@ class: center, middle
 # Exercise 2
 
 ---
+.h1[# Applicative is a Functor]
+
+```tut:invisible
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+```
+
+.large-left[
+```scala
+trait Applicative[F[_]] `extends Functor[F]` {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], f: A => B) =>
+  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
+)
+```
+]
+
+.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
+
+---
 # Applicative combine effects: Failure
 
 ```tut:reset:invisible
@@ -558,6 +589,7 @@ import answers.functors.FunctorsAnswers.functionMonad
 import answers.functors.FunctorsAnswers.listMonad
 import answers.functors.FunctorsAnswers.optionMonad
 import answers.functors.FunctorsAnswers.validatedApplicative
+import answers.functors.FunctorsAnswers.ioApplicative
 import answers.typeclass.TypeclassAnswers._
 ```
 
@@ -601,13 +633,9 @@ import exercises.errorhandling.Validated._
 
 ```tut
 (List(1,2,3), List("foo", "bar")).tuple2
+(List(1,2,3), Nil).tuple2
 ```
 
-
-```tut
-10.pure[List]
-(List(1,2,3), 10.pure[List]).map2(_ + _)
-```
 
 ---
 # Applicative combine effects: Dependency injection
@@ -615,15 +643,30 @@ import exercises.errorhandling.Validated._
 ```tut:silent
 case class State(userName: String, useLargeList: Boolean)
 
-val greet: State => String = state => s"Welcome ${state.userName}"
+def greet(state: State): String = s"Welcome ${state.userName}"
 
-val listSize: State => Int = state => if(state.useLargeList) 100 else 10
+def listSize(state: State): Int = if(state.useLargeList) 100 else 10
+
+val combined: State => (String, Int) = (greet _, listSize _).tuple2
 ```
 
 
 ```tut
-(greet, listSize).tuple2.apply(State("John Doe", true))
-(greet, listSize).tuple2.apply(State("Lena Doe", false))
+combined(State("John Doe", true))
+combined(State("Lena Doe", false))
+```
+
+---
+# Applicative combine effects: Side Effect
+
+```tut:silent
+import cats.effect.IO
+
+val combined = (IO(println("hello")), IO(println("I love FP!"))).tuple2
+```
+
+```tut
+combined.unsafeRunSync
 ```
 
 ---
@@ -643,45 +686,14 @@ pure  :: A => F[A]
 
 ```scala
 forAll(a:  A    => combine(empty, a ) == a )
-forAll(fa: F[A] => tuple2(unit  , fa) =~ fa)
+forAll(fa: F[A] => tuple2(unit  , fa) == fa) // equalities hold if we flatten tuples
 
 forAll(a:  A    => combine(a, empty) == a )
-forAll(fa: F[A] => tuple2(fa, unit ) =~ fa)
+forAll(fa: F[A] => tuple2(fa, unit ) == fa)
 
 forAll(( a: A   ,  b: B   ,  c: C)    => combine(combine(a, b), c)  == combine(a, combine(b, c)))
-forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) =~ tuple2(fa, tuple2(fb, fc)))
+forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) == tuple2(fa, tuple2(fb, fc)))
 ```
-
----
-.h1[# Applicative is a Functor]
-
-```tut:invisible
-trait Functor[F[_]] {
-  def map[A, B](fa: F[A])(f: A => B): F[B]
-}
-```
-
-.large-left[
-```tut:silent
-trait Applicative[F[_]] extends Functor[F] {
-
-  def pure[A](a: A): F[A]
-
-  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
-
-}
-```
-
-### Coherence Law
-
-```scala
-forAll((fa: F[A], f: A => B) =>
-  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
-)
-```
-]
-
-.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
 
 ---
 class: center, middle
@@ -690,6 +702,20 @@ class: center, middle
 
 ---
 .h1[# Monad]
+
+```tut:invisible
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+
+trait Applicative[F[_]] extends Functor[F] {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+}
+```
 
 .large-left[
 ```tut:silent

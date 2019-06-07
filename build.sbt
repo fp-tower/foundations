@@ -1,12 +1,16 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion       := "2.12.8",
-  scalacOptions     ++= Seq(
+  scalaVersion := "2.12.8",
+  scalacOptions ++= Seq(
     "-deprecation",
-    "-encoding", "UTF-8",
+    "-encoding",
+    "UTF-8",
     "-feature",
-    "-language:higherKinds", "-language:implicitConversions", "-language:existentials", "-language:postfixOps",
+    "-language:higherKinds",
+    "-language:implicitConversions",
+    "-language:existentials",
+    "-language:postfixOps",
     "-unchecked",
     "-Yno-adapted-args",
     "-Ywarn-value-discard",
@@ -16,15 +20,17 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
     cats,
+    catsEffect,
     refined,
     typesafeConfig,
     scalacheck,
     discipline,
-    scalatest % Test,
+    scalatest % Test
   )
 )
 
-lazy val `fp-foundation` = project.in(file("."))
+lazy val `fp-foundation` = project
+  .in(file("."))
   .settings(moduleName := "fp-foundation")
   .settings(baseSettings: _*)
   .aggregate(exercises, slides)

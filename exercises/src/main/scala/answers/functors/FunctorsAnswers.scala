@@ -1,7 +1,9 @@
 package answers.functors
 
 import answers.typeclass.TypeclassAnswers._
+import cats.effect.IO
 import exercises.errorhandling.Validated
+import exercises.errorhandling.Validated._
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
 import exercises.functors.Traverse.syntax._
@@ -41,6 +43,14 @@ object FunctorsAnswers extends FunctorsToImpl {
 
   implicit def eitherFunctor[E]: Functor[Either[E, ?]] = new DefaultFunctor[Either[E, ?]] {
     def map[A, B](fa: Either[E, A])(f: A => B): Either[E, B] = fa.map(f)
+  }
+
+  implicit def validatedFunctor[E]: Functor[Validated[E, ?]] = new DefaultFunctor[Validated[E, ?]] {
+    def map[A, B](fa: Validated[E, A])(f: A => B): Validated[E, B] =
+      fa match {
+        case Invalid(e) => Invalid(e)
+        case Valid(a)   => Valid(f(a))
+      }
   }
 
   implicit def mapFunctor[K]: Functor[Map[K, ?]] = new DefaultFunctor[Map[K, ?]] {
@@ -160,6 +170,11 @@ object FunctorsAnswers extends FunctorsToImpl {
     def pure[A](a: A): R => A = _ => a
     def map2[A, B, C](fa: R => A, fb: R => B)(f: (A, B) => C): R => C =
       r => f(fa(r), fb(r))
+  }
+
+  implicit val ioApplicative: Applicative[IO] = new DefaultApplicative[IO] {
+    def pure[A](a: A): IO[A]                                       = IO.pure(a)
+    def map2[A, B, C](fa: IO[A], fb: IO[B])(f: (A, B) => C): IO[C] = fa.flatMap(a => fb.map(f(a, _)))
   }
 
   implicit val zipListApply: Apply[ZipList] = new Apply[ZipList] with DefaultFunctor[ZipList] {
