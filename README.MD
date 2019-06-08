@@ -25,7 +25,8 @@
 
 ### Part 2: Regain power
 
-#### Module 3: Error Handling
+#### Module 3: Error Handling [WIP](https://julien-truffaut.github.io/fp-foundation/ErrorHandling#1)
+* Unrepresentable state
 * Compare error types: Option, Either, Validated, Try
 * ADT similarities
 
