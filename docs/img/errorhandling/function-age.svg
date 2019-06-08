@@ -19,7 +19,7 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-06-05 18:38:42 +0000</dc:date>
+    <dc:date>2019-06-08 13:52:01 +0000</dc:date>
   </metadata>
   <g id="function-age" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>function-age</title>
@@ -99,8 +99,8 @@
         <line x1="122.08696" y1="311.08696" x2="414.1079" y2="275.47464" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_112">
-        <text transform="translate(77 14)" fill="#70a3d8">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">Person</tspan>
+        <text transform="translate(90.56 14)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">User</tspan>
         </text>
       </g>
       <g id="Graphic_113">

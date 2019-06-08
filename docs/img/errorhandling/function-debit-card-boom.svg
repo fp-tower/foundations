@@ -29,7 +29,7 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-06-05 18:38:42 +0000</dc:date>
+    <dc:date>2019-06-08 13:52:01 +0000</dc:date>
   </metadata>
   <g id="function-debit-card-boom" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>function-debit-card-boom</title>
@@ -121,8 +121,8 @@
         <line x1="121.41818" y1="310.5818" x2="243.18402" y2="328.33934" marker-end="url(#FilledArrow_Marker_2)" stroke="#b1001c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_116">
-        <text transform="translate(77 5)" fill="#70a3d8">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">Person</tspan>
+        <text transform="translate(90.56 5)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">User</tspan>
         </text>
       </g>
       <g id="Graphic_115">

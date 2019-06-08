@@ -60,14 +60,193 @@ background-image: url(img/errorhandling/function-age.svg)
 # Function
 
 ---
-background-image: url(img/errorhandling/function-debit-card.svg)
+.h1[# Partial Function]
 
-# Partial Function
+.large-left[![Function Debit card](img/errorhandling/function-debit-card.svg)]
+
+--
+
+.small-right[
+### Maybe John:
+* doesn't have a card
+* didn't share it with us
+* lost it
+* debit card expired
+* ...
+]
 
 ---
-background-image: url(img/errorhandling/function-debit-card-boom.svg)
+.h1[# Partial Function]
 
-# Partial Function
+.large-left[![Function Debit card](img/errorhandling/function-debit-card-boom.svg)]
+
+.small-right[
+### Maybe John:
+* doesn't have a card
+* didn't share it with us
+* lost it
+* debit card expired
+* ...
+]
+
+---
+class: center, middle
+
+# How have you seen this scenario handled before?
+[2-3 min] to write down answers
+
+---
+# ❌ Null
+
+```tut:silent
+import java.time.LocalDate
+
+case class DebitCard(number: String, expiry: LocalDate)
+
+case class User(name: String, debitCard: DebitCard)
+
+val elise = User("Elise", DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8)))
+val john  = User("John" , null)
+
+def debitCardHint(x: User): String =
+  x.debitCard.number.take(4)
+```
+
+```tut:fail
+debitCardHint(john)
+```
+
+---
+# ✅ Option in data type
+
+```tut:silent
+case class DebitCard(number: String, expiry: LocalDate)
+
+case class User(name: String, debitCard: Option[DebitCard])
+
+val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
+val john  = User("John" , None)
+```
+
+---
+# ❌ Exception in function
+
+```scala
+case class DebitCard(number: String, expiry: LocalDate)
+
+case class User(name: String, debitCard: Option[DebitCard])
+
+val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
+val john  = User("John" , None)
+```
+
+```tut:silent
+def getValidDebitCard(user: User, today: LocalDate): DebitCard = {
+  if(user.debitCard.isEmpty)
+    throw new Exception("No debit card")
+  else if(user.debitCard.get.expiry.isAfter(today))
+    throw new Exception("Expired debit card")
+  else
+    user.debitCard.get
+}
+```
+
+```tut:fail
+getValidDebitCard(elise, today = LocalDate.of(2019,5,1))
+```
+
+---
+# ❌ Boolean flag (Boolean blindness)
+
+```scala
+case class DebitCard(number: String, expiry: LocalDate)
+
+case class User(name: String, debitCard: Option[DebitCard])
+
+val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
+val john  = User("John" , None)
+```
+
+```tut:silent
+def isValidDebitCard(user: User, today: LocalDate): Boolean = {
+  if(user.debitCard.isEmpty) false
+  else user.debitCard.get.expiry.isBefore(today)
+}
+```
+
+```tut
+isValidDebitCard(elise, today = LocalDate.of(2019,5,1))
+isValidDebitCard(elise, today = LocalDate.of(2020,1,1))
+```
+
+---
+# ❌ Number status
+
+```scala
+case class DebitCard(number: String, expiry: LocalDate)
+
+case class User(name: String, debitCard: Option[DebitCard])
+
+val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
+val john  = User("John" , None)
+```
+
+```tut:silent
+def validateDebitCard(user: User, today: LocalDate): Int = {
+  if(user.debitCard.isEmpty) -1
+  else if(user.debitCard.get.expiry.isAfter(today)) -2
+  else 1
+}
+```
+
+```tut
+validateDebitCard(elise, today = LocalDate.of(2019,5,1))
+validateDebitCard(elise, today = LocalDate.of(2020,1,1))
+validateDebitCard(john, today = LocalDate.of(2020,1,1))
+```
+
+---
+# ✅ Option or Either in function
+
+```tut:silent
+sealed trait DebitCardError
+case object MissingDebitCard extends DebitCardError
+case object ExpiredDebitCard extends DebitCardError
+
+def getValidDebitCard(user: User, today: LocalDate): Either[DebitCardError, DebitCard] =
+  user.debitCard match {
+    case None     => Left(MissingDebitCard)
+    case Some(dc) =>
+      if(dc.expiry.isAfter(today)) Left(ExpiredDebitCard)
+      else Right(dc)
+  }
+```
+
+```tut
+getValidDebitCard(elise, today = LocalDate.of(2019,5,1))
+getValidDebitCard(john , today = LocalDate.of(2019,5,1))
+```
+
+---
+# ✅ Make the error unrepresentable
+
+```tut:silent
+sealed trait User
+
+case class UserWithDc(name: String, debitCard: DebitCard) extends User
+case class InvalidUser(name: String) extends User
+```
+
+```tut:silent
+def getDebitCard(user: UserWithDc): DebitCard = user.debitCard
+
+def getValidDebitCard(user: UserWithDc, today: LocalDate): Option[DebitCard] = {
+  if(user.debitCard.expiry.isAfter(today)) None
+  else Some(user.debitCard)
+}
+```
+
+### Refinement types may be used to go even further
 
 ---
 class: center, middle
@@ -75,14 +254,53 @@ class: center, middle
 # Two strategies to fix it
 
 ---
+background-image: url(img/errorhandling/function-debit-card-large.svg)
+
+# Increase output type
+
+---
 background-image: url(img/errorhandling/function-debit-card-small.svg)
 
 # Reduce input type
 
 ---
-background-image: url(img/errorhandling/function-debit-card-large.svg)
+class: center, middle
 
-# Increase output type
+# Which approach is preferable? Why?
+[2-3 min] discuss with neighbour
+
+---
+class: center, middle
+
+# |A => B| = |B| ^ |A|
+
+---
+.h1[# Cardinality]
+
+
+.h1[### Increase output type]
+
+.center[
+```scala
+|A => (B | E)| = |B | E| ^ |A|
+                   = (|B| + |E|) ^ |A|
+                       = |B| ^ |A| * |E| ^ |A|
+                      = |A => B| * |E| ^ |A|
+```
+]
+
+.h1[### Reduce input type]
+
+.center[
+```scala
+|A1 => B| = |B| ^ |A1|
+              = |B| ^ |A - A2|
+                = |B| ^ |A| / |A2|
+               = |A => B| / |A2|
+```
+]
+
+assume `A = A1 | A2`
 
 ---
 .h1[# Failure types]
