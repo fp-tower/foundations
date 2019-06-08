@@ -8,5 +8,5 @@ object Dependencies {
   lazy val scalatest      = "org.scalatest"  %% "scalatest"      % "3.0.7"
   lazy val scalacheck     = "org.scalacheck" %% "scalacheck"     % "1.14.0"
   lazy val discipline     = "org.typelevel"  %% "discipline"     % "0.11.1"
-  lazy val kindProjector  = "org.typelevel"  %% "kind-projector" % "0.10.1" cross CrossVersion.binary
+  lazy val kindProjector  = "org.typelevel"  %% "kind-projector" % "0.10.3" cross CrossVersion.binary
 }
