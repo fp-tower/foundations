@@ -301,8 +301,6 @@ class: center, middle
 ```scala
 |A => (B | E)| = |B | E| ^ |A|
                    = (|B| + |E|) ^ |A|
-                       = |B| ^ |A| * |E| ^ |A|
-                      = |A => B| * |E| ^ |A|
 ```
 ]
 
@@ -311,13 +309,15 @@ class: center, middle
 .center[
 ```scala
 |A1 => B| = |B| ^ |A1|
-              = |B| ^ |A - A2|
-                = |B| ^ |A| / |A2|
-               = |A => B| / |A2|
+                  = |B| ^ (|A| - |A2|)
 ```
 ]
 
 assume `A = A1 | A2`
+
+---
+
+# Unrepresentable State Exercises
 
 ---
 .h1[# Failure types]
