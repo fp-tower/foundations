@@ -1,6 +1,6 @@
 ![FP Foundation Logo](logo/Foundation.png)<br>
 
-[![Join the chat at https://gitter.im/julien-truffaut/fp-foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)][gitter]
+[![Join the chat at https://gitter.im/fp-tower/foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)][gitter]
 <span class="badge-patreon"><a href="https://www.patreon.com/bePatron?u=10482033" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
 
 ## Synopsis
