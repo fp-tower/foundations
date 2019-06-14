@@ -5,18 +5,18 @@
 
 ## Synopsis
 
-### [Introduction](https://julien-truffaut.github.io/fp-foundation/index.html#1)
+### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
 
 ### Part 1: Principles
 
-#### Module 1: [Function](https://julien-truffaut.github.io/fp-foundation/Function#1)
+#### Module 1: [Function](https://fp-tower.github.io/foundation/Function#1)
 * Pure functions
 * Polymorphic functions
 * Higher-order functions
 * Recursion
 * Memoization
 
-#### Module 2: [Type](https://julien-truffaut.github.io/fp-foundation/Type#1)
+#### Module 2: [Type](https://fp-tower.github.io/foundation/Type#1)
 * Cardinality
 * Algebra of types
 * Types and Tests, Valid Implementation Count (VIC)
@@ -25,7 +25,7 @@
 
 ### Part 2: Regain power
 
-#### Module 3: Error Handling [WIP](https://julien-truffaut.github.io/fp-foundation/ErrorHandling#1)
+#### Module 3: Error Handling [WIP](https://fp-tower.github.io/foundation/ErrorHandling#1)
 * Unrepresentable state
 * Compare error types: Option, Either, Validated, Try
 * ADT similarities
@@ -36,7 +36,7 @@
 
 ### Part 3: Abstractions
 
-#### Module 6: [Typeclass](https://julien-truffaut.github.io/fp-foundation/Typeclass#1)
+#### Module 6: [Typeclass](https://fp-tower.github.io/foundation/Typeclass#1)
 * Different implementations of ad-hoc polymorphism
 * Eq, Monoid
 * Typeclass laws
@@ -46,7 +46,7 @@
 * Higher kinded typeclass with Foldable
 * Typeclass abuses
 
-#### Module 7: [Functors](https://julien-truffaut.github.io/fp-foundation/Functors#1)
+#### Module 7: [Functors](https://fp-tower.github.io/foundation/Functors#1)
 * Functor, Applicative, Monad
 * Combining effects
 * Typeclass consistency
@@ -88,6 +88,6 @@ self-study with online videos but it is not likely to happen before mid 2020.
 
 We do encourage people who enjoy the course to make a donation using [patreon][patreon].
 
-[gitter]: https://gitter.im/julien-truffaut/fp-foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[gitter]: https://gitter.im/fp-tower/foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 [patreon]: https://www.patreon.com/bePatron?u=10482033
