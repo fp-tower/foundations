@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Foundation of Functional Programming</title>
+  <title>Foundation</title>
   <meta charset="utf-8">
   <style>
   @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -16,7 +16,13 @@
   .large { font-size: 36px; }
   .pull-left { float: left; width: 47%; }
   .pull-right { float: right; width: 47%; }
+  .large-left { float: left; width: 57%; }
+  .small-right { float: right; width: 27%; }
+  .medium-right { float: right; width: 37%; }
   .footer { position: absolute; bottom: 12px; left: 45px }
+  table { border-collapse: collapse; display: inline-block; }
+  th, td { padding: 10px; border: 1px solid black; }
+  tr:nth-child(even) {background-color: #f2f2f2;}
 
   </style>
 </head>
@@ -54,16 +60,30 @@ class: center, middle
 
 # Goals
 
+
 ---
-.h1[# Develop your FP intuition]
+# 1. Get familiar with Typed FP building blocks
 
 <br>
 
-.center[
-### Implement an algorithm to reverse a String
-]
+### Pure function, Recursion, Lazyness
 
---
+### Algebraic Data Type (ADT), Parametricity
+
+### Either, Option, Validated
+
+### Reader, State, IO
+
+### Typeclasses, Monoid, Functor, Applicative, Traverse
+
+
+---
+.h1[# 2. Develop your FP intuition]
+
+<br>
+
+
+### How do you reverse a String?
 
 ```scala
 def reverseString(x: String): String = {
@@ -82,43 +102,21 @@ def reverseString(x: String): String = {
 ```
 
 ---
-.h1[# Develop your FP intuition]
+.h1[# 2. Develop your FP intuition]
 
 <br>
 
-.center[
-### Implement an algorithm to reverse a String
-]
+### How do you reverse a String?
 
 ```scala
 def reverseString(x: String): String =
-  x.foldLeft(List.empty[Char])((acc, c) => c :: acc).mkString
+  x.`foldLeft`(List.empty[Char])((acc, c) => c :: acc).mkString // or with StringBuffer
 ```
-
---
-
-```scala
-def reverseString(x: String): String =
-  x.foldLeft(new StringBuffer(x.length))(_.insert(0, _)).toString
-```
-
----
-# Get familiar with Typed FP building blocks
-
-### Pure function, Recursion, Lazyness
-
-### Algebraic Data Type (ADT)
-
-### Either, Option, Validated
-
-### Reader, State, IO
-
-### Typeclasses, Monoid, Functor, Applicative, Traverse
 
 ---
 class: center, middle
 
-# Why FP matters to you, your colleagues and your business
+# 3. Why FP matters to you, your colleagues and your business
 
 ---
 .h1[
@@ -126,34 +124,46 @@ class: center, middle
 ]
 
 
-.medium[
-* How to build complete FP application
+
+### How to build complete FP application
    * Monad Transformer
    * Free Monad
    * Final Tagless
    * Eff
    * ...
 
-* Performance
+### Scala low level details
 
-* Scala specific encoding
+
+---
+.h1[# Course main features]
+
+
+.h3[### Original diagrams]
+
+
+
+.large-left[
+<img src="img/functors/applicative-api-law.svg" alt="Applicative" style="width:600px;"/>
+]
+
+.medium-right[
+<img src="img/VIC-increment.jpg" alt="VIC" style="width:400px;"/>
 ]
 
 ---
-# Course main features
+.h1[# Course main features]
 
-<br>
+.h3[### Original diagrams]
 
-### Original diagrams
+.h3[### Lots of exercises (200+) with tests and answers]
 
-
----
-background-image: url(img/VIC-increment.jpg)
-
----
-background-image: url(img/functors/applicative-api-law.svg)
+.center[
+<img src="img/tests.png" alt="tests" style="width:600px;"/>
+]
 
 ---
+
 # Course main features
 
 <br>
@@ -162,28 +172,10 @@ background-image: url(img/functors/applicative-api-law.svg)
 
 ### Lots of exercises (200+) with tests and answers
 
---
-
 ### An active online community ready to answer your questions (gitter)
-
---
 
 ### Expert trainers with experience teaching FP at all level
 
----
-.h1[
-# Plan
-]
-
-.large[
-1. [Function](Function.html#1)
-1. [Type](Type.html#1)
-1. Error handling
-1. Reader / Writer / State
-1. IO / Effect
-1. [Typeclass](Typeclass.html#1)
-1. [Functors](Functors.html#1)
-]
 
 ---
 .h1[# Contact]
@@ -212,7 +204,9 @@ class: center, middle
 <script>
     var slideshow = remark.create({
         ratio: "16:9",
-        slideNumberFormat: '%current%'
+        slideNumberFormat: '%current%',
+        highlightLines: true,
+        highlightSpans: true,
     });
 </script>
 </body>

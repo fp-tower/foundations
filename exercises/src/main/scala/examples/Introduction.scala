@@ -1,5 +1,6 @@
 package examples
 
+import cats.data.NonEmptyList
 import cats.data.Validated.{Invalid, Valid}
 import cats.implicits._
 
@@ -40,17 +41,14 @@ object Introduction {
     else "all username are valid"
   }
 
-  def validateUsernamesFunctional(xs: List[String]): String =
-    xs.toNel.map(
-      _.traverse_(
-        username =>
-          if (isValidUsername(username)) ().valid
-          else 1.invalid
-      )
+  def validateUsernamesFunctional(xs: NonEmptyList[String]): String =
+    xs.traverse_(
+      username =>
+        if (isValidUsername(username)) ().valid
+        else 1.invalid
     ) match {
-      case None                      => "no username"
-      case Some(Invalid(countError)) => s"Found $countError invalid username"
-      case Some(Valid(_))            => "all username are valid"
+      case Invalid(countError) => s"Found $countError invalid username"
+      case Valid(_)            => "all username are valid"
     }
 
 }

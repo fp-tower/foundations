@@ -1,8 +1,9 @@
 package examples
 
+import cats.data.NonEmptyList
+import examples.Introduction._
 import org.scalatest.{FunSuite, Matchers}
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import examples.Introduction._
 
 class IntroductionTest extends FunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
@@ -15,14 +16,15 @@ class IntroductionTest extends FunSuite with Matchers with ScalaCheckDrivenPrope
       forAll((x: String) => x.reverse shouldEqual f(x))
     }
 
-  validateUserNames("imperative")(validateUsernamesImperative)
-  validateUserNames("functional")(validateUsernamesFunctional)
+  test("validate usernames imperative") {
+    validateUsernamesImperative(Nil) shouldEqual "no username"
+    validateUsernamesImperative(List("foo", "bar")) shouldEqual "all username are valid"
+    validateUsernamesImperative(List("foo", "a", "abc123", "bar", "@)01223")) shouldEqual s"Found 3 invalid username"
+  }
 
-  def validateUserNames(name: String)(f: List[String] => String) =
-    test("validate usernames  " + name) {
-      f(Nil) shouldEqual "no username"
-      f(List("foo", "bar")) shouldEqual "all username are valid"
-      f(List("foo", "a", "abc123", "bar", "@)01223")) shouldEqual s"Found 3 invalid username"
-    }
+  test("validate usernames functional") {
+    validateUsernamesFunctional(NonEmptyList.of("foo", "bar")) shouldEqual "all username are valid"
+    validateUsernamesFunctional(NonEmptyList.of("foo", "a", "abc123", "bar", "@)01223")) shouldEqual s"Found 3 invalid username"
+  }
 
 }
