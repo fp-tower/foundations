@@ -7,36 +7,30 @@
 
 ### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
 
-### Part 1: Principles
-
-#### Module 1: [Function](https://fp-tower.github.io/foundation/Function#1)
+### Module 1: [Function](https://fp-tower.github.io/foundation/Function#1)
 * Pure functions
 * Polymorphic functions
 * Higher-order functions
 * Recursion
 * Memoization
 
-#### Module 2: [Type](https://fp-tower.github.io/foundation/Type#1)
+### Module 2: [Type](https://fp-tower.github.io/foundation/Type#1)
 * Cardinality
 * Algebra of types
 * Types and Tests, Valid Implementation Count (VIC)
 * Parametricity
 * Logic and types
 
-### Part 2: Regain power
-
-#### Module 3: Error Handling [WIP](https://fp-tower.github.io/foundation/ErrorHandling#1)
+### Module 3: Error Handling [WIP](https://fp-tower.github.io/foundation/ErrorHandling#1)
 * Unrepresentable state
 * Compare error types: Option, Either, Validated, Try
 * ADT similarities
 
-#### Module 4: Reader / Writer / State
+### Module 4: Reader / Writer / State
 
-#### Module 5: IO / Effects
+### Module 5: IO / Effects
 
-### Part 3: Abstractions
-
-#### Module 6: [Typeclass](https://fp-tower.github.io/foundation/Typeclass#1)
+### Module 6: [Typeclass](https://fp-tower.github.io/foundation/Typeclass#1)
 * Different implementations of ad-hoc polymorphism
 * Eq, Monoid
 * Typeclass laws
@@ -46,7 +40,7 @@
 * Higher kinded typeclass with Foldable
 * Typeclass abuses
 
-#### Module 7: [Functors](https://fp-tower.github.io/foundation/Functors#1)
+### Module 7: [Functors](https://fp-tower.github.io/foundation/Functors#1)
 * Functor, Applicative, Monad
 * Combining effects
 * Typeclass consistency
