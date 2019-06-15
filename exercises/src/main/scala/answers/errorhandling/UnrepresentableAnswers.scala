@@ -19,7 +19,7 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
   val redBook = Item("12345", 2, 17.99)
 
   def totalItem(item: Item): Double =
-    (item.quantity * item.unitPrice) max 0.0
+    (item.quantity max 0) * (item.unitPrice max 0.0)
 
   def totalItemProperties(implicit arb: Arbitrary[Item]): Properties =
     new Properties("totalItem") {
