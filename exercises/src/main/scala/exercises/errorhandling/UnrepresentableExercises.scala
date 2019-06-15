@@ -2,12 +2,14 @@ package exercises.errorhandling
 
 import java.time.{Duration, Instant}
 
+import org.scalacheck.Prop.forAll
+import org.scalacheck.{Arbitrary, Properties}
 import toimpl.errorhandling.UnrepresentableToImpl
 
 object UnrepresentableExercises extends UnrepresentableToImpl {
 
   ////////////////////////
-  // 1. Order
+  // 1. Item
   ////////////////////////
 
   case class Item(id: String, quantity: Int, unitPrice: Double)
@@ -18,8 +20,21 @@ object UnrepresentableExercises extends UnrepresentableToImpl {
   // such as totalItem(redBook) = 35.98
   def totalItem(item: Item): Double = ???
 
-  // 1b. What scenario are impossible in real life but are permitted by Item encoding?
-  // How could you constrain Item to make these scenario impossible? Check refined scala library
+  // 1b. What property based tests would you write for totalItem?
+  // Try to find 1-2 different properties, will your implementation pass these tests?
+  def totalItemProperties(implicit arb: Arbitrary[Item]): Properties =
+    new Properties("totalItem") {
+      property("example") = forAll((item: Item) => item.quantity == 2) // to change
+    }
+
+  // 1c. What scenario are impossible in real life but are permitted by Item encoding?
+  // How could you constrain Item to make these scenario impossible?
+  // Check refined: https://github.com/fthomas/refined
+  // and singleton: https://github.com/fthomas/singleton-ops
+
+  ////////////////////////
+  // 2. Order
+  ////////////////////////
 
   // All orders have an id and a status
   // a status can be:
@@ -38,21 +53,21 @@ object UnrepresentableExercises extends UnrepresentableToImpl {
     deliveredAt: Option[Instant]
   )
 
-  // 1c. Implement checkout such as it encodes the transition PreCheckout -> Checkout
+  // 2a. Implement checkout such as it encodes the transition PreCheckout -> Checkout
   // What are the conditions for the transition to be successful?
   // For now throw an exception if a condition is not respected
   def checkout(order: Order): Order = ???
 
-  // 1d. Implement submit such as it encodes the transition Checkout -> Submitted
+  // 2b. Implement submit such as it encodes the transition Checkout -> Submitted
   // What are the conditions for the transition to be successful?
   // For now throw an exception if a condition is not respected
   def submit(order: Order, now: Instant): Order = ???
 
-  // 1d. Implement deliver such as it encodes the transition Submitted -> Delivered
+  // 2c. Implement deliver such as it encodes the transition Submitted -> Delivered
   // Return an updated order and the time it took to deliver (between submittedAt and now)
   // What are the conditions for the transition to be successful?
   // For now throw an exception if a condition is not respected
   def deliver(order: Order, now: Instant): (Order, Duration) = ???
 
-  // 1e. How would you refactor Order to reduce the number of possible exceptions?
+  // 2d. How would you refactor Order to reduce the number of possible exceptions?
 }

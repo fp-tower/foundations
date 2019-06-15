@@ -3,10 +3,13 @@ package toimpl.errorhandling
 import java.time.{Duration, Instant}
 
 import exercises.errorhandling.UnrepresentableExercises.{Item, Order}
+import org.scalacheck.{Arbitrary, Properties}
 
 trait UnrepresentableToImpl {
 
   def totalItem(item: Item): Double
+
+  def totalItemProperties(implicit arb: Arbitrary[Item]): Properties
 
   def checkout(order: Order): Order
 

@@ -6,6 +6,8 @@ import cats.data.NonEmptyList
 import eu.timepit.refined.auto._
 import eu.timepit.refined.types.numeric.{PosDouble, PosInt}
 import exercises.errorhandling.UnrepresentableExercises.{Item, Order}
+import org.scalacheck.Prop.forAll
+import org.scalacheck.{Arbitrary, Properties}
 import toimpl.errorhandling.UnrepresentableToImpl
 
 object UnrepresentableAnswers extends UnrepresentableToImpl {
@@ -16,7 +18,17 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
 
   val redBook = Item("12345", 2, 17.99)
 
-  def totalItem(item: Item): Double = item.quantity * item.unitPrice
+  def totalItem(item: Item): Double =
+    (item.quantity * item.unitPrice) max 0.0
+
+  def totalItemProperties(implicit arb: Arbitrary[Item]): Properties =
+    new Properties("totalItem") {
+      property("always positive") = forAll((item: Item) => totalItem(item) >= 0)
+      property("add qty increase total") = forAll { (item: Item) =>
+        val newQty = item.quantity + 1
+        totalItem(item.copy(quantity = newQty)) >= totalItem(item)
+      }
+    }
 
   case class Item_V2(id: String, quantity: PosInt, unitPrice: PosDouble)
   val redBook_v2 = Item_V2("12345", 2, 17.99)
