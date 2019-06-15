@@ -13,6 +13,10 @@
 Brian McKenna runs a free online version [here](https://www.youtube.com/watch?v=NzIZzvbplSM&list=PLly9WMAVMrayYo2c-1E_rIRwBXG_FbLBW)
 
 
+## 3. Presentation
+
+* [Singleton types](https://speakerdeck.com/soronpo/twoface-values-a-bridge-between-terms-and-types) from Oron Port
+
 ## 3. Other
 
 * [Typeclass infographic](https://github.com/tpolecat/cats-infographic) for cats
