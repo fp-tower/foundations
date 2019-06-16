@@ -16,25 +16,6 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
   // 1. Order
   ////////////////////////
 
-  val redBook = Item("12345", 2, 17.99)
-
-  def totalItem(item: Item): Double =
-    (item.quantity max 0) * (item.unitPrice max 0.0)
-
-  def totalItemProperties(implicit arb: Arbitrary[Item]): Properties =
-    new Properties("totalItem") {
-      property("always positive") = forAll((item: Item) => totalItem(item) >= 0)
-      property("add qty increase total") = forAll { (item: Item) =>
-        val newQty = item.quantity + 1
-        totalItem(item.copy(quantity = newQty)) >= totalItem(item)
-      }
-    }
-
-  case class Item_V2(id: String, quantity: PosInt, unitPrice: PosDouble)
-  val redBook_v2 = Item_V2("12345", 2, 17.99)
-
-  def totalItem_v2(item: Item_V2): PosDouble = ???
-
   def checkout(order: Order): Order =
     order.status match {
       case "Draft" =>
@@ -79,4 +60,25 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
         extends Order_V2
     case class Cancel(previousState: Either[Submitted, Delivered], cancelledAt: Instant) extends Order_V2
   }
+
+  ////////////////////////
+  // 2. Item
+  ////////////////////////
+
+  def totalItem(item: Item): Double =
+    (item.quantity max 0) * (item.unitPrice max 0.0)
+
+  def totalItemProperties(implicit arb: Arbitrary[Item]): Properties =
+    new Properties("totalItem") {
+      property("always positive") = forAll((item: Item) => totalItem(item) >= 0)
+      property("add qty increase total") = forAll { item: Item =>
+        val newQty = item.quantity + 1
+        totalItem(item.copy(quantity = newQty)) >= totalItem(item)
+      }
+    }
+
+  case class Item_V2(id: String, quantity: PosInt, unitPrice: PosDouble)
+  val redBook_v2 = Item_V2("12345", 2, 17.99)
+
+  def totalItem_v2(item: Item_V2): PosDouble = ???
 }

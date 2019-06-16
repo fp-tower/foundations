@@ -16,24 +16,6 @@ class UnrepresentableAnswersTest   extends UnrepresentableTest(UnrepresentableAn
 class UnrepresentableTest(impl: UnrepresentableToImpl) extends FunSuite with Matchers with Checkers {
   import impl._
 
-  test("totalItem") {
-    totalItem(Item("12345", 2, 17.99)) shouldEqual 35.98
-    totalItem(Item("12345", 0, 21.01)) shouldEqual 0
-  }
-
-  implicit val arbItem: Arbitrary[Item] = Arbitrary(
-    for {
-      id    <- Gen.resize(5, Gen.alphaNumStr)
-      qty   <- Gen.chooseNum(-10, 1000000)
-      price <- Gen.chooseNum(-10.0, 999999999999999.9) // it is cheating, I know
-    } yield Item(id, qty, price)
-  )
-
-  for ((id, prop) <- totalItemProperties.properties)
-    test(s"totalItem.$id") {
-      check(prop)
-    }
-
   test("checkout") {
     val order = Order(
       id = "xxx",
@@ -91,4 +73,21 @@ class UnrepresentableTest(impl: UnrepresentableToImpl) extends FunSuite with Mat
     assertThrows[Exception](submit(order.copy(status = "Draft"), now))
   }
 
+  test("totalItem") {
+    totalItem(Item("12345", 2, 17.99)) shouldEqual 35.98
+    totalItem(Item("12345", 0, 21.01)) shouldEqual 0
+  }
+
+  implicit val arbItem: Arbitrary[Item] = Arbitrary(
+    for {
+      id    <- Gen.resize(5, Gen.alphaNumStr)
+      qty   <- Gen.chooseNum(-10, 1000000)
+      price <- Gen.chooseNum(-10.0, 999999999999999.9) // it is cheating, I know
+    } yield Item(id, qty, price)
+  )
+
+  for ((id, prop) <- totalItemProperties.properties)
+    test(s"totalItem.$id") {
+      check(prop)
+    }
 }
