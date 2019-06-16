@@ -3,6 +3,7 @@ package answers.errorhandling
 import java.time.{Duration, Instant}
 
 import cats.data.NonEmptyList
+import cats.implicits._
 import eu.timepit.refined.auto._
 import eu.timepit.refined.types.numeric.{PosDouble, PosInt}
 import exercises.errorhandling.UnrepresentableExercises.{Item, Order}
@@ -52,14 +53,59 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
   sealed trait Order_V2
 
   object Order_V2 {
-    case class PreCheckout(id: String, items: List[Item])                                       extends Order_V2
+    case class Draft(id: String, items: List[Item])                                             extends Order_V2
     case class Checkout(id: String, items: NonEmptyList[Item], deliveryAddress: Option[String]) extends Order_V2
     case class Submitted(id: String, items: NonEmptyList[Item], deliveryAddress: String, submittedAt: Instant)
         extends Order_V2
-    case class Delivered(id: String, items: NonEmptyList[Item], deliveryAddress: String, submittedAt: Instant)
-        extends Order_V2
+    case class Delivered(
+      id: String,
+      items: NonEmptyList[Item],
+      deliveryAddress: String,
+      submittedAt: Instant,
+      deliveredAt: Instant
+    ) extends Order_V2
     case class Cancel(previousState: Either[Submitted, Delivered], cancelledAt: Instant) extends Order_V2
   }
+
+  import Order_V2._
+
+  def checkout_V2(order: Order_V2): Order_V2 =
+    order match {
+      case x: Draft =>
+        x.items.toNel match {
+          case Some(items) => Checkout(x.id, items, deliveryAddress = None)
+          case None        => throw new Exception("Cannot checkout order with an empty basket")
+        }
+      case _: Checkout | _: Submitted | _: Delivered | _: Cancel =>
+        throw new Exception(s"Invalid status to checkout $order")
+    }
+
+  def submit_V2(order: Order_V2, now: Instant): Order_V2 =
+    order match {
+      case x: Checkout =>
+        x.deliveryAddress match {
+          case Some(address) => Submitted(x.id, x.items, address, now)
+          case None          => throw new Exception("Cannot submit order with no delivery address")
+        }
+      case _: Draft | _: Submitted | _: Delivered | _: Cancel =>
+        throw new Exception(s"Invalid status to checkout $order")
+    }
+
+  def deliver_V2(order: Order_V2, now: Instant): (Order_V2, Duration) =
+    order match {
+      case x: Submitted =>
+        val duration = Duration.between(x.submittedAt, now)
+        val newState = Delivered(x.id, x.items, x.deliveryAddress, x.submittedAt, now)
+        (newState, duration)
+      case _: Draft | _: Checkout | _: Delivered | _: Cancel =>
+        throw new Exception(s"Invalid status to checkout $order")
+    }
+
+  def checkout_V3(draft: Draft): Checkout =
+    draft.items.toNel match {
+      case Some(items) => Checkout(draft.id, items, deliveryAddress = None)
+      case None        => throw new Exception("Cannot checkout order with an empty basket")
+    }
 
   ////////////////////////
   // 2. Item

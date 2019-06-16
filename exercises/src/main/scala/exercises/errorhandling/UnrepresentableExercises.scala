@@ -46,7 +46,28 @@ object UnrepresentableExercises extends UnrepresentableToImpl {
   // For now throw an exception if a condition is not respected
   def deliver(order: Order, now: Instant): (Order, Duration) = ???
 
-  // 1d. How would you refactor Order to reduce the number of possible exceptions?
+  // 1d. Now we will try to reduce the number of possible exceptions?
+  // Start by defining a case class for each Order State like Draft, Checkout, etc ...
+  // Each class should have as precise fields as possible, i.e. if a field is mandatory, it shouldn't be an Option
+  sealed trait Order_V2
+
+  object Order_V2 {
+    case class Draft()    extends Order_V2
+    case class Checkout() extends Order_V2
+  }
+
+  // 1e. Implement checkout_V2, submit_V2 and deliver_V2
+  // They should have less cases where you need to throw Exception
+  def checkout_V2(order: Order_V2): Order_V2 = ???
+
+  def submit_V2(order: Order_V2, now: Instant): Order_V2 = ???
+
+  def deliver_V2(order: Order_V2): (Order_V2, Duration) = ???
+
+  // 1f. The main source of errors is caused by the order not being in a valid state to make an action
+  // How could you change the signature or checkout / submit / deliver functions to avoid these cases
+  // Define and implement checkout_V3
+  def checkout_V3 = ???
 
   ////////////////////////
   // 2. Item
