@@ -85,14 +85,24 @@ background-image: url(img/errorhandling/function-age.svg)
 * doesn't have a card
 * didn't share it with us
 * lost it
-* debit card expired
+* card expired
 * ...
 ]
 
 ---
+# Partial Function is lie
+
+<br>
+
+```scala
+// If DebitCard is missing throw a NoSuchElementException
+def getDebitCard(person: Person): DebitCard = ???
+```
+
+---
 class: center, middle
 
-# How have you seen this scenario handled before?
+# How have you seen error scenarios handled?
 [2-3 min] to write down answers
 
 ---
