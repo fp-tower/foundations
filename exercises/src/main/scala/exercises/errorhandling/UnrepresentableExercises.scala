@@ -17,7 +17,6 @@ object UnrepresentableExercises extends UnrepresentableToImpl {
   // * "Draft" before checkout items can be empty
   // * "Checkout" items cannot be empty
   // * "Submitted" delivery address cannot empty, capture submission time
-  // * "Cancelled" cancelled a submitted items can be cancelled, capture cancel time
   // * "Delivered" received by the customer, cannot be updated (no return)
   case class Item(id: String, quantity: Int, unitPrice: Double)
   case class Order(
@@ -26,7 +25,6 @@ object UnrepresentableExercises extends UnrepresentableToImpl {
     items: List[Item],
     deliveryAddress: Option[String],
     submittedAt: Option[Instant],
-    cancelledAt: Option[Instant],
     deliveredAt: Option[Instant]
   )
 
@@ -68,6 +66,9 @@ object UnrepresentableExercises extends UnrepresentableToImpl {
   // How could you change the signature or checkout / submit / deliver functions to avoid these cases
   // Define and implement checkout_V3
   def checkout_V3 = ???
+
+  // 1g. How would you update your design if we add a Cancelled state with a cancelledAt timestamp
+  // Cancelled can be reached both from Submitted and Delivered
 
   ////////////////////////
   // 2. Item

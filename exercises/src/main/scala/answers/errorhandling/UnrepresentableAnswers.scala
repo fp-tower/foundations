@@ -64,7 +64,6 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
       submittedAt: Instant,
       deliveredAt: Instant
     ) extends Order_V2
-    case class Cancel(previousState: Either[Submitted, Delivered], cancelledAt: Instant) extends Order_V2
   }
 
   import Order_V2._
@@ -106,6 +105,8 @@ object UnrepresentableAnswers extends UnrepresentableToImpl {
       case Some(items) => Checkout(draft.id, items, deliveryAddress = None)
       case None        => throw new Exception("Cannot checkout order with an empty basket")
     }
+
+  case class Cancel(previousState: Either[Submitted, Delivered], cancelledAt: Instant) extends Order_V2
 
   ////////////////////////
   // 2. Item
