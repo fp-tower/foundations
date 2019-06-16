@@ -23,8 +23,7 @@ class UnrepresentableTest(impl: UnrepresentableToImpl) extends FunSuite with Mat
       items = List(Item("a", 1, 2), Item("b", 2, 3)),
       deliveredAt = None,
       deliveryAddress = None,
-      submittedAt = None,
-      cancelledAt = None
+      submittedAt = None
     )
 
     checkout(order) shouldEqual order.copy(status = "Checkout")
@@ -41,8 +40,7 @@ class UnrepresentableTest(impl: UnrepresentableToImpl) extends FunSuite with Mat
       items = List(Item("a", 1, 2)),
       deliveredAt = None,
       deliveryAddress = Some("123 Iffley road"),
-      submittedAt = None,
-      cancelledAt = None
+      submittedAt = None
     )
 
     submit(order, now) shouldEqual order.copy(status = "Submitted", submittedAt = Some(now))
@@ -61,8 +59,7 @@ class UnrepresentableTest(impl: UnrepresentableToImpl) extends FunSuite with Mat
       items = List(Item("a", 1, 2)),
       deliveredAt = None,
       deliveryAddress = Some("123 Iffley road"),
-      submittedAt = Some(now.minus(deliveryDuration)),
-      cancelledAt = None
+      submittedAt = Some(now.minus(deliveryDuration))
     )
 
     deliver(order, now) shouldEqual ((order.copy(status = "Delivered", deliveredAt = Some(now)), deliveryDuration))
