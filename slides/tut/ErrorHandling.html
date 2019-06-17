@@ -292,8 +292,8 @@ class: center, middle
 
 .center[
 ```scala
-|A => (B | E)| = |B | E| ^ |A|
-                   = (|B| + |E|) ^ |A|
+|A => (B | E)| = |(B | E)| ^ |A|
+                 = (|B| + |E|) ^ |A|
 ```
 ]
 
@@ -302,6 +302,7 @@ class: center, middle
 .center[
 ```scala
 |A1 => B| = |B| ^ |A1|
+                = |B| ^ |(A | A2)|
                   = |B| ^ (|A| - |A2|)
 ```
 ]
@@ -309,11 +310,30 @@ class: center, middle
 assume `A = A1 | A2`
 
 ---
+class: center, middle
 
-# Unrepresentable State Exercises
+# Unrepresentable Exercises
 
 ---
-.h1[# Failure types]
+.h1[# Making state unrepresentable]
+
+.large[
+* It requires more work when creating data types but it saves you from handling runtime errors in business logic
+
+* You can use techniques with different complexities:
+   * Enum
+   * ADT / GADTs
+   * Parametric / Refinement / Dependent types
+   * HList, HSet
+]
+
+---
+class: center, middle
+
+# Increase output type
+
+---
+.h1[# Type constructors with an error channel]
 
 .large[
 * `Option`
@@ -321,36 +341,26 @@ assume `A = A1 | A2`
 * `Either`
 
 * `Try`
-]
 
---
+* `Future` or `IO` (from cats, Monix, ZIO)
 
-.large[
-* `Future`
-]
-
---
-
-.large[
-* `Validated` (from cats / scalaz)
+* `Validated` (from cats, scalaz)
 ]
 
 ---
-.h1[# Failure types]
+.h1[# Type constructors with an error channel]
 
 .large[
-* **`Option`**
+* ### **`Option`**
 
-* **`Either`**
+* ###**`Either`**
 
 * `Try`
 
+* `Future` or `IO`
 
-* `Future`
-
-* **`Validated`** (from cats / scalaz)
+* ### **`Validated`**
 ]
-
 
 ---
 .h1[# Option]
@@ -370,25 +380,6 @@ object Option {
 ]
 
 .pull-right[![Option](img/errorhandling/option.svg)]
-
----
-.h1[# Option]
-
-.pull-left[
-```tut:silent
-sealed trait Option[+A]
-
-object Option {
-
-  case class Some[+A](value: A) extends Option[A]
-
-  case object None extends Option[Nothing]
-
-}
-```
-]
-
-.pull-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
 
 
 ---
@@ -516,6 +507,45 @@ Some(Circle(5.2)).orElse(Some("foo"))
 class: center, middle
 
 # Option Exercises
+
+---
+.h1[# Option]
+
+.pull-left[
+```tut:silent
+sealed trait Option[+A]
+
+object Option {
+
+  case class Some[+A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
+}
+```
+]
+
+.pull-right[![Option](img/errorhandling/option.svg)]
+
+
+---
+.h1[# Option]
+
+.pull-left[
+```tut:silent
+sealed trait Option[+A]
+
+object Option {
+
+  case class Some[+A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
+}
+```
+]
+
+.pull-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
 
 ---
 .h1[# Either]
