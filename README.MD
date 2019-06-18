@@ -41,10 +41,10 @@
 * Typeclass abuses
 
 ### Module 7: [Functors](https://fp-tower.github.io/foundation/Functors#1)
-* Functor, Applicative, Monad
+* Functor, Applicative, Monad, Traverse
 * Combining effects
-* Typeclass consistency
-* Traverse
+* Variance
+* Typeclass coherence
 * Typeclass granularity
 
 

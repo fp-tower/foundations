@@ -67,9 +67,7 @@ background-image: url(img/functors/plan.svg)
 ---
 class: center, middle
 
-# Why Functors?
-
-# Where are they used?
+# Why Functors? Where are they used?
 
 ---
 # Where are Functors used?
@@ -87,10 +85,14 @@ class: center, middle
 ---
 .h1[# Plan]
 
+<br>
+
 .large[
 * Functor hierarchy
 
 * 20+ generic functions
+
+* Variance
 
 * Typeclass coherence
 ]
@@ -107,9 +109,82 @@ class: center, middle
 
 ```scala
 trait Functor[F[_]] {
+
   def map[A, B](fa: F[A])(f: A => B): F[B]
+
 }
 ```
+
+---
+.h1[# Functor]
+
+
+```scala
+trait Functor[`F[_]`] {
+
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+
+}
+```
+
+### Functor is a higher kinded typeclass
+
+* It could apply to **type constructor** like `List`, `Option`, `IO`
+
+* But it cannot apply to **types** like `Int`, `String`
+
+---
+class: center, middle
+
+# Which F[_] is a Functor?
+
+---
+
+# F is a box or a container
+
+.pull-left[.large[
+* List, Vector, Stream
+
+* Option, Try
+
+* Map[K, ?], Either[E, ?]
+
+]]
+
+.pull-right[
+<br>
+![Functor box](img/functors/map-example.svg)
+]
+
+---
+
+# A Functor does not alter the structure
+
+.center[
+![Functor graph](img/functors/map-example-2.svg)
+]
+
+---
+# F is an effect
+
+```scala
+type Failure[A] = Option[A] or Either[String, A]
+
+type Nondeterminism[A] = List[A] or Vector[A]
+
+type SideEffect[A] = IO[A]
+
+type MutableState[A] = State[Int, A]
+
+type ImmutableState[A] = Reader[Int, A]
+
+type Console[A] = ...
+
+type Logger[A] = ...
+```
+
+
+### A Functor is an abstraction to update an effectful value **without** altering its effect
 
 ---
 .h1[# Functor]
@@ -154,41 +229,6 @@ trait Functor[F[_]] {
 <br>
 
 .center[![Functor API](img/functors/functor-api.svg)]
-
----
-class: center, middle
-
-# What is F[_]?
-
----
-background-image: url(img/functors/map-example.svg)
-
-# F as a box or container
-
----
-background-image: url(img/functors/map-example-2.svg)
-
----
-# F as an effect
-
-```scala
-type Failure[A] = Option[A] or Either[String, A]
-
-type Nondeterminism[A] = List[A] or Vector[A]
-
-type SideEffect[A] = IO[A]
-
-type MutableState[A] = State[Int, A]
-
-type ImmutableState[A] = Reader[Int, A]
-
-type Console[A] = ...
-
-type Logger[A] = ...
-```
-
-
-### A Functor is an abstraction to update an effectful value **without** altering its effect
 
 ---
 background-image: url(img/functors/functor-api-law.svg)
