@@ -642,20 +642,20 @@ res3: Either[String,(Nothing, Nothing)] = Left(oops)
 
 
 ```scala
-scala> (validNel(1), validNel("hello")).tuple2
-res4: exercises.errorhandling.Validated[cats.data.NonEmptyList[Nothing],(Int, String)] = Valid((1,hello))
+scala> println((validNel(1), validNel("hello")).tuple2)
+Valid((1,hello))
 
-scala> (validNel(1), invalidNel("an error")).tuple2
-res5: exercises.errorhandling.Validated[cats.data.NonEmptyList[String],(Int, Nothing)] = Invalid(NonEmptyList(an error))
+scala> println((validNel(1), invalidNel("an error")).tuple2)
+Invalid(NonEmptyList(an error))
 
-scala> (invalidNel("oops"), validNel(2)).tuple2
-res6: exercises.errorhandling.Validated[cats.data.NonEmptyList[String],(Nothing, Int)] = Invalid(NonEmptyList(oops))
+scala> println((invalidNel("oops"), validNel(2)).tuple2)
+Invalid(NonEmptyList(oops))
 ```
 
 
 ```scala
-scala> (invalidNel("oops"), invalidNel("an error")).tuple2
-res7: exercises.errorhandling.Validated[cats.data.NonEmptyList[String],(Nothing, Nothing)] = Invalid(NonEmptyList(oops, an error))
+scala> println((invalidNel("oops"), invalidNel("an error")).tuple2)
+Invalid(NonEmptyList(oops, an error))
 ```
 
 ---
@@ -1108,10 +1108,10 @@ class: center, middle
 ---
 class: center, middle
 
-# IO cannot be combined in parallel (but IO.Par can)
+# IO Applicative cannot combine in parallel (but IO.Par can)
 
 ---
-# Nesting
+# Composition
 
 ### if F and G are a Functor then F[G[_]] is a Functor
 
@@ -1124,7 +1124,7 @@ class: center, middle
 ---
 background-image: url(img/functors/monad-do-not-compose.svg)
 
-# Nesting
+# Monad do not compose
 
 ---
 class: center, middle
@@ -1329,17 +1329,50 @@ background-image: url(img/functors/cats-functor.svg)
 .h1[# Granularity]
 
 .large[
-* There is not a single "correct" granularity, it depends on your need
-
-* Principle of least power
+* There is not a single "correct" granularity
 ]
 
 --
 
 .large[
-* Applicative was discovered in 2008 [Applicative Programming with Effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.html)
+* Applicative was discovered in 2008
 
-* Selective Functor in 2018! [Selective Applicative Functors](https://www.staff.ncl.ac.uk/andrey.mokhov/selective-functors.pdf)
+* Selective Applicative Functor in 2018!
+]
+
+---
+.h1[# Recommendations]
+
+.pull-left[
+### Define strongest typeclasses for data types
+
+```scala
+val instances: Monad[Option] with Traverse[Option] = ???
+```
+
+<br>
+
+.medium[
+* Better defined behaviour
+* More tests for free
+* More powerful API
+]
+]
+
+.pull-right[
+### Use weakest typeclasses for functions
+
+```scala
+def program[F[_]: Console: Applicative]: F[String] = ???
+```
+
+<br>
+
+.medium[
+* Principle of least power
+* More reasoning
+* Less tests to write
+]
 ]
 
 ---
@@ -1348,6 +1381,8 @@ background-image: url(img/functors/cats-functor.svg)
 * [Cats infographic](https://github.com/tpolecat/cats-infographic): typeclass diagrams for cats
 * [Thinking with types](https://leanpub.com/thinking-with-types): variance
 * [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw) from Runar Bjarnason
+* Applicative paper [Applicative Programming with Effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.html)
+* Selective Applicative Functor paper [Selective Applicative Functors](https://www.staff.ncl.ac.uk/andrey.mokhov/selective-functors.pdf)
 
 ---
 class: center, middle
