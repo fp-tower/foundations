@@ -360,7 +360,7 @@ trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
 ### What kind of Functor is JsonDecoder, JsonEncoder and JsonCodec?
 
 ---
-# Functor variance
+# What kind of Functor is JsonDecoder?
 
 ```scala
 trait JsonDecoder[A]{
@@ -383,7 +383,7 @@ implicit val functor: `Functor`[JsonDecoder] = ???
 ```
 
 ---
-# Functor variance
+# What kind of Functor is JsonEncoder?
 
 ```scala
 trait JsonEncoder[A]{
@@ -406,7 +406,7 @@ implicit val functor: `ContravariantFunctor`[JsonEncoder] = ???
 ```
 
 ---
-# Functor variance
+# What kind of Functor is JsonCodec?
 
 ```scala
 trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
@@ -426,7 +426,7 @@ case class JsonCodec[A](
 ### hence
 
 ```scala
-implicit val functor: InvariantFunctor[JsonCodec] = ???
+implicit val functor: `InvariantFunctor`[JsonCodec] = ???
 ```
 
 ---
