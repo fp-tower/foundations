@@ -1,6 +1,7 @@
 package toimpl.functors
 
 import exercises.errorhandling.Validated
+import exercises.functors.FunctorsExercises.Country
 import exercises.typeclass.{Monoid, Semigroup}
 import exercises.functors._
 
@@ -69,7 +70,7 @@ trait FunctorsToImplLowLevel {
   implicit def constTraverse[R]: Traverse[Const[R, ?]]
 
   def parseNumber(value: String): Option[BigInt]
-  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit]
+  def checkAllUsersAdult(country: Country): Either[String, Unit]
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]]
 }

@@ -270,9 +270,8 @@ object FunctorsExercises extends FunctorsToImpl {
     // (getCurrentTime.flatMap(log.info) <* sleep(2.seconds)).forever
     //
     // (for {
-    //   req <- pullRequest
-    //   res <- handleRequest(req)
-    //   _   <- pushResponse(res)
+    //   event <- queue.pull(1)
+    //   _     <- handleRequest(event)
     // yield ()).forever
     //
     def forever[A](fa: F[A]): F[Nothing] = ???
@@ -414,12 +413,27 @@ object FunctorsExercises extends FunctorsToImpl {
       case _   => None
     }
 
-  // 4l. Implement checkAllUsersAdult, try to use traverse_
-  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit] = {
-    import CountryUsers._
+  // 4l. Implement checkAllUsersAdult which fetch all users for a Country and check if each one is an adult
+  // try to use traverse_
+  sealed trait Country
+  case object UK      extends Country
+  case object France  extends Country
+  case object Germany extends Country
 
-    ???
-  }
+  case class User(name: String, age: Int, country: Country)
+
+  def getUsers(country: Country): Either[String, List[User]] =
+    country match {
+      case UK      => Left("Unsupported: Brexit")
+      case France  => Right(List(User("Yves", 14, France), User("Laura", 12, France), User("Lucas", 20, France)))
+      case Germany => Right(List(User("Helene", 22, Germany), User("Daniel", 50, Germany)))
+    }
+
+  def checkAdult(user: User): Either[String, Unit] =
+    if (user.age < 18) Left(s"${user.name} is not an adult")
+    else Right(())
+
+  def checkAllUsersAdult(country: Country): Either[String, Unit] = ???
 
   // 4m. Implement an Traverse instance for Compose
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =

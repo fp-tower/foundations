@@ -6,6 +6,7 @@ import exercises.errorhandling.Validated
 import exercises.errorhandling.Validated._
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
+import exercises.functors.FunctorsExercises.{checkAdult, getUsers, Country}
 import exercises.functors.Traverse.syntax._
 import exercises.typeclass.Monoid.syntax._
 import exercises.functors._
@@ -331,7 +332,7 @@ object FunctorsAnswers extends FunctorsToImpl {
           digits.reverse.zipWithIndex.foldMap {
             case (digit, index) =>
               digit * BigInt(10).pow(index)
-          }
+        }
       )
 
   def parseDigit(value: Char): Option[Int] =
@@ -349,11 +350,8 @@ object FunctorsAnswers extends FunctorsToImpl {
       case _   => None
     }
 
-  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit] = {
-    import CountryUsers._
-
+  def checkAllUsersAdult(country: Country): Either[String, Unit] =
     getUsers(country).flatMap(_.traverse_(checkAdult))
-  }
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {

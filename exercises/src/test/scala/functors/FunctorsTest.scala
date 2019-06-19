@@ -4,9 +4,9 @@ import answers.functors.FunctorsAnswers
 import exercises.errorhandling.Validated
 import exercises.functors.Applicative.syntax._
 import exercises.functors.ContravariantFunctor.syntax._
-import exercises.functors.CountryUsers.{France, Germany, UK}
-import exercises.functors.InvariantFunctor.syntax._
 import exercises.functors.Functor.syntax._
+import exercises.functors.FunctorsExercises.{France, Germany, UK}
+import exercises.functors.InvariantFunctor.syntax._
 import exercises.functors.Monad.syntax._
 import exercises.functors.Traverse.syntax._
 import exercises.functors._
