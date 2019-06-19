@@ -129,9 +129,9 @@ trait Functor[`F[_]`] {
 
 ### Functor is a higher kinded typeclass
 
-* It could apply to **type constructor** like `List`, `Option`, `IO`
+* It applies to **type constructor** with a **single** hole
 
-* But it cannot apply to **types** like `Int`, `String`
+* But **types** like `Int`, `String` **cannot** be a Functor
 
 ---
 class: center, middle
@@ -139,8 +139,22 @@ class: center, middle
 # Which F[_] is a Functor?
 
 ---
+.h1[# F is a container]
 
-# F is a box or a container
+.pull-left[.large[
+* List, Vector, Stream
+
+* Option, Try
+
+]]
+
+.pull-right[
+<br>
+![Functor box](img/functors/map-example-array.svg)
+]
+
+---
+.h1[# F is a container]
 
 .pull-left[.large[
 * List, Vector, Stream
@@ -153,19 +167,37 @@ class: center, middle
 
 .pull-right[
 <br>
-![Functor box](img/functors/map-example.svg)
+![Functor box](img/functors/map-example-map.svg)
 ]
 
 ---
+.h1[# F is a container]
 
-# A Functor does not alter the structure
+.pull-left[.large[
+* List, Vector, Stream
+
+* Option, Try
+
+* Map[K, ?], Either[E, ?]
+
+* A => ?
+
+]]
+
+.pull-right[
+<br>
+![Functor box](img/functors/map-example-function.svg)
+]
+
+---
+.h1[# A Functor does not alter the structure]
 
 .center[
-![Functor graph](img/functors/map-example-2.svg)
+![Functor graph](img/functors/map-example-graph.svg)
 ]
 
 ---
-# F is an effect
+# F is an effect or capabilities
 
 ```scala
 type Failure[A] = Option[A] or Either[String, A]
@@ -183,20 +215,12 @@ type Console[A] = ...
 type Logger[A] = ...
 ```
 
+--
 
 ### A Functor is an abstraction to update an effectful value **without** altering its effect
 
 ---
-.h1[# Functor]
-
-.large-left[
-```tut:silent
-trait Functor[F[_]] {
-  def map[A, B](fa: F[A])(f: A => B): F[B]
-}
-```
-
-### Laws
+.h1[# Functor Laws]
 
 ```scala
 forAll(fa: F[A] => fa.map(identity) == fa)
@@ -205,9 +229,10 @@ forAll((fa: F[A], f: A => B, g: B => C) =>
   fa.map(f).map(g) == fa.map(f andThen g)
 )
 ```
-]
 
-.medium-right[![Functor law](img/functors/functor-law.svg)]
+<br>
+
+.center[![Functor law](img/functors/functor-law.svg)]
 
 ---
 # Functor API
