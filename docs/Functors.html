@@ -197,7 +197,7 @@ class: center, middle
 ]
 
 ---
-# F is an effect or capabilities
+# F is an effect
 
 ```scala
 type Failure[A] = Option[A] or Either[String, A]
@@ -215,7 +215,6 @@ type Console[A] = ...
 type Logger[A] = ...
 ```
 
---
 
 ### A Functor is an abstraction to update an effectful value **without** altering its effect
 
@@ -556,7 +555,8 @@ forAll((fa: F[A], fb: F[A], fc: F[C]) =>
 ---
 class: center, middle
 
-# An Applicative combines 2 effects associatively and it creates a NOOP effect
+# An Applicative combines 2 effects associatively
+# and lift pure values into NOOP effect
 
 ---
 .h1[# Applicative API]
@@ -606,39 +606,6 @@ trait Applicative[F[_]] extends Functor[F] {
 
 ---
 background-image: url(img/functors/applicative-api-law.svg)
-
----
-class: center, middle
-
-# Exercise 2
-
----
-.h1[# Applicative is a Functor]
-
-
-
-
-.large-left[
-```scala
-trait Applicative[F[_]] `extends Functor[F]` {
-
-  def pure[A](a: A): F[A]
-
-  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
-
-}
-```
-
-### Coherence Law
-
-```scala
-forAll((fa: F[A], f: A => B) =>
-  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
-)
-```
-]
-
-.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
 
 ---
 # Applicative combine effects: Failure
@@ -741,6 +708,36 @@ hello
 I love FP!
 res12: (Unit, Unit) = ((),())
 ```
+
+---
+class: center, middle
+
+# Exercise 2
+
+---
+.h1[# Applicative is a Functor]
+
+.large-left[
+```scala
+trait Applicative[F[_]] `extends Functor[F]` {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], f: A => B) =>
+  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
+)
+```
+]
+
+.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
 
 ---
 # Applicative is a Monoidal Functor
@@ -959,28 +956,6 @@ class: center, middle
 # Exercise 3
 
 ---
-# Monad is for sequential composition of effects
-
-```scala
-val res =
-  for {
-    a <- fa
-    b <- foo(`a`)
-  } yield f(a,b)
-```
-
---
-
-```scala
-def sendStatement(userId: UserId): IO[Unit] =
-  for {
-    user    <- getUser(userId)
-    account <- getAccount(`user.accountId`)
-    _       <- sendStatement(`user.email, account.statement`)
-  } yield ()
-```
-
----
 # Monad is an Applicative
 
 ```scala
@@ -1022,6 +997,28 @@ forAll{ (fa: F[A], fb: F[B]) =>
 
   combinedFor == (fa, fb).tuple2
 }
+```
+
+---
+# Monad is for sequential composition of effects
+
+```scala
+val res =
+  for {
+    a <- fa
+    b <- foo(`a`)
+  } yield f(a,b)
+```
+
+--
+
+```scala
+def sendStatement(userId: UserId): IO[Unit] =
+  for {
+    user    <- getUser(userId)
+    account <- getAccount(`user.accountId`)
+    _       <- sendStatement(`user.email, account.statement`)
+  } yield ()
 ```
 
 ---
