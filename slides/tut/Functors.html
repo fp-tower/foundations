@@ -67,9 +67,7 @@ background-image: url(img/functors/plan.svg)
 ---
 class: center, middle
 
-# Why Functors?
-
-# Where are they used?
+# Why Functors? Where are they used?
 
 ---
 # Where are Functors used?
@@ -87,10 +85,14 @@ class: center, middle
 ---
 .h1[# Plan]
 
+<br>
+
 .large[
 * Functor hierarchy
 
 * 20+ generic functions
+
+* Variance
 
 * Typeclass coherence
 ]
@@ -107,21 +109,117 @@ class: center, middle
 
 ```tut:silent
 trait Functor[F[_]] {
+
   def map[A, B](fa: F[A])(f: A => B): F[B]
+
 }
 ```
 
 ---
 .h1[# Functor]
 
-.large-left[
-```tut:silent
-trait Functor[F[_]] {
+
+```scala
+trait Functor[`F[_]`] {
+
   def map[A, B](fa: F[A])(f: A => B): F[B]
+
 }
 ```
 
-### Laws
+### Functor is a higher kinded typeclass
+
+* It applies to **type constructor** with a **single** hole
+
+* But **types** like `Int`, `String` **cannot** be a Functor
+
+---
+class: center, middle
+
+# Which F[_] is a Functor?
+
+---
+.h1[# F is a container]
+
+.pull-left[.large[
+* List, Vector, Stream
+
+* Option, Try
+
+]]
+
+.pull-right[
+<br>
+![Functor box](img/functors/map-example-array.svg)
+]
+
+---
+.h1[# F is a container]
+
+.pull-left[.large[
+* List, Vector, Stream
+
+* Option, Try
+
+* Map[K, ?], Either[E, ?]
+
+]]
+
+.pull-right[
+<br>
+![Functor box](img/functors/map-example-map.svg)
+]
+
+---
+.h1[# F is a container]
+
+.pull-left[.large[
+* List, Vector, Stream
+
+* Option, Try
+
+* Map[K, ?], Either[E, ?]
+
+* A => ?
+
+]]
+
+.pull-right[
+<br>
+![Functor box](img/functors/map-example-function.svg)
+]
+
+---
+.h1[# A Functor does not alter the structure]
+
+.center[
+![Functor graph](img/functors/map-example-graph.svg)
+]
+
+---
+# F is an effect
+
+```scala
+type Failure[A] = Option[A] or Either[String, A]
+
+type Nondeterminism[A] = List[A] or Vector[A]
+
+type SideEffect[A] = IO[A]
+
+type MutableState[A] = State[Int, A]
+
+type ImmutableState[A] = Reader[Int, A]
+
+type Console[A] = ...
+
+type Logger[A] = ...
+```
+
+
+### A Functor is an abstraction to update an effectful value **without** altering its effect
+
+---
+.h1[# Functor Laws]
 
 ```scala
 forAll(fa: F[A] => fa.map(identity) == fa)
@@ -130,9 +228,10 @@ forAll((fa: F[A], f: A => B, g: B => C) =>
   fa.map(f).map(g) == fa.map(f andThen g)
 )
 ```
-]
 
-.medium-right[![Functor law](img/functors/functor-law.svg)]
+<br>
+
+.center[![Functor law](img/functors/functor-law.svg)]
 
 ---
 # Functor API
@@ -154,41 +253,6 @@ trait Functor[F[_]] {
 <br>
 
 .center[![Functor API](img/functors/functor-api.svg)]
-
----
-class: center, middle
-
-# What is F[_]?
-
----
-background-image: url(img/functors/map-example.svg)
-
-# F as a box or container
-
----
-background-image: url(img/functors/map-example-2.svg)
-
----
-# F as an effect
-
-```scala
-type Failure[A] = Option[A] or Either[String, A]
-
-type Nondeterminism[A] = List[A] or Vector[A]
-
-type SideEffect[A] = IO[A]
-
-type MutableState[A] = State[Int, A]
-
-type ImmutableState[A] = Reader[Int, A]
-
-type Console[A] = ...
-
-type Logger[A] = ...
-```
-
-
-### A Functor is an abstraction to update an effectful value **without** altering its effect
 
 ---
 background-image: url(img/functors/functor-api-law.svg)
@@ -296,7 +360,7 @@ trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
 ### What kind of Functor is JsonDecoder, JsonEncoder and JsonCodec?
 
 ---
-# Functor variance
+# What kind of Functor is JsonDecoder?
 
 ```tut:silent
 trait JsonDecoder[A]{
@@ -319,7 +383,7 @@ implicit val functor: `Functor`[JsonDecoder] = ???
 ```
 
 ---
-# Functor variance
+# What kind of Functor is JsonEncoder?
 
 ```tut:silent
 trait JsonEncoder[A]{
@@ -342,7 +406,7 @@ implicit val functor: `ContravariantFunctor`[JsonEncoder] = ???
 ```
 
 ---
-# Functor variance
+# What kind of Functor is JsonCodec?
 
 ```tut:silent
 trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
@@ -362,7 +426,7 @@ case class JsonCodec[A](
 ### hence
 
 ```scala
-implicit val functor: InvariantFunctor[JsonCodec] = ???
+implicit val functor: `InvariantFunctor`[JsonCodec] = ???
 ```
 
 ---
@@ -492,7 +556,8 @@ forAll((fa: F[A], fb: F[A], fc: F[C]) =>
 ---
 class: center, middle
 
-# An Applicative combines 2 effects associatively and it creates a NOOP effect
+# An Applicative combines 2 effects associatively
+# and lift pure values into NOOP effect
 
 ---
 .h1[# Applicative API]
@@ -544,42 +609,6 @@ trait Applicative[F[_]] extends Functor[F] {
 background-image: url(img/functors/applicative-api-law.svg)
 
 ---
-class: center, middle
-
-# Exercise 2
-
----
-.h1[# Applicative is a Functor]
-
-```tut:invisible
-trait Functor[F[_]] {
-  def map[A, B](fa: F[A])(f: A => B): F[B]
-}
-```
-
-.large-left[
-```scala
-trait Applicative[F[_]] `extends Functor[F]` {
-
-  def pure[A](a: A): F[A]
-
-  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
-
-}
-```
-
-### Coherence Law
-
-```scala
-forAll((fa: F[A], f: A => B) =>
-  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
-)
-```
-]
-
-.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
-
----
 # Applicative combine effects: Failure
 
 ```tut:reset:invisible
@@ -618,14 +647,14 @@ import exercises.errorhandling.Validated._
 ```
 
 ```tut
-(validNel(1), validNel("hello")).tuple2
-(validNel(1), invalidNel("an error")).tuple2
-(invalidNel("oops"), validNel(2)).tuple2
+println((validNel(1), validNel("hello")).tuple2)
+println((validNel(1), invalidNel("an error")).tuple2)
+println((invalidNel("oops"), validNel(2)).tuple2)
 ```
 
 
 ```tut
-(invalidNel("oops"), invalidNel("an error")).tuple2
+println((invalidNel("oops"), invalidNel("an error")).tuple2)
 ```
 
 ---
@@ -669,6 +698,36 @@ val combined = (IO(println("hello")), IO(println("I love FP!"))).tuple2
 ```tut
 combined.unsafeRunSync
 ```
+
+---
+class: center, middle
+
+# Exercise 2
+
+---
+.h1[# Applicative is a Functor]
+
+.large-left[
+```scala
+trait Applicative[F[_]] `extends Functor[F]` {
+
+  def pure[A](a: A): F[A]
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
+
+}
+```
+
+### Coherence Law
+
+```scala
+forAll((fa: F[A], f: A => B) =>
+  (fa, pure(())).map2((a, _) => f(a)) == fa.map(f)
+)
+```
+]
+
+.medium-right[![Applicative Map Coherence](img/functors/applicative-map-coherence.svg)]
 
 ---
 # Applicative is a Monoidal Functor
@@ -892,28 +951,6 @@ class: center, middle
 # Exercise 3
 
 ---
-# Monad is for sequential composition of effects
-
-```scala
-val res =
-  for {
-    a <- fa
-    b <- foo(`a`)
-  } yield f(a,b)
-```
-
---
-
-```scala
-def sendStatement(userId: UserId): IO[Unit] =
-  for {
-    user    <- getUser(userId)
-    account <- getAccount(`user.accountId`)
-    _       <- sendStatement(`user.email, account.statement`)
-  } yield ()
-```
-
----
 # Monad is an Applicative
 
 ```scala
@@ -955,6 +992,28 @@ forAll{ (fa: F[A], fb: F[B]) =>
 
   combinedFor == (fa, fb).tuple2
 }
+```
+
+---
+# Monad is for sequential composition of effects
+
+```scala
+val res =
+  for {
+    a <- fa
+    b <- foo(`a`)
+  } yield f(a,b)
+```
+
+--
+
+```scala
+def sendStatement(userId: UserId): IO[Unit] =
+  for {
+    user    <- getUser(userId)
+    account <- getAccount(`user.accountId`)
+    _       <- sendStatement(`user.email, account.statement`)
+  } yield ()
 ```
 
 ---
@@ -1052,10 +1111,10 @@ class: center, middle
 ---
 class: center, middle
 
-# IO cannot be combined in parallel (but IO.Par can)
+# IO Applicative cannot combine in parallel (but IO.Par can)
 
 ---
-# Nesting
+# Composition
 
 ### if F and G are a Functor then F[G[_]] is a Functor
 
@@ -1068,7 +1127,7 @@ class: center, middle
 ---
 background-image: url(img/functors/monad-do-not-compose.svg)
 
-# Nesting
+# Monad do not compose
 
 ---
 class: center, middle
@@ -1274,17 +1333,50 @@ background-image: url(img/functors/cats-functor.svg)
 .h1[# Granularity]
 
 .large[
-* There is not a single "correct" granularity, it depends on your need
-
-* Principle of least power
+* There is not a single "correct" granularity
 ]
 
 --
 
 .large[
-* Applicative was discovered in 2008 [Applicative Programming with Effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.html)
+* Applicative was discovered in 2008
 
-* Selective Functor in 2018! [Selective Applicative Functors](https://www.staff.ncl.ac.uk/andrey.mokhov/selective-functors.pdf)
+* Selective Applicative Functor in 2018!
+]
+
+---
+.h1[# Recommendations]
+
+.pull-left[
+### Define strongest typeclasses for data types
+
+```scala
+val instances: Monad[Option] with Traverse[Option] = ???
+```
+
+<br>
+
+.medium[
+* Better defined behaviour
+* More tests for free
+* More powerful API
+]
+]
+
+.pull-right[
+### Use weakest typeclasses for functions
+
+```scala
+def program[F[_]: Console: Applicative]: F[String] = ???
+```
+
+<br>
+
+.medium[
+* Principle of least power
+* More reasoning
+* Less tests to write
+]
 ]
 
 ---
@@ -1293,6 +1385,8 @@ background-image: url(img/functors/cats-functor.svg)
 * [Cats infographic](https://github.com/tpolecat/cats-infographic): typeclass diagrams for cats
 * [Thinking with types](https://leanpub.com/thinking-with-types): variance
 * [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw) from Runar Bjarnason
+* Applicative paper [Applicative Programming with Effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.html)
+* Selective Applicative Functor paper [Selective Applicative Functors](https://www.staff.ncl.ac.uk/andrey.mokhov/selective-functors.pdf)
 
 ---
 class: center, middle

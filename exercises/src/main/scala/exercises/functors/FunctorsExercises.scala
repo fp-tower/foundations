@@ -91,6 +91,8 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // 1f. Implement a Functor instance for Predicate
+  val isEven: Predicate[Int] = Predicate(x => x % 2 == 0)
+
   implicit val predicateFunctor: Functor[Predicate] = new DefaultFunctor[Predicate] {
     def map[A, B](fa: Predicate[A])(f: A => B): Predicate[B] = ???
   }
@@ -117,6 +119,7 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // 1h. Implement a Functor instance for Compose
+  // e.g. Functor[Compose[Option, List, ?]]
   implicit def composeFunctor[F[_]: Functor, G[_]: Functor]: Functor[Compose[F, G, ?]] =
     new DefaultFunctor[Compose[F, G, ?]] {
       def map[A, B](fa: Compose[F, G, A])(f: A => B): Compose[F, G, B] = ???
@@ -130,7 +133,7 @@ object FunctorsExercises extends FunctorsToImpl {
     // 2a. Implement map using map2
     def map[A, B](fa: F[A])(f: A => B): F[B] = ???
 
-    // 2b. Implement tuple2
+    // 2b. Implement tuple2 using map2
     // such as tuple2(List(1,2,3), List('a','b')) == List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
     def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)] = ???
 
@@ -144,10 +147,10 @@ object FunctorsExercises extends FunctorsToImpl {
     // }
     def unit: F[Unit] = ???
 
-    // 2b. Implement map3
+    // 2b. Implement map3 using previous functions
     def map3[A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] = ???
 
-    // 2d. Implement productL, productR
+    // 2d. Implement productL, productR using previous functions
     // such as productL(Option(1), Option("hello")) == Some(1)
     //         productR(Option(1), Option("hello")) == Some("hello")
     // but     productL(Option(1), None)            == None
@@ -160,7 +163,7 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   // 2f. Implement the following instances
-  // you can reuse methods from the standard library
+  // you can use methods from the standard library
   implicit val listApplicative: Applicative[List] = new DefaultApplicative[List] {
     def pure[A](a: A): List[A]                                           = ???
     def map2[A, B, C](fa: List[A], fb: List[B])(f: (A, B) => C): List[C] = ???
@@ -221,10 +224,10 @@ object FunctorsExercises extends FunctorsToImpl {
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] = ???
   }
 
-  // 2j. Why does the Applicative instance of List do the cartesian product instead of zip?
-  // Why most implementations of map2 use flatMap?
+  // 2j. Why does the default Applicative instance of List do the cartesian product instead of zip?
 
   // 2k. Implement an Applicative instance for Compose
+  // e.g. Applicative[Compose[IO, Either[String, ?], ?]]
   implicit def composeApplicative[F[_]: Applicative, G[_]: Applicative]: Applicative[Compose[F, G, ?]] =
     new DefaultApplicative[Compose[F, G, ?]] {
       def pure[A](a: A): Compose[F, G, A]                                                             = ???
@@ -242,19 +245,19 @@ object FunctorsExercises extends FunctorsToImpl {
     // 3b. Implement map2 using flatMap
     def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = ???
 
-    // 3c. Implement flatten
+    // 3c. Implement flatten using flatMap
     // such as flatten(List(List(1,2), List(3,4,5)))  == List(1,2,3,4,5)
     //         flatten((x: Int) => (y: Int) => x + y) == (x: Int) => x + x
     def flatten[A](ffa: F[F[A]]): F[A] = ???
 
-    // 3d. Implement flatTap
+    // 3d. Implement flatTap using previous functions
     // such as flatTap(Option(10))(x => if(x > 0) unit[Option] else None) == Some(10)
     //         flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) == None
     // use case:
     // getUser(userId).flatTap(user => log.info(s"Fetched $user")): IO[User]
     def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A] = ???
 
-    // 3e. Implement ifM
+    // 3e. Implement ifM using previous functions
     // such as val func = ifM((x: Int) => x > 0)(_ * 2, _.abs)
     //         func(-10) == 10
     //         func(  3) == 6
@@ -265,21 +268,20 @@ object FunctorsExercises extends FunctorsToImpl {
     // )
     def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
 
-    // 3f. Implement forever
+    // 3f. Implement forever using previous functions
     // use case:
     // (getCurrentTime.flatMap(log.info) <* sleep(2.seconds)).forever
     //
     // (for {
-    //   req <- pullRequest
-    //   res <- handleRequest(req)
-    //   _   <- pushResponse(res)
+    //   event <- queue.pull(1)
+    //   _     <- handleRequest(event)
     // yield ()).forever
     //
     def forever[A](fa: F[A]): F[Nothing] = ???
   }
 
   // 3f. Implement the following instances
-  // you can reuse methods from the standard library
+  // you can use methods from the standard library
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
     def pure[A](a: A): List[A]                               = listApplicative.pure(a)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = ???
@@ -332,39 +334,39 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultTraverse[F[_]] extends Traverse[F] with DefaultFunctor[F] {
-    // 4a. Show that traverse can be implemented using sequence
+    // 4a. Implement traverse using sequence
     def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]] = ???
 
-    // 4b. Show that traverse can be implemented using sequence
+    // 4b. Implement sequence using traverse
     def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] = ???
 
-    // 4c. Implement traverse_
+    // 4c. Implement traverse_ using traverse
     // List(1,3,5).traverse_(a => if(a % 2 == 1) Some(a) else None) == Some(())
     // List(1,2,5).traverse_(a => if(a % 2 == 1) Some(a) else None) == None
     // bonus: try to implement this method using only Foldable methods
     def traverse_[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[Unit] = ???
 
-    // 4d. Implement foldMapM
+    // 4d. Implement foldMapM using traverse
     // List(1,3,5).foldMapM(a => if(a % 2 == 1) Some(a) else None) == Some(9)
     // List(1,2,5).foldMapM(a => if(a % 2 == 1) Some(a) else None) == None
     def foldMapM[G[_]: Applicative, A, B: Monoid](fa: F[A])(f: A => G[B]): G[B] = ???
 
-    // 4e. Implement flatSequence and flatTraverse
+    // 4e. Implement flatSequence and flatTraverse using previous functions
     def flatSequence[G[_]: Applicative, A](fgfa: F[G[F[A]]])(implicit ev: Monad[F]): G[F[A]] = ???
 
     def flatTraverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[F[B]])(implicit ev: Monad[F]): G[F[B]] = ???
 
-    // 4f. Show that map can be implemented using traverse
+    // 4f. Implement map using traverse
     def map[A, B](fa: F[A])(f: A => B): F[B] = ???
 
-    // 4g. Show that foldMap can be implemented using traverse
+    // 4g. Implement foldMap using traverse
     override def foldMap[A, B: Monoid](fa: F[A])(f: A => B): B = ???
 
-    // 4h. Show that foldLeft can be implemented using foldMap
+    // 4h. Implement foldLeft using foldMap
     // hint: try to use a newtype we saw in chapter 3
     def foldLeft[A, B](fa: F[A], z: B)(f: (B, A) => B): B = ???
 
-    // 4i. Show that foldLeft can be implemented using foldMap
+    // 4i. Implement foldRight using foldMap
     // hint: try to use a newtype we saw in chapter 3
     def foldRight[A, B](fa: F[A], z: B)(f: (A, => B) => B): B = ???
   }
@@ -414,14 +416,30 @@ object FunctorsExercises extends FunctorsToImpl {
       case _   => None
     }
 
-  // 4l. Implement checkAllUsersAdult, try to use traverse_
-  def checkAllUsersAdult(country: CountryUsers.Country): Either[String, Unit] = {
-    import CountryUsers._
+  // 4l. Implement checkAllUsersAdult which fetches all users for a Country and check if each one is an adult
+  // try to use traverse_
+  sealed trait Country
+  case object UK      extends Country
+  case object France  extends Country
+  case object Germany extends Country
 
-    ???
-  }
+  case class User(name: String, age: Int, country: Country)
+
+  def getUsers(country: Country): Either[String, List[User]] =
+    country match {
+      case UK      => Left("Unsupported: Brexit")
+      case France  => Right(List(User("Yves", 14, France), User("Laura", 12, France), User("Lucas", 20, France)))
+      case Germany => Right(List(User("Helene", 22, Germany), User("Daniel", 50, Germany)))
+    }
+
+  def checkAdult(user: User): Either[String, Unit] =
+    if (user.age < 18) Left(s"${user.name} is not an adult")
+    else Right(())
+
+  def checkAllUsersAdult(country: Country): Either[String, Unit] = ???
 
   // 4m. Implement an Traverse instance for Compose
+  // e.g. Traverse[Compose[List, Option, ?]]
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {
       override def traverse[H[_]: Applicative, A, B](fa: Compose[F, G, A])(f: A => H[B]): H[Compose[F, G, B]] = ???
