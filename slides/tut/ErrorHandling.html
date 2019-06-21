@@ -575,6 +575,35 @@ object Either {
 .medium-right[![Either unwrapped](img/errorhandling/either-unwrapped.svg)]
 
 ---
+.h1[# Either variance]
+
+```scala
+sealed trait Either[`+E`, `+A`]
+```
+
+```tut:invisible
+import Either.{Left, Right}
+```
+
+```tut:silent
+sealed trait MyError
+case class Error1(name: String) extends MyError
+case object Error2 extends MyError
+
+sealed trait Shape
+case class Circle(radius: Double) extends Shape
+case class Rectangle(width: Double, height: Double) extends Shape
+```
+
+
+```tut:silent
+val right1: Either[MyError, Shape] = Right(Circle(5.2))
+val right2: Either[MyError, Shape] = Right(Rectangle(2, 3))
+val left1 : Either[MyError, Shape] = Left(Error1("foo"))
+val left2 : Either[MyError, Shape] = Left(Error2)
+```
+
+---
 class: center, middle
 
 # Either Exercises
