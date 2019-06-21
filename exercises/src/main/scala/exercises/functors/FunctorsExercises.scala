@@ -19,7 +19,7 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultFunctor[F[_]] extends Functor[F] {
-    // 1a. Implement as
+    // 1a. Implement as using map
     // such as List(1,2,3).as(0) == List(0,0,0)
     def as[A, B](fa: F[A])(value: B): F[B] = ???
 
@@ -30,13 +30,13 @@ object FunctorsExercises extends FunctorsToImpl {
     // response.void: IO[Unit]
     def void[A](fa: F[A]): F[Unit] = ???
 
-    // 1c. Implement widen
+    // 1c. Implement widen using map
     // use case:
     // val circles: List[Circle] = List(Circle(4), Circle(10))
     // val shapes: List[Shape] = circles.widen
     def widen[A, B >: A](fa: F[A]): F[B] = ???
 
-    // 1d. Implement tupleL
+    // 1d. Implement tupleL and tupleR using map
     // such as tupleL(Some(4))("hello")  == Some(("hello", 4))
     //         tupleR(Some(4))("hello") == Some((4, "hello"))
     // but     tupleL(None)("hello")  == None
@@ -48,7 +48,7 @@ object FunctorsExercises extends FunctorsToImpl {
     def tupleL[A, B](fa: F[A])(value: B): F[(B, A)] = ???
     def tupleR[A, B](fa: F[A])(value: B): F[(A, B)] = ???
 
-    // 1e. implement lift
+    // 1e. implement lift using map
     // use case:
     // val inc = (x: Int) => x + 1
     // inc.lift[List]: List[Int] => List[Int]
@@ -130,14 +130,12 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultApplicative[F[_]] extends Applicative[F] with DefaultFunctor[F] {
-    // 2a. Implement map using map2
-    def map[A, B](fa: F[A])(f: A => B): F[B] = ???
 
-    // 2b. Implement tuple2 using map2
+    // 2a. Implement tuple2 using map2
     // such as tuple2(List(1,2,3), List('a','b')) == List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
     def tuple2[A, B](fa: F[A], fb: F[B]): F[(A, B)] = ???
 
-    // 2c. Implement unit
+    // 2b. Implement unit
     // such as unit[List] == List(())
     //         unit[Either[String, ?]] == Right(())
     // use case:
@@ -147,7 +145,7 @@ object FunctorsExercises extends FunctorsToImpl {
     // }
     def unit: F[Unit] = ???
 
-    // 2b. Implement map3 using previous functions
+    // 2c. Implement map3 using previous functions
     def map3[A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] = ???
 
     // 2d. Implement productL, productR using previous functions
@@ -160,6 +158,9 @@ object FunctorsExercises extends FunctorsToImpl {
     // getUser(userId) <* log.info(s"Got user $userId") would call getUser then log and return the fetched user
     def productL[A, B](fa: F[A], fb: F[B]): F[A] = ???
     def productR[A, B](fa: F[A], fb: F[B]): F[B] = ???
+
+    // 2e. Implement map using map2
+    def map[A, B](fa: F[A])(f: A => B): F[B] = ???
   }
 
   // 2f. Implement the following instances
