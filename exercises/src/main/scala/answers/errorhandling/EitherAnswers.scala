@@ -1,7 +1,5 @@
 package answers.errorhandling
 
-import java.time.LocalDate
-
 import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, UnsupportedCountry}
 import exercises.errorhandling.EitherExercises.UsernameError._
 import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, UsernameError}

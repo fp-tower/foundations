@@ -313,9 +313,9 @@ class: center, middle
 .h1[# Making state unrepresentable]
 
 .large[
-* It requires more work when creating data types but it saves you from handling runtime errors in business logic
+* More upfront work but much easier to write business logic
 
-* You can use techniques with different complexities:
+* Different tools with various complexities:
    * Enum
    * ADT / GADTs
    * Parametric / Refinement / Dependent types
@@ -543,6 +543,17 @@ object Option {
 .pull-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
 
 ---
+.h1[# Use Option when]
+
+<br>
+
+.large[
+* Failure is unique, e.g. key is not in the Map
+
+* You don't need granular error
+]
+
+---
 .h1[# Either]
 
 .large-left[
@@ -609,6 +620,32 @@ class: center, middle
 # Either Exercises
 
 ---
+class: center, middle
+
+# Either is an Option with varying error type
+
+---
+class: center, middle
+
+# Option is a special case of Either
+
+---
+class: center, middle
+
+# type Option[+A] = Either[Unit, A]
+
+---
+.h1[# Use Either when]
+
+<br>
+
+.large[
+* Many causes of failure and you want to keep track of them
+
+* Fail early, doesn't accumulate errors
+]
+
+---
 # Validated
 
 ```tut:silent
@@ -621,15 +658,111 @@ object Validated {
 ```
 
 ---
-# Algebraic Data Type (ADT)
+.h1[# Isn't Validated the same as an Either?]
+
+<br>
+
+```haskell
+data Either    e a = Left    e | Right a
+data Validated e a = Invalid e | Valid a
+```
+
+--
+
+## Yes, but Validated accumulates failure
+
+```tut:reset:invisible
+import answers.errorhandling.EitherAnswers.tuple2
+```
+
+```tut
+tuple2(Left("id not found"), Left("username too small"))
+```
+
+```tut:invisible
+import answers.errorhandling.ValidatedAnswers.tuple2
+import exercises.errorhandling.Validated._
+```
+
+```tut
+tuple2(Invalid("id not found"), Invalid("username too small"))(_ ++  ", " ++ _)
+```
+
+---
+# ValidatedNel
+
+```tut:silent
+import cats.data.NonEmptyList
+```
+
+```scala
+type ValidatedNel[+E, +A] = Validated[`NonEmptyList`[E], A]
+```
+
+```tut:silent
+def validNel[A](a: A): ValidatedNel[Nothing, A] =
+  Valid(a)
+
+def invalidNel[E](e: E): ValidatedNel[E, Nothing] =
+  Invalid(NonEmptyList.of(e))
+```
+
+--
+
+```tut
+println(tuple2(Invalid("id not found"), Invalid("username too small"))(_ ++  ", " ++ _))
+
+println(tuple2(invalidNel("id not found"), invalidNel("username too small"))(_ ::: _))
+```
+
+---
+class: center, middle
+
+# Validated Exercises
+
+---
+.h1[# Use Validated when]
+
+<br>
+
+.large[
+* Many causes of failure and you want to keep track of them
+
+* Accumulate errors, doesn't fail early
+]
+
+---
+# Validated accumulation using Typeclass
+
+<br>
+
+```scala
+def tuple2[E, A, B](fa: Validated[E, A], fb: Validated[E, B])
+                   (`combineError: (E, E) => E`): Validated[E, (A, B)] = ???
+
+tuple2(invalidNel("id not found"), invalidNel("username too small"))`(_ ::: _)`
+```
+
+--
+
+```scala
+def tuple2[`E: Semigroup`, A, B](fa: Validated[E, A], fb: Validated[E, B]): Validated[E, (A, B)] = ???
+
+tuple2(invalidNel("id not found"), invalidNel("username too small"))
+```
+
+### More details in [Typeclass](Typeclass.html#1) module
+
+---
+.h1[# Algebraic Data Type (ADT)]
+
+<br>
 
 ```haskell
 data Option      a = None      | Some  a
 data Either    e a = Left    e | Right a
 data Validated e a = Invalid e | Valid a
 ```
-
-
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
