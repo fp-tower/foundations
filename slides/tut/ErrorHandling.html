@@ -436,10 +436,10 @@ object Option {
 }
 
 implicit class OptionOps[A](self: Option[A]){
-  def orElse[B >: A](other: => Option[B]): Option[B] =
+  def getOrElse[B >: A](other: => B): B =
     self match {
       case Option.None    => other
-      case Option.Some(_) => self
+      case Option.Some(a) => a
     }
 }
 
@@ -448,11 +448,11 @@ import Shape.{Circle, Rectangle}
 ```
 
 ```tut
-Some(Circle(5.2)).orElse(Some(Rectangle(4,2)))
+Some(Circle(5.2)).getOrElse(Rectangle(4,2))
 ```
 
 ```tut
-Some(Circle(5.2)).orElse(Some("foo"))
+Some(Circle(5.2)).getOrElse("foo")
 ```
 ]
 
@@ -477,10 +477,10 @@ object Option {
 
 ```tut:invisible
 implicit class OptionOps[A](self: Option[A]){
-  def orElse(other: => Option[A]): Option[A] =
+  def getOrElse(other: => A): A =
     self match {
       case Option.None()  => other
-      case Option.Some(_) => self
+      case Option.Some(a) => a
     }
 }
 
@@ -489,12 +489,12 @@ import Shape.{Circle, Rectangle}
 ```
 
 ```tut
-Some(Circle(5.2): Shape).orElse(
-  Some(Rectangle(4,2): Shape))
+Some(Circle(5.2): Shape).getOrElse(
+  Rectangle(4,2): Shape)
 ```
 
 ```tut:fail
-Some(Circle(5.2)).orElse(Some("foo"))
+Some(Circle(5.2)).getOrElse("foo")
 ```
 ]
 
@@ -622,7 +622,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Either is an Option with varying error type
+# Either is an Option with polymorphic error type
 
 ---
 class: center, middle
@@ -642,7 +642,7 @@ class: center, middle
 .large[
 * Many causes of failure and you want to keep track of them
 
-* Fail early, doesn't accumulate errors
+* Fail early, not accumulate errors
 ]
 
 ---
@@ -728,7 +728,7 @@ class: center, middle
 .large[
 * Many causes of failure and you want to keep track of them
 
-* Accumulate errors, doesn't fail early
+* Accumulate errors, not fail early
 ]
 
 ---

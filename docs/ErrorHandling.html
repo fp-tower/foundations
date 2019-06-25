@@ -448,13 +448,13 @@ object Option {
 
 
 ```scala
-scala> Some(Circle(5.2)).orElse(Some(Rectangle(4,2)))
-res9: Option[Shape] = Some(Circle(5.2))
+scala> Some(Circle(5.2)).getOrElse(Rectangle(4,2))
+res9: Shape = Circle(5.2)
 ```
 
 ```scala
-scala> Some(Circle(5.2)).orElse(Some("foo"))
-res10: Option[java.io.Serializable] = Some(Circle(5.2))
+scala> Some(Circle(5.2)).getOrElse("foo")
+res10: java.io.Serializable = Circle(5.2)
 ```
 ]
 
@@ -475,18 +475,18 @@ object Option {
 
 
 ```scala
-scala> Some(Circle(5.2): Shape).orElse(
-     |   Some(Rectangle(4,2): Shape))
-res11: Option[Shape] = Some(Circle(5.2))
+scala> Some(Circle(5.2): Shape).getOrElse(
+     |   Rectangle(4,2): Shape)
+res11: Shape = Circle(5.2)
 ```
 
 ```scala
-scala> Some(Circle(5.2)).orElse(Some("foo"))
+scala> Some(Circle(5.2)).getOrElse("foo")
 <console>:24: error: type mismatch;
  found   : String("foo")
  required: Shape.Circle
-       Some(Circle(5.2)).orElse(Some("foo"))
-                                     ^
+       Some(Circle(5.2)).getOrElse("foo")
+                                   ^
 ```
 ]
 
@@ -613,7 +613,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Either is an Option with varying error type
+# Either is an Option with polymorphic error type
 
 ---
 class: center, middle
@@ -633,7 +633,7 @@ class: center, middle
 .large[
 * Many causes of failure and you want to keep track of them
 
-* Fail early, doesn't accumulate errors
+* Fail early, not accumulate errors
 ]
 
 ---
@@ -720,7 +720,7 @@ class: center, middle
 .large[
 * Many causes of failure and you want to keep track of them
 
-* Accumulate errors, doesn't fail early
+* Accumulate errors, not fail early
 ]
 
 ---
