@@ -21,7 +21,7 @@
 * Parametricity
 * Logic and types
 
-### Module 3: Error Handling [WIP](https://fp-tower.github.io/foundation/ErrorHandling#1)
+### Module 3: [Error Handling](https://fp-tower.github.io/foundation/ErrorHandling#1)
 * Unrepresentable state
 * Compare error types: Option, Either, Validated, Try
 * ADT similarities

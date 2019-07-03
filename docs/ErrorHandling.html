@@ -66,7 +66,7 @@ background-image: url(img/errorhandling/function-age.svg)
 * doesn't have a card
 * didn't share it with us
 * lost it
-* debit card expired
+* card expired
 * ...
 ]
 
@@ -268,8 +268,6 @@ def getValidDebitCard(user: UserWithDc, today: LocalDate): Option[DebitCard] = {
 }
 ```
 
-### Refinement types may be used to go even further
-
 ---
 class: center, middle
 
@@ -330,7 +328,7 @@ class: center, middle
 .h1[# Making state unrepresentable]
 
 .large[
-* More upfront work but much easier to write business logic
+* More upfront work but easier to write business logic
 
 * Different tools with various complexities:
    * Enum
@@ -343,6 +341,12 @@ class: center, middle
 class: center, middle
 
 # Increase output type
+
+---
+class: center, middle
+
+# Which type constructor has an error channel?
+[2-3 min] to write down answers
 
 ---
 .h1[# Type constructors with an error channel]
@@ -360,19 +364,15 @@ class: center, middle
 ]
 
 ---
-.h1[# Type constructors with an error channel]
+# Type constructors with an error channel
 
-.large[
-* ### **`Option`**
+<br>
 
-* ###**`Either`**
+## 1. Option
 
-* `Try`
+## 2. Either
 
-* `Future` or `IO`
-
-* ### **`Validated`**
-]
+## 3. Validated
 
 ---
 .h1[# Option]
@@ -542,7 +542,7 @@ object Option {
 .large[
 * Failure is unique, e.g. key is not in the Map
 
-* You don't need granular error
+* Or you don't need granular error
 ]
 
 ---
@@ -626,6 +626,11 @@ class: center, middle
 # type Option[+A] = Either[Unit, A]
 
 ---
+class: center, middle
+
+# type Try[+A] = Either[Throwable, A]
+
+---
 .h1[# Use Either when]
 
 <br>
@@ -633,7 +638,7 @@ class: center, middle
 .large[
 * Many causes of failure and you want to keep track of them
 
-* Fail early, not accumulate errors
+* Fail early, do not accumulate errors
 ]
 
 ---
@@ -689,10 +694,9 @@ import cats.data.NonEmptyList
 type ValidatedNel[+E, +A] = Validated[`NonEmptyList`[E], A]
 ```
 
-```scala
-def validNel[A](a: A): ValidatedNel[Nothing, A] =
-  Valid(a)
+--
 
+```scala
 def invalidNel[E](e: E): ValidatedNel[E, Nothing] =
   Invalid(NonEmptyList.of(e))
 ```
@@ -720,11 +724,11 @@ class: center, middle
 .large[
 * Many causes of failure and you want to keep track of them
 
-* Accumulate errors, not fail early
+* Accumulate errors, do not fail early
 ]
 
 ---
-# Validated accumulation using Typeclass
+# Error accumulation
 
 <br>
 
@@ -732,7 +736,7 @@ class: center, middle
 def tuple2[E, A, B](fa: Validated[E, A], fb: Validated[E, B])
                    (`combineError: (E, E) => E`): Validated[E, (A, B)] = ???
 
-tuple2(invalidNel("id not found"), invalidNel("username too small"))`(_ ::: _)`
+tuple2(invalidNel("id not found"), invalidNel("username too small"))(`_ ::: _`)
 ```
 
 --
@@ -746,15 +750,38 @@ tuple2(invalidNel("id not found"), invalidNel("username too small"))
 ### More details in [Typeclass](Typeclass.html#1) module
 
 ---
+class: center, middle
+
+# Review
+
+---
 .h1[# Algebraic Data Type (ADT)]
 
 <br>
 
-```haskell
-data Option      a = None      | Some  a
-data Either    e a = Left    e | Right a
-data Validated e a = Invalid e | Valid a
+```scala
+class Option[+A]        = None                  | Some(a: A)
+class Try[+A]           = Failure(e: Throwable) | Success(a: A)
+class Either[+E, +A]    = Left(e: E)            | Right(a: A)
+class Validated[+E, +A] = Invalid(e: E)         | Valid(a: A)
 ```
+
+--
+
+### They are all variations of Either
+
+```scala
+type Option[+A] = Either[Unit     , A]
+type Try[+A]    = Either[Throwable, A]
+
+case class Validation[+E, +A](value: Either[E, A])
+```
+
+---
+background-image: url(img/errorhandling/error-decision-tree.svg)
+
+# Decision Tree
+  
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
