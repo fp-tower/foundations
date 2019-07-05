@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="8.5 11.65 162.58575 195.4" width="162.58575" height="195.4">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <linearGradient x1="0" x2="1" id="Gradient" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#589a9e"/>
+      <stop offset="1" stop-color="#ff7f7f"/>
+    </linearGradient>
+    <linearGradient id="Obj_Gradient" xl:href="#Gradient" gradientTransform="translate(42.2022 182.25) scale(88.5392)"/>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-07-05 14:35:23 +0000</dc:date>
+  </metadata>
+  <g id="map2" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill-opacity="1" fill="none">
+    <title>map2</title>
+    <g id="map2: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_611">
+        <path d="M 80.9381 109.35 L 92.0055 109.35 L 92.0055 134.8 L 97.5392 134.8 L 86.4718 145.8 L 75.4044 134.8 L 80.9381 134.8 Z" fill="#acbdd0"/>
+        <path d="M 80.9381 109.35 L 92.0055 109.35 L 92.0055 134.8 L 97.5392 134.8 L 86.4718 145.8 L 75.4044 134.8 L 80.9381 134.8 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_610">
+        <text transform="translate(109.40848 107.45)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="45119464e-20" y="15">map2 f</tspan>
+        </text>
+      </g>
+      <g id="Graphic_609">
+        <path d="M 53.745054 184.8603 C 39.43535 182.25 45.1417 160.27551 67.968875 164.025 C 70.08673 156.71605 96.63167 157.90237 96.45813 164.025 C 113.10262 156.19408 134.37327 171.80878 120.10607 179.6397 C 137.226 183.43633 119.89003 203.89207 105.83975 200.475 C 104.7153 206.17043 79.59761 208.16352 77.39299 200.475 C 63.17005 208.68597 33.51296 196.06115 53.745054 184.8603 Z" fill="url(#Obj_Gradient)"/>
+        <path d="M 53.745054 184.8603 C 39.43535 182.25 45.1417 160.27551 67.968875 164.025 C 70.08673 156.71605 96.63167 157.90237 96.45813 164.025 C 113.10262 156.19408 134.37327 171.80878 120.10607 179.6397 C 137.226 183.43633 119.89003 203.89207 105.83975 200.475 C 104.7153 206.17043 79.59761 208.16352 77.39299 200.475 C 63.17005 208.68597 33.51296 196.06115 53.745054 184.8603 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(60.48308 172.25)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.9887186" y="15">f(a, b)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_608">
+        <path d="M 17.657141 39.060306 C 6.924863 36.45 11.204626 14.47551 28.325008 18.225 C 29.9134 10.916046 49.822103 12.102372 49.69195 18.225 C 62.17531 10.394082 78.12831 26.008776 67.4279 33.839694 C 80.267855 37.636326 67.265874 58.092066 56.72816 54.675 C 55.884825 60.370434 37.04656 62.36352 35.39309 54.675 C 24.72589 62.88597 2.4830725 50.26115 17.657141 39.060306 Z" fill="#599a9e"/>
+        <path d="M 17.657141 39.060306 C 6.924863 36.45 11.204626 14.47551 28.325008 18.225 C 29.9134 10.916046 49.822103 12.102372 49.69195 18.225 C 62.17531 10.394082 78.12831 26.008776 67.4279 33.839694 C 80.267855 37.636326 67.265874 58.092066 56.72816 54.675 C 55.884825 60.370434 37.04656 62.36352 35.39309 54.675 C 24.72589 62.88597 2.4830725 50.26115 17.657141 39.060306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(23.96066 26.45)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.945539" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_607">
+        <path d="M 106.19634 39.060306 C 95.46406 36.45 99.74382 14.47551 116.8642 18.225 C 118.4526 10.916046 138.3613 12.102372 138.23115 18.225 C 150.71451 10.394082 166.6675 26.008776 155.9671 33.839694 C 168.80705 37.636326 155.80507 58.092066 145.26736 54.675 C 144.42402 60.370434 125.58576 62.36352 123.93229 54.675 C 113.26509 62.88597 91.02227 50.26115 106.19634 39.060306 Z" fill="#ff8080"/>
+        <path d="M 106.19634 39.060306 C 95.46406 36.45 99.74382 14.47551 116.8642 18.225 C 118.4526 10.916046 138.3613 12.102372 138.23115 18.225 C 150.71451 10.394082 166.6675 26.008776 155.9671 33.839694 C 168.80705 37.636326 155.80507 58.092066 145.26736 54.675 C 144.42402 60.370434 125.58576 62.36352 123.93229 54.675 C 113.26509 62.88597 91.02227 50.26115 106.19634 39.060306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(112.49986 26.45)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.497539" y="15">b</tspan>
+        </text>
+      </g>
+      <g id="Graphic_606">
+        <path d="M 53.2696 72.9 L 62.75594 72.9 L 81.72863 97.2 L 91.21497 97.2 L 110.18765 72.9 L 119.674 72.9 L 91.21497 109.35 L 81.72863 109.35 Z" fill="#bcc9d7"/>
+        <path d="M 53.2696 72.9 L 62.75594 72.9 L 81.72863 97.2 L 91.21497 97.2 L 110.18765 72.9 L 119.674 72.9 L 91.21497 109.35 L 81.72863 109.35 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -751,6 +751,48 @@ forAll((fa: F[A], fb: F[A], fc: F[C]) => tuple2(tuple2(fa, fb), fc) == tuple2(fa
 ```
 
 ---
+background-image: url(img/functors/map2.svg)
+
+# Applicative combines effects
+
+---
+class: center, middle
+
+# What if one effect depends on another one?
+# e.g. F[B] depends on A
+
+---
+background-image: url(img/functors/nested-effects.svg)
+
+# Nested effects
+
+---
+background-image: url(img/functors/ifM.svg)
+
+# Nested effects: ifM
+
+---
+.h1[# Nested effects]
+
+.pull-left[
+<br>
+
+```scala
+for {
+  a <- fa
+  b <- fb(`a`)
+} yield f(a, b)
+```
+]
+
+.medium-right[![Monad flatMap](img/functors/nested-effects.svg)]
+
+---
+background-image: url(img/functors/map2-vs-for-comprehension.svg)
+
+# Independent vs dependent effects
+
+---
 class: center, middle
 
 # Monad
