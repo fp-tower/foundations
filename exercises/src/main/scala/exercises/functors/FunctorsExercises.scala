@@ -1,5 +1,7 @@
 package exercises.functors
 
+import cats.data.NonEmptyList
+import cats.effect.IO
 import exercises.errorhandling.Validated
 import exercises.errorhandling.Validated._
 import exercises.typeclass.{Monoid, Semigroup}
@@ -420,10 +422,16 @@ object FunctorsExercises extends FunctorsToImpl {
     override def traverse[G[_]: Applicative, A, B](fa: Const[R, A])(f: A => G[B]): G[Const[R, B]] = ???
   }
 
-  // 4k. Implement parseNumber, try to use traverse and parseDigit
-  // such as parseNumber("1052")  == Some(1052)
-  //         parseNumber("hello") == None
+  // 4k. Implement parseNumber, try to use traverse, parseDigit and digitsToBigInt
+  // such as parseNumber("1052")   == Some(1052)
+  //         parseNumber("10xx52") == None
+  //         parseNumber("hello")  == None
   def parseNumber(value: String): Option[BigInt] = ???
+
+  def digitsToBigInt(digits: List[Int]): BigInt =
+    digits.reverse.zipWithIndex.foldLeft(BigInt(0)) {
+      case (acc, (digit, index)) => acc + (digit * BigInt(10).pow(index))
+    }
 
   def parseDigit(value: Char): Option[Int] =
     value match {
@@ -440,29 +448,75 @@ object FunctorsExercises extends FunctorsToImpl {
       case _   => None
     }
 
-  // 4l. Implement checkAllUsersAdult which fetches all users for a Country and check if each one is an adult
-  // try to use traverse_
+  // 4l. Implement checkAllUsersAdult that checks if each user is an adult
+  // if all of all users are adults return Right(())
+  // if one or more users are not an adult return a failure for the first one
+  // bonus: does your implementation fail early? if not, can you make it so?
+  def checkAllUsersAdult(users: List[User]): Either[String, Unit] = ???
+
   sealed trait Country
-  case object UK      extends Country
+  case object US      extends Country
   case object France  extends Country
   case object Germany extends Country
 
   case class User(name: String, age: Int, country: Country)
 
-  def getUsers(country: Country): Either[String, List[User]] =
-    country match {
-      case UK      => Left("Unsupported: Brexit")
-      case France  => Right(List(User("Yves", 14, France), User("Laura", 12, France), User("Lucas", 20, France)))
-      case Germany => Right(List(User("Helene", 22, Germany), User("Daniel", 50, Germany)))
-    }
-
-  def checkAdult(user: User): Either[String, Unit] =
-    if (user.age < 18) Left(s"${user.name} is not an adult")
+  def checkUserAdult(user: User): Either[String, Unit] =
+    if (user.age < adultAge(user.country)) Left(s"${user.name} is not an adult")
     else Right(())
 
-  def checkAllUsersAdult(country: Country): Either[String, Unit] = ???
+  def adultAge(country: Country): Int =
+    country match {
+      case US               => 21
+      case Germany | France => 18
+    }
 
-  // 4m. Implement an Traverse instance for Compose
+  // 4m. Implement checkAllUsersAdult_v2 that checks if each user is an adult
+  // if all of all users are adults return Right(())
+  // if one or more users are not an adult return a failure for each invalid user
+  def checkAllUsersAdult_v2(users: List[User]): Either[NonEmptyList[String], Unit] = ???
+
+  // 4n. Implement getUsers such as it calls sequentially getOneUser
+  // if any call to getOneUser fails, getUsers should fail
+  // such as getUsers(List("Laura", "Bob")).unsafeRun == List(User("Laura", ...), User("Bob", ...))
+  // but     getUsers(List("John", "Chris", "hello")).unsafeRun == throw a serialisation error because Chris fails first
+  def getUsers(names: List[String]): IO[List[User]] = ???
+
+  private val db: Map[String, Either[String, User]] =
+    Map(
+      "John"  -> Right(User("John", 14, France)),
+      "Laura" -> Right(User("Laura", 14, France)),
+      "Bob"   -> Right(User("Bob", 14, France)),
+      "Anna"  -> Left("network issue"),
+      "Chris" -> Left("serialisation error"),
+    )
+
+  def getOneUser(name: String): IO[User] =
+    db.get(name) match {
+      case None           => IO.raiseError(new Exception(s"user $name not found"))
+      case Some(Left(e))  => IO.raiseError(new Exception(e))
+      case Some(Right(a)) => IO.pure(a)
+    }
+
+  // 4o. Implement getUsers_v2
+  // if an error occurs, it should return it
+  // if no error occurs but a user is not found, it should return None
+  // such as getUsers_v2(List("Laura", "Bob")).unsafeRun == List(User("Laura", ...), User("Bob", ...))
+  // but     getUsers_v2(List("John", "hello", "Chris")).unsafeRun == throw a serialisation error
+  //         getUsers_v2(List("John", "hello", "xxx")).unsafeRun   == None
+  def getUsers_v2(names: List[String]): IO[Option[List[User]]] = ???
+
+  def getOneUser_v2(name: String): IO[Option[User]] =
+    db.get(name) match {
+      case None           => IO.pure(None)
+      case Some(Left(e))  => IO.raiseError(new Exception(e))
+      case Some(Right(a)) => IO.pure(Some(a))
+    }
+
+  // 4p. What if we wanted to stop iterating through the list of names if we encountered a user not found?
+  // How would you change your implementation?
+
+  // 4q. Implement an Traverse instance for Compose
   // e.g. Traverse[Compose[List, Option, ?]]
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {

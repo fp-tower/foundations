@@ -1,7 +1,9 @@
 package toimpl.functors
 
+import cats.data.NonEmptyList
+import cats.effect.IO
 import exercises.errorhandling.Validated
-import exercises.functors.FunctorsExercises.Country
+import exercises.functors.FunctorsExercises.User
 import exercises.typeclass.{Monoid, Semigroup}
 import exercises.functors._
 
@@ -70,7 +72,10 @@ trait FunctorsToImplLowLevel {
   implicit def constTraverse[R]: Traverse[Const[R, ?]]
 
   def parseNumber(value: String): Option[BigInt]
-  def checkAllUsersAdult(country: Country): Either[String, Unit]
+  def checkAllUsersAdult(users: List[User]): Either[String, Unit]
+  def checkAllUsersAdult_v2(users: List[User]): Either[NonEmptyList[String], Unit]
+  def getUsers(names: List[String]): IO[List[User]]
+  def getUsers_v2(names: List[String]): IO[Option[List[User]]]
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]]
 }

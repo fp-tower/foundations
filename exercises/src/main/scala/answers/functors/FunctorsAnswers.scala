@@ -1,12 +1,13 @@
 package answers.functors
 
 import answers.typeclass.TypeclassAnswers._
+import cats.data.NonEmptyList
 import cats.effect.IO
 import exercises.errorhandling.Validated
 import exercises.errorhandling.Validated._
 import exercises.functors.Applicative.syntax._
 import exercises.functors.Functor.syntax._
-import exercises.functors.FunctorsExercises.{checkAdult, getUsers, Country}
+import exercises.functors.FunctorsExercises.{checkUserAdult, getOneUser, getOneUser_v2, User}
 import exercises.functors.Traverse.syntax._
 import exercises.typeclass.Monoid.syntax._
 import exercises.functors._
@@ -327,13 +328,12 @@ object FunctorsAnswers extends FunctorsToImpl {
   def parseNumber(value: String): Option[BigInt] =
     value.toList
       .traverse(parseDigit)
-      .map(
-        digits =>
-          digits.reverse.zipWithIndex.foldMap {
-            case (digit, index) =>
-              digit * BigInt(10).pow(index)
-        }
-      )
+      .map(digitsToBigInt)
+
+  def digitsToBigInt(digits: List[Int]): BigInt =
+    digits.reverse.zipWithIndex.foldMap {
+      case (digit, index) => digit * BigInt(10).pow(index)
+    }
 
   def parseDigit(value: Char): Option[Int] =
     value match {
@@ -350,8 +350,23 @@ object FunctorsAnswers extends FunctorsToImpl {
       case _   => None
     }
 
-  def checkAllUsersAdult(country: Country): Either[String, Unit] =
-    getUsers(country).flatMap(_.traverse_(checkAdult))
+  def checkAllUsersAdult(users: List[User]): Either[String, Unit] =
+    users.traverse_(checkUserAdult)
+
+  def checkAllUsersAdult_v2(users: List[User]): Either[NonEmptyList[String], Unit] =
+    users.traverse_(validateUser).toEither
+
+  def validateUser(user: User): ValidatedNel[String, Unit] =
+    checkUserAdult(user) match {
+      case Left(e)  => invalidNel(e)
+      case Right(a) => valid(a)
+    }
+
+  def getUsers(names: List[String]): IO[List[User]] =
+    names.traverse(getOneUser)
+
+  def getUsers_v2(names: List[String]): IO[Option[List[User]]] =
+    names.traverse(n => Compose(getOneUser_v2(n))).getCompose
 
   implicit def composeTraverse[F[_]: Traverse, G[_]: Traverse]: Traverse[Compose[F, G, ?]] =
     new DefaultTraverse[Compose[F, G, ?]] {

@@ -1,11 +1,12 @@
 package functors
 
 import answers.functors.FunctorsAnswers
+import cats.data.NonEmptyList
 import exercises.errorhandling.Validated
 import exercises.functors.Applicative.syntax._
 import exercises.functors.ContravariantFunctor.syntax._
 import exercises.functors.Functor.syntax._
-import exercises.functors.FunctorsExercises.{France, Germany, UK}
+import exercises.functors.FunctorsExercises.{France, Germany, US, User}
 import exercises.functors.InvariantFunctor.syntax._
 import exercises.functors.Monad.syntax._
 import exercises.functors.Traverse.syntax._
@@ -206,9 +207,37 @@ class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with M
   }
 
   test("checkAllUsersAdult") {
-    checkAllUsersAdult(UK) shouldEqual Left("Unsupported: Brexit")
-    checkAllUsersAdult(France) shouldEqual Left("Yves is not an adult")
-    checkAllUsersAdult(Germany) shouldEqual Right(())
+    val john  = User("John", 20, US)
+    val laura = User("Laura", 20, Germany)
+    val bob   = User("Bob", 12, France)
+
+    checkAllUsersAdult(List(laura)) shouldEqual Right(())
+    checkAllUsersAdult(List(laura, john)) shouldEqual Left("John is not an adult")
+    checkAllUsersAdult(List(laura, bob, john)) shouldEqual Left("Bob is not an adult")
+  }
+
+  test("checkAllUsersAdult_v2") {
+    val john  = User("John", 20, US)
+    val laura = User("Laura", 20, Germany)
+    val bob   = User("Bob", 12, France)
+
+    checkAllUsersAdult_v2(List(laura)) shouldEqual Right(())
+    checkAllUsersAdult_v2(List(laura, bob, john)) shouldEqual Left(
+      NonEmptyList.of("Bob is not an adult", "John is not an adult")
+    )
+  }
+
+  test("getUsers") {
+    getUsers(List("Laura", "Bob")).attempt.unsafeRunSync().map(_.size) shouldEqual Right(2)
+    getUsers(List("John", "Chris", "hello")).attempt.unsafeRunSync().left.map(_.getMessage) shouldEqual
+      Left("serialisation error")
+  }
+
+  test("getUsers_v2") {
+    getUsers_v2(List("Laura", "Bob")).attempt.unsafeRunSync().map(_.map(_.size)) shouldEqual Right(Some(2))
+    getUsers_v2(List("John", "hello", "Chris")).attempt.unsafeRunSync().left.map(_.getMessage) shouldEqual
+      Left("serialisation error")
+    getUsers_v2(List("John", "hello", "xxx")).attempt.unsafeRunSync() shouldEqual Right(None)
   }
 
 }
