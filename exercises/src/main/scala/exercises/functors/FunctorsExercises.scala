@@ -19,6 +19,12 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultFunctor[F[_]] extends Functor[F] {
+    ///////////////////////////////////////////////////
+    // Within this trait you CANNOT use Functor syntax
+    // you CANNOT use:      fa.map(f)
+    // instead you need to: map(fa)(f)
+    ///////////////////////////////////////////////////
+
     // 1a. Implement as using map
     // such as List(1,2,3).as(0) == List(0,0,0)
     def as[A, B](fa: F[A])(value: B): F[B] = ???
@@ -130,6 +136,11 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultApplicative[F[_]] extends Applicative[F] with DefaultFunctor[F] {
+    //////////////////////////////////////////////////////
+    // Within this trait you CANNOT use Applicative syntax
+    // you CANNOT use:      (fa, fb).map2(f)
+    // instead you need to: map2(fa, fb)(f)
+    //////////////////////////////////////////////////////
 
     // 2a. Implement tuple2 using map2
     // such as tuple2(List(1,2,3), List('a','b')) == List((1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b'))
@@ -240,6 +251,12 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultMonad[F[_]] extends Monad[F] with DefaultApplicative[F] {
+    //////////////////////////////////////////////////////
+    // Within this trait you CANNOT use Monad syntax
+    // you CANNOT use:      fa.flatMap(f)
+    // instead you need to: flatMap(fa)(f)
+    //////////////////////////////////////////////////////
+
     // 3a. Implement map using flatMap
     override def map[A, B](fa: F[A])(f: A => B): F[B] = ???
 
@@ -335,6 +352,12 @@ object FunctorsExercises extends FunctorsToImpl {
   ////////////////////////
 
   trait DefaultTraverse[F[_]] extends Traverse[F] with DefaultFunctor[F] {
+    //////////////////////////////////////////////////////
+    // Within this trait you CANNOT use Traverse syntax
+    // you CANNOT use:      fa.traverse(f)
+    // instead you need to: traverse(fa)(f)
+    //////////////////////////////////////////////////////
+
     // 4a. Implement traverse using sequence
     def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]] = ???
 
