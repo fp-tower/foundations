@@ -65,7 +65,7 @@ object FunctorsExercises extends FunctorsToImpl {
   // 1e. Implement the following instances
   // you can reuse methods from the standard library
   implicit val listFunctor: Functor[List] = new DefaultFunctor[List] {
-    def map[A, B](fa: List[A])(f: A => B): List[B] = ???
+    def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
   }
 
   implicit val optionFunctor: Functor[Option] = new DefaultFunctor[Option] {
@@ -302,7 +302,7 @@ object FunctorsExercises extends FunctorsToImpl {
   // you can use methods from the standard library
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
     def pure[A](a: A): List[A]                               = listApplicative.pure(a)
-    def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = ???
+    def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = fa.flatMap(f)
   }
 
   implicit val optionMonad: Monad[Option] = new DefaultMonad[Option] {
