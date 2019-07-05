@@ -802,6 +802,80 @@ background-image: url(img/functors/map2-vs-for-comprehension.svg)
 
 # Independent vs dependent effects
 
+---
+.h1[# For comprehension]
+
+```scala
+val res: F[D] =
+  for {
+    a: A <- fa: F[A]
+    b: B <- fb: F[B]
+    c: C <- fb: F[C]
+  } yield f(a,b,c): D
+```
+
+---
+.h1[# For comprehension]
+
+.scala[.remark-code[
+```scala
+val res: F[D] =
+  for {
+    a: A <- fa: F[A]
+    b: B <- fb: F[B]
+    c: C <- fb: F[C]
+  } yield f(a,b,c): D
+```
+]]
+
+.pull-left[
+### Using Monad
+
+```scala
+val res =
+  fa.flatMap(a =>
+    fb.flatMap(b =>
+      fc.flatMap(c =>
+        f(a,b,c).pure[F]
+      )))
+```
+]
+
+.pull-right[
+### Using FlatMap
+
+```scala
+val res =
+  fa.flatMap(a =>
+    fb.flatMap(b =>
+      fc.map(c =>
+        f(a,b,c)
+      )))
+```
+]
+
+---
+# For comprehension is for a single Monad
+
+```scala
+for {
+  a: A <- fa: F[A]
+  b: B <- fb: G[B] ❌
+  c: C <- fb: H[C] ❌
+} yield f(a,b,c)
+```
+
+```scala
+scala> for {
+     |   i <- List(1,2,3)
+     |   e <- if(i == 1) Right("One") else Left("Expected 1")
+     | } yield i
+<console>:32: error: type mismatch;
+ found   : scala.util.Either[String,Int]
+ required: scala.collection.GenTraversableOnce[?]
+         e <- if(i == 1) Right("One") else Left("Expected 1")
+           ^
+```
 
 ---
 class: center, middle
@@ -888,105 +962,6 @@ trait Monad[F[_]] extends Applicative[F] {
 
 ---
 background-image: url(img/functors/monad-api-law.svg)
-
----
-# For comprehension
-
-```scala
-scala> for {
-     |   n <- List(1,2,3)
-     |   s <- List("foo", "bar")
-     | } yield List.fill(n)(s).mkString
-res13: List[String] = List(foo, bar, foofoo, barbar, foofoofoo, barbarbar)
-```
-
---
-
-<br>
-
-```scala
-def sendStatement(userId: UserId): IO[Unit] =
-  for {
-    user    <- getUser(userId)
-    account <- getAccount(user.accountId)
-    _       <- sendStatement(user.email, account.statement)
-  } yield ()
-```
-
----
-.h1[# For comprehension]
-
-```scala
-val res: F[D] =
-  for {
-    a: A <- fa: F[A]
-    b: B <- fb: F[B]
-    c: C <- fb: F[C]
-  } yield f(a,b,c): D
-```
-
----
-.h1[# For comprehension]
-
-.scala[.remark-code[
-```scala
-val res: F[D] =
-  for {
-    a: A <- fa: F[A]
-    b: B <- fb: F[B]
-    c: C <- fb: F[C]
-  } yield f(a,b,c): D
-```
-]]
-
-.pull-left[
-### Using Monad
-
-```scala
-val res =
-  fa.flatMap(a =>
-    fb.flatMap(b =>
-      fc.flatMap(c =>
-        f(a,b,c).pure[F]
-      )))
-```
-]
-
-.pull-right[
-### Using FlatMap
-
-```scala
-val res =
-  fa.flatMap(a =>
-    fb.flatMap(b =>
-      fc.map(c =>
-        f(a,b,c)
-      )))
-```
-]
-
----
-# For comprehension is for a single Monad
-
-```scala
-for {
-  a: A <- fa: F[A]
-  b: B <- fb: G[B] ❌
-  c: C <- fb: H[C] ❌
-} yield f(a,b,c)
-```
-
-```scala
-scala> for {
-     |   i <- List(1,2,3)
-     |   e <- if(i == 1) Right("One") else Left("Expected 1")
-     | } yield i
-<console>:32: error: type mismatch;
- found   : scala.util.Either[String,Int]
- required: scala.collection.GenTraversableOnce[?]
-         e <- if(i == 1) Right("One") else Left("Expected 1")
-           ^
-```
 
 ---
 class: center, middle
