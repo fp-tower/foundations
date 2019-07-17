@@ -28,7 +28,9 @@
 
 ### Module 4: Reader / Writer / State
 
-### Module 5: IO / Effects
+### Module 5: Side Effect
+* IO vs Future
+* Async
 
 ### Module 6: [Typeclass](https://fp-tower.github.io/foundation/Typeclass#1)
 * Different implementations of ad-hoc polymorphism
