@@ -6,6 +6,11 @@ scala:
 jdk:
    - oraclejdk11
 
+env:
+  - NODE_VERSION="12.6.0"
+
+before_install:
+  - nvm install $NODE_VERSION
 
 cache:
    directories:
@@ -15,6 +20,7 @@ cache:
       - $HOME/.m2
       - $HOME/.ivy2/cache
       - $HOME/.coursier
+      - $HOME/.nvm
 
 before_cache:
    - find $HOME/.sbt -name "*.lock" -type f -delete
@@ -24,3 +30,14 @@ before_cache:
 script:
    - sbt ++$TRAVIS_SCALA_VERSION "testOnly *AnswersTest"
    - sbt ++$TRAVIS_SCALA_VERSION tut
+   - make depends
+   - make
+
+deploy:
+   provider: pages
+   local_dir: docs/
+   skip_cleanup: true
+   github_token: $GH_TOKEN
+   on:
+      branch: master
+      condition: $TRAVIS_PULL_REQUEST="false"
