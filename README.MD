@@ -28,7 +28,7 @@
 
 ### Module 4: Reader / Writer / State
 
-### Module 5: Side Effect
+### Module 5: Side Effect [WIP](https://fp-tower.github.io/foundation/SideEffect#1)
 * IO vs Future
 * Async
 
