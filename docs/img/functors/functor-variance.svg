@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 343 127" width="343" height="127">
+  <defs>
+    <font-face font-family="Helvetica" font-size="19" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="700">
+      <font-face-src>
+        <font-face-name name="Helvetica-Bold"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica" font-size="15" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="522.9492" cap-height="717.28516" ascent="770.0195" descent="-229.98047" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Helvetica"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -4 10 8" markerWidth="10" markerHeight="8" color="black">
+      <g>
+        <path d="M 8 0 L 0 -3 L 0 3 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-04-30 09:39:46 +0000</dc:date>
+  </metadata>
+  <g id="functor-variance" fill-opacity="1" stroke="none" stroke-dasharray="none" fill="none" stroke-opacity="1">
+    <title>functor-variance</title>
+    <g id="functor-variance: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_10">
+        <path d="M 216 90 L 324 90 C 333.94113 90 342 98.05887 342 108 L 342 108 C 342 117.94113 333.94113 126 324 126 L 216 126 C 206.05887 126 198 117.94113 198 108 L 198 108 C 198 98.05887 206.05887 90 216 90 Z" fill="#77afff"/>
+        <path d="M 216 90 L 324 90 C 333.94113 90 342 98.05887 342 108 L 342 108 C 342 117.94113 333.94113 126 324 126 L 216 126 C 206.05887 126 198 117.94113 198 108 L 198 108 C 198 98.05887 206.05887 90 216 90 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(203 96.5)" fill="#343434">
+          <tspan font-family="Helvetica" font-size="19" font-weight="700" fill="#343434" x="31.644043" y="19">Functor</tspan>
+        </text>
+      </g>
+      <g id="Graphic_41">
+        <path d="M 108 9 L 216 9 C 225.94113 9 234 17.058875 234 27 L 234 27 C 234 36.941125 225.94113 45 216 45 L 108 45 C 98.05887 45 90 36.941125 90 27 L 90 27 C 90 17.058875 98.05887 9 108 9 Z" fill="#c9deff"/>
+        <path d="M 108 9 L 216 9 C 225.94113 9 234 17.058875 234 27 L 234 27 C 234 36.941125 225.94113 45 216 45 L 108 45 C 98.05887 45 90 36.941125 90 27 L 90 27 C 90 17.058875 98.05887 9 108 9 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(95 9)" fill="#343434">
+          <tspan font-family="Helvetica" font-size="15" font-weight="400" fill="#343434" x="38.23413" y="15">Invariant</tspan>
+          <tspan font-family="Helvetica" font-size="15" font-weight="400" fill="#343434" x="41.573975" y="33">Functor</tspan>
+        </text>
+      </g>
+      <g id="Graphic_42">
+        <path d="M 27 90 L 135 90 C 144.94113 90 153 98.05887 153 108 L 153 108 C 153 117.94113 144.94113 126 135 126 L 27 126 C 17.058875 126 9 117.94113 9 108 L 9 108 C 9 98.05887 17.058875 90 27 90 Z" fill="#c9deff"/>
+        <path d="M 27 90 L 135 90 C 144.94113 90 153 98.05887 153 108 L 153 108 C 153 117.94113 144.94113 126 135 126 L 27 126 C 17.058875 126 9 117.94113 9 108 L 9 108 C 9 98.05887 17.058875 90 27 90 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(14 90)" fill="#343434">
+          <tspan font-family="Helvetica" font-size="15" font-weight="400" fill="#343434" x="21.978027" y="15">Contravariant</tspan>
+          <tspan font-family="Helvetica" font-size="15" font-weight="400" fill="#343434" x="41.573975" y="33">Functor</tspan>
+        </text>
+      </g>
+      <g id="Line_47">
+        <line x1="99.70711" y1="89.29289" x2="136.29254" y2="52.707464" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_48">
+        <line x1="245.2" y1="89.4" x2="194.72" y2="51.54" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

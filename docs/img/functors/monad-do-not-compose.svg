@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="8.5 8.5 244 451" width="244" height="451">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-06-19 19:28:13 +0000</dc:date>
+  </metadata>
+  <g id="monad-composition" stroke-dasharray="none" fill="none" stroke-opacity="1" fill-opacity="1" stroke="none">
+    <title>monad-composition</title>
+    <g id="monad-composition: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_532">
+        <path d="M 40.67991 138.56814 C 1.40625 126 17.0676 20.1969 79.71786 38.25 C 85.53042 3.05874 158.38425 8.77068 157.90797 38.25 C 203.58954 .54558 261.96786 75.72744 222.81084 113.43186 C 269.79732 131.71194 222.21792 230.20254 183.65625 213.75 C 180.57015 241.17246 111.63348 250.7688 105.58278 213.75 C 66.54726 253.2843 -14.84802 192.49812 40.67991 138.56814 Z" fill="#70a3d8"/>
+        <path d="M 40.67991 138.56814 C 1.40625 126 17.0676 20.1969 79.71786 38.25 C 85.53042 3.05874 158.38425 8.77068 157.90797 38.25 C 203.58954 .54558 261.96786 75.72744 222.81084 113.43186 C 269.79732 131.71194 222.21792 230.20254 183.65625 213.75 C 180.57015 241.17246 111.63348 250.7688 105.58278 213.75 C 66.54726 253.2843 -14.84802 192.49812 40.67991 138.56814 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_533">
+        <rect x="60.75" y="63" width="128.25" height="117" fill="#599a9e"/>
+        <rect x="60.75" y="63" width="128.25" height="117" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_534">
+        <path d="M 86.07996 130.8339 C 68.625 126 75.5856 85.3065 103.43016 92.25 C 106.01352 78.7149 138.393 80.9118 138.18132 92.25 C 158.48424 77.7483 184.43016 106.6644 167.02704 121.1661 C 187.90992 128.1969 166.76352 166.0779 149.625 159.75 C 148.2534 170.2971 117.61488 173.988 114.92568 159.75 C 97.57656 174.9555 61.40088 151.5762 86.07996 130.8339 Z" fill="#70a3d8"/>
+        <path d="M 86.07996 130.8339 C 68.625 126 75.5856 85.3065 103.43016 92.25 C 106.01352 78.7149 138.393 80.9118 138.18132 92.25 C 158.48424 77.7483 184.43016 106.6644 167.02704 121.1661 C 187.90992 128.1969 166.76352 166.0779 149.625 159.75 C 148.2534 170.2971 117.61488 173.988 114.92568 159.75 C 97.57656 174.9555 61.40088 151.5762 86.07996 130.8339 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_593">
+        <rect x="99" y="108" width="54" height="36" fill="#599a9e"/>
+        <rect x="99" y="108" width="54" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(104 116)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="17.704" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_595">
+        <path d="M 86.07996 418.8339 C 68.625 414 75.5856 373.3065 103.43016 380.25 C 106.01352 366.7149 138.393 368.9118 138.18132 380.25 C 158.48424 365.7483 184.43016 394.6644 167.02704 409.1661 C 187.90992 416.1969 166.76352 454.0779 149.625 447.75 C 148.2534 458.2971 117.61488 461.988 114.92568 447.75 C 97.57656 462.9555 61.40088 439.5762 86.07996 418.8339 Z" fill="#70a3d8"/>
+        <path d="M 86.07996 418.8339 C 68.625 414 75.5856 373.3065 103.43016 380.25 C 106.01352 366.7149 138.393 368.9118 138.18132 380.25 C 158.48424 365.7483 184.43016 394.6644 167.02704 409.1661 C 187.90992 416.1969 166.76352 454.0779 149.625 447.75 C 148.2534 458.2971 117.61488 461.988 114.92568 447.75 C 97.57656 462.9555 61.40088 439.5762 86.07996 418.8339 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_594">
+        <rect x="99" y="396" width="54" height="36" fill="#599a9e"/>
+        <rect x="99" y="396" width="54" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(104 404)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="17.704" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_600">
+        <path d="M 118.125 270 L 131.625 270 L 131.625 331 L 138.375 331 L 124.875 342 L 111.375 331 L 118.125 331 Z" fill="#acbdd0"/>
+        <path d="M 118.125 270 L 131.625 270 L 131.625 331 L 138.375 331 L 124.875 342 L 111.375 331 L 118.125 331 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_599">
+        <text transform="translate(167 293)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.224" y="15">flatten </tspan>
+        </text>
+      </g>
+      <g id="Graphic_605">
+        <path d="M 103.74292 270.13304 L 123.81185 288.20318 L 139.8742 270.36413 L 159.93108 288.42343 L 143.86873 306.26248 L 163.93765 324.3326 L 147.88494 342.16096 L 127.81602 324.0908 L 111.75367 341.92986 L 91.69679 323.87056 L 107.75914 306.0315 L 87.69021 287.96138 Z" fill="red" fill-opacity=".5386285"/>
+        <path d="M 103.74292 270.13304 L 123.81185 288.20318 L 139.8742 270.36413 L 159.93108 288.42343 L 143.86873 306.26248 L 163.93765 324.3326 L 147.88494 342.16096 L 127.81602 324.0908 L 111.75367 341.92986 L 91.69679 323.87056 L 107.75914 306.0315 L 87.69021 287.96138 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="15.252 -.5 139.996 244" width="139.996" height="244">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-06-07 14:58:57 +0000</dc:date>
+  </metadata>
+  <g id="traverse-sequence" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>traverse-sequence</title>
+    <g id="traverse-sequence: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_626">
+        <path d="M 27.4853 49.8339 C 12.9395 45 18.74 4.3065 41.9438 11.25 C 44.0966 -2.2851 71.0795 -.0882 70.9031 11.25 C 87.8222 -3.2517 109.4438 25.6644 94.9412 40.1661 C 112.3436 47.1969 94.7216 85.0779 80.4395 78.75 C 79.2965 89.2971 53.7644 92.988 51.5234 78.75 C 37.0658 93.9555 6.9194 70.5762 27.4853 49.8339 Z" fill="#599a9e"/>
+        <path d="M 27.4853 49.8339 C 12.9395 45 18.74 4.3065 41.9438 11.25 C 44.0966 -2.2851 71.0795 -.0882 70.9031 11.25 C 87.8222 -3.2517 109.4438 25.6644 94.9412 40.1661 C 112.3436 47.1969 94.7216 85.0779 80.4395 78.75 C 79.2965 89.2971 53.7644 92.988 51.5234 78.75 C 37.0658 93.9555 6.9194 70.5762 27.4853 49.8339 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_625">
+        <rect x="33.752" y="27" width="54" height="36" fill="#70a3d7"/>
+        <rect x="33.752" y="27" width="54" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(38.752 35)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="17.256" y="15">b</tspan>
+        </text>
+      </g>
+      <g id="Graphic_624">
+        <path d="M 56.252 99 L 65.252 99 L 65.252 133 L 69.752 133 L 60.752 144 L 51.752 133 L 56.252 133 Z" fill="#acbdd0"/>
+        <path d="M 56.252 99 L 65.252 99 L 65.252 133 L 69.752 133 L 60.752 144 L 51.752 133 L 56.252 133 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_623">
+        <text transform="translate(80.6 113)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="5258016e-19" y="15">sequence</tspan>
+        </text>
+      </g>
+      <g id="Graphic_620">
+        <rect x="15.752" y="153" width="90" height="90" fill="#70a3d8"/>
+        <rect x="15.752" y="153" width="90" height="90" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_619">
+        <path d="M 40.79198 199.93356 C 32.0645 198 35.5448 181.7226 49.46708 184.5 C 50.75876 179.08596 66.9485 179.96472 66.84266 184.5 C 76.99412 178.69932 89.96708 190.26576 81.26552 196.06644 C 91.70696 198.87876 81.13376 214.03116 72.5645 211.5 C 71.8787 215.71884 56.55944 217.1952 55.21484 211.5 C 46.54028 217.5822 28.45244 208.23048 40.79198 199.93356 Z" fill="#599a9e"/>
+        <path d="M 40.79198 199.93356 C 32.0645 198 35.5448 181.7226 49.46708 184.5 C 50.75876 179.08596 66.9485 179.96472 66.84266 184.5 C 76.99412 178.69932 89.96708 190.26576 81.26552 196.06644 C 91.70696 198.87876 81.13376 214.03116 72.5645 211.5 C 71.8787 215.71884 56.55944 217.1952 55.21484 211.5 C 46.54028 217.5822 28.45244 208.23048 40.79198 199.93356 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(46.852 188)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.156" y="15">b</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

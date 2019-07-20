@@ -1,5 +1,5 @@
 # Generated files
-docs/
+docs/*.html
 
 ## IntelliJ files to ignore
 *.iml

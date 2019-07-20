@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="26.5 26.5 505 559" width="505" height="559">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-06-07 15:39:11 +0000</dc:date>
+  </metadata>
+  <g id="traverse-derivation" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>traverse-derivation</title>
+    <g id="traverse-derivation: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_635">
+        <rect x="27" y="260.0168" width="117" height="324" fill="#70a3d8"/>
+        <rect x="27" y="260.0168" width="117" height="324" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_574">
+        <rect x="234" y="27" width="81" height="36" fill="#599a9e"/>
+        <rect x="234" y="27" width="81" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(239 35)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="6.764" y="15">traverse</tspan>
+        </text>
+      </g>
+      <g id="Graphic_634">
+        <rect x="36" y="323.0168" width="99" height="36" fill="#599a9e"/>
+        <rect x="36" y="323.0168" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41 331.0168)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="17.388" y="15">foldLeft</tspan>
+        </text>
+      </g>
+      <g id="Graphic_637">
+        <rect x="36" y="377.0168" width="99" height="36" fill="#599a9e"/>
+        <rect x="36" y="377.0168" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41 385.0168)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.204" y="15">foldRight</tspan>
+        </text>
+      </g>
+      <g id="Graphic_638">
+        <rect x="36" y="144" width="90" height="36" fill="#599a9e"/>
+        <rect x="36" y="144" width="90" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41 152)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.544" y="15">foldMapM</tspan>
+        </text>
+      </g>
+      <g id="Graphic_639">
+        <rect x="36" y="431.0168" width="99" height="36" fill="#599a9e"/>
+        <rect x="36" y="431.0168" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41 439.0168)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="30.588" y="15">size</tspan>
+        </text>
+      </g>
+      <g id="Graphic_640">
+        <text transform="translate(37.616 274.0168)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="700" fill="white" x="7958079e-19" y="16">Foldable API</tspan>
+        </text>
+      </g>
+      <g id="Graphic_646">
+        <rect x="216" y="126" width="117" height="270" fill="#70a3d8"/>
+        <rect x="216" y="126" width="117" height="270" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_645">
+        <rect x="225" y="189" width="99" height="36" fill="#599a9e"/>
+        <rect x="225" y="189" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 197)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.676" y="15">sequence</tspan>
+        </text>
+      </g>
+      <g id="Graphic_644">
+        <rect x="225" y="243" width="99" height="36" fill="#599a9e"/>
+        <rect x="225" y="243" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 251)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="11.764" y="15">traverse_</tspan>
+        </text>
+      </g>
+      <g id="Graphic_643">
+        <rect x="225" y="297" width="99" height="36" fill="#599a9e"/>
+        <rect x="225" y="297" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 305)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.468" y="15">flatTraverse</tspan>
+        </text>
+      </g>
+      <g id="Graphic_642">
+        <text transform="translate(226.728 140)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="700" fill="white" x="0" y="16">Traverse API</tspan>
+        </text>
+      </g>
+      <g id="Graphic_647">
+        <rect x="36" y="485.0168" width="99" height="36" fill="#599a9e"/>
+        <rect x="36" y="485.0168" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41 493.0168)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="2.556" y="15">headOption</tspan>
+        </text>
+      </g>
+      <g id="Graphic_648">
+        <rect x="36" y="539.0168" width="99" height="36" fill="#599a9e"/>
+        <rect x="36" y="539.0168" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41 547.0168)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="36.5" y="15">…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_649">
+        <rect x="225" y="351" width="99" height="36" fill="#599a9e"/>
+        <rect x="225" y="351" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 359)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="36.5" y="15">…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_650">
+        <path d="M 75.7049 197.25242 L 84.70353 197.09535 L 85.30871 231.76607 L 89.80802 231.68753 L 81.00137 242.84293 L 71.810765 232.00168 L 76.31008 231.92314 Z" fill="#acbdd0"/>
+        <path d="M 75.7049 197.25242 L 84.70353 197.09535 L 85.30871 231.76607 L 89.80802 231.68753 L 81.00137 242.84293 L 71.810765 232.00168 L 76.31008 231.92314 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_651">
+        <text transform="translate(95.448 210.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">derive</tspan>
+        </text>
+      </g>
+      <g id="Graphic_653">
+        <path d="M 264.7049 71.74401 L 273.70353 71.58694 L 274.3087 106.25766 L 278.80802 106.17913 L 270.00137 117.33452 L 260.81077 106.49327 L 265.31008 106.41473 Z" fill="#acbdd0"/>
+        <path d="M 264.7049 71.74401 L 273.70353 71.58694 L 274.3087 106.25766 L 278.80802 106.17913 L 270.00137 117.33452 L 260.81077 106.49327 L 265.31008 106.41473 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_652">
+        <text transform="translate(284.448 84.99159)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">derive</tspan>
+        </text>
+      </g>
+      <g id="Graphic_654">
+        <path d="M 208.31802 55.31802 L 214.68198 61.68198 L 153.14169 123.22227 L 156.32367 126.40425 L 142.18153 127.81847 L 143.59575 113.67633 L 146.77773 116.85831 Z" fill="#acbdd0"/>
+        <path d="M 208.31802 55.31802 L 214.68198 61.68198 L 153.14169 123.22227 L 156.32367 126.40425 L 142.18153 127.81847 L 143.59575 113.67633 L 146.77773 116.85831 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_655">
+        <text transform="translate(113 68)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">derive</tspan>
+        </text>
+      </g>
+      <g id="Graphic_665">
+        <rect x="414" y="261" width="117" height="324" fill="#70a3d8"/>
+        <rect x="414" y="261" width="117" height="324" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_664">
+        <rect x="423" y="324" width="99" height="36" fill="#599a9e"/>
+        <rect x="423" y="324" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428 332)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="36.204" y="15">as</tspan>
+        </text>
+      </g>
+      <g id="Graphic_663">
+        <rect x="423" y="378" width="99" height="36" fill="#599a9e"/>
+        <rect x="423" y="378" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428 386)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="28.94" y="15">Void</tspan>
+        </text>
+      </g>
+      <g id="Graphic_662">
+        <rect x="423" y="144" width="90" height="36" fill="#599a9e"/>
+        <rect x="423" y="144" width="90" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428 152)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="24.136" y="15">map</tspan>
+        </text>
+      </g>
+      <g id="Graphic_661">
+        <rect x="423" y="432" width="99" height="36" fill="#599a9e"/>
+        <rect x="423" y="432" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428 440)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="21.236" y="15">tupleR</tspan>
+        </text>
+      </g>
+      <g id="Graphic_660">
+        <text transform="translate(427.696 275)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="700" fill="white" x="8739676e-19" y="16">Functor</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="700" fill="white" y="16"> API</tspan>
+        </text>
+      </g>
+      <g id="Graphic_659">
+        <rect x="423" y="486" width="99" height="36" fill="#599a9e"/>
+        <rect x="423" y="486" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428 494)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="22.268" y="15">tupleL</tspan>
+        </text>
+      </g>
+      <g id="Graphic_658">
+        <rect x="423" y="540" width="99" height="36" fill="#599a9e"/>
+        <rect x="423" y="540" width="99" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428 548)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="36.5" y="15">…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_657">
+        <path d="M 462.7049 197.25242 L 471.70353 197.09535 L 472.3087 231.76607 L 476.808 231.68753 L 468.00137 242.84293 L 458.81077 232.00168 L 463.3101 231.92314 Z" fill="#acbdd0"/>
+        <path d="M 462.7049 197.25242 L 471.70353 197.09535 L 472.3087 231.76607 L 476.808 231.68753 L 468.00137 242.84293 L 458.81077 232.00168 L 463.3101 231.92314 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_656">
+        <text transform="translate(482.448 210.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">derive</tspan>
+        </text>
+      </g>
+      <g id="Graphic_667">
+        <path d="M 336.182 63.54594 L 342.54594 57.18198 L 404.08623 118.72227 L 407.2682 115.54029 L 408.68243 129.68243 L 394.5403 128.26821 L 397.72227 125.08623 Z" fill="#acbdd0"/>
+        <path d="M 336.182 63.54594 L 342.54594 57.18198 L 404.08623 118.72227 L 407.2682 115.54029 L 408.68243 129.68243 L 394.5403 128.26821 L 397.72227 125.08623 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_666">
+        <text transform="translate(392 77)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">derive</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

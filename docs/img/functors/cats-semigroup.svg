@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="-.5 8 595 253.5" width="595" height="253.5">
+  <defs>
+    <font-face font-family="Helvetica" font-size="12" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="522.9492" cap-height="717.28516" ascent="770.0195" descent="-229.98047" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Helvetica"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica" font-size="17" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="700">
+      <font-face-src>
+        <font-face-name name="Helvetica-Bold"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -4 10 8" markerWidth="10" markerHeight="8" color="black">
+      <g>
+        <path d="M 8 0 L 0 -3 L 0 3 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-06-06 09:40:39 +0000</dc:date>
+  </metadata>
+  <g id="cats-semigroup" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>cats-semigroup</title>
+    <g id="cats-semigroup: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_23">
+        <path d="M 18 81 L 126 81 C 135.94113 81 144 89.05887 144 99 L 144 99 C 144 108.94113 135.94113 117 126 117 L 18 117 C 8.0588745 117 12174368e-22 108.94113 0 99 L 0 99 C 12174368e-22 89.05887 8.0588745 81 18 81 Z" fill="#ffc0c0"/>
+        <path d="M 18 81 L 126 81 C 135.94113 81 144 89.05887 144 99 L 144 99 C 144 108.94113 135.94113 117 126 117 L 18 117 C 8.0588745 117 12174368e-22 108.94113 0 99 L 0 99 C 12174368e-22 89.05887 8.0588745 81 18 81 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(5 92)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="52.987305" y="11">Band</tspan>
+        </text>
+      </g>
+      <g id="Graphic_22">
+        <path d="M 225 225 L 333 225 C 342.94113 225 351 233.05887 351 243 L 351 243 C 351 252.94113 342.94113 261 333 261 L 225 261 C 215.05887 261 207 252.94113 207 243 L 207 243 C 207 233.05887 215.05887 225 225 225 Z" fill="#ffc0c0"/>
+        <path d="M 225 225 L 333 225 C 342.94113 225 351 233.05887 351 243 L 351 243 C 351 252.94113 342.94113 261 333 261 L 225 261 C 215.05887 261 207 252.94113 207 243 L 207 243 C 207 233.05887 215.05887 225 225 225 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(212 236)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="13.632813" y="11">BoundedSemilattice</tspan>
+        </text>
+      </g>
+      <g id="Graphic_21">
+        <path d="M 405 225 L 513 225 C 522.9411 225 531 233.05887 531 243 L 531 243 C 531 252.94113 522.9411 261 513 261 L 405 261 C 395.05887 261 387 252.94113 387 243 L 387 243 C 387 233.05887 395.05887 225 405 225 Z" fill="#ffc0c0"/>
+        <path d="M 405 225 L 513 225 C 522.9411 225 531 233.05887 531 243 L 531 243 C 531 252.94113 522.9411 261 513 261 L 405 261 C 395.05887 261 387 252.94113 387 243 L 387 243 C 387 233.05887 395.05887 225 405 225 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(392 236)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="14.980469" y="11">CommutativeGroup</tspan>
+        </text>
+      </g>
+      <g id="Graphic_20">
+        <path d="M 288 153 L 396 153 C 405.94113 153 414 161.05887 414 171 L 414 171 C 414 180.94113 405.94113 189 396 189 L 288 189 C 278.05887 189 270 180.94113 270 171 L 270 171 C 270 161.05887 278.05887 153 288 153 Z" fill="#ffc0c0"/>
+        <path d="M 288 153 L 396 153 C 405.94113 153 414 161.05887 414 171 L 414 171 C 414 180.94113 405.94113 189 396 189 L 288 189 C 278.05887 189 270 180.94113 270 171 L 270 171 C 270 161.05887 278.05887 153 288 153 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(275 164)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="11.977539" y="11">CommutativeMonoid</tspan>
+        </text>
+      </g>
+      <g id="Graphic_19">
+        <path d="M 189 81 L 297 81 C 306.94113 81 315 89.05887 315 99 L 315 99 C 315 108.94113 306.94113 117 297 117 L 189 117 C 179.05887 117 171 108.94113 171 99 L 171 99 C 171 89.05887 179.05887 81 189 81 Z" fill="#ffc0c0"/>
+        <path d="M 189 81 L 297 81 C 306.94113 81 315 89.05887 315 99 L 315 99 C 315 108.94113 306.94113 117 297 117 L 189 117 C 179.05887 117 171 108.94113 171 99 L 171 99 C 171 89.05887 179.05887 81 189 81 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(176 92)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="2.640625" y="11">CommutativeSemigroup</tspan>
+        </text>
+      </g>
+      <g id="Graphic_18">
+        <path d="M 468 153 L 576 153 C 585.9411 153 594 161.05887 594 171 L 594 171 C 594 180.94113 585.9411 189 576 189 L 468 189 C 458.0589 189 450 180.94113 450 171 L 450 171 C 450 161.05887 458.0589 153 468 153 Z" fill="#ffc0c0"/>
+        <path d="M 468 153 L 576 153 C 585.9411 153 594 161.05887 594 171 L 594 171 C 594 180.94113 585.9411 189 576 189 L 468 189 C 458.0589 189 450 180.94113 450 171 L 450 171 C 450 161.05887 458.0589 153 468 153 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(455 164)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="50.32422" y="11">Group</tspan>
+        </text>
+      </g>
+      <g id="Graphic_17">
+        <path d="M 189 9 L 297 9 C 306.94113 9 315 17.058875 315 27 L 315 27 C 315 36.941125 306.94113 45 297 45 L 189 45 C 179.05887 45 171 36.941125 171 27 L 171 27 C 171 17.058875 179.05887 9 189 9 Z" fill="#ffc0c0"/>
+        <path d="M 189 9 L 297 9 C 306.94113 9 315 17.058875 315 27 L 315 27 C 315 36.941125 306.94113 45 297 45 L 189 45 C 179.05887 45 171 36.941125 171 27 L 171 27 C 171 17.058875 179.05887 9 189 9 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(176 17)" fill="#343434">
+          <tspan font-family="Helvetica" font-size="17" font-weight="700" fill="#343434" x="22.607422" y="16">Semigroup</tspan>
+        </text>
+      </g>
+      <g id="Graphic_16">
+        <path d="M 369 81 L 477 81 C 486.9411 81 495 89.05887 495 99 L 495 99 C 495 108.94113 486.9411 117 477 117 L 369 117 C 359.05887 117 351 108.94113 351 99 L 351 99 C 351 89.05887 359.05887 81 369 81 Z" fill="#ff8080"/>
+        <path d="M 369 81 L 477 81 C 486.9411 81 495 89.05887 495 99 L 495 99 C 495 108.94113 486.9411 117 477 117 L 369 117 C 359.05887 117 351 108.94113 351 99 L 351 99 C 351 89.05887 359.05887 81 369 81 Z" stroke="#515151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(356 89)" fill="#343434">
+          <tspan font-family="Helvetica" font-size="17" font-weight="700" fill="#343434" x="36.789307" y="16">Monoid</tspan>
+        </text>
+      </g>
+      <g id="Graphic_15">
+        <path d="M 108 153 L 216 153 C 225.94113 153 234 161.05887 234 171 L 234 171 C 234 180.94113 225.94113 189 216 189 L 108 189 C 98.05887 189 90 180.94113 90 171 L 90 171 C 90 161.05887 98.05887 153 108 153 Z" fill="#ffc0c0"/>
+        <path d="M 108 153 L 216 153 C 225.94113 153 234 161.05887 234 171 L 234 171 C 234 180.94113 225.94113 189 216 189 L 108 189 C 98.05887 189 90 180.94113 90 171 L 90 171 C 90 161.05887 98.05887 153 108 153 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(95 164)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="400" fill="black" x="37.65625" y="11">Semilattice</tspan>
+        </text>
+      </g>
+      <g id="Line_14">
+        <path d="M 93.13043 81 L 153 30 L 160.2592 29.758027" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_13">
+        <line x1="249.75" y1="225" x2="199.68142" y2="194.18856" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_12">
+        <line x1="294.75" y1="225" x2="319.7308" y2="196.4505" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_11">
+        <line x1="474.75" y1="225" x2="499.7308" y2="196.4505" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_10">
+        <line x1="429.75" y1="225" x2="379.6814" y2="194.18856" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_9">
+        <line x1="362.25" y1="153" x2="394.22565" y2="124.5772" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_8">
+        <line x1="317.25" y1="153" x2="275.7565" y2="122.8229" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_7">
+        <line x1="243" y1="81" x2="243" y2="55.9" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_6">
+        <line x1="497.25" y1="153" x2="457.1315" y2="123.8229" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_5">
+        <path d="M 398.2174 80 L 333 30 L 325.7408 29.758027" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_4">
+        <line x1="139.5" y1="153" x2="102.2306" y2="123.18448" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_3">
+        <line x1="182.25" y1="153" x2="215.35065" y2="123.5772" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

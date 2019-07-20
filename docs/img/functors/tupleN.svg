@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="-.5 -.5 550 217" width="550" height="217">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.10.2 
+    <dc:date>2019-05-01 08:02:15 +0000</dc:date>
+  </metadata>
+  <g id="tupleN" fill-opacity="1" stroke="none" stroke-dasharray="none" fill="none" stroke-opacity="1">
+    <title>tupleN</title>
+    <rect fill="white" x="0" y="0" width="549.5" height="216.5"/>
+    <g id="tupleN: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <path d="M 17.59995 44.85051 C -4.21875 40.5 4.482 3.87585 39.2877 10.125 C 42.5169 -2.05659 82.99125 -.07938 82.72665 10.125 C 108.1053 -2.92653 140.5377 23.09796 118.7838 36.14949 C 144.8874 42.47721 118.4544 76.57011 97.03125 70.875 C 95.31675 80.36739 57.0186 83.6892 53.6571 70.875 C 31.9707 84.55995 -13.2489 63.51858 17.59995 44.85051 Z" fill="#6f9a9c"/>
+        <path d="M 17.59995 44.85051 C -4.21875 40.5 4.482 3.87585 39.2877 10.125 C 42.5169 -2.05659 82.99125 -.07938 82.72665 10.125 C 108.1053 -2.92653 140.5377 23.09796 118.7838 36.14949 C 144.8874 42.47721 118.4544 76.57011 97.03125 70.875 C 95.31675 80.36739 57.0186 83.6892 53.6571 70.875 C 31.9707 84.55995 -13.2489 63.51858 17.59995 44.85051 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_7">
+        <rect x="45" y="18" width="45" height="45" fill="#b3b3b3"/>
+        <rect x="45" y="18" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(50 30.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="12.316" y="15">A</tspan>
+        </text>
+      </g>
+      <g id="Graphic_28">
+        <path d="M 267.75 90 L 281.25 90 L 281.25 115 L 288 115 L 274.5 126 L 261 115 L 267.75 115 Z" fill="#6f9a9c"/>
+        <path d="M 267.75 90 L 281.25 90 L 281.25 115 L 288 115 L 274.5 126 L 261 115 L 267.75 115 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_30">
+        <path d="M 161.59995 44.85051 C 139.78125 40.5 148.482 3.87585 183.2877 10.125 C 186.5169 -2.05659 226.99125 -.07938 226.72665 10.125 C 252.1053 -2.92653 284.5377 23.09796 262.7838 36.14949 C 288.8874 42.47721 262.4544 76.57011 241.03125 70.875 C 239.31675 80.36739 201.0186 83.6892 197.6571 70.875 C 175.9707 84.55995 130.7511 63.51858 161.59995 44.85051 Z" fill="#6f9a9c"/>
+        <path d="M 161.59995 44.85051 C 139.78125 40.5 148.482 3.87585 183.2877 10.125 C 186.5169 -2.05659 226.99125 -.07938 226.72665 10.125 C 252.1053 -2.92653 284.5377 23.09796 262.7838 36.14949 C 288.8874 42.47721 262.4544 76.57011 241.03125 70.875 C 239.31675 80.36739 201.0186 83.6892 197.6571 70.875 C 175.9707 84.55995 130.7511 63.51858 161.59995 44.85051 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_31">
+        <rect x="189" y="18" width="45" height="45" fill="#b3b3b3"/>
+        <rect x="189" y="18" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(194 30.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="12.02" y="15">B</tspan>
+        </text>
+      </g>
+      <g id="Graphic_32">
+        <path d="M 204.63993 179.8505 C 174.09375 175.5 186.2748 138.87585 235.00278 145.125 C 239.52366 132.94341 296.18775 134.92062 295.8173 145.125 C 331.34742 132.07347 376.7528 158.09796 346.2973 171.1495 C 382.84236 177.4772 345.83616 211.5701 315.84375 205.875 C 313.44345 215.3674 259.82604 218.6892 255.11994 205.875 C 224.75898 219.55995 161.45154 198.51858 204.63993 179.8505 Z" fill="#6f9a9c"/>
+        <path d="M 204.63993 179.8505 C 174.09375 175.5 186.2748 138.87585 235.00278 145.125 C 239.52366 132.94341 296.18775 134.92062 295.8173 145.125 C 331.34742 132.07347 376.7528 158.09796 346.2973 171.1495 C 382.84236 177.4772 345.83616 211.5701 315.84375 205.875 C 313.44345 215.3674 259.82604 218.6892 255.11994 205.875 C 224.75898 219.55995 161.45154 198.51858 204.63993 179.8505 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_33">
+        <rect x="234" y="153" width="81" height="45" fill="#b3b3b3"/>
+        <rect x="234" y="153" width="81" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(239 165.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.612" y="15">(A,B,C,D)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_34">
+        <text transform="translate(289.752 95)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">tupleN</tspan>
+        </text>
+      </g>
+      <g id="Graphic_38">
+        <path d="M 296.59995 44.85051 C 274.78125 40.5 283.482 3.87585 318.2877 10.125 C 321.5169 -2.05659 361.99125 -.07938 361.72665 10.125 C 387.1053 -2.92653 419.5377 23.09796 397.7838 36.14949 C 423.8874 42.47721 397.4544 76.57011 376.03125 70.875 C 374.31675 80.36739 336.0186 83.6892 332.6571 70.875 C 310.9707 84.55995 265.7511 63.51858 296.59995 44.85051 Z" fill="#6f9a9c"/>
+        <path d="M 296.59995 44.85051 C 274.78125 40.5 283.482 3.87585 318.2877 10.125 C 321.5169 -2.05659 361.99125 -.07938 361.72665 10.125 C 387.1053 -2.92653 419.5377 23.09796 397.7838 36.14949 C 423.8874 42.47721 397.4544 76.57011 376.03125 70.875 C 374.31675 80.36739 336.0186 83.6892 332.6571 70.875 C 310.9707 84.55995 265.7511 63.51858 296.59995 44.85051 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_37">
+        <rect x="324" y="18" width="45" height="45" fill="#b3b3b3"/>
+        <rect x="324" y="18" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(329 30.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="11.724" y="15">C</tspan>
+        </text>
+      </g>
+      <g id="Graphic_42">
+        <path d="M 431.59995 44.85051 C 409.78125 40.5 418.482 3.87585 453.2877 10.125 C 456.5169 -2.05659 496.99125 -.07938 496.72665 10.125 C 522.1053 -2.92653 554.5377 23.09796 532.7838 36.14949 C 558.8874 42.47721 532.4544 76.57011 511.03125 70.875 C 509.31675 80.36739 471.0186 83.6892 467.6571 70.875 C 445.9707 84.55995 400.7511 63.51858 431.59995 44.85051 Z" fill="#6f9a9c"/>
+        <path d="M 431.59995 44.85051 C 409.78125 40.5 418.482 3.87585 453.2877 10.125 C 456.5169 -2.05659 496.99125 -.07938 496.72665 10.125 C 522.1053 -2.92653 554.5377 23.09796 532.7838 36.14949 C 558.8874 42.47721 532.4544 76.57011 511.03125 70.875 C 509.31675 80.36739 471.0186 83.6892 467.6571 70.875 C 445.9707 84.55995 400.7511 63.51858 431.59995 44.85051 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_41">
+        <rect x="459" y="18" width="45" height="45" fill="#b3b3b3"/>
+        <rect x="459" y="18" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(464 30.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="11.868" y="15">D</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
