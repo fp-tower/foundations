@@ -234,107 +234,22 @@ class: center, middle
 
 `exercises.sideeffect.IOExercises.scala`
 
+---
+.h1[# IO Summary]
+
+.large[
+* an `IO[A]` is like an executable when run:
+  * succeeds with an `A`
+  * fails with an `Exception`
+  * runs forever
+
+* It is better for testing to group `IO` in a interface (see `Console`)
+]
 
 ---
 class: center, middle
 
-# Refactor after this
-
----
-.h1[# Examples]
-
-## Description
-
-```tut:silent
-case class Log(message: String)
-
-val program: Log = Log("Hello World!")
-```
-
-
-## Execution
-
-```tut:silent
-def unsafeRun(action: Log): Unit = {
-  println(action.message)
-}
-```
-
----
-# Examples
-
-```tut:silent
-object Main extends App {
-
-  unsafeRun(program)
-
-}
-```
-
----
-.h1[# Examples with several actions]
-
-.pull-left[
-## Description
-
-```tut:invisible
-case class User(name: String, age: Int)
-```
-
-```tut:silent
-sealed trait Action
-
-case class Log(message: String) extends Action
-case class SaveUser(user: User) extends Action
-
-val program1: Action = Log("Hello World!")
-val program1: Action = SaveUser(User("John", 26))
-```
-]
-
-.pull-right[
-## Execution
-
-```tut:silent
-def unsafeRun(action: Action): Unit =
-  action match {
-    case x: Log      => println(x.message)
-    case x: SaveUser => ??? // save in db
-  }
-```
-]
-
----
-.h1[# Examples with several actions]
-
-.pull-left[
-## Description
-
-```tut:silent
-sealed trait Action
-
-case class Log(message: String) extends Action
-case class SaveUser(user: User) extends Action
-
-val program: List[Action] = List(
-  Log("Hello World!"),
-  SaveUser(User("John", 26))
-)
-```
-]
-
-.pull-right[
-## Execution
-
-```tut:silent
-def unsafeRun(actions: List[Action]): Unit =
-  actions.foreach {
-    case x: Log      => println(x.message)
-    case x: SaveUser => ??? // save in db
-  }
-```
-]
-
+# What are the limitations of IO?
 
 
 </textarea>
