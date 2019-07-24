@@ -30,8 +30,8 @@ before_cache:
 script:
    - sbt ++$TRAVIS_SCALA_VERSION "testOnly *AnswersTest"
    - sbt ++$TRAVIS_SCALA_VERSION tut
-   - make depends
-   - make
+#   - make depends
+#   - make
 
 deploy:
    provider: pages
