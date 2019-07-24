@@ -1,12 +1,11 @@
 SRCS=$(notdir $(wildcard slides/tut/*.html))
-HTMLS=$(addprefix docs/, $(SRCS))
+HTMLS=$(addprefix slides/docs/, $(SRCS))
 PDFS=$(HTMLS:.html=.pdf)
 
 pdf: ${PDFS}
 
 docs/img:
 	mkdir -p docs
-	cp -r slides/img docs/
 
 docs/%.pdf: docs/%.html
 	decktape $< $@

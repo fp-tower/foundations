@@ -47,6 +47,6 @@ lazy val slides = project
   .settings(baseSettings: _*)
   .settings(
     tutSourceDirectory := baseDirectory.value / "tut",
-    tutTargetDirectory := baseDirectory.value / "../docs"
+    tutTargetDirectory := baseDirectory.value / "docs"
   )
   .enablePlugins(TutPlugin)

@@ -1,5 +1,5 @@
 # Generated files
-docs/*.html
+slides/docs/*.html
 
 ## IntelliJ files to ignore
 *.iml
@@ -16,8 +16,6 @@ docs/*.html
 target/
 project/project/
 _site/
-
-fast.html
 
 ## Metals files to ignore
 .metals/
