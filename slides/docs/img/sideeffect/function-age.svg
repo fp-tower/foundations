@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 604 370" width="604" height="370">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 604 370" width="604" height="370">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -19,9 +19,9 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-07-20 08:36:27 +0000</dc:date>
+    <dc:date>2019-07-24 17:48:17 +0000</dc:date>
   </metadata>
-  <g id="function-age" stroke="none" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" fill="none">
+  <g id="function-age" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1">
     <title>function-age</title>
     <g id="function-age: Layer 1">
       <title>Layer 1</title>
@@ -30,7 +30,7 @@
         <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_99">
-        <ellipse cx="495" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#599a9e"/>
+        <ellipse cx="495" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#589b9d"/>
         <ellipse cx="495" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_36">

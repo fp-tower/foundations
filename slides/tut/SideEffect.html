@@ -85,11 +85,21 @@ class: center, middle
 ---
 class: center, middle
 
-# Purely create a DESCRIPTION of actions (i.e. a program)
+# What is the solution?
+
+---
+class: center, middle
+
+# Create a VALUE that describe the actions
 
 --
 
-# Execute the description in Main (impure)
+# Interpret the value to generate side effects (in Main)
+
+---
+background-image: url(img/sideeffect/effects-on-edges.svg)
+
+# Run side effects at the edges
 
 ---
 ### 1. Program encoding
@@ -117,9 +127,36 @@ object Main extends App {
 ```
 
 ---
-.h1[# Cooking example
+# Executable program
 
-.h3[### 1. Secret pasta recipe (Program)]
+.center[![Run program](img/sideeffect/program-run.svg)]
+
+<br>
+
+```bash
+~/project/foundation ᐅ ls
+LICENCE   Makefile  README.MD build.sbt exercises logo      notes     project   slides    target
+```
+
+---
+# Executable program
+
+.center[![Pipe program](img/sideeffect/program-pipe.svg)]
+
+<br>
+
+```bash
+~/project/foundation ᐅ ls | grep es
+exercis`es`
+not`es`
+slid`es`
+```
+
+---
+.h1[# Cooking]
+
+.pull-left[
+### 1. Secret pasta recipe (Program)
 
 .large[
 1. Boil 200 ml of water
@@ -127,11 +164,13 @@ object Main extends App {
 3. Wait 11 minutes
 4. Drain the pasta
 ]
-
+]
+.pull-right[
 .h3[### 2. Cook (Unsafe evaluation)]
 
 .large[
 Take the recipe and do it at home
+]
 ]
 
 ---
@@ -143,13 +182,19 @@ class: center, middle
 # Method 1: Thunk
 
 ```tut:silent
+import java.time.LocalDate
+import scala.io.StdIn
+
 type Thunk[A] = Unit => A
 
 val readLine: Thunk[String] =
-  _ => scala.io.StdIn.readLine()
+  _ => StdIn.readLine()
 
 def writeLine(message: String): Thunk[Unit] =
   _ => println(message)
+
+val localDate: Thunk[LocalDate] =
+  _ => LocalDate.now()
 ```
 
 --
@@ -159,9 +204,35 @@ def unsafeRun[A](fa: Thunk[A]): A = fa.apply(())
 ```
 
 ---
+# Method 1: IO
+
+```tut:silent
+class IO[A](sideEffect: () => A) {
+  def unsafeRun(): A = sideEffect()
+}
+
+val readLine: IO[String] =
+  new IO(() => StdIn.readLine())
+
+def writeLine(message: String): IO[Unit] =
+  new IO(() => println(message))
+
+val localDate: IO[LocalDate] =
+  new IO(() => LocalDate.now())
+```
+
+```tut
+localDate
+localDate.unsafeRun()
+```
+
+
+---
 class: center, middle
 
-# Thunk Exercises
+# IO Exercises
+
+`exercises.sideeffect.IOExercises.scala`
 
 
 ---
