@@ -4,9 +4,8 @@ import scala.io.StdIn
 
 object Console {
   def readLine: IO[String] =
-    IO.effect(StdIn.readLine())
+    IO(StdIn.readLine())
 
   def writeLine(message: String): IO[Unit] =
-    IO.effect(println(message))
+    IO(println(message))
 }
-

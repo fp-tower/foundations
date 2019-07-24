@@ -21,9 +21,9 @@ trait SideEffectToImpl { self =>
 
   def userDbProgram: IO[Map[String, User]]
 
-  implicit class IOOps[A](fa: IO[A]){
-    def map[B](f: A => B): IO[B] = self.map(fa)(f)
+  implicit class IOOps[A](fa: IO[A]) {
+    def map[B](f: A => B): IO[B]         = self.map(fa)(f)
     def flatMap[B](f: A => IO[B]): IO[B] = self.flatMap(fa)(f)
-    def void: IO[Unit] = self.void(fa)
+    def void: IO[Unit]                   = self.void(fa)
   }
 }

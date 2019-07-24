@@ -57,6 +57,8 @@ background-image: url(img/sideeffect/function-age.svg)
 ---
 .h1[# How to do something?]
 
+<br>
+
 .large[
 * read or write from a file
 
@@ -65,14 +67,13 @@ background-image: url(img/sideeffect/function-age.svg)
 * send notification to user's phone
 
 * update counter of active users
-
-* simply display the result of a pure calculation
 ]
 
 ---
 class: center, middle
 
-# A pure function cannot DO anything, it can only produce a value
+# A pure function cannot DO anything
+# it can only produce a value
 
 ---
 class: center, middle
@@ -82,6 +83,187 @@ class: center, middle
 [Simon Peyton Jones](https://www.reddit.com/r/programming/comments/25m291/simon_peyton_jones_haskell_is_useless/) major contributor of haskell
 
 ---
+class: center, middle
+
+# Purely create a DESCRIPTION of actions (i.e. a program)
+
+--
+
+# Execute the description in Main (impure)
+
+---
+### 1. Program encoding
+
+```tut:silent
+trait Program[A]
+```
+
+### 2. Unsafe evaluation of a Program
+
+```tut:silent
+def unsafeRun[A](fa: Program[A]): A = ??? // execute program, this is not a pure function
+```
+
+### 3. Combine everything in Main
+
+```tut:silent
+object Main extends App {
+
+  val program: Program[Unit] = ???
+
+  unsafeRun(program)
+
+}
+```
+
+---
+.h1[# Cooking example
+
+.h3[### 1. Secret pasta recipe (Program)]
+
+.large[
+1. Boil 200 ml of water
+2. Add 250 g of dry pasta
+3. Wait 11 minutes
+4. Drain the pasta
+]
+
+.h3[### 2. Cook (Unsafe evaluation)]
+
+.large[
+Take the recipe and do it at home
+]
+
+---
+class: center, middle
+
+# How to encode a program?
+
+---
+# Method 1: Thunk
+
+```tut:silent
+type Thunk[A] = Unit => A
+
+val readLine: Thunk[String] =
+  _ => scala.io.StdIn.readLine()
+
+def writeLine(message: String): Thunk[Unit] =
+  _ => println(message)
+```
+
+--
+
+```tut:silent
+def unsafeRun[A](fa: Thunk[A]): A = fa.apply(())
+```
+
+---
+class: center, middle
+
+# Thunk Exercises
+
+
+---
+class: center, middle
+
+# Refactor after this
+
+---
+.h1[# Examples]
+
+## Description
+
+```tut:silent
+case class Log(message: String)
+
+val program: Log = Log("Hello World!")
+```
+
+
+## Execution
+
+```tut:silent
+def unsafeRun(action: Log): Unit = {
+  println(action.message)
+}
+```
+
+---
+# Examples
+
+```tut:silent
+object Main extends App {
+
+  unsafeRun(program)
+
+}
+```
+
+---
+.h1[# Examples with several actions]
+
+.pull-left[
+## Description
+
+```tut:invisible
+case class User(name: String, age: Int)
+```
+
+```tut:silent
+sealed trait Action
+
+case class Log(message: String) extends Action
+case class SaveUser(user: User) extends Action
+
+val program1: Action = Log("Hello World!")
+val program1: Action = SaveUser(User("John", 26))
+```
+]
+
+.pull-right[
+## Execution
+
+```tut:silent
+def unsafeRun(action: Action): Unit =
+  action match {
+    case x: Log      => println(x.message)
+    case x: SaveUser => ??? // save in db
+  }
+```
+]
+
+---
+.h1[# Examples with several actions]
+
+.pull-left[
+## Description
+
+```tut:silent
+sealed trait Action
+
+case class Log(message: String) extends Action
+case class SaveUser(user: User) extends Action
+
+val program: List[Action] = List(
+  Log("Hello World!"),
+  SaveUser(User("John", 26))
+)
+```
+]
+
+.pull-right[
+## Execution
+
+```tut:silent
+def unsafeRun(actions: List[Action]): Unit =
+  actions.foreach {
+    case x: Log      => println(x.message)
+    case x: SaveUser => ??? // save in db
+  }
+```
+]
+
 
 
 </textarea>

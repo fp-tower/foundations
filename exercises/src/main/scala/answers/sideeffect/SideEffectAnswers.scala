@@ -6,14 +6,13 @@ import exercises.sideeffect.SideEffectExercises.{stringToInt, User}
 
 object SideEffectAnswers extends SideEffectToImpl {
   def map[A, B](fa: IO[A])(f: A => B): IO[B] =
-    IO(() =>
-      fa.unsafeRun().map(f)
-    )
+    new IO(() => f(fa.unsafeRun()))
 
   def flatMap[A, B](fa: IO[A])(f: A => IO[B]): IO[B] =
-    IO(() =>
-      fa.unsafeRun().flatMap(f(_).unsafeRun())
-    )
+    IO {
+      val a = fa.unsafeRun()
+      f(a).unsafeRun()
+    }
 
   def readNameProgram: IO[String] =
     for {
@@ -25,15 +24,14 @@ object SideEffectAnswers extends SideEffectToImpl {
   def readInt: IO[Int] =
     for {
       s <- Console.readLine
-      i <- IO.fromTry(stringToInt(s))
+      i <- IO(stringToInt(s).getOrElse(sys.error(s"Invalid number $s")))
     } yield i
 
   def void[A](fa: IO[A]): IO[Unit] =
     fa.map(_ => ())
 
-
   def insertUser(ref: IORef[Map[String, User]], user: User): IO[Unit] =
-    ref.modify(_.updated(user.name, user))
+    ref.modify(_.updated(user.name, user)).void
 
   def geAllUsers(ref: IORef[Map[String, User]]): IO[List[User]] =
     ref.get.map(_.values.toList)

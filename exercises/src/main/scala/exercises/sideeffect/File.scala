@@ -2,7 +2,7 @@ package exercises.sideeffect
 
 object File {
   def readLines(path: String): IO[List[String]] =
-    IO.effect(
+    IO(
       scala.io.Source.fromResource(path).getLines().toList
     )
 
