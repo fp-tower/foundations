@@ -251,6 +251,23 @@ class: center, middle
 
 # What are the limitations of IO?
 
+---
+# IO vs Algebra
+
+```tut:silent
+trait Console {
+  val readLine: IO[String]
+  def writeLine(message: String): IO[Unit]
+}
+```
+
+```tut:silent
+sealed trait Console[A]
+object Console {
+  case object ReadLine                  extends Console[String]
+  case class WriteLine(message: String) extends Console[Unit]
+}
+```
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
