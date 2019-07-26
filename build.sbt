@@ -1,7 +1,7 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.13.0",
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
@@ -12,10 +12,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-language:existentials",
     "-language:postfixOps",
     "-unchecked",
-    "-Yno-adapted-args",
-    "-Ywarn-value-discard",
-    "-Xfuture",
-    "-Ypartial-unification"
+    "-Ywarn-value-discard"
   ),
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
@@ -25,7 +22,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     typesafeConfig,
     scalacheck,
     discipline,
-    scalatest % Test
+    disciplineTest % Test
   )
 )
 
