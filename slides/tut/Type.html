@@ -202,11 +202,20 @@ def fullPersonAddress(person: Person): Option[String] =
 ---
 # Type too big
 
-```tut:silent
+```scala
 // quantity must be positive
 case class Item(id: String, quantity: Int, price: Double)
 
 // order must have at least one item
+case class Order(id: String, items: List[Item]){
+  def total: Double =
+    items.map(i => i.quantity * i.price).sum
+}
+```
+
+```tut:invisible
+case class Item(id: String, quantity: Int, price: Double)
+
 case class Order(id: String, items: List[Item]){
   def total: Double =
     items.map(i => i.quantity * i.price).sum
@@ -226,11 +235,20 @@ def halfPriceFirstItem(order: Order): Order = {
 ---
 # Type too big
 
-```tut:silent
+```scala
 // quantity must be positive
 case class Item(id: String, quantity: Int, price: Double)
 
 // order must have at least one item
+case class Order(id: String, items: List[Item]){
+  def total: Double =
+    items.map(i => i.quantity * i.price).sum
+}
+```
+
+```tut:invisible
+case class Item(id: String, quantity: Int, price: Double)
+
 case class Order(id: String, items: List[Item]){
   def total: Double =
     items.map(i => i.quantity * i.price).sum
@@ -251,11 +269,23 @@ def halfPriceFirstItem(order: Order): Order = {
 ---
 # Type just right
 
-```tut:silent
+```scala
 import cats.data.NonEmptyList
 import cats.implicits._
 
 // quantity must be positive
+case class Item(id: String, quantity: Int, price: Double)
+
+case class Order(id: String, items: NonEmptyList[Item]){
+  def total: Double =
+    items.foldMap(i => i.quantity * i.price)
+}
+```
+
+```tut:invisible
+import cats.data.NonEmptyList
+import cats.implicits._
+
 case class Item(id: String, quantity: Int, price: Double)
 
 case class Order(id: String, items: NonEmptyList[Item]){
@@ -580,12 +610,20 @@ class: center, middle
 ---
 # Unit Test
 
-```tut:silent
+```scala
 sealed trait DayOfWeek
 
 case object Monday  extends DayOfWeek
 case object Tuesday extends DayOfWeek
 // ...
+case object Sunday  extends DayOfWeek
+```
+
+```tut:invisible
+sealed trait DayOfWeek
+
+case object Monday  extends DayOfWeek
+case object Tuesday extends DayOfWeek
 case object Sunday  extends DayOfWeek
 ```
 
