@@ -34,7 +34,7 @@ object IOExercises extends IOToImpl {
   // use map
   // Note: you can use map in infix or prefix position
   // val one: IO[Int] = _ => 1
-  // one.map(_ + 1) or map(one)(_ + 1) (see Ops syntax in IOToImpl)
+  // one.map(_ + 1) or map(one)(_ + 1)
   val readLength: IO[Int] = new IO(() => ???)
 
   // 2c. Implement readInt using readLine
@@ -96,7 +96,7 @@ object IOExercises extends IOToImpl {
   // Note: you can use map4 in infix or prefix position
   // val one: IO[Int] = _ => 1
   // def inc(x: Int): IO[Int] = _ => x + 1
-  // one.flatMap(inc) or flatMap(one)(inc) (see Ops syntax in IOToImpl)
+  // one.flatMap(inc) or flatMap(one)(inc)
   val userConsoleProgram3: IO[User] = new IO(() => ???)
 
   ////////////////////////
@@ -119,4 +119,19 @@ object IOExercises extends IOToImpl {
   // 5a. Implement a testConsole
   def testConsole(in: List[String], out: ListBuffer[String]): Console = ???
 
+  def userConsoleProgram4(console: Console): IO[User] =
+    for {
+      _    <- console.writeLine("What's your name?")
+      name <- console.readLine
+      _    <- console.writeLine("What's your age?")
+      age  <- console.readInt
+    } yield User(name, age)
+
+  // 5b. Write a test using testConsole to check userConsoleProgram4 implementation is correct
+  // see IOTests.scala: read user from Console
+
+  // 5c. Now our production code is "pure" (free of side effect) but not our test code
+  // how would you fix this this?
+  // try to implement safeTestConsole such as it is a pure Console implementation and it allows unit testing
+  def safeTestConsole: Console = ???
 }

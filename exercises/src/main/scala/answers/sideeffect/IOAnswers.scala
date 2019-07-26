@@ -1,12 +1,18 @@
 package answers.sideeffect
 
 import exercises.sideeffect.{IO, IORef}
-import exercises.sideeffect.IOExercises.{map4, parseInt, readLine, writeLine, Console, User}
+import exercises.sideeffect.IOExercises.{parseInt, Console, User}
 import toimpl.sideeffect.IOToImpl
 
 import scala.collection.mutable.ListBuffer
 
 object IOAnswers extends IOToImpl {
+
+  val readLine: IO[String] =
+    new IO(() => scala.io.StdIn.readLine())
+
+  def writeLine(message: String): IO[Unit] =
+    new IO(() => println(message))
 
   val consoleProgram: IO[String] = new IO(() => {
     writeLine("What's your name?").unsafeRun()
@@ -38,6 +44,12 @@ object IOAnswers extends IOToImpl {
       val b = fb.unsafeRun()
       f(a, b)
     })
+
+  def map4[A, B, C, D, E](fa: IO[A], fb: IO[B], fc: IO[C], fd: IO[D])(f: (A, B, C, D) => E): IO[E] =
+    map2(
+      map2(fa, fb)((a, b) => (a, b)), // IO[(A, B)]
+      map2(fc, fd)((c, d) => (c, d)) // IO[(C, D)]
+    ) { case ((a, b), (c, d)) => f(a, b, c, d) }
 
   val consoleProgram2: IO[String] =
     map2(writeLine("What's your name?"), readLine)((_, name) => name)
@@ -76,8 +88,16 @@ object IOAnswers extends IOToImpl {
       }
     }
 
-  def safeTestConsole(in: IORef[List[String]]): TestConsole =
-    TestConsole(in)
+  def userConsoleProgram4(console: Console): IO[User] =
+    for {
+      _    <- console.writeLine("What's your name?")
+      name <- console.readLine
+      _    <- console.writeLine("What's your age?")
+      age  <- console.readInt
+    } yield User(name, age)
+
+  def safeTestConsole(in: List[String]): TestConsole =
+    TestConsole(IORef(in))
 
   case class TestConsole(in: IORef[List[String]]) extends Console {
     val out: IORef[List[String]] = IORef(List.empty[String])
