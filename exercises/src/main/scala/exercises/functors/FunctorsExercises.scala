@@ -179,18 +179,23 @@ object FunctorsExercises extends FunctorsToImpl {
   // 2f. Implement the following instances
   // you can use methods from the standard library
   implicit val listApplicative: Applicative[List] = new DefaultApplicative[List] {
-    def pure[A](a: A): List[A]                                           = ???
-    def map2[A, B, C](fa: List[A], fb: List[B])(f: (A, B) => C): List[C] = ???
+    def map2[A, B, C](fa: List[A], fb: List[B])(f: (A, B) => C): List[C] =
+      for {
+        a <- fa
+        b <- fb
+      } yield f(a, b)
+    def pure[A](a: A): List[A] =
+      List(a)
   }
 
   implicit val optionApplicative: Applicative[Option] = new DefaultApplicative[Option] {
-    def pure[A](a: A): Option[A]                                               = ???
     def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+    def pure[A](a: A): Option[A]                                               = ???
   }
 
   implicit def eitherApplicative[E]: Applicative[Either[E, ?]] = new DefaultApplicative[Either[E, ?]] {
-    def pure[A](a: A): Either[E, A]                                                     = ???
     def map2[A, B, C](fa: Either[E, A], fb: Either[E, B])(f: (A, B) => C): Either[E, C] = ???
+    def pure[A](a: A): Either[E, A]                                                     = ???
   }
 
   implicit def validatedApplicative[E: Semigroup]: Applicative[Validated[E, ?]] =
@@ -200,8 +205,8 @@ object FunctorsExercises extends FunctorsToImpl {
     }
 
   implicit def mapApplicative[K]: Applicative[Map[K, ?]] = new DefaultApplicative[Map[K, ?]] {
-    def pure[A](a: A): Map[K, A]                                               = ???
     def map2[A, B, C](fa: Map[K, A], fb: Map[K, B])(f: (A, B) => C): Map[K, C] = ???
+    def pure[A](a: A): Map[K, A]                                               = ???
   }
 
   implicit def mapApply[K]: Apply[Map[K, ?]] = new Apply[Map[K, ?]] with DefaultFunctor[Map[K, ?]] {
@@ -210,23 +215,27 @@ object FunctorsExercises extends FunctorsToImpl {
   }
 
   implicit val idApplicative: Applicative[Id] = new DefaultApplicative[Id] {
-    def pure[A](a: A): Id[A]                                       = ???
     def map2[A, B, C](fa: Id[A], fb: Id[B])(f: (A, B) => C): Id[C] = ???
+    def pure[A](a: A): Id[A]                                       = ???
   }
 
   implicit def constApplicative[R: Monoid]: Applicative[Const[R, ?]] = new DefaultApplicative[Const[R, ?]] {
-    def pure[A](a: A): Const[R, A]                                                   = ???
     def map2[A, B, C](fa: Const[R, A], fb: Const[R, B])(f: (A, B) => C): Const[R, C] = ???
+    def pure[A](a: A): Const[R, A]                                                   = ???
   }
 
+  //  val inc: Int => Int      = _ + 1
+  //  val even: Int => Boolean = _ % 2 == 0
+  //  val combined: Int => (Int, Boolean) = (inc, even).tuple2
+  //  combined(10) // (11, true)
   implicit def functionApplicative[R]: Applicative[R => ?] = new DefaultApplicative[R => ?] {
-    def pure[A](a: A): R => A                                         = ???
     def map2[A, B, C](fa: R => A, fb: R => B)(f: (A, B) => C): R => C = ???
+    def pure[A](a: A): R => A                                         = ???
   }
 
   // 2h. Implement an Applicative instance for ZipList
   // such as map2 "zip" the two List instead of doing the cartesian product
-  // e.g. map2(ZipList(1,2,3), ZipList(2,2,2))(_ + _) == ZipList(3,4,5)
+  // e.g. map2(ZipList(1,2,3), ZipList(2,2))(_ + _) == ZipList(3,4)
   implicit val zipListApplicative: Applicative[ZipList] = new DefaultApplicative[ZipList] {
     def map2[A, B, C](fa: ZipList[A], fb: ZipList[B])(f: (A, B) => C): ZipList[C] = ???
     def pure[A](a: A): ZipList[A]                                                 = ???
@@ -244,8 +253,8 @@ object FunctorsExercises extends FunctorsToImpl {
   // e.g. Applicative[Compose[IO, Either[String, ?], ?]]
   implicit def composeApplicative[F[_]: Applicative, G[_]: Applicative]: Applicative[Compose[F, G, ?]] =
     new DefaultApplicative[Compose[F, G, ?]] {
-      def pure[A](a: A): Compose[F, G, A]                                                             = ???
       def map2[A, B, C](fa: Compose[F, G, A], fb: Compose[F, G, B])(f: (A, B) => C): Compose[F, G, C] = ???
+      def pure[A](a: A): Compose[F, G, A]                                                             = ???
     }
 
   ////////////////////////
@@ -259,25 +268,12 @@ object FunctorsExercises extends FunctorsToImpl {
     // instead you need to: flatMap(fa)(f)
     //////////////////////////////////////////////////////
 
-    // 3a. Implement map using flatMap
-    override def map[A, B](fa: F[A])(f: A => B): F[B] = ???
-
-    // 3b. Implement map2 using flatMap
-    def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = ???
-
-    // 3c. Implement flatten using flatMap
+    // 3a. Implement flatten using flatMap
     // such as flatten(List(List(1,2), List(3,4,5)))  == List(1,2,3,4,5)
     //         flatten((x: Int) => (y: Int) => x + y) == (x: Int) => x + x
     def flatten[A](ffa: F[F[A]]): F[A] = ???
 
-    // 3d. Implement flatTap using previous functions
-    // such as flatTap(Option(10))(x => if(x > 0) unit[Option] else None) == Some(10)
-    //         flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) == None
-    // use case:
-    // getUser(userId).flatTap(user => log.info(s"Fetched $user")): IO[User]
-    def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A] = ???
-
-    // 3e. Implement ifM using previous functions
+    // 3b. Implement ifM using flatMap
     // such as val func = ifM((x: Int) => x > 0)(_ * 2, _.abs)
     //         func(-10) == 10
     //         func(  3) == 6
@@ -288,7 +284,14 @@ object FunctorsExercises extends FunctorsToImpl {
     // )
     def ifM[A](cond: F[Boolean])(ifTrue: => F[A], ifFalse: => F[A]): F[A] = ???
 
-    // 3f. Implement forever using previous functions
+    // 3c. Implement flatTap using previous functions
+    // such as flatTap(Option(10))(x => if(x > 0) unit[Option] else None) == Some(10)
+    //         flatTap(Option(-5))(x => if(x > 0) unit[Option] else None) == None
+    // use case:
+    // getUser(userId).flatTap(user => log.info(s"Fetched $user")): IO[User]
+    def flatTap[A, B](fa: F[A])(f: A => F[B]): F[A] = ???
+
+    // 3d. Implement forever using previous functions
     // use case:
     // (getCurrentTime.flatMap(log.info) <* sleep(2.seconds)).forever
     //
@@ -298,9 +301,15 @@ object FunctorsExercises extends FunctorsToImpl {
     // yield ()).forever
     //
     def forever[A](fa: F[A]): F[Nothing] = ???
+
+    // 3e. Implement map using flatMap
+    override def map[A, B](fa: F[A])(f: A => B): F[B] = ???
+
+    // 3f. Implement map2 using flatMap
+    def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = ???
   }
 
-  // 3f. Implement the following instances
+  // 3g. Implement the following instances
   // you can use methods from the standard library
   implicit val listMonad: Monad[List] = new DefaultMonad[List] {
     def pure[A](a: A): List[A]                               = listApplicative.pure(a)
@@ -337,12 +346,18 @@ object FunctorsExercises extends FunctorsToImpl {
     def flatMap[A, B](fa: Const[R, A])(f: A => Const[R, B]): Const[R, B] = ???
   }
 
+  //  val even: Int => Boolean = _ % 2 == 0
+  //  val inc: Int => Int      = _ + 1
+  //  val dec: Int => Int      = _ + 1
+  //  val combined: Int => Int = even.flatMap(b => if(b) inc else dec)
+  //  combined(10) // 11
+  //  combined(11) // 10
   implicit def functionMonad[R]: Monad[Function[R, ?]] = new DefaultMonad[Function[R, ?]] {
     def pure[A](a: A): Function[R, A]                                             = functionApplicative.pure(a)
     def flatMap[A, B](fa: Function[R, A])(f: A => Function[R, B]): Function[R, B] = ???
   }
 
-  // 3g. Implement an Monad instance for Compose
+  // 3h. Implement an Monad instance for Compose
   implicit def composeMonad[F[_]: Monad, G[_]: Monad]: Monad[Compose[F, G, ?]] =
     new DefaultMonad[Compose[F, G, ?]] {
       def pure[A](a: A): Compose[F, G, A]                                                 = ???
