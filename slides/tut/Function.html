@@ -45,29 +45,99 @@ layout: true
 </div>
 
 ---
+class: center, middle
+
+# __Function__al Programming
+
+---
+# First class function
+
+```tut:silent
+def inc(x: Int): Int = x + 1
+```
+
+```tut
+inc(10)
+```
+
+```tut:silent
+val inc: Int => Int = (x: Int) => x + 1
+```
+
+```tut
+inc(10)
+```
+
+---
+# First class function
+
+```tut:silent
+val inc: Int => Int = (x: Int) => x + 1
+```
+
+```tut
+List(1,2,3).map(inc)
+
+List("hello", "world", "!").foreach(println)
+```
+
+---
+class: center, middle
+
+# Functional programing is the use of "pure" function
+
+---
 background-image: url(img/function/mapping-1.svg)
 
-# Function is a mapping
+# Pure function is a mapping
 
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Function is a mapping
+# Pure function is a mapping
 
 ---
 class: center, middle
 
 # Programming function
 # !=
-# Maths function
-
----
-class: center, middle
-
 # Pure function
 
 ---
-background-image: url(img/nondeterministic-function.jpg)
+background-image: url(img/function/partial-function.svg)
+
+# Partial function
+
+---
+background-image: url(img/function/exception.svg)
+
+# Partial function
+
+---
+background-image: url(img/function/null-1.svg)
+
+# Null
+
+---
+background-image: url(img/function/null-2.svg)
+
+# Null
+
+---
+.h1[# Null]
+
+<br>
+
+.large[
+We cannot remove `null` from the language (maybe in 3.0)
+
+We cannot handle it for all functions
+
+So we ignore null: don't return it, don't handle it
+]
+
+---
+background-image: url(img/function/nondeterministic.svg)
 
 # Nondeterministic
 
@@ -84,143 +154,24 @@ Random.nextInt(100)
 Random.nextInt(100)
 ```
 
----
-background-image: url(img/partial-function-1.jpg)
-
-# Partial function
-
----
-background-image: url(img/partial-function-2.jpg)
-
-# Partial function
-
----
-# Partial function
+--
 
 ```tut:silent
-def head(xs: List[Int]): Int = xs match {
-  case Nil    => sys.error("Can't access head of empty List")
-  case x :: _ => x
-}
+import java.time.Instant
 ```
 
 ```tut
-head(List(1,2,3))
-```
-
-```tut:fail
-head(Nil)
+Instant.now()
+Instant.now()
 ```
 
 ---
-background-image: url(img/null-function-1.jpg)
+background-image: url(img/function/side-effect-1.svg)
 
-# Null
-
----
-background-image: url(img/null-function-2.jpg)
-
-# Null
+# Side effect
 
 ---
-# Null
-
-```tut:silent
-sealed trait Shape
-
-case class Circle(radius: Int) extends Shape
-case class Rectangle(width: Int, height: Int) extends Shape
-
-def isCircle(x: Shape): Boolean = x match {
-  case Circle(_)       => true
-  case Rectangle(_, _) => false
-}
-```
-
-```tut
-isCircle(Circle(5))
-isCircle(Rectangle(5, 10))
-```
-
-```tut:fail
-isCircle(null)
-```
-
----
-# Reflection
-
-```tut:silent
-def foo[A](a: A): A = a match {
-  case x: Int    => (x + 1).asInstanceOf[A]
-  case x: String => x.reverse.asInstanceOf[A]
-  case _         => a
-}
-```
-
-```tut
-foo(5)
-foo("Hello")
-
-foo(true)
-```
-
----
-# Reflection
-
-```tut:silent
-def foo[A](a: A): Int = a match {
-  case _: List[Int]    => 0
-  case _: List[String] => 1
-  case _               => 2
-}
-```
-
-
-```tut
-foo(List(1,2,3))
-foo(List("abc"))
-```
-
----
-# Without Reflection
-
-```tut:silent
-def foo[A](a: A): A = ???
-```
-
----
-# Without Reflection
-
-```tut:silent
-def foo[A](a: A): A = a
-```
-
----
-# Reflection
-
-```tut:silent
-def bar(a: Any): Any = a match {
-  case x: Int    => x + 1
-  case x: String => x.reverse
-  case _         => a
-}
-```
-
-
-```tut:silent
-trait MyInterface
-case class Impl1(value: Int) extends MyInterface
-case class Impl2(value: String) extends MyInterface
-
-def bar(a: MyInterface): Int = a match {
-  case x: Impl1 => x.value + 1
-  case x: Impl2 => x.value.size
-  case _        => 0
-}
-```
-
----
-background-image: url(img/function-side-effect.jpg)
+background-image: url(img/function/side-effect-2.svg)
 
 # Side effect
 
@@ -237,15 +188,13 @@ def println(message: String): Unit = ...
 val x = println("Hello")
 ```
 
----
-# Side effect
+--
 
 ```tut
 scala.io.Source.fromURL("http://google.com").take(100).mkString
 ```
 
----
-# Side effect
+--
 
 ```tut:silent
 var x: Int = 0
@@ -256,42 +205,109 @@ def count(): Int = {
 }
 ```
 
+---
+background-image: url(img/function/side-effect-3.svg)
+
+# Side effect
+
+---
+# Reflection
+
+```tut:silent
+def foo[A](a: A): A = a match {
+  case x: Int    => (x + 1).asInstanceOf[A]
+  case x: String => x.reverse.asInstanceOf[A]
+  case _         => a
+}
+```
+
 ```tut
-count()
-count()
-count()
+foo(5)
+foo("Hello")
+foo(true)
+```
+
+---
+# Reflection is not reliable
+
+```tut:silent
+def foo[A](a: A): Int = a match {
+  case _: List[Int]    => 0
+  case _: List[String] => 1
+  case _               => 2
+}
+```
+
+
+```tut
+foo(List(1,2,3))
+foo(List("abc"))
+```
+
+---
+# Reflection renders signature documentation unreliable
+
+```tut:silent
+def foo[A](a: A): A = ???
+```
+
+--
+
+# Without Reflection
+
+```tut:silent
+def foo[A](a: A): A = a
+```
+
+(and without infinite recursion)
+
+---
+# Also apply to `Any` and non sealed trait
+
+```tut:silent
+def foo(a: Any): Int = ???
+```
+
+--
+
+# Without Reflection
+
+```tut:silent
+def foo[A](a: Any): Int = 5
 ```
 
 ---
 .h1[# Pure Function]
 
 .large[
-* deterministic (not nondeterministic)
+* deterministic
 * total (not partial)
 * no mutation
 * no exception
 * no null
-* no reflection
 * no side effect
+* no reflection
 ]
 
 ---
 .h1[# Scalazzi subset]
 
 .large[
-* deterministic (not nondeterministic)
+* deterministic
 * total (not partial)
 * no mutation
 * no exception
 * no null
-* no reflection
 * no side effect
+* no reflection
 ]
 
 ---
 class: center, middle
 
-# Exercises
+# Exercise 1
+
+`exercises.function.FunctionExercises.scala`
 
 ---
 class: center, middle

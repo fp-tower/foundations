@@ -21,12 +21,12 @@
   <metadata> Produced by OmniGraffle 7.10.2 
     <dc:date>2019-07-28 13:14:21 +0000</dc:date>
   </metadata>
-  <g id="partial-function" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1">
-    <title>partial-function</title>
-    <g id="partial-function: Layer 1">
+  <g id="side-effect-1" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1">
+    <title>side-effect-1</title>
+    <g id="side-effect-1: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_98">
-        <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#70a3d8"/>
+        <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#8db2dc"/>
         <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_99">
@@ -34,76 +34,79 @@
         <ellipse cx="495" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_36">
-        <path d="M 99 99 L 135 135 L 99 171 L 63 135 Z" fill="#589b9d"/>
-        <path d="M 99 99 L 135 135 L 99 171 L 63 135 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(77.72 124.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.264" y="15">Elise</tspan>
-        </text>
-      </g>
-      <g id="Graphic_100">
-        <path d="M 162 180 L 198 216 L 162 252 L 126 216 Z" fill="#589b9d"/>
-        <path d="M 162 180 L 198 216 L 162 252 L 126 216 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(140.72 205.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.224" y="15">Zoe</tspan>
+        <path d="M 135 90 L 189 126 L 135 162 L 81 126 Z" fill="#589b9d"/>
+        <path d="M 135 90 L 189 126 L 135 162 L 81 126 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(100.58 115.28)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="1.276" y="15">(Elise, 10)</tspan>
         </text>
       </g>
       <g id="Graphic_101">
-        <path d="M 90 270 L 126 306 L 90 342 L 54 306 Z" fill="#ff8080"/>
-        <path d="M 90 270 L 126 306 L 90 342 L 54 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(68.72 295.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.36" y="15">John</tspan>
+        <path d="M 139.5 261 L 198 297 L 139.5 333 L 81 297 Z" fill="#589b9d"/>
+        <path d="M 139.5 261 L 198 297 L 139.5 333 L 81 297 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(101.795 286.28)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.971" y="15">(John,  5)</tspan>
         </text>
       </g>
       <g id="Graphic_102">
         <path d="M 450 90 L 486 126 L 450 162 L 414 126 Z" fill="#70a3d8"/>
         <path d="M 450 90 L 486 126 L 450 162 L 414 126 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(428.72 115.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.104" y="15">28</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.656" y="15">£10</tspan>
         </text>
       </g>
       <g id="Graphic_103">
         <path d="M 459 225 L 495 261 L 459 297 L 423 261 Z" fill="#70a3d8"/>
         <path d="M 459 225 L 495 261 L 459 297 L 423 261 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(437.72 250.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.104" y="15">34</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.656" y="15">12£</tspan>
         </text>
       </g>
       <g id="Graphic_104">
         <path d="M 549 162 L 585 198 L 549 234 L 513 198 Z" fill="#70a3d8"/>
         <path d="M 549 162 L 585 198 L 549 234 L 513 198 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(527.72 187.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.104" y="15">17</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.656" y="15">60£</tspan>
         </text>
       </g>
       <g id="Graphic_105">
         <path d="M 531 270 L 567 306 L 531 342 L 495 306 Z" fill="#70a3d8"/>
         <path d="M 531 270 L 567 306 L 531 342 L 495 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(509.72 295.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="17.552" y="15">1</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">£100</tspan>
         </text>
       </g>
       <g id="Graphic_106">
         <path d="M 522 63 L 558 99 L 522 135 L 486 99 Z" fill="#70a3d8"/>
         <path d="M 522 63 L 558 99 L 522 135 L 486 99 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(500.72 88.28)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="17.552" y="15">2</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.656" y="15">56£</tspan>
         </text>
       </g>
       <g id="Line_107">
-        <line x1="134.1" y1="134.1" x2="402.00424" y2="127.23066" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-      </g>
-      <g id="Line_109">
-        <line x1="193.26316" y1="220.73684" x2="414.9824" y2="254.33067" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="177.82759" y1="133.44828" x2="505.6241" y2="190.45637" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_111">
-        <text transform="translate(90.56 5)" fill="#70a3d8">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">User</tspan>
+        <text transform="translate(63.008 5)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">(User, Int)</tspan>
         </text>
       </g>
       <g id="Graphic_110">
-        <text transform="translate(473.012 5)" fill="#599a9e">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" x="5115908e-19" y="23">Age</tspan>
+        <text transform="translate(447.668 5)" fill="#599a9e">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" x="0" y="23">Account</tspan>
         </text>
+      </g>
+      <g id="Graphic_115">
+        <path d="M 72 180 L 126 216 L 72 252 L 18 216 Z" fill="#589b9d"/>
+        <path d="M 72 180 L 126 216 L 72 252 L 18 216 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(37.58 205.28)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="1.276" y="15">(Elise, 50)</tspan>
+        </text>
+      </g>
+      <g id="Line_116">
+        <line x1="111.78947" y1="206.52632" x2="408.3739" y2="135.91098" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_117">
+        <line x1="188.94643" y1="291.42857" x2="413.8267" y2="266.08995" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>
