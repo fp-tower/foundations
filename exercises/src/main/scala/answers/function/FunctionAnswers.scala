@@ -46,6 +46,10 @@ object FunctionAnswers extends FunctionToImpl {
 
   def const[A, B](a: A)(b: B): A = a
 
+  def apply[A, B](value: A, f: A => B): B = f(value)
+
+  def apply2[A, B](value: A)(f: A => B): B = f(value)
+
   def updateAge(f: Int => Int): List[User] =
     List(User("John", 26), User("Lisa", 5)).map { p =>
       p.copy(age = f(p.age))

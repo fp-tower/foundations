@@ -60,6 +60,8 @@ def inc(x: Int): Int = x + 1
 inc(10)
 ```
 
+<br>
+
 ```tut:silent
 val inc: Int => Int = (x: Int) => x + 1
 ```
@@ -73,13 +75,42 @@ inc(10)
 
 ```tut:silent
 val inc: Int => Int = (x: Int) => x + 1
+val dec: Int => Int = (x: Int) => x - 1
+val double: Int => Int = (x: Int) => x - 1
+
+
+val list = List(inc, dec, double)
+
+val map = Map(
+  "foo"  -> inc,
+  "bar"  -> dec,
+  "fizz" -> double,
+)
+```
+
+---
+# First class function
+
+```tut:silent
+val inc: Int => Int = (x: Int) => x + 1
+
+def map(xs: List[Int])(f: Int => Int): List[Int] = ???
 ```
 
 ```tut
 List(1,2,3).map(inc)
+```
 
+```tut
 List("hello", "world", "!").foreach(println)
 ```
+
+---
+class: center, middle
+
+# Exercises 1 and 2
+
+`exercises.function.FunctionExercises.scala`
 
 ---
 class: center, middle
@@ -305,7 +336,7 @@ def foo[A](a: Any): Int = 5
 ---
 class: center, middle
 
-# Exercise 1
+# Exercise 3
 
 `exercises.function.FunctionExercises.scala`
 

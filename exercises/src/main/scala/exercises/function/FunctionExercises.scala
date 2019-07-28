@@ -68,7 +68,14 @@ object FunctionExercises extends FunctionToImpl {
   // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
   // val idVal = ???
 
-  // 2e. implement setAge using updateAge
+  // 2e. Implement apply
+  // such as apply(5, (_: Int) + 1) == 6
+  // what's the difference with apply2?
+  def apply[A, B](value: A, f: A => B): B = ???
+
+  def apply2[A, B](value: A)(f: A => B): B = apply(value, f)
+
+  // 2f. implement setAge using updateAge
   // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
   // hint: try to use either identity or const
   case class User(name: String, age: Int)
@@ -80,31 +87,39 @@ object FunctionExercises extends FunctionToImpl {
 
   def setAge(value: Int): List[User] = ???
 
-  // 2f. implement noopAge using updateAge
+  // 2g. implement noopAge using updateAge
   // such as getUsersUnchanged == List(User("John", 26), User("Lisa", 5))
   // hint: try to use either identity or const
   def getUsersUnchanged: List[User] = ???
 
-  // 2g. Implement andThen and compose
+  // 2h. Implement andThen and compose
+  // such as
+  // val isEven: Int => Boolean = _ % 2 == 0
+  // val inc   : Int => Int = _ + 1
+  // compose(isEven, inc)(10) == false
+  // andThen(inc, isEven)(10) == false
   def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 2h. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 2i. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = identity // ???
 
-  // 2i. Same for f(x) = 2 * (x + 1)
+  // 2j. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
 
-  // 2j. Implement curry and uncurry
+  // 2k. Implement curry and uncurry
   def curry[A, B, C](f: (A, B) => C): A => B => C = ???
 
   def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
 
-  // 2k. Implement join
+  // 2l. Implement join such as
+  // val reverse: Boolean => Boolean = x => !x
+  // val zeroOne: Boolean => String  = x => if (x) "1" else "0"
+  // join(zeroOne, reverse)(_ + _.toString)(true) == "1false"
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
 
   ////////////////////////

@@ -32,6 +32,10 @@ trait FunctionToImpl {
 
   def const[A, B](a: A)(b: B): A
 
+  def apply[A, B](value: A, f: A => B): B
+
+  def apply2[A, B](value: A)(f: A => B): B
+
   def setAge(value: Int): List[User]
 
   def getUsersUnchanged: List[User]

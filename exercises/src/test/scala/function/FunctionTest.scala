@@ -66,12 +66,30 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
     List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
   }
 
+  test("apply - apply2") {
+    apply(5, (_: Int) + 1) shouldEqual 6
+    apply2(5)(_ + 1) shouldEqual 6
+  }
+
   test("setAge") {
     setAge(10) == List(User("John", 10), User("Lisa", 10))
   }
 
   test("getUsersUnchanged") {
     getUsersUnchanged == List(User("John", 26), User("Lisa", 5))
+  }
+
+  test("andThen") {
+    val isEven = (_: Int) % 2 == 0
+    val inc    = (_: Int) + 1
+    andThen(inc, isEven)(10) shouldEqual false
+  }
+
+  test("andThen - compose") {
+    val isEven = (_: Int) % 2 == 0
+    val inc    = (_: Int) + 1
+    compose(isEven, inc)(10) shouldEqual false
+    andThen(inc, isEven)(10) shouldEqual false
   }
 
   test("doubleInc") {
