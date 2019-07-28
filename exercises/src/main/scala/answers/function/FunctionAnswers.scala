@@ -1,6 +1,6 @@
 package answers.function
 
-import exercises.function.FunctionExercises.{double, inc, updateAge, Person}
+import exercises.function.FunctionExercises.{double, inc, updateAge, User}
 import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
@@ -8,25 +8,54 @@ import scala.collection.mutable
 
 object FunctionAnswers extends FunctionToImpl {
 
+  ////////////////////////////
+  // 1. first class functions
+  ////////////////////////////
+
+  def triple(x: Int): Int =
+    3 * x
+
+  val tripleVal: Int => Int =
+    (x: Int) => 3 * x
+
+  def tripleList(xs: List[Int]): List[Int] =
+    xs.map(tripleVal)
+
+  val tripleVal2: Int => Int = triple _
+
+  def move(increment: Boolean): Int => Int =
+    x => if (increment) x + 1 else x - 1
+
+  val move2: (Boolean, Int) => Int =
+    (increment, x) => move(increment)(x)
+
+  val move3: Boolean => Int => Int =
+    move _
+
+  def applyMany(xs: List[Int => Int]): Int => List[Int] =
+    x => xs.map(_.apply(x))
+
+  def applyManySum(xs: List[Int => Int]): Int => Int =
+    x => xs.foldLeft(0)((acc, f) => acc + f(x))
+
+  ////////////////////////////
+  // 2. polymorphic functions
+  ////////////////////////////
+
   def identity[A](x: A): A = x
 
   def const[A, B](a: A)(b: B): A = a
 
-  def triple(x: Int): Int = x * 3
+  def updateAge(f: Int => Int): List[User] =
+    List(User("John", 26), User("Lisa", 5)).map { p =>
+      p.copy(age = f(p.age))
+    }
 
-  val tripleVal: Int => Int = triple _
+  def setAge(value: Int): List[User] =
+    updateAge(const(value))
 
-  def tripleAge(xs: List[Person]): List[Person] =
-    updateAge(xs, _ * 3)
-
-  def setAge(xs: List[Person], value: Int): List[Person] =
-    updateAge(xs, const(value))
-
-  def noopAge(xs: List[Person]): List[Person] =
-    updateAge(xs, identity)
-
-  def apply[A, B](f: A => B, value: A): B =
-    f(value)
+  val getUsersUnchanged: List[User] =
+    updateAge(identity)
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C =
     a => g(f(a))
@@ -46,6 +75,10 @@ object FunctionAnswers extends FunctionToImpl {
 
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D =
     a => h(f(a), g(a))
+
+  ///////////////////////////
+  // 4. Recursion & Laziness
+  ///////////////////////////
 
   def sumList(xs: List[Int]): Int =
     xs match {
@@ -83,16 +116,21 @@ object FunctionAnswers extends FunctionToImpl {
   def sumList3(xs: List[Int]): Int =
     foldLeft(xs, 0)(_ + _)
 
+  ////////////////////////
+  // 5. Memoization
+  ////////////////////////
+
   def memoize[A, B](f: A => B): A => B = {
     val cache = mutable.Map.empty[A, B]
-    (a: A) => {
-      cache.get(a) match {
-        case Some(b) => b // cache succeeds
-        case None =>
-          val b = f(a)
-          cache.update(a, b) // update cache
-          b
+    (a: A) =>
+      {
+        cache.get(a) match {
+          case Some(b) => b // cache succeeds
+          case None =>
+            val b = f(a)
+            cache.update(a, b) // update cache
+            b
+        }
       }
-    }
   }
 }

@@ -2,8 +2,8 @@ package function
 
 import answers.function.FunctionAnswers
 import exercises.function.FunctionExercises
-import exercises.function.FunctionExercises.Person
-import org.scalatest.{FreeSpec, Matchers}
+import exercises.function.FunctionExercises.User
+import org.scalatest.{FunSuite, Matchers}
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import toimpl.function.FunctionToImpl
 
@@ -12,63 +12,90 @@ import scala.collection.mutable.ListBuffer
 class FunctionAnswersTest   extends FunctionToImplTest(FunctionAnswers)
 class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
 
-class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers with ScalaCheckDrivenPropertyChecks {
+class FunctionToImplTest(impl: FunctionToImpl) extends FunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
   import impl._
 
-  "identity" in {
+  ////////////////////////////
+  // 1. first class functions
+  ////////////////////////////
+
+  test("tripleVal") {
+    tripleVal(5) shouldEqual 15
+  }
+
+  test("tripleList") {
+    tripleList(List(1, 2, 3)) shouldEqual List(3, 6, 9)
+  }
+
+  test("move") {
+    move(true)(5) shouldEqual 6
+    move(false)(5) shouldEqual 4
+  }
+
+  test("move2") {
+    move2(true, 5) shouldEqual 6
+    move2(false, 5) shouldEqual 4
+  }
+
+  test("move3") {
+    move3(true)(5) shouldEqual 6
+    move3(false)(5) shouldEqual 4
+  }
+
+  test("applyMany") {
+    applyMany(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual List(11, 9, 20)
+  }
+
+  test("applyManySum") {
+    applyManySum(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual 30
+  }
+
+  ////////////////////////////
+  // 2. polymorphic functions
+  ////////////////////////////
+
+  test("identity") {
     identity(3) shouldEqual 3
     identity("foo") shouldEqual "foo"
   }
 
-  "const" in {
+  test("const") {
     const("foo")(5) shouldEqual "foo"
     const(5)("foo") shouldEqual 5
+    List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
   }
 
-  "tripleVal" in {
-    tripleVal(5) shouldEqual 15
+  test("setAge") {
+    setAge(10) == List(User("John", 10), User("Lisa", 10))
   }
 
-  "tripleAge" in {
-    tripleAge(List(Person("John", 23), Person("Alice", 5))) shouldEqual List(Person("John", 69), Person("Alice", 15))
+  test("getUsersUnchanged") {
+    getUsersUnchanged == List(User("John", 26), User("Lisa", 5))
   }
 
-  "setAge" in {
-    setAge(List(Person("John", 23), Person("Alice", 5)), 10) shouldEqual List(Person("John", 10), Person("Alice", 10))
-  }
-
-  "noopAge" in {
-    val xs = List(Person("John", 23), Person("Alice", 5))
-    noopAge(xs) shouldEqual xs
-  }
-
-  "apply" in {
-    apply((_: Int) + 1, 10) shouldEqual 11
-  }
-
-  "doubleInc" in {
+  test("doubleInc") {
     doubleInc(0) shouldEqual 1
     doubleInc(6) shouldEqual 13
   }
 
-  "incDouble" in {
+  test("incDouble") {
     incDouble(0) shouldEqual 2
     incDouble(6) shouldEqual 14
   }
 
-  "curry" in {
+  test("curry") {
     def plus(x: Int, y: Int): Int = x + y
 
     curry(plus)(4)(6) shouldEqual 10
   }
 
-  "uncurry" in {
+  test("uncurry") {
     def plus(x: Int)(y: Int): Int = x + y
 
     uncurry(plus)(4, 6) shouldEqual 10
   }
 
-  "join" in {
+  test("join") {
     val reverse: Boolean => Boolean = x => !x
     val zeroOne: Boolean => String  = x => if (x) "1" else "0"
 
@@ -77,7 +104,7 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
   List(sumList _, sumList2 _, sumList3 _).zipWithIndex.foreach {
     case (f, i) =>
-      s"sumList $i small" in {
+      test(s"sumList $i small") {
         f(List(1, 2, 3, 10)) shouldEqual 16
         f(Nil) shouldEqual 0
       }
@@ -85,14 +112,14 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
 
   List(sumList2 _, sumList3 _).zipWithIndex.foreach {
     case (f, i) =>
-      s"sumList $i large" in {
+      test(s"sumList $i large") {
         val xs = 1.to(1000000).toList
 
         f(xs) shouldEqual xs.sum
       }
   }
 
-  "find" in {
+  test("find") {
     val xs = 1.to(1000000).toList
 
     val seen = ListBuffer.empty[Int]
@@ -105,7 +132,7 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FreeSpec with Matchers wi
     seen.size shouldEqual 11
   }
 
-  "memoize" in {
+  test("memoize") {
     def inc(x: Int): Int                         = x + 1
     def circleCircumference(radius: Int): Double = 2 * radius * Math.PI
 

@@ -1,22 +1,40 @@
 package toimpl.function
 
-import exercises.function.FunctionExercises.Person
+import exercises.function.FunctionExercises.User
 
 trait FunctionToImpl {
+
+  ////////////////////////////
+  // 1. first class functions
+  ////////////////////////////
+
+  val tripleVal: Int => Int
+
+  def tripleList(xs: List[Int]): List[Int]
+
+  val tripleVal2: Int => Int
+
+  def move(increment: Boolean): Int => Int
+
+  val move2: (Boolean, Int) => Int
+
+  val move3: Boolean => Int => Int
+
+  def applyMany(xs: List[Int => Int]): Int => List[Int]
+
+  def applyManySum(xs: List[Int => Int]): Int => Int
+
+  ////////////////////////////
+  // 2. polymorphic functions
+  ////////////////////////////
 
   def identity[A](x: A): A
 
   def const[A, B](a: A)(b: B): A
 
-  val tripleVal: Int => Int
+  def setAge(value: Int): List[User]
 
-  def tripleAge(xs: List[Person]): List[Person]
-
-  def setAge(xs: List[Person], value: Int): List[Person]
-
-  def noopAge(xs: List[Person]): List[Person]
-
-  def apply[A, B](f: A => B, value: A): B
+  def getUsersUnchanged: List[User]
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C
 
@@ -32,6 +50,10 @@ trait FunctionToImpl {
 
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D
 
+  ///////////////////////////
+  // 4. Recursion & Laziness
+  ///////////////////////////
+
   def sumList(xs: List[Int]): Int
 
   def sumList2(xs: List[Int]): Int
@@ -43,6 +65,10 @@ trait FunctionToImpl {
   def sumList3(xs: List[Int]): Int
 
   def find[A](xs: List[A])(p: A => Boolean): Option[A]
+
+  ////////////////////////
+  // 5. Memoization
+  ////////////////////////
 
   def memoize[A, B](f: A => B): A => B
 
