@@ -2,20 +2,24 @@ package typeclass
 
 import answers.typeclass.TypeclassAnswers
 import cats.data.NonEmptyList
-import exercises.typeclass.Eq
 import cats.instances.all._
 import exercises.typeclass.Monoid.syntax._
 import exercises.typeclass.Semigroup.syntax._
-import exercises.typeclass._
+import exercises.typeclass.{Eq, _}
 import org.scalacheck.{Arbitrary, Cogen}
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import org.typelevel.discipline.scalatest.Discipline
 import toimpl.typeclass.TypeclassToImpl
 
 class TypeclassExercisesTest extends TypeclassTest(TypeclassExercises)
 class TypeclassAnswersTest   extends TypeclassTest(TypeclassAnswers)
 
-class TypeclassTest(impl: TypeclassToImpl) extends FunSuite with Discipline with Matchers with TypeclassTestInstance {
+class TypeclassTest(impl: TypeclassToImpl)
+    extends AnyFunSuite
+    with Discipline
+    with Matchers
+    with TypeclassTestInstance {
   import impl._
 
   /////////////////////////////

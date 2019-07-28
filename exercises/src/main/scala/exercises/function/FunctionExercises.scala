@@ -48,7 +48,7 @@ object FunctionExercises extends FunctionToImpl {
   def applyMany(xs: List[Int => Int]): Int => List[Int] = ???
 
   // 1g. Implement applyManySum
-  // such as applyManySum(List(_ + 1, _ - 1, _ * 2))(10) == 30
+  // such as applyManySum(List(_ + 1, _ - 1, _ * 2))(10) == 40
   def applyManySum(xs: List[Int => Int]): Int => Int = ???
 
   ////////////////////////////

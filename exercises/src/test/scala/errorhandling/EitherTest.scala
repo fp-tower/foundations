@@ -1,19 +1,19 @@
 package errorhandling
 
 import answers.errorhandling.EitherAnswers
-import exercises.errorhandling.{EitherExercises, Username}
 import exercises.errorhandling.EitherExercises.GetOrderError.{NonUniqueOrderId, OrderNotFound}
-import exercises.errorhandling.EitherExercises.{parseStringToInt, UsernameError}
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacter, TooSmall}
-import exercises.errorhandling.EitherExercises.UsernameError.InvalidCharacter
+import exercises.errorhandling.EitherExercises.{parseStringToInt, UsernameError}
 import exercises.errorhandling.OptionExercises.Order
-import org.scalatest.{FunSuite, Matchers}
+import exercises.errorhandling.{EitherExercises, Username}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import toimpl.errorhandling.EitherToImpl
 
 class EitherExercisesTest extends EitherTest(EitherExercises)
 class EitherAnswersTest   extends EitherTest(EitherAnswers)
 
-class EitherTest(impl: EitherToImpl) extends FunSuite with Matchers {
+class EitherTest(impl: EitherToImpl) extends AnyFunSuite with Matchers {
   import impl._
 
   ////////////////////////

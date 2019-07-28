@@ -6,14 +6,15 @@ import answers.errorhandling.UnrepresentableAnswers
 import exercises.errorhandling.UnrepresentableExercises
 import exercises.errorhandling.UnrepresentableExercises.{Item, Order}
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.Checkers
 import toimpl.errorhandling.UnrepresentableToImpl
 
 class UnrepresentableExercisesTest extends UnrepresentableTest(UnrepresentableExercises)
 class UnrepresentableAnswersTest   extends UnrepresentableTest(UnrepresentableAnswers)
 
-class UnrepresentableTest(impl: UnrepresentableToImpl) extends FunSuite with Matchers with Checkers {
+class UnrepresentableTest(impl: UnrepresentableToImpl) extends AnyFunSuite with Matchers with Checkers {
   import impl._
 
   test("checkout") {

@@ -3,7 +3,8 @@ package function
 import answers.function.FunctionAnswers
 import exercises.function.FunctionExercises
 import exercises.function.FunctionExercises.User
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import toimpl.function.FunctionToImpl
 
@@ -12,7 +13,7 @@ import scala.collection.mutable.ListBuffer
 class FunctionAnswersTest   extends FunctionToImplTest(FunctionAnswers)
 class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
 
-class FunctionToImplTest(impl: FunctionToImpl) extends FunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
+class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
   import impl._
 
   ////////////////////////////
@@ -47,7 +48,7 @@ class FunctionToImplTest(impl: FunctionToImpl) extends FunSuite with Matchers wi
   }
 
   test("applyManySum") {
-    applyManySum(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual 30
+    applyManySum(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual 40
   }
 
   ////////////////////////////

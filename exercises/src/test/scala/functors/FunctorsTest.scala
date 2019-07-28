@@ -13,7 +13,8 @@ import exercises.functors.Traverse.syntax._
 import exercises.functors._
 import exercises.typeclass.{Eq, Monoid}
 import org.scalacheck.Arbitrary
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import org.typelevel.discipline.scalatest.Discipline
 import toimpl.functors.FunctorsToImpl
 
@@ -22,7 +23,7 @@ import scala.util.Try
 class FunctorsExercisesTest extends FunctorsTest(FunctorsExercises)
 class FunctorsAnswersTest   extends FunctorsTest(FunctorsAnswers)
 
-class FunctorsTest(impl: FunctorsToImpl) extends FunSuite with Discipline with Matchers with FunctorsTestInstance {
+class FunctorsTest(impl: FunctorsToImpl) extends AnyFunSuite with Discipline with Matchers with FunctorsTestInstance {
   import impl._
 
   ////////////////////////

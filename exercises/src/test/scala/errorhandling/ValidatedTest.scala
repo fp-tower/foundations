@@ -4,14 +4,15 @@ import answers.errorhandling.ValidatedAnswers
 import cats.data.NonEmptyList
 import exercises.errorhandling.Validated._
 import exercises.errorhandling.ValidatedExercises
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import toimpl.errorhandling.ValidatedToImpl
 
 class ValidatedExercisesTest extends ValidatedTest(ValidatedExercises)
 
 class ValidatedAnswersTest extends ValidatedTest(ValidatedAnswers)
 
-class ValidatedTest(impl: ValidatedToImpl) extends FunSuite with Matchers {
+class ValidatedTest(impl: ValidatedToImpl) extends AnyFunSuite with Matchers {
   import impl._
 
   def boom[A, B, C](a: A, b: B): C = ???

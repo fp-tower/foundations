@@ -1,11 +1,12 @@
 package sideeffect
 
 import exercises.sideeffect.IOExercises
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 
 import scala.collection.mutable.ListBuffer
 
-class IOTests extends FunSuite with Matchers {
+class IOTests extends AnyFunSuite with Matchers {
 
   test("read user from Console") {
     val in: List[String]        = ???

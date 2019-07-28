@@ -2,9 +2,10 @@ package sideeffect
 
 import answers.sideeffect.IOAnswers
 import exercises.sideeffect.IOExercises.User
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 
-class IOAnswersTests extends FunSuite with Matchers {
+class IOAnswersTests extends AnyFunSuite with Matchers {
 
   ignore("read user from Console") {
     val in: List[String] = List("John", "24")

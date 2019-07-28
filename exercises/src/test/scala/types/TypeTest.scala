@@ -4,11 +4,12 @@ import answers.types.TypeAnswers
 import exercises.typeclass.Eq
 import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import org.typelevel.discipline.scalatest.Discipline
 import toimpl.types.TypeToImpl
 
-class TypeToImplTest(impl: TypeToImpl) extends FunSuite with Discipline with Matchers {
+class TypeToImplTest(impl: TypeToImpl) extends AnyFunSuite with Discipline with Matchers {
   import impl._
 
   test("boolean - optUnit") {

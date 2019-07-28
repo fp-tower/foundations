@@ -1,11 +1,12 @@
 package function
 
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funsuite.AnyFunSuite
 import org.typelevel.discipline.scalatest.Discipline
 
 import scala.util.Random
 
-class PureFunctionExercisesTest extends FunSuite with Discipline with Matchers {
+class PureFunctionExercisesTest extends AnyFunSuite with Discipline with Matchers {
 
   def increment(x: Int): Int = x + 1
 
