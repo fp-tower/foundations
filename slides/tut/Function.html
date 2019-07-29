@@ -77,9 +77,9 @@ inc(10)
 # First class function
 
 ```tut:silent
-val inc: Int => Int = (x: Int) => x + 1
-val dec: Int => Int = (x: Int) => x - 1
-val double: Int => Int = (x: Int) => x - 1
+val inc   : Int => Int = (x: Int) => x + 1
+val dec   : Int => Int = (x: Int) => x - 1
+val double: Int => Int = (x: Int) => x * 2
 
 
 val list = List(inc, dec, double)
@@ -100,12 +100,16 @@ val inc: Int => Int = (x: Int) => x + 1
 def map(xs: List[Int])(f: Int => Int): List[Int] = ???
 ```
 
+--
+
 ```tut
 List(1,2,3).map(inc)
 ```
 
+<br>
+
 ```tut
-List("hello", "world", "!").foreach(println)
+List("hello", "world", "!").takeWhile(_.length > 2)
 ```
 
 ---
@@ -213,8 +217,6 @@ background-image: url(img/function/side-effect-2.svg)
 ```scala
 def println(message: String): Unit = ...
 ```
-
---
 
 ```tut
 val x = println("Hello")
@@ -336,7 +338,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Refactoring
+# 1. Refactoring
 
 ---
 # Refactoring
@@ -533,291 +535,107 @@ hello_simplified(foo) // print foo
 ---
 class: center, middle
 
-# Referential transparency
-
----
-# Referential transparency
-
-A function is referentially transparent if we can replace all the calls of the function by its output without
-changing the behaviour of the program.
-
---
-
-```scala
-bar(foo(42), foo(42))
-```
-
-```scala
-val x = foo(42)
-bar(x, x)
-```
-
----
-# Referentially transparent
-
-```tut:silent
-var countCall = 0
-
-def isEven(x: Int): Boolean = {
-  countCall += 1
-  x % 2 == 0
-}
-```
-
---
-
-```tut
-val five = isEven(5)
-val six  = isEven(6)
-countCall
-```
-
---
-
-```scala
-forAll((x: Int) => !isEven(x + 1) == isEvent(x))
-```
-
----
-# Referentially transparent
-
-```tut:silent
-var countCall = 0
-
-def isEven(x: Int): Boolean = {
-  countCall += 1
-  x % 2 == 0
-}
-```
-
-```tut
-val five = isEven(5)
-val six  = !isEven(5) // isEven(6)
-countCall
-```
-
-```scala
-forAll((x: Int) => !isEven(x + 1) == isEvent(x))
-```
-
----
-# Referentially transparent
-
-```tut:silent
-var countCall = 0
-
-def isEven(x: Int): Boolean = {
-  countCall += 1
-  x % 2 == 0
-}
-```
-
-```tut
-val five = isEven(5)
-val six  = !five // isEven(6)
-countCall
-```
-
-```scala
-forAll((x: Int) => !isEven(x + 1) == isEvent(x))
-```
-
----
-# Referentially transparent
-
-```tut:silent
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-
-def doSomethingExpensive(x: Int): Future[Int] =
-  Future { ??? }
-
-for {
-  x <- doSomethingExpensive(5)
-  y <- doSomethingExpensive(8) // one after the other
-} yield x + y
-```
-
---
-
-```tut:silent
-val fx = doSomethingExpensive(5)
-val fy = doSomethingExpensive(8) // in parallel
-
-for {
-  x <- fx
-  y <- fy
-} yield x + y
-```
-
----
-# Referentially transparent
-
-```scala
-def confirm(id: OrderId): Order = {
-  val order  = getOrder(id)
-  val status = updateStatus(id, Confirmed)
-  val log    = audit.info(s"Order $id confirmed")
-  val user   = getUser(order.userId)
-  order
-}
-```
-
----
-# Referentially transparent
-
-```scala
-def confirm(id: OrderId): Order = {
-  val order  = getOrder(id)
-  val status = updateStatus(id, Confirmed)
-  val log    = audit.info(s"Order $id confirmed")
-  // val user   = getUser(order.userId)
-  order
-}
-```
-
----
-# Referentially transparent
-
-```scala
-def confirm(id: OrderId): Order = {
-  val order  = getOrder(id)
-  // val status = updateStatus(id, Confirmed)
-  // val log    = audit.info(s"Order $id confirmed")
-  // val user   = getUser(order.userId)
-  order
-}
-```
-
----
-class: center, middle
-
-# Referentially transparent
-
-# means
-
-# local reasoning
-
----
-class: center, middle
-
-# Referentially transparent
+# Pure function
 
 # means
 
 # fearless refactoring
 
 ---
-# Testing
+class: center, middle
 
-```tut:silent
-var counter: Long = 1
+# 2. Local reasoning
 
-def foo(x: Int, b: Boolean): Long = {
-  counter += x
-  if(b) counter *= 2
-  else counter = 0
-  counter
+---
+# Local reasoning
+
+```scala
+def hello(foo: Foo, bar: Bar): Int = {
+
+  ??? // only depends on foo, bar
 }
 ```
 
---
-
-```tut
-foo(5,  true) == 12L
-
-foo(5, false) == 0L
-
-foo(5,  true) == 10L
-```
-
 ---
-# Testing
-
-```tut:silent
-def foo(x: Int, b: Boolean): Long = ???
-```
-
-```tut:invisible
-def foo(x: Int, b: Boolean): Long = 0
-```
-
---
-
-```tut:silent
-foo(5,  true) == 12L
-
-foo(5, false) == 0L
-```
-
-???
-
-* no setup / dependency injection, `foo` only depends on its inputs
-* order of tests does not matter
-* tests can be run in parallel
-
-
----
-# Caching
-
-```tut:silent
-def expensiveFunc(x: Long): Boolean = ???
-```
-
---
-
-```tut:silent
-def memoize[A, B](f: A => B): A => B = ???
-```
+# Local reasoning
 
 ```scala
-val cachedExpensiveFunc: Long => Boolean =
-  memoize(expensiveFunc)
+class HelloWorld(fizz: Fizz) {
+
+  val const = 12.3
+
+  def hello(foo: Foo, bar: Bar): Int = {
+
+    ??? // only depends on foo, bar, const and fizz
+  }
+
+}
 ```
 
 ---
-background-image: url(img/function-composition-1.jpg)
+# Local reasoning
 
-# Function composition
+```scala
+class HelloWorld(fizz: Fizz) {
 
----
-background-image: url(img/function-composition-2.jpg)
+  var secret = null // ❌
 
-# Function composition
+  def hello(foo: Foo, bar: Bar): Int = {
+    FarAwayObject.mutableMap += "foo" -> foo // ❌
+    publishMessage(Hello(foo, bar)) // ❌
+    ???
+  }
 
----
-background-image: url(img/function-composition-3.jpg)
+}
 
-# Function composition
-
----
-background-image: url(img/function-graph.jpg)
-
-# Graph
-
----
-.h1[# Downsides of pure function]
-
-.large[
-* We can't **DO** anything
-]
-
---
-
-.large[
-* We have to re-learn almost everything e.g. error handling, state, data structure
-]
-
---
-
-.large[
-* Some things used to be easy e.g. logging
-]
+object FarAwayObject {
+  val mutableMap = ??? // ❌
+}
+```
 
 ---
 class: center, middle
 
-# A => F[B]
+# 3. Easier testing
+
+---
+class: center, middle
+
+# 4. Better documentation
+
+---
+# Better documentation
+
+```scala
+def getAge(user: User): `Int` = ???
+
+def getOrElse[A](fa: Option[A])(orElse: `=> A`): A = ???
+
+def parseJson(x: String): `Either[ParsingError`, Json] = ???
+
+def void[`A`](fa: Option[`A`]): Option[Unit] = ???
+
+def forever[A](fa: IO[A]): IO[`Nothing`] = ???
+```
+
+---
+class: center, middle
+
+# 5. Potential compiler optimisations
+
+### See Exercise 5
+
+`exercises.function.FunctionExercises.scala`
+
+---
+class: center, middle
+
+# What's the catch?
+
+---
+class: center, middle
+
+# With pure function, you cannot __DO__ anything
 
 ---
 class: center, middle
