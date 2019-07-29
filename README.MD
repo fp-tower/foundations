@@ -8,29 +8,32 @@
 ### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
 
 ### Module 1: [Function](https://fp-tower.github.io/foundation/Function#1)
-* Pure functions
+* First class functions
 * Polymorphic functions
-* Higher-order functions
+* Pure functions
 * Recursion
 * Memoization
 
-### Module 2: [Type](https://fp-tower.github.io/foundation/Type#1)
+### Module 2: Side Effect [WIP](https://fp-tower.github.io/foundation/SideEffect#1)
+* Side effect with referential transparency
+* IO / Thunk
+* Restricted algebra
+* IO vs Future
+* Async
+
+### Module 3: [Type](https://fp-tower.github.io/foundation/Type#1)
 * Cardinality
 * Algebra of types
 * Types and Tests, Valid Implementation Count (VIC)
 * Parametricity
 * Logic and types
 
-### Module 3: [Error Handling](https://fp-tower.github.io/foundation/ErrorHandling#1)
+### Module 4: [Error Handling](https://fp-tower.github.io/foundation/ErrorHandling#1)
 * Unrepresentable state
 * Compare error types: Option, Either, Validated, Try
 * ADT similarities
 
-### Module 4: Reader / Writer / State
-
-### Module 5: Side Effect [WIP](https://fp-tower.github.io/foundation/SideEffect#1)
-* IO vs Future
-* Async
+### Module 5: Reader / Writer / State
 
 ### Module 6: [Typeclass](https://fp-tower.github.io/foundation/Typeclass#1)
 * Different implementations of ad-hoc polymorphism
