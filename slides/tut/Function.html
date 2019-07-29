@@ -14,8 +14,11 @@
     .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     .medium { font-size: 28px; }
     .large { font-size: 36px; }
-    .pull-left { float: left; width: 47%; }
-    .pull-right { float: right; width: 47%; }
+
+    .cols { display: flex; }
+    .fifty { flex: 50%; }
+    .fortyfive { flex: 45%; }
+    .ten { flex: 10%; }
     .footer { position: absolute; bottom: 12px; left: 45px }
 
   </style>
@@ -115,7 +118,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Functional programing is the use of "pure" function
+# Pure function
 
 ---
 background-image: url(img/function/mapping-1.svg)
@@ -306,20 +309,7 @@ def foo[A](a: Any): Int = 5
 ```
 
 ---
-.h1[# Pure Function]
-
-.large[
-* deterministic
-* total (not partial)
-* no mutation
-* no exception
-* no null
-* no side effect
-* no reflection
-]
-
----
-.h1[# Scalazzi subset]
+.h1[# Pure Function (aka Scalazzi subset)]
 
 .large[
 * deterministic
@@ -342,6 +332,203 @@ class: center, middle
 class: center, middle
 
 # Why pure function?
+
+---
+class: center, middle
+
+# Refactoring
+
+---
+# Refactoring
+
+```scala
+def hello_1(foo: Foo, bar: Bar) = {
+  val x = f(foo)
+  val y = g(bar)
+  h(y)
+  y
+}
+```
+
+---
+# Refactoring: remove unused code
+
+```scala
+def hello_1(foo: Foo, bar: Bar) = {
+  `val x = f(foo)`
+  val y = g(bar)
+  `h(y)`
+  y
+}
+```
+
+---
+# Refactoring: remove unused code
+
+```scala
+def hello_1(foo: Foo, bar: Bar) = {
+  `val x = f(foo)`
+  val y = g(bar)
+  `h(y)`
+  y
+}
+```
+
+should be equivalent to
+
+```scala
+def hello_2(foo: Foo, bar: Bar): Int =
+  g(bar)
+```
+
+--
+
+### Counter example
+
+```scala
+def f(foo: Foo): Unit = upsertToDb(foo)
+
+def h(id: Int): Unit = globalVar += 1
+```
+
+---
+.h1[# Refactoring: reorder variables]
+
+.cols[
+.fortyfive[
+```scala
+def hello_1(foo: Foo, bar: Bar) = {
+  `val x = f(foo)`
+  val y = g(bar)
+  h(x, y)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.fortyfive[
+```scala
+def hello_2(foo: Foo, bar: Bar): Int = {
+  val y = g(bar)
+  `val x = f(foo)`
+  h(x, y)
+}
+```
+]]
+
+--
+
+### Counter example
+
+```scala
+def f(foo: Foo): Unit = print("foo")
+def g(bar: Bar): Unit = print("bar")
+
+hello_1(foo, bar) // print foobar
+hello_2(foo, bar) // print barfoo
+```
+
+---
+.h1[# Refactoring: extract - inline]
+
+.cols[
+.fortyfive[
+```scala
+def hello_extract(foo: Foo, bar: Bar) = {
+  val x = f(foo)
+  val y = g(bar)
+  h(x, y)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.fortyfive[
+```scala
+def hello_inline(foo: Foo, bar: Bar) = {
+  h(f(foo), g(bar))
+}
+```
+]]
+
+--
+
+### Counter example
+
+```scala
+def f(foo: Foo): Boolean = false
+
+def g(bar: Bar): Boolean = throw new Exception("Boom!")
+
+def h(b1: Boolean, b2:` =>` Boolean): Boolean = b1 && b2
+
+hello_inline (foo, bar) // false
+hello_extract(foo, bar) // throw Exception
+```
+
+---
+# Refactoring: extract - inline
+
+```tut:silent
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+def doSomethingExpensive(x: Int): Future[Int] =
+  Future { ??? }
+
+for {
+  x <- doSomethingExpensive(5)
+  y <- doSomethingExpensive(8) // sequential, only starts when first Future is complete
+} yield x + y
+```
+
+```tut:silent
+val fx = doSomethingExpensive(5)
+val fy = doSomethingExpensive(8) // in parallel
+
+for {
+  x <- fx
+  y <- fy
+} yield x + y
+```
+
+---
+.h1[# Refactoring: de-duplicate]
+
+.cols[
+.fortyfive[
+```scala
+def hello_duplicate(foo: Foo) = {
+  val x = f(foo)
+  val y = f(foo)
+  h(x, y)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.fortyfive[
+```scala
+def hello_simplified(foo: Foo) = {
+  val x = f(foo)
+  h(x, x)
+}
+```
+]]
+
+--
+
+### Counter example
+
+```scala
+def f(foo: Foo): Unit = print("foo")
+
+hello_duplicate(foo)  // print foofoo
+hello_simplified(foo) // print foo
+```
 
 ---
 class: center, middle
@@ -643,7 +830,9 @@ class: center, middle
 <script>
     var slideshow = remark.create({
         ratio: "16:9",
-        slideNumberFormat: '%current%'
+        slideNumberFormat: '%current%',
+        highlightLines: true,
+        highlightSpans: true,
     });
 </script>
 </body>
