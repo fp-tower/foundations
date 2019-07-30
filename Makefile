@@ -1,11 +1,11 @@
 SRCS=$(notdir $(wildcard slides/tut/*.html))
-HTMLS=$(addprefix slides/docs/, $(SRCS))
+HTMLS=$(addprefix docs/, $(SRCS))
 PDFS=$(HTMLS:.html=.pdf)
 
 pdf: ${PDFS}
 
 docs/img:
-	mkdir -p docs
+	cp -r slides/docs docs/
 
 docs/%.pdf: docs/%.html
 	decktape $< $@
@@ -17,4 +17,4 @@ depends:
 	npm install -g decktape
 
 clean:
-	rm -rf docs 
+	rm -rf docs
