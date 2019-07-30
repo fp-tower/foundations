@@ -30,14 +30,14 @@ before_cache:
 script:
    - sbt ++$TRAVIS_SCALA_VERSION "testOnly *AnswersTest"
    - sbt ++$TRAVIS_SCALA_VERSION tut
-#   - make depends
-#   - make
-#
-#deploy:
-#   provider: pages
-#   local_dir: docs/
-#   skip_cleanup: true
-#   github_token: $GH_TOKEN
-#   on:
-#      branch: master
-#      condition: $TRAVIS_PULL_REQUEST="false"
+   - make depends
+   - make
+
+deploy:
+   provider: pages
+   local_dir: docs/
+   skip_cleanup: true
+   github_token: $GH_TOKEN
+   on:
+      branch: master
+      condition: $TRAVIS_PULL_REQUEST="false"
