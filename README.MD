@@ -7,35 +7,35 @@
 
 ### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
 
-### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function#1)
+### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)
 * First class functions
 * Polymorphic functions
 * Pure functions
 * Recursion
 * Memoization
 
-### Module 2: Side Effect [WIP](https://fp-tower.github.io/foundation/2-SideEffect#1)
+### Module 2: Side Effect [WIP](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
 * Side effect with referential transparency
 * IO / Thunk
 * Restricted algebra
 * IO vs Future
 * Async
 
-### Module 3: [Type](https://fp-tower.github.io/foundation/3-Type#1)
+### Module 3: [Type](https://fp-tower.github.io/foundation/3-Type.html#1)
 * Cardinality
 * Algebra of types
 * Types and Tests, Valid Implementation Count (VIC)
 * Parametricity
 * Logic and types
 
-### Module 4: [Error Handling](https://fp-tower.github.io/foundation/4-ErrorHandling#1)
+### Module 4: [Error Handling](https://fp-tower.github.io/foundation/4-ErrorHandling.html#1)
 * Unrepresentable state
 * Compare error types: Option, Either, Validated, Try
 * ADT similarities
 
 ### Module 5: Reader / Writer / State
 
-### Module 6: [Typeclass](https://fp-tower.github.io/foundation/6-Typeclass#1)
+### Module 6: [Typeclass](https://fp-tower.github.io/foundation/6-Typeclass.html#1)
 * Different implementations of ad-hoc polymorphism
 * Eq, Monoid
 * Typeclass laws
@@ -45,7 +45,7 @@
 * Higher kinded typeclass with Foldable
 * Typeclass abuses
 
-### Module 7: [Functors](https://fp-tower.github.io/foundation/7-Functors#1)
+### Module 7: [Functors](https://fp-tower.github.io/foundation/7-Functors.html#1)
 * Functor, Applicative, Monad, Traverse
 * Combining effects
 * Variance
