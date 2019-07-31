@@ -10,3 +10,5 @@ done
 
 mkdir -p docs/pdf
 mv docs/*.pdf docs/pdf
+
+tar -czf docs/pdf/foundation.tar.gz docs/pdf/*.pdf
