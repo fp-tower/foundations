@@ -81,7 +81,7 @@ object FunctionAnswers extends FunctionToImpl {
     a => h(f(a), g(a))
 
   ///////////////////////////
-  // 4. Recursion & Laziness
+  // 3. Recursion & Laziness
   ///////////////////////////
 
   def sumList(xs: List[Int]): Int =

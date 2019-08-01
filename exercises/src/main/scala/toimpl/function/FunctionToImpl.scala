@@ -55,7 +55,7 @@ trait FunctionToImpl {
   def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D
 
   ///////////////////////////
-  // 4. Recursion & Laziness
+  // 3. Recursion & Laziness
   ///////////////////////////
 
   def sumList(xs: List[Int]): Int

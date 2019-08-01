@@ -1,6 +1,6 @@
 # Generated files
 slides/docs/*.html
-docs/
+/docs/
 
 ## IntelliJ files to ignore
 *.iml

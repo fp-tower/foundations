@@ -18,9 +18,9 @@
     .cols { display: flex; }
     .fifty { flex: 50%; }
     .fortyfive { flex: 45%; }
+    .fortyfive-middle{ flex: 45%; display: flex; align-items: center; justify-content: center;}
     .ten { flex: 10%; }
     .footer { position: absolute; bottom: 12px; left: 45px }
-
   </style>
 </head>
 <body>
@@ -118,6 +118,69 @@ class: center, middle
 # Exercises 1 and 2
 
 `exercises.function.FunctionExercises.scala`
+
+---
+background-image: url(img/function/fold.svg)
+
+# Folding
+
+---
+background-image: url(img/function/fold-left-1.svg)
+
+# Fold Left
+
+---
+background-image: url(img/function/fold-left-2.svg)
+
+# Fold Left
+
+---
+background-image: url(img/function/fold-left-all.svg)
+
+# Fold Left
+
+---
+
+.cols[
+.fortyfive-middle[
+```scala
+def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
+  var acc = b
+  val it = fa.iterator
+
+  while(it.hasNext) {
+    val current = it.next()
+    acc = f(acc, current)
+  }
+
+  acc
+}
+```
+]
+
+
+.fortyfive[
+![Fold left](img/function/fold-left-all.svg)
+]]
+
+---
+background-image: url(img/function/fold-right-1.svg)
+
+# Fold Right
+
+---
+background-image: url(img/function/fold-right-2.svg)
+
+# Fold Right
+
+---
+background-image: url(img/function/fold-right-3.svg)
+
+# Fold Right
+
+---
+# Fold Right TODO
+
 
 ---
 class: center, middle
