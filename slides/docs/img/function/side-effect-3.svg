@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 604 478" width="604" height="478">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 604 478" width="604" height="478">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -18,10 +18,10 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-08-01 13:59:52 +0000</dc:date>
+  <metadata> Produced by OmniGraffle 7.11 
+    <dc:date>2019-08-02 13:37:30 +0000</dc:date>
   </metadata>
-  <g id="side-effect-3" fill="none" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none">
+  <g id="side-effect-3" fill-opacity="1" stroke-opacity="1" stroke="none" stroke-dasharray="none" fill="none">
     <title>side-effect-3</title>
     <g id="side-effect-3: Layer 1">
       <title>Layer 1</title>
@@ -36,35 +36,35 @@
       <g id="Graphic_102">
         <path d="M 450 90 L 486 126 L 450 162 L 414 126 Z" fill="#70a3d8"/>
         <path d="M 450 90 L 486 126 L 450 162 L 414 126 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(428.72 115.28)" fill="white">
+        <text transform="translate(428.72 116.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.808" y="15">b1</tspan>
         </text>
       </g>
       <g id="Graphic_103">
         <path d="M 459 225 L 495 261 L 459 297 L 423 261 Z" fill="#70a3d8"/>
         <path d="M 459 225 L 495 261 L 459 297 L 423 261 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(437.72 250.28)" fill="white">
+        <text transform="translate(437.72 251.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.808" y="15">b4</tspan>
         </text>
       </g>
       <g id="Graphic_104">
         <path d="M 549 162 L 585 198 L 549 234 L 513 198 Z" fill="#70a3d8"/>
         <path d="M 549 162 L 585 198 L 549 234 L 513 198 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(527.72 187.28)" fill="white">
+        <text transform="translate(527.72 188.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.808" y="15">b3</tspan>
         </text>
       </g>
       <g id="Graphic_105">
         <path d="M 531 270 L 567 306 L 531 342 L 495 306 Z" fill="#70a3d8"/>
         <path d="M 531 270 L 567 306 L 531 342 L 495 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(509.72 295.28)" fill="white">
+        <text transform="translate(509.72 296.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.808" y="15">b5</tspan>
         </text>
       </g>
       <g id="Graphic_106">
         <path d="M 522 63 L 558 99 L 522 135 L 486 99 Z" fill="#70a3d8"/>
         <path d="M 522 63 L 558 99 L 522 135 L 486 99 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(500.72 88.28)" fill="white">
+        <text transform="translate(500.72 89.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.808" y="15">b2</tspan>
         </text>
       </g>
@@ -90,21 +90,21 @@
       <g id="Graphic_122">
         <path d="M 90 99 L 126 135 L 90 171 L 54 135 Z" fill="#589b9d"/>
         <path d="M 90 99 L 126 135 L 90 171 L 54 135 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(68.72 124.28)" fill="white">
+        <text transform="translate(68.72 125.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.256" y="15">a1</tspan>
         </text>
       </g>
       <g id="Graphic_123">
         <path d="M 153 162 L 189 198 L 153 234 L 117 198 Z" fill="#589b9d"/>
         <path d="M 153 162 L 189 198 L 153 234 L 117 198 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(131.72 187.28)" fill="white">
+        <text transform="translate(131.72 188.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.256" y="15">a2</tspan>
         </text>
       </g>
       <g id="Graphic_124">
         <path d="M 117 261 L 153 297 L 117 333 L 81 297 Z" fill="#589b9d"/>
         <path d="M 117 261 L 153 297 L 117 333 L 81 297 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(95.72 286.28)" fill="white">
+        <text transform="translate(95.72 287.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.256" y="15">a3</tspan>
         </text>
       </g>

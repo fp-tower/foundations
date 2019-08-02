@@ -92,21 +92,20 @@ val map = Map(
 ```
 
 ---
-# First class function
+# First class function: higher order
 
-```tut:silent
-val inc: Int => Int = (x: Int) => x + 1
-
-def map(xs: List[Int])(f: Int => Int): List[Int] = ???
+```scala
+def map(xs: List[Int])(`f: Int => Int`): List[Int] = ???
 ```
 
 --
 
+<br>
+
+
 ```tut
 List(1,2,3).map(inc)
 ```
-
-<br>
 
 ```tut
 List("hello", "world", "!").takeWhile(_.length > 2)
@@ -126,11 +125,6 @@ background-image: url(img/function/fold.svg)
 
 ---
 background-image: url(img/function/fold-left-1.svg)
-
-# Fold Left
-
----
-background-image: url(img/function/fold-left-2.svg)
 
 # Fold Left
 
@@ -170,11 +164,6 @@ background-image: url(img/function/fold-right-1.svg)
 
 ---
 background-image: url(img/function/fold-right-2.svg)
-
-# Fold Right
-
----
-background-image: url(img/function/fold-right-3.svg)
 
 # Fold Right
 

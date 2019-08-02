@@ -138,7 +138,7 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
       }
   }
 
-  test("find") {
+  test("find lazy") {
     val xs = 1.to(1000000).toList
 
     val seen = ListBuffer.empty[Int]
@@ -149,6 +149,28 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
 
     res shouldEqual Some(11)
     seen.size shouldEqual 11
+  }
+
+  test("find") {
+    val xs    = 1.to(1000000).toList
+    val small = find(xs)(_ == 5)
+    val neg   = find(xs)(_ == -1)
+
+    small shouldEqual Some(5)
+    neg shouldEqual None
+  }
+
+  test("contains") {
+    val xs = 1.to(1000000).toList
+
+    def contains[A](xs: List[A], value: A): Boolean =
+      foldRight(xs, false)(_ == value || _)
+
+    val small = contains(xs, 5)
+    val neg   = contains(xs, -1)
+
+    small shouldEqual true
+    neg shouldEqual false
   }
 
   test("memoize") {
