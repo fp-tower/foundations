@@ -213,12 +213,30 @@ class: center, middle
 `exercises.function.FunctionExercises.scala`
 
 ---
-background-image: url(img/function/fold-right-1.svg)
-
 # Fold Right
 
+```tut:silent
+sealed trait List[A]
+
+case class Nil[A]() extends List[A]
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+```
+
+```tut
+val xs: List[Int] = Cons(1, Cons(2, Cons(3, Nil())))
+```
+
+--
+
+```scala
+def foldRight[A, B](list: List[A], `z: B`)(f: `(A, => B) => B`): B
+
+foldRight(xs, z)(f) == foldRight(Cons(1, Cons(2, Cons(3, Nil()))), z)(f)
+                    ==           f   (1, f   (2, f   (3, z)))
+```
+
 ---
-background-image: url(img/function/fold-right-2.svg)
+background-image: url(img/function/fold-right-1.svg)
 
 # Fold Right
 
