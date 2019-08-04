@@ -84,11 +84,12 @@ object FunctionAnswers extends FunctionToImpl {
   // 3. Recursion & Laziness
   ///////////////////////////
 
-  def sumList(xs: List[Int]): Int =
-    xs match {
-      case Nil    => 0
-      case h :: t => h + sumList(t)
-    }
+  def sumList(xs: List[Int]): Int = {
+    val it  = xs.iterator
+    var sum = 0
+    while (it.hasNext) sum += it.next()
+    sum
+  }
 
   def sumList2(xs: List[Int]): Int = {
     @tailrec
@@ -110,6 +111,9 @@ object FunctionAnswers extends FunctionToImpl {
 
   def sumList3(xs: List[Int]): Int =
     foldLeft(xs, 0)(_ + _)
+
+  def reverse[A](xs: List[A]): List[A] =
+    foldLeft(xs, List.empty[A])(_.::(_))
 
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
     xs match {
@@ -140,9 +144,6 @@ object FunctionAnswers extends FunctionToImpl {
       case (false, _)   => false
       case (true, rest) => rest
     }
-
-  //  def find[A](xs: List[A])(p: A => Boolean): Option[A] =
-//    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
 
   ////////////////////////
   // 5. Memoization

@@ -2,6 +2,7 @@ package exercises.function
 
 import toimpl.function.FunctionToImpl
 
+import scala.annotation.tailrec
 import scala.util.Random
 
 // you can run and print things here
@@ -127,38 +128,55 @@ object FunctionExercises extends FunctionToImpl {
   ///////////////////////////
 
   // 3a. Use an imperative approach (while, for loop) to implement sumList
+  // such as sumList(List(1,5,2)) == 8
   def sumList(xs: List[Int]): Int = ???
 
   // 3b. Use recursion to implement sumList2
-  // does your implementation works with large list? e.g. sumList2()
+  // does your implementation works with large list? e.g. sumList2(List.fill(1000000)(1))
+  val largeList: List[Int] = List.fill(1000000)(1) // List(1,1,1,1, ....)
+
   def sumList2(xs: List[Int]): Int = ???
 
-  // 3c. Implement foldLeft using recursion
-  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B = ???
+  // 3c. Implement sumList3 using a foldLeft
+  @tailrec
+  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+    xs match {
+      case Nil    => z
+      case h :: t => foldLeft(t, f(z, h))(f)
+    }
 
-  // 3d. Implement sumList3 using a foldLeft
   def sumList3(xs: List[Int]): Int = ???
 
-  // 3e. Implement find using a recursion or loop
-  // does your implementation works with large list? e.g. find(1.to(1000000).toList)(-1)
+  ///////////////////////
+  // GO BACK TO SLIDES
+  ///////////////////////
+
+  // 3d. Implement find using a recursion or loop
   // does your implementation terminate early? e.g. find(1.to(1000000).toList)(-1)(1) does not go through the entire list
+  // does your implementation works with large list? e.g. find(1.to(1000000).toList)(-1)
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
-  // 3f. Implement forAll using a recursion or loop
+  // 3e. Implement forAll using a recursion or loop
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
-  // Again think about large list and early termination
+  // does your implementation terminate early? e.g. forAll(List(false, false, false)) does not go through the entire list
+  // does your implementation works with large list? e.g. forAll(List.fill(1000000)(true))
   def forAll(xs: List[Boolean]): Boolean = ???
 
-  // 3g. Implement foldRight using recursion
-  // Note that combining function f is lazy on its second argument
-  // This is the key to make foldRight terminate early
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B = ???
+  // 3f. Implement find2 and forAll2 using foldRight
+  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
+    xs match {
+      case Nil    => z
+      case h :: t => f(h, foldRight(t, z)(f))
+    }
 
-  // 3h. Implement find2 and forAll2 using foldRight
   def find2[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
   def forAll2(xs: List[Boolean]): Boolean = ???
+
+  ///////////////////////
+  // GO BACK TO SLIDES
+  ///////////////////////
 
   // 3i. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =

@@ -62,15 +62,11 @@ trait FunctionToImpl {
 
   def sumList2(xs: List[Int]): Int
 
-  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B
-
   def sumList3(xs: List[Int]): Int
 
   def find[A](xs: List[A])(p: A => Boolean): Option[A]
 
   def forAll(xs: List[Boolean]): Boolean
-
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B
 
   def find2[A](xs: List[A])(p: A => Boolean): Option[A]
 

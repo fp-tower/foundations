@@ -114,7 +114,7 @@ List("hello", "world", "!").takeWhile(_.length > 2)
 ---
 class: center, middle
 
-# Exercises 1 and 2
+# Exercises 1, 2 and 3a-c
 
 `exercises.function.FunctionExercises.scala`
 
@@ -137,7 +137,7 @@ background-image: url(img/function/fold-left-all.svg)
 
 .cols[
 .fortyfive-middle[
-```scala
+```tut:silent
 def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
   var acc = b
   val it = fa.iterator
@@ -156,6 +156,61 @@ def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
 .fortyfive[
 ![Fold left](img/function/fold-left-all.svg)
 ]]
+
+---
+.cols[
+.fortyfive[
+# FoldLeft
+
+<br>
+<br>
+<br>
+
+```tut:silent
+def sum(xs: List[Int]): Int =
+  foldLeft(xs, 0)(_ + _)
+```
+
+```tut
+sum(List(2,3,10,4))
+```
+]
+
+
+.fortyfive[
+![Sum](img/function/fold-sum.svg)
+]]
+
+---
+.cols[
+.fortyfive[
+# FoldLeft
+
+<br>
+<br>
+<br>
+
+```tut:silent
+def reverse[A](xs: List[A]): List[A] =
+  foldLeft(xs, List.empty[A])((acc, a) => a :: acc)
+```
+
+```tut
+reverse(List(1,2,3,4))
+```
+]
+
+
+.fortyfive[
+![Reverse](img/function/fold-reverse.svg)
+]]
+
+---
+class: center, middle
+
+# Finish Exercise 3
+
+`exercises.function.FunctionExercises.scala`
 
 ---
 background-image: url(img/function/fold-right-1.svg)
