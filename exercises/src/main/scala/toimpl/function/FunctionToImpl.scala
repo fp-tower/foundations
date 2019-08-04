@@ -64,11 +64,17 @@ trait FunctionToImpl {
 
   def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B
 
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B
-
   def sumList3(xs: List[Int]): Int
 
   def find[A](xs: List[A])(p: A => Boolean): Option[A]
+
+  def forAll(xs: List[Boolean]): Boolean
+
+  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B
+
+  def find2[A](xs: List[A])(p: A => Boolean): Option[A]
+
+  def forAll2(xs: List[Boolean]): Boolean
 
   ////////////////////////
   // 5. Memoization
