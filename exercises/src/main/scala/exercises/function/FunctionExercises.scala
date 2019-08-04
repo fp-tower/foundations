@@ -126,30 +126,41 @@ object FunctionExercises extends FunctionToImpl {
   // 3. Recursion & Laziness
   ///////////////////////////
 
-  // 3a. Use recursion to implement sumList
+  // 3a. Use an imperative approach (while, for loop) to implement sumList
   def sumList(xs: List[Int]): Int = ???
 
-  // 3b. Run it with different size of list
-  // What happens when the list is big enough? Why?
-  // You can use `to` to generate a List from 1 to x
-  val oneToTen = 1.to(10).toList
-
-  // 3c. implement sumList2 recursively without the same issue
+  // 3b. Use recursion to implement sumList2
+  // does your implementation works with large list? e.g. sumList2()
   def sumList2(xs: List[Int]): Int = ???
 
-  // 3d. Implement foldLeft using recursion
+  // 3c. Implement foldLeft using recursion
   def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B = ???
 
-  // 3e. Implement foldRight using recursion
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B = ???
-
-  // 3f. Implement sumList3 using a fold, which one should you choose?
+  // 3d. Implement sumList3 using a foldLeft
   def sumList3(xs: List[Int]): Int = ???
 
-  // 3g. Implement find using a fold, which one should you choose?
+  // 3e. Implement find using a recursion or loop
+  // does your implementation works with large list? e.g. find(1.to(1000000).toList)(-1)
+  // does your implementation terminate early? e.g. find(1.to(1000000).toList)(-1)(1) does not go through the entire list
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
-  // 3h. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
+  // 3f. Implement forAll using a recursion or loop
+  // such as forAll(List(true, true , true)) == true
+  // but     forAll(List(true, false, true)) == false
+  // Again think about large list and early termination
+  def forAll(xs: List[Boolean]): Boolean = ???
+
+  // 3g. Implement foldRight using recursion
+  // Note that combining function f is lazy on its second argument
+  // This is the key to make foldRight terminate early
+  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B = ???
+
+  // 3h. Implement find2 and forAll2 using foldRight
+  def find2[A](xs: List[A])(p: A => Boolean): Option[A] = ???
+
+  def forAll2(xs: List[Boolean]): Boolean = ???
+
+  // 3i. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =
     if (x > 0) isOdd(x - 1)
     else if (x < 0) isOdd(x + 1)
@@ -160,7 +171,7 @@ object FunctionExercises extends FunctionToImpl {
     else if (x < 0) isEven(x + 1)
     else false
 
-  // 3i. does the commented function below compile? If yes, what happens when you call it
+  // 3j. does the commented function below compile? If yes, what happens when you call it
   // Search for General recursion
   // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
   //  def foo: Int = foo

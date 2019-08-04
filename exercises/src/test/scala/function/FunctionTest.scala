@@ -138,34 +138,51 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
       }
   }
 
-  test("find lazy") {
-    val xs = 1.to(1000000).toList
+  List(find[Int] _, find2[Int] _).zipWithIndex.foreach {
+    case (f, i) =>
+      test(s"find $i") {
+        val xs = 1.to(100).toList
 
-    val seen = ListBuffer.empty[Int]
+        f(xs)(_ == 5) shouldEqual Some(5)
+        f(xs)(_ == -1) shouldEqual None
+      }
 
-    val res = find(xs) { x =>
-      seen += x; x > 10
-    }
+      test(s"find $i is lazy") {
+        val xs = 1.to(1000000).toList
 
-    res shouldEqual Some(11)
-    seen.size shouldEqual 11
+        val seen = ListBuffer.empty[Int]
+
+        val res = f(xs) { x =>
+          seen += x; x > 10
+        }
+
+        res shouldEqual Some(11)
+        seen.size shouldEqual 11
+      }
+
+      if (i == 0)
+        test(s"find $i is stack safe") {
+          val xs = 1.to(10000000).toList
+
+          f(xs)(_ == 5) shouldEqual Some(5)
+          f(xs)(_ == -1) shouldEqual None
+        }
   }
 
-  test("find") {
-    val xs = 1.to(1000000).toList
+  List(impl.forAll _, forAll2 _).zipWithIndex.foreach {
+    case (f, i) =>
+      test(s"forAll $i") {
+        f(List(true, true, true)) shouldEqual true
+        f(List(true, false, true)) shouldEqual false
+        f(Nil) shouldEqual true
+      }
 
-    find(xs)(_ == 5) shouldEqual Some(5)
-//    find(xs)(_ == -1) shouldEqual None
-  }
+      if (i == 0)
+        test(s"forAll $i is stack safe") {
+          val xs = List.fill(1000000)(true)
 
-  test("contains") {
-    val xs = 1.to(1000000).toList
-
-    def contains[A](xs: List[A], value: A): Boolean =
-      foldRight(xs, false)(_ == value || _)
-
-    contains(xs, 5) shouldEqual true
-//    contains(xs, -1) shouldEqual false
+          f(xs) shouldEqual true
+        }
   }
 
   test("memoize") {

@@ -108,17 +108,41 @@ object FunctionAnswers extends FunctionToImpl {
       case h :: t => foldLeft(t, f(z, h))(f)
     }
 
+  def sumList3(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
+
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
     xs match {
       case Nil    => z
       case h :: t => f(h, foldRight(t, z)(f))
     }
 
-  def find[A](xs: List[A])(p: A => Boolean): Option[A] =
+  @tailrec
+  def find[A](fa: List[A])(p: A => Boolean): Option[A] =
+    fa match {
+      case Nil     => None
+      case x :: xs => if (p(x)) Some(x) else find(xs)(p)
+    }
+
+  @tailrec
+  def forAll(fa: List[Boolean]): Boolean =
+    fa match {
+      case Nil        => true
+      case false :: _ => false
+      case true :: xs => forAll(xs)
+    }
+
+  def find2[A](xs: List[A])(p: A => Boolean): Option[A] =
     foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
 
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
+  def forAll2(xs: List[Boolean]): Boolean =
+    foldRight(xs, true) {
+      case (false, _)   => false
+      case (true, rest) => rest
+    }
+
+  //  def find[A](xs: List[A])(p: A => Boolean): Option[A] =
+//    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
 
   ////////////////////////
   // 5. Memoization
