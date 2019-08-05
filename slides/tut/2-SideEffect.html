@@ -195,22 +195,20 @@ class: center, middle
 import java.time.LocalDate
 import scala.io.StdIn
 
-type Thunk[A] = Unit => A
+type Thunk[A] = () => A  // Unit => A
 
 val readLine: Thunk[String] =
-  _ => StdIn.readLine()
+  () => StdIn.readLine()
 
 def writeLine(message: String): Thunk[Unit] =
-  _ => println(message)
+  () => println(message)
 
 val localDate: Thunk[LocalDate] =
-  _ => LocalDate.now()
+  () => LocalDate.now()
 ```
 
---
-
 ```tut:silent
-def unsafeRun[A](fa: Thunk[A]): A = fa.apply(())
+def unsafeRun[A](fa: Thunk[A]): A = fa()
 ```
 
 ---
@@ -248,12 +246,11 @@ class: center, middle
 .h1[# IO Summary]
 
 .large[
-* an `IO[A]` is like an executable when run:
-  * succeeds with an `A`
-  * fails with an `Exception`
-  * runs forever
+* An `IO[A]` is a thunk of potentially impure code
 
-* It is better for testing to group `IO` in a interface (see `Console`)
+* Composing `IO` is referentially transparent, nothing get executed
+
+* It is better to group `IO` in a interface for testing (see `Console`)
 ]
 
 ---
@@ -262,14 +259,12 @@ class: center, middle
 # What are the limitations of IO?
 
 ---
-# IO vs Algebra
+background-image: url(img/sideeffect/io.svg)
 
-```tut:silent
-trait Console {
-  val readLine: IO[String]
-  def writeLine(message: String): IO[Unit]
-}
-```
+# IO cannot be introspected
+
+---
+# Algebra
 
 ```tut:silent
 sealed trait Console[A]
@@ -277,6 +272,38 @@ object Console {
   case object ReadLine                  extends Console[String]
   case class WriteLine(message: String) extends Console[Unit]
 }
+```
+
+```scala
+import Console._
+
+def unsafeRun[A](fa: Console[A]): A =
+  fa match {
+    case ReadLine       => StdIn.readLine()
+    case WriteLine(msg) => println(msg)
+  }
+```
+
+---
+# Algebra
+
+```tut:silent
+sealed trait Console[A]
+object Console {
+  case object ReadLine                  extends Console[String]
+  case class WriteLine(message: String) extends Console[Unit]
+}
+```
+
+```scala
+def compileToIO[A](fa: Console[A]): IO[A] =
+  fa match {
+    case ReadLine       => new IO(() => StdIn.readLine())
+    case WriteLine(msg) => new IO(() => println(message))
+  }
+
+def unsafeRun[A](fa: Console[A]): A =
+  compileToIO(fa).unsafeRun()
 ```
 
 ---
