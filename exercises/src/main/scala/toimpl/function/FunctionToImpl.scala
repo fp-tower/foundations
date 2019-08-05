@@ -48,12 +48,6 @@ trait FunctionToImpl {
 
   val incDouble: Int => Int
 
-  def curry[A, B, C](f: (A, B) => C): A => B => C
-
-  def uncurry[A, B, C](f: A => B => C): (A, B) => C
-
-  def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D
-
   ///////////////////////////
   // 3. Recursion & Laziness
   ///////////////////////////

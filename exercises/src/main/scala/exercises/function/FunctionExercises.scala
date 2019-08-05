@@ -112,17 +112,6 @@ object FunctionExercises extends FunctionToImpl {
   // 2j. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
 
-  // 2k. Implement curry and uncurry
-  def curry[A, B, C](f: (A, B) => C): A => B => C = ???
-
-  def uncurry[A, B, C](f: A => B => C): (A, B) => C = ???
-
-  // 2l. Implement join such as
-  // val reverse: Boolean => Boolean = x => !x
-  // val zeroOne: Boolean => String  = x => if (x) "1" else "0"
-  // join(zeroOne, reverse)(_ + _.toString)(true) == "1false"
-  def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D = ???
-
   ///////////////////////////
   // 3. Recursion & Laziness
   ///////////////////////////

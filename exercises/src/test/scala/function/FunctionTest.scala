@@ -102,24 +102,9 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
     incDouble(6) shouldEqual 14
   }
 
-  test("curry") {
-    def plus(x: Int, y: Int): Int = x + y
-
-    curry(plus)(4)(6) shouldEqual 10
-  }
-
-  test("uncurry") {
-    def plus(x: Int)(y: Int): Int = x + y
-
-    uncurry(plus)(4, 6) shouldEqual 10
-  }
-
-  test("join") {
-    val reverse: Boolean => Boolean = x => !x
-    val zeroOne: Boolean => String  = x => if (x) "1" else "0"
-
-    join(zeroOne, reverse)(_ + _.toString)(true) shouldEqual "1false"
-  }
+  ///////////////////////////
+  // 3. Recursion & Laziness
+  ///////////////////////////
 
   List(sumList _, sumList2 _, sumList3 _).zipWithIndex.foreach {
     case (f, i) =>

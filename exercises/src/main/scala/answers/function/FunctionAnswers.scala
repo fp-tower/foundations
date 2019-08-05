@@ -71,15 +71,6 @@ object FunctionAnswers extends FunctionToImpl {
 
   val incDouble: Int => Int = compose(double, inc)
 
-  def curry[A, B, C](f: (A, B) => C): A => B => C =
-    a => b => f(a, b)
-
-  def uncurry[A, B, C](f: A => B => C): (A, B) => C =
-    (a, b) => f(a)(b)
-
-  def join[A, B, C, D](f: A => B, g: A => C)(h: (B, C) => D): A => D =
-    a => h(f(a), g(a))
-
   ///////////////////////////
   // 3. Recursion & Laziness
   ///////////////////////////
