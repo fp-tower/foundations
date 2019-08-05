@@ -254,7 +254,7 @@ def foldRight[A, B](xs: List[A], z: B)(f: (A, `=> B`) => B): B =
 ---
 background-image: url(img/function/fold-right-stack-safety.svg)
 
-# Fold Right is NOT stack safe
+# Fold Right is NOT always stack safe
 
 ---
 # Fold Right replaces constructors
@@ -278,6 +278,15 @@ def foldRight[A, B](list: List[A], `z: B`)(f: `(A, => B) => B`): B
 foldRight(xs, z)(f) == foldRight(Cons(1, Cons(2, Cons(3, Nil()))), z)(f)
                     ==           f   (1, f   (2, f   (3, z    )))
 ```
+
+--
+
+### Exercise: How would you "replace constructors" for Option or Binary Tree?
+
+---
+# Different level of abstractions
+
+.center[![Abstractions](img/function/abstractions.svg)]
 
 ---
 class: center, middle

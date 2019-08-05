@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292 514" width="292" height="514">
+  <defs>
+    <linearGradient x1="0" x2="1" id="Gradient" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff7f7f"/>
+      <stop offset=".3" stop-color="#bc8c8e"/>
+      <stop offset="1" stop-color="#6f9a9c"/>
+    </linearGradient>
+    <linearGradient id="Obj_Gradient" xl:href="#Gradient" gradientTransform="translate(53.35714 513) rotate(-90) scale(508.35484)"/>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.11 
+    <dc:date>2019-08-05 16:58:11 +0000</dc:date>
+  </metadata>
+  <g id="abstractions" fill-opacity="1" stroke-opacity="1" fill="none" stroke="none" stroke-dasharray="none">
+    <title>abstractions</title>
+    <g id="abstractions: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_9">
+        <path d="M 53.35714 4.6451613 L 88.71429 31.064516 L 75.85714 31.064516 L 75.85714 486.58065 L 88.71429 486.58065 L 53.35714 513 L 18 486.58065 L 30.857143 486.58065 L 30.857143 31.064516 L 18 31.064516 Z" fill="url(#Obj_Gradient)"/>
+        <path d="M 53.35714 4.6451613 L 88.71429 31.064516 L 75.85714 31.064516 L 75.85714 486.58065 L 88.71429 486.58065 L 53.35714 513 L 18 486.58065 L 30.857143 486.58065 L 30.857143 31.064516 L 18 31.064516 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_12">
+        <text transform="translate(104 41)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">traverse / foldMap</tspan>
+        </text>
+      </g>
+      <g id="Graphic_13">
+        <text transform="translate(104 131)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="14210855e-20" y="21">foldLeft / foldRight</tspan>
+        </text>
+      </g>
+      <g id="Graphic_14">
+        <text transform="translate(104 446)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">goto</tspan>
+        </text>
+      </g>
+      <g id="Graphic_15">
+        <text transform="translate(104 347)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">for / while</tspan>
+        </text>
+      </g>
+      <g id="Graphic_16">
+        <text transform="translate(104 239)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="17053026e-20" y="21">Iterator</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
