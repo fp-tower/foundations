@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 380 236" width="380" height="236">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.11 
+    <dc:date>2019-08-05 08:47:31 +0000</dc:date>
+  </metadata>
+  <g id="fold-right-lazy-2" fill-opacity="1" stroke-opacity="1" stroke="none" stroke-dasharray="none" fill="none">
+    <title>fold-right-lazy-2</title>
+    <g id="fold-right-lazy-2: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_36">
+        <rect x="98.12903" y="72" width="279.87097" height="162" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_37">
+        <rect x="197.12903" y="153" width="171.87097" height="72" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(202.12903 175.692)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="62.587486" y="21">???</tspan>
+        </text>
+      </g>
+      <g id="Graphic_16">
+        <rect x="9" y="72" width="71.12903" height="70.714286" fill="#6e9a9d"/>
+        <rect x="9" y="72" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14 94.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.413516" y="21">true</tspan>
+        </text>
+      </g>
+      <g id="Graphic_12">
+        <ellipse cx="144.43548" cy="36" rx="27.4355277101794" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="144.43548" cy="36" rx="27.4355277101794" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(127.4871 22.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.088387" y="21">&amp;&amp;</tspan>
+        </text>
+      </g>
+      <g id="Graphic_21">
+        <rect x="107.12903" y="153" width="71.12903" height="70.714286" fill="#6e9a9d"/>
+        <rect x="107.12903" y="153" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(112.12903 175.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="7.552516" y="21">false</tspan>
+        </text>
+      </g>
+      <g id="Graphic_20">
+        <ellipse cx="243.43548" cy="108" rx="27.4355277101794" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="243.43548" cy="108" rx="27.4355277101794" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(226.4871 94.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.088387" y="21">&amp;&amp;</tspan>
+        </text>
+      </g>
+      <g id="Line_28">
+        <line x1="122.23094" y1="51.864996" x2="90.62516" y2="74.44712" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_29">
+        <line x1="222.1201" y1="125.0023" x2="188.3428" y2="151.94486" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_32">
+        <line x1="166.50276" y1="52.04893" x2="210.9355" y2="84.36365" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_39">
+        <text transform="translate(299.606 86)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="11368684e-20" y="21">Step 1</tspan>
+        </text>
+      </g>
+      <g id="Line_43">
+        <line x1="255.34067" y1="132.33367" x2="258.80396" y2="139.41248" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>
