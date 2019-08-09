@@ -1,21 +1,108 @@
 package exercises.sideeffect
 
-import toimpl.sideeffect.IOToImpl
+import java.time.Instant
 
 import scala.collection.mutable.ListBuffer
-import scala.util.{Failure, Success, Try}
+import scala.concurrent.duration.FiniteDuration
+import scala.util.Try
 
-object IOExercises extends IOToImpl {
+object IOExercises {
 
-  val readLine: IO[String] =
-    new IO(() => scala.io.StdIn.readLine())
+  /////////////////////////
+  // 1. Smart constructors
+  /////////////////////////
 
-  def writeLine(message: String): IO[Unit] =
-    new IO(() => println(message))
+  object IO {
+    // 1a. Implement succeed a "smart constructor" that lift a pure value into an IO
+    // such as succeed(x).unsafeRun() == x
+    // note that succeed is strict, it means that the same value will be return every time it is run
+    // it also means it is an unsafe to throw an Exception when you call succeed, e.g. succeed(throw new Exception(""))
+    def succeed[A](value: A): IO[A] = ???
 
-  // 1. Implement consoleProgram such as it behaves similarly to unsafeConsoleProgram
-  // Try to re-use readLine and writeLine
-  // consoleProgram should only execute actions when the IO is run
+    // common alias for succeed
+    def pure[A](value: A): IO[A] = succeed(value)
+
+    // 1b. Implement fail a "smart constructor" that creates an IO which always fails
+    // note that val error = fail(new Exception("")) does not throw
+    // the Exception is only thrown when unsafeRun is called, e.g. error.unsafeRun()
+    def fail[A](error: Throwable): IO[A] = ???
+
+    // 1c. Write a test for fail in IOTest
+
+    // 1d. What is the type of boom? Try to guess without using your IDE
+    val boom = fail(new Exception("Boom!"))
+
+    def fromTry[A](fa: Try[A]): IO[A] =
+      fa.fold(fail, succeed)
+
+    // 1e. Implement effect which captures a potentially side effecty operation
+    // such as effect(4) == succeed(4)
+    // and effect(throw new Exception("")) == fail(new Exception(""))
+    // use case: effect(impureFunction(4))
+    def effect[A](fa: => A): IO[A] = ???
+
+    // common alias for effect
+    def apply[A](fa: => A): IO[A] = effect(fa)
+
+    def notImplemented[A]: IO[A] = effect(???)
+
+    // 1f. Implement sleep, see Thread.sleep
+    // What the issue with this implementation? How could you fix it?
+    def sleep(duration: FiniteDuration): IO[Unit] = ???
+
+    // 2h. Implement an IO that never completes
+    // this should be the equivalent of sleep with an Infinite duration
+    val forever: IO[Nothing] = notImplemented
+  }
+
+  /////////////////////
+  // 2. IO API
+  /////////////////////
+
+  class IO[A](val unsafeRun: () => A) {
+
+    // 2a. Implement map
+    // such as succeed(x).map(f) == succeed(f(x))
+    // and     fail(e).map(f) == fail(e)
+    // note that f is a pure function, you should NOT use it to do another side effect e.g. succeed(4).map(println)
+    def map[B](f: A => B): IO[B] = ???
+
+    // 2b. Implement flatMap
+    // such as succeed(x).flatMap(f) == f(x)
+    // and     fail(e).flatMap(f) == fail(e)
+    def flatMap[B](f: A => IO[B]): IO[B] = ???
+
+    // 2c. Implement attempt which makes the error part of IO explicit
+    // such as attempt(pure(x)) == pure(Right(x))
+    //         attempt(fail(new Exception(""))) == pure(Left(new Exception("")))
+    // note that attempt guarantee that unsafeRun() will not throw an Exception
+    def attempt[B]: IO[Either[Throwable, A]] = ???
+
+    // 2d. Implement retryOnce that takes an IO and if it fails, try to run it again
+    def retryOnce: IO[A] = ???
+
+    // 2e. Implement retryUntilSuccess
+    // similar to retryOnce but it retries until the IO succeeds (potentially indefinitely)
+    // sleep `waitBeforeRetry` between each retry
+    def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] = ???
+  }
+
+  ////////////////////
+  // 3. Programs
+  ////////////////////
+
+  def unsafeReadLine: String =
+    scala.io.StdIn.readLine()
+
+  def unsafeWriteLine(message: String): Unit =
+    println(message)
+
+  // 3a. Implement readLine and writeLine such as they become referentially transparent
+  // which smart constructor of IO should you use?
+  val readLine: IO[String] = IO.notImplemented
+
+  def writeLine(message: String): IO[Unit] = IO.notImplemented
+
   def unsafeConsoleProgram: String = {
     println("What's your name?")
     val name = scala.io.StdIn.readLine()
@@ -23,115 +110,81 @@ object IOExercises extends IOToImpl {
     name
   }
 
-  val consoleProgram: IO[String] = new IO(() => ???)
+  // 3b. Implement consoleProgram such as it is a referentially version of unsafeConsoleProgram
+  // Try to re-use readLine and writeLine
+  val consoleProgram: IO[String] = IO.notImplemented
 
-  // 2a. Implement map
-  // such as map(readLine)(_.reverse) creates a IO that will return the reverse of the typed String
-  def map[A, B](fa: IO[A])(f: A => B): IO[B] = ???
-
-  // 2b. Implement map
-  // such as readLength creates a IO that will return the length of the typed String
-  // use map
-  // Note: you can use map in infix or prefix position
-  // val one: IO[Int] = _ => 1
-  // one.map(_ + 1) or map(one)(_ + 1)
-  val readLength: IO[Int] = new IO(() => ???)
-
-  // 2c. Implement readInt using readLine
-  // such as readInt will return an Int if the user typed a valid Int or throws an exception if it is invalid
-  // use map and parseInt
+  // 3c. Implement readInt which reads an Int from the command line
+  // such as readInt.unsafeRun() == 32 if user types "32"
+  // and readInt.unsafeRun() throws an Exception if user types "hello"
+  // use parseInt and readLine
   def parseInt(x: String): Try[Int] = Try(x.toInt)
 
-  // Try[A] is either a Failure or a Success, you can pattern match on Try e.g.
-  def tryToStatusCode[A](fa: Try[A]): Int =
-    fa match {
-      case Failure(_) => 0
-      case Success(_) => 1
-    }
+  val readInt: IO[Int] = IO.notImplemented
 
-  val readInt: IO[Int] = new IO(() => ???)
+  // 3d. Implement userConsoleProgram such as it is a referentially version of unsafeUserConsoleProgram
+  case class User(name: String, age: Int, createdAt: Instant)
 
-  // 3a. Implement consoleProgram2 such as it behaves similarly to userConsoleProgram
-  case class User(name: String, age: Int)
+  val readNow: IO[Instant] = IO.effect(Instant.now())
+
+  val userConsoleProgram: IO[User] = IO.notImplemented
 
   def unsafeUserConsoleProgram: User = {
     println("What's your name?")
     val name = scala.io.StdIn.readLine()
     println("What's your age?")
     val age = scala.io.StdIn.readLine().toInt
-    User(name, age)
+    User(name, age, createdAt = Instant.now())
   }
 
-  val userConsoleProgram: IO[User] = new IO(() => ???)
-
-  // 3b. Implement map2 which combines independent thunks
-  // such as map2(readLine, readLine)(_ ++ _) reads 2 lines from StdIn and concatenates result
-  // Note: fa should be executed before fb when the resulting thunk is run
-  def map2[A, B, C](fa: IO[A], fb: IO[B])(f: (A, B) => C): IO[C] = ???
-
-  // 3c. Implement consoleProgram2 (same as consoleProgram) using map2
-  // Note: you can use map2 in infix or prefix position
-  // val one: IO[Int] = _ => 1
-  // (one, one).map2(_ + _) or map2(one, one)(_ + _) (see Ops syntax in IOToImpl)
-  val consoleProgram2: IO[String] = new IO(() => ???)
-
-  // 3c. Implement userConsoleProgram2 (same as userConsoleProgram) using map4
-  // Note: you can use map4 in infix or prefix position
-  // val one: IO[Int] = _ => 1
-  // (one, one, one, one).map4(_ + _ + _ + _) or map4(one, one, one, one)(_ + _ + _ + _) (see Ops syntax in IOToImpl)
-  def map4[A, B, C, D, E](fa: IO[A], fb: IO[B], fc: IO[C], fd: IO[D])(f: (A, B, C, D) => E): IO[E] =
-    map2(
-      map2(fa, fb)((a, b) => (a, b)), // IO[(A, B)]
-      map2(fc, fd)((c, d) => (c, d)) // IO[(C, D)]
-    ) { case ((a, b), (c, d)) => f(a, b, c, d) }
-
-  val userConsoleProgram2: IO[User] = new IO(() => ???)
-
-  // 3d. Can you always sequence IOs using mapX? If no, find an example
-
-  // 4a. Implement flatMap
-  def flatMap[A, B](fa: IO[A])(f: A => IO[B]): IO[B] = ???
-
-  // 4b. Implement userConsoleProgram3 (same as userConsoleProgram) using flatMap
-  // Note: you can use map4 in infix or prefix position
-  // val one: IO[Int] = _ => 1
-  // def inc(x: Int): IO[Int] = _ => x + 1
-  // one.flatMap(inc) or flatMap(one)(inc)
-  val userConsoleProgram3: IO[User] = new IO(() => ???)
+  // 3e. How would you test userConsoleProgram?
+  // what are the issues with the current implementation?
 
   ////////////////////////
-  // 5. Testing
+  // 4. Testing
   ////////////////////////
+
+  trait Clock {
+    val readNow: IO[Instant]
+  }
+
+  val systemClock: Clock = new Clock {
+    val readNow: IO[Instant] = IO.effect(Instant.now())
+  }
+
+  // 4a. Implement a testClock which facilitates testing
+  def testClock: Clock = ???
 
   trait Console {
     val readLine: IO[String]
     def writeLine(message: String): IO[Unit]
 
-    val readInt: IO[Int] =
-      readLine.map(x => parseInt(x).getOrElse(throw new Exception(s"Invalid Int $x")))
+    val readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
   }
 
   val stdin: Console = new Console {
-    val readLine: IO[String]                 = new IO(() => scala.io.StdIn.readLine())
-    def writeLine(message: String): IO[Unit] = new IO(() => println(message))
+    val readLine: IO[String]                 = IO.effect(scala.io.StdIn.readLine())
+    def writeLine(message: String): IO[Unit] = IO.effect(println(message))
   }
 
-  // 5a. Implement a testConsole
+  // 4b. Implement a testConsole which facilitates testing
+  // use both testClock and testConsole to write a test for userConsoleProgram2 in IOTest
   def testConsole(in: List[String], out: ListBuffer[String]): Console = ???
 
-  def userConsoleProgram4(console: Console): IO[User] =
+  def userConsoleProgram2(console: Console, clock: Clock): IO[User] =
     for {
-      _    <- console.writeLine("What's your name?")
-      name <- console.readLine
-      _    <- console.writeLine("What's your age?")
-      age  <- console.readInt
-    } yield User(name, age)
+      _         <- console.writeLine("What's your name?")
+      name      <- console.readLine
+      _         <- console.writeLine("What's your age?")
+      age       <- console.readInt
+      createdAt <- clock.readNow
+    } yield User(name, age, createdAt)
 
-  // 5b. Write a test using testConsole to check userConsoleProgram4 implementation is correct
-  // see IOTests.scala: read user from Console
-
-  // 5c. Now our production code is "pure" (free of side effect) but not our test code
+  // 4c. Now our production code is "pure" (free of side effect) but not our test code
   // how would you fix this this?
-  // try to implement safeTestConsole such as it is a pure Console implementation and it allows unit testing
+  // try to implement safeTestConsole such as:
+  // - it is a pure Console implementation
+  // - it makes unit testing convenient
   def safeTestConsole: Console = ???
+
 }

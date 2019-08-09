@@ -2,16 +2,18 @@ package exercises.sideeffect
 
 import java.util.concurrent.atomic.AtomicReference
 
-case class IORef[A](private val ref: AtomicReference[A]) {
-  def get: IO[A]                 = new IO(() => ref.get())
-  def set(newValue: A): IO[Unit] = new IO(() => ref.set(newValue))
+import answers.sideeffect.IOAnswers.IO
+
+case class IORef[A](ref: AtomicReference[A]) {
+  def get: IO[A]                 = IO.effect(ref.get())
+  def set(newValue: A): IO[Unit] = IO.effect(ref.set(newValue))
 
   def modify(f: A => A): IO[A] =
     modifyFold(a => { val newA = f(a); (newA, newA) })
 
   // copied from https://github.com/scalaz/ioeffect
   def modifyFold[B](f: A => (B, A)): IO[B] =
-    new IO(() => {
+    IO.effect {
       var loop = true
       var b: B = null.asInstanceOf[B]
 
@@ -21,7 +23,7 @@ case class IORef[A](private val ref: AtomicReference[A]) {
         loop = !ref.compareAndSet(current, newA)
       }
       b
-    })
+    }
 }
 
 object IORef {

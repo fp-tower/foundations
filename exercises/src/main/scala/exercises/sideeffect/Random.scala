@@ -1,5 +1,7 @@
 package exercises.sideeffect
 
+import answers.sideeffect.IOAnswers.IO
+
 sealed trait RandomAlg[A]
 object RandomAlg {
   case object RandomInt extends RandomAlg[Int]
