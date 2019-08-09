@@ -27,7 +27,7 @@ object IOExercises {
     // the Exception is only thrown when unsafeRun is called, e.g. error.unsafeRun()
     def fail[A](error: Throwable): IO[A] = ???
 
-    // 1c. Write a test for fail in IOTest
+    // 1c. Write a test for fail in IOExercisesTest
 
     // 1d. What is the type of boom? Try to guess without using your IDE
     val boom = fail(new Exception("Boom!"))
@@ -168,7 +168,7 @@ object IOExercises {
   }
 
   // 4b. Implement a testConsole which facilitates testing
-  // use both testClock and testConsole to write a test for userConsoleProgram2 in IOTest
+  // use both testClock and testConsole to write a test for userConsoleProgram2 in IOExercisesTest
   def testConsole(in: List[String], out: ListBuffer[String]): Console = ???
 
   def userConsoleProgram2(console: Console, clock: Clock): IO[User] =

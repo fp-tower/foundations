@@ -47,3 +47,13 @@ lazy val slides = project
     tutTargetDirectory := baseDirectory.value / "docs"
   )
   .enablePlugins(TutPlugin)
+
+
+addCommandAlias("testAnswers", "testOnly *AnswersTest")
+
+addCommandAlias("testExercises1", "testOnly function.*ExercisesTest")
+addCommandAlias("testExercises2", "testOnly sideeffect.*ExercisesTest")
+addCommandAlias("testExercises3", "testOnly types.*ExercisesTest")
+addCommandAlias("testExercises4", "testOnly errorhandling.*ExercisesTest")
+addCommandAlias("testExercises6", "testOnly typeclass.*ExercisesTest")
+addCommandAlias("testExercises7", "testOnly functors.*ExercisesTest")

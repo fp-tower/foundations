@@ -70,13 +70,13 @@ Finally, go back to the slides and repeat the process. If you have any question,
 ### How to run the tests?
 
 ```bash
-sbt "testOnly ${MODULE}*ExercisesTest"
+sbt testExercises$X
 ```
 
-For example for module 1
+For example tests for module 3 (Type) is run with:
 
 ```bash
-sbt "testOnly function*ExercisesTest"
+sbt testExercises3
 ```
 
 ### Is this course free?

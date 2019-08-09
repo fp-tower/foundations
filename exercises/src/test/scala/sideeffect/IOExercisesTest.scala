@@ -7,7 +7,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
 
-class IOTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
+class IOExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
   /////////////////////////
   // 1. Smart constructors

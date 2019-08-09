@@ -28,7 +28,7 @@ before_cache:
    - rm -rf $HOME/.ivy2/local
 
 script:
-   - sbt ++$TRAVIS_SCALA_VERSION "testOnly *AnswersTest"
+   - sbt ++$TRAVIS_SCALA_VERSION testAnswers
    - npm install -g decktape
    - bin/gen-pdf.sh
 
