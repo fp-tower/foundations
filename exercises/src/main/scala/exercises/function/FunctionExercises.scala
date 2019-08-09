@@ -1,8 +1,11 @@
 package exercises.function
 
+import exercises.function.HttpClientBuilder
+import exercises.function.HttpClientBuilder._
 import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
+import scala.concurrent.duration._
 import scala.util.Random
 
 // you can run and print things here
@@ -111,6 +114,13 @@ object FunctionExercises extends FunctionToImpl {
 
   // 2j. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
+
+  // 2k. inc and double are a special case of function where the input and output type is the same.
+  // These functions are known as endofunctions.
+  // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
+  // Can you find a design pattern that relies on Endo function?
+  type Endo[A] = A => A
+  def composeEndo[A](f: Endo[A], g: Endo[A]): Endo[A] = f compose g
 
   ///////////////////////////
   // 3. Recursion & Laziness

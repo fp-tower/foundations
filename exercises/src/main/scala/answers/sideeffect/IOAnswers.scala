@@ -1,77 +1,178 @@
 package answers.sideeffect
 
-import exercises.sideeffect.{IO, IORef}
-import exercises.sideeffect.IOExercises.{parseInt, Console, User}
-import toimpl.sideeffect.IOToImpl
+import java.time.Instant
+
+import exercises.sideeffect.IORef
 
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.duration.FiniteDuration
+import scala.util.Try
 
-object IOAnswers extends IOToImpl {
+object IOAnswers {
+
+  /////////////////////////
+  // 1. Smart constructors
+  /////////////////////////
+
+  object IO {
+    def succeed[A](value: A): IO[A] =
+      new IO(() => value)
+
+    def pure[A](value: A): IO[A] =
+      succeed(value)
+
+    def fail[A](error: Throwable): IO[A] =
+      new IO(() => throw error)
+
+    val boom: IO[Nothing] = fail(new Exception("Boom!"))
+
+    def effect[A](fa: => A): IO[A] =
+      new IO(() => fa)
+
+    // common alias for effect
+    def apply[A](fa: => A): IO[A] =
+      effect(fa)
+
+    val notImplemented: IO[Nothing] = effect(???)
+
+    def fromTry[A](fa: Try[A]): IO[A] =
+      fa.fold(fail, succeed)
+
+    def sleep(duration: FiniteDuration): IO[Unit] =
+      effect(Thread.sleep(duration.toMillis))
+
+    val forever: IO[Nothing] = notImplemented
+  }
+
+  /////////////////////
+  // 2. IO API
+  /////////////////////
+
+  class IO[+A](val unsafeRun: () => A) {
+    import IO._
+
+    def map[B](f: A => B): IO[B] =
+      effect(f(unsafeRun()))
+
+    def flatMap[B](f: A => IO[B]): IO[B] =
+      effect(f(unsafeRun()).unsafeRun())
+
+    def tuple2[B](fb: IO[B]): IO[(A, B)] =
+      for {
+        a <- this
+        b <- fb
+      } yield (a, b)
+
+    def productL[B](fb: IO[B]): IO[A] =
+      tuple2(fb).map(_._1)
+
+    def productR[B](fb: IO[B]): IO[B] =
+      tuple2(fb).map(_._2)
+
+    // common alias for productL
+    def <*[B](fb: IO[B]): IO[A] = productL(fb)
+
+    // common alias for productR
+    def *>[B](fb: IO[B]): IO[B] = productR(fb)
+
+    def attempt[B]: IO[Either[Throwable, A]] =
+      map(Try(_).toEither)
+
+    def retryOnce: IO[A] =
+      attempt.flatMap {
+        case Left(_)  => this
+        case Right(a) => succeed(a)
+      }
+
+    def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] =
+      attempt.flatMap {
+        case Left(_)  => sleep(waitBeforeRetry) *> retryUntilSuccess(waitBeforeRetry)
+        case Right(a) => succeed(a)
+      }
+  }
+
+  ////////////////////
+  // 3. Programs
+  ////////////////////
+
+  def unsafeReadLine: String =
+    scala.io.StdIn.readLine()
+
+  def unsafeWriteLine(message: String): Unit =
+    println(message)
 
   val readLine: IO[String] =
-    new IO(() => scala.io.StdIn.readLine())
+    IO.effect(scala.io.StdIn.readLine())
 
   def writeLine(message: String): IO[Unit] =
-    new IO(() => println(message))
+    IO.effect(println(message))
 
-  val consoleProgram: IO[String] = new IO(() => {
-    writeLine("What's your name?").unsafeRun()
-    val name = readLine.unsafeRun()
-    writeLine("Your name is $name").unsafeRun()
+  def unsafeConsoleProgram: String = {
+    println("What's your name?")
+    val name = scala.io.StdIn.readLine()
+    println(s"Your name is $name")
     name
-  })
+  }
 
-  def map[A, B](fa: IO[A])(f: A => B): IO[B] =
-    new IO(() => f(fa.unsafeRun()))
-
-  val readLength: IO[Int] =
-    readLine.map(_.length)
-
-  val readInt: IO[Int] =
-    readLine.map(x => parseInt(x).getOrElse(throw new Exception(s"Invalid Int $x")))
-
-  val userConsoleProgram: IO[User] = new IO(() => {
-    writeLine("What's your name?").unsafeRun()
-    val name = readLine.unsafeRun()
-    writeLine("What's your age?").unsafeRun()
-    val age = readInt.unsafeRun()
-    User(name, age)
-  })
-
-  def map2[A, B, C](fa: IO[A], fb: IO[B])(f: (A, B) => C): IO[C] =
-    new IO(() => {
-      val a = fa.unsafeRun()
-      val b = fb.unsafeRun()
-      f(a, b)
-    })
-
-  def map4[A, B, C, D, E](fa: IO[A], fb: IO[B], fc: IO[C], fd: IO[D])(f: (A, B, C, D) => E): IO[E] =
-    map2(
-      map2(fa, fb)((a, b) => (a, b)), // IO[(A, B)]
-      map2(fc, fd)((c, d) => (c, d)) // IO[(C, D)]
-    ) { case ((a, b), (c, d)) => f(a, b, c, d) }
-
-  val consoleProgram2: IO[String] =
-    map2(writeLine("What's your name?"), readLine)((_, name) => name)
-
-  val userConsoleProgram2: IO[User] =
-    map4(writeLine("What's your name?"), readLine, writeLine("What's your age?"), readInt)(
-      (_, name, _, age) => User(name, age)
-    )
-
-  def flatMap[A, B](fa: IO[A])(f: A => IO[B]): IO[B] =
-    new IO(() => {
-      val a = fa.unsafeRun()
-      f(a).unsafeRun()
-    })
-
-  val userConsoleProgram3: IO[User] =
+  val consoleProgram: IO[String] =
     for {
       _    <- writeLine("What's your name?")
       name <- readLine
-      _    <- writeLine("What's your age?")
-      age  <- readInt
-    } yield User(name, age)
+      _    <- writeLine(s"Your name is $name")
+    } yield name
+
+  def parseInt(x: String): Try[Int] = Try(x.toInt)
+
+  val readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
+
+  case class User(name: String, age: Int, createdAt: Instant)
+
+  val readNow: IO[Instant] = IO.effect(Instant.now())
+
+  val userConsoleProgram: IO[User] =
+    for {
+      _         <- writeLine("What's your name?")
+      name      <- readLine
+      _         <- writeLine("What's your age?")
+      age       <- readInt
+      createdAt <- readNow
+    } yield User(name, age, createdAt)
+
+  def unsafeUserConsoleProgram: User = {
+    println("What's your name?")
+    val name = scala.io.StdIn.readLine()
+    println("What's your age?")
+    val age = scala.io.StdIn.readLine().toInt
+    User(name, age, createdAt = Instant.now())
+  }
+
+  ////////////////////////
+  // 5. Testing
+  ////////////////////////
+
+  trait Clock {
+    val readNow: IO[Instant]
+  }
+
+  val systemClock: Clock = new Clock {
+    val readNow: IO[Instant] = IO.effect(Instant.now())
+  }
+
+  def testClock(constant: Instant): Clock = new Clock {
+    val readNow: IO[Instant] = IO.succeed(constant)
+  }
+
+  trait Console {
+    val readLine: IO[String]
+    def writeLine(message: String): IO[Unit]
+
+    val readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
+  }
+
+  val stdin: Console = new Console {
+    val readLine: IO[String]                 = IO.effect(scala.io.StdIn.readLine())
+    def writeLine(message: String): IO[Unit] = IO.effect(println(message))
+  }
 
   def testConsole(in: List[String], out: ListBuffer[String]): Console =
     new Console {
@@ -88,13 +189,14 @@ object IOAnswers extends IOToImpl {
       }
     }
 
-  def userConsoleProgram4(console: Console): IO[User] =
+  def userConsoleProgram2(console: Console, clock: Clock): IO[User] =
     for {
-      _    <- console.writeLine("What's your name?")
-      name <- console.readLine
-      _    <- console.writeLine("What's your age?")
-      age  <- console.readInt
-    } yield User(name, age)
+      _         <- console.writeLine("What's your name?")
+      name      <- console.readLine
+      _         <- console.writeLine("What's your age?")
+      age       <- console.readInt
+      createdAt <- clock.readNow
+    } yield User(name, age, createdAt)
 
   def safeTestConsole(in: List[String]): TestConsole =
     TestConsole(IORef(in))

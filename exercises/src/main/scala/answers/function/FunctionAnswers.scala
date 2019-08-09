@@ -1,10 +1,13 @@
 package answers.function
 
-import exercises.function.FunctionExercises.{double, inc, updateAge, User}
+import exercises.function.FunctionExercises.{double, inc, User}
+import exercises.function.HttpClientBuilder
+import exercises.function.HttpClientBuilder._
 import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
 import scala.collection.mutable
+import scala.concurrent.duration._
 
 object FunctionAnswers extends FunctionToImpl {
 
@@ -70,6 +73,18 @@ object FunctionAnswers extends FunctionToImpl {
   val doubleInc: Int => Int = andThen(double, inc)
 
   val incDouble: Int => Int = compose(double, inc)
+
+  val default: HttpClientBuilder = HttpClientBuilder.default("localhost", 8080)
+
+  val clientBuilder1: HttpClientBuilder = default
+    .withTimeout(10.seconds)
+    .withFollowRedirect(true)
+    .withMaxParallelRequest(3)
+
+  val clientBuilder2: HttpClientBuilder =
+    (withTimeout(10.seconds) compose
+      withFollowRedirect(true) compose
+      withMaxParallelRequest(3)).apply(default)
 
   ///////////////////////////
   // 3. Recursion & Laziness
