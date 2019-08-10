@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 289 255" width="289" height="255">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.11 
+    <dc:date>2019-08-10 14:42:18 +0000</dc:date>
+  </metadata>
+  <g id="right-triangle-1" fill="none" stroke="none" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1">
+    <title>right-triangle-1</title>
+    <g id="right-triangle-1: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_114">
+        <path d="M 72 73.28571 L 288 216 L 72 216 Z" fill="#70a3d8"/>
+        <path d="M 72 73.28571 L 288 216 L 72 216 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_125">
+        <text transform="translate(48.82 129.50572)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="black" x="0" y="19">x</tspan>
+        </text>
+      </g>
+      <g id="Graphic_126">
+        <text transform="translate(159.17283 223.50572)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="black" x="0" y="19">y</tspan>
+        </text>
+      </g>
+      <g id="Graphic_127">
+        <text transform="translate(198 129.50572)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="black" x="0" y="19">z</tspan>
+        </text>
+      </g>
+      <g id="Graphic_128">
+        <rect x="72" y="198" width="18" height="18" fill="#ff8080"/>
+        <rect x="72" y="198" width="18" height="18" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

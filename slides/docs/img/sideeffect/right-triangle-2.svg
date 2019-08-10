@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 477 541" width="477" height="541">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="13" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.11 
+    <dc:date>2019-08-10 14:42:18 +0000</dc:date>
+  </metadata>
+  <g id="right-triangle-2" fill="none" stroke="none" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1">
+    <title>right-triangle-2</title>
+    <g id="right-triangle-2: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_114">
+        <path d="M 144 181.28571 L 360 324 L 144 324 Z" fill="#8db2dc"/>
+        <path d="M 144 181.28571 L 360 324 L 144 324 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_129">
+        <rect x="144" y="324" width="216" height="216" fill="#589b9d"/>
+        <rect x="144" y="324" width="216" height="216" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(149 420.22)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="94.386" y="19">y</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="white" y="13">2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_130">
+        <rect x="0" y="180" width="144" height="144" fill="#589b9d"/>
+        <rect x="0" y="180" width="144" height="144" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(5 240.22)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="58.206" y="19">x</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="white" y="13">2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_131">
+        <path d="M 258.60187 6.7424706 L 476.26735 149.72197 L 361.6112 324.2693 L 143.9457 181.28982 Z" fill="#ff8080"/>
+        <path d="M 258.60187 6.7424706 L 476.26735 149.72197 L 361.6112 324.2693 L 143.9457 181.28982 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(184.75924 155.2565) rotate(-.7000008)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="78.21671" y="19">z</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="white" y="13">2 </tspan>
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" y="19">= x</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="white" y="13">2 </tspan>
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" y="19">+ y</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="white" y="13">2</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

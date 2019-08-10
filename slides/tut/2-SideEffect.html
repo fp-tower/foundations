@@ -23,6 +23,14 @@
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
     tr:nth-child(even) {background-color: #f2f2f2;}
+    .reference {
+    font-size: 16px;
+    position: fixed;
+    left: 50%;
+    bottom: 12px;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    }
   </style>
 </head>
 <body>
@@ -73,14 +81,17 @@ background-image: url(img/sideeffect/function-age.svg)
 class: center, middle
 
 # A pure function cannot DO anything
-# it can only produce a value
+# it can only produce a VALUE
 
 ---
 class: center, middle
 
 # Functional Programming is useless *
 
-[Simon Peyton Jones](https://www.reddit.com/r/programming/comments/25m291/simon_peyton_jones_haskell_is_useless/) major contributor of haskell
+[Simon Peyton Jones](https://www.reddit.com/r/programming/comments/25m291/simon_peyton_jones_haskell_is_useless/) co-author of haskell
+
+???
+He actually said Haskell is useless
 
 ---
 class: center, middle
@@ -90,11 +101,11 @@ class: center, middle
 ---
 class: center, middle
 
-# Create a VALUE that describe the actions
+# Create a VALUE that describes actions
 
 --
 
-# Interpret the value to generate side effects (in Main)
+# Interpret the value with side effects in Main
 
 ---
 background-image: url(img/sideeffect/effects-on-edges.svg)
@@ -102,16 +113,16 @@ background-image: url(img/sideeffect/effects-on-edges.svg)
 # Run side effects at the edges
 
 ---
-### 1. Program encoding
+### 1. Encode Action
 
 ```tut:silent
-trait Program[A]
+trait Action[A]
 ```
 
-### 2. Unsafe evaluation of a Program
+### 2. Define an unsafe interpreter of Action
 
 ```tut:silent
-def unsafeRun[A](fa: Program[A]): A = ??? // execute program, this is not a pure function
+def unsafeRun[A](fa: Action[A]): A = ??? // execute action, this is not a pure function
 ```
 
 ### 3. Combine everything in Main
@@ -119,12 +130,50 @@ def unsafeRun[A](fa: Program[A]): A = ??? // execute program, this is not a pure
 ```tut:silent
 object Main extends App {
 
-  val program: Program[Unit] = ???
+  val program: Action[Unit] = ???
 
   unsafeRun(program)
 
 }
 ```
+
+---
+class: center, middle
+
+# Examples
+
+---
+.h1[# Cooking]
+
+.pull-left[
+### 1. Secret pasta recipe (Program)
+
+.large[
+1. Boil 200 ml of water
+2. Add 250 g of dry pasta
+3. Wait 11 minutes
+4. Drain the pasta
+]
+]
+.pull-right[
+.h3[### 2. Cook (Unsafe evaluation)]
+
+.large[
+Take the recipe and do it at home
+]
+]
+
+---
+background-image: url(img/sideeffect/lemon-meringue-1.svg)
+
+.reference[[Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)]
+
+---
+background-image: url(img/sideeffect/lemon-meringue-2.svg)
+
+# Cooking compose
+
+.reference[[Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)]
 
 ---
 # Executable program
@@ -153,38 +202,62 @@ slid`es`
 ```
 
 ---
-.h1[# Cooking]
+.h1[# Mathematical formula]
 
 .pull-left[
-### 1. Secret pasta recipe (Program)
+```tut
+val x = 2
+val y = 3
+val x2 = Math.pow(x, 2)
+val y2 = Math.pow(y, 2)
+val z  = Math.sqrt(x2 + y2)
+```
+]
 
-.large[
-1. Boil 200 ml of water
-2. Add 250 g of dry pasta
-3. Wait 11 minutes
-4. Drain the pasta
-]
-]
 .pull-right[
-.h3[### 2. Cook (Unsafe evaluation)]
+![Right triangle](img/sideeffect/right-triangle-1.svg)
+]
+
+---
+
+.pull-left[
+# Mathematical formula
+
+<br>
+
+```tut
+val x2 = Math.pow(2, 2)
+val y2 = Math.pow(3, 2)
+val z  = Math.sqrt(x2 + y2)
+
+val z2 = Math.pow(z, 2)
+```
+]
+
+.pull-right[
+![Right triangle](img/sideeffect/right-triangle-2.svg)
+]
+
+.reference[[Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)]
+
+---
+.h1[# Separate description from execution]
+
+<br>
 
 .large[
-Take the recipe and do it at home
+*   Music
+*   Architecture
+*   Cooking
+*   Mathematical formula
+*   Docker
+*   ...
 ]
-]
-
----
-background-image: url(img/sideeffect/lemon-meringue-1.svg)
-
----
-background-image: url(img/sideeffect-hardcoded/lemon-meringue-2.png)
-
-# Cooking
 
 ---
 class: center, middle
 
-# How to encode a program?
+# How to encode actions?
 
 ---
 # Method 1: Thunk
@@ -213,9 +286,7 @@ def unsafeRun[A](fa: Thunk[A]): A = fa()
 # Method 1: IO
 
 ```tut:silent
-class IO[A](sideEffect: () => A) {
-  def unsafeRun(): A = sideEffect()
-}
+class IO[A](val unsafeRun: () => A)
 
 val readLine: IO[String] =
   new IO(() => StdIn.readLine())
@@ -308,6 +379,7 @@ def unsafeRun[A](fa: Console[A]): A =
 # Resources and further study
 
 * [Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)
+* [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)
 
 
 </textarea>
