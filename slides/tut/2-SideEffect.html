@@ -130,9 +130,9 @@ def unsafeRun[A](fa: Action[A]): A = ??? // execute action, this is not a pure f
 ```tut:silent
 object Main extends App {
 
-  val program: Action[Unit] = ???
+  val action: Action[Unit] = ???
 
-  unsafeRun(program)
+  unsafeRun(action)
 
 }
 ```
@@ -329,25 +329,40 @@ class: center, middle
 # What are the limitations of IO?
 
 ---
+background-image: url(img/sideeffect/IO-composition-1.svg)
+
+# IO cannot be introspected
+
+---
+background-image: url(img/sideeffect/IO-composition-2.svg)
+
+# IO cannot be introspected
+
+---
 background-image: url(img/sideeffect/IO.svg)
 
 # IO cannot be introspected
 
 ---
-# Algebra
+class: center, middle
+
+# IO is probably the most primitive way to capture side effect
+
+---
+# Effect Algebra
 
 ```tut:silent
-sealed trait Console[A]
-object Console {
-  case object ReadLine                  extends Console[String]
-  case class WriteLine(message: String) extends Console[Unit]
+sealed trait Action[A]
+object Action {
+  case object ReadLine                  extends Action[String]
+  case class WriteLine(message: String) extends Action[Unit]
 }
 ```
 
-```scala
-import Console._
+```tut:silent
+import Action._
 
-def unsafeRun[A](fa: Console[A]): A =
+def unsafeRun[A](fa: Action[A]): A =
   fa match {
     case ReadLine       => StdIn.readLine()
     case WriteLine(msg) => println(msg)
@@ -355,24 +370,189 @@ def unsafeRun[A](fa: Console[A]): A =
 ```
 
 ---
-# Algebra
+# Effect Algebra
 
 ```tut:silent
-sealed trait Console[A]
-object Console {
-  case object ReadLine                  extends Console[String]
-  case class WriteLine(message: String) extends Console[Unit]
+object Main extends App {
+
+  val action: Action[Unit] = WriteLine("Hello World")
+
+  unsafeRun(action)
+
+}
+```
+
+```tut
+Main.main(Array.empty)
+```
+
+---
+class: center, middle
+
+# How to add new actions?
+
+---
+class: center, middle
+
+# How to combine actions together?
+
+---
+# How to add new actions?
+
+```tut:silent
+sealed trait Action[A]
+object Action {
+  case object ReadLine                  extends Action[String]
+  case class WriteLine(message: String) extends Action[Unit]
+}
+```
+
+--
+
+### 1. Add primitive
+
+```scala
+case object ReadInt extends Action[Int]
+```
+
+--
+
+### 2. Somehow transform existing actions
+
+```scala
+ReadLine.map(intToString) // ideally
+```
+
+---
+# Free structures (really brief introduction)
+
+```tut:invisible:silent
+sealed trait FreeMap[A]
+
+object FreeMap {
+  case class AFreeMap[X, A](action: Action[X], update: X => A) extends FreeMap[A]
 }
 ```
 
 ```scala
-def compileToIO[A](fa: Console[A]): IO[A] =
+sealed trait FreeMap[A]
+
+object FreeMap {
+  case class Map[`X`, A](action: Action[`X`], update: `X` => A) extends FreeMap[A]
+}
+```
+
+--
+
+### How to translate functions to free structures
+
+```scala
+def         readLine :              String
+case object ReadLine extends Action[String]
+
+def         writeLine(message: String) :              Unit
+case object WriteLine(message: String) extends Action[Unit]
+
+def        map[X, A](action: Action[X], update: X => A) :        Action[A]
+case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
+```
+
+---
+# Free structures (really brief introduction)
+
+```tut:silent
+sealed trait FreeMap[A]
+
+object FreeMap {
+  case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
+}
+```
+
+```tut:invisible
+import Action._
+import FreeMap.Map
+import scala.util.Try
+```
+
+```tut:silent
+def parseInt(x: String): Int = Try(x.toInt).getOrElse(-1)
+
+val readLine: FreeMap[Int] = Map(ReadLine, parseInt)
+```
+
+--
+
+```tut:invisible
+def unsafeRun[A](fa: Action[A]): A =
   fa match {
-    case ReadLine       => new IO(() => StdIn.readLine())
-    case WriteLine(msg) => new IO(() => println(message))
+    case ReadLine       => StdIn.readLine()
+    case WriteLine(msg) => println(msg)
+  }
+```
+
+```tut:silent
+def unsafeRunFree[A](fa: FreeMap[A]): A =
+  fa match {
+    case Map(fa, f) => f(unsafeRun(fa))
+  }
+```
+
+---
+# Generalised Free structures
+
+```tut:silent
+sealed trait FreeMap[F[_], A]{
+  def map[B](f: A => B): FreeMap[F, B]
+}
+
+object FreeMap {
+  case class Map[F[_], X, A](action: F[X], update: X => A) extends FreeMap[F, A] {
+    def map[B](f: A => B): FreeMap[F, B] = Map(action, update andThen f)
+  }
+}
+```
+
+--
+
+```tut:silent
+sealed trait Random[A]
+
+object Random {
+  case object RandomInt extends Random[Int]
+}
+
+val randomInt: FreeMap[Random, Int] = FreeMap.Map(Random.RandomInt, identity[Int])
+
+def isEven(x: Int): Boolean = x % 2 == 0
+
+val randomBool: FreeMap[Random, Boolean] = randomInt.map(isEven)
+```
+
+
+
+---
+# Intermediate compilation to IO
+
+```tut:reset:invisible
+import answers.sideeffect.IOAnswers._
+```
+
+```tut:silent
+sealed trait Action[A]
+object Console {
+  case object ReadLine                  extends Action[String]
+  case class WriteLine(message: String) extends Action[Unit]
+}
+```
+
+```scala
+def compileToIO[A](fa: Action[A]): IO[A] =
+  fa match {
+    case ReadLine       => IO.effect(StdIn.readLine())
+    case WriteLine(msg) => IO.effect(println(message))
   }
 
-def unsafeRun[A](fa: Console[A]): A =
+def unsafeRun[A](fa: Action[A]): A =
   compileToIO(fa).unsafeRun()
 ```
 

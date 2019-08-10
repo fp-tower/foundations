@@ -13,8 +13,8 @@ sealed trait FreeMap[F[_], A] {
 }
 
 object FreeMap {
-  case class Map[F[_], A, B](value: F[B], update: B => A) extends FreeMap[F, A] {
-    def map[C](f: A => C): FreeMap[F, C] =
+  case class Map[F[_], X, A](value: F[X], update: X => A) extends FreeMap[F, A] {
+    def map[B](f: A => B): FreeMap[F, B] =
       Map(value, f compose update)
   }
 
