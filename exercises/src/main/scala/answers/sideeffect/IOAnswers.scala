@@ -33,6 +33,8 @@ object IOAnswers {
     def apply[A](fa: => A): IO[A] =
       effect(fa)
 
+    val unit: IO[Unit] = succeed(())
+
     val notImplemented: IO[Nothing] = effect(???)
 
     def fromTry[A](fa: Try[A]): IO[A] =
@@ -56,6 +58,8 @@ object IOAnswers {
 
     def flatMap[B](f: A => IO[B]): IO[B] =
       effect(f(unsafeRun()).unsafeRun())
+
+    def void: IO[Unit] = map(_ => ())
 
     def tuple2[B](fb: IO[B]): IO[(A, B)] =
       for {

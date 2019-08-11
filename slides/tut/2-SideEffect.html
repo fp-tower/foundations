@@ -424,13 +424,13 @@ ReadLine.map(intToString) // ideally
 ```
 
 ---
-# Free structures (really brief introduction)
+# Free structures (brief introduction)
 
 ```tut:invisible:silent
 sealed trait FreeMap[A]
 
 object FreeMap {
-  case class AFreeMap[X, A](action: Action[X], update: X => A) extends FreeMap[A]
+  case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
 }
 ```
 
@@ -443,30 +443,6 @@ object FreeMap {
 ```
 
 --
-
-### How to translate functions to free structures
-
-```scala
-def         readLine :              String
-case object ReadLine extends Action[String]
-
-def         writeLine(message: String) :              Unit
-case object WriteLine(message: String) extends Action[Unit]
-
-def        map[X, A](action: Action[X], update: X => A) :        Action[A]
-case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
-```
-
----
-# Free structures (really brief introduction)
-
-```tut:silent
-sealed trait FreeMap[A]
-
-object FreeMap {
-  case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
-}
-```
 
 ```tut:invisible
 import Action._
@@ -482,18 +458,72 @@ val readLine: FreeMap[Int] = Map(ReadLine, parseInt)
 
 --
 
-```tut:invisible
+```tut:silent
 def unsafeRun[A](fa: Action[A]): A =
   fa match {
     case ReadLine       => StdIn.readLine()
     case WriteLine(msg) => println(msg)
   }
-```
 
-```tut:silent
 def unsafeRunFree[A](fa: FreeMap[A]): A =
   fa match {
     case Map(fa, f) => f(unsafeRun(fa))
+  }
+```
+
+---
+# Free translates functions to data structures (GADT)
+
+
+```scala
+def         readLine :              String
+case object ReadLine extends Action[String]
+
+def         writeLine(message: String) :              Unit
+case object WriteLine(message: String) extends Action[Unit]
+
+def        map[X, A](action: Action[X], update: X => A) :        Action[A]
+case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
+```
+
+---
+# Interpret algebra in different ways
+
+```tut:reset:invisible
+import answers.sideeffect.IOAnswers._
+```
+
+```tut:silent
+sealed trait Action[A]
+object Action {
+  case object ReadLine                  extends Action[String]
+  case class WriteLine(message: String) extends Action[Unit]
+}
+```
+
+```tut:invisible
+import Action._
+import scala.io.StdIn
+import exercises.sideeffect.IORef
+```
+
+```tut:silent
+def compileToIO[A](fa: Action[A]): IO[A] =
+  fa match {
+    case ReadLine       => IO.effect(StdIn.readLine())
+    case WriteLine(msg) => IO.effect(println(msg))
+  }
+
+def log[A](fa: Action[A]): String =
+  fa match {
+    case ReadLine       => "Call ReadLine"
+    case WriteLine(msg) => s"Call WriteLine with $msg"
+  }
+
+def metrics[A](fa: Action[A], countRead: IORef[Int]): IO[Unit] =
+  fa match {
+    case ReadLine       => countRead.modify(_ + 1).void
+    case WriteLine(msg) => IO.unit
   }
 ```
 
@@ -512,8 +542,6 @@ object FreeMap {
 }
 ```
 
---
-
 ```tut:silent
 sealed trait Random[A]
 
@@ -528,33 +556,37 @@ def isEven(x: Int): Boolean = x % 2 == 0
 val randomBool: FreeMap[Random, Boolean] = randomInt.map(isEven)
 ```
 
+---
+class: center, middle
 
+# Algebra Exercises
+
+`exercises.sideeffect.AlgebraExercises.scala`
 
 ---
-# Intermediate compilation to IO
+.h1[# Free Summary]
 
-```tut:reset:invisible
-import answers.sideeffect.IOAnswers._
-```
+.large[
+* Free translates code into data
 
-```tut:silent
-sealed trait Action[A]
-object Console {
-  case object ReadLine                  extends Action[String]
-  case class WriteLine(message: String) extends Action[Unit]
-}
-```
+* Easy to interpret an algebra in many ways (log, test, real, metrics)
 
-```scala
-def compileToIO[A](fa: Action[A]): IO[A] =
-  fa match {
-    case ReadLine       => IO.effect(StdIn.readLine())
-    case WriteLine(msg) => IO.effect(println(message))
-  }
+* Complex (GADT, natural transformation, Coproduct, ...)
 
-def unsafeRun[A](fa: Action[A]): A =
-  compileToIO(fa).unsafeRun()
-```
+* Can miss some features from target effect like parallel execution, resource handling
+]
+
+---
+class: center, middle
+
+# All problems in computer science can be solved by another level of indirection
+
+David Wheeler
+
+---
+class: center, middle
+
+# Free is several order of magnitude more complex than IO
 
 ---
 # Resources and further study
