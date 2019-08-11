@@ -2,6 +2,7 @@ package answers.sideeffect
 
 import java.time.Instant
 
+import cats.Monad
 import exercises.sideeffect.IORef
 
 import scala.collection.mutable.ListBuffer
@@ -44,6 +45,15 @@ object IOAnswers {
       effect(Thread.sleep(duration.toMillis))
 
     val forever: IO[Nothing] = notImplemented
+
+    implicit val monad: Monad[IO] = new Monad[IO] {
+      def pure[A](x: A): IO[A]                           = IO.pure(x)
+      def flatMap[A, B](fa: IO[A])(f: A => IO[B]): IO[B] = fa.flatMap(f)
+      def tailRecM[A, B](a: A)(f: A => IO[Either[A, B]]): IO[B] = f(a).flatMap {
+        case Left(a2) => tailRecM(a2)(f) // not tailrec
+        case Right(b) => pure(b)
+      }
+    }
   }
 
   /////////////////////

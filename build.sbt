@@ -17,6 +17,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
     cats,
+    catsFree,
     catsEffect,
     refined,
     typesafeConfig,
