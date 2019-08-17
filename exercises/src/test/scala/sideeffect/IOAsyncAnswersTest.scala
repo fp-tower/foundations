@@ -2,7 +2,7 @@ package sideeffect
 
 import java.time.Instant
 
-import exercises.sideeffect.IOAsync
+import answers.sideeffect.IOAsync
 import exercises.sideeffect.IORef
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
