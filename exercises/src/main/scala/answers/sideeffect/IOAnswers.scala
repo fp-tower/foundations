@@ -216,10 +216,10 @@ object IOAnswers {
     } yield User(name, age, createdAt)
 
   def safeTestConsole(in: List[String]): TestConsole =
-    TestConsole(IORef(in))
+    TestConsole(IORef.unsafe(in))
 
   case class TestConsole(in: IORef[List[String]]) extends Console {
-    val out: IORef[List[String]] = IORef(List.empty[String])
+    val out: IORef[List[String]] = IORef.unsafe(List.empty[String])
 
     val readLine: IO[String] =
       in.modify {

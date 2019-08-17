@@ -3,6 +3,7 @@ package sideeffect
 import java.time.Instant
 
 import answers.sideeffect.IOAnswers._
+import exercises.sideeffect.IORef
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -51,9 +52,31 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
     forAll((e: Exception, f: Int => Boolean) => IO.fail(e).map(f).attempt.unsafeRun() == Left(e))
   }
 
+  test("flatMap") {
+    forAll { (x: Int, f: Int => Int) =>
+      IORef(x).flatMap(_.updateGetNew(f)).unsafeRun() shouldEqual f(x)
+    }
+
+    forAll((e: Exception) => IO.fail(e).flatMap(_ => IO.notImplemented).attempt.unsafeRun() shouldEqual Left(e))
+
+    forAll((x: Int, e: Exception) => IO.fail(e).flatMap(_ => IO.succeed(x)).attempt.unsafeRun() shouldEqual Left(e))
+  }
+
   test("attempt") {
     forAll((x: Int) => IO.succeed(x).attempt.unsafeRun() shouldEqual Right(x))
     forAll((e: Exception) => IO.fail(e).attempt.unsafeRun() shouldEqual Left(e))
+  }
+
+  test("retryOnce") {
+    val error = new Exception("Unsupported odd number")
+    def action(ref: IORef[Int]): IO[String] =
+      ref.updateGetNew(_ + 1).map(_ % 2 == 0).flatMap {
+        case true  => IO.succeed("OK")
+        case false => IO.fail(error)
+      }
+
+    IORef(0).flatMap(action).attempt.unsafeRun() shouldEqual Left(error)
+    IORef(0).flatMap(action(_).retryOnce).unsafeRun() shouldEqual "OK"
   }
 
   ////////////////////

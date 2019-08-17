@@ -25,8 +25,18 @@ case class IORef[A](ref: AtomicReference[A]) {
   // copied from cats-effect
   def update(f: A => A): IO[Unit] =
     modify(a => (f(a), ()))
+
+  def updateGetNew(f: A => A): IO[A] =
+    modify { a =>
+      val newValue = f(a)
+      (newValue, newValue)
+    }
 }
 
 object IORef {
-  def apply[A](value: A): IORef[A] = IORef(new AtomicReference(value))
+  def apply[A](value: A): IO[IORef[A]] =
+    IO.effect(IORef(new AtomicReference(value)))
+
+  def unsafe[A](value: A): IORef[A] =
+    IORef(new AtomicReference(value))
 }
