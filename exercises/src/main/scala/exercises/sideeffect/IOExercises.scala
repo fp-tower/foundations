@@ -50,7 +50,7 @@ object IOExercises {
     // What the issue with this implementation? How could you fix it?
     def sleep(duration: FiniteDuration): IO[Unit] = ???
 
-    // 2h. Implement an IO that never completes
+    // 1g. Implement an IO that never completes
     // this should be the equivalent of sleep with an Infinite duration
     val forever: IO[Nothing] = notImplemented
   }
@@ -59,29 +59,71 @@ object IOExercises {
   // 2. IO API
   /////////////////////
 
-  class IO[A](val unsafeRun: () => A) {
+  class IO[A](thunk: () => A) {
+    import IO._
+
+    def unsafeRun(): A = thunk()
 
     // 2a. Implement map
     // such as succeed(x).map(f) == succeed(f(x))
     // and     fail(e).map(f) == fail(e)
-    // note that f is a pure function, you should NOT use it to do another side effect e.g. succeed(4).map(println)
+    // note that f is a pure function, you should NOT use it to do another side effect
+    // e.g. succeed(4).map(println)
     def map[B](f: A => B): IO[B] = ???
+
+    // void discards the return value
+    // use case:
+    // val rowsUpdated: IO[Int] = updateDb(sql"...")
+    // val response: IO[Unit] = rowsUpdated.void
+    def void: IO[Unit] = map(_ => ())
 
     // 2b. Implement flatMap
     // such as succeed(x).flatMap(f) == f(x)
     // and     fail(e).flatMap(f) == fail(e)
     def flatMap[B](f: A => IO[B]): IO[B] = ???
 
+    // productL and productR combines independent IO where one of them is only used for side effect
+    // this is a rare case where an infix operator is really convenient see <* and *>
+    // use case:
+    // logInfo("Fetching user $userId") *> getUser($userId)            : IO[User]  // logInfo value is discarded
+    // createOrder(item, qty, userId) <* sendConfirmationEmail(userId) : IO[Order] // sendConfirmationEmail value is discarded
+    // note that we can use a for comprehension because we already implemented map and flatMap
+    def productL[B](fb: IO[B]): IO[A] =
+      for {
+        a <- this
+        _ <- fb
+      } yield a
+
+    def productR[B](fb: IO[B]): IO[B] =
+      for {
+        _ <- this
+        b <- fb
+      } yield b
+
+    // common alias for productL
+    def <*[B](fb: IO[B]): IO[A] = productL(fb)
+
+    // common alias for productR
+    def *>[B](fb: IO[B]): IO[B] = productR(fb)
+
     // 2c. Implement attempt which makes the error part of IO explicit
-    // such as attempt(pure(x)) == pure(Right(x))
-    //         attempt(fail(new Exception(""))) == pure(Left(new Exception("")))
+    // such as succeed(x).attempt == succeed(Right(x))
+    //         fail(new Exception("")).attempt == succeed(Left(new Exception("")))
     // note that attempt guarantee that unsafeRun() will not throw an Exception
     def attempt[B]: IO[Either[Throwable, A]] = ???
 
-    // 2d. Implement retryOnce that takes an IO and if it fails, try to run it again
+    // 2d. Implement handleErrorWith which allow to catch failing IO
+    // such as fail(new Exception("")).handleErrorWith(_ => someIO) == someIO
+    //         fail(new Exception("foo")).handleErrorWith{
+    //            case e: IllegalArgumentException => succeed(1)
+    //            case other                       => succeed(2)
+    //         } == succeed(2)
+    def handleErrorWith(f: Throwable => IO[A]): IO[A] = ???
+
+    // 2e. Implement retryOnce that takes an IO and if it fails, try to run it again
     def retryOnce: IO[A] = ???
 
-    // 2e. Implement retryUntilSuccess
+    // 2f. Implement retryUntilSuccess
     // similar to retryOnce but it retries until the IO succeeds (potentially indefinitely)
     // sleep `waitBeforeRetry` between each retry
     def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] = ???
@@ -186,5 +228,25 @@ object IOExercises {
   // - it is a pure Console implementation
   // - it makes unit testing convenient
   def safeTestConsole: Console = ???
+
+  ////////////////////////
+  // 5. Advanced API
+  ////////////////////////
+
+  // 5a. Implement sequence which run sequentially a list of IO and collect the results
+  // sequence(List(succeed(1), succeed(2))) == succeed(List(1,2))
+  // sequence(List(succeed(1), notImplemented, succeed(3))) == succeed(1) *> notImplemented
+  // use case:
+  // val userIds: List[UserId] = ...
+  // sequence(userIds.map(fetchUser)): IO[List[User]]
+  def sequence[A](xs: List[IO[A]]): IO[List[A]] = ???
+
+  // 5b. Implement traverse
+  // traverse(List(1,2,3))(succeed) == succeed(List(1,2,3))
+  // traverse(List(1,2,3))(x => if(x % 2 == 0) notImplemented else succeed(x)) == succeed(1) *> notImplemented
+  // use case:
+  // val userIds: List[UserId] = ...
+  // userIds.traverse(fetchUser): IO[List[User]]
+  def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] = ???
 
 }

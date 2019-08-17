@@ -6,7 +6,7 @@ import cats.Monad
 import exercises.sideeffect.IORef
 
 import scala.collection.mutable.ListBuffer
-import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.duration._
 import scala.util.Try
 
 object IOAnswers {
@@ -44,7 +44,11 @@ object IOAnswers {
     def sleep(duration: FiniteDuration): IO[Unit] =
       effect(Thread.sleep(duration.toMillis))
 
-    val forever: IO[Nothing] = notImplemented
+    val forever: IO[Nothing] =
+      effect {
+        sleep(100.day).unsafeRun()
+        forever.unsafeRun()
+      }
 
     implicit val monad: Monad[IO] = new Monad[IO] {
       def pure[A](x: A): IO[A]                           = IO.pure(x)
@@ -60,8 +64,10 @@ object IOAnswers {
   // 2. IO API
   /////////////////////
 
-  class IO[+A](val unsafeRun: () => A) {
+  class IO[+A](thunk: () => A) {
     import IO._
+
+    def unsafeRun(): A = thunk()
 
     def map[B](f: A => B): IO[B] =
       effect(f(unsafeRun()))
@@ -90,19 +96,16 @@ object IOAnswers {
     def *>[B](fb: IO[B]): IO[B] = productR(fb)
 
     def attempt[B]: IO[Either[Throwable, A]] =
-      map(Try(_).toEither)
+      new IO(() => Try(unsafeRun())).map(_.toEither)
+
+    def handleErrorWith[B >: A](f: Throwable => IO[B]): IO[B] =
+      attempt.flatMap(_.fold(f, succeed))
 
     def retryOnce: IO[A] =
-      attempt.flatMap {
-        case Left(_)  => this
-        case Right(a) => succeed(a)
-      }
+      handleErrorWith(_ => this)
 
     def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] =
-      attempt.flatMap {
-        case Left(_)  => sleep(waitBeforeRetry) *> retryUntilSuccess(waitBeforeRetry)
-        case Right(a) => succeed(a)
-      }
+      handleErrorWith(_ => sleep(waitBeforeRetry) *> retryUntilSuccess(waitBeforeRetry))
   }
 
   ////////////////////
@@ -180,7 +183,7 @@ object IOAnswers {
     val readLine: IO[String]
     def writeLine(message: String): IO[Unit]
 
-    val readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
+    def readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
   }
 
   val stdin: Console = new Console {
@@ -219,13 +222,30 @@ object IOAnswers {
     val out: IORef[List[String]] = IORef(List.empty[String])
 
     val readLine: IO[String] =
-      in.modifyFold {
-        case x :: xs => (x, xs)
-        case Nil     => ("", Nil)
+      in.modify {
+        case x :: xs => (xs, x)
+        case Nil     => (Nil, "")
       }
 
     def writeLine(message: String): IO[Unit] =
-      out.modify(message :: _).map(_ => ())
+      out.update(_ :+ message)
   }
+
+  ////////////////////////
+  // 5. Advanced API
+  ////////////////////////
+
+  def sequence[A](xs: List[IO[A]]): IO[List[A]] =
+    traverse(xs)(identity)
+
+  def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
+    xs.foldLeft(IO.succeed(List.empty[B]))(
+        (facc, a) =>
+          for {
+            acc <- facc
+            a   <- f(a)
+          } yield a :: acc
+      )
+      .map(_.reverse)
 
 }

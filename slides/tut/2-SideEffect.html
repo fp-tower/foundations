@@ -113,16 +113,16 @@ background-image: url(img/sideeffect/effects-on-edges.svg)
 # Run side effects at the edges
 
 ---
-### 1. Encode Action
+### 1. Encode Description
 
 ```tut:silent
-trait Action[A]
+trait Description[A]
 ```
 
-### 2. Define an unsafe interpreter of Action
+### 2. Define an unsafe interpreter of Description
 
 ```tut:silent
-def unsafeRun[A](fa: Action[A]): A = ??? // execute action, this is not a pure function
+def unsafeRun[A](fa: Description[A]): A = ??? // execute action, this is not a pure function
 ```
 
 ### 3. Combine everything in Main
@@ -130,9 +130,9 @@ def unsafeRun[A](fa: Action[A]): A = ??? // execute action, this is not a pure f
 ```tut:silent
 object Main extends App {
 
-  val action: Action[Unit] = ???
+  val description: Description[Unit] = ???
 
-  unsafeRun(action)
+  unsafeRun(description)
 
 }
 ```
@@ -140,13 +140,13 @@ object Main extends App {
 ---
 class: center, middle
 
-# Examples
+# Examples of description / evaluation
 
 ---
 .h1[# Cooking]
 
 .pull-left[
-### 1. Secret pasta recipe (Program)
+### 1. Secret pasta recipe (Description)
 
 .large[
 1. Boil 200 ml of water
@@ -176,32 +176,6 @@ background-image: url(img/sideeffect/lemon-meringue-2.svg)
 .reference[[Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)]
 
 ---
-# Executable program
-
-.center[![Run program](img/sideeffect/program-run.svg)]
-
-<br>
-
-```bash
-~/project/foundation ᐅ ls
-LICENCE   Makefile  README.MD build.sbt exercises logo      notes     project   slides    target
-```
-
----
-# Executable program compose
-
-.center[![Pipe program](img/sideeffect/program-pipe.svg)]
-
-<br>
-
-```bash
-~/project/foundation ᐅ ls | grep es
-exercis`es`
-not`es`
-slid`es`
-```
-
----
 .h1[# Mathematical formula]
 
 .pull-left[
@@ -226,8 +200,8 @@ val z  = Math.sqrt(x2 + y2)
 <br>
 
 ```tut
-val x2 = Math.pow(2, 2)
-val y2 = Math.pow(3, 2)
+val x2 = Math.pow(x, 2)
+val y2 = Math.pow(y, 2)
 val z  = Math.sqrt(x2 + y2)
 
 val z2 = Math.pow(z, 2)
@@ -239,6 +213,33 @@ val z2 = Math.pow(z, 2)
 ]
 
 .reference[[Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)]
+
+
+---
+# Executable program
+
+.center[![Run program](img/sideeffect/program-run.svg)]
+
+<br>
+
+```bash
+~/project/foundation ᐅ ls
+LICENCE   Makefile  README.MD build.sbt exercises logo      notes     project   slides    target
+```
+
+---
+# Executable program compose
+
+.center[![Pipe program](img/sideeffect/program-pipe.svg)]
+
+<br>
+
+```bash
+~/project/foundation ᐅ ls | grep es
+exercis`es`
+not`es`
+slid`es`
+```
 
 ---
 .h1[# Separate description from execution]
@@ -286,7 +287,9 @@ def unsafeRun[A](fa: Thunk[A]): A = fa()
 # Method 1: IO
 
 ```tut:silent
-class IO[A](val unsafeRun: () => A)
+class IO[A](thunk: () => A) {
+  def unsafeRun(): A = thunk()
+}
 
 val readLine: IO[String] =
   new IO(() => StdIn.readLine())
@@ -329,17 +332,12 @@ class: center, middle
 # What are the limitations of IO?
 
 ---
-background-image: url(img/sideeffect/IO-composition-1.svg)
-
-# IO cannot be introspected
-
----
-background-image: url(img/sideeffect/IO-composition-2.svg)
-
-# IO cannot be introspected
-
----
 background-image: url(img/sideeffect/IO.svg)
+
+# IO cannot be introspected
+
+---
+background-image: url(img/sideeffect/IO-composition-1.svg)
 
 # IO cannot be introspected
 
@@ -352,17 +350,17 @@ class: center, middle
 # Effect Algebra
 
 ```tut:silent
-sealed trait Action[A]
-object Action {
-  case object ReadLine                  extends Action[String]
-  case class WriteLine(message: String) extends Action[Unit]
+sealed trait Description[A]
+object Description {
+  case object ReadLine                  extends Description[String]
+  case class WriteLine(message: String) extends Description[Unit]
 }
 ```
 
 ```tut:silent
-import Action._
+import Description._
 
-def unsafeRun[A](fa: Action[A]): A =
+def unsafeRun[A](fa: Description[A]): A =
   fa match {
     case ReadLine       => StdIn.readLine()
     case WriteLine(msg) => println(msg)
@@ -375,7 +373,7 @@ def unsafeRun[A](fa: Action[A]): A =
 ```tut:silent
 object Main extends App {
 
-  val action: Action[Unit] = WriteLine("Hello World")
+  val action: Description[Unit] = WriteLine("Hello World")
 
   unsafeRun(action)
 
@@ -400,10 +398,10 @@ class: center, middle
 # How to add new actions?
 
 ```tut:silent
-sealed trait Action[A]
-object Action {
-  case object ReadLine                  extends Action[String]
-  case class WriteLine(message: String) extends Action[Unit]
+sealed trait Description[A]
+object Description {
+  case object ReadLine                  extends Description[String]
+  case class WriteLine(message: String) extends Description[Unit]
 }
 ```
 
@@ -412,7 +410,7 @@ object Action {
 ### 1. Add primitive
 
 ```scala
-case object ReadInt extends Action[Int]
+case object ReadInt extends Description[Int]
 ```
 
 --
@@ -430,7 +428,7 @@ ReadLine.map(intToString) // ideally
 sealed trait FreeMap[A]
 
 object FreeMap {
-  case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
+  case class Map[X, A](action: Description[X], update: X => A) extends FreeMap[A]
 }
 ```
 
@@ -438,14 +436,14 @@ object FreeMap {
 sealed trait FreeMap[A]
 
 object FreeMap {
-  case class Map[`X`, A](action: Action[`X`], update: `X` => A) extends FreeMap[A]
+  case class Map[`X`, A](action: Description[`X`], update: `X` => A) extends FreeMap[A]
 }
 ```
 
 --
 
 ```tut:invisible
-import Action._
+import Description._
 import FreeMap.Map
 import scala.util.Try
 ```
@@ -459,7 +457,7 @@ val readLine: FreeMap[Int] = Map(ReadLine, parseInt)
 --
 
 ```tut:silent
-def unsafeRun[A](fa: Action[A]): A =
+def unsafeRun[A](fa: Description[A]): A =
   fa match {
     case ReadLine       => StdIn.readLine()
     case WriteLine(msg) => println(msg)
@@ -476,14 +474,14 @@ def unsafeRunFree[A](fa: FreeMap[A]): A =
 
 
 ```scala
-def         readLine :              String
-case object ReadLine extends Action[String]
+def         readLine :                   String
+case object ReadLine extends Description[String]
 
-def         writeLine(message: String) :              Unit
-case object WriteLine(message: String) extends Action[Unit]
+def         writeLine(message: String) :                   Unit
+case object WriteLine(message: String) extends Description[Unit]
 
-def        map[X, A](action: Action[X], update: X => A) :        Action[A]
-case class Map[X, A](action: Action[X], update: X => A) extends FreeMap[A]
+def        map[X, A](action: Description[X], update: X => A) :       Description[A]
+case class Map[X, A](action: Description[X], update: X => A) extends     FreeMap[A]
 ```
 
 ---
@@ -494,33 +492,33 @@ import answers.sideeffect.IOAnswers._
 ```
 
 ```tut:silent
-sealed trait Action[A]
-object Action {
-  case object ReadLine                  extends Action[String]
-  case class WriteLine(message: String) extends Action[Unit]
+sealed trait Description[A]
+object Description {
+  case object ReadLine                  extends Description[String]
+  case class WriteLine(message: String) extends Description[Unit]
 }
 ```
 
 ```tut:invisible
-import Action._
+import Description._
 import scala.io.StdIn
 import exercises.sideeffect.IORef
 ```
 
 ```tut:silent
-def compileToIO[A](fa: Action[A]): IO[A] =
+def compileToIO[A](fa: Description[A]): IO[A] =
   fa match {
     case ReadLine       => IO.effect(StdIn.readLine())
     case WriteLine(msg) => IO.effect(println(msg))
   }
 
-def log[A](fa: Action[A]): String =
+def log[A](fa: Description[A]): String =
   fa match {
     case ReadLine       => "Call ReadLine"
     case WriteLine(msg) => s"Call WriteLine with $msg"
   }
 
-def metrics[A](fa: Action[A], countRead: IORef[Int]): IO[Unit] =
+def metrics[A](fa: Description[A], countRead: IORef[Int]): IO[Unit] =
   fa match {
     case ReadLine       => countRead.modify(_ + 1).void
     case WriteLine(msg) => IO.unit

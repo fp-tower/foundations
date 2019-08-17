@@ -48,13 +48,19 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
 
   test("map") {
     forAll((x: Int, f: Int => Boolean) => IO.succeed(x).map(f).unsafeRun() == f(x))
+    forAll((e: Exception, f: Int => Boolean) => IO.fail(e).map(f).attempt.unsafeRun() == Left(e))
+  }
+
+  test("attempt") {
+    forAll((x: Int) => IO.succeed(x).attempt.unsafeRun() shouldEqual Right(x))
+    forAll((e: Exception) => IO.fail(e).attempt.unsafeRun() shouldEqual Left(e))
   }
 
   ////////////////////
   // 4. Testing
   ////////////////////
 
-  ignore("read user from Console") {
+  test("read user from Console") {
     val in: List[String] = List("John", "24")
     val console          = safeTestConsole(in)
     val now              = Instant.ofEpochMilli(100)
@@ -65,6 +71,19 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
 
     user shouldEqual User("John", 24, now)
     output shouldEqual List("What's your name?", "What's your age?")
+  }
+
+  ////////////////////////
+  // 5. Advanced API
+  ////////////////////////
+
+  test("traverse") {
+    forAll((xs: List[Int]) => traverse(xs)(IO.succeed).unsafeRun() shouldEqual xs)
+
+    forAll { xs: List[Exception] =>
+      val boom = new Exception("boom")
+      traverse(boom :: xs)(IO.fail).attempt.unsafeRun() shouldEqual Left(boom)
+    }
   }
 
 }
