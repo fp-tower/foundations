@@ -2,9 +2,17 @@ package answers.sideeffect
 
 import java.util.concurrent.CountDownLatch
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success, Try}
 
+/**
+  * IO implementation encoded as a Thunk or Async
+  *
+  * This encoding is made to illustrate how can we incorporate asynchronous computation
+  * within a thunk based IO implementation (e.g. IOAnswers.IO)
+  *
+  * However, it is not stack nor efficient
+  */
 sealed trait IOAsync[+A] {
   import IOAsync._
 
@@ -17,21 +25,30 @@ sealed trait IOAsync[+A] {
   def attempt: IOAsync[Either[Throwable, A]] =
     effect(Try(unsafeRun()).toEither)
 
-  // adapated from cats-effect
-  def unsafeRun(): A = {
-    val latch          = new CountDownLatch(1)
-    var res: Option[A] = None
+  def unsafeToFuture: Future[A] = {
+    val promise = Promise[A]()
 
     unsafeRunAsync {
-      case Left(e) => throw e
-      case Right(a) =>
-        res = Some(a)
-        latch.countDown()
+      case Left(e)  => promise.failure(e)
+      case Right(a) => promise.success(a)
     }
 
-    latch.await()
+    promise.future
+  }
 
-    res.get
+  // adapated from cats-effect
+  def unsafeRun(): A = {
+    val latch                     = new CountDownLatch(1)
+    var res: Either[Throwable, A] = null
+
+    unsafeRunAsync { eOrA =>
+      res = eOrA
+      latch.countDown()
+    }
+
+    latch.await() // await until the latch is opened within unsafeRunAsync callBack
+
+    res.fold(throw _, identity)
   }
 
   def unsafeRunAsync(cb: Either[Throwable, A] => Unit): Unit =
