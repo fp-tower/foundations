@@ -21,6 +21,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     catsEffect,
     refined,
     typesafeConfig,
+    circe,
     scalacheck,
     discipline,
     disciplineTest % Test

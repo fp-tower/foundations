@@ -105,7 +105,7 @@ class: center, middle
 
 --
 
-# Interpret the value with side effects in Main
+# INTERPRET the value with side effects in Main
 
 ---
 background-image: url(img/sideeffect/effects-on-edges.svg)
@@ -122,7 +122,7 @@ trait Description[A]
 ### 2. Define an unsafe interpreter of Description
 
 ```tut:silent
-def unsafeRun[A](fa: Description[A]): A = ??? // execute action, this is not a pure function
+def unsafeRun[A](fa: Description[A]): A = ??? // execute description, this is not a pure function
 ```
 
 ### 3. Combine everything in Main
@@ -204,7 +204,8 @@ val x2 = Math.pow(x, 2)
 val y2 = Math.pow(y, 2)
 val z  = Math.sqrt(x2 + y2)
 
-val z2 = Math.pow(z, 2)
+Math.pow(z, 2)
+x2 + y2
 ```
 ]
 
@@ -242,32 +243,36 @@ slid`es`
 ```
 
 ---
-.h1[# Separate description from execution]
+class: center, middle
+
+# How to encode description?
+
+---
+# How to encode description?
 
 <br>
 
-.large[
-*   Music
-*   Architecture
-*   Cooking
-*   Mathematical formula
-*   Docker
-*   ...
-]
+```tut:silent
+trait Description[A]
 
----
-class: center, middle
 
-# How to encode actions?
+def unsafeRun[A](fa: Description[A]): A = ???
+```
 
 ---
 # Method 1: Thunk
 
 ```tut:silent
-import java.time.LocalDate
-import scala.io.StdIn
-
 type Thunk[A] = () => A  // Unit => A
+
+def unsafeRun[A](fa: Thunk[A]): A = fa()
+```
+
+--
+
+```tut:silent
+import java.time.LocalDate
+import scala.io.{Source, StdIn, BufferedSource}
 
 val readLine: Thunk[String] =
   () => StdIn.readLine()
@@ -275,12 +280,11 @@ val readLine: Thunk[String] =
 def writeLine(message: String): Thunk[Unit] =
   () => println(message)
 
-val localDate: Thunk[LocalDate] =
+val today: Thunk[LocalDate] =
   () => LocalDate.now()
-```
 
-```tut:silent
-def unsafeRun[A](fa: Thunk[A]): A = fa()
+def fetch(url: String): Thunk[Iterator[String]] =
+  () => Source.fromURL(url).getLines
 ```
 
 ---
@@ -297,13 +301,16 @@ val readLine: IO[String] =
 def writeLine(message: String): IO[Unit] =
   new IO(() => println(message))
 
-val localDate: IO[LocalDate] =
+val today: IO[LocalDate] =
   new IO(() => LocalDate.now())
+
+def fetch(url: String): IO[Iterator[String]] =
+  new IO(() => Source.fromURL(url).getLines)
 ```
 
 ```tut
-localDate
-localDate.unsafeRun()
+fetch("http://google.com")
+fetch("http://google.com").unsafeRun().take(1).toList
 ```
 
 
@@ -344,26 +351,41 @@ background-image: url(img/sideeffect/IO-composition-1.svg)
 ---
 class: center, middle
 
-# IO is probably the most primitive way to capture side effect
+# IO is probably the most primitive way to describe side effect
+
+---
+class: center, middle
+
+# How can we encode side effects more precisely?
+
+---
+class: center, middle
+
+# Warning: this is an advanced technique
 
 ---
 # Effect Algebra
 
 ```tut:silent
 sealed trait Description[A]
+
 object Description {
-  case object ReadLine                  extends Description[String]
-  case class WriteLine(message: String) extends Description[Unit]
+  case object Today                      extends Description[LocalDate]
+  case class  FetchString(url: String)   extends Description[String]
+  case class  WriteLine(message: String) extends Description[Unit]
 }
 ```
+
+--
 
 ```tut:silent
 import Description._
 
 def unsafeRun[A](fa: Description[A]): A =
   fa match {
-    case ReadLine       => StdIn.readLine()
-    case WriteLine(msg) => println(msg)
+    case Today            => LocalDate.now()
+    case FetchString(url) => Source.fromURL(url).mkString("")
+    case WriteLine(msg)   => println(msg)
   }
 ```
 
@@ -373,9 +395,9 @@ def unsafeRun[A](fa: Description[A]): A =
 ```tut:silent
 object Main extends App {
 
-  val action: Description[Unit] = WriteLine("Hello World")
+  val description: Description[Unit] = WriteLine("Hello World")
 
-  unsafeRun(action)
+  unsafeRun(description)
 
 }
 ```
@@ -385,40 +407,83 @@ Main.main(Array.empty)
 ```
 
 ---
-class: center, middle
+# Interpret algebra in different ways
 
-# How to add new actions?
+```tut:silent
+def testInterpreter[A](fa: Description[A]): A =
+  fa match {
+    case Today            => LocalDate.of(2019, 8, 17)
+    case FetchString(url) => "Hello World"
+    case WriteLine(msg)   => ()
+  }
+```
+
+```tut:silent
+def loggerInterpreter[A](fa: Description[A]): String =
+  fa match {
+    case Today            =>  "call Today"
+    case FetchString(url) => s"call FetchString for $url"
+    case WriteLine(msg)   => s"call WriteLine with $msg"
+  }
+```
 
 ---
 class: center, middle
 
-# How to combine actions together?
+# How to add new descriptions?
+
+# How to combine description together?
 
 ---
-# How to add new actions?
+# How to add new descriptions?
 
 ```tut:silent
 sealed trait Description[A]
 object Description {
-  case object ReadLine                  extends Description[String]
-  case class WriteLine(message: String) extends Description[Unit]
+  case object Today                      extends Description[LocalDate]
+  case class  FetchString(url: String)   extends Description[String]
+  case class  WriteLine(message: String) extends Description[Unit]
 }
 ```
 
 --
 
-### 1. Add primitive
+### 1. Add primitive (👎 not really scalable)
 
 ```scala
-case object ReadInt extends Description[Int]
+case object FetchJson extends Description[Json]
 ```
 
 --
 
-### 2. Somehow transform existing actions
+### 2. Transform existing actions (👍 composable)
 
 ```scala
-ReadLine.map(intToString) // ideally
+FetchString.map(parseJson)
+```
+
+---
+# Problem
+
+```tut:silent
+sealed trait Description[A]
+
+object Description {
+  case object Today                      extends Description[LocalDate]
+  case class  FetchString(url: String)   extends Description[String]
+  case class  WriteLine(message: String) extends Description[Unit]
+}
+```
+
+```tut:silent
+import Description._
+
+def map[A, B](fa: Description[A])(f: A => B): Description[B] =
+  fa match {
+    case Today            => ???
+    case FetchString(url) => ???
+    case WriteLine(msg)   => ???
+  }
 ```
 
 ---
@@ -428,7 +493,7 @@ ReadLine.map(intToString) // ideally
 sealed trait FreeMap[A]
 
 object FreeMap {
-  case class Map[X, A](action: Description[X], update: X => A) extends FreeMap[A]
+  case class Map[X, A](description: Description[X], update: X => A) extends FreeMap[A]
 }
 ```
 
@@ -436,7 +501,7 @@ object FreeMap {
 sealed trait FreeMap[A]
 
 object FreeMap {
-  case class Map[`X`, A](action: Description[`X`], update: `X` => A) extends FreeMap[A]
+  case class Map[`X`, A](description: Description[`X`], update: `X` => A) extends FreeMap[A]
 }
 ```
 
@@ -445,28 +510,98 @@ object FreeMap {
 ```tut:invisible
 import Description._
 import FreeMap.Map
-import scala.util.Try
 ```
 
 ```tut:silent
-def parseInt(x: String): Int = Try(x.toInt).getOrElse(-1)
+import io.circe.Json
 
-val readLine: FreeMap[Int] = Map(ReadLine, parseInt)
+def parseJson(x: String): Json =
+  io.circe.parser.parse(x).getOrElse(Json.obj())
+
+def fetchJson(url: String): FreeMap[Json] =
+  Map(FetchString(url), parseJson)
 ```
 
---
+---
+# Free structures
+
+```tut:silent
+sealed trait FreeMap[A] {
+  def map[C](f: A => C): FreeMap[C]
+}
+
+object FreeMap {
+  def lift[A](description: Description[A]): FreeMap[A] =
+    Map(description, identity[A])
+
+  case class Map[X, A](description: Description[X], update: X => A) extends FreeMap[A] {
+    def map[C](f: A => C): FreeMap[C] = Map(description, update andThen f)
+  }
+}
+```
+
+```tut:invisible
+import Description._
+import FreeMap.Map
+```
+
+```tut:silent
+def fetchString(url: String): FreeMap[String] = FreeMap.lift(FetchString(url))
+
+def fetchJson(url: String)   : FreeMap[Json]  = fetchString(url).map(parseJson)
+```
+
+---
+# Free structures
+
+### 1. Primitives
+
+```tut:silent
+val today                   : FreeMap[LocalDate] = FreeMap.lift(Today)
+def fetchString(url: String): FreeMap[String]    = FreeMap.lift(FetchString(url))
+def writeLine(msg: String)  : FreeMap[Unit]      = FreeMap.lift(WriteLine(msg))
+```
+
+### 2. Derived description
+
+```tut:silent
+def fetchJson(url: String): FreeMap[Json] = fetchString(url).map(parseJson)
+```
+
+---
+# Free structures
+
+### 3. Interpreters
 
 ```tut:silent
 def unsafeRun[A](fa: Description[A]): A =
   fa match {
-    case ReadLine       => StdIn.readLine()
-    case WriteLine(msg) => println(msg)
+    case Today            => LocalDate.now()
+    case FetchString(url) => Source.fromURL(url).mkString("")
+    case WriteLine(msg)   => println(msg)
   }
 
 def unsafeRunFree[A](fa: FreeMap[A]): A =
   fa match {
     case Map(fa, f) => f(unsafeRun(fa))
   }
+```
+
+---
+# Tadam!
+
+```tut:silent
+object Main extends App {
+
+  val description = fetchJson("https://api.github.com/users/julien-truffaut/orgs").map(println)
+
+  unsafeRunFree(description)
+
+}
+```
+
+```tut
+Main.main(Array.empty)
 ```
 
 ---
@@ -482,76 +617,6 @@ case object WriteLine(message: String) extends Description[Unit]
 
 def        map[X, A](action: Description[X], update: X => A) :       Description[A]
 case class Map[X, A](action: Description[X], update: X => A) extends     FreeMap[A]
-```
-
----
-# Interpret algebra in different ways
-
-```tut:reset:invisible
-import answers.sideeffect.IOAnswers._
-```
-
-```tut:silent
-sealed trait Description[A]
-object Description {
-  case object ReadLine                  extends Description[String]
-  case class WriteLine(message: String) extends Description[Unit]
-}
-```
-
-```tut:invisible
-import Description._
-import scala.io.StdIn
-import exercises.sideeffect.IORef
-```
-
-```tut:silent
-def compileToIO[A](fa: Description[A]): IO[A] =
-  fa match {
-    case ReadLine       => IO.effect(StdIn.readLine())
-    case WriteLine(msg) => IO.effect(println(msg))
-  }
-
-def log[A](fa: Description[A]): String =
-  fa match {
-    case ReadLine       => "Call ReadLine"
-    case WriteLine(msg) => s"Call WriteLine with $msg"
-  }
-
-def metrics[A](fa: Description[A], countRead: IORef[Int]): IO[Unit] =
-  fa match {
-    case ReadLine       => countRead.modify(_ + 1).void
-    case WriteLine(msg) => IO.unit
-  }
-```
-
----
-# Generalised Free structures
-
-```tut:silent
-sealed trait FreeMap[F[_], A]{
-  def map[B](f: A => B): FreeMap[F, B]
-}
-
-object FreeMap {
-  case class Map[F[_], X, A](action: F[X], update: X => A) extends FreeMap[F, A] {
-    def map[B](f: A => B): FreeMap[F, B] = Map(action, update andThen f)
-  }
-}
-```
-
-```tut:silent
-sealed trait Random[A]
-
-object Random {
-  case object RandomInt extends Random[Int]
-}
-
-val randomInt: FreeMap[Random, Int] = FreeMap.Map(Random.RandomInt, identity[Int])
-
-def isEven(x: Int): Boolean = x % 2 == 0
-
-val randomBool: FreeMap[Random, Boolean] = randomInt.map(isEven)
 ```
 
 ---
