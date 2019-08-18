@@ -1,14 +1,15 @@
 package sideeffect
 
-import java.time.Instant
+import java.util.concurrent.ExecutorService
 
-import answers.sideeffect.IOAsync
+import answers.sideeffect.{IOAsync, IOAsyncRef}
 import exercises.sideeffect.IORef
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import sideeffect.ThreadPoolUtil.CounterExecutionContext
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Try}
 
 class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
@@ -55,6 +56,25 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     counter shouldEqual 1
   }
 
+  test("evalOn") {
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "evalOn")) { ec =>
+      val counterEC = new CounterExecutionContext(ec)
+
+      val io = for {
+        ref <- IOAsyncRef(0)
+        _   <- IOAsync.printThreadName
+        _ <- IOAsync.traverse(List.fill(10)(0))(
+          _ => IOAsync.evalOn(counterEC)(ref.update(_ + 1) <* IOAsync.printThreadName)
+        )
+        _   <- IOAsync.printThreadName
+        res <- ref.get
+      } yield res
+
+      io.unsafeRun() shouldEqual 10
+      counterEC.executeCalled.get() shouldEqual 10
+    }
+  }
+
   /////////////////////
   // 2. IO API
   /////////////////////
@@ -81,6 +101,15 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
   test("attempt") {
     forAll((x: Int) => IOAsync.succeed(x).attempt.unsafeRun() shouldEqual Right(x))
     forAll((e: Exception) => IOAsync.fail(e).attempt.unsafeRun() shouldEqual Left(e))
+  }
+
+  // TODO use Resource or handmade equivalent
+  def withExecutionContext[A](makeES: => ExecutorService)(f: ExecutionContext => A): A = {
+    val es = makeES
+    val ec = ExecutionContext.fromExecutorService(es)
+    val a  = f(ec)
+    es.shutdown()
+    a
   }
 
 }

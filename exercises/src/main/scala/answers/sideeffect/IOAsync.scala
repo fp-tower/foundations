@@ -25,6 +25,21 @@ sealed trait IOAsync[+A] {
   def attempt: IOAsync[Either[Throwable, A]] =
     effect(Try(unsafeRun()).toEither)
 
+  def tuple[B](other: IOAsync[B]): IOAsync[(A, B)] =
+    map2(other)((_, _))
+
+  def map2[B, C](other: IOAsync[B])(f: (A, B) => C): IOAsync[C] =
+    for {
+      a <- this
+      b <- other
+    } yield f(a, b)
+
+  def <*[B](other: IOAsync[B]): IOAsync[B] =
+    flatMap(_ => other)
+
+  def *>[B](other: IOAsync[B]): IOAsync[A] =
+    other.<*(this)
+
   def unsafeToFuture: Future[A] = {
     val promise = Promise[A]()
 
@@ -61,6 +76,10 @@ sealed trait IOAsync[+A] {
 
 object IOAsync {
 
+  case class Thunk[+A](underlying: () => A) extends IOAsync[A]
+
+  case class Async[A](cb: (Either[Throwable, A] => Unit) => Unit) extends IOAsync[A]
+
   def succeed[A](value: A): IOAsync[A] =
     Thunk(() => value)
 
@@ -89,14 +108,33 @@ object IOAsync {
             case Failure(e) => Left(e)
           })
       )(new ExecutionContext {
-        def execute(r: Runnable): Unit = r.run()
-        def reportFailure(e: Throwable): Unit =
-          println(s"Failed with $e")
+        def execute(r: Runnable): Unit        = r.run()
+        def reportFailure(e: Throwable): Unit = println(s"Failed with $e")
       })
     }
 
-  case class Thunk[+A](underlying: () => A) extends IOAsync[A]
+  def evalOn[A](ec: ExecutionContext)(io: IOAsync[A]): IOAsync[A] =
+    async[A](
+      cb =>
+        ec.execute(new Runnable {
+          def run(): Unit = cb(Right(io.unsafeRun()))
+        })
+    )
 
-  case class Async[A](cb: (Either[Throwable, A] => Unit) => Unit) extends IOAsync[A]
+  val threadName: IOAsync[String] =
+    IOAsync.effect(Thread.currentThread().getName)
+
+  val printThreadName: IOAsync[Unit] =
+    threadName.map(println)
+
+  def traverse[A, B](xs: List[A])(f: A => IOAsync[B]): IOAsync[List[B]] =
+    xs.foldLeft(succeed(List.empty[B]))(
+        (facc, a) =>
+          for {
+            acc <- facc
+            a   <- f(a)
+          } yield a :: acc
+      )
+      .map(_.reverse)
 
 }
