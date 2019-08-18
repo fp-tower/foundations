@@ -11,6 +11,7 @@ import sideeffect.ThreadPoolUtil.CounterExecutionContext
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Try}
+import scala.concurrent.duration._
 
 class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
@@ -56,15 +57,36 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     counter shouldEqual 1
   }
 
-  test("evalOn") {
-    withExecutionContext(ThreadPoolUtil.fixedSize(4, "evalOn")) { ec =>
+  test("traverse-evalOn") {
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "traverse-evalOn")) { ec =>
       val counterEC = new CounterExecutionContext(ec)
 
       val io = for {
         ref <- IOAsyncRef(0)
         _   <- IOAsync.printThreadName
         _ <- IOAsync.traverse(List.fill(10)(0))(
-          _ => IOAsync.evalOn(counterEC)(ref.update(_ + 1) <* IOAsync.printThreadName)
+          _ =>
+            IOAsync.evalOn(counterEC)(ref.update(_ + 1) <* IOAsync.printThreadName <* IOAsync.sleep(100.milliseconds))
+        )
+        _   <- IOAsync.printThreadName
+        res <- ref.get
+      } yield res
+
+      io.unsafeRun() shouldEqual 10
+      counterEC.executeCalled.get() shouldEqual 10
+    }
+  }
+
+  test("parTraverse-evalOn") {
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parTraverse-evalOn")) { ec =>
+      val counterEC = new CounterExecutionContext(ec)
+
+      val io = for {
+        ref <- IOAsyncRef(0)
+        _   <- IOAsync.printThreadName
+        _ <- IOAsync.parTraverse(List.fill(10)(0))(
+          _ =>
+            IOAsync.evalOn(counterEC)(ref.update(_ + 1) <* IOAsync.printThreadName <* IOAsync.sleep(500.milliseconds))
         )
         _   <- IOAsync.printThreadName
         res <- ref.get

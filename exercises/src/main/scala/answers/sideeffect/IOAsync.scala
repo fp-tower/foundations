@@ -2,6 +2,7 @@ package answers.sideeffect
 
 import java.util.concurrent.CountDownLatch
 
+import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success, Try}
 
@@ -13,7 +14,7 @@ import scala.util.{Failure, Success, Try}
   *
   * However, it is not stack nor efficient
   */
-sealed trait IOAsync[+A] {
+sealed trait IOAsync[+A] { self =>
   import IOAsync._
 
   def map[B](f: A => B): IOAsync[B] =
@@ -39,6 +40,12 @@ sealed trait IOAsync[+A] {
 
   def *>[B](other: IOAsync[B]): IOAsync[A] =
     other.<*(this)
+
+  def start: IOAsync[IOAsync[A]] =
+    IOAsync.effect {
+      val future = self.unsafeToFuture
+      IOAsync.fromFuture(future)
+    }
 
   def unsafeToFuture: Future[A] = {
     val promise = Promise[A]()
@@ -89,6 +96,9 @@ object IOAsync {
   def effect[A](value: => A): IOAsync[A] =
     Thunk(() => value)
 
+  def sleep(duration: FiniteDuration): IOAsync[Unit] =
+    effect(Thread.sleep(duration.toMillis))
+
   val notImplemented: IOAsync[Nothing] =
     effect(???)
 
@@ -127,6 +137,9 @@ object IOAsync {
   val printThreadName: IOAsync[Unit] =
     threadName.map(println)
 
+  def sequence[A](xs: List[IOAsync[A]]): IOAsync[List[A]] =
+    traverse(xs)(identity)
+
   def traverse[A, B](xs: List[A])(f: A => IOAsync[B]): IOAsync[List[B]] =
     xs.foldLeft(succeed(List.empty[B]))(
         (facc, a) =>
@@ -136,5 +149,8 @@ object IOAsync {
           } yield a :: acc
       )
       .map(_.reverse)
+
+  def parTraverse[A, B](xs: List[A])(f: A => IOAsync[B]): IOAsync[List[B]] =
+    traverse(xs)(f(_).start).flatMap(sequence)
 
 }
