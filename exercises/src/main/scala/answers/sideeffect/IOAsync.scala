@@ -47,6 +47,14 @@ sealed trait IOAsync[+A] { self =>
       IOAsync.fromFuture(future)
     }
 
+  def evalOn(ec: ExecutionContext): IOAsync[A] =
+    async(
+      cb =>
+        ec.execute(new Runnable {
+          def run(): Unit = cb(Right(unsafeRun()))
+        })
+    )
+
   def unsafeToFuture: Future[A] = {
     val promise = Promise[A]()
 
@@ -122,14 +130,6 @@ object IOAsync {
         def reportFailure(e: Throwable): Unit = println(s"Failed with $e")
       })
     }
-
-  def evalOn[A](ec: ExecutionContext)(io: IOAsync[A]): IOAsync[A] =
-    async[A](
-      cb =>
-        ec.execute(new Runnable {
-          def run(): Unit = cb(Right(io.unsafeRun()))
-        })
-    )
 
   val threadName: IOAsync[String] =
     IOAsync.effect(Thread.currentThread().getName)

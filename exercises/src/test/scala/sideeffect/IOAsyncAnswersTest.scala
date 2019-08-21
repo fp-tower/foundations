@@ -65,8 +65,7 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
         ref <- IOAsyncRef(0)
         _   <- IOAsync.printThreadName
         _ <- IOAsync.traverse(List.fill(10)(0))(
-          _ =>
-            IOAsync.evalOn(counterEC)(ref.update(_ + 1) <* IOAsync.printThreadName <* IOAsync.sleep(100.milliseconds))
+          _ => (ref.update(_ + 1) <* IOAsync.printThreadName <* IOAsync.sleep(100.milliseconds)).evalOn(counterEC)
         )
         _   <- IOAsync.printThreadName
         res <- ref.get
@@ -85,8 +84,7 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
         ref <- IOAsyncRef(0)
         _   <- IOAsync.printThreadName
         _ <- IOAsync.parTraverse(List.fill(10)(0))(
-          _ =>
-            IOAsync.evalOn(counterEC)(ref.update(_ + 1) <* IOAsync.printThreadName <* IOAsync.sleep(500.milliseconds))
+          _ => (ref.update(_ + 1) <* IOAsync.printThreadName <* IOAsync.sleep(500.milliseconds)).evalOn(counterEC)
         )
         _   <- IOAsync.printThreadName
         res <- ref.get
