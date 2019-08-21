@@ -35,11 +35,21 @@ sealed trait IOAsync[+A] { self =>
       b <- other
     } yield f(a, b)
 
-  def <*[B](other: IOAsync[B]): IOAsync[B] =
+  def parTuple[B](other: IOAsync[B]): IOAsync[(A, B)] =
+    parMap2(other)((_, _))
+
+  def parMap2[B, C](other: IOAsync[B])(f: (A, B) => C): IOAsync[C] =
+    for {
+      fa <- this.start
+      fb <- other.start
+      c  <- fa.map2(fb)(f)
+    } yield c
+
+  def *>[B](other: IOAsync[B]): IOAsync[B] =
     flatMap(_ => other)
 
-  def *>[B](other: IOAsync[B]): IOAsync[A] =
-    other.<*(this)
+  def <*[B](other: IOAsync[B]): IOAsync[A] =
+    other.*>(this)
 
   def start: IOAsync[IOAsync[A]] =
     IOAsync.effect {
@@ -109,6 +119,9 @@ object IOAsync {
 
   val notImplemented: IOAsync[Nothing] =
     effect(???)
+
+  def printLine(message: String): IOAsync[Unit] =
+    effect(println(message))
 
   def async[A](k: (Either[Throwable, A] => Unit) => Unit): IOAsync[A] =
     Async(k)
