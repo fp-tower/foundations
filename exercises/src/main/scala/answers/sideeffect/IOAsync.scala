@@ -114,6 +114,9 @@ object IOAsync {
   def effect[A](value: => A): IOAsync[A] =
     Thunk(() => value)
 
+  def apply[A](value: => A): IOAsync[A] =
+    effect(value)
+
   def sleep(duration: FiniteDuration): IOAsync[Unit] =
     effect(Thread.sleep(duration.toMillis))
 
