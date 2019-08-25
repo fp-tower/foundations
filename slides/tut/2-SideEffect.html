@@ -16,7 +16,7 @@
     .large { font-size: 36px; }
     .pull-left { float: left; width: 47%; }
     .pull-right { float: right; width: 47%; }
-    .large-left { float: left; width: 57%; }
+    .large-left { float: left; width: 67%; }
     .small-right { float: right; width: 27%; }
     .medium-right { float: right; width: 37%; }
     .footer { position: absolute; bottom: 12px; left: 45px }
@@ -351,7 +351,277 @@ background-image: url(img/sideeffect/IO-composition-1.svg)
 ---
 class: center, middle
 
-# IO is probably the most primitive way to describe side effect
+# IO Execution
+
+---
+# IO execution
+
+```scala
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+
+def getUser(userId: UserId): IO[User] =
+  IO.effect{
+    val response = httpClient.get(s"http://foo.com/user/${userId.value}")
+    if(response.status == 200) parseJson[User](response.body)
+    else throw new Exception(s"Invalid status ${response.status}")
+  }
+
+def deleteOrder(orderId: String): IO[Unit] =
+  IO.effect{
+    val response = httpClient.delete(s"http://foo.com/order/${orderId.value}")
+    if(response.status == 200) () else throw new Exception(s"Invalid status ${response.status}")
+  }
+```
+
+---
+# IO execution
+
+```tut:invisible
+import answers.sideeffect.IOAnswers.IO
+import answers.sideeffect.IOAnswers.IO._
+import answers.sideeffect.IOAnswers.sequence
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+
+def getUser(userId: UserId): IO[User] = IO.notImplemented
+def deleteOrder(orderId: OrderId): IO[Unit] = IO.notImplemented
+```
+
+```tut:silent
+def deleteAllUserOrders(userId: UserId): IO[Unit] =
+  for {
+    user    <- getUser(userId)
+    deletes  = user.orderIds.map(deleteOrder): List[IO[Unit]]
+    _       <- sequence(deletes)             : IO[List[Unit]]
+  } yield ()
+
+object Main extends App {
+
+  deleteAllUserOrders(UserId("1234")).unsafeRun()
+
+}
+```
+
+---
+.h1[# IO execution]
+
+.pull-left[
+```tut:silent
+def deleteAllUserOrders(userId: UserId): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    // User("1234", "Rob", List("1111", "5555"))
+    _    <- deleteOrder(OrderId("1111"))
+    _    <- deleteOrder(OrderId("5555"))
+  } yield ()
+```
+]
+
+.pull-right[
+![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
+]
+
+---
+.h1[# How can we evaluate IO concurrently?]
+
+.pull-left[
+```tut:silent
+def deleteAllUserOrders(userId: UserId): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    // User("1234", "Rob", List("1111", "5555"))
+    _    <- deleteOrder(OrderId("1111"))
+    _    <- deleteOrder(OrderId("5555"))
+  } yield ()
+```
+]
+
+.pull-right[
+![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
+]
+
+---
+.h1[# 1. Which actions could be done concurrently?]
+
+.large-left[
+
+```tut:silent
+def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+  for {
+    _ <- deleteOrder(orderId1)
+    _ <- deleteOrder(orderId2)
+  } yield ()
+```
+
+```scala
+def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+  deleteOrder(orderId1).flatMap(`res1` =>
+    deleteOrder(orderId2).map(res2 =>
+      ()
+    )
+  )
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders.svg)
+]
+
+---
+.h1[# 1. Which actions could be done concurrently?]
+
+.large-left[
+
+```tut:silent
+def parEval(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
+
+def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+  parEval(deleteOrder(orderId1), deleteOrder(orderId2))
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent.svg)
+]
+
+
+---
+.h1[# 1. Which actions could be done concurrently?]
+
+.large-left[
+
+```tut:silent
+def parTuple[A, B](fa: IO[A], fb: IO[B]): IO[(A, B)] = ???
+
+def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+  parTuple(deleteOrder(orderId1), deleteOrder(orderId2)).void
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent.svg)
+]
+
+---
+# IO
+
+```tut:silent
+sealed trait IO[+A]
+
+object IO {
+  case class Thunk[+A](underlying: () => A) extends IO[A]
+
+  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit) extends IO[A]
+}
+```
+
+---
+background-image: url(img/sideeffect/process-threads.svg)
+
+# System
+
+---
+.h1[# Our application]
+
+.pull-left[
+```tut:silent
+var x: Int = 0
+
+val inc: Runnable = new Runnable {
+  def run(): Unit =
+    x += 1
+}
+
+val threads = (1 to 10).map(_ => new Thread(inc))
+```
+
+```tut
+x
+
+threads.foreach(_.start())
+
+x
+```
+]
+
+.pull-right[
+![Application](img/sideeffect/application.svg)
+]
+
+---
+.h1[# Thread creation is expensive]
+
+```tut:invisible
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.ThreadFactory
+
+def threadFactory(prefix: String): ThreadFactory =
+  new ThreadFactory {
+    val ctr = new AtomicInteger(0)
+    def newThread(r: Runnable): Thread = {
+      val back = new Thread(r)
+      back.setName(prefix + "-" + ctr.getAndIncrement())
+      back.setDaemon(true)
+      back
+    }
+  }
+```
+
+.pull-left[
+```tut:silent
+import java.util.concurrent.Executors
+import scala.concurrent.ExecutionContext
+
+val factory = threadFactory("test")
+val pool = Executors.newFixedThreadPool(2, factory)
+val ec = ExecutionContext.fromExecutorService(pool)
+
+var x: Int = 0
+
+val inc: Runnable = new Runnable {
+  def run(): Unit = x += 1
+}
+```
+
+
+```tut
+x
+
+(1 to 10).foreach(_ => ec.execute(inc))
+
+x
+```
+]
+
+.pull-right[
+![Execution Context](img/sideeffect/execution-context.svg)
+]
+
+
+
+---
+# Blocking
+
+```scala
+val getAllUsers: IO[List[User]] =
+  IO.effect{
+    val statement = ...
+    val rs = statement.executeQuery("SELECT name, age FROM user")
+    val users = ListBuffer.empty[User]
+    while (rs.next) {
+      val name = rs.getString("name")
+      val age = rs.getInt("age")
+      users += User(name, age)
+    }
+    users.toList
+  }
+```
 
 ---
 class: center, middle
@@ -650,11 +920,6 @@ David Wheeler
 class: center, middle
 
 # Free is several order of magnitude more complex than IO
-
----
-class: center, middle
-
-# Async
 
 ---
 # Resources and further study

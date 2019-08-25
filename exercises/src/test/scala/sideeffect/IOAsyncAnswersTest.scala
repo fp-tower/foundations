@@ -100,7 +100,7 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
   }
 
   test("parMap2") {
-    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parTraverse-evalOn")) { ec =>
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parMap2-evalOn")) { ec =>
       val counterEC = new CounterExecutionContext(ec)
 
       def bump(ref: IOAsyncRef[Int]): IOAsync[Unit] =

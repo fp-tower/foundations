@@ -52,7 +52,7 @@ sealed trait IOAsync[+A] { self =>
     other.*>(this)
 
   def start: IOAsync[IOAsync[A]] =
-    IOAsync.effect {
+    effect {
       val future = self.unsafeToFuture
       IOAsync.fromFuture(future)
     }
@@ -103,7 +103,7 @@ object IOAsync {
 
   case class Thunk[+A](underlying: () => A) extends IOAsync[A]
 
-  case class Async[A](cb: (Either[Throwable, A] => Unit) => Unit) extends IOAsync[A]
+  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit) extends IOAsync[A]
 
   def succeed[A](value: A): IOAsync[A] =
     Thunk(() => value)

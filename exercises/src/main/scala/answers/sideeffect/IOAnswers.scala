@@ -236,16 +236,11 @@ object IOAnswers {
   ////////////////////////
 
   def sequence[A](xs: List[IO[A]]): IO[List[A]] =
-    traverse(xs)(identity)
+    IO.effect(
+      xs.map(_.unsafeRun())
+    )
 
   def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
-    xs.foldLeft(IO.succeed(List.empty[B]))(
-        (facc, a) =>
-          for {
-            acc <- facc
-            a   <- f(a)
-          } yield a :: acc
-      )
-      .map(_.reverse)
+    sequence(xs.map(f))
 
 }
