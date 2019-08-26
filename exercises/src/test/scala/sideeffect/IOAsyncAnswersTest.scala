@@ -116,8 +116,8 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
       withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec2")) { ec2 =>
         withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec3")) { ec3 =>
           withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec4")) { ec4 =>
-            val asyncPrint = IOAsync.async[Unit](cb => cb.apply(Right(println("cb: " + Thread.currentThread))))(ec4)
-            val io         = asyncPrint *> IOAsync.effect(println("io:" + Thread.currentThread))
+            val asyncPrint = IOAsync.async[Unit](cb => cb(Right(println("cb: " + Thread.currentThread.getName))))(ec4)
+            val io         = asyncPrint *> IOAsync.effect(println("io: " + Thread.currentThread.getName))
 
             (io.evalOn(ec1) *> io.evalOn(ec2)).evalOn(ec3).unsafeRun()
           }
