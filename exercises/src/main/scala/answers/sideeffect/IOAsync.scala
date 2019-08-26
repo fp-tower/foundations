@@ -93,16 +93,20 @@ object IOAsync {
 
   case class Thunk[+A](underlying: () => A) extends IOAsync[A]
 
+  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit, ec: ExecutionContext) extends IOAsync[A]
+
   case class FlatMap[X, +A](source: IOAsync[X], f: X => IOAsync[A]) extends IOAsync[A]
 
   case class Attempt[+A](source: IOAsync[A]) extends IOAsync[Either[Throwable, A]]
-
-  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit, ec: ExecutionContext) extends IOAsync[A]
 
   def runLoop[A](fa: IOAsync[A])(cb: Either[Throwable, A] => Unit): Unit =
     fa match {
       case Thunk(x) =>
         cb(Try(x()).toEither)
+      case Async(f, ec) =>
+        ec.execute(new Runnable {
+          def run(): Unit = f(cb)
+        })
       case FlatMap(source, f) =>
         runLoop(source) {
           case Left(e)  => cb(Left(e))
@@ -110,10 +114,6 @@ object IOAsync {
         }
       case Attempt(source) =>
         runLoop(source)(x => cb(Right(x)))
-      case Async(f, ec) =>
-        ec.execute(new Runnable {
-          def run(): Unit = f(cb)
-        })
     }
 
   def succeed[A](value: A): IOAsync[A] =
