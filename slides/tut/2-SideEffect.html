@@ -409,7 +409,7 @@ object Main extends App {
 ```
 
 ---
-.h1[# IO execution]
+.h1[# IO execution is sequential]
 
 .pull-left[
 ```tut:silent
@@ -417,8 +417,8 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
     user <- getUser(userId)
     // User("1234", "Rob", List("1111", "5555"))
-    _    <- deleteOrder(OrderId("1111"))
-    _    <- deleteOrder(OrderId("5555"))
+    _    <- deleteOrder(user.orderIds(0)) // 1111
+    _    <- deleteOrder(user.orderIds(1)) // 5555
   } yield ()
 ```
 ]
@@ -428,16 +428,25 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 ]
 
 ---
-.h1[# How can we evaluate IO concurrently?]
+class: center, middle
+
+# How can we evaluate IO concurrently?
+
+--
+
+# Which IO can be evaluated concurrently?
+
+---
+.h1[# For comprehension cannot be done in parallel]
 
 .pull-left[
-```tut:silent
+```scala
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
-    user <- getUser(userId)
+    `user` <- getUser(userId)
     // User("1234", "Rob", List("1111", "5555"))
-    _    <- deleteOrder(OrderId("1111"))
-    _    <- deleteOrder(OrderId("5555"))
+    _    <- deleteOrder(`user`.orderIds(0)) // 1111
+    _    <- deleteOrder(`user`.orderIds(1)) // 5555
   } yield ()
 ```
 ]
@@ -447,7 +456,7 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 ]
 
 ---
-.h1[# 1. Which actions could be done concurrently?]
+.h1[# For comprehension cannot be done in parallel]
 
 .large-left[
 
@@ -461,8 +470,8 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 
 ```scala
 def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  deleteOrder(orderId1).flatMap(`res1` =>
-    deleteOrder(orderId2).map(res2 =>
+  deleteOrder(orderId1).flatMap(`ackOrder1` =>
+    deleteOrder(orderId2).map(`ackOrder2` =>
       ()
     )
   )
@@ -474,15 +483,15 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 ---
-.h1[# 1. Which actions could be done concurrently?]
+.h1[# Parallel execution]
 
 .large-left[
 
 ```tut:silent
-def parEval(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
+def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
 
 def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parEval(deleteOrder(orderId1), deleteOrder(orderId2))
+  parExec(deleteOrder(orderId1), deleteOrder(orderId2))
 ```
 ]
 
@@ -492,7 +501,7 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 
 
 ---
-.h1[# 1. Which actions could be done concurrently?]
+.h1[# Parallel execution]
 
 .large-left[
 
@@ -503,7 +512,10 @@ def parMap2[A, B, C](
 )(f: (A, B) => C): IO[C] = ???
 
 def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parMap2(deleteOrder(orderId1), deleteOrder(orderId2))(_ => ())
+  parMap2(
+    deleteOrder(orderId1),
+    deleteOrder(orderId2)
+  )((_,_) => ())
 ```
 ]
 
@@ -512,53 +524,67 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 ---
-# IO
+.h1[# Future]
 
+.large-left[
 ```tut:silent
-sealed trait IO[+A]
+import scala.concurrent.{ExecutionContext, Future}
 
-object IO {
-  case class Thunk[+A](underlying: () => A) extends IO[A]
+def deleteOrder(orderId: OrderId)
+(implicit ec: ExecutionContext): Future[Unit] =
+  Future { ??? }(ec)
 
-  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit) extends IO[A]
+def deleteOrders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(implicit ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1)(ec) // (1) side effect
+  val delete2 = deleteOrder(orderId2)(ec) // (2) side effect
+
+  for {
+    _ /* (3) */ <- delete1
+    _ /* (4) */ <- delete2
+  } yield ()
 }
-```
-
----
-background-image: url(img/sideeffect/process-threads.svg)
-
-# System
-
----
-.h1[# Our application]
-
-.pull-left[
-```tut:silent
-var x: Int = 0
-
-val inc: Runnable = new Runnable {
-  def run(): Unit =
-    x += 1
-}
-
-val threads = (1 to 10).map(_ => new Thread(inc))
-```
-
-```tut
-x
-
-threads.foreach(_.start())
-
-x
 ```
 ]
 
-.pull-right[
-![Application](img/sideeffect/application.svg)
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
 ]
 
 ---
-.h1[# Thread creation is expensive]
+.h1[# Execution Context]
+
+.large-left[
+```tut:silent
+import scala.concurrent.{ExecutionContext, Future}
+
+def deleteOrder(orderId: OrderId)(ec: ExecutionContext): Future[Unit] =
+  Future { ??? }(`ec`)
+
+def deleteOrders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1)(`ec`) // (1) side effect
+  val delete2 = deleteOrder(orderId2)(`ec`) // (2) side effect
+
+  delete1.flatMap(_ =>        // (3)
+    delete2.map(_ => ())(`ec`) // (4)
+  )(`ec`)
+}
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+]
+
+---
+.h1[# Execution Context]
 
 ```tut:invisible
 import java.util.concurrent.atomic.AtomicInteger
@@ -604,6 +630,57 @@ x
 
 .pull-right[
 ![Execution Context](img/sideeffect/execution-context.svg)
+]
+
+---
+background-image: url(img/sideeffect/promise-life-cycle.svg)
+
+# Future and Promise
+
+---
+# IO
+
+```tut:silent
+sealed trait IO[+A]
+
+object IO {
+  case class Thunk[+A](underlying: () => A) extends IO[A]
+
+  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit) extends IO[A]
+}
+```
+
+---
+background-image: url(img/sideeffect/process-threads.svg)
+
+# System
+
+---
+.h1[# Our application]
+
+.pull-left[
+```tut:silent
+var x: Int = 0
+
+val inc: Runnable = new Runnable {
+  def run(): Unit =
+    x += 1
+}
+
+val threads = (1 to 10).map(_ => new Thread(inc))
+```
+
+```tut
+x
+
+threads.foreach(_.start())
+
+x
+```
+]
+
+.pull-right[
+![Application](img/sideeffect/application.svg)
 ]
 
 

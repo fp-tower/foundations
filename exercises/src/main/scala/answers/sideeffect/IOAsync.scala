@@ -125,8 +125,13 @@ object IOAsync {
   def async[A](k: (Either[Throwable, A] => Unit) => Unit)(ec: ExecutionContext): IOAsync[A] =
     Async(k, ec)
 
+  val immediateEC: ExecutionContext = new ExecutionContext {
+    def execute(r: Runnable): Unit        = r.run()
+    def reportFailure(e: Throwable): Unit = ExecutionContext.defaultReporter(e)
+  }
+
   val never: IOAsync[Nothing] =
-    async[Nothing](_ => ())(scala.concurrent.ExecutionContext.global) // EC is not used anyway
+    async[Nothing](_ => ())(immediateEC) // EC is not used anyway
 
   // adapted from cats-effect
   def fromFuture[A](fa: => Future[A]): IOAsync[A] =
@@ -139,11 +144,6 @@ object IOAsync {
           })
       )(immediateEC)
     }(immediateEC) // Future is already running on an ExecutionContext
-
-  val immediateEC: ExecutionContext = new ExecutionContext {
-    def execute(r: Runnable): Unit        = r.run()
-    def reportFailure(e: Throwable): Unit = ExecutionContext.defaultReporter(e)
-  }
 
   val threadName: IOAsync[String] =
     IOAsync.effect(Thread.currentThread().getName)
