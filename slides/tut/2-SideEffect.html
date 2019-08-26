@@ -497,10 +497,13 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 .large-left[
 
 ```tut:silent
-def parTuple[A, B](fa: IO[A], fb: IO[B]): IO[(A, B)] = ???
+def parMap2[A, B, C](
+  fa: IO[A],
+  fb: IO[B]
+)(f: (A, B) => C): IO[C] = ???
 
 def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parTuple(deleteOrder(orderId1), deleteOrder(orderId2)).void
+  parMap2(deleteOrder(orderId1), deleteOrder(orderId2))(_ => ())
 ```
 ]
 

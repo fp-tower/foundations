@@ -35,35 +35,30 @@ sealed trait IOAsync[+A] { self =>
       b <- other
     } yield f(a, b)
 
-  def parTuple[B](other: IOAsync[B]): IOAsync[(A, B)] =
-    parMap2(other)((_, _))
-
-  def parMap2[B, C](other: IOAsync[B])(f: (A, B) => C): IOAsync[C] =
-    for {
-      fa <- this.start
-      fb <- other.start
-      c  <- fa.map2(fb)(f)
-    } yield c
-
   def *>[B](other: IOAsync[B]): IOAsync[B] =
     flatMap(_ => other)
 
   def <*[B](other: IOAsync[B]): IOAsync[A] =
     other.*>(this)
 
-  def start: IOAsync[IOAsync[A]] =
+  def parTuple[B](other: IOAsync[B])(ec: ExecutionContext): IOAsync[(A, B)] =
+    parMap2(other)((_, _))(ec)
+
+  def parMap2[B, C](other: IOAsync[B])(f: (A, B) => C)(ec: ExecutionContext): IOAsync[C] =
+    for {
+      fa <- this.start(ec)
+      fb <- other.start(ec)
+      c  <- fa.map2(fb)(f)
+    } yield c
+
+  def start(ec: ExecutionContext): IOAsync[IOAsync[A]] =
     effect {
-      val future = self.unsafeToFuture
+      val future = evalOn(ec).unsafeToFuture
       IOAsync.fromFuture(future)
     }
 
   def evalOn(ec: ExecutionContext): IOAsync[A] =
-    async(
-      cb =>
-        ec.execute(new Runnable {
-          def run(): Unit = cb(Right(unsafeRun()))
-        })
-    )
+    async(unsafeRunAsync)(ec)
 
   def unsafeToFuture: Future[A] = {
     val promise = Promise[A]()
@@ -94,7 +89,10 @@ sealed trait IOAsync[+A] { self =>
   def unsafeRunAsync(cb: Either[Throwable, A] => Unit): Unit =
     this match {
       case Thunk(x) => cb(Try(x()).toEither)
-      case Async(f) => f(cb)
+      case Async(f, ec) =>
+        ec.execute(new Runnable {
+          def run(): Unit = f(cb)
+        })
     }
 
 }
@@ -103,12 +101,12 @@ object IOAsync {
 
   case class Thunk[+A](underlying: () => A) extends IOAsync[A]
 
-  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit) extends IOAsync[A]
+  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit, ec: ExecutionContext) extends IOAsync[A]
 
   def succeed[A](value: A): IOAsync[A] =
     Thunk(() => value)
 
-  def fail(error: Exception): IOAsync[Nothing] =
+  def fail(error: Throwable): IOAsync[Nothing] =
     Thunk(() => throw error)
 
   def effect[A](value: => A): IOAsync[A] =
@@ -126,26 +124,28 @@ object IOAsync {
   def printLine(message: String): IOAsync[Unit] =
     effect(println(message))
 
-  def async[A](k: (Either[Throwable, A] => Unit) => Unit): IOAsync[A] =
-    Async(k)
+  def async[A](k: (Either[Throwable, A] => Unit) => Unit)(ec: ExecutionContext): IOAsync[A] =
+    Async(k, ec)
 
   val never: IOAsync[Nothing] =
-    async(_ => ())
+    async[Nothing](_ => ())(scala.concurrent.ExecutionContext.global) // EC is not used anyway
 
-  // copied from cats-effect
+  // adapted from cats-effect
   def fromFuture[A](fa: => Future[A]): IOAsync[A] =
-    async { cb =>
+    async[A] { cb =>
       fa.onComplete(
         r =>
           cb(r match {
             case Success(a) => Right(a)
             case Failure(e) => Left(e)
           })
-      )(new ExecutionContext {
-        def execute(r: Runnable): Unit        = r.run()
-        def reportFailure(e: Throwable): Unit = println(s"Failed with $e")
-      })
-    }
+      )(immediateEC)
+    }(immediateEC) // Future is already running on an ExecutionContext
+
+  val immediateEC: ExecutionContext = new ExecutionContext {
+    def execute(r: Runnable): Unit        = r.run()
+    def reportFailure(e: Throwable): Unit = ExecutionContext.defaultReporter(e)
+  }
 
   val threadName: IOAsync[String] =
     IOAsync.effect(Thread.currentThread().getName)
@@ -166,7 +166,7 @@ object IOAsync {
       )
       .map(_.reverse)
 
-  def parTraverse[A, B](xs: List[A])(f: A => IOAsync[B]): IOAsync[List[B]] =
-    traverse(xs)(f(_).start).flatMap(sequence)
+  def parTraverse[A, B](xs: List[A])(f: A => IOAsync[B])(ec: ExecutionContext): IOAsync[List[B]] =
+    traverse(xs)(f(_).start(ec)).flatMap(sequence)
 
 }

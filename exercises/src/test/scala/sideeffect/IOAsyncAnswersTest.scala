@@ -62,8 +62,7 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
       val counterEC = new CounterExecutionContext(ec)
 
       def bump(ref: IOAsyncRef[Int]): IOAsync[Unit] =
-        (IOAsync.printThreadName *> IOAsync.sleep(100.milliseconds) *> ref.update(_ + 1))
-          .evalOn(counterEC)
+        (IOAsync.printThreadName *> IOAsync.sleep(100.milliseconds) *> ref.update(_ + 1)).evalOn(counterEC)
 
       val io = for {
         ref <- IOAsyncRef(0)
@@ -78,18 +77,17 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     }
   }
 
-  test("parTraverse-evalOn") {
+  test("parTraverse") {
     withExecutionContext(ThreadPoolUtil.fixedSize(4, "parTraverse-evalOn")) { ec =>
       val counterEC = new CounterExecutionContext(ec)
 
       def bump(ref: IOAsyncRef[Int]): IOAsync[Unit] =
-        (IOAsync.printThreadName *> IOAsync.sleep(500.milliseconds) *> ref.update(_ + 1))
-          .evalOn(counterEC)
+        IOAsync.printThreadName *> IOAsync.sleep(500.milliseconds) *> ref.update(_ + 1)
 
       val io = for {
         ref <- IOAsyncRef(0)
         _   <- IOAsync.printThreadName
-        _   <- IOAsync.parTraverse(List.fill(10)(0))(_ => bump(ref))
+        _   <- IOAsync.parTraverse(List.fill(10)(0))(_ => bump(ref))(counterEC)
         _   <- IOAsync.printThreadName
         res <- ref.get
       } yield res
@@ -100,16 +98,15 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
   }
 
   test("parMap2") {
-    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parMap2-evalOn")) { ec =>
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parMap2")) { ec =>
       val counterEC = new CounterExecutionContext(ec)
 
       def bump(ref: IOAsyncRef[Int]): IOAsync[Unit] =
-        (IOAsync.printThreadName *> ref.updateGetNew(_ + 1).map(_.toString).flatMap(IOAsync.printLine))
-          .evalOn(counterEC)
+        IOAsync.printThreadName *> ref.updateGetNew(_ + 1).map(_.toString).flatMap(IOAsync.printLine)
 
       val io = for {
         ref <- IOAsyncRef(0)
-        _   <- bump(ref).parTuple(bump(ref))
+        _   <- bump(ref).parTuple(bump(ref))(counterEC)
         res <- ref.get
       } yield res
 
