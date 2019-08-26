@@ -16,10 +16,10 @@ sealed trait IOAsync[+A] { self =>
   import IOAsync._
 
   def map[B](f: A => B): IOAsync[B] =
-    effect(f(unsafeRun()))
+    FlatMap(this, (a: A) => succeed(f(a)))
 
   def flatMap[B](f: A => IOAsync[B]): IOAsync[B] =
-    effect(f(unsafeRun()).unsafeRun())
+    FlatMap(this, f)
 
   def attempt: IOAsync[Either[Throwable, A]] =
     effect(Try(unsafeRun()).toEither)
@@ -91,6 +91,11 @@ sealed trait IOAsync[+A] { self =>
         ec.execute(new Runnable {
           def run(): Unit = f(cb)
         })
+      case FlatMap(source, f) =>
+        source.unsafeRunAsync {
+          case Left(e)  => cb(Left(e))
+          case Right(x) => f(x).unsafeRunAsync(cb)
+        }
     }
 
 }
@@ -100,6 +105,8 @@ object IOAsync {
   case class Thunk[+A](underlying: () => A) extends IOAsync[A]
 
   case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit, ec: ExecutionContext) extends IOAsync[A]
+
+  case class FlatMap[X, +A](source: IOAsync[X], f: X => IOAsync[A]) extends IOAsync[A]
 
   def succeed[A](value: A): IOAsync[A] =
     Thunk(() => value)
