@@ -11,8 +11,6 @@ import scala.util.{Failure, Success, Try}
   *
   * This encoding is made to illustrate how can we incorporate asynchronous computation
   * within a thunk based IO implementation (e.g. IOAnswers.IO)
-  *
-  * However, it is not stack nor efficient
   */
 sealed trait IOAsync[+A] { self =>
   import IOAsync._
