@@ -9,15 +9,11 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import sideeffect.ThreadPoolUtil.CounterExecutionContext
 
+import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Try}
-import scala.concurrent.duration._
 
 class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
-
-  /////////////////////////
-  // 1. Smart constructors
-  /////////////////////////
 
   test("succeed") {
     IOAsync.succeed(4).unsafeRun() shouldEqual 4
@@ -115,9 +111,20 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     }
   }
 
-  /////////////////////
-  // 2. IO API
-  /////////////////////
+  test("evalOn - async") {
+    withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec1")) { ec1 =>
+      withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec2")) { ec2 =>
+        withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec3")) { ec3 =>
+          withExecutionContext(ThreadPoolUtil.fixedSize(2, "ec4")) { ec4 =>
+            val asyncPrint = IOAsync.async[Unit](cb => cb.apply(Right(println("cb: " + Thread.currentThread))))(ec4)
+            val io         = asyncPrint *> IOAsync.effect(println("io:" + Thread.currentThread))
+
+            (io.evalOn(ec1) *> io.evalOn(ec2)).evalOn(ec3).unsafeRun()
+          }
+        }
+      }
+    }
+  }
 
   test("map") {
     forAll((x: Int, f: Int => Boolean) => IOAsync.succeed(x).map(f).unsafeRun() == f(x))
