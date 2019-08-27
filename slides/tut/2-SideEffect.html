@@ -108,11 +108,6 @@ class: center, middle
 # INTERPRET the value with side effects in Main
 
 ---
-background-image: url(img/sideeffect/effects-on-edges.svg)
-
-# Run side effects at the edges
-
----
 ### 1. Encode Description
 
 ```tut:silent
@@ -136,6 +131,11 @@ object Main extends App {
 
 }
 ```
+
+---
+background-image: url(img/sideeffect/effects-on-edges.svg)
+
+# Run side effects at the edges
 
 ---
 class: center, middle
@@ -357,11 +357,13 @@ class: center, middle
 # IO execution
 
 ```scala
-case class UserId(value: String)
+case class UserId (value: String)
 case class OrderId(value: String)
 
 case class User(userId: UserId, name: String, orderIds: List[OrderId])
+```
 
+```scala
 def getUser(userId: UserId): IO[User] =
   IO.effect{
     val response = httpClient.get(s"http://foo.com/user/${userId.value}")
@@ -369,7 +371,7 @@ def getUser(userId: UserId): IO[User] =
     else throw new Exception(s"Invalid status ${response.status}")
   }
 
-def deleteOrder(orderId: String): IO[Unit] =
+def deleteOrder(orderId: OrderId): IO[Unit] =
   IO.effect{
     val response = httpClient.delete(s"http://foo.com/order/${orderId.value}")
     if(response.status == 200) () else throw new Exception(s"Invalid status ${response.status}")
@@ -377,12 +379,12 @@ def deleteOrder(orderId: String): IO[Unit] =
 ```
 
 ---
-# IO execution
+# How is it executed?
 
 ```tut:invisible
 import answers.sideeffect.IOAnswers.IO
 import answers.sideeffect.IOAnswers.IO._
-import answers.sideeffect.IOAnswers.sequence
+import answers.sideeffect.IOAnswers.{sequence, traverse}
 
 case class UserId(value: String)
 case class OrderId(value: String)
@@ -392,6 +394,23 @@ case class User(userId: UserId, name: String, orderIds: List[OrderId])
 def getUser(userId: UserId): IO[User] = IO.notImplemented
 def deleteOrder(orderId: OrderId): IO[Unit] = IO.notImplemented
 ```
+
+```tut:silent
+def deleteAllUserOrders(userId: UserId): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    _    <- traverse(user.orderIds)(deleteOrder)
+  } yield ()
+
+object Main extends App {
+
+  deleteAllUserOrders(UserId("1234")).unsafeRun()
+
+}
+```
+
+---
+# How is it executed?
 
 ```tut:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
@@ -409,9 +428,8 @@ object Main extends App {
 ```
 
 ---
-.h1[# IO execution is sequential]
+# How is it executed?
 
-.pull-left[
 ```tut:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
@@ -420,10 +438,36 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
     _    <- deleteOrder(user.orderIds(0)) // 1111
     _    <- deleteOrder(user.orderIds(1)) // 5555
   } yield ()
+
+object Main extends App {
+
+  deleteAllUserOrders(UserId("1234")).unsafeRun()
+
+}
+```
+
+---
+.h1[# IO execution is sequential]
+
+.large-left[
+```tut:silent
+def deleteAllUserOrders(userId: UserId): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    // User("1234", "Rob", List("1111", "5555"))
+    _    <- deleteOrder(user.orderIds(0)) // 1111
+    _    <- deleteOrder(user.orderIds(1)) // 5555
+  } yield ()
+
+object Main extends App {
+
+  deleteAllUserOrders(UserId("1234")).unsafeRun()
+
+}
 ```
 ]
 
-.pull-right[
+.small-right[
 ![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
 ]
 
@@ -431,8 +475,6 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 class: center, middle
 
 # How can we evaluate IO concurrently?
-
---
 
 # Which IO can be evaluated concurrently?
 
@@ -461,20 +503,11 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 .large-left[
 
 ```tut:silent
-def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   for {
-    _ <- deleteOrder(orderId1)
-    _ <- deleteOrder(orderId2)
+    `ackOrder1` <- deleteOrder(orderId1)
+    `ackOrder2` <- deleteOrder(orderId2)
   } yield ()
-```
-
-```scala
-def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  deleteOrder(orderId1).flatMap(`ackOrder1` =>
-    deleteOrder(orderId2).map(`ackOrder2` =>
-      ()
-    )
-  )
 ```
 ]
 
@@ -490,7 +523,7 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ```tut:silent
 def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
 
-def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   parExec(deleteOrder(orderId1), deleteOrder(orderId2))
 ```
 ]
@@ -511,7 +544,7 @@ def parMap2[A, B, C](
   fb: IO[B]
 )(f: (A, B) => C): IO[C] = ???
 
-def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   parMap2(
     deleteOrder(orderId1),
     deleteOrder(orderId2)
@@ -531,16 +564,16 @@ def deleteOrders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 import scala.concurrent.{ExecutionContext, Future}
 
 def deleteOrder(orderId: OrderId)
-(implicit ec: ExecutionContext): Future[Unit] =
-  Future { ??? }(ec)
+  (implicit ec: ExecutionContext): Future[Unit] =
+  Future { ??? }
 
-def deleteOrders(
+def delete2Orders(
   orderId1: OrderId,
   orderId2: OrderId
 )(implicit ec: ExecutionContext): Future[Unit] = {
 
-  val delete1 = deleteOrder(orderId1)(ec) // (1) side effect
-  val delete2 = deleteOrder(orderId2)(ec) // (2) side effect
+  val delete1 = deleteOrder(orderId1) // (1) side effect
+  val delete2 = deleteOrder(orderId2) // (2) side effect
 
   for {
     _ /* (3) */ <- delete1
@@ -555,6 +588,32 @@ def deleteOrders(
 ]
 
 ---
+.h1[# Future is not referentially transparent]
+
+.large-left[
+```tut:silent
+import scala.concurrent.{ExecutionContext, Future}
+
+def deleteOrder(orderId: OrderId)
+  (implicit ec: ExecutionContext): Future[Unit] =
+  Future { ??? }
+
+def delete2Orders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(implicit ec: ExecutionContext): Future[Unit] =
+  for {
+    _ <- deleteOrder(orderId1) // (1)
+    _ <- deleteOrder(orderId2) // start after (1) completes
+  } yield ()
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders.svg)
+]
+
+---
 .h1[# Execution Context]
 
 .large-left[
@@ -564,7 +623,7 @@ import scala.concurrent.{ExecutionContext, Future}
 def deleteOrder(orderId: OrderId)(ec: ExecutionContext): Future[Unit] =
   Future { ??? }(`ec`)
 
-def deleteOrders(
+def delete2Orders(
   orderId1: OrderId,
   orderId2: OrderId
 )(ec: ExecutionContext): Future[Unit] = {
