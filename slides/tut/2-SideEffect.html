@@ -756,6 +756,51 @@ def unsafeRunAsync[A](fa: IO[A])(cb: Callback[A]): Unit =
 ```
 
 ---
+# IO with Async
+
+```scala
+sealed trait IO[+A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+}
+```
+
+```tut:invisible
+sealed trait IO[+A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+  def map[B](f: A => B): IO[B]
+  def flatMap[B](f: A => IO[B]): IO[B]
+}
+```
+
+---
+.h1[# IO with Async]
+
+.large-left[
+```scala
+sealed trait IO[+A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+}
+```
+
+```tut:silent
+def parMap2[A, B, C](
+  fa: IO[A],
+  fb: IO[B]
+)(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
+  for {
+    waitForA <- fa.start(ec) // (1)
+    waitForB <- fb.start(ec) // (2)
+    a        <- waitForA     // (3)
+    b        <- waitForB     // (4)
+  } yield f(a, b)
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+]
+
+---
 class: center, middle
 
 # How can we encode side effects more precisely?
