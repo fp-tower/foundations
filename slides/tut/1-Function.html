@@ -394,7 +394,7 @@ val x = println("Hello")
 --
 
 ```tut
-scala.io.Source.fromURL("http://google.com").take(100).mkString
+scala.io.Source.fromURL("http://google.com")("ISO-8859-1").take(100).mkString
 ```
 
 --
