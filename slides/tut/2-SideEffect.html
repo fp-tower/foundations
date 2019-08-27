@@ -284,7 +284,7 @@ val today: Thunk[LocalDate] =
   () => LocalDate.now()
 
 def fetch(url: String): Thunk[Iterator[String]] =
-  () => Source.fromURL(url).getLines
+  () => Source.fromURL(url)("ISO-8859-1").getLines
 ```
 
 ---
@@ -305,7 +305,7 @@ val today: IO[LocalDate] =
   new IO(() => LocalDate.now())
 
 def fetch(url: String): IO[Iterator[String]] =
-  new IO(() => Source.fromURL(url).getLines)
+  new IO(() => Source.fromURL(url)("ISO-8859-1").getLines)
 ```
 
 ```tut
