@@ -549,7 +549,6 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
     _ <- io2
   } yield ()
 
-```tut:silent
 def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   IO.succeed(())
 ```
