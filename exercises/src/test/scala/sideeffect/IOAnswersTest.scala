@@ -109,4 +109,25 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
     }
   }
 
+  test("deleteAllUserOrders") {
+    val users = List(User_V2(UserId("1234"), "Rob", List(OrderId("1111"), OrderId("5555"))))
+    def testApi(ref: IORef[List[OrderId]]) = new UserOrderApi {
+      def getUser(userId: UserId): IO[User_V2] =
+        users.find(_.userId == userId) match {
+          case None    => IO.fail(new Exception(s"User not found $userId"))
+          case Some(u) => IO.succeed(u)
+        }
+
+      def deleteOrder(orderId: OrderId): IO[Unit] =
+        ref.update(_ :+ orderId)
+    }
+
+    (for {
+      ref <- IORef(List.empty[OrderId])
+      api = testApi(ref)
+      _   <- deleteAllUserOrders(api)(UserId("1234"))
+      ids <- ref.get
+    } yield ids shouldEqual List(OrderId("1111"), OrderId("5555"))).unsafeRun()
+  }
+
 }

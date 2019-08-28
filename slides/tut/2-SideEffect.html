@@ -215,33 +215,6 @@ x2 + y2
 
 .reference[[Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)]
 
-
----
-# Executable program
-
-.center[![Run program](img/sideeffect/program-run.svg)]
-
-<br>
-
-```bash
-~/project/foundation ᐅ ls
-LICENCE   Makefile  README.MD build.sbt exercises logo      notes     project   slides    target
-```
-
----
-# Executable program compose
-
-.center[![Pipe program](img/sideeffect/program-pipe.svg)]
-
-<br>
-
-```bash
-~/project/foundation ᐅ ls | grep es
-exercis`es`
-not`es`
-slid`es`
-```
-
 ---
 class: center, middle
 
@@ -272,10 +245,7 @@ def unsafeRun[A](fa: Thunk[A]): A = fa()
 
 ```tut:silent
 import java.time.LocalDate
-import scala.io.{Source, StdIn, BufferedSource}
-
-val readLine: Thunk[String] =
-  () => StdIn.readLine()
+import scala.io.Source
 
 def writeLine(message: String): Thunk[Unit] =
   () => println(message)
@@ -295,9 +265,6 @@ class IO[A](thunk: () => A) {
   def unsafeRun(): A = thunk()
 }
 
-val readLine: IO[String] =
-  new IO(() => StdIn.readLine())
-
 def writeLine(message: String): IO[Unit] =
   new IO(() => println(message))
 
@@ -309,8 +276,8 @@ def fetch(url: String): IO[Iterator[String]] =
 ```
 
 ```tut
-fetch("http://google.com")
-fetch("http://google.com").unsafeRun().take(1).toList
+val google = fetch("http://google.com")
+google.unsafeRun().take(1).toList
 ```
 
 

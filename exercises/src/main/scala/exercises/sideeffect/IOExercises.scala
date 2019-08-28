@@ -6,6 +6,12 @@ import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Try
 
+object IOExercisesApp extends App {
+  import IOExercises._
+
+  unsafeConsoleProgram
+}
+
 object IOExercises {
 
   /////////////////////////
@@ -17,7 +23,7 @@ object IOExercises {
     // such as succeed(x).unsafeRun() == x
     // note that succeed is strict, it means that the same value will be return every time it is run
     // it also means it is an unsafe to throw an Exception when you call succeed, e.g. succeed(throw new Exception(""))
-    def succeed[A](value: A): IO[A] = ???
+    def succeed[A](value: A): IO[A] = new IO(() => ???)
 
     // common alias for succeed
     def pure[A](value: A): IO[A] = succeed(value)
@@ -25,7 +31,7 @@ object IOExercises {
     // 1b. Implement fail a "smart constructor" that creates an IO which always fails
     // note that val error = fail(new Exception("")) does not throw
     // the Exception is only thrown when unsafeRun is called, e.g. error.unsafeRun()
-    def fail[A](error: Throwable): IO[A] = ???
+    def fail[A](error: Throwable): IO[A] = new IO(() => ???)
 
     // 1c. Write a test for fail in IOExercisesTest
 
@@ -39,7 +45,7 @@ object IOExercises {
     // such as effect(4) == succeed(4)
     // and effect(throw new Exception("")) == fail(new Exception(""))
     // use case: effect(impureFunction(4))
-    def effect[A](fa: => A): IO[A] = ???
+    def effect[A](fa: => A): IO[A] = new IO(() => ???)
 
     // common alias for effect
     def apply[A](fa: => A): IO[A] = effect(fa)
@@ -48,7 +54,7 @@ object IOExercises {
 
     // 1f. Implement sleep, see Thread.sleep
     // What the issue with this implementation? How could you fix it?
-    def sleep(duration: FiniteDuration): IO[Unit] = ???
+    def sleep(duration: FiniteDuration): IO[Unit] = notImplemented
 
     // 1g. Implement an IO that never completes
     // this should be the equivalent of sleep with an Infinite duration
@@ -69,7 +75,8 @@ object IOExercises {
     // and     fail(e).map(f) == fail(e)
     // note that f is a pure function, you should NOT use it to do another side effect
     // e.g. succeed(4).map(println)
-    def map[B](f: A => B): IO[B] = ???
+    def map[B](f: A => B): IO[B] =
+      notImplemented
 
     // void discards the return value
     // use case:
@@ -80,7 +87,8 @@ object IOExercises {
     // 2b. Implement flatMap
     // such as succeed(x).flatMap(f) == f(x)
     // and     fail(e).flatMap(f) == fail(e)
-    def flatMap[B](f: A => IO[B]): IO[B] = ???
+    def flatMap[B](f: A => IO[B]): IO[B] =
+      notImplemented
 
     // productL and productR combines independent IO where one of them is only used for side effect
     // this is a rare case where an infix operator is really convenient see <* and *>
@@ -110,7 +118,8 @@ object IOExercises {
     // such as succeed(x).attempt == succeed(Right(x))
     //         fail(new Exception("")).attempt == succeed(Left(new Exception("")))
     // note that attempt guarantee that unsafeRun() will not throw an Exception
-    def attempt[B]: IO[Either[Throwable, A]] = ???
+    def attempt[B]: IO[Either[Throwable, A]] =
+      notImplemented
 
     // 2d. Implement handleErrorWith which allow to catch failing IO
     // such as fail(new Exception("")).handleErrorWith(_ => someIO) == someIO
@@ -118,7 +127,8 @@ object IOExercises {
     //            case e: IllegalArgumentException => succeed(1)
     //            case other                       => succeed(2)
     //         } == succeed(2)
-    def handleErrorWith(f: Throwable => IO[A]): IO[A] = ???
+    def handleErrorWith(f: Throwable => IO[A]): IO[A] =
+      notImplemented
 
     // 2e. Implement retryOnce that takes an IO and if it fails, try to run it again
     def retryOnce: IO[A] = ???
@@ -126,7 +136,8 @@ object IOExercises {
     // 2f. Implement retryUntilSuccess
     // similar to retryOnce but it retries until the IO succeeds (potentially indefinitely)
     // sleep `waitBeforeRetry` between each retry
-    def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] = ???
+    def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] =
+      notImplemented
   }
 
   ////////////////////
@@ -139,7 +150,7 @@ object IOExercises {
   def unsafeWriteLine(message: String): Unit =
     println(message)
 
-  // 3a. Implement readLine and writeLine such as they become referentially transparent
+  // 3a. Implement readLine and writeLine such as effects are only done when IO is run
   // which smart constructor of IO should you use?
   val readLine: IO[String] = IO.notImplemented
 
@@ -201,10 +212,10 @@ object IOExercises {
     val readLine: IO[String]
     def writeLine(message: String): IO[Unit]
 
-    val readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
+    def readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
   }
 
-  val stdin: Console = new Console {
+  val stdinConsole: Console = new Console {
     val readLine: IO[String]                 = IO.effect(scala.io.StdIn.readLine())
     def writeLine(message: String): IO[Unit] = IO.effect(println(message))
   }
@@ -239,7 +250,8 @@ object IOExercises {
   // use case:
   // val userIds: List[UserId] = ...
   // sequence(userIds.map(fetchUser)): IO[List[User]]
-  def sequence[A](xs: List[IO[A]]): IO[List[A]] = ???
+  def sequence[A](xs: List[IO[A]]): IO[List[A]] =
+    IO.notImplemented
 
   // 5b. Implement traverse
   // traverse(List(1,2,3))(succeed) == succeed(List(1,2,3))
@@ -247,6 +259,24 @@ object IOExercises {
   // use case:
   // val userIds: List[UserId] = ...
   // userIds.traverse(fetchUser): IO[List[User]]
-  def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] = ???
+  def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
+    IO.notImplemented
+
+  // 5c. Implement deleteAllUserOrders such as it fetches a user: User_V2 and delete all orders associated
+  // e.g. if getUser returns User_V2(UserId("1234"), "Rob", List(OrderId("1111"), OrderId("5555")))
+  //      then we would call deleteOrder(OrderId("1111")) and deleteOrder(OrderId("5555"))
+  // try to use sequence or traverse
+  case class UserId(value: String)
+  case class OrderId(value: String)
+
+  case class User_V2(userId: UserId, name: String, orderIds: List[OrderId])
+
+  trait UserOrderApi {
+    def getUser(userId: UserId): IO[User_V2]
+    def deleteOrder(orderId: OrderId): IO[Unit]
+  }
+
+  def deleteAllUserOrders(api: UserOrderApi)(userId: UserId): IO[Unit] =
+    IO.notImplemented
 
 }

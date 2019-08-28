@@ -9,6 +9,12 @@ import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
 import scala.util.Try
 
+object IOAnswersApp extends App {
+  import IOAnswers._
+
+  userConsoleProgram2(stdinConsole, systemClock).map(_.toString).flatMap(writeLine).unsafeRun()
+}
+
 object IOAnswers {
 
   /////////////////////////
@@ -186,7 +192,7 @@ object IOAnswers {
     def readInt: IO[Int] = readLine.map(parseInt).flatMap(IO.fromTry)
   }
 
-  val stdin: Console = new Console {
+  val stdinConsole: Console = new Console {
     val readLine: IO[String]                 = IO.effect(scala.io.StdIn.readLine())
     def writeLine(message: String): IO[Unit] = IO.effect(println(message))
   }
@@ -242,5 +248,21 @@ object IOAnswers {
 
   def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
     sequence(xs.map(f))
+
+  case class UserId(value: String)
+  case class OrderId(value: String)
+
+  case class User_V2(userId: UserId, name: String, orderIds: List[OrderId])
+
+  trait UserOrderApi {
+    def getUser(userId: UserId): IO[User_V2]
+    def deleteOrder(orderId: OrderId): IO[Unit]
+  }
+
+  def deleteAllUserOrders(api: UserOrderApi)(userId: UserId): IO[Unit] =
+    for {
+      user <- api.getUser(userId)
+      _    <- traverse(user.orderIds)(api.deleteOrder)
+    } yield ()
 
 }
