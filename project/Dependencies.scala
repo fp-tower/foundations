@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
   lazy val cats           = "org.typelevel"  %% "cats-core"            % "2.0.0-RC2"
   lazy val catsFree       = "org.typelevel"  %% "cats-free"            % "2.0.0-RC2"
-  lazy val catsEffect     = "org.typelevel"  %% "cats-effect"          % "2.0.0-RC1"
+  lazy val catsEffect     = "org.typelevel"  %% "cats-effect"          % "2.0.0-RC2"
   lazy val refined        = "eu.timepit"     %% "refined"              % "0.9.9"
   lazy val typesafeConfig = "com.typesafe"   % "config"                % "1.3.4"
   lazy val circe          = "io.circe"       %% "circe-parser"         % "0.12.0-RC4"
