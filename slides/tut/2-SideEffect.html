@@ -548,9 +548,6 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
     _ <- io1
     _ <- io2
   } yield ()
-```
-
---
 
 ```tut:silent
 def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
@@ -581,6 +578,11 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 ---
+class: center, middle
+
+# Future
+
+---
 .h1[# Future]
 
 .large-left[
@@ -596,8 +598,8 @@ def delete2Orders(
   orderId2: OrderId
 )(implicit ec: ExecutionContext): Future[Unit] = {
 
-  val delete1 = deleteOrder(orderId1) // (1) side effect
-  val delete2 = deleteOrder(orderId2) // (2) side effect
+  val delete1: Future[Unit] = deleteOrder(orderId1) // (1) side effect
+  val delete2: Future[Unit] = deleteOrder(orderId2) // (2) side effect
 
   for {
     _ /* (3) */ <- delete1
@@ -609,32 +611,6 @@ def delete2Orders(
 
 .small-right[
 ![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
-]
-
----
-.h1[# Future is not referentially transparent]
-
-.large-left[
-```tut:silent
-import scala.concurrent.{ExecutionContext, Future}
-
-def deleteOrder(orderId: OrderId)
-  (implicit ec: ExecutionContext): Future[Unit] =
-  Future { ??? }
-
-def delete2Orders(
-  orderId1: OrderId,
-  orderId2: OrderId
-)(implicit ec: ExecutionContext): Future[Unit] =
-  for {
-    _ <- deleteOrder(orderId1) // (1)
-    _ <- deleteOrder(orderId2) // start after (1) completes
-  } yield ()
-```
-]
-
-.small-right[
-![Sequence Diagram](img/sideeffect/delete-orders.svg)
 ]
 
 ---
@@ -716,9 +692,126 @@ x
 ]
 
 ---
-background-image: url(img/sideeffect/promise-life-cycle.svg)
+.h1[# Execution Context]
 
-# Future and Promise
+.pull-left[
+```tut:silent
+def delete2Orders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1)(`ec`) // (1)
+  val delete2 = deleteOrder(orderId2)(`ec`) // (2)
+
+  delete1.flatMap(_ =>       // (3)
+    delete2.map(_ => ())(ec) // (4)
+  )(ec)
+}
+```
+]
+
+.pull-right[
+![Sequence Diagram](img/sideeffect/future-ec-1.svg)
+]
+
+---
+.h1[# Execution Context]
+
+.pull-left[
+```tut:silent
+def delete2Orders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1)(`ec`) // (1)
+  val delete2 = deleteOrder(orderId2)(`ec`) // (2)
+
+  delete1.flatMap(_ =>       // (3)
+    delete2.map(_ => ())(ec) // (4)
+  )(ec)
+}
+```
+]
+
+.pull-right[
+![Sequence Diagram](img/sideeffect/future-ec-2.svg)
+]
+
+---
+.h1[# Execution Context]
+
+.pull-left[
+```tut:silent
+def delete2Orders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1)(ec) // (1)
+  val delete2 = deleteOrder(orderId2)(ec) // (2)
+
+  delete1.flatMap(_ =>       // (3)
+    delete2.map(_ => ())(ec) // (4)
+  )(`ec`)
+}
+```
+]
+
+.pull-right[
+![Sequence Diagram](img/sideeffect/future-ec-3.svg)
+]
+
+---
+.h1[# Execution Context]
+
+.pull-left[
+```tut:silent
+def delete2Orders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1)(ec) // (1)
+  val delete2 = deleteOrder(orderId2)(ec) // (2)
+
+  delete1.flatMap(_ =>       // (3)
+    delete2.map(_ => ())(`ec`) // (4)
+  )(ec)
+}
+```
+]
+
+.pull-right[
+![Sequence Diagram](img/sideeffect/future-ec-4.svg)
+]
+
+---
+.h1[# Future is not referentially transparent]
+
+.large-left[
+```tut:silent
+import scala.concurrent.{ExecutionContext, Future}
+
+def deleteOrder(orderId: OrderId)
+  (implicit ec: ExecutionContext): Future[Unit] =
+  Future { ??? }
+
+def delete2Orders(
+  orderId1: OrderId,
+  orderId2: OrderId
+)(implicit ec: ExecutionContext): Future[Unit] =
+  for {
+    _ <- deleteOrder(orderId1) // (1)
+    _ <- deleteOrder(orderId2) // start after (1) completes
+  } yield ()
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders.svg)
+]
 
 ---
 # IO with Async

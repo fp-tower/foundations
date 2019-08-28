@@ -7,8 +7,6 @@ import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success, Try}
 
 /**
-  * IO implementation encoded as a Thunk or Async
-  *
   * This encoding is made to illustrate how can we incorporate asynchronous computation
   * within a thunk based IO implementation (e.g. IOAnswers.IO)
   */
@@ -84,22 +82,24 @@ sealed trait IOAsync[+A] { self =>
     res.fold(throw _, identity)
   }
 
-  def unsafeRunAsync(cb: Either[Throwable, A] => Unit): Unit =
+  def unsafeRunAsync(cb: Callback[A]): Unit =
     runLoop(this)(cb)
 
 }
 
 object IOAsync {
 
+  type Callback[-A] = Either[Throwable, A] => Unit
+
   case class Thunk[+A](underlying: () => A) extends IOAsync[A]
 
-  case class Async[+A](cb: (Either[Throwable, A] => Unit) => Unit, ec: ExecutionContext) extends IOAsync[A]
+  case class Async[+A](cb: Callback[A] => Unit, ec: ExecutionContext) extends IOAsync[A]
 
   case class FlatMap[X, +A](source: IOAsync[X], f: X => IOAsync[A]) extends IOAsync[A]
 
   case class Attempt[+A](source: IOAsync[A]) extends IOAsync[Either[Throwable, A]]
 
-  def runLoop[A](fa: IOAsync[A])(cb: Either[Throwable, A] => Unit): Unit =
+  def runLoop[A](fa: IOAsync[A])(cb: Callback[A]): Unit =
     fa match {
       case Thunk(x) =>
         cb(Try(x()).toEither)
