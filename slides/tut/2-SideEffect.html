@@ -336,21 +336,6 @@ class: center, middle
 ---
 class: center, middle
 
-# What are the limitations of IO?
-
----
-background-image: url(img/sideeffect/IO.svg)
-
-# IO cannot be introspected
-
----
-background-image: url(img/sideeffect/IO-composition-1.svg)
-
-# IO cannot be introspected
-
----
-class: center, middle
-
 # IO Execution
 
 ---
@@ -558,11 +543,18 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
 
 .large-left[
 
-```tut:silent
-def parMap2[A, B, C](
-  fa: IO[A],
-  fb: IO[B]
-)(f: (A, B) => C): IO[C] = ???
+```tut:invisible
+def parMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
+
+def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+  parMap2(
+    deleteOrder(orderId1),
+    deleteOrder(orderId2)
+  )((_,_) => ())
+```
+
+```scala
+def parMap2[A, B, C](fa: IO[A], fb: IO[B])(f: (`A`, `B`) => `C`): IO[`C`] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   parMap2(
@@ -579,7 +571,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ---
 class: center, middle
 
-# Future
+# How is it done with Future?
 
 ---
 .h1[# Future]
@@ -855,10 +847,15 @@ trait IO[+A] {
   def map[B](f: A => B): IO[B]
   def flatMap[B](f: A => IO[B]): IO[B]
 }
+
+def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] = ???
+def sequence[A](xs: List[IO[A]]): IO[List[A]] = ???
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
 ---
-.h1[# Concurrent IO]
+.h1[# Concurrent IO: parMap2]
 
 .large-left[
 ```scala
@@ -883,6 +880,33 @@ def parMap2[A, B, C](
 
 .small-right[
 ![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+]
+
+---
+.h1[# Concurrent IO: parTraverse]
+
+.large-left[
+```tut:silent
+def parTraverse[A, B](xs: List[A])(f: A => IO[B])
+                    (ec: ExecutionContext): IO[List[B]] =
+  traverse(xs)(f(_).start(ec)).flatMap(sequence)
+
+def deleteAllUserOrders(userId: UserId)(ec: ExecutionContext): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    _    <- parTraverse(user.orderIds)(deleteOrder)(ec)
+  } yield ()
+
+def deleteAllUserOrdersSequential(userId: UserId): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    _    <- traverse(user.orderIds)(deleteOrder)
+  } yield ()
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-all-user-orders-concurrent.svg)
 ]
 
 ---
@@ -919,6 +943,32 @@ def unsafeRunAsync[A](fa: IO[A])(cb: Callback[A]): Unit =
       })
   }
 ```
+
+---
+.h1[# Library IO implementations do more]
+
+.large[
+* Cancellation, e.g. race two IO, cancel the loser
+
+* Safe resource shutdown, e.g. close file, shutdown server
+
+* Help to chose right thread pool for different type of work: blocking, compute, dispatcher
+]
+
+---
+class: center, middle
+
+# What are the limitations of IO?
+
+---
+background-image: url(img/sideeffect/IO.svg)
+
+# IO cannot be introspected
+
+---
+background-image: url(img/sideeffect/IO-composition-1.svg)
+
+# IO cannot be introspected
 
 ---
 class: center, middle
