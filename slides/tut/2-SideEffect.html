@@ -479,7 +479,7 @@ class: center, middle
 # Which IO can be evaluated concurrently?
 
 ---
-.h1[# For comprehension cannot be done in parallel]
+.h1[# For comprehension cannot be done concurrently]
 
 .pull-left[
 ```scala
@@ -498,7 +498,7 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 ]
 
 ---
-.h1[# For comprehension cannot be done in parallel]
+.h1[# For comprehension cannot be done concurrently]
 
 .large-left[
 
@@ -516,7 +516,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 ---
-.h1[# Parallel execution]
+.h1[# Concurrent execution]
 
 .large-left[
 
@@ -555,7 +555,7 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
 ```
 
 ---
-.h1[# Parallel execution]
+.h1[# Concurrent execution]
 
 .large-left[
 
