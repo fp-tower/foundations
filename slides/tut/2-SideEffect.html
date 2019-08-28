@@ -788,29 +788,43 @@ def delete2Orders(
 ]
 
 ---
+.large-left[
 .h1[# Future is not referentially transparent]
 
-.large-left[
-```tut:silent
-import scala.concurrent.{ExecutionContext, Future}
-
-def deleteOrder(orderId: OrderId)
-  (implicit ec: ExecutionContext): Future[Unit] =
+```tut:invisible
+def deleteOrder(orderId: OrderId)(implicit ec: ExecutionContext): Future[Unit] =
   Future { ??? }
+```
 
-def delete2Orders(
-  orderId1: OrderId,
-  orderId2: OrderId
-)(implicit ec: ExecutionContext): Future[Unit] =
+```tut:silent
+def deleteOrdersConcurrent(orderId1: OrderId,orderId2: OrderId)
+  (implicit ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1) // (1)
+  val delete2 = deleteOrder(orderId2) // (2)
+
   for {
-    _ <- deleteOrder(orderId1) // (1)
-    _ <- deleteOrder(orderId2) // start after (1) completes
+    _ /* (3) */ <- delete1
+    _ /* (4) */ <- delete2
+  } yield ()
+}
+```
+
+```tut:silent
+def deleteOrdersSequential(orderId1: OrderId,orderId2: OrderId)
+  (implicit ec: ExecutionContext): Future[Unit] =
+  for {
+    _ /* (2) */ <- deleteOrder(orderId1) // (1)
+    _ /* (4) */ <- deleteOrder(orderId2) // (3)
   } yield ()
 ```
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders.svg)
+![Sequence Diagram](img/sideeffect/delete-orders-2.svg)
+<br>
+<br>
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
 ]
 
 ---
