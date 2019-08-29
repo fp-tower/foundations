@@ -137,8 +137,8 @@ object IOAsync {
   def printLine(message: String): IOAsync[Unit] =
     effect(println(message))
 
-  def async[A](k: (Either[Throwable, A] => Unit) => Unit)(ec: ExecutionContext): IOAsync[A] =
-    Async(k, ec)
+  def async[A](f: Callback[A] => Unit)(ec: ExecutionContext): IOAsync[A] =
+    Async(f, ec)
 
   val immediateEC: ExecutionContext = new ExecutionContext {
     def execute(r: Runnable): Unit        = r.run()

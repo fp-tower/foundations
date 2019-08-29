@@ -3,11 +3,11 @@ package sideeffect
 import java.util.concurrent.ExecutorService
 
 import answers.sideeffect.{IOAsync, IOAsyncRef}
-import exercises.sideeffect.IORef
+import exercises.sideeffect.{IORef, ThreadPoolUtil}
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import sideeffect.ThreadPoolUtil.CounterExecutionContext
+import exercises.sideeffect.ThreadPoolUtil.CounterExecutionContext
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}

@@ -296,8 +296,7 @@ class: center, middle
 
 * Composing `IO` is referentially transparent, nothing get executed
 
-* It is better to group `IO` in a interface for testing
-(see `Console` and `Clock` trait in `IOExercises`)
+* It is easier to test `IO` if they are defined in a interface (see `Console` and `Clock` trait in `IOExercises`)
 ]
 
 ---
@@ -912,10 +911,19 @@ def unsafeRunAsync[A](fa: IO[A])(cb: Callback[A]): Unit =
 ```
 
 ---
-.h1[# Library IO implementations do more]
+class: center, middle
+
+# IO Async Exercises
+
+`exercises.sideeffect.IOAsyncExercises.scala`
+
+---
+.h1[# Library IO implementations do much more]
 
 .large[
-* Cancellation, e.g. race two IO, cancel the loser
+* Stack safety and JVM optimisation
+
+* Cancellation, e.g. race two IO and cancel the loser
 
 * Safe resource shutdown, e.g. close file, shutdown server
 
