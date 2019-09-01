@@ -331,7 +331,7 @@ background-image: url(img/function/null-2.svg)
 # Null
 
 ---
-.h1[# Null]
+.h1[# Null handling]
 
 <br>
 
@@ -448,7 +448,7 @@ foo(List("abc"))
 ```
 
 ---
-# Reflection renders signature documentation unreliable
+# Reflection makes signature unreliable
 
 ```tut:silent
 def foo[A](a: A): A = ???
@@ -462,7 +462,11 @@ def foo[A](a: A): A = ???
 def foo[A](a: A): A = a
 ```
 
-(and without infinite recursion)
+and without infinite recursion
+
+```tut:silent
+def foo[A](a: A): A = foo(a)
+```
 
 ---
 # Also apply to `Any` and non sealed trait
@@ -470,8 +474,6 @@ def foo[A](a: A): A = a
 ```tut:silent
 def foo(a: Any): Int = ???
 ```
-
---
 
 # Without Reflection
 
@@ -652,12 +654,13 @@ def doSomethingExpensive(x: Int): Future[Int] =
 for {
   x <- doSomethingExpensive(5)
   y <- doSomethingExpensive(8) // sequential, only starts when first Future is complete
+                               // will not be called if first Future fails
 } yield x + y
 ```
 
 ```tut:silent
 val fx = doSomethingExpensive(5)
-val fy = doSomethingExpensive(8) // in parallel
+val fy = doSomethingExpensive(8) // both Future are started in parallel
 
 for {
   x <- fx
@@ -783,6 +786,8 @@ def getOrElse[A](fa: Option[A])(orElse: `=> A`): A = ???
 def parseJson(x: String): `Either[ParsingError`, Json] = ???
 
 def void[`A`](fa: Option[`A`]): Option[Unit] = ???
+
+def none: Option[`Nothing`] = ???
 
 def forever[A](fa: IO[A]): IO[`Nothing`] = ???
 ```

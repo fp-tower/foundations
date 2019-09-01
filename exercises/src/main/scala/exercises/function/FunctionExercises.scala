@@ -77,7 +77,7 @@ object FunctionExercises extends FunctionToImpl {
   // what's the difference with apply2?
   def apply[A, B](value: A, f: A => B): B = ???
 
-  def apply2[A, B](value: A)(f: A => B): B = apply(value, f)
+  def apply2[A, B](value: A)(f: A => B): B = ???
 
   // 2f. implement setAge using updateAge
   // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
@@ -137,11 +137,23 @@ object FunctionExercises extends FunctionToImpl {
   def sumList2(xs: List[Int]): Int = ???
 
   // 3c. Implement sumList3 using a foldLeft
+  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
+    var acc = b
+    val it  = fa.iterator
+
+    while (it.hasNext) {
+      val current = it.next()
+      acc = f(acc, current)
+    }
+
+    acc
+  }
+
   @tailrec
-  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+  def foldLeftRec[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
     xs match {
       case Nil    => z
-      case h :: t => foldLeft(t, f(z, h))(f)
+      case h :: t => foldLeftRec(t, f(z, h))(f)
     }
 
   def sumList3(xs: List[Int]): Int = ???
