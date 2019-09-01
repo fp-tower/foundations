@@ -360,6 +360,10 @@ object Main extends App {
 }
 ```
 
+<br>
+
+### Discuss with your neighbour 3-4 min
+
 ---
 # How is it executed?
 
@@ -428,6 +432,35 @@ class: center, middle
 # How can we evaluate IO concurrently?
 
 # Which IO can be evaluated concurrently?
+
+---
+.h1[# Which IO can be evaluated concurrently?]
+
+.large-left[
+```tut:silent
+def deleteAllUserOrders(userId: UserId): IO[Unit] =
+  for {
+    user <- getUser(userId)
+    // User("1234", "Rob", List("1111", "5555"))
+    _    <- deleteOrder(user.orderIds(0)) // 1111
+    _    <- deleteOrder(user.orderIds(1)) // 5555
+  } yield ()
+
+object Main extends App {
+
+  deleteAllUserOrders(UserId("1234")).unsafeRun()
+
+}
+```
+
+<br>
+
+### Discuss with your neighbour 3-4 min
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
+]
 
 ---
 .h1[# For comprehension cannot be done concurrently]
@@ -505,7 +538,7 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
 ```
 
 ---
-.h1[# Concurrent execution]
+.h1[# Parametricity]
 
 .large-left[
 
@@ -520,7 +553,8 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ```
 
 ```scala
-def parMap2[A, B, C](fa: IO[A], fb: IO[B])(f: (`A`, `B`) => `C`): IO[`C`] = ???
+def parMap2[A, B, C](fa: IO[`A`], fb: IO[`B`])
+                    (f: (`A`, `B`) => `C`): IO[`C`] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   parMap2(
@@ -537,7 +571,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ---
 class: center, middle
 
-# How is it done with Future?
+# How concurrency is done with Future?
 
 ---
 .h1[# Future]
@@ -798,6 +832,10 @@ trait IO[+A] {
 }
 ```
 
+<br>
+
+### Discuss with your neighbour 3-4 min
+
 ---
 # Concurrent IO
 
@@ -849,33 +887,6 @@ def parMap2[A, B, C](
 ]
 
 ---
-.h1[# Concurrent IO: parTraverse]
-
-.large-left[
-```tut:silent
-def parTraverse[A, B](xs: List[A])(f: A => IO[B])
-                    (ec: ExecutionContext): IO[List[B]] =
-  traverse(xs)(f(_).start(ec)).flatMap(sequence)
-
-def deleteAllUserOrders(userId: UserId)(ec: ExecutionContext): IO[Unit] =
-  for {
-    user <- getUser(userId)
-    _    <- parTraverse(user.orderIds)(deleteOrder)(ec)
-  } yield ()
-
-def deleteAllUserOrdersSequential(userId: UserId): IO[Unit] =
-  for {
-    user <- getUser(userId)
-    _    <- traverse(user.orderIds)(deleteOrder)
-  } yield ()
-```
-]
-
-.small-right[
-![Sequence Diagram](img/sideeffect/delete-all-user-orders-concurrent.svg)
-]
-
----
 # Concurrent IO with Async
 
 ```tut:silent
@@ -891,6 +902,23 @@ object IO {
 ```
 
 --
+
+### An IO is either a Thunk or a Async computation with a CallBack
+
+---
+# Concurrent IO with Async
+
+```tut:silent
+type Callback[-A] = Either[Throwable, A] => Unit
+
+sealed trait IO[+A]
+
+object IO {
+  case class Thunk[+A](f: () => A) extends IO[A]
+
+  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
+}
+```
 
 ```tut:invisible
 import IO._
@@ -911,6 +939,49 @@ def unsafeRunAsync[A](fa: IO[A])(cb: Callback[A]): Unit =
 ```
 
 ---
+# EvalOn
+
+```scala
+type Callback[-A] = Either[Throwable, A] => Unit
+
+sealed trait IO[+A]
+
+object IO {
+  case class Thunk[+A](f: () => A) extends IO[A]
+
+  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
+}
+```
+
+```tut:silent
+val threadName: IO[String] = IO.Thunk(() => Thread.currentThread().getName)
+
+def evalOn[A](fa: IO[A])(ec: ExecutionContext): IO[A] =
+  IO.Async(unsafeRunAsync(fa), ec)
+```
+
+```tut:invisible
+def unsafeRun[A](fa: IO[A]): A = {
+  val latch = new java.util.concurrent.CountDownLatch(1)
+  var res: Either[Throwable, A] = null
+
+  unsafeRunAsync(fa) { eOrA =>
+    res = eOrA
+    latch.countDown()
+  }
+
+  latch.await()
+
+  res.fold(throw _, identity)
+}
+```
+
+```tut
+unsafeRun(threadName)
+unsafeRun(evalOn(threadName)(scala.concurrent.ExecutionContext.global))
+```
+
+---
 class: center, middle
 
 # IO Async Exercises
@@ -926,6 +997,8 @@ class: center, middle
 * Cancellation, e.g. race two IO and cancel the loser
 
 * Safe resource shutdown, e.g. close file, shutdown server
+
+* Efficient Timer, retry utilities
 
 * Help to chose right thread pool for different type of work: blocking, compute, dispatcher
 ]
@@ -1185,9 +1258,9 @@ def unsafeRunFree[A](fa: FreeMap[A]): A =
 ```tut:silent
 object Main extends App {
 
-  val description = fetchJson("https://api.github.com/users/julien-truffaut/orgs").map(println)
+  val description: FreeMap[Json] = fetchJson("https://api.github.com/users/julien-truffaut/orgs")
 
-  unsafeRunFree(description)
+  println(unsafeRunFree(description))
 
 }
 ```
@@ -1241,7 +1314,7 @@ David Wheeler
 ---
 class: center, middle
 
-# Free is several order of magnitude more complex than IO
+# Free is several orders of magnitude more complex than IO
 
 ---
 # Resources and further study
@@ -1249,6 +1322,10 @@ class: center, middle
 * [Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)
 * [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)
 
+---
+class: center, middle
+
+# [Module 3: Type](3-Type.html#1)
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
