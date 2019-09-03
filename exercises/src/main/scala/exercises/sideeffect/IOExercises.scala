@@ -50,7 +50,7 @@ object IOExercises {
     // and effect(throw new Exception("")) == fail(new Exception(""))
     // use case:
     // effect(println("hello"))
-    // effect(http.delete("http://foo.com/order"))
+    // effect(http.delete("http://foo.com/order/1234"))
     def effect[A](fa: => A): IO[A] =
       new IO(() => ???)
 
