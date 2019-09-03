@@ -4,6 +4,7 @@ import java.time.Instant
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.duration._
 import scala.util.Try
 
 object IOExercisesApp extends App {
@@ -23,15 +24,18 @@ object IOExercises {
     // such as succeed(x).unsafeRun() == x
     // note that succeed is strict, it means that the same value will be return every time it is run
     // it also means it is an unsafe to throw an Exception when you call succeed, e.g. succeed(throw new Exception(""))
-    def succeed[A](value: A): IO[A] = new IO(() => ???)
+    def succeed[A](value: A): IO[A] =
+      new IO(() => ???)
 
     // common alias for succeed
-    def pure[A](value: A): IO[A] = succeed(value)
+    def pure[A](value: A): IO[A] =
+      succeed(value)
 
     // 1b. Implement fail a "smart constructor" that creates an IO which always fails
     // note that val error = fail(new Exception("")) does not throw
     // the Exception is only thrown when unsafeRun is called, e.g. error.unsafeRun()
-    def fail[A](error: Throwable): IO[A] = new IO(() => ???)
+    def fail[A](error: Throwable): IO[A] =
+      new IO(() => ???)
 
     // 1c. Write a test for fail in IOExercisesTest
 
@@ -44,21 +48,29 @@ object IOExercises {
     // 1e. Implement effect which captures a potentially side effecty operation
     // such as effect(4) == succeed(4)
     // and effect(throw new Exception("")) == fail(new Exception(""))
-    // use case: effect(impureFunction(4))
-    def effect[A](fa: => A): IO[A] = new IO(() => ???)
+    // use case:
+    // effect(println("hello"))
+    // effect(http.delete("http://foo.com/order"))
+    def effect[A](fa: => A): IO[A] =
+      new IO(() => ???)
 
     // common alias for effect
-    def apply[A](fa: => A): IO[A] = effect(fa)
+    // IO { println("hello") } instead of effect(println("hello"))
+    def apply[A](fa: => A): IO[A] =
+      effect(fa)
 
-    def notImplemented[A]: IO[A] = effect(???)
+    def notImplemented[A]: IO[A] =
+      effect(???)
 
     // 1f. Implement sleep, see Thread.sleep
     // What the issue with this implementation? How could you fix it?
-    def sleep(duration: FiniteDuration): IO[Unit] = notImplemented
+    def sleep(duration: FiniteDuration): IO[Unit] =
+      notImplemented
 
     // 1g. Implement an IO that never completes
     // this should be the equivalent of sleep with an Infinite duration
-    val forever: IO[Nothing] = notImplemented
+    val never: IO[Nothing] =
+      notImplemented
   }
 
   /////////////////////
@@ -68,7 +80,8 @@ object IOExercises {
   class IO[A](thunk: () => A) {
     import IO._
 
-    def unsafeRun(): A = thunk()
+    def unsafeRun(): A =
+      thunk()
 
     // 2a. Implement map
     // such as succeed(x).map(f) == succeed(f(x))
@@ -82,7 +95,8 @@ object IOExercises {
     // use case:
     // val rowsUpdated: IO[Int] = updateDb(sql"...")
     // val response: IO[Unit] = rowsUpdated.void
-    def void: IO[Unit] = map(_ => ())
+    def void: IO[Unit] =
+      map(_ => ())
 
     // 2b. Implement flatMap
     // such as succeed(x).flatMap(f) == f(x)
@@ -109,10 +123,12 @@ object IOExercises {
       } yield b
 
     // common alias for productL
-    def <*[B](fb: IO[B]): IO[A] = productL(fb)
+    def <*[B](fb: IO[B]): IO[A] =
+      productL(fb)
 
     // common alias for productR
-    def *>[B](fb: IO[B]): IO[B] = productR(fb)
+    def *>[B](fb: IO[B]): IO[B] =
+      productR(fb)
 
     // 2c. Implement attempt which makes the error part of IO explicit
     // such as succeed(x).attempt == succeed(Right(x))
@@ -131,7 +147,8 @@ object IOExercises {
       notImplemented
 
     // 2e. Implement retryOnce that takes an IO and if it fails, try to run it again
-    def retryOnce: IO[A] = ???
+    def retryOnce: IO[A] =
+      notImplemented
 
     // 2f. Implement retryUntilSuccess
     // similar to retryOnce but it retries until the IO succeeds (potentially indefinitely)
@@ -152,9 +169,11 @@ object IOExercises {
 
   // 3a. Implement readLine and writeLine such as effects are only done when IO is run
   // which smart constructor of IO should you use?
-  val readLine: IO[String] = IO.notImplemented
+  val readLine: IO[String] =
+    IO.notImplemented
 
-  def writeLine(message: String): IO[Unit] = IO.notImplemented
+  def writeLine(message: String): IO[Unit] =
+    IO.notImplemented
 
   def unsafeConsoleProgram: String = {
     println("What's your name?")
@@ -165,22 +184,26 @@ object IOExercises {
 
   // 3b. Implement consoleProgram such as it is a referentially version of unsafeConsoleProgram
   // Try to re-use readLine and writeLine
-  val consoleProgram: IO[String] = IO.notImplemented
+  val consoleProgram: IO[String] =
+    IO.notImplemented
 
   // 3c. Implement readInt which reads an Int from the command line
   // such as readInt.unsafeRun() == 32 if user types "32"
   // and readInt.unsafeRun() throws an Exception if user types "hello"
   // use parseInt and readLine
-  def parseInt(x: String): Try[Int] = Try(x.toInt)
+  def parseInt(x: String): Try[Int] =
+    Try(x.toInt)
 
-  val readInt: IO[Int] = IO.notImplemented
+  val readInt: IO[Int] =
+    IO.notImplemented
 
   // 3d. Implement userConsoleProgram such as it is a referentially version of unsafeUserConsoleProgram
   case class User(name: String, age: Int, createdAt: Instant)
 
   val readNow: IO[Instant] = IO.effect(Instant.now())
 
-  val userConsoleProgram: IO[User] = IO.notImplemented
+  val userConsoleProgram: IO[User] =
+    IO.notImplemented
 
   def unsafeUserConsoleProgram: User = {
     println("What's your name?")

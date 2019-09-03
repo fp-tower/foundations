@@ -50,10 +50,10 @@ object IOAnswers {
     def sleep(duration: FiniteDuration): IO[Unit] =
       effect(Thread.sleep(duration.toMillis))
 
-    val forever: IO[Nothing] =
+    val never: IO[Nothing] =
       effect {
         sleep(100.day).unsafeRun()
-        forever.unsafeRun()
+        never.unsafeRun()
       }
 
     implicit val monad: Monad[IO] = new Monad[IO] {
