@@ -233,7 +233,7 @@ def unsafeRun[A](fa: Description[A]): A = ???
 ```
 
 ---
-# Method 1: Thunk
+# Thunk
 
 ```tut:silent
 type Thunk[A] = () => A  // Unit => A
@@ -257,8 +257,15 @@ def fetch(url: String): Thunk[Iterator[String]] =
   () => Source.fromURL(url)("ISO-8859-1").getLines
 ```
 
+--
+
+```tut
+val google = fetch("http://google.com")
+unsafeRun(google).take(1).toList
+```
+
 ---
-# Method 1: IO
+# IO a wrapper over a thunk
 
 ```tut:silent
 class IO[A](thunk: () => A) {
@@ -267,17 +274,11 @@ class IO[A](thunk: () => A) {
 
 def writeLine(message: String): IO[Unit] =
   new IO(() => println(message))
-
-val today: IO[LocalDate] =
-  new IO(() => LocalDate.now())
-
-def fetch(url: String): IO[Iterator[String]] =
-  new IO(() => Source.fromURL(url)("ISO-8859-1").getLines)
 ```
 
 ```tut
-val google = fetch("http://google.com")
-google.unsafeRun().take(1).toList
+val helloWorld = writeLine("Hello World!")
+helloWorld.unsafeRun()
 ```
 
 
@@ -291,12 +292,14 @@ class: center, middle
 ---
 .h1[# IO Summary]
 
+<br>
+
 .large[
 * An `IO` is a thunk of potentially impure code
 
 * Composing `IO` is referentially transparent, nothing get executed
 
-* It is easier to test `IO` if they are defined in a interface (see `Console` and `Clock` trait in `IOExercises`)
+* It is easier to test `IO` if they are defined in a interface
 ]
 
 ---
@@ -841,6 +844,41 @@ trait IO[+A] {
 
 ```scala
 trait IO[+A] {
+  def start(ec: ExecutionContext): IO[???]
+}
+```
+
+---
+# Concurrent IO
+
+```scala
+trait IO[+A] {
+  def start(ec: ExecutionContext): IO[Foo[A]]
+}
+
+trait Foo[A] {
+  def await: ???
+}
+```
+
+---
+# Concurrent IO
+
+```scala
+trait IO[+A] {
+  def start(ec: ExecutionContext): IO[Foo[A]]
+}
+
+trait Foo[A] {
+  def await: IO[A]
+}
+```
+
+---
+# Concurrent IO
+
+```scala
+trait IO[+A] {
   def start(ec: ExecutionContext): IO[IO[A]]
 }
 ```
@@ -872,13 +910,69 @@ trait IO[+A] {
 def parMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
+)(f: (A, B) => C)(ec: ExecutionContext): IO[C] = ???
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+]
+
+
+---
+.h1[# Concurrent IO: parMap2]
+
+.large-left[
+```scala
+trait IO[+A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+}
+```
+
+```tut:silent
+def parMap2[A, B, C](
+  fa: IO[A],
+  fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
   for {
-    waitForA <- fa.start(ec) // (1)
-    waitForB <- fb.start(ec) // (2)
-    a        <- waitForA     // (3)
-    b        <- waitForB     // (4)
+    awaitForA <- fa.start(ec) // (1)
+    awaitForB <- fb.start(ec) // (2)
+    a         <- awaitForA    // (3)
+    b         <- awaitForB    // (4)
   } yield f(a, b)
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+]
+
+---
+.h1[# Concurrent IO is referentially transparent]
+
+.large-left[
+```scala
+trait IO[+A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+}
+```
+
+```tut:silent
+def parMap2[A, B, C](
+  fa: IO[A],
+  fb: IO[B]
+)(f: (A, B) => C)(ec: ExecutionContext): IO[C] = {
+
+  val asyncIOA = fa.start(ec)
+  val asyncIOB = fb.start(ec)
+
+  for {
+    awaitForA <- asyncIOA     // (1)
+    awaitForB <- asyncIOB     // (2)
+    a         <- awaitForA    // (3)
+    b         <- awaitForB    // (4)
+  } yield f(a, b)
+}
 ```
 ]
 
@@ -904,6 +998,34 @@ object IO {
 --
 
 ### An IO is either a Thunk or a Async computation with a CallBack
+
+---
+# Concurrent IO with Async
+
+```tut:silent
+type Callback[-A] = Either[Throwable, A] => Unit
+
+sealed trait IO[+A]
+
+object IO {
+  case class Thunk[+A](f: () => A) extends IO[A]
+
+  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
+}
+```
+
+### Continuation-passing style (CPS)
+
+```tut:silent
+def add(a: Int, b: Int): Int = a + b
+
+def add(a: Int, b: Int)(rest: Int => Unit): Unit = {
+  val res = a + b
+  rest(res)
+}
+```
+
+.reference[[How do Fibers work](http://systemfw.org/Scala-World-2019/#/)]
 
 ---
 # Concurrent IO with Async
@@ -1321,6 +1443,7 @@ class: center, middle
 
 * [Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)
 * [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)
+* [How do Fibers work](http://systemfw.org/Scala-World-2019/#/)
 
 ---
 class: center, middle
