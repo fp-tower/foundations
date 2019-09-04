@@ -17,7 +17,7 @@
 * Recursion
 * Memoization
 
-### Module 2: Side Effect [WIP](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
+### Module 2: [Side Effect](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
 * Side effect with referential transparency
 * IO / Thunk
 * Restricted algebra
