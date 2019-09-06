@@ -81,10 +81,15 @@ val inc   : Int => Int = (x: Int) => x + 1
 val dec   : Int => Int = (x: Int) => x - 1
 val double: Int => Int = (x: Int) => x * 2
 
-
 val list = List(inc, dec, double)
+```
 
-val map = Map(
+```tut
+list.map(func => func(10))
+```
+
+```tut:silent
+val dictionary = Map(
   "foo"  -> inc,
   "bar"  -> dec,
   "fizz" -> double,
@@ -108,7 +113,33 @@ List(1,2,3).map(inc)
 ```
 
 ```tut
-List("hello", "world", "!").takeWhile(_.length > 2)
+List("hello", "world", "is", "a", "common", "String").takeWhile(_.length > 2)
+```
+
+---
+# First class function: produce functions
+
+```tut:invisible
+def formatDouble(decimal: Int): Double => String =
+  (value: Double) =>
+    BigDecimal(value).setScale(decimal, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
+
+val format2D: Double => String = formatDouble(2)
+val format5D: Double => String = formatDouble(5)
+```
+
+```scala
+def formatDouble(decimal: Int): `Double => String` =
+  (value: Double) =>
+    BigDecimal(value).setScale(decimal, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
+
+val format2D: Double => String = formatDouble(2)
+val format5D: Double => String = formatDouble(5)
+```
+
+```tut
+format2D(1.123456789)
+format5D(1.123456789)
 ```
 
 ---
