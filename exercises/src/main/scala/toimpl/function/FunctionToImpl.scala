@@ -22,8 +22,6 @@ trait FunctionToImpl {
 
   def applyMany(xs: List[Int => Int]): Int => List[Int]
 
-  def applyManySum(xs: List[Int => Int]): Int => Int
-
   ////////////////////////////
   // 2. polymorphic functions
   ////////////////////////////
@@ -38,7 +36,7 @@ trait FunctionToImpl {
 
   def setAge(value: Int): List[User]
 
-  def getUsersUnchanged: List[User]
+  def getUsers: List[User]
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C
 

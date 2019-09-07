@@ -51,10 +51,6 @@ object FunctionExercises extends FunctionToImpl {
   // such as applyMany(List(_ + 1, _ - 1, _ * 2))(10) == List(11, 9, 20)
   def applyMany(xs: List[Int => Int]): Int => List[Int] = ???
 
-  // 1g. Implement applyManySum
-  // such as applyManySum(List(_ + 1, _ - 1, _ * 2))(10) == 40
-  def applyManySum(xs: List[Int => Int]): Int => Int = ???
-
   ////////////////////////////
   // 2. polymorphic functions
   ////////////////////////////
@@ -69,19 +65,19 @@ object FunctionExercises extends FunctionToImpl {
   //         List(1,2,3).map(const(0)) == List(0,0,0)
   def const[A, B](a: A)(b: B): A = ???
 
-  // 2d. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
+  // 2c. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
   // val idVal = ???
 
-  // 2e. Implement apply
+  // 2d. Implement apply and apply2 which both call a function for an input
   // such as apply(5, (_: Int) + 1) == 6
   // what's the difference with apply2?
   def apply[A, B](value: A, f: A => B): B = ???
 
   def apply2[A, B](value: A)(f: A => B): B = ???
 
-  // 2f. implement setAge using updateAge
+  // 2e. Implement setAge which update the age of all users
   // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
-  // hint: try to use either identity or const
+  // hint: use updateAge with one of the polymorphic function we just saw
   case class User(name: String, age: Int)
 
   def updateAge(f: Int => Int): List[User] =
@@ -91,12 +87,12 @@ object FunctionExercises extends FunctionToImpl {
 
   def setAge(value: Int): List[User] = ???
 
-  // 2g. implement noopAge using updateAge
-  // such as getUsersUnchanged == List(User("John", 26), User("Lisa", 5))
-  // hint: try to use either identity or const
-  def getUsersUnchanged: List[User] = ???
+  // 2f. implement getUsers which returns all users
+  // such as getUsers == List(User("John", 26), User("Lisa", 5))
+  // hint: use updateAge with one of the polymorphic function we just saw
+  def getUsers: List[User] = ???
 
-  // 2h. Implement andThen and compose
+  // 2g. Implement andThen and compose
   // such as
   // val isEven: Int => Boolean = _ % 2 == 0
   // val inc   : Int => Int = _ + 1
@@ -106,19 +102,19 @@ object FunctionExercises extends FunctionToImpl {
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 2i. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 2h. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = identity // ???
 
-  // 2j. Same for f(x) = 2 * (x + 1)
+  // 2i. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
 
-  // 2k. inc and double are a special case of function where the input and output type is the same.
-  // These functions are known as endofunctions.
+  // 2j. inc and double are a special case of function where the input and output type is the same.
+  // These functions are called endofunctions.
   // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
-  // Can you find a design pattern that relies on Endo function?
+  // Can you think of a common design pattern that relies on endofunctions?
   type Endo[A] = A => A
   def composeEndo[A](f: Endo[A], g: Endo[A]): Endo[A] = f compose g
 
@@ -126,17 +122,20 @@ object FunctionExercises extends FunctionToImpl {
   // 3. Recursion & Laziness
   ///////////////////////////
 
-  // 3a. Use an imperative approach (while, for loop) to implement sumList
+  // 3a. Implement sumList using an imperative approach (while, for loop)
   // such as sumList(List(1,5,2)) == 8
   def sumList(xs: List[Int]): Int = ???
 
   // 3b. Use recursion to implement sumList2
   // does your implementation works with large list? e.g. sumList2(List.fill(1000000)(1))
-  val largeList: List[Int] = List.fill(1000000)(1) // List(1,1,1,1, ....)
+  val largeList: List[Int] = List.fill(1000000)(1) // List(1,1,1,1, ...)
 
   def sumList2(xs: List[Int]): Int = ???
 
   // 3c. Implement sumList3 using a foldLeft
+  // foldLeft can be written imperatively or via recursion (foldLeftRec)
+  def sumList3(xs: List[Int]): Int = ???
+
   def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
     var acc = b
     val it  = fa.iterator
@@ -156,34 +155,38 @@ object FunctionExercises extends FunctionToImpl {
       case h :: t => foldLeftRec(t, f(z, h))(f)
     }
 
-  def sumList3(xs: List[Int]): Int = ???
-
   ///////////////////////
   // GO BACK TO SLIDES
   ///////////////////////
 
-  // 3d. Implement find using a recursion or loop
-  // does your implementation terminate early? e.g. find(1.to(1000000).toList)(-1)(1) does not go through the entire list
-  // does your implementation works with large list? e.g. find(1.to(1000000).toList)(-1)
-  def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
-
-  // 3e. Implement forAll using a recursion or loop
+  // 3d. Implement forAll using a recursion or loop
+  // forAll returns true if all the elements in the List are true
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
   // does your implementation terminate early? e.g. forAll(List(false, false, false)) does not go through the entire list
-  // does your implementation works with large list? e.g. forAll(List.fill(1000000)(true))
+  // does your implementation works for large list? e.g. forAll(List.fill(1000000)(true))
   def forAll(xs: List[Boolean]): Boolean = ???
 
-  // 3f. Implement find2 and forAll2 using foldRight
+  // 3e. Implement find using a recursion or loop
+  // find returns the first element of a List that matches the predicate `p`
+  // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
+  // but     find(List(1,2,3))(_ == -1) == None
+  // does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
+  // does your implementation works for large list? e.g. find(1.to(1000000).toList)(_ == -1)
+  def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
+
+  // 3f. Implement forAll2 and find2 using foldRight
+  // foldRight is an abstraction over recursion that can terminate early
+  // early termination is achieved by laziness (see call by name `=> B`)
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
     xs match {
       case Nil    => z
       case h :: t => f(h, foldRight(t, z)(f))
     }
 
-  def find2[A](xs: List[A])(p: A => Boolean): Option[A] = ???
-
   def forAll2(xs: List[Boolean]): Boolean = ???
+
+  def find2[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
   ///////////////////////
   // GO BACK TO SLIDES

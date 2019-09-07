@@ -61,7 +61,7 @@ object FunctionAnswers extends FunctionToImpl {
   def setAge(value: Int): List[User] =
     updateAge(const(value))
 
-  val getUsersUnchanged: List[User] =
+  val getUsers: List[User] =
     updateAge(identity)
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C =

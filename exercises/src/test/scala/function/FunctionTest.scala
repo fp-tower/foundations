@@ -47,10 +47,6 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
     applyMany(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual List(11, 9, 20)
   }
 
-  test("applyManySum") {
-    applyManySum(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual 40
-  }
-
   ////////////////////////////
   // 2. polymorphic functions
   ////////////////////////////
@@ -72,11 +68,11 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
   }
 
   test("setAge") {
-    setAge(10) == List(User("John", 10), User("Lisa", 10))
+    setAge(10) shouldEqual List(User("John", 10), User("Lisa", 10))
   }
 
-  test("getUsersUnchanged") {
-    getUsersUnchanged == List(User("John", 26), User("Lisa", 5))
+  test("getUsers") {
+    getUsers shouldEqual List(User("John", 26), User("Lisa", 5))
   }
 
   test("andThen") {
@@ -123,6 +119,22 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
       }
   }
 
+  List(impl.forAll _, forAll2 _).zipWithIndex.foreach {
+    case (f, i) =>
+      test(s"forAll $i") {
+        f(List(true, true, true)) shouldEqual true
+        f(List(true, false, true)) shouldEqual false
+        f(Nil) shouldEqual true
+      }
+
+      if (i == 0)
+        test(s"forAll $i is stack safe") {
+          val xs = List.fill(1000000)(true)
+
+          f(xs) shouldEqual true
+        }
+  }
+
   List(find[Int] _, find2[Int] _).zipWithIndex.foreach {
     case (f, i) =>
       test(s"find $i") {
@@ -151,22 +163,6 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
 
           f(xs)(_ == 5) shouldEqual Some(5)
           f(xs)(_ == -1) shouldEqual None
-        }
-  }
-
-  List(impl.forAll _, forAll2 _).zipWithIndex.foreach {
-    case (f, i) =>
-      test(s"forAll $i") {
-        f(List(true, true, true)) shouldEqual true
-        f(List(true, false, true)) shouldEqual false
-        f(Nil) shouldEqual true
-      }
-
-      if (i == 0)
-        test(s"forAll $i is stack safe") {
-          val xs = List.fill(1000000)(true)
-
-          f(xs) shouldEqual true
         }
   }
 
