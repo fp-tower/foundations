@@ -117,7 +117,7 @@ List("hello", "world", "is", "a", "common", "String").takeWhile(_.length > 2)
 ```
 
 ---
-# First class function: produce functions
+# First class function: return
 
 ```tut:invisible
 def formatDouble(decimal: Int): Double => String =
@@ -145,7 +145,7 @@ format5D(1.123456789)
 ---
 class: center, middle
 
-# Exercises 1, 2 and 3a-c
+# Exercises 1, 2 and 3a-b
 
 `exercises.function.FunctionExercises.scala`
 
@@ -239,7 +239,7 @@ reverse(List(1,2,3,4))
 ---
 class: center, middle
 
-# Finish Exercise 3
+# Exercise 3c-f
 
 `exercises.function.FunctionExercises.scala`
 
@@ -312,10 +312,21 @@ foldRight(xs, z)(f) == foldRight(Cons(1, Cons(2, Cons(3, Nil()))), z)(f)
 
 --
 
-### Exercise: How would you "replace constructors" for Option or Binary Tree?
+### Home exercise: How would you "replace constructors" for Option or Binary Tree?
+
+---
+class: center, middle
+
+# Finish Exercise 3
+
+`exercises.function.FunctionExercises.scala`
 
 ---
 # Different level of abstractions
+
+<br>
+<br>
+<br>
 
 .center[![Abstractions](img/function/abstractions.svg)]
 

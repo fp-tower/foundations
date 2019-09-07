@@ -56,6 +56,10 @@ trait FunctionToImpl {
 
   def sumList3(xs: List[Int]): Int
 
+  def multiply(xs: List[Int]): Int
+
+  def filter[A](xs: List[A])(p: A => Boolean): List[A]
+
   def find[A](xs: List[A])(p: A => Boolean): Option[A]
 
   def forAll(xs: List[Boolean]): Boolean

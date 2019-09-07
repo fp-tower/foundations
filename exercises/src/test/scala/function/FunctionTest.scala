@@ -119,6 +119,20 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
       }
   }
 
+  test("multiply") {
+    multiply(Nil) shouldEqual 1
+    multiply(List(0, 2, 4)) shouldEqual 0
+    multiply(List(1, 2, 4)) shouldEqual 8
+
+    forAll((x: Int, xs: List[Int]) => multiply(x :: xs) shouldEqual (x * multiply(xs)))
+
+    forAll((xs: List[Int]) => multiply(xs) shouldEqual multiply(xs.reverse))
+  }
+
+  test("filter") {
+    forAll((xs: List[Int], p: Int => Boolean) => filter(xs)(p) shouldEqual xs.filter(p))
+  }
+
   List(impl.forAll _, forAll2 _).zipWithIndex.foreach {
     case (f, i) =>
       test(s"forAll $i") {

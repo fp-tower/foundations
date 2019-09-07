@@ -132,9 +132,12 @@ object FunctionExercises extends FunctionToImpl {
 
   def sumList2(xs: List[Int]): Int = ???
 
-  // 3c. Implement sumList3 using a foldLeft
-  // foldLeft can be written imperatively or via recursion (foldLeftRec)
-  def sumList3(xs: List[Int]): Int = ???
+  ///////////////////////
+  // GO BACK TO SLIDES
+  ///////////////////////
+
+  def sumList3(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
 
   def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
     var acc = b
@@ -155,11 +158,15 @@ object FunctionExercises extends FunctionToImpl {
       case h :: t => foldLeftRec(t, f(z, h))(f)
     }
 
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
+  // 3c. Implement multiply using foldLeft
+  // such as multiply(List(3,2,4)) == 24
+  def multiply(xs: List[Int]): Int = ???
 
-  // 3d. Implement forAll using a recursion or loop
+  // 3d. Implement filter using foldLeft
+  // such as filter(List(1,2,3,4))(isEven) == List(2,4)
+  def filter[A](xs: List[A])(p: A => Boolean): List[A] = ???
+
+  // 3e. Implement forAll using a recursion or loop
   // forAll returns true if all the elements in the List are true
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
@@ -167,7 +174,7 @@ object FunctionExercises extends FunctionToImpl {
   // does your implementation works for large list? e.g. forAll(List.fill(1000000)(true))
   def forAll(xs: List[Boolean]): Boolean = ???
 
-  // 3e. Implement find using a recursion or loop
+  // 3f. Implement find using a recursion or loop
   // find returns the first element of a List that matches the predicate `p`
   // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
   // but     find(List(1,2,3))(_ == -1) == None
@@ -175,7 +182,11 @@ object FunctionExercises extends FunctionToImpl {
   // does your implementation works for large list? e.g. find(1.to(1000000).toList)(_ == -1)
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
-  // 3f. Implement forAll2 and find2 using foldRight
+  ///////////////////////
+  // GO BACK TO SLIDES
+  ///////////////////////
+
+  // 3g. Implement forAll2 and find2 using foldRight
   // foldRight is an abstraction over recursion that can terminate early
   // early termination is achieved by laziness (see call by name `=> B`)
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =

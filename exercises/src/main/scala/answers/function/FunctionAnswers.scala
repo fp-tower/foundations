@@ -121,6 +121,11 @@ object FunctionAnswers extends FunctionToImpl {
   def reverse[A](xs: List[A]): List[A] =
     foldLeft(xs, List.empty[A])(_.::(_))
 
+  def multiply(xs: List[Int]): Int = foldLeft(xs, 1)(_ * _)
+
+  def filter[A](xs: List[A])(p: A => Boolean): List[A] =
+    foldLeft(xs, List.empty[A])((acc, a) => if (p(a)) a :: acc else acc).reverse
+
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
     xs match {
       case Nil    => z
