@@ -101,7 +101,7 @@ object IOAnswers {
     // common alias for productR
     def *>[B](fb: IO[B]): IO[B] = productR(fb)
 
-    def attempt[B]: IO[Either[Throwable, A]] =
+    def attempt: IO[Either[Throwable, A]] =
       new IO(() => Try(unsafeRun())).map(_.toEither)
 
     def handleErrorWith[B >: A](f: Throwable => IO[B]): IO[B] =

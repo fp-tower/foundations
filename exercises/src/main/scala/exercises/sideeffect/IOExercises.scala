@@ -5,7 +5,7 @@ import java.time.Instant
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.duration._
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 object IOExercisesApp extends App {
   import IOExercises._
@@ -134,7 +134,7 @@ object IOExercises {
     // such as succeed(x).attempt == succeed(Right(x))
     //         fail(new Exception("")).attempt == succeed(Left(new Exception("")))
     // note that attempt guarantee that unsafeRun() will not throw an Exception
-    def attempt[B]: IO[Either[Throwable, A]] =
+    def attempt: IO[Either[Throwable, A]] =
       notImplemented
 
     // 2d. Implement handleErrorWith which allow to catch failing IO

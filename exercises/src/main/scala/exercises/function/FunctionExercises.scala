@@ -199,11 +199,12 @@ object FunctionExercises extends FunctionToImpl {
 
   def find2[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
+  // 3i. which fold (left or right) would you use to implement the following min and take? Why
+  def min(xs: List[Int]): Option[Int] = ???
 
-  // 3i. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
+  def take[A](xs: List[A])(x: Int): List[Int] = ???
+
+  // 3j. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
   def isEven(x: Int): Boolean =
     if (x > 0) isOdd(x - 1)
     else if (x < 0) isOdd(x + 1)
@@ -214,7 +215,7 @@ object FunctionExercises extends FunctionToImpl {
     else if (x < 0) isEven(x + 1)
     else false
 
-  // 3j. does the commented function below compile? If yes, what happens when you call it
+  // 3k. does the commented function below compile? If yes, what happens when you call it
   // Search for General recursion
   // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
   //  def foo: Int = foo

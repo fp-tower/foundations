@@ -30,7 +30,7 @@ object FunctionAnswers extends FunctionToImpl {
     x => if (increment) x + 1 else x - 1
 
   val move2: (Boolean, Int) => Int =
-    (increment, x) => move(increment)(x)
+    move(_)(_)
 
   val move3: Boolean => Int => Int =
     move _
