@@ -265,22 +265,34 @@ unsafeRun(google).take(1).toList
 ```
 
 ---
-# IO a wrapper over a thunk
+# IO
 
 ```tut:silent
-class IO[A](thunk: () => A) {
-  def unsafeRun(): A = thunk()
-}
+trait IO[A] {
 
+  def unsafeRun(): A // abstract method, must be implemented when you create an IO with new
+
+  def map[B](f: A => B): B = ???
+
+  def retry: IO[A] = ???
+}
+```
+
+--
+
+```tut:silent
 def writeLine(message: String): IO[Unit] =
-  new IO(() => println(message))
+  new IO[Unit] {
+    def unsafeRun(): Unit =
+      println(message)
+  }
 ```
 
 ```tut
-val helloWorld = writeLine("Hello World!")
-helloWorld.unsafeRun()
-```
+val printHelloWorld = writeLine("Hello World")
 
+printHelloWorld.unsafeRun()
+```
 
 ---
 class: center, middle

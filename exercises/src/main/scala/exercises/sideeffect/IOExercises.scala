@@ -25,7 +25,9 @@ object IOExercises {
     // note that succeed is strict, it means that the same value will be return every time it is run
     // it also means it is an unsafe to throw an Exception when you call succeed, e.g. succeed(throw new Exception(""))
     def succeed[A](value: A): IO[A] =
-      new IO(() => ???)
+      new IO[A] {
+        def unsafeRun(): A = ???
+      }
 
     // common alias for succeed
     def pure[A](value: A): IO[A] =
@@ -35,7 +37,9 @@ object IOExercises {
     // note that val error = fail(new Exception("")) does not throw
     // the Exception is only thrown when unsafeRun is called, e.g. error.unsafeRun()
     def fail[A](error: Throwable): IO[A] =
-      new IO(() => ???)
+      new IO[A] {
+        def unsafeRun(): A = ???
+      }
 
     // 1c. Write a test for fail in IOExercisesTest
 
@@ -51,8 +55,11 @@ object IOExercises {
     // use case:
     // effect(println("hello"))
     // effect(http.delete("http://foo.com/order/1234"))
+    // What's the difference between effect and succeed?
     def effect[A](fa: => A): IO[A] =
-      new IO(() => ???)
+      new IO[A] {
+        def unsafeRun(): A = ???
+      }
 
     // common alias for effect
     // IO { println("hello") } instead of effect(println("hello"))
@@ -77,11 +84,10 @@ object IOExercises {
   // 2. IO API
   /////////////////////
 
-  class IO[A](thunk: () => A) {
+  trait IO[A] {
     import IO._
 
-    def unsafeRun(): A =
-      thunk()
+    def unsafeRun(): A
 
     // 2a. Implement map
     // such as succeed(x).map(f) == succeed(f(x))
