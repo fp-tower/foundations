@@ -1,6 +1,6 @@
 package answers.function
 
-import exercises.function.FunctionExercises.{double, inc, User}
+import exercises.function.FunctionExercises.{double, inc, Direction, User}
 import exercises.function.HttpClientBuilder
 import exercises.function.HttpClientBuilder._
 import toimpl.function.FunctionToImpl
@@ -26,20 +26,11 @@ object FunctionAnswers extends FunctionToImpl {
 
   val tripleVal2: Int => Int = triple _
 
-  def move(increment: Boolean): Int => Int =
-    x => if (increment) x + 1 else x - 1
-
-  val move2: (Boolean, Int) => Int =
-    move(_)(_)
-
-  val move3: Boolean => Int => Int =
-    move _
-
-  def applyMany(xs: List[Int => Int]): Int => List[Int] =
-    x => xs.map(_.apply(x))
-
-  def applyManySum(xs: List[Int => Int]): Int => Int =
-    x => xs.foldLeft(0)((acc, f) => acc + f(x))
+  def move(direction: Direction)(x: Int): Int =
+    direction match {
+      case Direction.Down => x - 1
+      case Direction.Up   => x + 1
+    }
 
   ////////////////////////////
   // 2. polymorphic functions
@@ -91,9 +82,8 @@ object FunctionAnswers extends FunctionToImpl {
   ///////////////////////////
 
   def sumList(xs: List[Int]): Int = {
-    val it  = xs.iterator
     var sum = 0
-    while (it.hasNext) sum += it.next()
+    for (x <- xs) sum += x
     sum
   }
 
@@ -108,15 +98,24 @@ object FunctionAnswers extends FunctionToImpl {
     _sumList(xs, 0)
   }
 
+  def sumList3(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
+
+  def mkString(xs: List[Char]): String = {
+    var str = ""
+    for (x <- xs) str += x
+    str
+  }
+
+  def mkString2(xs: List[Char]): String =
+    foldLeft(xs, "")(_ + _)
+
   @tailrec
   def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
     xs match {
       case Nil    => z
       case h :: t => foldLeft(t, f(z, h))(f)
     }
-
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
 
   def reverse[A](xs: List[A]): List[A] =
     foldLeft(xs, List.empty[A])(_.::(_))

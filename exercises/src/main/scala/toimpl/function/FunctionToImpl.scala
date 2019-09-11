@@ -1,6 +1,6 @@
 package toimpl.function
 
-import exercises.function.FunctionExercises.User
+import exercises.function.FunctionExercises.{Direction, User}
 
 trait FunctionToImpl {
 
@@ -14,13 +14,7 @@ trait FunctionToImpl {
 
   val tripleVal2: Int => Int
 
-  def move(increment: Boolean): Int => Int
-
-  val move2: (Boolean, Int) => Int
-
-  val move3: Boolean => Int => Int
-
-  def applyMany(xs: List[Int => Int]): Int => List[Int]
+  def move(direction: Direction)(x: Int): Int
 
   ////////////////////////////
   // 2. polymorphic functions
@@ -29,10 +23,6 @@ trait FunctionToImpl {
   def identity[A](x: A): A
 
   def const[A, B](a: A)(b: B): A
-
-  def apply[A, B](value: A, f: A => B): B
-
-  def apply2[A, B](value: A)(f: A => B): B
 
   def setAge(value: Int): List[User]
 
@@ -55,6 +45,10 @@ trait FunctionToImpl {
   def sumList2(xs: List[Int]): Int
 
   def sumList3(xs: List[Int]): Int
+
+  def mkString(xs: List[Char]): String
+
+  def mkString2(xs: List[Char]): String
 
   def multiply(xs: List[Int]): Int
 

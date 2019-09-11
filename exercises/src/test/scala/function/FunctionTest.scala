@@ -2,7 +2,7 @@ package function
 
 import answers.function.FunctionAnswers
 import exercises.function.FunctionExercises
-import exercises.function.FunctionExercises.User
+import exercises.function.FunctionExercises.{Direction, User}
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -29,22 +29,8 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
   }
 
   test("move") {
-    move(true)(5) shouldEqual 6
-    move(false)(5) shouldEqual 4
-  }
-
-  test("move2") {
-    move2(true, 5) shouldEqual 6
-    move2(false, 5) shouldEqual 4
-  }
-
-  test("move3") {
-    move3(true)(5) shouldEqual 6
-    move3(false)(5) shouldEqual 4
-  }
-
-  test("applyMany") {
-    applyMany(List(_ + 1, _ - 1, _ * 2))(10) shouldEqual List(11, 9, 20)
+    move(Direction.Up)(5) shouldEqual 6
+    move(Direction.Down)(5) shouldEqual 4
   }
 
   ////////////////////////////
@@ -60,11 +46,6 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
     const("foo")(5) shouldEqual "foo"
     const(5)("foo") shouldEqual 5
     List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
-  }
-
-  test("apply - apply2") {
-    apply(5, (_: Int) + 1) shouldEqual 6
-    apply2(5)(_ + 1) shouldEqual 6
   }
 
   test("setAge") {
@@ -116,6 +97,13 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
         val xs = 1.to(1000000).toList
 
         f(xs) shouldEqual xs.sum
+      }
+  }
+
+  List(mkString _, mkString2 _).zipWithIndex.foreach {
+    case (f, i) =>
+      test(s"mkString $i") {
+        forAll((s: String) => f(s.toList) shouldEqual s)
       }
   }
 

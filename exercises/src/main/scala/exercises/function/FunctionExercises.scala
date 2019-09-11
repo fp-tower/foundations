@@ -25,7 +25,8 @@ object FunctionExercises extends FunctionToImpl {
   // 1a. Implement tripleVal such as it behaves in the same way as triple
   def triple(x: Int): Int = 3 * x
 
-  val tripleVal: Int => Int = (x: Int) => ???
+  val tripleVal: Int => Int =
+    (x: Int) => ???
 
   // 1b. Implement tripleList by reusing triple or tripleVal, what's the difference?
   // such as tripleList(List(1,2,3)) == List(3,6,9)
@@ -35,21 +36,26 @@ object FunctionExercises extends FunctionToImpl {
   // 1c. Implement tripleVal2 by transforming triple into a val
   val tripleVal2: Int => Int = _ => ???
 
-  // 1d. Implement move that increase or decrease an Int based on a Boolean flag
-  // such as move(true ).apply(5) == 6
-  // but     move(false).apply(5) == 4
-  // note: move(true).apply(5) can be shorten to move(true)(5)
-  def move(increment: Boolean): Int => Int = ???
+  // 1d. Implement move that increase or decrease an Int based on a Direction
+  // such as move(Up)(5) == 6
+  // but     move(Down)(5) == 4
+  sealed trait Direction
+  object Direction {
+    case object Up   extends Direction
+    case object Down extends Direction
+  }
 
-  // 1e. Implement move2 and move3 by reusing move
-  // what's the difference between the two?
-  val move2: (Boolean, Int) => Int = (_, _) => ???
+  def move(direction: Direction)(x: Int): Int = ???
 
-  val move3: Boolean => Int => Int = _ => ???
+  // 1e. what's the difference between all these versions of move?
+  def move2(direction: Direction, x: Int): Int =
+    move(direction)(x)
 
-  // 1f. Implement applyMany
-  // such as applyMany(List(_ + 1, _ - 1, _ * 2))(10) == List(11, 9, 20)
-  def applyMany(xs: List[Int => Int]): Int => List[Int] = ???
+  val move3: (Direction, Int) => Int =
+    (direction, x) => move(direction)(x)
+
+  val move4: Direction => Int => Int =
+    direction => x => move(direction)(x)
 
   ////////////////////////////
   // 2. polymorphic functions
@@ -68,12 +74,10 @@ object FunctionExercises extends FunctionToImpl {
   // 2c. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
   // val idVal = ???
 
-  // 2d. Implement apply and apply2 which both call a function for an input
-  // such as apply(5, (_: Int) + 1) == 6
-  // what's the difference with apply2?
-  def apply[A, B](value: A, f: A => B): B = ???
-
-  def apply2[A, B](value: A)(f: A => B): B = ???
+  // 2d. what's the difference with mapOption and mapOption2?
+  // Which one should you use?
+  def mapOption[A, B](option: Option[A], f: A => B): Option[B]  = option.map(f)
+  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] = option.map(f)
 
   // 2e. Implement setAge which update the age of all users
   // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
@@ -132,20 +136,19 @@ object FunctionExercises extends FunctionToImpl {
 
   def sumList2(xs: List[Int]): Int = ???
 
+  // 3c. Implement mkString, you can use an imperative approach or recursion
+  // such as mkString(List('H', 'e', 'l', 'l', 'o')) == "Hello"
+  def mkString(xs: List[Char]): String = ???
+
   ///////////////////////
   // GO BACK TO SLIDES
   ///////////////////////
 
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
-
   def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
     var acc = b
-    val it  = fa.iterator
 
-    while (it.hasNext) {
-      val current = it.next()
-      acc = f(acc, current)
+    for (a <- fa) {
+      acc = f(acc, a)
     }
 
     acc
@@ -158,15 +161,21 @@ object FunctionExercises extends FunctionToImpl {
       case h :: t => foldLeftRec(t, f(z, h))(f)
     }
 
-  // 3c. Implement multiply using foldLeft
+  def sumList3(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
+
+  def mkString2(xs: List[Char]): String =
+    foldLeft(xs, "")(_ + _)
+
+  // 3d. Implement multiply using foldLeft
   // such as multiply(List(3,2,4)) == 24
   def multiply(xs: List[Int]): Int = ???
 
-  // 3d. Implement filter using foldLeft
+  // 3e. Implement filter using foldLeft
   // such as filter(List(1,2,3,4))(isEven) == List(2,4)
   def filter[A](xs: List[A])(p: A => Boolean): List[A] = ???
 
-  // 3e. Implement forAll using a recursion or loop
+  // 3f. Implement forAll using a recursion or loop
   // forAll returns true if all the elements in the List are true
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
@@ -174,7 +183,7 @@ object FunctionExercises extends FunctionToImpl {
   // does your implementation works for large list? e.g. forAll(List.fill(1000000)(true))
   def forAll(xs: List[Boolean]): Boolean = ???
 
-  // 3f. Implement find using a recursion or loop
+  // 3g. Implement find using a recursion or loop
   // find returns the first element of a List that matches the predicate `p`
   // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
   // but     find(List(1,2,3))(_ == -1) == None
@@ -186,7 +195,7 @@ object FunctionExercises extends FunctionToImpl {
   // GO BACK TO SLIDES
   ///////////////////////
 
-  // 3g. Implement forAll2 and find2 using foldRight
+  // 3h. Implement forAll2 and find2 using foldRight
   // foldRight is an abstraction over recursion that can terminate early
   // early termination is achieved by laziness (see call by name `=> B`)
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =

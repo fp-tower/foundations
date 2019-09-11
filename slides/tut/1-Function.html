@@ -171,11 +171,9 @@ background-image: url(img/function/fold-left-all.svg)
 ```tut:silent
 def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
   var acc = b
-  val it = fa.iterator
 
-  while(it.hasNext) {
-    val current = it.next()
-    acc = f(acc, current)
+  for (a <- fa) {
+    acc = f(acc, a)
   }
 
   acc
