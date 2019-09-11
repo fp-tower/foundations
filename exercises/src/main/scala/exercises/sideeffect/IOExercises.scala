@@ -137,10 +137,11 @@ object IOExercises {
       productR(fb)
 
     // 2c. Implement attempt which makes the error part of IO explicit
-    // such as succeed(x).attempt == succeed(Right(x))
-    //         fail(new Exception("")).attempt == succeed(Left(new Exception("")))
+    // Try[A] is either a Success(a: A) or a Failure(e: Throwable)
+    // such as succeed(x).attempt == succeed(Success(x))
+    //         fail(new Exception("")).attempt == succeed(Failure(new Exception("")))
     // note that attempt guarantee that unsafeRun() will not throw an Exception
-    def attempt: IO[Either[Throwable, A]] =
+    def attempt: IO[Try[A]] =
       notImplemented
 
     // 2d. Implement handleErrorWith which allow to catch failing IO
