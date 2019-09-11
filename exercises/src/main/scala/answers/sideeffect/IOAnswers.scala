@@ -23,18 +23,24 @@ object IOAnswers {
 
   object IO {
     def succeed[A](value: A): IO[A] =
-      new IO(() => value)
+      new IO[A] {
+        def unsafeRun(): A = value
+      }
 
     def pure[A](value: A): IO[A] =
       succeed(value)
 
     def fail[A](error: Throwable): IO[A] =
-      new IO(() => throw error)
+      new IO[A] {
+        def unsafeRun(): A = throw error
+      }
 
     val boom: IO[Nothing] = fail(new Exception("Boom!"))
 
     def effect[A](fa: => A): IO[A] =
-      new IO(() => fa)
+      new IO[A] {
+        def unsafeRun(): A = fa
+      }
 
     // common alias for effect
     def apply[A](fa: => A): IO[A] =
@@ -70,10 +76,10 @@ object IOAnswers {
   // 2. IO API
   /////////////////////
 
-  class IO[+A](thunk: () => A) {
+  trait IO[+A] { self =>
     import IO._
 
-    def unsafeRun(): A = thunk()
+    def unsafeRun(): A
 
     def map[B](f: A => B): IO[B] =
       effect(f(unsafeRun()))
@@ -101,8 +107,11 @@ object IOAnswers {
     // common alias for productR
     def *>[B](fb: IO[B]): IO[B] = productR(fb)
 
-    def attempt: IO[Either[Throwable, A]] =
-      new IO(() => Try(unsafeRun())).map(_.toEither)
+    def attempt: IO[Try[A]] =
+      new IO[Try[A]] {
+        def unsafeRun(): Try[A] =
+          Try(self.unsafeRun())
+      }
 
     def handleErrorWith[B >: A](f: Throwable => IO[B]): IO[B] =
       attempt.flatMap(_.fold(f, succeed))
@@ -202,13 +211,13 @@ object IOAnswers {
       var inRemaining: List[String] = in
 
       val readLine: IO[String] = inRemaining match {
-        case Nil     => new IO(() => "")
-        case x :: xs => inRemaining = xs; new IO(() => x)
+        case Nil     => IO.succeed("")
+        case x :: xs => inRemaining = xs; IO.succeed(x)
       }
 
       def writeLine(message: String): IO[Unit] = {
         out += message
-        new IO(() => ())
+        IO.succeed(())
       }
     }
 

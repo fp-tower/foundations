@@ -8,7 +8,7 @@ import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-import scala.util.{Failure, Try}
+import scala.util.{Failure, Success, Try}
 
 class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
@@ -48,8 +48,8 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
   /////////////////////
 
   test("map") {
-    forAll((x: Int, f: Int => Boolean) => IO.succeed(x).map(f).unsafeRun() == f(x))
-    forAll((e: Exception, f: Int => Boolean) => IO.fail(e).map(f).attempt.unsafeRun() == Left(e))
+    forAll((x: Int, f: Int => Boolean) => IO.succeed(x).map(f).unsafeRun() shouldEqual f(x))
+    forAll((e: Exception, f: Int => Boolean) => IO.fail(e).map(f).attempt.unsafeRun() shouldEqual Failure(e))
   }
 
   test("flatMap") {
@@ -57,14 +57,14 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
       IORef(x).flatMap(_.updateGetNew(f)).unsafeRun() shouldEqual f(x)
     }
 
-    forAll((e: Exception) => IO.fail(e).flatMap(_ => IO.notImplemented).attempt.unsafeRun() shouldEqual Left(e))
+    forAll((e: Exception) => IO.fail(e).flatMap(_ => IO.notImplemented).attempt.unsafeRun() shouldEqual Failure(e))
 
-    forAll((x: Int, e: Exception) => IO.fail(e).flatMap(_ => IO.succeed(x)).attempt.unsafeRun() shouldEqual Left(e))
+    forAll((x: Int, e: Exception) => IO.fail(e).flatMap(_ => IO.succeed(x)).attempt.unsafeRun() shouldEqual Failure(e))
   }
 
   test("attempt") {
-    forAll((x: Int) => IO.succeed(x).attempt.unsafeRun() shouldEqual Right(x))
-    forAll((e: Exception) => IO.fail(e).attempt.unsafeRun() shouldEqual Left(e))
+    forAll((x: Int) => IO.succeed(x).attempt.unsafeRun() shouldEqual Success(x))
+    forAll((e: Exception) => IO.fail(e).attempt.unsafeRun() shouldEqual Failure(e))
   }
 
   test("retryOnce") {
@@ -75,7 +75,7 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
         case false => IO.fail(error)
       }
 
-    IORef(0).flatMap(action).attempt.unsafeRun() shouldEqual Left(error)
+    IORef(0).flatMap(action).attempt.unsafeRun() shouldEqual Failure(error)
     IORef(0).flatMap(action(_).retryOnce).unsafeRun() shouldEqual "OK"
   }
 
@@ -105,7 +105,7 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
 
     forAll { xs: List[Exception] =>
       val boom = new Exception("boom")
-      traverse(boom :: xs)(IO.fail).attempt.unsafeRun() shouldEqual Left(boom)
+      traverse(boom :: xs)(IO.fail).attempt.unsafeRun() shouldEqual Failure(boom)
     }
   }
 
