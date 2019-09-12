@@ -23,7 +23,7 @@ object IOExercises {
     // 1a. Implement succeed a "smart constructor" that lift a pure value into an IO
     // such as succeed(x).unsafeRun() == x
     // note that succeed is strict, it means that the same value will be return every time it is run
-    // it also means it is an unsafe to throw an Exception when you call succeed, e.g. succeed(throw new Exception(""))
+    // it also means it is unsafe to throw an Exception when you call succeed, e.g. succeed(throw new Exception(""))
     def succeed[A](value: A): IO[A] =
       new IO[A] {
         def unsafeRun(): A = ???
@@ -50,14 +50,14 @@ object IOExercises {
     def fromTry[A](fa: Try[A]): IO[A] =
       fa.fold(fail, succeed)
 
-    // 1e. Implement effect which captures a potentially side effecty operation
+    // 1e. Implement effect that captures a block of code with potential side effect
     // such as effect(4) == succeed(4)
     // and effect(throw new Exception("")) == fail(new Exception(""))
     // use case:
     // effect(println("hello"))
     // effect(http.delete("http://foo.com/order/1234"))
     // What's the difference between effect and succeed?
-    def effect[A](fa: => A): IO[A] =
+    def effect[A](block: => A): IO[A] =
       new IO[A] {
         def unsafeRun(): A = ???
       }
@@ -68,17 +68,20 @@ object IOExercises {
       effect(fa)
 
     def notImplemented[A]: IO[A] =
-      effect(???)
+      fail(new NotImplementedError)
 
     // 1f. Implement sleep, see Thread.sleep
     // What the issue with this implementation? How could you fix it?
     def sleep(duration: FiniteDuration): IO[Unit] =
-      notImplemented
+      ???
 
     // 1g. Implement an IO that never completes
-    // this should be the equivalent of sleep with an Infinite duration
+    // this should be equivalent of sleep with an Infinite duration
+    // Why never has a different return type than sleep?
     val never: IO[Nothing] =
-      notImplemented
+      new IO[Nothing] {
+        def unsafeRun(): Nothing = ???
+      }
   }
 
   /////////////////////
@@ -96,7 +99,7 @@ object IOExercises {
     // note that f is a pure function, you should NOT use it to do another side effect
     // e.g. succeed(4).map(println)
     def map[B](f: A => B): IO[B] =
-      notImplemented
+      ???
 
     // void discards the return value
     // use case:
@@ -109,7 +112,7 @@ object IOExercises {
     // such as succeed(x).flatMap(f) == f(x)
     // and     fail(e).flatMap(f) == fail(e)
     def flatMap[B](f: A => IO[B]): IO[B] =
-      notImplemented
+      ???
 
     // productL and productR combines independent IO where one of them is only used for side effect
     // this is a rare case where an infix operator is really convenient see <* and *>
@@ -142,8 +145,7 @@ object IOExercises {
     // such as succeed(x).attempt == succeed(Success(x))
     //         fail(new Exception("")).attempt == succeed(Failure(new Exception("")))
     // note that attempt guarantee that unsafeRun() will not throw an Exception
-    def attempt: IO[Try[A]] =
-      notImplemented
+    def attempt: IO[Try[A]] = ???
 
     // 2d. Implement handleErrorWith which allow to catch failing IO
     // such as fail(new Exception("")).handleErrorWith(_ => someIO) == someIO
@@ -151,18 +153,15 @@ object IOExercises {
     //            case e: IllegalArgumentException => succeed(1)
     //            case other                       => succeed(2)
     //         } == succeed(2)
-    def handleErrorWith(f: Throwable => IO[A]): IO[A] =
-      notImplemented
+    def handleErrorWith(f: Throwable => IO[A]): IO[A] = ???
 
     // 2e. Implement retryOnce that takes an IO and if it fails, try to run it again
-    def retryOnce: IO[A] =
-      notImplemented
+    def retryOnce: IO[A] = ???
 
     // 2f. Implement retryUntilSuccess
     // similar to retryOnce but it retries until the IO succeeds (potentially indefinitely)
     // sleep `waitBeforeRetry` between each retry
-    def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] =
-      notImplemented
+    def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] = ???
   }
 
   ////////////////////
@@ -190,7 +189,7 @@ object IOExercises {
     name
   }
 
-  // 3b. Implement consoleProgram such as it is a referentially version of unsafeConsoleProgram
+  // 3b. Implement consoleProgram such as it is a pure version of unsafeConsoleProgram
   // Try to re-use readLine and writeLine
   val consoleProgram: IO[String] =
     IO.notImplemented
@@ -205,7 +204,7 @@ object IOExercises {
   val readInt: IO[Int] =
     IO.notImplemented
 
-  // 3d. Implement userConsoleProgram such as it is a referentially version of unsafeUserConsoleProgram
+  // 3d. Implement userConsoleProgram such as it is a pure version of unsafeUserConsoleProgram
   case class User(name: String, age: Int, createdAt: Instant)
 
   val readNow: IO[Instant] = IO.effect(Instant.now())
@@ -222,7 +221,7 @@ object IOExercises {
   }
 
   // 3e. How would you test userConsoleProgram?
-  // what are the issues with the current implementation?
+  // What are the issues with the current implementation?
 
   ////////////////////////
   // 4. Testing
@@ -264,7 +263,7 @@ object IOExercises {
       createdAt <- clock.readNow
     } yield User(name, age, createdAt)
 
-  // 4c. Now our production code is "pure" (free of side effect) but not our test code
+  // 4c. Now our production code is "pure" (free of side effect) but our test code is not
   // how would you fix this this?
   // try to implement safeTestConsole such as:
   // - it is a pure Console implementation
@@ -293,7 +292,7 @@ object IOExercises {
   def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
     IO.notImplemented
 
-  // 5c. Implement deleteAllUserOrders such as it fetches a user: User_V2 and delete all orders associated
+  // 5c. Implement deleteAllUserOrders such as it fetches a user: User_V2 and delete all associated orders
   // e.g. if getUser returns User_V2(UserId("1234"), "Rob", List(OrderId("1111"), OrderId("5555")))
   //      then we would call deleteOrder(OrderId("1111")) and deleteOrder(OrderId("5555"))
   // try to use sequence or traverse
