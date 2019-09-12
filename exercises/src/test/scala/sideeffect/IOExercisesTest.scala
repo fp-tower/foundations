@@ -6,6 +6,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
+import scala.util.{Failure, Try}
 
 class IOExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 

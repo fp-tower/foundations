@@ -30,6 +30,7 @@ object IOExercises {
       }
 
     // common alias for succeed
+    // IO.pure(4) == IO.succeed(4)
     def pure[A](value: A): IO[A] =
       succeed(value)
 
@@ -84,7 +85,7 @@ object IOExercises {
   // 2. IO API
   /////////////////////
 
-  trait IO[A] {
+  trait IO[A] { self =>
     import IO._
 
     def unsafeRun(): A

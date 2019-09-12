@@ -108,10 +108,7 @@ object IOAnswers {
     def *>[B](fb: IO[B]): IO[B] = productR(fb)
 
     def attempt: IO[Try[A]] =
-      new IO[Try[A]] {
-        def unsafeRun(): Try[A] =
-          Try(self.unsafeRun())
-      }
+      effect(Try(unsafeRun()))
 
     def handleErrorWith[B >: A](f: Throwable => IO[B]): IO[B] =
       attempt.flatMap(_.fold(f, succeed))
