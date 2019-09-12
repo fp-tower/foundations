@@ -97,7 +97,7 @@ val dictionary = Map(
 ```
 
 ---
-# First class function: higher order
+# First class function: Higher Order
 
 ```scala
 def map(xs: List[Int])(`f: Int => Int`): List[Int] = ???
@@ -117,21 +117,19 @@ List("hello", "world", "is", "a", "common", "String").takeWhile(_.length > 2)
 ```
 
 ---
-# First class function: return
+# First class function: Currying
 
 ```tut:invisible
-def formatDouble(decimal: Int): Double => String =
-  (value: Double) =>
-    BigDecimal(value).setScale(decimal, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
+def formatDouble(scale: Int)(value: Double): String =
+  BigDecimal(value).setScale(scale, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
 
 val format2D: Double => String = formatDouble(2)
 val format5D: Double => String = formatDouble(5)
 ```
 
 ```scala
-def formatDouble(decimal: Int): `Double => String` =
-  (value: Double) =>
-    BigDecimal(value).setScale(decimal, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
+def formatDouble(`scale: Int)(value: Double`): String =
+  BigDecimal(value).setScale(scale, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
 
 val format2D: Double => String = formatDouble(2)
 val format5D: Double => String = formatDouble(5)
@@ -189,7 +187,7 @@ def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
 ---
 .cols[
 .fortyfive[
-# FoldLeft
+# Fold Left
 
 <br>
 <br>
@@ -213,7 +211,7 @@ sum(List(2,3,10,4))
 ---
 .cols[
 .fortyfive[
-# FoldLeft
+# Fold Left
 
 <br>
 <br>
@@ -331,24 +329,24 @@ class: center, middle
 ---
 class: center, middle
 
-# Pure function
+# Pure Function
 
 ---
 background-image: url(img/function/mapping-1.svg)
 
-# Pure function is a mapping
+# Pure Function is a mapping
 
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Pure function is a mapping
+# Pure Function is a mapping
 
 ---
 class: center, middle
 
 # Programming function
 # !=
-# Pure function
+# Pure Function
 
 ---
 background-image: url(img/function/partial-function.svg)
@@ -544,7 +542,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Why pure function?
+# Why Pure Function?
 
 ---
 class: center, middle
@@ -747,7 +745,7 @@ hello_simplified(foo) // print foo
 ---
 class: center, middle
 
-# Pure function
+# Pure Function
 
 # means
 
@@ -849,7 +847,7 @@ class: center, middle
 ---
 class: center, middle
 
-# With pure function, you cannot __DO__ anything
+# With Pure Function, you cannot __DO__ anything
 
 ---
 # Resources and further study

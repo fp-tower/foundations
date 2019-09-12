@@ -79,9 +79,9 @@ object FunctionExercises extends FunctionToImpl {
   def mapOption[A, B](option: Option[A], f: A => B): Option[B]  = option.map(f)
   def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] = option.map(f)
 
-  // 2e. Implement setAge which update the age of all users
+  // 2e. Implement setAge which updates the age of all users
   // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
-  // hint: use updateAge with one of the polymorphic function we just saw
+  // hint: use updateAge with one of the polymorphic functions we just saw
   case class User(name: String, age: Int)
 
   def updateAge(f: Int => Int): List[User] =
@@ -93,7 +93,7 @@ object FunctionExercises extends FunctionToImpl {
 
   // 2f. implement getUsers which returns all users
   // such as getUsers == List(User("John", 26), User("Lisa", 5))
-  // hint: use updateAge with one of the polymorphic function we just saw
+  // hint: use updateAge with one of the polymorphic functions we just saw
   def getUsers: List[User] = ???
 
   // 2g. Implement andThen and compose
@@ -131,7 +131,7 @@ object FunctionExercises extends FunctionToImpl {
   def sumList(xs: List[Int]): Int = ???
 
   // 3b. Use recursion to implement sumList2
-  // does your implementation works with large list? e.g. sumList2(List.fill(1000000)(1))
+  // does your implementation work with a large list? e.g. sumList2(List.fill(1000000)(1))
   val largeList: List[Int] = List.fill(1000000)(1) // List(1,1,1,1, ...)
 
   def sumList2(xs: List[Int]): Int = ???
@@ -180,7 +180,7 @@ object FunctionExercises extends FunctionToImpl {
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
   // does your implementation terminate early? e.g. forAll(List(false, false, false)) does not go through the entire list
-  // does your implementation works for large list? e.g. forAll(List.fill(1000000)(true))
+  // does your implementation work with a large list? e.g. forAll(List.fill(1000000)(true))
   def forAll(xs: List[Boolean]): Boolean = ???
 
   // 3g. Implement find using a recursion or loop
@@ -188,7 +188,7 @@ object FunctionExercises extends FunctionToImpl {
   // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
   // but     find(List(1,2,3))(_ == -1) == None
   // does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
-  // does your implementation works for large list? e.g. find(1.to(1000000).toList)(_ == -1)
+  // does your implementation work with a large list? e.g. find(1.to(1000000).toList)(_ == -1)
   def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
 
   ///////////////////////
