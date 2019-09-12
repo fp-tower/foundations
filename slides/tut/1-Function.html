@@ -454,39 +454,42 @@ background-image: url(img/function/side-effect-3.svg)
 ---
 # Reflection
 
+```tut:invisible
+case class OrderId(value: String)
+case class Order(id: OrderId, quantity: Int)
+
+import scala.concurrent.Future
+```
+
 ```tut:silent
-def foo[A](a: A): A = a match {
-  case x: Int    => (x + 1).asInstanceOf[A]
-  case x: String => x.reverse.asInstanceOf[A]
-  case _         => a
+trait OrderApi {
+  def addOrder(order: Order): Future[Unit]
+  def getOrder(orderId: OrderId): Future[Order]
 }
 ```
 
-```tut
-foo(5)
-foo("Hello")
-foo(true)
-```
+```scala
+class DbOrderApi(db: DB) extends OrderApi {
+  ...
+}
 
----
-# Reflection is not reliable
-
-```tut:silent
-def foo[A](a: A): Int = a match {
-  case _: List[Int]    => 0
-  case _: List[String] => 1
-  case _               => 2
+class OrderApiWithAuth(api: OrderApi, auth: AuthService) extends OrderApi {
+  ...
 }
 ```
 
 
-```tut
-foo(List(1,2,3))
-foo(List("abc"))
+```scala
+def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] =
+  api match {
+    case x: DbOrderApi       => ... ❌
+    case x: OrderApiWithAuth => ... ❌
+    case _                   => ... ❌
+  }
 ```
 
 ---
-# Reflection breaks encapsulation
+# Reflection
 
 ```tut:invisible
 case class OrderId(value: String)
@@ -507,23 +510,22 @@ class DbOrderApi(db: DB) extends OrderApi {
   ...
 }
 
-class MockOrderApi(static: Map[OrderId, Order]) extends OrderApi {
+class OrderApiWithAuth(api: OrderApi, auth: AuthService) extends OrderApi {
   ...
 }
 ```
 
---
 
 ```scala
-def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] =
-  api match {
-    case x: DbOrderApi   => ... ❌
-    case x: MockOrderApi => ... ❌
-  }
+def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] = {
+  if     (api.`isInstanceOf[DbOrderApi]`) ...
+  else if(api.`isInstanceOf[OrderApiWithAuth]`) ...
+  else ...
+}
 ```
 
 ---
-# A Trait / Class is equivalent to a Record of Functions
+# A Trait or Class is equivalent to a Record of Functions
 
 ```tut:silent
 trait OrderApi {
@@ -538,7 +540,7 @@ case class OrderApi(
 ```
 
 ---
-# A SEALED Trait / Class is equivalent to an Enumeration
+# A SEALED Trait or Class is equivalent to an Enumeration
 
 ```tut:silent
 sealed trait ConfigValue
@@ -552,16 +554,29 @@ object ConfigValue {
 
 <br>
 
-### An ConfigValue is either an Int, a String or Empty
+### A ConfigValue is either an Int, a String or Empty
 
 ---
-# Reflection breaks encapsulation
+# Reflection for generics and Any
 
 ```tut:silent
-def foo[A](a: A): A = ???
+def foo[A](a: A): A = a match {
+  case x: Int    => (x + 1).asInstanceOf[A]
+  case x: String => x.reverse.asInstanceOf[A]
+  case _         => a
+}
 
-def foo(any: Any): Int = ???
+def bar(a: Any): Int = a match {
+  case x: Int         =>  1
+  case x: String      =>  2
+  case x: ConfigValue =>  3
+  case _              => -1
+}
 ```
+
+<br>
+
+### A generic type or Any is equivalent to a trait with no methods
 
 ---
 .h1[# Pure Function (aka Scalazzi subset)]
