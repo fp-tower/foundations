@@ -486,37 +486,81 @@ foo(List("abc"))
 ```
 
 ---
-# Reflection makes signature unreliable
+# Reflection breaks encapsulation
+
+```tut:invisible
+case class OrderId(value: String)
+case class Order(id: OrderId, quantity: Int)
+
+import scala.concurrent.Future
+```
 
 ```tut:silent
-def foo[A](a: A): A = ???
+trait OrderApi {
+  def addOrder(order: Order): Future[Unit]
+  def getOrder(orderId: OrderId): Future[Order]
+}
+```
+
+```scala
+class DbOrderApi(db: DB) extends OrderApi {
+  ...
+}
+
+class MockOrderApi(static: Map[OrderId, Order]) extends OrderApi {
+  ...
+}
 ```
 
 --
 
-# Without Reflection
-
-```tut:silent
-def foo[A](a: A): A = a
-```
-
-and without infinite recursion
-
-```tut:silent
-def foo[A](a: A): A = foo(a)
+```scala
+def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] =
+  api match {
+    case x: DbOrderApi   => ... ❌
+    case x: MockOrderApi => ... ❌
+  }
 ```
 
 ---
-# Also apply to `Any` and non sealed trait
+# A Trait / Class is equivalent to a Record of Functions
 
 ```tut:silent
-def foo(a: Any): Int = ???
+trait OrderApi {
+  def addOrder(order: Order): Future[Unit]
+  def getOrder(orderId: OrderId): Future[Order]
+}
+
+case class OrderApi(
+  addOrder: Order   => Future[Unit],
+  getOrder: OrderId => Future[Order]
+)
 ```
 
-# Without Reflection
+---
+# A SEALED Trait / Class is equivalent to an Enumeration
 
 ```tut:silent
-def foo[A](a: Any): Int = 5
+sealed trait ConfigValue
+
+object ConfigValue {
+  case class AnInt(value: Int)      extends ConfigValue
+  case class AString(value: String) extends ConfigValue
+  case object Empty                 extends ConfigValue
+}
+```
+
+<br>
+
+### An ConfigValue is either an Int, a String or Empty
+
+---
+# Reflection breaks encapsulation
+
+```tut:silent
+def foo[A](a: A): A = ???
+
+def foo(any: Any): Int = ???
 ```
 
 ---
