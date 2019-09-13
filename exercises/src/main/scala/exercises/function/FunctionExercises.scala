@@ -74,7 +74,7 @@ object FunctionExercises extends FunctionToImpl {
   // 2c. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
   // val idVal = ???
 
-  // 2d. what's the difference with mapOption and mapOption2?
+  // 2d. what's the difference between mapOption and mapOption2?
   // Which one should you use?
   def mapOption[A, B](option: Option[A], f: A => B): Option[B]  = option.map(f)
   def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] = option.map(f)
