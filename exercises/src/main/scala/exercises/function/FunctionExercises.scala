@@ -71,30 +71,30 @@ object FunctionExercises extends FunctionToImpl {
   //         List(1,2,3).map(const(0)) == List(0,0,0)
   def const[A, B](a: A)(b: B): A = ???
 
-  // 2c. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
-  // val idVal = ???
-
-  // 2d. what's the difference between mapOption and mapOption2?
-  // Which one should you use?
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B]  = option.map(f)
-  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] = option.map(f)
-
-  // 2e. Implement setAge which updates the age of all users
+  // 2c. Implement setAge which updates the age of all users
   // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
   // hint: use updateAge with one of the polymorphic functions we just saw
   case class User(name: String, age: Int)
 
-  def updateAge(f: Int => Int): List[User] =
+  def updateUsersAge(f: Int => Int): List[User] =
     List(User("John", 26), User("Lisa", 5)).map { p =>
       p.copy(age = f(p.age))
     }
 
-  def setAge(value: Int): List[User] = ???
+  def setUsersAge(value: Int): List[User] = ???
 
-  // 2f. implement getUsers which returns all users
+  // 2d. implement getUsers which returns all users
   // such as getUsers == List(User("John", 26), User("Lisa", 5))
   // hint: use updateAge with one of the polymorphic functions we just saw
   def getUsers: List[User] = ???
+
+  // 2e. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
+  // val idVal = ???
+
+  // 2f. what's the difference between mapOption and mapOption2?
+  // Which one should you use?
+  def mapOption[A, B](option: Option[A], f: A => B): Option[B]  = option.map(f)
+  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] = option.map(f)
 
   // 2g. Implement andThen and compose
   // such as

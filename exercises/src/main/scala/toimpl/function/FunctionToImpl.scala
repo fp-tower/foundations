@@ -24,7 +24,7 @@ trait FunctionToImpl {
 
   def const[A, B](a: A)(b: B): A
 
-  def setAge(value: Int): List[User]
+  def setUsersAge(value: Int): List[User]
 
   def getUsers: List[User]
 

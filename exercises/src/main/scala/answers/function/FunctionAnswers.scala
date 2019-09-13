@@ -49,7 +49,7 @@ object FunctionAnswers extends FunctionToImpl {
       p.copy(age = f(p.age))
     }
 
-  def setAge(value: Int): List[User] =
+  def setUsersAge(value: Int): List[User] =
     updateAge(const(value))
 
   val getUsers: List[User] =

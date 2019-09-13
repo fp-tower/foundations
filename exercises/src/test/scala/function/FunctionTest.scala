@@ -48,8 +48,8 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
     List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
   }
 
-  test("setAge") {
-    setAge(10) shouldEqual List(User("John", 10), User("Lisa", 10))
+  test("setUsersAge") {
+    setUsersAge(10) shouldEqual List(User("John", 10), User("Lisa", 10))
   }
 
   test("getUsers") {
