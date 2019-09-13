@@ -21,7 +21,7 @@ object Introduction {
   }
 
   def reverseStringFunctional(x: String): String =
-    x.foldLeft(List.empty[Char])((acc, c) => c :: acc).mkString
+    x.foldLeft("")((acc, c) => acc.prepended(c))
 
   def reverseStringFunctional2(x: String): String =
     x.foldLeft(new StringBuffer(x.length))(_.insert(0, _)).toString

@@ -105,7 +105,19 @@ def reverseString(x: String): String = {
 
 ```scala
 def reverseString(x: String): String =
-  x.`foldLeft`(List.empty[Char])((acc, c) => c :: acc).mkString // or with StringBuffer
+  x.`foldLeft`("")((acc: String, c: Char) => acc.prepended(c)) // or with StringBuffer
+```
+
+---
+.h1[# 2. Develop your FP intuition]
+
+<br>
+
+### How do you reverse a String?
+
+```scala
+def reverseString(x: String): String =
+  x.foldLeft(`""`)((acc: String, c: Char) => acc.`prepended`(c)) // or with StringBuffer
 ```
 
 ---
