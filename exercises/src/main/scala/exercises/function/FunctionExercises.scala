@@ -34,6 +34,7 @@ object FunctionExercises extends FunctionToImpl {
   def tripleList(xs: List[Int]): List[Int] = ???
 
   // 1c. Implement tripleVal2 by transforming triple into a val
+  // You may want to read about eta expansion
   val tripleVal2: Int => Int = _ => ???
 
   // 1d. Implement move that increase or decrease an Int based on a Direction
@@ -64,6 +65,9 @@ object FunctionExercises extends FunctionToImpl {
   // 2a. Implement identity
   // such as identity(1) == 1
   //         identity("foo") == "foo"
+  // Imagine you were a hacker trying to introduce a bug in identity.
+  // Which other implementations of identity could you use such as it
+  // satisfies the type checker.
   def identity[A](x: A): A = ???
 
   // 2b. Implement const
@@ -71,9 +75,9 @@ object FunctionExercises extends FunctionToImpl {
   //         List(1,2,3).map(const(0)) == List(0,0,0)
   def const[A, B](a: A)(b: B): A = ???
 
-  // 2c. Implement setAge which updates the age of all users
-  // such as setAge(10) == List(User("John", 10), User("Lisa", 10))
-  // hint: use updateAge with one of the polymorphic functions we just saw
+  // 2c. Implement setUsersAge which updates the age of all users
+  // such as setUsersAge(10) == List(User("John", 10), User("Lisa", 10))
+  // hint: use updateUsersAge with one of the polymorphic functions we just saw
   case class User(name: String, age: Int)
 
   def updateUsersAge(f: Int => Int): List[User] =
@@ -85,7 +89,7 @@ object FunctionExercises extends FunctionToImpl {
 
   // 2d. implement getUsers which returns all users
   // such as getUsers == List(User("John", 26), User("Lisa", 5))
-  // hint: use updateAge with one of the polymorphic functions we just saw
+  // hint: use updateUsersAge with one of the polymorphic functions we just saw
   def getUsers: List[User] = ???
 
   // 2e. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986

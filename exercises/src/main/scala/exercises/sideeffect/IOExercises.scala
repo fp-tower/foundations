@@ -309,7 +309,10 @@ object IOExercises {
     def deleteOrder(orderId: OrderId): IO[Unit]
   }
 
+  def deleteTwoOrders(api: UserOrderApi)(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+    ???
+
   def deleteAllUserOrders(api: UserOrderApi)(userId: UserId): IO[Unit] =
-    IO.notImplemented
+    ???
 
 }
