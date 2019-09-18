@@ -1,6 +1,7 @@
 package exercises.types
 
 import eu.timepit.refined.types.numeric.PosInt
+import exercises.sideeffect.IOExercises.IO
 import exercises.types.Card._
 import toimpl.types.TypeToImpl
 
@@ -13,6 +14,79 @@ object TypeApp extends App {
 
 object TypeExercises extends TypeToImpl {
 
+  ////////////////////////
+  // 1. Misused types
+  ////////////////////////
+
+  case class Country(value: String)
+
+  val UK: Country          = Country("United Kingdom")
+  val France: Country      = Country("France")
+  val Switzerland: Country = Country("Switzerland")
+
+  // 1a. Implement `getCurrency` for UK, France and Switzerland
+  // such as getCurrency(Country("France")) == "EUR"
+  // What is wrong with this function? How could you improve it?
+  def getCurrency(country: Country): String = ???
+
+  val UKShort: Country  = Country("UK")
+  val UKIban: Country   = Country("GBR") // https://www.iban.com/country-codes
+  val UKFrench: Country = Country("Royaume-Uni")
+
+  // 1b. Implement `compareChar` that indicates if `c1` is smaller, equal to or larger than `c2`
+  // such as compareChar('a', 'c') == -1
+  //         compareChar('c', 'c') ==  0
+  //         compareChar('c', 'a') ==  1
+  // What is wrong with this function? How could you improve it?
+  def compareChar(c1: Char, c2: Char): Int = ???
+
+  // 1c. Implement `mostRecentBlogs` that returns the `n` most recent blog posts
+  // such as mostRecentBlogs(1)(List(
+  //   BlogPost(1,First blog,2019-09-18T16:21:06.681768Z)
+  //   BlogPost(23,Thoughts of the day,2019-09-21T08:14:06.702836Z)
+  // )) == List(BlogPost(23,Thoughts of the day,2019-09-21T08:14:06.702836Z))
+  // What is wrong with this function? How could you improve it?
+  case class BlogPost(id: String, title: String, createAt: String)
+
+  def mostRecentBlogs(n: Int)(blogs: List[BlogPost]): List[BlogPost] = ???
+
+  // 1d. Implement `User#address` that returns the full address for a User (e.g. to send a parcel)
+  // such as User("John Doe", Some(108), Some("Canon Street"), Some("EC4N 6EU")) == "108 Canon Street EC4N 6EU"
+  // What is wrong with this function? How could you improve it?
+  case class User(name: String, streetNumber: Option[Int], streetName: Option[String], postCode: Option[String]) {
+    def address: String = ???
+  }
+
+  // 1e. Implement `Order#total` that returns the total price of an Order then implement
+  // `Order#totalWithDiscountedFirstItem`. The latter should calculate the total applying a
+  // discount only on the first item, e.g. totalWithDiscountedFirstItem(0.3) would apply a 30% discount.
+  // What is wrong with this function? How could you improve it?
+
+  // quantity must be positive
+  case class Item(id: String, quantity: Int, price: Double)
+  // order must have at least one item
+  case class Order(id: String, items: List[Item]) {
+    def total: Double = ???
+
+    def totalWithDiscountedFirstItem(discountPercent: Double): Double = ???
+  }
+
+  // 1f. Implement `getItemCount` that return how many items are part of the order.
+  // In other words, it sums up items quantities without looking at prices.
+  // Use `getOrder` to implement `getItemCount`.
+  // What is wrong with this function? How could you improve it?
+  def getOrder(id: String): IO[Order] =
+    if (id == "123")
+      IO.succeed(Order("123", List(Item("aa", 10, 2.5), Item("x", 2, 13.4))))
+    else
+      IO.fail(new Exception(s"No Order found for id $id"))
+
+  def getItemCount(id: String): IO[Int] = ???
+
+  ////////////////////////
+  // 1. Cardinality
+  ////////////////////////
+
   val boolean = new Cardinality[Boolean] {
     def cardinality: Card = Lit(2)
   }
@@ -20,10 +94,6 @@ object TypeExercises extends TypeToImpl {
   val int: Cardinality[Int] = new Cardinality[Int] {
     def cardinality: Card = Lit(2) ^ Lit(32)
   }
-
-  ////////////////////////
-  // 1. Cardinality
-  ////////////////////////
 
   // 1a. How many possible values are of type Unit?
   val unit: Cardinality[Unit] = new Cardinality[Unit] {

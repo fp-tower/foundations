@@ -77,8 +77,6 @@ inc(10.3)
 inc('c')
 ```
 
---
-
 ```tut:fail
 inc(java.time.Instant.ofEpochMilli(0))
 ```
@@ -87,16 +85,31 @@ inc(java.time.Instant.ofEpochMilli(0))
 .h1[# Plan]
 
 .large[
-* What is the impact of types on our program? How to measure it?
+* What is the cost of misusing types?
 ]
 
 .large[
-* How to select types and tests to write more correct programs
+* How to encode data
+]
+
+.large[
+* Learn how to count
+]
+
+.large[
+* Look at the relationship between types and tests
 ]
 
 .large[
 * Explore relationship between types, algebra and logic
 ]
+
+---
+class: center, middle
+
+# Exercise 1
+
+`exercises.types.TypeExercises.scala`
 
 ---
 background-image: url(img/types-1.jpg)
