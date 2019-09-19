@@ -1,6 +1,10 @@
 package answers.types
 
+import java.time.Instant
+import java.util.UUID
+
 import answers.types.Comparison._
+import cats.data.NonEmptyList
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
 import exercises.types.Card._
@@ -10,13 +14,32 @@ import toimpl.types.TypeToImpl
 
 object TypeAnswers extends TypeToImpl {
 
-  type Two    = Branch[One, One]
-  type Three  = Branch[One, Two]
-  type Four_1 = Pair[Two, Two]
-  type Four_2 = Branch[Two, Two]
-  type Five_1 = Branch[Four_1, One]
-  type Five_2 = Branch[Three, Two]
-  type Eight  = Func[Three, Two]
+  ////////////////////////
+  // 2. Data Encoding
+  ////////////////////////
+
+  case class OrderId(value: UUID)
+  case class Order(id: OrderId, createdAt: Instant, status: OrderStatus)
+
+  sealed trait OrderStatus {
+    case class Draft(basket: List[Item], deliveryAddress: Option[Address])                           extends OrderStatus
+    case class Submitted(basket: NonEmptyList[Item], deliveryAddress: Address, submittedAt: Instant) extends OrderStatus
+    case class Delivered(basket: NonEmptyList[Item],
+                         deliveryAddress: Address,
+                         submittedAt: Instant,
+                         deliveredAt: Instant)
+        extends OrderStatus
+    case class Cancelled(basket: NonEmptyList[Item], cancelledAt: Instant) extends OrderStatus
+  }
+
+  case class ItemId(value: UUID)
+  case class Item(id: ItemId, quantity: Long, price: BigDecimal)
+
+  case class Address(streetNumber: Int, postCode: String)
+
+  ////////////////////////
+  // 3. Cardinality
+  ////////////////////////
 
   val boolean: Cardinality[Boolean] = new Cardinality[Boolean] {
     def cardinality: Card = Lit(2)
@@ -155,4 +178,13 @@ object TypeAnswers extends TypeToImpl {
     if (x < y) LessThan
     else if (x > y) GreaterThan
     else EqualTo
+
+  type Two    = Branch[One, One]
+  type Three  = Branch[One, Two]
+  type Four_1 = Pair[Two, Two]
+  type Four_2 = Branch[Two, Two]
+  type Five_1 = Branch[Four_1, One]
+  type Five_2 = Branch[Three, Two]
+  type Eight  = Func[Three, Two]
+
 }

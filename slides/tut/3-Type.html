@@ -93,11 +93,7 @@ inc(java.time.Instant.ofEpochMilli(0))
 ]
 
 .large[
-* Learn how to count
-]
-
-.large[
-* Look at the relationship between types and tests
+* Learn how to count and apply it to a new metric, VIC
 ]
 
 .large[
@@ -107,7 +103,117 @@ inc(java.time.Instant.ofEpochMilli(0))
 ---
 class: center, middle
 
-# Exercise 1
+# Exercise 1: Misused types
+
+`exercises.types.TypeExercises.scala`
+
+---
+class: center, middle
+
+# Type should <span style="color:blue">exactly</span> fit business requirement
+
+---
+class: center, middle
+
+# Imprecise data lead to errors
+# and misleading documentation
+
+---
+class: center, middle
+
+# How should we encode data?
+
+---
+.h1[# Only 2 building blocks]
+
+<br>
+
+.large[
+* OR, a `Foo` is either a `Bar` OR a `Fizz` OR a `Buzz`
+]
+
+.large[
+* AND, a `User` is an `userId` AND a `name` AND an `address`
+]
+
+---
+.h1[# OR]
+
+.large[
+* a `Boolean` is `true` or `false`
+* an Int is a `Int.MinValue` or `0` or `1` or ...
+* a `DayOfTheWeek` is `Monday` or a `Tuesday` or `Wednesday` or ...
+* an `Option` is a `Some` or a `None`
+* a `List` is a `Nil` or a `Cons`
+* a `Json` is an `JsonNumber` or a `JsonString` or a `JsonArray` or a `JsonObject` or ...
+]
+
+---
+class: center, middle
+
+# How can we encode OR?
+# A `Foo` is either a `Bar` OR a `Fizz` OR a `Buzz`
+
+### Discuss with your neighbour
+
+---
+# OR Encoding
+
+```tut:silent
+sealed trait Foo
+
+object Foo {
+  case class Bar(x: String) extends Foo
+  case class Fizz(x: Int) extends Foo
+  case object Buzz extends Foo
+}
+```
+
+---
+.h1[# AND]
+
+.large[
+* a `User` is an `userId` and a `name` and an `address`
+* a `ZonedDateTime` is a `dateTime` and a `timeZone`
+* a `Cons` is a `head` and a `tail`
+* a `Tuple2` is a `_1` and a `_2`
+]
+
+---
+class: center, middle
+
+# How can we encode AND?
+# A `User` is an `userId` and a `name` and an `address`
+
+### Discuss with your neighbour
+
+---
+# AND Encoding
+
+```tut:invisible
+import java.util.UUID
+
+case class Address(streetNumber: Int, streetName: String, postCode: String)
+
+case class User(userId: UUID, name: String, address: Address)
+```
+
+```scala
+import java.util.UUID
+
+case class User(userId: UUID, name: String, address: Address)
+
+case class Address(streetNumber: Int, streetName: String, postCode: String)
+```
+
+```tut
+User(UUID.randomUUID(), "John Doe", Address(108, "Cannon Street", "EC4N 6EU"))
+```
+
+---
+class: center, middle
+
+# Exercise 2: Data Encoding
 
 `exercises.types.TypeExercises.scala`
 
@@ -124,7 +230,7 @@ background-image: url(img/types-1-bis.jpg)
 ---
 class: center, middle
 
-  # Cardinality of a type should <span style="color:blue">exactly</span> fit business requirement
+# Cardinality of a type should <span style="color:blue">exactly</span> fit business requirement
 
 ---
 # Type too big
@@ -442,7 +548,9 @@ def getCurrency2(country: Country): Currency = ???
 ---
 class: center, middle
 
-# Exercise 1
+# Exercise 3
+
+`exercises.types.TypeExercises.scala`
 
 ---
 # Sealed trait cardinality
@@ -533,7 +641,9 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercise 2
+# Exercise 4
+
+`exercises.types.TypeExercises.scala`
 
 ---
 class: center, middle
@@ -568,7 +678,9 @@ background-image: url(img/count-A-to-B-4.jpg)
 ---
 class: center, middle
 
-# Exercise 3
+# Exercise 5
+
+`exercises.types.TypeExercises.scala`
 
 ---
 background-image: url(img/int-to-int-type-1.jpg)
@@ -705,7 +817,9 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercise 4 and 5
+# Exercises 6 and 7
+
+`exercises.types.TypeExercises.scala`
 
 ---
 .h1[# Type Algebra]

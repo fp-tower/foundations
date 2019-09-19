@@ -51,7 +51,7 @@ object TypeExercises extends TypeToImpl {
   def mostRecentBlogs(n: Int)(blogs: List[BlogPost]): List[BlogPost] = ???
 
   // 1d. Implement `User#address` that returns the full address for a User (e.g. to send a parcel)
-  // such as User("John Doe", Some(108), Some("Canon Street"), Some("EC4N 6EU")) == "108 Canon Street EC4N 6EU"
+  // such as User("John Doe", Some(108), Some("Cannon Street"), Some("EC4N 6EU")) == "108 Canon Street EC4N 6EU"
   // What is wrong with this function? How could you improve it?
   case class User(name: String, streetNumber: Option[Int], streetName: Option[String], postCode: Option[String]) {
     def address: String = ???
@@ -84,7 +84,22 @@ object TypeExercises extends TypeToImpl {
   def getItemCount(id: String): IO[Int] = ???
 
   ////////////////////////
-  // 1. Cardinality
+  // 2. Data Encoding
+  ////////////////////////
+
+  // 2a. Create types that encode the following business requirements:
+  // An order contains an order id (UUID), a created timestamp (Instant), an order status, and a basket of items.
+  // An order status is either a draft, submitted, delivered or cancelled.
+  // An item consists of an item id (UUID), a quantity and a price.
+  // A basket can be empty in draft otherwise it must contain at least one item.
+  // When an order is in draft, it may have a delivery address.
+  // When an order is in submitted, it must have a delivery address and a submitted timestamp (Instant).
+  // When an order is in delivered, it must have a delivery address, a submitted and delivered timestamps (Instant).
+  // When an order is cancelled, it must contains a cancellation timestamp (Instant).
+  // An address consists of a street number and a post code.
+
+  ////////////////////////
+  // 3. Cardinality
   ////////////////////////
 
   val boolean = new Cardinality[Boolean] {
@@ -95,109 +110,110 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = Lit(2) ^ Lit(32)
   }
 
-  // 1a. How many possible values are of type Unit?
+  // 3a. How many possible values exist of type Unit?
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
     def cardinality: Card = ???
   }
 
-  // 1b. How many possible values are of type Byte?
+  // 3b. How many possible values exist of type Byte?
   val byte: Cardinality[Byte] = new Cardinality[Byte] {
     def cardinality: Card = ???
   }
 
-  // 1c. How many possible values are of type Option[Unit]?
+  // 3c. How many possible values exist of type Option[Unit]?
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
     def cardinality: Card = ???
   }
 
-  // 1d. How many possible values are of type Option[Boolean]?
+  // 3d. How many possible values exist of type Option[Boolean]?
   val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
     def cardinality: Card = ???
   }
 
+  // 3e. How many possible values exist of type IntOrBoolean?
   val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
     def cardinality: Card = ???
   }
 
-  // 1e. How many possible values are of type (Boolean, Unit)?
+  // 3f. How many possible values exist of type (Boolean, Unit)?
   val boolUnit: Cardinality[(Boolean, Unit)] = new Cardinality[(Boolean, Unit)] {
     def cardinality: Card = ???
   }
 
-  // 1f. How many possible values are of type (Boolean, Byte)?
+  // 3g. How many possible values exist of type (Boolean, Byte)?
   val boolByte: Cardinality[(Boolean, Byte)] = new Cardinality[(Boolean, Byte)] {
     def cardinality: Card = ???
   }
 
-  // 1g. How many possible values are of type IntAndBoolean?
+  // 3h. How many possible values exist of type IntAndBoolean?
   val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
     def cardinality: Card = ???
   }
 
-  // 1h. How many possible values are of type List[Unit]?
+  // 3i. How many possible values exist of type List[Unit]?
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
     def cardinality: Card = ???
   }
 
-  // 1j. How many possible values are of type Nothing?
+  // 3j. How many possible values exist of type Nothing?
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
     def cardinality: Card = ???
   }
 
-  // 1k. How many possible values are of type Option[Nothing]?
+  // 3k. How many possible values exist of type Option[Nothing]?
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
     def cardinality: Card = ???
   }
 
-  // 1l. How many possible values are of type (Boolean, Nothing)?
+  // 3l. How many possible values exist of type (Boolean, Nothing)?
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
     def cardinality: Card = ???
   }
 
-  // 1m. How many possible values are of type Any?
+  // 3m. How many possible values exist of type Any?
   val any: Cardinality[Any] = new Cardinality[Any] {
     def cardinality: Card = ???
   }
 
   ///////////////////////////
-  // 2. Advanced Cardinality
+  // 4. Advanced Cardinality
   ///////////////////////////
 
-  // 2a. Implement option that derives the cardinality of Option[A] from A
+  // 4a. Implement option that derives the cardinality of Option[A] from A
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {
       def cardinality: Card = ???
     }
 
-  // 2b. Implement list
+  // 4b. Implement list
   def list[A](a: Cardinality[A]): Cardinality[List[A]] = new Cardinality[List[A]] {
     def cardinality: Card = ???
   }
 
-  // 2c. Implement either
+  // 4c. Implement either
   def either[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[Either[A, B]] =
     new Cardinality[Either[A, B]] {
       def cardinality: Card = ???
     }
 
-  // 2d. Implement tuple2
+  // 4d. Implement tuple2
   def tuple2[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[(A, B)] =
     new Cardinality[(A, B)] {
       def cardinality: Card = ???
     }
 
-  // 2e. How many possible values are of type String?
+  // 4e. How many possible values exist of type String?
   val string: Cardinality[String] = new Cardinality[String] {
     def cardinality: Card = ???
   }
 
-  // 2f. Implement func
+  // 4f. Implement func
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
       def cardinality: Card = ???
     }
 
-  // 2g. Implement isAdult1 and isAdult2, which one is better?
+  // 4g. Implement isAdult1 and isAdult2, which one is better?
   def isAdult1: Cardinality[Int => Boolean] = new Cardinality[Int => Boolean] {
     def cardinality: Card = ???
   }
@@ -205,7 +221,7 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = ???
   }
 
-  // 2h. Implement getCurrency1 and getCurrency2, which one is better?
+  // 4h. Implement getCurrency1 and getCurrency2, which one is better?
   def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
     def cardinality: Card = ???
   }
@@ -214,74 +230,74 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = ???
   }
 
-  // 2i How can we make compareInt more precise? Update the signature of compareInt2
+  // 4i How can we make compareInt more precise? Update the signature of compareInt2
   /** see [[Integer.compare]] */
   def compareInt1(x: Int, y: Int): Int = x - y
 
   def compareInt2 = ???
 
-  // 2j. Can you provide two examples of function signature with only one implementation
+  // 4j. Can you provide two examples of function signature with only one implementation
   // i.e. find A1, A2 such as |A1 => A2| = 1
 
-  // 2k. Can you provide an example of a function signature with no implementation
+  // 4k. Can you provide an example of a function signature with no implementation
   // i.e. find A1, A2 such as |A1 => A2| = 0
 
   ////////////////////////
-  // 3. Tests
+  // 5. Tests
   ////////////////////////
 
-  // 3a. Given sign type signature and one unit test:
+  // 5a. Given sign type signature and one unit test:
   // assert(sign(5) = true)
   // how many valid implementations exist for sign, i.e. how many pass type checker and tests
   def sign(x: Int): Boolean = ???
 
-  // 3b. what if have 3 unit tests
+  // 5b. what if have 3 unit tests
   // assert(sign(-2) = false)
   // assert(sign( 0) = true)
   // assert(sign( 5) = true)
   // can you generalise for n unit tests?
 
-  // 3c. How many implementations remain valid if I have the following property
+  // 5c. How many implementations remain valid if I have the following property
   // forAll(x: Int => sign(x) == !sign(-x))
 
-  // 3d. Can you think of other ways to reduce the number of valid implementations?
+  // 5d. Can you think of other ways to reduce the number of valid implementations?
   // check out the following resources for more details:
   // Property-Based Testing in a Screencast Editor (by Oskar Wickström): https://wickstrom.tech/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html
-  // Types vs Tests (by Julien Truffaut): https://skillsmatter.com/skillscasts/12648-types-vs-tests
+  // Types vs Tests (by Julien Truffaut): https://skillsmatter.com/skillscasts/12658-types-vs-tests
 
   ////////////////////////
-  // 4. Parametricity
+  // 6. Parametricity
   ////////////////////////
 
-  // 4a. How many implementations exist for id, const (assume we are using scalazzi subset)
+  // 6a. How many implementations exist for id, const (assume we are using scalazzi subset)
   def id[A](a: A): A = ???
 
   def const[A, B](a: A)(b: B): A = ???
 
-  // 4b. How many implementations exist for mapOption
+  // 6b. How many implementations exist for mapOption
   def mapOption[A, B](opt: Option[A])(f: A => B): Option[B] = ???
 
-  // 4c. How many implementations exist for mapOptionIntToBool
+  // 6c. How many implementations exist for mapOptionIntToBool
   def mapOptionIntToBool(opt: Option[Int])(f: Int => Boolean): Option[Boolean] = ???
 
-  // 4d. How many implementations exist for flatMapOption
+  // 6d. How many implementations exist for flatMapOption
   def flatMapOption[A, B](opt: Option[A])(f: A => Option[B]): Option[B] = ???
 
-  // 4e. How would you test mapOption and flatMapOption to achieve a VIC of 1
+  // 6e. How would you test mapOption and flatMapOption to achieve a VIC of 1
 
-  // 4f. How many implementations exist for mapList
+  // 6f. How many implementations exist for mapList
   def mapList[A, B](xs: List[A])(f: A => B): List[B] = ???
 
-  // 4g. How would you test mapList to achieve a VIC of 1
+  // 6g. How would you test mapList to achieve a VIC of 1
 
   // Further reading on parametricity
   // Counting type inhabitants (by Alexander Konovalov): https://alexknvl.com/posts/counting-type-inhabitants.html
 
   ////////////////////////
-  // 5. Algebra
+  // 7. Algebra
   ////////////////////////
 
-  // 5a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
+  // 7a. in basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
   // Is it also true with types?
   // to prove that two types A and B are equivalent you need to provide a pair of functions `to` and `from`
   // such as for all a: A, from(to(a)) == a, and equivalent for B
@@ -294,26 +310,26 @@ object TypeExercises extends TypeToImpl {
   def aOrNothingToA[A]: Iso[Either[A, Nothing], A] =
     Iso(_ => ???, _ => ???)
 
-  // 5b. Prove that Option is equivalent to Either[Unit,]
+  // 7b. Prove that Option is equivalent to Either[Unit,]
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
     Iso(_ => ???, _ => ???)
 
-  // 5c. Prove that a * (b + c) = a * b + a * c
+  // 7c. Prove that a * (b + c) = a * b + a * c
   // (A, Either[B, C]) =~ Either[(A, B), (A, C)] ?
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(_ => ???, _ => ???)
 
-  // 5d. Prove that a ^ 1 = a
+  // 7d. Prove that a ^ 1 = a
   def power1[A]: Iso[Unit => A, A] =
     new Iso[Unit => A, A](
       _ => ???,
       _ => ???
     )
 
-  // 5e. Can you think of any other properties that types and algebra have in common?
+  // 7e. Can you think of any other properties that types and algebra have in common?
 
   ////////////////////////
-  // 6. Extra Cardinality
+  // 8. Extra Cardinality
   ////////////////////////
 
   sealed trait Zero
@@ -329,19 +345,19 @@ object TypeExercises extends TypeToImpl {
     case class Right[A, B](value: B) extends Branch[A, B]
   }
 
-  // 6a. Define Two a type containing 2 possible values using Zero, One, Pair and Branch
+  // 8a. Define Two a type containing 2 possible values using Zero, One, Pair and Branch
   type Two = Nothing // ???
 
-  // 6b. Define Three a type containing 3 possible values using all previously defined types
+  // 8b. Define Three a type containing 3 possible values using all previously defined types
   type Three = Nothing // ???
 
-  // 6c. Define Four a type containing 4 possible values using all previously defined types
+  // 8c. Define Four a type containing 4 possible values using all previously defined types
   type Four = Nothing // ???
 
-  // 6d. Define Five a type containing 8 possible values using all previously defined types
+  // 8d. Define Five a type containing 8 possible values using all previously defined types
   type Five = Nothing // ???
 
-  // 6e. Define Eight type containing 8 possible values using Func and all previously defined types
+  // 8e. Define Eight type containing 8 possible values using Func and all previously defined types
   trait Func[A, B] {
     def apply(value: A): B
   }
