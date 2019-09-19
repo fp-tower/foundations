@@ -129,7 +129,7 @@ class: center, middle
 <br>
 
 .large[
-* OR, a `Foo` is either a `Bar` OR a `Fizz` OR a `Buzz`
+* OR, a `ConfigValue` is either a `String` OR an `Int` OR `Empty`
 ]
 
 .large[
@@ -140,19 +140,19 @@ class: center, middle
 .h1[# OR]
 
 .large[
-* a `Boolean` is `true` or `false`
-* an Int is a `Int.MinValue` or `0` or `1` or ...
-* a `DayOfTheWeek` is `Monday` or a `Tuesday` or `Wednesday` or ...
-* an `Option` is a `Some` or a `None`
-* a `List` is a `Nil` or a `Cons`
-* a `Json` is an `JsonNumber` or a `JsonString` or a `JsonArray` or a `JsonObject` or ...
+* a `Boolean` is `true` OR `false`
+* an Int is a `-10` OR `0` OR `1` OR ...
+* a `DayOfTheWeek` is `Monday` OR a `Tuesday` OR `Wednesday` OR ...
+* an `Option` is a `Some` OR a `None`
+* a `List` is a `Nil` OR a `Cons`
+* a `Json` is a `JsonNumber` OR a `JsonString` OR a `JsonArray` OR a `JsonObject` OR ...
 ]
 
 ---
 class: center, middle
 
-# How can we encode OR?
-# A `Foo` is either a `Bar` OR a `Fizz` OR a `Buzz`
+# How should we encode OR?
+# A `ConfigValue` is either a `String` OR an `Int` OR `Empty`
 
 ### Discuss with your neighbour
 
@@ -160,12 +160,24 @@ class: center, middle
 # OR Encoding
 
 ```tut:silent
-sealed trait Foo
+sealed trait ConfigValue
 
-object Foo {
-  case class Bar(x: String) extends Foo
-  case class Fizz(x: Int) extends Foo
-  case object Buzz extends Foo
+object ConfigValue {
+  case class ConfigString(value: String) extends ConfigValue
+  case class ConfigNumber(value: Double) extends ConfigValue
+  case object ConfigEmpty extends ConfigValue
+}
+```
+
+--
+
+### In Scala 3
+
+```scala
+enum ConfigValue {
+  case ConfigString(value: String)
+  case ConfigNumber(value: Double)
+  case ConfigEmpty
 }
 ```
 
@@ -173,17 +185,17 @@ object Foo {
 .h1[# AND]
 
 .large[
-* a `User` is an `userId` and a `name` and an `address`
-* a `ZonedDateTime` is a `dateTime` and a `timeZone`
-* a `Cons` is a `head` and a `tail`
-* a `Tuple2` is a `_1` and a `_2`
+* a `User` is an `userId` AND a `name` AND an `address`
+* a `ZonedDateTime` is a `dateTime` AND a `timeZone`
+* a `Cons` is a `head` AND a `tail`
+* a `Tuple2` is a `_1` AND a `_2`
 ]
 
 ---
 class: center, middle
 
 # How can we encode AND?
-# A `User` is an `userId` and a `name` and an `address`
+# A `User` is an `userId` AND a `name` AND an `address`
 
 ### Discuss with your neighbour
 
@@ -218,6 +230,13 @@ class: center, middle
 `exercises.types.TypeExercises.scala`
 
 ---
+class: center, middle
+
+# Nested AND and OR can be used to encode any data
+
+### Sometimes for performance reasons we choose a different encoding (e.g. Int)
+
+---
 background-image: url(img/types-1.jpg)
 
 # Type
@@ -226,248 +245,6 @@ background-image: url(img/types-1.jpg)
 background-image: url(img/types-1-bis.jpg)
 
 # Type
-
----
-class: center, middle
-
-# Cardinality of a type should <span style="color:blue">exactly</span> fit business requirement
-
----
-# Type too big
-
-```tut:silent
-def getCurrency(country: String): String =
-  country match {
-    case "France" | "Germany" => "EUR"
-    case "United Kingdom"     => "GBP"
-    case "Switzerland"        => "CHF"
-    case _                    => ???
-  }
-```
-
----
-# Type too big
-
-```tut:silent
-def getCurrency(country: String): Option[String] =
-  country match {
-    case "France" | "Germany" => Some("EUR")
-    case "United Kingdom"     => Some("GBP")
-    case "Switzerland"        => Some("CHF")
-    case _                    => None
-  }
-```
-
----
-# Type just right
-
-```tut:silent
-sealed trait Country
-
-case object France        extends Country
-case object Germany       extends Country
-case object UnitedKingdom extends Country
-case object Switzerland   extends Country
-
-sealed trait Currency
-
-case object EUR extends Currency
-case object GBP extends Currency
-case object CHF extends Currency
-
-def getCurrency(country: Country): Currency =
-  country match {
-    case France | Germany => EUR
-    case UnitedKingdom    => GBP
-    case Switzerland      => CHF
-  }
-```
-
----
-# Type too big
-
-```tut:silent
-case class Person(name: String, streetNumber: Option[Int], streetName: Option[String])
-
-def fullAddress(person: Person): Option[String] =
-  (person.streetNumber, person.streetName) match {
-    case (Some(x), Some(y)) => Some(s"$x $y")
-    case (Some(x), None   ) => ???
-    case (None   , Some(y)) => ???
-    case (None   , None   ) => None
-  }
-```
-
-
-```tut
-fullAddress(Person("John", Some(108), Some("Canon Street")))
-fullAddress(Person("John", None, None))
-```
-
----
-# Type just right
-
-```tut:silent
-case class Address(streetNumber: Int, streetName: String)
-case class Person(name: String, address: Option[Address])
-
-def fullAddress(address: Address): String =
-  s"${address.streetNumber} ${address.streetName}"
-
-def fullPersonAddress(person: Person): Option[String] =
-  person.address.map(fullAddress)
-```
-
----
-# Type too big
-
-```scala
-// quantity must be positive
-case class Item(id: String, quantity: Int, price: Double)
-
-// order must have at least one item
-case class Order(id: String, items: List[Item]){
-  def total: Double =
-    items.map(i => i.quantity * i.price).sum
-}
-```
-
-```tut:invisible
-case class Item(id: String, quantity: Int, price: Double)
-
-case class Order(id: String, items: List[Item]){
-  def total: Double =
-    items.map(i => i.quantity * i.price).sum
-}
-```
-
---
-
-```tut:silent
-def halfPriceFirstItem(order: Order): Order = {
-  val firstItem = order.items.head
-  val discounted = firstItem.copy(price = firstItem.price / 2)
-  order.copy(items = discounted :: order.items.tail)
-}
-```
-
----
-# Type too big
-
-```scala
-// quantity must be positive
-case class Item(id: String, quantity: Int, price: Double)
-
-// order must have at least one item
-case class Order(id: String, items: List[Item]){
-  def total: Double =
-    items.map(i => i.quantity * i.price).sum
-}
-```
-
-```tut:invisible
-case class Item(id: String, quantity: Int, price: Double)
-
-case class Order(id: String, items: List[Item]){
-  def total: Double =
-    items.map(i => i.quantity * i.price).sum
-}
-```
-
-```tut:silent
-def halfPriceFirstItem(order: Order): Order = {
-  order.items match {
-    case Nil     => ???
-    case x :: xs =>
-      val discounted = x.copy(price = x.price / 2)
-      order.copy(items = discounted :: xs)
-  }
-}
-```
-
----
-# Type just right
-
-```scala
-import cats.data.NonEmptyList
-import cats.implicits._
-
-// quantity must be positive
-case class Item(id: String, quantity: Int, price: Double)
-
-case class Order(id: String, items: NonEmptyList[Item]){
-  def total: Double =
-    items.foldMap(i => i.quantity * i.price)
-}
-```
-
-```tut:invisible
-import cats.data.NonEmptyList
-import cats.implicits._
-
-case class Item(id: String, quantity: Int, price: Double)
-
-case class Order(id: String, items: NonEmptyList[Item]){
-  def total: Double =
-    items.foldMap(i => i.quantity * i.price)
-}
-```
-
-```tut:silent
-def halfPriceFirstItem(order: Order): Order = {
-  val firstItem  = order.items.head
-  val discounted = firstItem.copy(price = firstItem.price / 2)
-  order.copy(items = NonEmptyList(discounted, order.items.tail))
-}
-```
-
----
-# Even further
-
-```tut:silent
-import cats.data.NonEmptyList
-import cats.implicits._
-import eu.timepit.refined.types.numeric.PosInt
-
-case class Item(id: String, quantity: PosInt, price: Double)
-
-case class Order(id: String, items: NonEmptyList[Item]){
-  def total: Double =
-    items.foldMap(i => i.quantity.value * i.price)
-}
-```
-
-```tut:silent
-def halfPriceFirstItem(order: Order): Order = {
-  val firstItem  = order.items.head
-  val discounted = firstItem.copy(price = firstItem.price / 2)
-  order.copy(items = NonEmptyList(discounted, order.items.tail))
-}
-```
-
-
----
-# Type too small
-
-```tut:silent
-import java.util.Date
-```
-
-```tut
-val fifthMarch = new Date(1551818168101L)
-```
-
---
-
-```tut
-List(1,2,3,4).size
-```
-
---
-
-```scala
-def parseJson(json: String): Option[Json] = ???
-```
 
 ---
 class: center, middle
