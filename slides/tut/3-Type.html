@@ -199,6 +199,13 @@ class: center, middle
 ---
 class: center, middle
 
+# Case Class and Sealed Trait map exactly to business language AND and OR
+
+### Together, they form what is called Algebraic Data Types (ADTs)
+
+---
+class: center, middle
+
 # Nested AND and OR can be used to encode any data precisely
 
 ### OR is generally underused
@@ -206,7 +213,7 @@ class: center, middle
 ---
 class: center, middle
 
-# ADTs are the only types where we should pattern match on
+# ADTs are the .hl[only] types we should pattern match on
 
 ---
 class: center, middle
@@ -215,6 +222,31 @@ class: center, middle
 
 
 # What else can we do to .hl[reduce errors] caused by our encoding?
+
+---
+# How can we measure benefits of two encodings?
+
+```scala
+def getCurrency(country: String): Option[String]
+```
+
+### Is it better to reduce input or reduce output?
+
+```scala
+def getCurrency(country: Country): String
+```
+
+```scala
+def getCurrency(country: String): Option[Currency]
+```
+
+--
+
+### How much benefit do we get by reducing both?
+
+```scala
+def getCurrency(country: Country): Currency
+```
 
 ---
 background-image: url(img/type/cardinality-1.svg)
@@ -252,8 +284,6 @@ class: center, middle
 
 # Type is a Set
 
---
-
 # &&
 
 # A => B is a Type
@@ -266,12 +296,19 @@ background-image: url(img/type/function-set-1.svg)
 ---
 background-image: url(img/type/function-set-2.svg)
 
-# Function is a Set!
+# Functions are Sets!
 
 ---
 class: center, middle
 
-# |A => B| represents how many implementations exist
+# How many elements are in the A => B Set?
+
+# How many implementations satisfy the type checker?
+
+---
+class: center, middle
+
+# |A => B|
 
 ---
 class: center, middle
@@ -281,30 +318,12 @@ class: center, middle
 ---
 class: center, middle
 
-# Ultimate goal |A => B| = 1
-
----
-# How to calculate |A => B| ?
-
-```scala
-def getCurrency1(country: String ): Option[String] = ???
-
-def getCurrency2(country: Country): Currency = ???
-```
-
---
-
-## Intuitively
-
-```scala
-|getCurrency2| < |getCurrency1|
-```
-
+# Perfect case is when |A => B| = 1
 
 ---
 class: center, middle
 
-# Exercise 3
+# Exercise 3: Cardinality
 
 `exercises.types.TypeExercises.scala`
 
