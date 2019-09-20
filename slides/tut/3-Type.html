@@ -20,6 +20,7 @@
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
     tr:nth-child(even) {background-color: #f2f2f2;}
+    .hl { color : blue }
 
   </style>
 </head>
@@ -48,40 +49,6 @@ layout: true
 </div>
 
 ---
-class: center, middle
-
-  # All dynamic languages are static languages with a <span style="color:blue">single</span> type
-
----
-class: center, middle
-
-# Any
-
----
-# Any => Any
-
-```tut:silent
-def inc(value: Any): Any = value match {
-  case x: Int    => x + 1
-  case x: Double => x + 1
-  case x: Char   => x.toString + "1"
-  case x: String => x + "1"
-}
-```
-
---
-
-```tut
-inc(5)
-inc(10.3)
-inc('c')
-```
-
-```tut:fail
-inc(java.time.Instant.ofEpochMilli(0))
-```
-
----
 .h1[# Plan]
 
 .large[
@@ -89,11 +56,11 @@ inc(java.time.Instant.ofEpochMilli(0))
 ]
 
 .large[
-* How to encode data
+* How to use ADT to encode data
 ]
 
 .large[
-* Learn how to count and apply it to a new metric, VIC
+* Learn how to count
 ]
 
 .large[
@@ -110,7 +77,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Type should <span style="color:blue">exactly</span> fit business requirement
+# Type should .hl[exactly] fit business requirements
 
 ---
 class: center, middle
@@ -124,37 +91,39 @@ class: center, middle
 # How should we encode data?
 
 ---
-.h1[# Only 2 building blocks]
-
-<br>
+.h1[# Algebraic Data Type (ADT)]
 
 .large[
-* OR, a `ConfigValue` is either a `String` OR an `Int` OR `Empty`
+* OR, a `ConfigValue` is
+   * a `String` .hl[OR]
+   * an `Int` .hl[OR]
+   * `Empty`
 ]
 
 .large[
-* AND, a `User` is an `userId` AND a `name` AND an `address`
+* AND, a `User` is
+   * an `userId` .hl[AND]
+   * a `name` .hl[AND]
+   * an `address`
 ]
 
 ---
 .h1[# OR]
 
 .large[
-* a `Boolean` is `true` OR `false`
-* an Int is a `-10` OR `0` OR `1` OR ...
-* a `DayOfTheWeek` is `Monday` OR a `Tuesday` OR `Wednesday` OR ...
-* an `Option` is a `Some` OR a `None`
-* a `List` is a `Nil` OR a `Cons`
-* a `Json` is a `JsonNumber` OR a `JsonString` OR a `JsonArray` OR a `JsonObject` OR ...
+* a `Boolean` is `true` .hl[OR] `false`
+* an Int is a `-10` .hl[OR] `0` .hl[OR] `1` .hl[OR] ...
+* a `DayOfTheWeek` is `Monday` .hl[OR] `Tuesday` .hl[OR] `Wednesday` .hl[OR] ...
+* an `Option` is a `Some` .hl[OR] a `None`
+* a `List` is a `Nil` .hl[OR] a `Cons`
+* a `Json` is a `JsonNumber` .hl[OR] a `JsonString` .hl[OR] a `JsonArray` .hl[OR] a `JsonObject` .hl[OR] ...
 ]
 
 ---
 class: center, middle
 
 # How should we encode OR?
-# A `ConfigValue` is either a `String` OR an `Int` OR `Empty`
-
-### Discuss with your neighbour
+### A `ConfigValue` is a `String` OR an `Int` OR `Empty`
 
 ---
 # OR Encoding
@@ -185,19 +154,17 @@ enum ConfigValue {
 .h1[# AND]
 
 .large[
-* a `User` is an `userId` AND a `name` AND an `address`
-* a `ZonedDateTime` is a `dateTime` AND a `timeZone`
-* a `Cons` is a `head` AND a `tail`
-* a `Tuple2` is a `_1` AND a `_2`
+* a `User` is an `userId` .hl[AND] a `name` .hl[AND] an `address`
+* a `ZonedDateTime` is a `dateTime` .hl[AND] a `timeZone`
+* a `Cons` is a `head` .hl[AND] a `tail`
+* a `Tuple2` is a `_1` .hl[AND] a `_2`
 ]
 
 ---
 class: center, middle
 
-# How can we encode AND?
-# A `User` is an `userId` AND a `name` AND an `address`
-
-### Discuss with your neighbour
+# How should we encode AND?
+### A `User` is an `userId` AND a `name` AND an `address`
 
 ---
 # AND Encoding
@@ -232,62 +199,74 @@ class: center, middle
 ---
 class: center, middle
 
-# Nested AND and OR can be used to encode any data
+# Nested AND and OR can be used to encode any data precisely
 
-### Sometimes for performance reasons we choose a different encoding (e.g. Int)
-
----
-background-image: url(img/types-1.jpg)
-
-# Type
-
----
-background-image: url(img/types-1-bis.jpg)
-
-# Type
+### OR is generally underused
 
 ---
 class: center, middle
 
-# Function
+# ADTs are the only types where we should pattern match on
+
+---
+class: center, middle
+
+# What else can we do to .hl[improve precision] of our encoding?
+
+
+# What else can we do to .hl[reduce errors] caused by our encoding?
+
+---
+background-image: url(img/type/cardinality-1.svg)
+
+# Type is a Set
+
+---
+background-image: url(img/type/cardinality-2.svg)
+
+# Cardinality
 
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Function
-
+# Function is a mapping between Types
 
 ---
-class: center, middle
+# A => B is a Type
+
+<br>
+<br>
+<br>
 
 ```tut:silent
 val isEven: Int => Boolean =
-  x => x % 2 == 0
+  (x: Int) => x % 2 == 0
+
 
 val increment: Int => Int =
-  x => x + 1
+  (x: Int) => x + 1
 ```
 
 ---
 class: center, middle
 
-# Type is a set
+# Type is a Set
 
 --
 
 # &&
 
-# A => B is a type
+# A => B is a Type
 
 ---
-background-image: url(img/A-to-B-set-1.jpg)
+background-image: url(img/type/function-set-1.svg)
 
-# A => B is a set!
+# A => B is a Set!
 
 ---
-background-image: url(img/int-to-int-type-1.jpg)
+background-image: url(img/type/function-set-2.svg)
 
-# Function is a set!
+# Function is a Set!
 
 ---
 class: center, middle
@@ -307,7 +286,7 @@ class: center, middle
 ---
 # How to calculate |A => B| ?
 
-```tut:silent
+```scala
 def getCurrency1(country: String ): Option[String] = ???
 
 def getCurrency2(country: Country): Currency = ???
@@ -402,11 +381,11 @@ IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ---
 class: center, middle
 
-# A sealed trait is called a <span style="color:blue">Sum</span> type
+# A sealed trait is called a .hl[Sum] type
 
 --
 
-# A case class is called a <span style="color:blue">Product</span> type
+# A case class is called a .hl[Product] type
 
 ---
 class: center, middle
@@ -733,6 +712,41 @@ Either[A, B] => C = (A ∨ B) → C
    * Property based testing
    * Parametric polymorphism
 ]
+
+---
+class: center, middle
+
+# All dynamic languages are static languages with a .hl[single] type
+
+---
+class: center, middle
+
+# Any
+
+---
+# Any => Any
+
+```tut:silent
+def inc(value: Any): Any = value match {
+  case x: Int    => x + 1
+  case x: Double => x + 1
+  case x: Char   => x.toString + "1"
+  case x: String => x + "1"
+}
+```
+
+--
+
+```tut
+inc(5)
+inc(10.3)
+inc('c')
+```
+
+```tut:fail
+inc(java.time.Instant.ofEpochMilli(0))
+```
+
 
 ---
 # Resources and further study
