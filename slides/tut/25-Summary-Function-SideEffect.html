@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Summary Function - Side Effect</title>
+  <meta charset="utf-8">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+    body { font-family: 'Droid Serif'; color: #333333; }
+    h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
+    h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
+    .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    .medium { font-size: 28px; }
+    .large { font-size: 36px; }
+    .pull-left { float: left; width: 47%; }
+    .pull-right { float: right; width: 47%; }
+    .medium-left { float: left; width: 37%; }
+    .large-left { float: left; width: 67%; }
+    .small-right { float: right; width: 27%; }
+    .medium-right { float: right; width: 37%; }
+    .large-right { float: right; width: 57%; }
+    .footer { position: absolute; bottom: 12px; left: 45px }
+    table { border-collapse: collapse; display: inline-block; }
+    th, td { padding: 10px; border: 1px solid black; }
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    .hl { color : blue }
+
+  </style>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+<a href="https://github.com/fp-tower/foundation">
+  <img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
+</a>
+
+<br>
+<br>
+
+
+# Summary Function - Side Effect
+
+---
+layout: true
+
+<div class="footer">
+  <a href="https://github.com/fp-tower/foundation">
+    <img src="img/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
+  </a>
+</div>
+
+---
+class: center, middle
+
+# First Class Function
+
+---
+background-image: url(img/sideeffect/pure-function.svg)
+
+# Pure function
+
+---
+background-image: url(img/sideeffect/side-effect.svg)
+
+# Pure function
+
+---
+background-image: url(img/sideeffect/io.svg)
+
+# Pure Actions with IO
+
+---
+# All impure code can be lifted into IO
+
+```scala
+def getOrderTotal(userId: Int, orderId: Int): Double = {
+  log.trace(s"User $userId get order total for order $orderId")
+  val hasAccess = canUserCanAccessOrder(userId, orderId)
+  if(! hasAccess)
+    throw new Exception(s"User $userId does not have access to order $orderId")
+  else {
+    val order = getOrder(orderId)
+    order.total
+  }
+}
+```
+
+```scala
+def getOrderTotal(userId: Int, orderId: Int): `IO`[Double] =
+  `for` {
+    _         <- IO.`effect`(log.trace(s"User $userId get order total for order $orderId"))
+    hasAccess <- IO.`effect`(canUserCanAccessOrder(userId, orderId))
+    _         <- if(hasAccess) IO.`succeed`(())
+                 else IO.`fail`(new Exception(s"User $userId does not have access to order $orderId"))
+    order     <- IO.`effect`(getOrder(orderId))
+  } `yield` order.total
+```
+
+---
+background-image: url(img/sideeffect/IO-introspection.svg)
+
+# IO cannot be introspected
+
+---
+class: center, middle
+
+# When can we avoid IO
+# and how?
+
+---
+class: center, middle
+
+# [Module 3: Type](3-Type.html#1)
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+  var slideshow = remark.create({
+    ratio: "16:9",
+    slideNumberFormat: '%current%',
+    // highlightStyle: "github",
+    highlightLines: true,
+    highlightSpans: true,
+  });
+</script>
+</body>
+</html>
