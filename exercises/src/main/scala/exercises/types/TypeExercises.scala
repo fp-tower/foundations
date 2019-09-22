@@ -102,7 +102,7 @@ object TypeExercises extends TypeToImpl {
   // 3. Cardinality
   ////////////////////////
 
-  val boolean = new Cardinality[Boolean] {
+  val boolean: Cardinality[Boolean] = new Cardinality[Boolean] {
     def cardinality: Card = Lit(2)
   }
 
@@ -110,68 +110,69 @@ object TypeExercises extends TypeToImpl {
     def cardinality: Card = Lit(2) ^ Lit(32)
   }
 
-  // 3a. How many possible values exist of type Unit?
-  val unit: Cardinality[Unit] = new Cardinality[Unit] {
-    def cardinality: Card = ???
+  val any: Cardinality[Any] = new Cardinality[Any] {
+    def cardinality: Card = Inf
   }
 
-  // 3b. How many possible values exist of type Byte?
+  val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
+    def cardinality: Card = Lit(0)
+  }
+
+  val unit: Cardinality[Unit] = new Cardinality[Unit] {
+    def cardinality: Card = Lit(1)
+  }
+
+  val ioUnit: Cardinality[IO[Unit]] = new Cardinality[IO[Unit]] {
+    def cardinality: Card = Inf
+  }
+
+  // 3a. How many possible values exist of type Byte?
   val byte: Cardinality[Byte] = new Cardinality[Byte] {
     def cardinality: Card = ???
   }
 
-  // 3c. How many possible values exist of type Option[Unit]?
+  // 3b. How many possible values exist of type Option[Unit]?
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
     def cardinality: Card = ???
   }
 
-  // 3d. How many possible values exist of type Option[Boolean]?
+  // 3c. How many possible values exist of type Option[Boolean]?
   val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
     def cardinality: Card = ???
   }
 
-  // 3e. How many possible values exist of type IntOrBoolean?
+  // 3d. How many possible values exist of type IntOrBoolean?
   val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
     def cardinality: Card = ???
   }
 
-  // 3f. How many possible values exist of type (Boolean, Unit)?
+  // 3e. How many possible values exist of type (Boolean, Unit)?
   val boolUnit: Cardinality[(Boolean, Unit)] = new Cardinality[(Boolean, Unit)] {
     def cardinality: Card = ???
   }
 
-  // 3g. How many possible values exist of type (Boolean, Byte)?
+  // 3f. How many possible values exist of type (Boolean, Byte)?
   val boolByte: Cardinality[(Boolean, Byte)] = new Cardinality[(Boolean, Byte)] {
     def cardinality: Card = ???
   }
 
-  // 3h. How many possible values exist of type IntAndBoolean?
+  // 3g. How many possible values exist of type IntAndBoolean?
   val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
     def cardinality: Card = ???
   }
 
-  // 3i. How many possible values exist of type List[Unit]?
+  // 3h. How many possible values exist of type List[Unit]?
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
     def cardinality: Card = ???
   }
 
-  // 3j. How many possible values exist of type Nothing?
-  val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
-    def cardinality: Card = ???
-  }
-
-  // 3k. How many possible values exist of type Option[Nothing]?
+  // 3i. How many possible values exist of type Option[Nothing]?
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
     def cardinality: Card = ???
   }
 
-  // 3l. How many possible values exist of type (Boolean, Nothing)?
+  // 3j. How many possible values exist of type (Boolean, Nothing)?
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
-    def cardinality: Card = ???
-  }
-
-  // 3m. How many possible values exist of type Any?
-  val any: Cardinality[Any] = new Cardinality[Any] {
     def cardinality: Card = ???
   }
 

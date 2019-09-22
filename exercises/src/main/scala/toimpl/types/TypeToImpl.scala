@@ -1,16 +1,23 @@
 package toimpl.types
 
+import exercises.sideeffect.IOExercises.IO
 import exercises.types.{Cardinality, IntAndBoolean, IntOrBoolean, Iso}
 
 trait TypeToImpl {
 
   val boolean: Cardinality[Boolean]
 
+  val int: Cardinality[Int]
+
+  val any: Cardinality[Any]
+
+  val nothing: Cardinality[Nothing]
+
   val unit: Cardinality[Unit]
 
-  val byte: Cardinality[Byte]
+  val ioUnit: Cardinality[IO[Unit]]
 
-  val int: Cardinality[Int]
+  val byte: Cardinality[Byte]
 
   val optUnit: Cardinality[Option[Unit]]
 
@@ -28,13 +35,9 @@ trait TypeToImpl {
 
   val string: Cardinality[String]
 
-  val nothing: Cardinality[Nothing]
-
   val optNothing: Cardinality[Option[Nothing]]
 
   val boolNothing: Cardinality[(Boolean, Nothing)]
-
-  val any: Cardinality[Any]
 
   def option[A](a: Cardinality[A]): Cardinality[Option[A]]
 

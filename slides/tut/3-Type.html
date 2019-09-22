@@ -16,6 +16,11 @@
     .large { font-size: 36px; }
     .pull-left { float: left; width: 47%; }
     .pull-right { float: right; width: 47%; }
+    .medium-left { float: left; width: 37%; }
+    .large-left { float: left; width: 67%; }
+    .small-right { float: right; width: 27%; }
+    .medium-right { float: right; width: 37%; }
+    .large-right { float: right; width: 57%; }
     .footer { position: absolute; bottom: 12px; left: 45px }
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
@@ -252,6 +257,70 @@ background-image: url(img/type/cardinality-1.svg)
 background-image: url(img/type/cardinality-2.svg)
 
 # Cardinality
+
+---
+.pull-left[
+.h1[# Cardinality: Any]
+
+```tut:silent
+val x: Int = 3
+
+val hello: String = "hello"
+
+case class User(name: String, age: Int)
+
+val john: User = User("John", 53)
+```
+
+```tut
+x: Any
+
+john: Any
+
+
+List(x, hello, john)
+```
+]
+
+.pull-right[
+<br>
+![Any](img/type/any.svg)
+]
+
+---
+background-image: url(img/type/nothing-1.svg)
+
+# Cardinality: Nothing
+
+---
+.medium-left[
+.h1[# Cardinality: Nothing]
+
+```scala
+sealed trait Nothing
+  extends Int
+  with    Boolean
+  with    String
+  with    Foo
+  with    List[Int]
+  with    Any
+```
+]
+
+.large-right[
+<br>
+![Nothing](img/type/nothing-2.svg)
+]
+
+---
+background-image: url(img/type/unit.svg)
+
+# Cardinality: Unit
+
+---
+background-image: url(img/type/io-unit.svg)
+
+# Cardinality: IO
 
 ---
 background-image: url(img/function/mapping-2.svg)

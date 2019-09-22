@@ -7,6 +7,7 @@ import answers.types.Comparison._
 import cats.data.NonEmptyList
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
+import exercises.sideeffect.IOExercises.IO
 import exercises.types.Card._
 import exercises.types.TypeExercises.{Branch, Func, One, Pair}
 import exercises.types._
@@ -45,8 +46,24 @@ object TypeAnswers extends TypeToImpl {
     def cardinality: Card = Lit(2)
   }
 
+  val int: Cardinality[Int] = new Cardinality[Int] {
+    def cardinality: Card = Lit(2) ^ Lit(32)
+  }
+
+  val any: Cardinality[Any] = new Cardinality[Any] {
+    def cardinality: Card = Inf
+  }
+
+  val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
+    def cardinality: Card = Lit(0)
+  }
+
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
     def cardinality: Card = Lit(1)
+  }
+
+  val ioUnit: Cardinality[IO[Unit]] = new Cardinality[IO[Unit]] {
+    def cardinality: Card = Inf
   }
 
   val byte: Cardinality[Byte] = new Cardinality[Byte] {
@@ -55,10 +72,6 @@ object TypeAnswers extends TypeToImpl {
 
   val char: Cardinality[Char] = new Cardinality[Char] {
     def cardinality: Card = Lit(2) ^ Lit(16)
-  }
-
-  val int: Cardinality[Int] = new Cardinality[Int] {
-    def cardinality: Card = Lit(2) ^ Lit(32)
   }
 
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
@@ -89,20 +102,12 @@ object TypeAnswers extends TypeToImpl {
     def cardinality: Card = Inf
   }
 
-  val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
-    def cardinality: Card = Lit(0)
-  }
-
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
     def cardinality: Card = nothing.cardinality + Lit(1)
   }
 
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
     def cardinality: Card = boolean.cardinality * nothing.cardinality
-  }
-
-  val any: Cardinality[Any] = new Cardinality[Any] {
-    def cardinality: Card = Inf
   }
 
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
