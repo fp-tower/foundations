@@ -213,11 +213,6 @@ class: center, middle
 ---
 class: center, middle
 
-# ADTs are the .hl[only] types we should pattern match on
-
----
-class: center, middle
-
 # What else can we do to .hl[improve precision] of our encoding?
 
 
@@ -282,11 +277,11 @@ val increment: Int => Int =
 ---
 class: center, middle
 
-# Type is a Set
+# A => B is a Type
 
 # &&
 
-# A => B is a Type
+# Type is a Set
 
 ---
 background-image: url(img/type/function-set-1.svg)
@@ -328,7 +323,7 @@ class: center, middle
 `exercises.types.TypeExercises.scala`
 
 ---
-# Sealed trait cardinality
+# Sealed Trait
 
 ```tut:silent
 sealed trait IntOrBoolean
@@ -337,7 +332,6 @@ case class AnInt(value: Int) extends IntOrBoolean
 case class ABoolean(value: Boolean) extends IntOrBoolean
 ```
 
---
 
 ```scala
 AnInt(Int.MinValue) // ~ -2 billion
@@ -346,16 +340,10 @@ AnInt(0)
 AnInt(1)
 ...
 AnInt(Int.MaxValue) // ~ +2 billion
-```
 
---
-
-```scala
 ABoolean(false)
 ABoolean(true)
 ```
-
---
 
 ```scala
 |IntOrBoolean| = |AnInt| + |ABoolean|
@@ -363,13 +351,11 @@ ABoolean(true)
 ```
 
 ---
-# Case class cardinality
+# Case Class
 
 ```tut:silent
 case class IntAndBoolean(i: Int, b: Boolean)
 ```
-
---
 
 ```scala
 IntAndBoolean(Int.MinValue, false)  // ~ -2 billion
@@ -378,11 +364,7 @@ IntAndBoolean(0, false)
 IntAndBoolean(1, false)
 ...
 IntAndBoolean(Int.MaxValue, false) // ~ +2 billion
-```
 
---
-
-```scala
 IntAndBoolean(Int.MinValue, true)  // ~ -2 billion
 ...
 IntAndBoolean(0, true)
@@ -391,8 +373,6 @@ IntAndBoolean(1, true)
 IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ```
 
---
-
 ```scala
 |IntAndBoolean| = |Int| * |Boolean|
 ```
@@ -400,23 +380,20 @@ IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ---
 class: center, middle
 
-# A sealed trait is called a .hl[Sum] type
+# A Sealed Trait is called a .hl[Sum] type
 
---
-
-# A case class is called a .hl[Product] type
+# A Case Class is called a .hl[Product] type
 
 ---
 class: center, middle
 
-# A sealed trait is called a Co-Product
-
-# A case class is called a Product
+# `|A OR B OR C| = |A| + |B| + |C|`
+# `|A AND B AND C| = |A| * |B| * |C|`
 
 ---
 class: center, middle
 
-# Exercise 4
+# Exercise 4: Advanced Cardinality
 
 `exercises.types.TypeExercises.scala`
 
