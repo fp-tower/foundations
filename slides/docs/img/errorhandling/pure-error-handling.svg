@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 658 487" width="658" height="487">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 665 487" width="665" height="487">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -18,48 +18,48 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.10.2 
-    <dc:date>2019-06-08 13:52:01 +0000</dc:date>
+  <metadata> Produced by OmniGraffle 7.11.3 
+    <dc:date>2019-09-24 12:49:54 +0000</dc:date>
   </metadata>
-  <g id="function-debit-card-large" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
-    <title>function-debit-card-large</title>
+  <g id="function-debit-card-large" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" fill="none">
+    <title>pure-error-handling</title>
     <g id="function-debit-card-large: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_117">
-        <path d="M 613.50524 101.90115 C 671.49835 189.76905 671.49835 332.23095 613.50524 420.09885 C 555.5124 507.9672 461.4876 507.9672 403.49476 420.09885 C 345.50165 332.23095 345.50165 189.76905 403.49476 101.90115 C 461.4876 14.0328 555.5124 14.0328 613.50524 101.90115" fill="#599a9e"/>
+        <path d="M 613.50524 101.90115 C 671.49835 189.76905 671.49835 332.23095 613.50524 420.09885 C 555.5124 507.9672 461.4876 507.9672 403.49476 420.09885 C 345.50165 332.23095 345.50165 189.76905 403.49476 101.90115 C 461.4876 14.0328 555.5124 14.0328 613.50524 101.90115" fill="#acbdd0"/>
         <path d="M 613.50524 101.90115 C 671.49835 189.76905 671.49835 332.23095 613.50524 420.09885 C 555.5124 507.9672 461.4876 507.9672 403.49476 420.09885 C 345.50165 332.23095 345.50165 189.76905 403.49476 101.90115 C 461.4876 14.0328 555.5124 14.0328 613.50524 101.90115" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_98">
-        <ellipse cx="117" cy="252" rx="108.000172573405" ry="162.000258860107" fill="#8db2dc"/>
+        <ellipse cx="117" cy="252" rx="108.000172573405" ry="162.000258860107" fill="#70a3d8"/>
         <ellipse cx="117" cy="252" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_99">
-        <ellipse cx="504" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#6fd09c"/>
+        <ellipse cx="504" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#589b9d"/>
         <ellipse cx="504" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_36">
         <path d="M 99 144 L 135 180 L 99 216 L 63 180 Z" fill="#6f9a9c"/>
         <path d="M 99 144 L 135 180 L 99 216 L 63 180 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(77.72 169.28)" fill="white">
+        <text transform="translate(77.72 170.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.264" y="15">Elise</tspan>
         </text>
       </g>
       <g id="Graphic_100">
         <path d="M 162 225 L 198 261 L 162 297 L 126 261 Z" fill="#6f9a9c"/>
         <path d="M 162 225 L 198 261 L 162 297 L 126 261 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(140.72 250.28)" fill="white">
+        <text transform="translate(140.72 251.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.224" y="15">Zoe</tspan>
         </text>
       </g>
       <g id="Graphic_101">
         <path d="M 90 315 L 126 351 L 90 387 L 54 351 Z" fill="#599a9e"/>
         <path d="M 90 315 L 126 351 L 90 387 L 54 351 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(68.72 340.28)" fill="white">
+        <text transform="translate(68.72 341.056)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.36" y="15">John</tspan>
         </text>
       </g>
       <g id="Graphic_102">
-        <path d="M 459 90 L 495 126 L 459 162 L 423 126 Z" fill="#8db2dc"/>
+        <path d="M 459 90 L 495 126 L 459 162 L 423 126 Z" fill="#70a3d8"/>
         <path d="M 459 90 L 495 126 L 459 162 L 423 126 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(437.72 106.832)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
@@ -67,7 +67,7 @@
         </text>
       </g>
       <g id="Graphic_103">
-        <path d="M 468 225 L 504 261 L 468 297 L 432 261 Z" fill="#8db2dc"/>
+        <path d="M 468 225 L 504 261 L 468 297 L 432 261 Z" fill="#70a3d8"/>
         <path d="M 468 225 L 504 261 L 468 297 L 432 261 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(446.72 241.832)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
@@ -75,7 +75,7 @@
         </text>
       </g>
       <g id="Graphic_104">
-        <path d="M 558 162 L 594 198 L 558 234 L 522 198 Z" fill="#8db2dc"/>
+        <path d="M 558 162 L 594 198 L 558 234 L 522 198 Z" fill="#70a3d8"/>
         <path d="M 558 162 L 594 198 L 558 234 L 522 198 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(536.72 178.832)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
@@ -83,7 +83,7 @@
         </text>
       </g>
       <g id="Graphic_105">
-        <path d="M 540 270 L 576 306 L 540 342 L 504 306 Z" fill="#8db2dc"/>
+        <path d="M 540 270 L 576 306 L 540 342 L 504 306 Z" fill="#70a3d8"/>
         <path d="M 540 270 L 576 306 L 540 342 L 504 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(518.72 286.832)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
@@ -91,7 +91,7 @@
         </text>
       </g>
       <g id="Graphic_106">
-        <path d="M 531 63 L 567 99 L 531 135 L 495 99 Z" fill="#8db2dc"/>
+        <path d="M 531 63 L 567 99 L 531 135 L 495 99 Z" fill="#70a3d8"/>
         <path d="M 531 63 L 567 99 L 531 135 L 495 99 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(509.72 79.832)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
@@ -110,10 +110,12 @@
         </text>
       </g>
       <g id="Graphic_115">
-        <text transform="translate(376.192 5)" fill="#6fd09c">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#6fd09c" x="4405365e-19" y="23">Debit Card</tspan>
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" y="23"> Or </tspan>
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#ff7f81" y="23">Error</tspan>
+        <text transform="translate(365 2.303833)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#589b9d" x="7958079e-19" y="23">Debit Card</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" y="23"> </tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#424242" y="23">Or</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" y="23"> </tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#ff7f81" y="23">Some Error</tspan>
         </text>
       </g>
       <g id="Graphic_118">
@@ -124,16 +126,16 @@
         <line x1="120.96" y1="356.04" x2="434.688" y2="407.112" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_120">
-        <path d="M 477 387 L 513 414 L 477 441 L 441 414 Z" fill="#8db2dc"/>
+        <path d="M 477 387 L 513 414 L 477 441 L 441 414 Z" fill="#70a3d8"/>
         <path d="M 477 387 L 513 414 L 477 441 L 441 414 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(455.72 403.46)" fill="white">
+        <text transform="translate(455.72 404.236)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="1.848" y="15">LostIt</tspan>
         </text>
       </g>
       <g id="Graphic_122">
-        <path d="M 549 405 L 585 432 L 549 459 L 513 432 Z" fill="#8db2dc"/>
+        <path d="M 549 405 L 585 432 L 549 459 L 513 432 Z" fill="#70a3d8"/>
         <path d="M 549 405 L 585 432 L 549 459 L 513 432 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(527.72 421.46)" fill="white">
+        <text transform="translate(527.72 422.236)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="14" y="15">…</tspan>
         </text>
       </g>

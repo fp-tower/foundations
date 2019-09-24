@@ -14,11 +14,13 @@
     .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     .medium { font-size: 28px; }
     .large { font-size: 36px; }
-    .pull-left { float: left; width: 47%; }
-    .pull-right { float: right; width: 47%; }
+    .medium-left { float: left; width: 37%; }
+    .half-left { float: left; width: 47%; }
     .large-left { float: left; width: 57%; }
     .small-right { float: right; width: 27%; }
     .medium-right { float: right; width: 37%; }
+    .half-right { float: right; width: 47%; }
+    .large-right { float: right; width: 57%; }
     .footer { position: absolute; bottom: 12px; left: 45px }
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
@@ -50,317 +52,140 @@ layout: true
 </div>
 
 ---
-background-image: url(img/errorhandling/function-age.svg)
+background-image: url(img/errorhandling/pure-function-1.svg)
 
-# Function
+# Pure Function is a mapping between Types
 
----
-.h1[# Partial Function]
-
-.large-left[![Function Debit card](img/errorhandling/function-debit-card.svg)]
-
---
-
-.small-right[
-### Maybe John:
-* doesn't have a card
-* didn't share it with us
-* lost it
-* card expired
-* ...
-]
 
 ---
-.h1[# Partial Function]
+.h1[# Pure Function is a mapping between Types]
 
-.large-left[![Function Debit card](img/errorhandling/function-debit-card-boom.svg)]
+.large-left[![Partial Function](img/errorhandling/pure-function-2.svg)]
 
-.small-right[
-### Maybe John:
-* doesn't have a card
-* didn't share it with us
-* lost it
-* card expired
-* ...
-]
-
----
-# Partial Function is lie
-
+.medium-right[
+.medium[
 <br>
+* Powerful refactoring
+* Local reasoning
+* Easier to test
+* Result can be cached
+* Can be run in parallel
+]
+]
 
+---
+.h1[# Function with Side Effects are not Pure]
+
+.half-left[![Partial Function](img/errorhandling/side-effect.svg)]
+
+.half-right[
 ```scala
-// If DebitCard is missing throw a NoSuchElementException
-def getDebitCard(person: Person): DebitCard = ???
-```
-
----
-class: center, middle
-
-# How have you seen error scenarios handled?
-[2-3 min] to write down answers
-
----
-# ❌ Null
-
-```tut:silent
-import java.time.LocalDate
-
-case class DebitCard(number: String, expiry: LocalDate)
-
-case class User(name: String, debitCard: DebitCard)
-
-val elise = User("Elise", DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8)))
-val john  = User("John" , null)
-
-def debitCardHint(x: User): String =
-  x.debitCard.number.take(4)
-```
-
-```tut:fail
-debitCardHint(john)
-```
-
----
-# ✅ Option in data type
-
-```tut:silent
-case class DebitCard(number: String, expiry: LocalDate)
-
-case class User(name: String, debitCard: Option[DebitCard])
-
-val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
-val john  = User("John" , None)
-```
-
----
-# ❌ Exception in function
-
-```scala
-case class DebitCard(number: String, expiry: LocalDate)
-
-case class User(name: String, debitCard: Option[DebitCard])
-
-val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
-val john  = User("John" , None)
-```
-
-```tut:silent
-def getValidDebitCard(user: User, today: LocalDate): DebitCard = {
-  if(user.debitCard.isEmpty)
-    throw new Exception("No debit card")
-  else if(user.debitCard.get.expiry.isAfter(today))
-    throw new Exception("Expired debit card")
-  else
-    user.debitCard.get
+def getDebitCard(userId: UserId): DebitCard = {
+  val user = db.getUser(userId)
+  user.debitCard
 }
-```
 
-```tut:fail
-getValidDebitCard(elise, today = LocalDate.of(2019,5,1))
-```
 
----
-# ❌ Boolean flag (Boolean blindness)
-
-```scala
-case class DebitCard(number: String, expiry: LocalDate)
-
-case class User(name: String, debitCard: Option[DebitCard])
-
-val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
-val john  = User("John" , None)
-```
-
-```tut:silent
-def isValidDebitCard(user: User, today: LocalDate): Boolean = {
-  if(user.debitCard.isEmpty) false
-  else user.debitCard.get.expiry.isBefore(today)
+def deleteDebitCard(userId: UserId): DebitCard = {
+  val user = db.getUser(userId)
+  val debitCard = user.debitCard
+  db.upsertDebitCard(userId, null)
+  debitCard
 }
-```
-
-```tut
-isValidDebitCard(elise, today = LocalDate.of(2019,5,1))
-isValidDebitCard(elise, today = LocalDate.of(2020,1,1))
-```
-
----
-# ❌ Number status
-
-```scala
-case class DebitCard(number: String, expiry: LocalDate)
-
-case class User(name: String, debitCard: Option[DebitCard])
-
-val elise = User("Elise", Some(DebitCard("0476-9999-9999-9999", LocalDate.of(2019,6,8))))
-val john  = User("John" , None)
-```
-
-```tut:silent
-def validateDebitCard(user: User, today: LocalDate): Int = {
-  if(user.debitCard.isEmpty) -1
-  else if(user.debitCard.get.expiry.isAfter(today)) -2
-  else 1
-}
-```
-
-```tut
-validateDebitCard(elise, today = LocalDate.of(2019,5,1))
-validateDebitCard(elise, today = LocalDate.of(2020,1,1))
-validateDebitCard(john, today = LocalDate.of(2020,1,1))
-```
-
----
-# ✅ Option or Either in function
-
-```tut:silent
-sealed trait DebitCardError
-case object MissingDebitCard extends DebitCardError
-case object ExpiredDebitCard extends DebitCardError
-
-def getValidDebitCard(user: User, today: LocalDate): Either[DebitCardError, DebitCard] =
-  user.debitCard match {
-    case None     => Left(MissingDebitCard)
-    case Some(dc) =>
-      if(dc.expiry.isAfter(today)) Left(ExpiredDebitCard)
-      else Right(dc)
-  }
-```
-
-```tut
-getValidDebitCard(elise, today = LocalDate.of(2019,5,1))
-getValidDebitCard(john , today = LocalDate.of(2019,5,1))
-```
-
----
-# ✅ Make the error unrepresentable
-
-```tut:silent
-sealed trait User
-
-case class UserWithDc(name: String, debitCard: DebitCard) extends User
-case class InvalidUser(name: String) extends User
-```
-
-```tut:silent
-def getDebitCard(user: UserWithDc): DebitCard = user.debitCard
-
-def getValidDebitCard(user: UserWithDc, today: LocalDate): Option[DebitCard] = {
-  if(user.debitCard.expiry.isAfter(today)) None
-  else Some(user.debitCard)
-}
-```
-
----
-class: center, middle
-
-# Two strategies to fix it
-
----
-background-image: url(img/errorhandling/function-debit-card-large.svg)
-
-# Increase output type
-
----
-background-image: url(img/errorhandling/function-debit-card-small.svg)
-
-# Reduce input type
-
----
-class: center, middle
-
-# Which approach is preferable? Why?
-[2-3 min] discuss with neighbour
-
----
-class: center, middle
-
-# |A => B| = |B| ^ |A|
-
----
-.h1[# Cardinality]
-
-
-.h1[### Increase output type]
-
-.center[
-```scala
-|A => (B | E)| = |(B | E)| ^ |A|
-                 = (|B| + |E|) ^ |A|
 ```
 ]
 
-.h1[### Reduce input type]
+---
+.h1[# Pure Side Effect and Exception with IO]
 
-.center[
-```scala
-|A1 => B| = |B| ^ |A1|
-                = |B| ^ |(A | A2)|
-                  = |B| ^ (|A| - |A2|)
-```
+.half-left[
+![IO](img/errorhandling/io.svg)
 ]
 
-assume `A = A1 | A2`
+.half-right[
+```scala
+def getDebitCard(db: DbApi, userId: UserId)
+  : IO[DebitCard] =
+  db.getUser          // IO[User]
+    .map(_.debitCard) // IO[Option[DebitCard]]
+    .flatMap{
+      case None =>
+        IO.fail(new Exception("No debit card"))
+      case Some(dc) =>
+        IO.succeed(dc)
+    }
 
----
-class: center, middle
 
-# Unrepresentable Exercises
-
----
-.h1[# Making state unrepresentable]
-
-.large[
-* More upfront work but easier to write business logic
-
-* Different tools with various complexities:
-   * Enum
-   * ADT / GADTs
-   * Parametric / Refinement / Dependent types
-   * HList, HSet
+def deleteDebitCard(db: DbApi, userId: UserId)
+  : IO[DebitCard] =
+  for {
+    user <- db.getUser(userId)
+    _    <- db.upsertDebitCard(userId, None)
+  } yield user.debitCard
+```
 ]
 
 ---
 class: center, middle
 
-# Increase output type
+# What are the disadvantages of IO?
+
+---
+background-image: url(img/errorhandling/io-big.svg)
+
+# IO can be too many things
 
 ---
 class: center, middle
 
-# Which type constructor has an error channel?
-[2-3 min] to write down answers
+# Can we use a type dedicated to error handling in the cases where there is no side effect?
+
+---
+.h1[# Partial Function are not Pure]
+
+.large-left[![Partial Function](img/errorhandling/partial-function-2.svg)]
+
+.medium-right[
+.medium[
+<br>
+Maybe
+* John doesn't have a card
+* John didn't share its card details
+* John lost its card
+* John's card expired
+* ...
+]
+]
+
+---
+background-image: url(img/errorhandling/pure-error-handling.svg)
+
+# Pure Error Handling
+
+---
+class: center, middle
+
+# What types can we use to encode errors (except IO)?
 
 ---
 .h1[# Type constructors with an error channel]
 
+<br>
+
 .large[
 * `Option`
 
-* `Either`
-
 * `Try`
 
-* `Future` or `IO` (from cats, Monix, ZIO)
+* `Either`
 
-* `Validated` (from cats, scalaz)
+* `Validated`
 ]
-
----
-# Type constructors with an error channel
-
-<br>
-
-## 1. Option
-
-## 2. Either
-
-## 3. Validated
 
 ---
 .h1[# Option]
 
-.pull-left[
+.half-left[
 ```tut:silent
 sealed trait Option[+A]
 
@@ -374,13 +199,20 @@ object Option {
 ```
 ]
 
-.pull-right[![Option](img/errorhandling/option.svg)]
+.half-right[![Option](img/errorhandling/option.svg)]
+
+---
+class: center, middle
+
+# Option Exercises
+
+`exercises.errorhandling.OptionExercises.scala`
 
 
 ---
 .h1[# Option variance]
 
-.pull-left[
+.half-left[
 ```scala
 sealed trait Option[`+A`]
 
@@ -391,7 +223,7 @@ object Option {
 ```
 ]
 
-.pull-right[
+.half-right[
 ```scala
 sealed trait Option[`A`]
 
@@ -417,7 +249,7 @@ object Shape {
 ---
 .h1[# Option variance]
 
-.pull-left[
+.half-left[
 ```scala
 sealed trait Option[`+A`]
 
@@ -456,7 +288,7 @@ Some(Circle(5.2)).getOrElse("foo")
 ```
 ]
 
-.pull-right[
+.half-right[
 ```scala
 sealed trait Option[`A`]
 
@@ -506,7 +338,7 @@ class: center, middle
 ---
 .h1[# Option]
 
-.pull-left[
+.half-left[
 ```tut:silent
 sealed trait Option[+A]
 
@@ -520,13 +352,13 @@ object Option {
 ```
 ]
 
-.pull-right[![Option](img/errorhandling/option.svg)]
+.half-right[![Option](img/errorhandling/option.svg)]
 
 
 ---
 .h1[# Option]
 
-.pull-left[
+.half-left[
 ```tut:silent
 sealed trait Option[+A]
 
@@ -540,7 +372,7 @@ object Option {
 ```
 ]
 
-.pull-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
+.half-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
 
 ---
 .h1[# Use Option when]
