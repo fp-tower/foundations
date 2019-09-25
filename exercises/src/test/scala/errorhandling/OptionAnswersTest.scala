@@ -2,17 +2,12 @@ package errorhandling
 
 import answers.errorhandling.OptionAnswers
 import exercises.errorhandling.Country.{France, Switzerland}
-import exercises.errorhandling.OptionExercises.Order
-import exercises.errorhandling.{OptionExercises, User, Username}
+import exercises.errorhandling.{User, Username}
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
-import toimpl.errorhandling.OptionToImpl
 
-class OptionExercisesTest extends OptionTest(OptionExercises)
-class OptionAnswersTest   extends OptionTest(OptionAnswers)
-
-class OptionTest(impl: OptionToImpl) extends AnyFunSuite with Matchers {
-  import impl._
+class OptionAnswersTest extends AnyFunSuite with Matchers {
+  import OptionAnswers._
 
   ////////////////////////
   // 1. Use cases

@@ -2,8 +2,7 @@ package answers.errorhandling
 
 import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, UnsupportedCountry}
 import exercises.errorhandling.EitherExercises.UsernameError._
-import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, UsernameError}
-import exercises.errorhandling.OptionExercises.Order
+import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, Order, UsernameError}
 import exercises.errorhandling.{Country, User, Username}
 import toimpl.errorhandling.EitherToImpl
 
@@ -12,7 +11,6 @@ object EitherAnswers extends EitherToImpl {
   ////////////////////////
   // 1. Use cases
   ////////////////////////
-
   def getOrder(id: Int, users: List[Order]): Either[GetOrderError, Order] =
     users.filter(_.id == id) match {
       case Nil      => Left(GetOrderError.OrderNotFound)
@@ -35,7 +33,7 @@ object EitherAnswers extends EitherToImpl {
           case (Left(e), Right(_))  => Left(e)
           case (Right(_), Left(e))  => Left(e)
           case (Left(e), Left(_))   => Left(e)
-        }
+      }
     )
 
   def validateUsername(username: String): Either[UsernameError, Username] = {

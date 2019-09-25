@@ -1,112 +1,101 @@
 package exercises.errorhandling
 
 import exercises.errorhandling.Country._
-import toimpl.errorhandling.OptionToImpl
 
-object OptionExercises extends OptionToImpl {
+object OptionExercises {
 
   ////////////////////////
   // 1. Use cases
   ////////////////////////
 
-  // 1a. Implement getUser such as it returns the first user matching the id
-  // such as getUser(123, List(User(222, "paul"), User(123, "john"))) == Some(User(123, "john"))
-  // but getUser(111, List(User(222, "paul"), User(123, "john"))) == None
-  case class Order(id: Int, name: String)
-  def getOrder(id: Int, users: List[Order]): Option[Order] = ???
+  // 1a. Implement `getUser` that looks up the first order in a list with a matching id
+  // such as getUser(123, List(User(222, "foo"), User(123, "bar"))) == Some(User(123, "bar"))
+  // but     getUser(111, List(User(222, "foo"), User(123, "bar"))) == None
+  // Note: you can use any functions from List API.
+  case class User(id: Int, name: String)
+  def getUser(id: Int, users: List[User]): Option[User] = ???
 
-  // 1b. Implement charToDigit such as it returns 0 for '0', 1 for '1', ..., 9 for '9'
+  // 1b. Implement `charToDigit` which parses digit characters into number
+  // such as charToDigit('0') == Some('0')
+  //         charToDigit('1') == Some('1')
+  //         charToDigit('9') == Some('9')
+  // but     charToDigit('x') == None
+  // How would you test `charToDigit` with property based testing (PBT)?
   def charToDigit(c: Char): Option[Int] = ???
 
-  // 1c. Implement isValidUsername such as a username:
-  // * is at least 3 characters long
-  // * contains only letter, digits or the following special characters: "_-"
-  def isValidUsername(username: String): Boolean = ???
+  sealed trait Order {
+    // 1c. Implement `optLimit` which return the limit if the order has one
+    // such as LimitOrder(100).optLimit == Some(100)
+    //         StopLimitOrder(10, 20).optLimit == Some(20)
+    // but     StopOrder(100).optLimit == None
+    def optLimit: Option[Double] = ???
+    // 1c. Implement `optLimitOrder` which checks if the current order is a LimitOrder
+    // such as LimitOrder(100).optLimitOrder == Some(LimitOrder(100))
+    // but     StopLimitOrder(10, 20).optLimitOrder == None
+    def optLimitOrder: Option[Order.LimitOrder] = ???
+  }
 
-  // 1d. Implement validateUsername such as it trims the input username and then validate it
-  // such as validateUsername("foo") == Some(UserName("foo"))
-  //         validateUsername("  foo ") == Some(UserName("foo"))
-  // but     validateUsername("abc!@£") == None
-  //         validateUsername(" yo")    == None
-  def validateUsername(username: String): Option[Username] = ???
-
-  // 1e. Implement validateCountry such as it parses a 3 letter country code into a Country enumeration
-  // see https://www.iban.com/country-codes
-  // e.g. validateCountry("FRA") == Some(France)
-  //      validateCountry("foo") == None
-  //      validateCountry("FRANCE") == None
-  //      validateCountry("DZA") a valid alpha 3 but not supported
-  def validateCountry(country: String): Option[Country] = ???
-
-  // 1f. Implement validateUser that validates both username and country
-  // Use pattern matching for this implementation
-  def validateUser(username: String, country: String): Option[User] = ???
+  object Order {
+    case object MarketOrder                                extends Order
+    case class LimitOrder(limit: Double)                   extends Order
+    case class StopOrder(stop: Double)                     extends Order
+    case class StopLimitOrder(stop: Double, limit: Double) extends Order
+  }
 
   ////////////////////////
-  // 2. Composing Option
+  // 2. API
   ////////////////////////
 
-  // 2a. Implement tuple2 using pattern matching such as
-  // tuple2(Some(1), Some("hello")) == Some((1, "hello"))
-  // tuple2(Some(1), None) == None
-  // bonus: how many implementations of tuple2 would compile?
-  def tuple2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] = ???
+  // 2a. Implement `Person#address` which returns the complete address of a Person if both
+  // `streetNumber` and `streetName` is defined.
+  // such as Person(John, Some(10), Some("High street")).address == Some("10 High street")
+  // but     Person(John, Some(10), None).address == None
+  // Note: you can use any functions from Option API such as map, flatMap.
+  // Bonus: Implement `Person#oddAddress` that behaves similarly to `address` but
+  // it will only return an address if the street number is odd
+  case class Person(name: String, streetNumber: Option[Int], streetName: Option[String]) {
+    def address: Option[String]    = ???
+    def oddAddress: Option[String] = ???
+  }
 
-  // 2b. Implement map2 using pattern matching such as
-  // map2(Some(1), Some(2))(_ + _) == Some(3)
-  // map2(Some(1), Option.empty[Int])(_ + _) == None
-  def map2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
+  // 2b. Implement `BankUser#getBalance` which returns the balance of the provided accountId
+  // or 0.0 if the account does not belong to the user.
+  // The balance of a CashAccount is a field of the case class, while it needs to be computed
+  // for a ShareAccount.
+  case class BankUser(name: String,
+                      cashAccounts: Map[AccountId, CashAccount],
+                      shareAccounts: Map[AccountId, CashAccount]) {
+    def getBalance(accountId: AccountId): Double = ???
+  }
+  case class AccountId(value: String)
+  case class CashAccount(id: AccountId, balance: Double)
+  case class ShareAccount(id: AccountId, shares: List[Share]) {
+    def balance: Double = ???
+  }
+  case class Share(quantity: Int, unitPrice: Double)
 
-  // 2c. Re-implement map2 using tuple2 and tuple2 using map2
-  // which would you prefer? Why?
-  def map2FromTuple2[A, B, C](fa: Option[A], fb: Option[B])(f: (A, B) => C): Option[C] = ???
-  def tuple2FromMap2[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)]               = ???
+  // 2c. Implement `filterLimitOrders` which only keeps the LimitOrder from the list
+  // such as filterLimitOrders(List(LimitOrder(10), MarketOrder, LimitOrder(20))) == List(LimitOrder(10), LimitOrder(20))
+  def filterLimitOrders(orders: List[Order]): List[Order.LimitOrder] = ???
 
-  // 2d. Re-implement validateUser using tuple2 or map2
-  def validateUser_v2(username: String, country: String): Option[User] = ???
+  // 2c. Implement `checkAllLimitOrders` which verifies all input orders are LimitOrder
+  // such as checkAllLimitOrders(List(LimitOrder(10),              LimitOrder(20))) == Some(List(LimitOrder(10), LimitOrder(20)))
+  // but     checkAllLimitOrders(List(LimitOrder(10), MarketOrder, LimitOrder(20))) == None
+  // Note: you may want to use listSequence or listTraverse defined below
+  def checkAllLimitOrders(orders: List[Order]): Option[List[Order.LimitOrder]] = ???
 
-  // 2e. Re-implement validateUser using flatMap
-  // which way do you prefer? Why?
-  def validateUser_v3(username: String, country: String): Option[User] = ???
+  def listSequence[A](xs: List[Option[A]]): Option[List[A]] =
+    xs.foldRight(Option(List.empty[A])) {
+      case (None, _)            => None
+      case (_, None)            => None
+      case (Some(a), Some(acc)) => Some(a :: acc)
+    }
 
-  // 2f. Implement validateUsernames such as it returns a list of Username if all inputs are valid
-  // e.g. validateUsernames(List("  foo", "Foo123", "Foo1-2_3")) == Some(List(UserName("foo"), UserName("Foo123"), UserName("Foo1-2_3")))
-  // e.g. validateUsernames(List("  foo", "x", "Foo1-2_3")) == None
-  // Use recursion or fold
-  def validateUsernames(usernames: List[String]): Option[List[Username]] = ???
-
-  // 2g. Implement sequence using recursion or fold
-  // such as sequence(List(Some(1), Some(5), Some(8))) == Some(List(1, 5, 8))
-  //         sequence(Nil) == Some(Nil)
-  // but     sequence(List(Some(1), None, Some(8))) == None
-  def sequence[A](fa: List[Option[A]]): Option[List[A]] = ???
-
-  // 2h. Re-implement validateUsernames using sequence
-  def validateUsernames_v2(usernames: List[String]): Option[List[Username]] = ???
-
-  // 2i. Implement traverse using recursion or fold
-  // such as traverse(List(1, 5, 9))(x => if(isEven(x)) Some(x) else None) == Some(List(1, 5, 9))
-  //         traverse(List.empty[Int])(x => if(isEven(x)) Some(x) else None) == Some(Nil)
-  // but     traverse(List(1, 4, 9))(x => if(isEven(x)) Some(x) else None) == None
-  def traverse[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] = ???
-
-  // 2j. Re-implement validateUsernames using traverse
-  def validateUsernames_v3(usernames: List[String]): Option[List[Username]] = ???
-
-  // 2k. Re-implement traverse using sequence and sequence using traverse
-  // which would you prefer? Why?
-  def traverseFromSequence[A, B](fa: List[A])(f: A => Option[B]): Option[List[B]] = ???
-  def sequenceFromTraverse[A](fa: List[Option[A]]): Option[List[A]]               = ???
+  def listTraverse[A, B](xs: List[A])(f: A => Option[B]): Option[List[B]] =
+    listSequence(xs.map(f))
 
   ////////////////////////
-  // 3. Error message
+  // 3. Limitation
   ////////////////////////
-
-  // 3a. Implement validateUserMessage such as:
-  // * if the inputs are valid, it display the User (e.g. user.toString)
-  // * if the inputs are invalid, it display an error message
-  def validateUserMessage(username: String, country: String): String = ???
-
-  // 3b. What is the problem with validateUserMessage? How would you fix it?
 
 }

@@ -1,7 +1,6 @@
 package exercises.errorhandling
 
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacter, TooSmall}
-import exercises.errorhandling.OptionExercises.Order
 import toimpl.errorhandling.EitherToImpl
 
 import scala.util.Try
@@ -16,6 +15,8 @@ object EitherExercises extends EitherToImpl {
   // such as getOrder(123, List(Order(222, "paul"), Order(123, "john"))) == Right(Order(123, "john"))
   // but getOrder(111, List(Order(222, "paul"), Order(123, "john"))) == Left(OrderNotFound)
   //     getOrder(123, List(Order(123, "paul"), Order(123, "john"))) == Left(NonUniqueOrderId)
+  case class Order(id: Int, name: String)
+
   sealed trait GetOrderError
   object GetOrderError {
     case object OrderNotFound    extends GetOrderError

@@ -1,15 +1,15 @@
 package answers.errorhandling
 
 import exercises.errorhandling.Country._
-import exercises.errorhandling.OptionExercises.Order
 import exercises.errorhandling.{Country, User, Username}
-import toimpl.errorhandling.OptionToImpl
 
-object OptionAnswers extends OptionToImpl {
+object OptionAnswers {
 
   ////////////////////////
   // 1. Use cases
   ////////////////////////
+
+  case class Order(id: Int, name: String)
 
   def getOrder(id: Int, orders: List[Order]): Option[Order] =
     orders.find(_.id == id)

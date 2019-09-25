@@ -3,8 +3,7 @@ package errorhandling
 import answers.errorhandling.EitherAnswers
 import exercises.errorhandling.EitherExercises.GetOrderError.{NonUniqueOrderId, OrderNotFound}
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacter, TooSmall}
-import exercises.errorhandling.EitherExercises.{parseStringToInt, UsernameError}
-import exercises.errorhandling.OptionExercises.Order
+import exercises.errorhandling.EitherExercises.{parseStringToInt, Order, UsernameError}
 import exercises.errorhandling.{EitherExercises, Username}
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite

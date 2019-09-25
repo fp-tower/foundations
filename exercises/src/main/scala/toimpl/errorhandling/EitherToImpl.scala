@@ -1,8 +1,7 @@
 package toimpl.errorhandling
 
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacter, TooSmall}
-import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, UsernameError}
-import exercises.errorhandling.OptionExercises.Order
+import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, Order, UsernameError}
 import exercises.errorhandling.{Country, Username}
 
 trait EitherToImpl {
