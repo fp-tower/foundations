@@ -138,7 +138,7 @@ background-image: url(img/errorhandling/io-big.svg)
 ---
 class: center, middle
 
-# Can we use a type dedicated to error handling in the cases where there is no side effect?
+# Can we use a type dedicated to error handling?
 
 ---
 .h1[# Partial Function are not Pure]
@@ -186,7 +186,7 @@ class: center, middle
 .h1[# Option]
 
 .half-left[
-```tut:silent
+```scala
 sealed trait Option[+A]
 
 object Option {
@@ -200,6 +200,89 @@ object Option {
 ]
 
 .half-right[![Option](img/errorhandling/option.svg)]
+
+
+---
+.h1[# Option documents which values can null]
+
+.half-left[
+```tut:silent
+case class User(
+  id     : java.util.UUID,
+  name   : String,
+  age    : Int,
+  email  : Option[String],
+  address: Option[String]
+)
+```
+
+<br>
+
+.medium[In theory, someone can create a User with a null id but in practice, no one uses null outside of java interop]
+]
+
+.half-right[
+```sql
+CREATE TABLE users (
+  id      UUID NOT NULL,
+  name    TEXT NOT NULL,
+  age     INT  NOT NULL,
+  email   TEXT,
+  address TEXT
+)
+```
+]
+
+---
+.h1[# Option forces us to think about empty case]
+
+.half-left[
+```tut:silent
+def longest(xs: List[String]): Option[String] = {
+  var current: Option[String] = None
+
+  for (x <- xs) {
+    current match {
+      case Some(max) if max.length > x.length =>
+        () // do nothing
+      case _ =>
+        current = Some(x)
+    }
+  }
+
+  current
+}
+```
+]
+
+.half-right[
+```tut:silent
+def longest(xs: List[String]): String = {
+  var current: String = null
+
+  for (x <- xs) {
+
+    if(current != null && current.length > x.length) {
+      () // do nothing
+    } else {
+      current = x
+    }
+  }
+
+  current
+}
+```
+]
+
+---
+# Option is a List with at most one element
+
+```tut
+Some("hello").toList
+None.toList
+
+List(Some(3), None, Some(4), None, None, Some(5)).flatMap(_.toList)
+```
 
 ---
 class: center, middle

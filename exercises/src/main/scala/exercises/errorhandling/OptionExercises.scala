@@ -1,14 +1,12 @@
 package exercises.errorhandling
 
-import exercises.errorhandling.Country._
-
 object OptionExercises {
 
   ////////////////////////
   // 1. Use cases
   ////////////////////////
 
-  // 1a. Implement `getUser` that looks up the first order in a list with a matching id
+  // 1a. Implement `getUser` that looks up the first order with a matching id
   // such as getUser(123, List(User(222, "foo"), User(123, "bar"))) == Some(User(123, "bar"))
   // but     getUser(111, List(User(222, "foo"), User(123, "bar"))) == None
   // Note: you can use any functions from List API.
@@ -29,7 +27,7 @@ object OptionExercises {
     //         StopLimitOrder(10, 20).optLimit == Some(20)
     // but     StopOrder(100).optLimit == None
     def optLimit: Option[Double] = ???
-    // 1c. Implement `optLimitOrder` which checks if the current order is a LimitOrder
+    // 1d. Implement `optLimitOrder` which checks if the current order is a LimitOrder
     // such as LimitOrder(100).optLimitOrder == Some(LimitOrder(100))
     // but     StopLimitOrder(10, 20).optLimitOrder == None
     def optLimitOrder: Option[Order.LimitOrder] = ???
@@ -47,12 +45,12 @@ object OptionExercises {
   ////////////////////////
 
   // 2a. Implement `Person#address` which returns the complete address of a Person if both
-  // `streetNumber` and `streetName` is defined.
+  // `streetNumber` and `streetName` are defined
   // such as Person(John, Some(10), Some("High street")).address == Some("10 High street")
   // but     Person(John, Some(10), None).address == None
   // Note: you can use any functions from Option API such as map, flatMap.
   // Bonus: Implement `Person#oddAddress` that behaves similarly to `address` but
-  // it will only return an address if the street number is odd
+  // it will return None if the street number is even
   case class Person(name: String, streetNumber: Option[Int], streetName: Option[String]) {
     def address: Option[String]    = ???
     def oddAddress: Option[String] = ???
@@ -60,8 +58,7 @@ object OptionExercises {
 
   // 2b. Implement `BankUser#getBalance` which returns the balance of the provided accountId
   // or 0.0 if the account does not belong to the user.
-  // The balance of a CashAccount is a field of the case class, while it needs to be computed
-  // for a ShareAccount.
+  // The balance of a CashAccount is a field of the case class, while it is computed for a ShareAccount.
   case class BankUser(name: String,
                       cashAccounts: Map[AccountId, CashAccount],
                       shareAccounts: Map[AccountId, CashAccount]) {
@@ -70,25 +67,26 @@ object OptionExercises {
   case class AccountId(value: String)
   case class CashAccount(id: AccountId, balance: Double)
   case class ShareAccount(id: AccountId, shares: List[Share]) {
-    def balance: Double = ???
+    def balance: Double = shares.map(s => s.quantity * s.unitPrice).sum
   }
   case class Share(quantity: Int, unitPrice: Double)
 
-  // 2c. Implement `filterLimitOrders` which only keeps the LimitOrder from the list
-  // such as filterLimitOrders(List(LimitOrder(10), MarketOrder, LimitOrder(20))) == List(LimitOrder(10), LimitOrder(20))
-  def filterLimitOrders(orders: List[Order]): List[Order.LimitOrder] = ???
+  // 2c. Implement `filterDigits` which only keeps the digits from the list
+  // such as filterDigits(List('a', '1', 'b', 'c', '4')) == List(1, 4)
+  // Note: try to reuse `charToDigit`
+  def filterDigits(xs: List[Char]): List[Int] = ???
 
-  // 2c. Implement `checkAllLimitOrders` which verifies all input orders are LimitOrder
-  // such as checkAllLimitOrders(List(LimitOrder(10),              LimitOrder(20))) == Some(List(LimitOrder(10), LimitOrder(20)))
-  // but     checkAllLimitOrders(List(LimitOrder(10), MarketOrder, LimitOrder(20))) == None
+  // 2d. Implement `checkAllDigits` which verifies all input characters are digits
+  // such as checkAllDigits(List('a', '1', 'b', 'c', '4')) == None
+  // but     checkAllDigits(List('1', '2', '3')) == Some(List(1, 2, 3))
   // Note: you may want to use listSequence or listTraverse defined below
-  def checkAllLimitOrders(orders: List[Order]): Option[List[Order.LimitOrder]] = ???
+  def checkAllDigits(orders: List[Char]): Option[List[Int]] = ???
 
   def listSequence[A](xs: List[Option[A]]): Option[List[A]] =
     xs.foldRight(Option(List.empty[A])) {
+      case (Some(a), Some(acc)) => Some(a :: acc)
       case (None, _)            => None
       case (_, None)            => None
-      case (Some(a), Some(acc)) => Some(a :: acc)
     }
 
   def listTraverse[A, B](xs: List[A])(f: A => Option[B]): Option[List[B]] =
@@ -97,5 +95,30 @@ object OptionExercises {
   ////////////////////////
   // 3. Limitation
   ////////////////////////
+
+  // 3a. Implement `validateUsernameMessage` which gives a human readable message about the validity of its username
+  // such as validateUsernameMessage(" john-doe ") == "john-doe is a valid username"
+  // but     validateUsernameMessage("jo") == "Username must have at least 3 characters long, currently 2"
+  //         validateUsernameMessage("!john**") == "Username contains invalid characters (!*)"
+  def validateUsernameMessage(username: String): String = ???
+
+  def validateUsername(username: String): Option[Username] = {
+    val trimmed = username.trim
+    for {
+      _ <- checkUsernameLength(trimmed)
+      _ <- checkUsernameCharacters(trimmed)
+    } yield Username(trimmed)
+  }
+
+  def checkUsernameLength(username: String): Option[Unit] =
+    if (username.length >= 3) Some(())
+    else None
+
+  def checkUsernameCharacters(username: String): Option[Unit] =
+    if (username.forall(isValidUsernameCharacter)) Some(())
+    else None
+
+  def isValidUsernameCharacter(c: Char): Boolean =
+    c.isLetter || c.isDigit || c == '_' || c == '-'
 
 }
