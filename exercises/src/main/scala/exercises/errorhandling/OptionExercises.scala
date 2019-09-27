@@ -98,8 +98,9 @@ object OptionExercises {
 
   // 3a. Implement `validateUsernameMessage` which gives a human readable message about the validity of its username
   // such as validateUsernameMessage(" john-doe ") == "john-doe is a valid username"
-  // but     validateUsernameMessage("jo") == "Username must have at least 3 characters long, currently 2"
+  // but     validateUsernameMessage("jo  ") == "Username must have at least 3 characters long, currently 2"
   //         validateUsernameMessage("!john**") == "Username contains invalid characters (!*)"
+  // Note: username is trimmed in `validateUsername`
   def validateUsernameMessage(username: String): String = ???
 
   def validateUsername(username: String): Option[Username] = {

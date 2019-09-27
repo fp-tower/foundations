@@ -56,6 +56,10 @@ background-image: url(img/errorhandling/pure-function-1.svg)
 
 # Pure Function is a mapping between Types
 
+---
+background-image: url(img/errorhandling/pure-function-2.svg)
+
+# Pure Function is a mapping between Types
 
 ---
 .h1[# Pure Function is a mapping between Types]
@@ -68,8 +72,7 @@ background-image: url(img/errorhandling/pure-function-1.svg)
 * Powerful refactoring
 * Local reasoning
 * Easier to test
-* Result can be cached
-* Can be run in parallel
+* Potential performance optimisations (caching)
 ]
 ]
 
@@ -107,12 +110,11 @@ def deleteDebitCard(userId: UserId): DebitCard = {
 def getDebitCard(db: DbApi, userId: UserId)
   : IO[DebitCard] =
   db.getUser          // IO[User]
-    .map(_.debitCard) // IO[Option[DebitCard]]
-    .flatMap{
-      case None =>
+    .flatMap{ user =>
+      if(user.debitCard == null)
         IO.fail(new Exception("No debit card"))
-      case Some(dc) =>
-        IO.succeed(dc)
+      else
+        IO.succeed(user.debitCard)
     }
 
 
@@ -120,7 +122,7 @@ def deleteDebitCard(db: DbApi, userId: UserId)
   : IO[DebitCard] =
   for {
     user <- db.getUser(userId)
-    _    <- db.upsertDebitCard(userId, None)
+    _    <- db.upsertDebitCard(userId, null)
   } yield user.debitCard
 ```
 ]
@@ -203,7 +205,7 @@ object Option {
 
 
 ---
-.h1[# Option documents which values can null]
+.h1[# Option documents which values can be null]
 
 .half-left[
 ```tut:silent
@@ -291,171 +293,118 @@ class: center, middle
 
 `exercises.errorhandling.OptionExercises.scala`
 
-
 ---
-.h1[# Option variance]
+# Variance
 
-.half-left[
 ```scala
-sealed trait Option[`+A`]
+sealed trait Option[`+`A]
 
 object Option {
-  case class Some[`+A`](value: A) extends Option[A]
-  case object None extends Option[`Nothing`]
+
+  case class Some[`+`A](value: A) extends Option[A]
+
+  case object None extends Option[Nothing]
+
 }
 ```
+
+--
+
+```tut:silent
+trait Foo[+A] // Foo is covariant
+trait Foo[-A] // Foo is contravariant
+trait Foo[ A] // Foo is invariant
+```
+
+---
+.h1[# Type hierarchy]
+
+.half-left[
+![Type Hierarchy](img/errorhandling/type-hierarchy.svg)
 ]
 
 .half-right[
-```scala
-sealed trait Option[`A`]
+```tut:silent
+val bool: Boolean = true
+val five: Int = 5
 
-object Option {
-  case class Some[A](value: A) extends Option[A]
-  case class None`[A]()` extends Option[`A`]
-}
+case class Foo(i: Int, s: String)
+val hello: String = "Hello"
+val foo: Foo = Foo(0, "")
+
+val anyVals: List[AnyVal] = List(bool, five)
+val anyRefs: List[AnyRef] = List(hello, foo, null)
+
+val anys: List[Any] = anyVals ++ anyRefs
 ```
 ]
 
 ---
-# Option variance
+background-image: url(img/errorhandling/covariance.svg)
+
+.h1[# Covariance]
+
+---
+background-image: url(img/errorhandling/type-hierarchy-option.svg)
+
+---
+# Benefits of Variance
+
+```tut:silent
+val optNothing: Option[Nothing] = None
+val optInt    : Option[Int]     = None
+val optString : Option[String]  = None
+
+def none[A]: Option[A] = None
+```
 
 ```tut:silent
 sealed trait Shape extends Product with Serializable
 
-object Shape {
-  case class Circle(radius: Double) extends Shape
-  case class Rectangle(width: Double, height: Double) extends Shape
-}
-```
-
----
-.h1[# Option variance]
-
-.half-left[
-```scala
-sealed trait Option[`+A`]
-
-object Option {
-  case class Some[`+A`](value: A) extends Option[A]
-  case object None extends Option[`Nothing`]
-}
-```
-
-```tut:invisible
-sealed trait Option[+A]
-
-object Option {
-  case class Some[+A](value: A) extends Option[A]
-  case object None extends Option[Nothing]
-}
-
-implicit class OptionOps[A](self: Option[A]){
-  def getOrElse[B >: A](other: => B): B =
-    self match {
-      case Option.None    => other
-      case Option.Some(a) => a
-    }
-}
-
-import Option.{Some, None}
-import Shape.{Circle, Rectangle}
+case class Circle(radius: Double) extends Shape
+case class Rectangle(width: Double, height: Double) extends Shape
 ```
 
 ```tut
+Some(Circle(5.2))
 Some(Circle(5.2)).getOrElse(Rectangle(4,2))
 ```
 
-```tut
-Some(Circle(5.2)).getOrElse("foo")
-```
-]
-
-.half-right[
-```scala
-sealed trait Option[`A`]
-
-object Option {
-  case class Some[A](value: A) extends Option[A]
-  case class None`[A]()` extends Option[`A`]
-}
-```
-
-```tut:invisible
-sealed trait Option[A]
-
-object Option {
-  case class Some[A](value: A) extends Option[A]
-  case class None[A]() extends Option[A]
-}
-```
-
-```tut:invisible
-implicit class OptionOps[A](self: Option[A]){
-  def getOrElse(other: => A): A =
-    self match {
-      case Option.None()  => other
-      case Option.Some(a) => a
-    }
-}
-
-import Option.{Some, None}
-import Shape.{Circle, Rectangle}
-```
+---
+# Inconveniences of Variance
 
 ```tut
-Some(Circle(5.2): Shape).getOrElse(
-  Rectangle(4,2): Shape)
+Some(Circle(5.2)).getOrElse(3)
+Some(Circle(5.2)).getOrElse("Triangle")
+```
+
+### It is generally a bug when the inferred type is `Any`, `AnyRef` or `Serializable`
+### see Least Upper Bound (LUB)
+
+---
+# Invariant Option
+
+```tut:silent
+sealed trait InvariantOption[A]
+
+object InvariantOption {
+  case class Some[A](value: A) extends InvariantOption[A]
+  case class None[A]() extends InvariantOption[A]
+}
+```
+
+```tut:silent
+val optInt: Option[Int] = Some(3)
+val optAny: Option[Any] = optInt
+```
+
+```tut:silent
+val optInt: InvariantOption[Int] = InvariantOption.Some(3)
 ```
 
 ```tut:fail
-Some(Circle(5.2)).getOrElse("foo")
+val optAny: InvariantOption[Any] = optInt
 ```
-]
-
----
-class: center, middle
-
-# Option Exercises
-
----
-.h1[# Option]
-
-.half-left[
-```tut:silent
-sealed trait Option[+A]
-
-object Option {
-
-  case class Some[+A](value: A) extends Option[A]
-
-  case object None extends Option[Nothing]
-
-}
-```
-]
-
-.half-right[![Option](img/errorhandling/option.svg)]
-
-
----
-.h1[# Option]
-
-.half-left[
-```tut:silent
-sealed trait Option[+A]
-
-object Option {
-
-  case class Some[+A](value: A) extends Option[A]
-
-  case object None extends Option[Nothing]
-
-}
-```
-]
-
-.half-right[![Option unwrapped](img/errorhandling/option-unwrapped.svg)]
 
 ---
 .h1[# Use Option when]
@@ -463,9 +412,11 @@ object Option {
 <br>
 
 .large[
-* Failure is unique, e.g. key is not in the Map
+* A value may be missing
 
-* Or you don't need granular error
+* An operation can fail in a unique obvious way, e.g. lookup in a Map
+
+* An operation can fail in many ways but we don't need to differentiate
 ]
 
 ---
