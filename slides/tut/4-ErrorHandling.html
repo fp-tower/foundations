@@ -423,7 +423,7 @@ val optAny: InvariantOption[Any] = optInt
 .h1[# Either]
 
 .large-left[
-```tut:silent
+```scala
 sealed trait Either[+E, +A]
 
 object Either {
@@ -436,48 +436,25 @@ object Either {
 .medium-right[![Either](img/errorhandling/either.svg)]
 
 ---
-.h1[# Either]
+# How shall we encode errors in an Either?
 
-.large-left[
 ```tut:silent
-sealed trait Either[+E, +A]
+sealed trait Country
 
-object Either {
-  case class  Left[+E](value: E) extends Either[E, Nothing]
-  case class Right[+A](value: A) extends Either[Nothing, A]
+object Country {
+  case object France        extends Country
+  case object Germany       extends Country
+  case object Switzerland   extends Country
+  case object UnitedKingdom extends Country
+
+  val all: List[Country] = List(France, Germany, Switzerland, UnitedKingdom)
 }
 ```
-]
-
-.medium-right[![Either unwrapped](img/errorhandling/either-unwrapped.svg)]
-
----
-.h1[# Either variance]
 
 ```scala
-sealed trait Either[`+E`, `+A`]
-```
-
-```tut:invisible
-import Either.{Left, Right}
-```
-
-```tut:silent
-sealed trait MyError
-case class Error1(name: String) extends MyError
-case object Error2 extends MyError
-
-sealed trait Shape
-case class Circle(radius: Double) extends Shape
-case class Rectangle(width: Double, height: Double) extends Shape
-```
-
-
-```tut:silent
-val right1: Either[MyError, Shape] = Right(Circle(5.2))
-val right2: Either[MyError, Shape] = Right(Rectangle(2, 3))
-val left1 : Either[MyError, Shape] = Left(Error1("foo"))
-val left2 : Either[MyError, Shape] = Left(Error2)
+// A country must be a 3 letter country code from https://www.iban.com/country-codes
+// e.g. FRA for France
+def validateCountry(country: String): Either[???, Country] = ???
 ```
 
 ---
