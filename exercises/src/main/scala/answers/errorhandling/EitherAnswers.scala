@@ -1,5 +1,6 @@
 package answers.errorhandling
 
+import exercises.errorhandling.Country.{France, Germany, Switzerland, UnitedKingdom}
 import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, UnsupportedCountry}
 import exercises.errorhandling.EitherExercises.UsernameError._
 import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, Order, UsernameError}
@@ -21,8 +22,11 @@ object EitherAnswers extends EitherToImpl {
   def validateUsernameSize(username: String): Either[TooSmall.type, Unit] =
     if (username.length < 3) Left(TooSmall) else Right(())
 
+  def isValidUsernameCharacter(c: Char): Boolean =
+    c.isLetter || c.isDigit || c == '_' || c == '-'
+
   def validateUsernameCharacter(c: Char): Either[InvalidCharacter, Unit] =
-    if (OptionAnswers.isValidUsernameCharacter(c)) Right(())
+    if (isValidUsernameCharacter(c)) Right(())
     else Left(InvalidCharacter(c))
 
   def validateUsernameContent(username: String): Either[InvalidCharacter, Unit] =
@@ -48,8 +52,16 @@ object EitherAnswers extends EitherToImpl {
 
   def validateCountry(country: String): Either[CountryError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
-      OptionAnswers.validateCountry(country).toRight(UnsupportedCountry)
+      parseCountry(country).toRight(UnsupportedCountry)
     else Left(InvalidFormat)
+
+  def parseCountry(country: String): Option[Country] = country match {
+    case "FRA" => Some(France)
+    case "DEU" => Some(Germany)
+    case "CHE" => Some(Switzerland)
+    case "BGR" => Some(UnitedKingdom)
+    case _     => None
+  }
 
   ////////////////////////
   // 2. Composing Either
