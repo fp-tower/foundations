@@ -25,6 +25,7 @@
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
     tr:nth-child(even) {background-color: #f2f2f2;}
+    .hl { color : blue }
   </style>
 </head>
 <body>
@@ -52,19 +53,138 @@ layout: true
 </div>
 
 ---
-background-image: url(img/errorhandling/pure-function-1.svg)
+class: center, middle
 
-# Pure Function is a mapping between Types
+# How to deal with predicable runtime errors
+
 
 ---
-background-image: url(img/errorhandling/pure-function-2.svg)
+background-image: url(img/errorhandling/partial-function-1.svg)
 
-# Pure Function is a mapping between Types
+# Partial Function
+
+---
+background-image: url(img/errorhandling/partial-function-2.svg)
+
+# Partial Function
+
+---
+.h1[# Error Handling Objectives]
+
+.large[
+<br>
+1. Document when errors can occur
+
+1. Document what specific type of errors can occur
+
+1. Force caller to deal with errors with a powerful API
+
+1. Provide a user friendly syntax to raise and handle errors
+]
+
+---
+# Exception
+
+```tut:silent
+case class Item(id: Long, unitPrice: Double, quantity: Int)
+
+case class OrderState(status: String, basket: List[Item])
+
+def submitOrder(state: OrderState): OrderState =
+  state.status match {
+    case "Draft" if state.basket.nonEmpty =>
+      state.copy(status = "Submitted")
+    case other =>
+      throw new Exception("Invalid Command")
+  }
+```
+
+```tut:fail
+submitOrder(OrderState("Draft", Nil))
+```
+
+---
+# Exception
+
+```tut:silent
+case class Item(id: Long, unitPrice: Double, quantity: Int)
+
+case class OrderState(status: String, basket: List[Item])
+
+case object EmptyBasketError extends Exception
+case class InvalidCommandError(command: String, state: OrderState) extends Exception
+
+def submitOrder(state: OrderState): OrderState =
+  state.status match {
+    case "Draft" =>
+      if(state.basket.isEmpty)
+         throw EmptyBasketError
+      else
+         state.copy(status = "Submitted")
+    case other =>
+      throw new InvalidCommandError("submit", state)
+  }
+```
+
+```tut:fail
+submitOrder(OrderState("Draft", Nil))
+```
+
+---
+# Exception
+
+```tut:silent
+def submitOrder(state: OrderState): OrderState = ???
+
+def canSubmitOrder(state: OrderState): Boolean =
+  try {
+    submitOrder(state)
+    true
+  } catch {
+    case EmptyBasketError       => false
+    case _: InvalidCommandError => false
+    case _: ArithmeticException => false
+    case _: Exception           => false
+  }
+```
+
+--
+
+### In Java, you have checked Exception
+
+```java
+public OrderState submitOrder(OrderState state) `throws EmptyBasketError, InvalidCommandError`
+```
+
+---
+# Exception
+
+```tut:silent
+import scala.util.{Try, Success, Failure}
+
+def submitOrder(state: OrderState): OrderState = ???
+
+def canSubmitOrder(state: OrderState): Boolean =
+  Try(submitOrder(state)) match {
+    case Success(_) => true
+    case Failure(_) => false
+  }
+```
+
+<br>
+
+1. ❌ Document when errors can occur
+
+1. ❌ Document what specific type of errors can occur
+
+1. ❌ Force caller to deal with errors with a powerful API
+
+1. ✅ Provide a user friendly syntax to raise and handle errors
 
 ---
 .h1[# Pure Function is a mapping between Types]
 
-.large-left[![Partial Function](img/errorhandling/pure-function-2.svg)]
+.large-left[![Partial Function](img/errorhandling/pure-function-1.svg)]
 
 .medium-right[
 .medium[
@@ -73,6 +193,7 @@ background-image: url(img/errorhandling/pure-function-2.svg)
 * Local reasoning
 * Easier to test
 * Potential performance optimisations (caching)
+* .hl[Better documentation]
 ]
 ]
 
@@ -109,7 +230,7 @@ def deleteDebitCard(userId: UserId): DebitCard = {
 ```scala
 def getDebitCard(db: DbApi, userId: UserId)
   : IO[DebitCard] =
-  db.getUser          // IO[User]
+  db.getUser // IO[User]
     .flatMap{ user =>
       if(user.debitCard == null)
         IO.fail(new Exception("No debit card"))
@@ -128,36 +249,62 @@ def deleteDebitCard(db: DbApi, userId: UserId)
 ]
 
 ---
-class: center, middle
-
-# What are the disadvantages of IO?
-
----
 background-image: url(img/errorhandling/io-big.svg)
 
 # IO can be too many things
 
 ---
-class: center, middle
+# IO is more difficult to test
 
-# Can we use a type dedicated to error handling?
+```tut:silent
+import answers.sideeffect.IOAnswers.IO
+import java.util.UUID
+
+case class UserId(value: UUID)
+case class User(value: UserId, name: String)
+
+def generateUserId: IO[UserId] =
+  IO.effect( UserId(UUID.randomUUID()) )
+
+def createUser(name: String): IO[User] =
+  generateUserId.map(id => User(id, name))
+```
+
+```tut
+val createJohn = createUser("John")
+
+createJohn.unsafeRun()
+createJohn.unsafeRun()
+```
 
 ---
-.h1[# Partial Function are not Pure]
+.h1[# Pure Side Effect and Exception with IO]
 
-.large-left[![Partial Function](img/errorhandling/partial-function-2.svg)]
+.half-left[
+![IO](img/errorhandling/io.svg)
+]
 
-.medium-right[
-.medium[
+.half-right[
 <br>
-Maybe
-* John doesn't have a card
-* John didn't share its card details
-* John lost its card
-* John's card expired
-* ...
+
+1. ✅ Document when errors can occur
+
+1. ❌ Document what specific type of errors can occur
+
+1. ✅ Force caller to deal with errors with a powerful API
+
+1. .hl[≈] Provide a user friendly syntax to raise and handle errors
 ]
-]
+
+---
+class: center, middle
+
+# Can we use a type only dedicated to error handling?
+
+---
+background-image: url(img/errorhandling/partial-function-1.svg)
+
+# Partial Function
 
 ---
 background-image: url(img/errorhandling/pure-error-handling.svg)
@@ -217,10 +364,6 @@ case class User(
   address: Option[String]
 )
 ```
-
-<br>
-
-.medium[In theory, someone can create a User with a null id but in practice, no one uses null outside of java interop]
 ]
 
 .half-right[
