@@ -24,17 +24,19 @@
 * IO vs Future
 * Async
 
-### Module 3: [Type](https://fp-tower.github.io/foundation/3-Type.html#1)
+### Module 3: [Error Handling](https://fp-tower.github.io/foundation/3-ErrorHandling.html#1)
+* How to safely deal with predictable runtime errors
+* Compare error types: Option, Either, Validated, Try
+* Covariance
+* Introduction to OptionT, EitherT
+
+### Module 4: [Type](https://fp-tower.github.io/foundation/4-Type.html#1)
+* Unrepresentable state
 * Cardinality
 * Algebra of types
 * Types and Tests, Valid Implementation Count (VIC)
 * Parametricity
 * Logic and types
-
-### Module 4: [Error Handling](https://fp-tower.github.io/foundation/4-ErrorHandling.html#1)
-* Unrepresentable state
-* Compare error types: Option, Either, Validated, Try
-* ADT similarities
 
 ### Module 5: Reader / Writer / State
 
