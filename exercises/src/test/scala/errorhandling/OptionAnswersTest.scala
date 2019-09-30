@@ -2,9 +2,11 @@ package errorhandling
 
 import answers.errorhandling.OptionAnswers.Role._
 import answers.errorhandling.OptionAnswers._
+import answers.sideeffect.{IOAsync, IOAsyncRef}
 import exercises.errorhandling.InvariantOption
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import scala.concurrent.duration._
 
 class OptionAnswersTest extends AnyFunSuite with Matchers {
 
@@ -48,6 +50,40 @@ class OptionAnswersTest extends AnyFunSuite with Matchers {
   test("checkAllDigits") {
     checkAllDigits("1234".toList) shouldEqual Some(List(1, 2, 3, 4))
     checkAllDigits("a1bc4".toList) shouldEqual None
+  }
+
+  test("sendUserEmail") {
+    def inMemoryDb(ref: IOAsyncRef[Map[UserId, User]]): DbApi = new DbApi {
+      def getAllUsers: IOAsync[Map[UserId, User]] = ref.get
+    }
+    def inMemoryClient(ref: IOAsyncRef[List[(Email, String)]]): EmailClient = new EmailClient {
+      def sendEmail(email: Email, body: String): IOAsync[Unit] =
+        ref.update(_ :+ (email, body))
+    }
+
+    val ec = scala.concurrent.ExecutionContext.global
+
+    val test = for {
+      usersRef  <- IOAsyncRef(Map.empty[UserId, User])
+      emailsRef <- IOAsyncRef(List.empty[(Email, String)])
+      db     = inMemoryDb(usersRef)
+      client = inMemoryClient(emailsRef)
+      userId = UserId(10)
+      email  = Email("j@foo.com")
+      body   = "Hello World"
+      user   = User(userId, "John", Some(email))
+      waitEmail     <- sendUserEmail(db, client)(userId, body).start(ec)
+      _             <- IOAsync.sleep(200.millis)
+      expectNoEmail <- emailsRef.get
+      _             <- usersRef.update(_ + (userId -> user))
+      _             <- waitEmail
+      expectEmail   <- emailsRef.get
+    } yield {
+      expectNoEmail shouldEqual Nil
+      expectEmail shouldEqual List(email -> body)
+    }
+
+    test.unsafeRun()
   }
 
 }

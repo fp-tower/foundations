@@ -1,5 +1,9 @@
 package exercises.errorhandling
 
+import answers.sideeffect.IOAnswers.IO
+import io.circe.{parser, Json}
+
+import scala.concurrent.duration._
 import scala.util.Try
 
 object OptionExercises {
@@ -132,4 +136,32 @@ object OptionExercises {
   def listTraverse[A, B](xs: List[A])(f: A => Option[B]): Option[List[B]] =
     listSequence(xs.map(f))
 
+  ///////////////////
+  // 4. Limitation
+  ///////////////////
+
+  // 4a. Implement `sendUserEmail` which attempts to send an email to a user.
+  // If a user is missing, we will retry to send email in 100 millis
+  // but if a user exists and it doesn't have an email address, then we fail the IO
+  // Can you reuse `getUserEmail`? Why?
+  def sendUserEmail(db: DbApi, emailClient: EmailClient)(userId: UserId, emailBody: String): IO[Unit] =
+    ???
+
+  trait DbApi {
+    def getAllUsers: IO[Map[UserId, User]]
+  }
+
+  trait EmailClient {
+    def sendEmail(email: Email, body: String): IO[Unit]
+  }
+
+  // 4b. Implement `parsingJsonMessage` which attempt to parse a String into Json and returns either
+  // a successful message in case of success (e.g. "OK") or
+  // a descriptive error message in case of failure (e.g. "invalid syntax at line 3: `foo :-: 4`'")
+  // Note: assume you can only use `parseJson`
+  def parsingJsonMessage(jsonStr: String): String =
+    ???
+
+  def parseJson(jsonStr: String): Option[Json] =
+    parser.parse(jsonStr).toOption
 }
