@@ -2,6 +2,7 @@ package errorhandling
 
 import answers.errorhandling.OptionAnswers.Role._
 import answers.errorhandling.OptionAnswers._
+import exercises.errorhandling.InvariantOption
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -30,6 +31,14 @@ class OptionAnswersTest extends AnyFunSuite with Matchers {
     editor.optEditor shouldEqual Some(editor)
     Reader(AccountId(123), premiumUser = true).optEditor shouldEqual None
     Admin.optEditor shouldEqual None
+  }
+
+  test("parseShape") {
+    parseShape("C 5") shouldEqual InvariantOption.Some(Shape.Circle(5))
+    parseShape("R 2 5") shouldEqual InvariantOption.Some(Shape.Rectangle(2, 5))
+    parseShape("R 2") shouldEqual InvariantOption.None()
+    parseShape("C 2 3") shouldEqual InvariantOption.None()
+    parseShape("W 2 5") shouldEqual InvariantOption.None()
   }
 
   test("filterDigits") {

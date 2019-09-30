@@ -1,6 +1,14 @@
 package answers.errorhandling
 
+import exercises.errorhandling.InvariantOption
+
+import scala.util.Try
+
 object OptionAnswers {
+
+  ////////////////////////
+  // 1. Use cases
+  ////////////////////////
 
   def getUserEmail(id: UserId, users: Map[UserId, User]): Option[Email] =
     for {
@@ -35,6 +43,41 @@ object OptionAnswers {
   }
 
   case class AccountId(value: Long)
+
+  ////////////////////////
+  // 2. Variance
+  ////////////////////////
+
+  def parseShape(inputLine: String): InvariantOption[Shape] =
+    widen[Shape.Circle, Shape](parseCircle(inputLine)).orElse(
+      widen[Shape.Rectangle, Shape](parseRectangle(inputLine))
+    )
+
+  def widen[A, B >: A](fa: InvariantOption[A]): InvariantOption[B] =
+    fa.map(a => a: B)
+
+  sealed trait Shape
+  object Shape {
+    case class Circle(radius: Int)                extends Shape
+    case class Rectangle(width: Int, height: Int) extends Shape
+  }
+
+  def parseCircle(inputLine: String): InvariantOption[Shape.Circle] =
+    inputLine.split(" ").toList match {
+      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Shape.Circle(radius))
+      case _                               => InvariantOption.None()
+    }
+
+  def parseRectangle(inputLine: String): InvariantOption[Shape.Rectangle] =
+    inputLine.split(" ").toList match {
+      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvariantOption.Some(Shape.Rectangle(width, height))
+      case _                                                   => InvariantOption.None()
+    }
+
+  object IntParser {
+    def unapply(s: String): Option[Int] =
+      Try(s.toInt).toOption
+  }
 
   def filterDigits(xs: List[Char]): List[Int] =
     xs.flatMap(charToDigit(_).toList)

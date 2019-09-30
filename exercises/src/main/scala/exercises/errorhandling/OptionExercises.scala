@@ -1,5 +1,7 @@
 package exercises.errorhandling
 
+import scala.util.Try
+
 object OptionExercises {
 
   ////////////////////////
