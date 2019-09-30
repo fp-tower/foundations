@@ -494,7 +494,7 @@ background-image: url(img/errorhandling/type-hierarchy-option.svg)
 ---
 class: center, middle
 
-# Option Exercises 2 and 3
+# Option Exercises 2, 3 and 4
 
 `exercises.errorhandling.OptionExercises.scala`
 
@@ -508,7 +508,7 @@ class: center, middle
 
 * An operation can fail in a unique obvious way
 
-* An operation can fail in many ways but we don't need any error information
+* An operation can fail in many ways but we don't need any information about the error
 ]
 
 ---
@@ -547,6 +547,26 @@ object Country {
 // A country must be a 3 letter country code from https://www.iban.com/country-codes
 // e.g. FRA for France
 def validateCountry(country: String): Either[???, Country] = ???
+```
+
+---
+# String Error
+
+```tut:silent
+import Country._
+
+def validateCountry(country: String): Either[String, Country] = {
+  if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
+    country match {
+      case "FRA" => Right(France)
+      case "DEU" => Right(Germany)
+      case "CHE" => Right(Switzerland)
+      case "GBR" => Right(UnitedKingdom)
+      case _     => Left(s"Unsupported country code $country")
+    }
+  else
+    Left("A country code must be 3 upper case letters")
+}
 ```
 
 ---

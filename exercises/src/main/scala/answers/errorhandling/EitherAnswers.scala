@@ -59,7 +59,7 @@ object EitherAnswers extends EitherToImpl {
     case "FRA" => Some(France)
     case "DEU" => Some(Germany)
     case "CHE" => Some(Switzerland)
-    case "BGR" => Some(UnitedKingdom)
+    case "GBR" => Some(UnitedKingdom)
     case _     => None
   }
 
