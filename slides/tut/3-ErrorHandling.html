@@ -143,7 +143,7 @@ def canSubmitOrder(state: OrderState): Boolean =
   } catch {
     case EmptyBasketError       => false
     case _: InvalidCommandError => false
-    case _: ArithmeticException => false
+    case _: ArithmeticException => true
     case _: Exception           => false
   }
 ```
@@ -193,7 +193,7 @@ def canSubmitOrder(state: OrderState): Boolean =
 * Local reasoning
 * Easier to test
 * Potential performance optimisations (caching)
-* .hl[Better documentation]
+* Better documentation
 ]
 ]
 
@@ -227,24 +227,22 @@ def deleteDebitCard(userId: UserId): DebitCard = {
 ]
 
 .half-right[
+<br>
 ```scala
-def getDebitCard(db: DbApi, userId: UserId)
-  : IO[DebitCard] =
-  db.getUser // IO[User]
-    .flatMap{ user =>
-      if(user.debitCard == null)
-        IO.fail(new Exception("No debit card"))
-      else
-        IO.succeed(user.debitCard)
-    }
+def getDebitCard(user: User): IO[DebitCard] = {
+  if(user.debitCard == null)
+    IO.fail(new Exception("No debit card"))
+  else
+    IO.succeed(user.debitCard)
+}
 
 
-def deleteDebitCard(db: DbApi, userId: UserId)
-  : IO[DebitCard] =
+def deleteDebitCard(db: DbApi, userId: UserId): IO[DebitCard] =
   for {
-    user <- db.getUser(userId)
-    _    <- db.upsertDebitCard(userId, null)
-  } yield user.debitCard
+    user      <- db.getUser(userId)
+    debitCard <- getDebitCard(user)
+    _         <- db.upsertDebitCard(userId, null)
+  } yield debitCard
 ```
 ]
 
@@ -256,10 +254,13 @@ background-image: url(img/errorhandling/io-big.svg)
 ---
 # IO is more difficult to test
 
-```tut:silent
+
+```tut:invisible
 import answers.sideeffect.IOAnswers.IO
 import java.util.UUID
+```
 
+```tut:silent
 case class UserId(value: UUID)
 case class User(value: UserId, name: String)
 
@@ -299,7 +300,7 @@ createJohn.unsafeRun()
 ---
 class: center, middle
 
-# Can we use a type only dedicated to error handling?
+# Can we use a type dedicated to error handling?
 
 ---
 background-image: url(img/errorhandling/partial-function-1.svg)
@@ -432,7 +433,7 @@ List(Some(3), None, Some(4), None, None, Some(5)).flatMap(_.toList)
 ---
 class: center, middle
 
-# Option Exercises
+# Option Exercise 1
 
 `exercises.errorhandling.OptionExercises.scala`
 
@@ -491,63 +492,11 @@ background-image: url(img/errorhandling/covariance.svg)
 background-image: url(img/errorhandling/type-hierarchy-option.svg)
 
 ---
-# Benefits of Variance
+class: center, middle
 
-```tut:silent
-val optNothing: Option[Nothing] = None
-val optInt    : Option[Int]     = None
-val optString : Option[String]  = None
+# Option Exercises 2 and 3
 
-def none[A]: Option[A] = None
-```
-
-```tut:silent
-sealed trait Shape extends Product with Serializable
-
-case class Circle(radius: Double) extends Shape
-case class Rectangle(width: Double, height: Double) extends Shape
-```
-
-```tut
-Some(Circle(5.2))
-Some(Circle(5.2)).getOrElse(Rectangle(4,2))
-```
-
----
-# Inconveniences of Variance
-
-```tut
-Some(Circle(5.2)).getOrElse(3)
-Some(Circle(5.2)).getOrElse("Triangle")
-```
-
-### It is generally a bug when the inferred type is `Any`, `AnyRef` or `Serializable`
-### see Least Upper Bound (LUB)
-
----
-# Invariant Option
-
-```tut:silent
-sealed trait InvariantOption[A]
-
-object InvariantOption {
-  case class Some[A](value: A) extends InvariantOption[A]
-  case class None[A]() extends InvariantOption[A]
-}
-```
-
-```tut:silent
-val optInt: Option[Int] = Some(3)
-val optAny: Option[Any] = optInt
-```
-
-```tut:silent
-val optInt: InvariantOption[Int] = InvariantOption.Some(3)
-```
-
-```tut:fail
-val optAny: InvariantOption[Any] = optInt
-```
+`exercises.errorhandling.OptionExercises.scala`
 
 ---
 .h1[# Use Option when]

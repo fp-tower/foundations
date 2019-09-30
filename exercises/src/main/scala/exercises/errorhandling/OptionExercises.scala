@@ -2,7 +2,11 @@ package exercises.errorhandling
 
 object OptionExercises {
 
-  // 1a. Implement `getUserEmail` that looks up the email of a user using its user id such as
+  ////////////////////////
+  // 1. Use cases
+  ////////////////////////
+
+  // 1a. Implement `getUserEmail` which looks a user by its id then return user's email if it exists
   // val userMap = Map(
   //   222 -> User(222, "john" , "j@x.com"),
   //   123 -> User(123, "elisa", "e@y.com"),
@@ -32,6 +36,7 @@ object OptionExercises {
     // but     Reader(123, premiumUser = true).optEditor == None
     def optEditor: Option[Role.Editor] = ???
   }
+
   object Role {
     // A Reader has read-only access on an account
     case class Reader(accountId: AccountId, premiumUser: Boolean) extends Role
@@ -43,7 +48,48 @@ object OptionExercises {
 
   case class AccountId(value: Long)
 
-  // 1d. Implement `filterDigits` which only keeps the digits from the list
+  ///////////////////////
+  // GO BACK TO SLIDES
+  ///////////////////////
+
+  ////////////////////////
+  // 2. Variance
+  ////////////////////////
+
+  // 2a. Implement `parseShape` which parses a user input line (e.g. from the command line) into a Shape.
+  // Try to reuse `parseCircle` and `parseRectangle`.
+  // Note: We are returning an `InvariantOption` instead of a standard `Option` to see pros/cons of variance
+  def parseShape(inputLine: String): InvariantOption[Shape] =
+    ???
+
+  sealed trait Shape
+  object Shape {
+    case class Circle(radius: Int)                extends Shape
+    case class Rectangle(width: Int, height: Int) extends Shape
+  }
+
+  def parseCircle(inputLine: String): InvariantOption[Shape.Circle] =
+    inputLine.split(" ").toList match {
+      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Shape.Circle(radius))
+      case _                               => InvariantOption.None()
+    }
+
+  def parseRectangle(inputLine: String): InvariantOption[Shape.Rectangle] =
+    inputLine.split(" ").toList match {
+      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvariantOption.Some(Shape.Rectangle(width, height))
+      case _                                                   => InvariantOption.None()
+    }
+
+  object IntParser {
+    def unapply(s: String): Option[Int] =
+      Try(s.toInt).toOption
+  }
+
+  ///////////////////
+  // 3. Advanced API
+  ///////////////////
+
+  // 3a. Implement `filterDigits` which only keeps the digits from the list
   // such as filterDigits(List('a', '1', 'b', 'c', '4')) == List(1, 4)
   // Note: use `charToDigit`
   def filterDigits(xs: List[Char]): List[Int] = ???
@@ -63,7 +109,7 @@ object OptionExercises {
       case _   => None
     }
 
-  // 1e. Implement `checkAllDigits` which verifies all input characters are digits
+  // 3b. Implement `checkAllDigits` which verifies all input characters are digits
   // such as checkAllDigits(List('a', '1', 'b', 'c', '4')) == None
   // but     checkAllDigits(List('1', '2', '3')) == Some(List(1, 2, 3))
   // Note: you may want to use listSequence or listTraverse defined below
