@@ -528,7 +528,22 @@ object Either {
 .medium-right[![Either](img/errorhandling/either.svg)]
 
 ---
-# How shall we encode errors in an Either?
+# Either is the Canonical OR
+
+```tut:silent
+type IntOrString = Either[Int, String]
+
+
+```
+
+--
+
+```tut:silent
+type IntAndString = (Int, String)
+```
+
+---
+# String Error
 
 ```tut:silent
 sealed trait Country
@@ -536,38 +551,45 @@ sealed trait Country
 object Country {
   case object France        extends Country
   case object Germany       extends Country
-  case object Switzerland   extends Country
   case object UnitedKingdom extends Country
-
-  val all: List[Country] = List(France, Germany, Switzerland, UnitedKingdom)
 }
-```
-
-```scala
-// A country must be a 3 letter country code from https://www.iban.com/country-codes
-// e.g. FRA for France
-def validateCountry(country: String): Either[???, Country] = ???
-```
-
----
-# String Error
-
-```tut:silent
-import Country._
 
 def validateCountry(country: String): Either[String, Country] = {
   if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
     country match {
-      case "FRA" => Right(France)
-      case "DEU" => Right(Germany)
-      case "CHE" => Right(Switzerland)
-      case "GBR" => Right(UnitedKingdom)
+      case "FRA" => Right(Country.France)
+      case "DEU" => Right(Country.Germany)
+      case "GBR" => Right(Country.UnitedKingdom)
       case _     => Left(s"Unsupported country code $country")
     }
   else
     Left("A country code must be 3 upper case letters")
 }
 ```
+
+---
+# Throwable Error
+
+```tut:silent
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import scala.util.Try
+
+val formatter =  DateTimeFormatter.ofPattern("uuuu-MM-dd")
+
+def parseLocalDate(dateStr: String): Either[Throwable, LocalDate] =
+  Try(LocalDate.parse(dateStr, formatter)).toEither
+```
+
+```tut
+parseLocalDate("2019-09-12")
+parseLocalDate("12 July 1996")
+```
+
+---
+# Enum Error
+
+// TODO
 
 ---
 class: center, middle
@@ -744,6 +766,11 @@ case class Validation[+E, +A](value: Either[E, A])
 background-image: url(img/errorhandling/error-decision-tree.svg)
 
 # Decision Tree
+
+---
+# Resources and further study
+
+* [Scala Best Practices I Wish Someone'd Told Me About](https://nrinaudo.github.io/talk-scala-best-practices/#1)
 
 ---
 class: center, middle
