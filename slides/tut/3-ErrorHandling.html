@@ -530,17 +530,40 @@ object Either {
 ---
 # Either is the Canonical OR
 
-```tut:silent
-type IntOrString = Either[Int, String]
+```tut:invisible
+case class UserId(value: Long)
+case class Email(value: String)
 
+case class User()
 
+trait DbApi {
+  def getUserById(userId: UserId): IO[User]
+  def getUserByEmail(email: Email): IO[User]
+}
+
+def db: DbApi = ???
 ```
+
+```tut:silent
+def getUser(userIdOrEmail: Either[UserId, Email]): IO[User] =
+  userIdOrEmail match {
+    case Left(userId) => db.getUserById(userId)
+    case Right(email) => db.getUserByEmail(email)
+  }
+```
+
+### Either[UserId, Email] represents a UserId OR an Email
 
 --
 
-```tut:silent
-type IntAndString = (Int, String)
-```
+### (UserId, Email) represents a UserId AND an Email
+
+---
+class: center, middle
+
+# What types shall we use to encode error in an Either?
+
+# Either[E, A]
 
 ---
 # String Error
@@ -590,6 +613,29 @@ parseLocalDate("12 July 1996")
 # Enum Error
 
 // TODO
+
+---
+class: center, middle
+
+# Why do we use Left for errors and Right for successes?
+
+---
+# Either is Right Bias
+
+```tut:silent
+def map[E, A, B](either: Either[E, A])(f: A => B): Either[E, B] = ???
+
+def flatMap[E, A, B](either: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
+```
+
+```tut
+parseLocalDate("2019-09-12").map(_.plusDays(2))
+
+for {
+  france  <- validateCountry("FRA")
+  germany <- validateCountry("DEU")
+} yield (france, germany)
+```
 
 ---
 class: center, middle
