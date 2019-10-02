@@ -894,9 +894,24 @@ class: center, middle
 
 # 5. Potential compiler optimisations
 
-### See Exercise 5
+---
+# 5. Potential compiler optimisations
 
-`exercises.function.FunctionExercises.scala`
+### Fusion
+
+```scala
+val largeList = List.range(0, 10000)
+
+largeList.map(f).map(g) == largeList.map(f andThen g)
+```
+
+### Caching
+
+```scala
+def memoize[A, B](f: A => B): A => B = ???
+
+val cacheFunc = memoize(f)
+```
 
 ---
 class: center, middle
