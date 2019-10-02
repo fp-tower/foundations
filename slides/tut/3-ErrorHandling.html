@@ -554,33 +554,82 @@ def getUser(userIdOrEmail: Either[UserId, Email]): IO[User] =
 ---
 class: center, middle
 
-# What types shall we use to encode error in an Either?
-
-# Either[E, A]
+# Either[???, A]
 
 ---
 # String Error
 
 ```tut:silent
-sealed trait Country
+def submitOrder(state: OrderState): Either[String, OrderState] =
+  state.status match {
+    case "Draft" =>
+      if(state.basket.isEmpty)
+         Left("Basket is empty")
+      else
+         Right(state.copy(status = "Submitted"))
+    case _ =>
+      Left("Cannot submit an order in ${state.status}")
+  }
+```
 
-object Country {
-  case object France        extends Country
-  case object Germany       extends Country
-  case object UnitedKingdom extends Country
-}
+```tut
+submitOrder(OrderState("Draft", List(Item(111, 12.25, 2))))
+submitOrder(OrderState("Draft", Nil))
+submitOrder(OrderState("Delivered", Nil))
+```
 
-def validateCountry(country: String): Either[String, Country] = {
-  if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
-    country match {
-      case "FRA" => Right(Country.France)
-      case "DEU" => Right(Country.Germany)
-      case "GBR" => Right(Country.UnitedKingdom)
-      case _     => Left(s"Unsupported country code $country")
-    }
-  else
-    Left("A country code must be 3 upper case letters")
+---
+# Enum Error
+
+```tut:silent
+sealed trait OrderError
+
+case object EmptyBasketError extends OrderError
+case class InvalidAction(action: String, status: String) extends OrderError
+
+def submitOrder(state: OrderState): Either[OrderError, OrderState] =
+  state.status match {
+    case "Draft" =>
+      if(state.basket.isEmpty) Left(EmptyBasketError)
+      else Right(state.copy(status = "Submitted"))
+    case _ => Left(InvalidAction("submit", state.status))
+  }
+```
+
+```tut
+submitOrder(OrderState("Draft", List(Item(111, 12.25, 2))))
+submitOrder(OrderState("Draft", Nil))
+submitOrder(OrderState("Delivered", Nil))
+```
+
+---
+# Enum Error
+
+```scala
+val currentState = OrderState("Draft", List(Item(111, 12.25, 2)))
+
+submitOrder(currentState) match {
+  case Right(newState)        => ???
+  case Left(EmptyBasketError) => ???
+  case Left(_: InvalidAction) => ???
 }
+```
+
+---
+# Enum Error
+
+```scala
+val currentState = OrderState("Draft", List(Item(111, 12.25, 2)))
+
+submitOrder(currentState) match {
+  case Right(newState)        => ???
+  case Left(_: InvalidAction) => ???
+}
+```
+
+```scala
+On line 2: warning: match may not be exhaustive.
+It would fail on the following input: Left(EmptyBasketError)
 ```
 
 ---
@@ -591,7 +640,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.Try
 
-val formatter =  DateTimeFormatter.ofPattern("uuuu-MM-dd")
+val formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
 
 def parseLocalDate(dateStr: String): Either[Throwable, LocalDate] =
   Try(LocalDate.parse(dateStr, formatter)).toEither
@@ -603,17 +652,12 @@ parseLocalDate("12 July 1996")
 ```
 
 ---
-# Enum Error
-
-// TODO
-
----
 class: center, middle
 
 # Why do we use Left for errors and Right for successes?
 
 ---
-# Either is Right Bias
+# Either is Right biased
 
 ```tut:silent
 def map[E, A, B](either: Either[E, A])(f: A => B): Either[E, B] = ???
@@ -625,9 +669,9 @@ def flatMap[E, A, B](either: Either[E, A])(f: A => Either[E, B]): Either[E, B] =
 parseLocalDate("2019-09-12").map(_.plusDays(2))
 
 for {
-  france  <- validateCountry("FRA")
-  germany <- validateCountry("DEU")
-} yield (france, germany)
+  date1 <- parseLocalDate("2019-01-24")
+  date2 <- parseLocalDate("2020-09-12")
+} yield date1.isBefore(date2)
 ```
 
 ---
