@@ -192,7 +192,7 @@ def canSubmitOrder(state: OrderState): Boolean =
 * Powerful refactoring
 * Local reasoning
 * Easier to test
-* Potential performance optimisations (caching)
+* Potential performance optimisations
 * Better documentation
 ]
 ]
@@ -229,7 +229,7 @@ def deleteDebitCard(userId: UserId): DebitCard = {
 .half-right[
 <br>
 ```scala
-def getDebitCard(user: User): IO[DebitCard] = {
+def extractDebitCard(user: User): IO[DebitCard] = {
   if(user.debitCard == null)
     IO.fail(new Exception("No debit card"))
   else
@@ -240,7 +240,7 @@ def getDebitCard(user: User): IO[DebitCard] = {
 def deleteDebitCard(db: DbApi, userId: UserId): IO[DebitCard] =
   for {
     user      <- db.getUser(userId)
-    debitCard <- getDebitCard(user)
+    debitCard <- extractDebitCard(user)
     _         <- db.upsertDebitCard(userId, null)
   } yield debitCard
 ```
@@ -252,30 +252,21 @@ background-image: url(img/errorhandling/io-big.svg)
 # IO can be too many things
 
 ---
-# IO is more difficult to test
+# IO error handling is fragile
 
+```scala
+def deleteCard(userId: UserId): IO[DebitCard] = ???
 
-```tut:invisible
-import answers.sideeffect.IOAnswers.IO
-import java.util.UUID
-```
-
-```tut:silent
-case class UserId(value: UUID)
-case class User(value: UserId, name: String)
-
-def generateUserId: IO[UserId] =
-  IO.effect( UserId(UUID.randomUUID()) )
-
-def createUser(name: String): IO[User] =
-  generateUserId.map(id => User(id, name))
-```
-
-```tut
-val createJohn = createUser("John")
-
-createJohn.unsafeRun()
-createJohn.unsafeRun()
+val httpRoute = {
+  case DELETE -> Root / "user" / UserId(x) / "card" =>
+    deleteCard(x)
+      .map(Ok(_))
+      .handleErrorWith {
+        case _: UserMissing | _: CardMissing => NotFound()
+        case _: ExpiredCard                  => BadRequest()
+        case _: Throwable                    => InternalServerError()
+      }
+}
 ```
 
 ---
@@ -531,6 +522,8 @@ object Either {
 # Either is the Canonical OR
 
 ```tut:invisible
+import answers.sideeffect.IOAnswers.IO
+
 case class UserId(value: Long)
 case class Email(value: String)
 
