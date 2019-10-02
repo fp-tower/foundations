@@ -63,25 +63,9 @@ background-image: url(img/sideeffect/pure-function.svg)
 # Pure function
 
 ---
-.h1[# How to do something?]
+background-image: url(img/sideeffect/side-effect.svg)
 
-<br>
-
-.large[
-* read or write from a file
-
-* save user in database
-
-* send notification to user's phone
-
-* update counter of active users
-]
-
----
-class: center, middle
-
-# A pure function cannot DO anything
-# it can only produce a VALUE
+# Function with Side Effects are not Pure
 
 ---
 class: center, middle
@@ -101,6 +85,12 @@ class: center, middle
 ---
 class: center, middle
 
+# A pure function cannot DO anything
+# it can only produce a VALUE
+
+---
+class: center, middle
+
 # Create a VALUE that describes actions
 
 --
@@ -108,13 +98,13 @@ class: center, middle
 # INTERPRET the value with side effects in Main
 
 ---
-### 1. Encode Description
+### 1. Encode description of actions
 
 ```tut:silent
 trait Description[A]
 ```
 
-### 2. Define an unsafe interpreter of Description
+### 2. Define an interpreter of Description
 
 ```tut:silent
 def unsafeRun[A](fa: Description[A]): A = ??? // execute description, this is not a pure function
@@ -216,11 +206,6 @@ x2 + y2
 .reference[[Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)]
 
 ---
-class: center, middle
-
-# How to encode description?
-
----
 # How to encode description?
 
 <br>
@@ -235,17 +220,12 @@ def unsafeRun[A](fa: Description[A]): A = ???
 ---
 # Thunk
 
-```tut:silent
-type Thunk[A] = () => A  // Unit => A
-
-def unsafeRun[A](fa: Thunk[A]): A = fa()
+```tut:invisible
+import java.time.LocalDate
 ```
 
---
-
 ```tut:silent
-import java.time.LocalDate
-import scala.io.Source
+type Thunk[A] = () => A  // Unit => A
 
 def writeLine(message: String): Thunk[Unit] =
   () => println(message)
@@ -254,7 +234,13 @@ val today: Thunk[LocalDate] =
   () => LocalDate.now()
 
 def fetch(url: String): Thunk[Iterator[String]] =
-  () => Source.fromURL(url)("ISO-8859-1").getLines
+  () => scala.io.Source.fromURL(url)("ISO-8859-1").getLines
+```
+
+--
+
+```tut:silent
+def unsafeRun[A](fa: Thunk[A]): A = fa()
 ```
 
 --
@@ -270,10 +256,10 @@ unsafeRun(google).take(1).toList
 ```tut:silent
 trait IO[A] {
 
-  def unsafeRun(): A // abstract method, must be implemented when you create an IO with new
+  def unsafeRun(): A // single abstract method
 
-  def map[B](f: A => B): B = ???
-
+  def map[B](f: A => B): IO[B] = ???
+  def flatMap[B](f: A => IO[B]): IO[B] = ???
   def retry: IO[A] = ???
 }
 ```
@@ -283,16 +269,30 @@ trait IO[A] {
 ```tut:silent
 def writeLine(message: String): IO[Unit] =
   new IO[Unit] {
-    def unsafeRun(): Unit =
-      println(message)
+    def unsafeRun(): Unit = println(message)
   }
 ```
 
 ```tut
-val printHelloWorld = writeLine("Hello World")
+val helloWorld = writeLine("Hello World")
 
-printHelloWorld.unsafeRun()
+helloWorld.unsafeRun()
 ```
+
+---
+.h1[# Plan]
+
+<br>
+
+.large[
+* Implement our own IO
+
+* Use IO to encode and test side effecting programs
+
+* Discuss how to add asynchronicity
+
+* Brief introduction to Free structures
+]
 
 ---
 class: center, middle
@@ -1176,6 +1176,10 @@ object Description {
 ```
 
 --
+
+```tut:invisible
+import scala.io.Source
+```
 
 ```tut:silent
 import Description._
