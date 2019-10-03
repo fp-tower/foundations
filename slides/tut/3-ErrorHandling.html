@@ -77,7 +77,7 @@ background-image: url(img/errorhandling/partial-function-2.svg)
 
 1. Document what specific type of errors can occur
 
-1. Force caller to deal with errors with a powerful API
+1. Force caller to deal with errors
 
 1. Provide a user friendly syntax to raise and handle errors
 ]
@@ -177,7 +177,7 @@ def canSubmitOrder(state: OrderState): Boolean =
 
 1. ❌ Document what specific type of errors can occur
 
-1. ❌ Force caller to deal with errors with a powerful API
+1. ❌ Force caller to deal with errors
 
 1. ✅ Provide a user friendly syntax to raise and handle errors
 
@@ -283,7 +283,7 @@ val httpRoute = {
 
 1. ❌ Document what specific type of errors can occur
 
-1. ✅ Force caller to deal with errors with a powerful API
+1. ✅ Force caller to deal with errors
 
 1. .hl[≈] Provide a user friendly syntax to raise and handle errors
 ]
@@ -606,29 +606,27 @@ submitOrder(OrderState("Delivered", Nil))
 # Enum Error
 
 ```scala
-val currentState = OrderState("Draft", List(Item(111, 12.25, 2)))
-
-submitOrder(currentState) match {
-  case Right(newState)        => ???
-  case Left(EmptyBasketError) => ???
-  case Left(_: InvalidAction) => ???
-}
+def canSubmitOrder(state: OrderState): Boolean =
+  submitOrder(currentState) match {
+    case Right(newState)        => true
+    case Left(EmptyBasketError) => false
+    case Left(_: InvalidAction) => false
+  }
 ```
 
 ---
 # Enum Error
 
 ```scala
-val currentState = OrderState("Draft", List(Item(111, 12.25, 2)))
-
-submitOrder(currentState) match {
-  case Right(newState)        => ???
-  case Left(_: InvalidAction) => ???
-}
+def canSubmitOrder(state: OrderState): Boolean =
+  submitOrder(currentState) match {
+    case Right(newState)        => true
+    case Left(_: InvalidAction) => false
+  }
 ```
 
 ```scala
-On line 2: warning: match may not be exhaustive.
+On line 3: warning: match may not be exhaustive.
 It would fail on the following input: Left(EmptyBasketError)
 ```
 
@@ -654,7 +652,7 @@ parseLocalDate("12 July 1996")
 ---
 class: center, middle
 
-# Why do we use Left for errors and Right for successes?
+# Why do we use Left for error and Right for success?
 
 ---
 # Either is Right biased
@@ -678,6 +676,8 @@ for {
 class: center, middle
 
 # Either Exercises
+
+`exercises.errorhandling.EitherExercises.scala`
 
 ---
 class: center, middle
