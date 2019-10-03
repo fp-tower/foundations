@@ -3,8 +3,10 @@ package answers.sideeffect
 import java.time.Instant
 
 import cats.Monad
+import exercises.sideeffect.IOExercises.IO
 import exercises.sideeffect.IORef
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
 import scala.util.Try
@@ -57,9 +59,12 @@ object IOAnswers {
       effect(Thread.sleep(duration.toMillis))
 
     val never: IO[Nothing] =
-      effect {
-        sleep(100.day).unsafeRun()
-        never.unsafeRun()
+      new IO[Nothing] {
+        @tailrec
+        def unsafeRun(): Nothing = {
+          Thread.sleep(Long.MaxValue)
+          unsafeRun()
+        }
       }
 
     implicit val monad: Monad[IO] = new Monad[IO] {
