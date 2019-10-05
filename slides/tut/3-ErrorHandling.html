@@ -73,13 +73,11 @@ background-image: url(img/errorhandling/partial-function-2.svg)
 
 .large[
 <br>
-1. Document when errors can occur
-
-1. Document what specific type of errors can occur
+1. Document when and what type of errors can occur
 
 1. Force caller to deal with errors
 
-1. Provide a user friendly syntax to raise and handle errors
+1. Limit the noise over success path
 ]
 
 ---
@@ -157,31 +155,6 @@ public OrderState submitOrder(OrderState state) `throws EmptyBasketError, Invali
 ```
 
 ---
-# Exception
-
-```tut:silent
-import scala.util.{Try, Success, Failure}
-
-def submitOrder(state: OrderState): OrderState = ???
-
-def canSubmitOrder(state: OrderState): Boolean =
-  Try(submitOrder(state)) match {
-    case Success(_) => true
-    case Failure(_) => false
-  }
-```
-
-<br>
-
-1. ❌ Document when errors can occur
-
-1. ❌ Document what specific type of errors can occur
-
-1. ❌ Force caller to deal with errors
-
-1. ✅ Provide a user friendly syntax to raise and handle errors
-
----
 .h1[# Pure Function is a mapping between Types]
 
 .large-left[![Partial Function](img/errorhandling/pure-function-1.svg)]
@@ -247,11 +220,6 @@ def deleteDebitCard(db: DbApi, userId: UserId): IO[DebitCard] =
 ]
 
 ---
-background-image: url(img/errorhandling/io-big.svg)
-
-# IO can be too many things
-
----
 # IO error handling is fragile
 
 ```scala
@@ -270,23 +238,9 @@ val httpRoute = {
 ```
 
 ---
-.h1[# Pure Side Effect and Exception with IO]
+background-image: url(img/errorhandling/io-big.svg)
 
-.half-left[
-![IO](img/errorhandling/io.svg)
-]
-
-.half-right[
-<br>
-
-1. ✅ Document when errors can occur
-
-1. ❌ Document what specific type of errors can occur
-
-1. ✅ Force caller to deal with errors
-
-1. .hl[≈] Provide a user friendly syntax to raise and handle errors
-]
+# IO can be too many things
 
 ---
 class: center, middle
@@ -319,9 +273,21 @@ class: center, middle
 * `Try`
 
 * `Either`
-
-* `Validated`
 ]
+
+---
+.h1[# Plan]
+
+<br>
+
+.large[
+* Look at use cases and API of `Option`, `Try` and `Either`
+
+* Practice the design of error ADT (Algebraic Data Type)
+
+* How to use `Option` and `Either` in conjunction with `IO`
+]
+
 
 ---
 .h1[# Option]
@@ -563,10 +529,8 @@ class: center, middle
 def submitOrder(state: OrderState): Either[String, OrderState] =
   state.status match {
     case "Draft" =>
-      if(state.basket.isEmpty)
-         Left("Basket is empty")
-      else
-         Right(state.copy(status = "Submitted"))
+      if(state.basket.isEmpty) Left("Basket is empty")
+      else Right(state.copy(status = "Submitted"))
     case _ =>
       Left(s"Cannot submit an order in ${state.status}")
   }
@@ -583,7 +547,6 @@ submitOrder(OrderState("Delivered", Nil))
 
 ```tut:silent
 sealed trait OrderError
-
 case object EmptyBasketError extends OrderError
 case class InvalidAction(action: String, status: String) extends OrderError
 
@@ -592,7 +555,8 @@ def submitOrder(state: OrderState): Either[OrderError, OrderState] =
     case "Draft" =>
       if(state.basket.isEmpty) Left(EmptyBasketError)
       else Right(state.copy(status = "Submitted"))
-    case _ => Left(InvalidAction("submit", state.status))
+    case _ =>
+      Left(InvalidAction("submit", state.status))
   }
 ```
 
@@ -609,7 +573,7 @@ submitOrder(OrderState("Delivered", Nil))
 def canSubmitOrder(state: OrderState): Boolean =
   submitOrder(currentState) match {
     case Right(newState)        => true
-    case Left(EmptyBasketError) => false
+    case Left(EmptyBasket)      => false
     case Left(_: InvalidAction) => false
   }
 ```
@@ -659,18 +623,27 @@ class: center, middle
 
 ```tut:silent
 def map[E, A, B](either: Either[E, A])(f: A => B): Either[E, B] = ???
-
-def flatMap[E, A, B](either: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
 ```
 
 ```tut
 parseLocalDate("2019-09-12").map(_.plusDays(2))
+```
 
+--
+
+<br>
+
+```tut:silent
+def flatMap[E, A, B](either: Either[E, A])(f: A => Either[E, B]): Either[E, B] = ???
+```
+
+```tut
 for {
   date1 <- parseLocalDate("2019-01-24")
   date2 <- parseLocalDate("2020-09-12")
 } yield date1.isBefore(date2)
 ```
+
 
 ---
 class: center, middle
@@ -700,155 +673,20 @@ class: center, middle
 # type Try[+A] = Either[Throwable, A]
 
 ---
-.h1[# Use Either when]
+.h1[# Either Summary]
 
 <br>
 
 .large[
-* Many causes of failure and you want to keep track of them
+* Use when many causes of failure need to be captured
 
-* Fail early, do not accumulate errors
+* Fail early with `flatMap`
+
+* Accumulate failures with `parMap`, `parTraverse`
 ]
-
----
-# Validated
-
-```tut:silent
-sealed trait Validated[+E, +A]
-
-object Validated {
-  case class Invalid[+E](value: E) extends Validated[E, Nothing]
-  case class   Valid[+A](value: A) extends Validated[Nothing, A]
-}
-```
-
----
-.h1[# Isn't Validated the same as an Either?]
-
-<br>
-
-```haskell
-data Either    e a = Left    e | Right a
-data Validated e a = Invalid e | Valid a
-```
-
---
-
-## Yes, but Validated accumulates failure
-
-```tut:reset:invisible
-import answers.errorhandling.EitherAnswers.tuple2
-```
-
-```tut
-tuple2(Left("id not found"), Left("username too small"))
-```
-
-```tut:invisible
-import answers.errorhandling.ValidatedAnswers.tuple2
-import exercises.errorhandling.Validated._
-```
-
-```tut
-tuple2(Invalid("id not found"), Invalid("username too small"))(_ ++  ", " ++ _)
-```
-
----
-# ValidatedNel
-
-```tut:silent
-import cats.data.NonEmptyList
-```
-
-```scala
-type ValidatedNel[+E, +A] = Validated[`NonEmptyList`[E], A]
-```
-
---
-
-```tut:silent
-def invalidNel[E](e: E): ValidatedNel[E, Nothing] =
-  Invalid(NonEmptyList.of(e))
-```
-
---
-
-```tut
-println(tuple2(Invalid("id not found"), Invalid("username too small"))(_ ++  ", " ++ _))
-
-println(tuple2(invalidNel("id not found"), invalidNel("username too small"))(_ ::: _))
-```
-
----
-class: center, middle
-
-# Validated Exercises
-
----
-.h1[# Use Validated when]
-
-<br>
-
-.large[
-* Many causes of failure and you want to keep track of them
-
-* Accumulate errors, do not fail early
-]
-
----
-# Error accumulation
-
-<br>
-
-```scala
-def tuple2[E, A, B](fa: Validated[E, A], fb: Validated[E, B])
-                   (`combineError: (E, E) => E`): Validated[E, (A, B)] = ???
-
-tuple2(invalidNel("id not found"), invalidNel("username too small"))(`_ ::: _`)
-```
-
---
-
-```scala
-def tuple2[`E: Semigroup`, A, B](fa: Validated[E, A], fb: Validated[E, B]): Validated[E, (A, B)] = ???
-
-tuple2(invalidNel("id not found"), invalidNel("username too small"))
-```
-
-### More details in [Typeclass](6-Typeclass.html#1) module
-
----
-class: center, middle
-
-# Review
-
----
-.h1[# Algebraic Data Type (ADT)]
-
-<br>
-
-```scala
-class Option[+A]        = None                  | Some(a: A)
-class Try[+A]           = Failure(e: Throwable) | Success(a: A)
-class Either[+E, +A]    = Left(e: E)            | Right(a: A)
-class Validated[+E, +A] = Invalid(e: E)         | Valid(a: A)
-```
-
---
-
-### They are all variations of Either
-
-```scala
-type Option[+A] = Either[Unit     , A]
-type Try[+A]    = Either[Throwable, A]
-
-case class Validation[+E, +A](value: Either[E, A])
-```
 
 ---
 background-image: url(img/errorhandling/error-decision-tree.svg)
-
-# Decision Tree
 
 ---
 # Resources and further study
