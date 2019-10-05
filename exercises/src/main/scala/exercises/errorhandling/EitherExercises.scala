@@ -1,9 +1,11 @@
 package exercises.errorhandling
 
 import java.time.{Duration, Instant}
+import java.util.UUID
 
 import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, UnsupportedCountry}
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacters, TooSmall}
+import exercises.errorhandling.EitherExercises.UserEmailError.{EmailNotFound, UserNotFound}
 import exercises.errorhandling.OptionExercises.{Email, UserId}
 
 import scala.util.Try
@@ -61,6 +63,12 @@ object EitherExercises {
   //////////////////////////////////
   // 2. Import code with Exception
   //////////////////////////////////
+
+  // 2a. Implement `parseUUID` which safely parse a String into UUID using `UUID.fromString`.
+  // `UUID.fromString` is unsafe, it throws Exception if the input string is invalid.
+  // Note: You can capture Exception using try { ... } catch { case t: Throwable => ... }
+  // or using `Try(...)` from `scala.util`
+  def parseUUID(uuidStr: String): Either[Throwable, UUID] = ???
 
   //////////////////////////////////
   // 3. Advanced API

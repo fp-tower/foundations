@@ -1,6 +1,7 @@
 package errorhandling
 
 import java.time.{Duration, LocalDate, ZoneOffset}
+import java.util.UUID
 
 import answers.errorhandling.EitherAnswers.CountryError.InvalidFormat
 import answers.errorhandling.EitherAnswers.UserEmailError.{EmailNotFound, UserNotFound}
@@ -64,6 +65,13 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
   //////////////////////////////////
   // 2. Import code with Exception
   //////////////////////////////////
+
+  test("parseUUID") {
+    parseUUID("123e4567-e89b-12d3-a456-426655440000") shouldEqual Right(
+      UUID.fromString("123e4567-e89b-12d3-a456-426655440000")
+    )
+    parseUUID("foo").isLeft shouldEqual true
+  }
 
   //////////////////////////////////
   // 3. Advanced API

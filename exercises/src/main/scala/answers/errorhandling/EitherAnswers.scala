@@ -1,11 +1,14 @@
 package answers.errorhandling
 
 import java.time.{Duration, Instant}
+import java.util.UUID
 
 import answers.errorhandling.EitherAnswers.CountryError.{InvalidFormat, UnsupportedCountry}
 import answers.errorhandling.EitherAnswers.UserEmailError.{EmailNotFound, UserNotFound}
 import answers.errorhandling.EitherAnswers.UsernameError.{InvalidCharacters, TooSmall}
-import answers.errorhandling.OptionAnswers.UserId
+import answers.errorhandling.OptionAnswers.{Email, UserId}
+
+import scala.util.Try
 
 object EitherAnswers {
 
@@ -13,7 +16,7 @@ object EitherAnswers {
   // 1. Use cases
   ////////////////////////
 
-  def getUserEmail(id: UserId, users: Map[UserId, OptionAnswers.User]): Either[UserEmailError, OptionAnswers.Email] =
+  def getUserEmail(id: UserId, users: Map[UserId, OptionAnswers.User]): Either[UserEmailError, Email] =
     for {
       user  <- users.get(id).toRight(UserNotFound(id))
       email <- user.email.toRight(EmailNotFound(id))
@@ -78,6 +81,9 @@ object EitherAnswers {
   //////////////////////////////////
   // 2. Import code with Exception
   //////////////////////////////////
+
+  def parseUUID(uuidStr: String): Either[Throwable, UUID] =
+    Try(UUID.fromString(uuidStr)).toEither
 
   //////////////////////////////////
   // 3. Advanced API
