@@ -62,7 +62,16 @@ object OptionExercises {
   // 2. Variance
   ////////////////////////
 
-  // 2a. Implement `parseShape` which parses a user input line (e.g. from the command line) into a Shape.
+  // 2a. Implement `parseRectangle` which parses a user input line (e.g. from the command line) into a `Rectangle`.
+  // `parseRectangle` expects the following format 'R', space, Int, space, Int, end of line
+  // such as parseRectangle("R 20 5") == Some(Rectangle(20, 5))
+  // but     parseRectangle("C 20 5") == None
+  //         parseRectangle("R 0")    == None
+  // Note: `parseCircle` does something similar for `Circle`
+  def parseRectangle(inputLine: String): InvariantOption[Shape.Rectangle] =
+    ???
+
+  // 2b. Implement `parseShape` which parses a user input line (e.g. from the command line) into a `Shape`.
   // Try to reuse `parseCircle` and `parseRectangle`.
   // Note: We are returning an `InvariantOption` instead of a standard `Option` to see pros/cons of variance
   def parseShape(inputLine: String): InvariantOption[Shape] =
@@ -78,12 +87,6 @@ object OptionExercises {
     inputLine.split(" ").toList match {
       case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Shape.Circle(radius))
       case _                               => InvariantOption.None()
-    }
-
-  def parseRectangle(inputLine: String): InvariantOption[Shape.Rectangle] =
-    inputLine.split(" ").toList match {
-      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvariantOption.Some(Shape.Rectangle(width, height))
-      case _                                                   => InvariantOption.None()
     }
 
   object IntParser {

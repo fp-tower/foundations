@@ -1,143 +1,170 @@
 package answers.errorhandling
 
-import exercises.errorhandling.Country.{France, Germany, Switzerland, UnitedKingdom}
-import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, UnsupportedCountry}
-import exercises.errorhandling.EitherExercises.UsernameError._
-import exercises.errorhandling.EitherExercises.{CountryError, GetOrderError, Order, UsernameError}
-import exercises.errorhandling.{Country, User, Username}
-import toimpl.errorhandling.EitherToImpl
+import java.time.{Duration, Instant}
 
-object EitherAnswers extends EitherToImpl {
+import answers.errorhandling.EitherAnswers.CountryError.{InvalidFormat, UnsupportedCountry}
+import answers.errorhandling.EitherAnswers.UserEmailError.{EmailNotFound, UserNotFound}
+import answers.errorhandling.EitherAnswers.UsernameError.{InvalidCharacters, TooSmall}
+import answers.errorhandling.OptionAnswers.UserId
+
+object EitherAnswers {
 
   ////////////////////////
   // 1. Use cases
   ////////////////////////
-  def getOrder(id: Int, users: List[Order]): Either[GetOrderError, Order] =
-    users.filter(_.id == id) match {
-      case Nil      => Left(GetOrderError.OrderNotFound)
-      case x :: Nil => Right(x)
-      case _ :: _   => Left(GetOrderError.NonUniqueOrderId)
+
+  def getUserEmail(id: UserId, users: Map[UserId, OptionAnswers.User]): Either[UserEmailError, OptionAnswers.Email] =
+    for {
+      user  <- users.get(id).toRight(UserNotFound(id))
+      email <- user.email.toRight(EmailNotFound(id))
+    } yield email
+
+  sealed trait UserEmailError
+  object UserEmailError {
+    case class UserNotFound(userId: UserId)  extends UserEmailError
+    case class EmailNotFound(userId: UserId) extends UserEmailError
+  }
+
+  def checkout(order: Order): Either[OrderError, Order] =
+    order.status match {
+      case "Draft" =>
+        if (order.basket.isEmpty) Left(OrderError.EmptyBasket)
+        else Right(order.copy(status = "Checkout"))
+      case other =>
+        Left(OrderError.InvalidStatus("checkout", other))
     }
 
-  def validateUsernameSize(username: String): Either[TooSmall.type, Unit] =
-    if (username.length < 3) Left(TooSmall) else Right(())
+  case class Item(id: String, quantity: Int, unitPrice: Double)
+  case class Order(
+    id: String,
+    status: String, // Draft | Checkout | Submitted | Delivered
+    basket: List[Item],
+    deliveryAddress: Option[String],
+    submittedAt: Option[Instant],
+    deliveredAt: Option[Instant]
+  )
+
+  def submit(order: Order, now: Instant): Either[OrderError, Order] =
+    order.status match {
+      case "Checkout" =>
+        if (order.deliveryAddress.isEmpty) Left(OrderError.MissingDeliveryAddress)
+        else Right(order.copy(status = "Submitted", submittedAt = Some(now)))
+      case other =>
+        Left(OrderError.InvalidStatus("submit", other))
+    }
+
+  def deliver(order: Order, now: Instant): Either[OrderError, (Order, Duration)] =
+    order.status match {
+      case "Submitted" =>
+        order.submittedAt match {
+          case Some(submittedTimestamp) =>
+            val deliveryDuration = Duration.between(submittedTimestamp, now)
+            val newOrder         = order.copy(status = "Delivered", deliveredAt = Some(now))
+            Right((newOrder, deliveryDuration))
+          case None => Left(OrderError.MissingSubmittedTimestamp)
+        }
+      case other =>
+        Left(OrderError.InvalidStatus("deliver", other))
+    }
+
+  sealed trait OrderError
+  object OrderError {
+    case object EmptyBasket                                         extends OrderError
+    case object MissingDeliveryAddress                              extends OrderError
+    case object MissingSubmittedTimestamp                           extends OrderError
+    case class InvalidStatus(action: String, currentStatus: String) extends OrderError
+  }
+
+  //////////////////////////////////
+  // 2. Import code with Exception
+  //////////////////////////////////
+
+  //////////////////////////////////
+  // 3. Advanced API
+  //////////////////////////////////
+
+  def validateUsername(username: String): Either[UsernameError, Username] = {
+    val trimmed = username.trim
+    for {
+      _ <- validateUsernameSize(trimmed)
+      _ <- validateUsernameCharacters(trimmed)
+    } yield Username(trimmed)
+  }
+
+  case class Username(value: String)
+
+  def validateUsernameSize(username: String): Either[TooSmall, Unit] =
+    if (username.length < 3) Left(TooSmall(username.length)) else Right(())
+
+  def validateUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
+    username.toList.filterNot(isValidUsernameCharacter) match {
+      case Nil => Right(())
+      case xs  => Left(InvalidCharacters(xs))
+    }
 
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  def validateUsernameCharacter(c: Char): Either[InvalidCharacter, Unit] =
-    if (isValidUsernameCharacter(c)) Right(())
-    else Left(InvalidCharacter(c))
+  sealed trait UserError
 
-  def validateUsernameContent(username: String): Either[InvalidCharacter, Unit] =
-    username.toList.foldRight[Either[InvalidCharacter, Unit]](Right(()))(
-      (c, acc) =>
-        (validateUsernameCharacter(c), acc) match {
-          case (Right(_), Right(_)) => Right(())
-          case (Left(e), Right(_))  => Left(e)
-          case (Right(_), Left(e))  => Left(e)
-          case (Left(e), Left(_))   => Left(e)
-      }
-    )
-
-  def validateUsername(username: String): Either[UsernameError, Username] = {
-    val trimmed = username.trim
-    (validateUsernameSize(trimmed), validateUsernameContent(trimmed)) match {
-      case (Right(_), Right(_)) => Right(Username(trimmed))
-      case (Left(e), Right(_))  => Left(e)
-      case (Right(_), Left(e))  => Left(e)
-      case (Left(e), Left(_))   => Left(e)
-    }
+  sealed trait UsernameError extends UserError
+  object UsernameError {
+    case class TooSmall(length: Int)               extends UsernameError
+    case class InvalidCharacters(char: List[Char]) extends UsernameError
   }
+
+  sealed trait CountryError extends UserError
+  object CountryError {
+    case class InvalidFormat(country: String)      extends CountryError
+    case class UnsupportedCountry(country: String) extends CountryError
+  }
+
+  def validateUser(username: String, country: String): Either[UserError, User] =
+    for {
+      username <- validateUsername(username)
+      country  <- validateCountry(country)
+    } yield User(username, country)
+
+  case class User(userName: Username, country: Country)
 
   def validateCountry(country: String): Either[CountryError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
-      parseCountry(country).toRight(UnsupportedCountry)
-    else Left(InvalidFormat)
+      country match {
+        case "FRA" => Right(Country.France)
+        case "DEU" => Right(Country.Germany)
+        case "CHE" => Right(Country.Switzerland)
+        case "GBR" => Right(Country.UnitedKingdom)
+        case _     => Left(UnsupportedCountry(country))
+      } else Left(InvalidFormat(country))
 
-  def parseCountry(country: String): Option[Country] = country match {
-    case "FRA" => Some(France)
-    case "DEU" => Some(Germany)
-    case "CHE" => Some(Switzerland)
-    case "GBR" => Some(UnitedKingdom)
-    case _     => None
+  sealed trait Country
+  object Country {
+    case object France        extends Country
+    case object Germany       extends Country
+    case object Switzerland   extends Country
+    case object UnitedKingdom extends Country
   }
 
-  ////////////////////////
-  // 2. Composing Either
-  ////////////////////////
+  def validateUserPar(username: String, country: String): Either[List[UserError], User] =
+    parMap2(
+      validateUsernamePar(username),
+      validateCountry(country).left.map(List(_))
+    )(User)
 
-  def leftMap[E, A, B](fa: Either[E, A])(f: E => B): Either[B, A] =
-    fa match {
-      case Left(e)  => Left(f(e))
-      case Right(a) => Right(a)
-    }
-
-  def tuple2[E, A, B](fa: Either[E, A], fb: Either[E, B]): Either[E, (A, B)] =
-    (fa, fb) match {
-      case (Right(a), Right(b)) => Right((a, b))
-      case (Left(e), Right(_))  => Left(e)
-      case (Right(_), Left(e))  => Left(e)
-      case (Left(e), Left(_))   => Left(e)
-    }
-
-  def tuple3[E, A, B, C](fa: Either[E, A], fb: Either[E, B], fc: Either[E, C]): Either[E, (A, B, C)] =
-    tuple2(tuple2(fa, fb), fc).map { case ((a, b), c) => (a, b, c) }
-
-  def map2[E, A1, A2, B](fa: Either[E, A1], fb: Either[E, A2])(f: (A1, A2) => B): Either[E, B] =
-    (fa, fb) match {
-      case (Right(a), Right(b)) => Right(f(a, b))
-      case (Left(e), Right(_))  => Left(e)
-      case (Right(_), Left(e))  => Left(e)
-      case (Left(e), Left(_))   => Left(e)
-    }
-
-  def validateUsername_v2(username: String): Either[UsernameError, Username] = {
+  def validateUsernamePar(username: String): Either[List[UsernameError], Username] = {
     val trimmed = username.trim
-    map2(validateUsernameSize(trimmed), validateUsernameContent(username))((_, _) => Username(trimmed))
+    parMap2(
+      validateUsernameSize(trimmed).left.map(List(_)),
+      validateUsernameCharacters(trimmed).left.map(List(_))
+    )((_, _) => Username(trimmed))
   }
 
-  def validateUsername_v3(username: String): Either[UsernameError, Username] = {
-    val trimmed = username.trim
-    for {
-      _ <- validateUsernameSize(trimmed)
-      _ <- validateUsernameContent(username)
-    } yield Username(trimmed)
-  }
-
-  def sequence[E, A](fa: List[Either[E, A]]): Either[E, List[A]] =
-    fa.foldRight[Either[E, List[A]]](Right(Nil))((a, acc) => map2(a, acc)(_ :: _))
-
-  def validateUsernameContent_v2(username: String): Either[InvalidCharacter, Unit] =
-    sequence(username.toList.map(validateUsernameCharacter)).map(_ => ())
-
-  def traverse[E, A, B](fa: List[A])(f: A => Either[E, B]): Either[E, List[B]] =
-    fa.foldRight[Either[E, List[B]]](Right(Nil))((a, acc) => map2(f(a), acc)(_ :: _))
-
-  def validateUsernameContent_v3(username: String): Either[InvalidCharacter, Unit] =
-    traverse(username.toList)(validateUsernameCharacter).map(_ => ())
-
-  def traverse_[E, A, B](fa: List[A])(f: A => Either[E, B]): Either[E, Unit] =
-    fa.foldRight[Either[E, Unit]](Right(()))((a, acc) => map2(f(a), acc)((_, _) => ()))
-
-  def validateUsernameContent_v4(username: String): Either[InvalidCharacter, Unit] =
-    traverse_(username.toList)(validateUsernameCharacter)
-
-  ////////////////////////
-  // 3. Error message
-  ////////////////////////
-
-  def validateUserMessage(username: String, country: String): String =
-    (validateUsername(username), validateCountry(country)) match {
-      case (Right(x), Right(y)) => User(x, y).toString
-      case (x, y) =>
-        leftMap(
-          sequence(
-            List(
-              leftMap(x)(e => s"Invalid username, error: $e"),
-              leftMap(y)(e => s"Invalid country, error: $e")
-            )
-          )
-        )(es => s"Invalid User: ${es.mkString(", ")}").fold(identity, _ => "")
+  def parMap2[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] =
+    (fa, fb) match {
+      case (Right(a), Right(b))   => Right(f(a, b))
+      case (Left(es), Right(_))   => Left(es)
+      case (Right(_), Left(es))   => Left(es)
+      case (Left(es1), Left(es2)) => Left(es1 ++ es2)
     }
+
 }

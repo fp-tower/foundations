@@ -568,7 +568,7 @@ def submitOrder(state: OrderState): Either[String, OrderState] =
       else
          Right(state.copy(status = "Submitted"))
     case _ =>
-      Left("Cannot submit an order in ${state.status}")
+      Left(s"Cannot submit an order in ${state.status}")
   }
 ```
 
