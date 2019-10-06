@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 587 451" width="587" height="451">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 604 451" width="604" height="451">
   <defs>
-    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
@@ -14,129 +14,106 @@
     </marker>
   </defs>
   <metadata> Produced by OmniGraffle 7.11.3 
-    <dc:date>2019-10-05 16:58:47 +0000</dc:date>
+    <dc:date>2019-10-06 16:54:11 +0000</dc:date>
   </metadata>
   <g id="error-decision-tree" stroke="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" fill="none">
     <title>error-decision-tree</title>
     <g id="error-decision-tree: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_118">
-        <rect x="27" y="382" width="100" height="50" fill="#599a9e"/>
-        <rect x="27" y="382" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(32 397.776)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="20.84" y="15">Option</tspan>
+        <rect x="503" y="378" width="100" height="50" fill="#70a3d8"/>
+        <rect x="503" y="378" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(508 392.248)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="17.82" y="17">Option</tspan>
         </text>
       </g>
       <g id="Graphic_119">
         <rect x="225" y="360" width="171" height="90" fill="#599a9e"/>
         <rect x="225" y="360" width="171" height="90" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(230 377.328)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="25.668" y="15">Do you need to </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="15.868" y="33.448">capture difference </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="22.428" y="51.895996">between errors?</tspan>
+        <text transform="translate(230 372.744)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="18.814" y="17">Do you need to </tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="7.789" y="38.504">capture difference </tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="15.169" y="60.007996">between errors?</tspan>
         </text>
       </g>
       <g id="Graphic_121">
-        <rect x="486" y="382" width="100" height="50" fill="#599a9e"/>
-        <rect x="486" y="382" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(491 397.776)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="24.408" y="15">Either</tspan>
+        <rect x="27" y="378" width="100" height="50" fill="#70a3d8"/>
+        <rect x="27" y="378" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(32 392.248)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="21.834" y="17">Either</tspan>
         </text>
       </g>
       <g id="Graphic_123">
-        <rect x="242" y="198" width="136" height="72" fill="#599a9e"/>
-        <rect x="242" y="198" width="136" height="72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(247 215.552)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.192" y="15">How many ways </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="26.552" y="33.448">can it fail?</tspan>
+        <rect x="225" y="189" width="171" height="90" fill="#599a9e"/>
+        <rect x="225" y="189" width="171" height="90" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 212.496)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="14.341" y="17">How many ways </tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="39.496" y="38.504">can it fail?</tspan>
         </text>
       </g>
       <g id="Line_125">
-        <line x1="310.10526" y1="270" x2="310.33947" y2="350.10004" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="310.5" y1="279" x2="310.5" y2="350.1" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Line_127">
-        <line x1="225" y1="405.73233" x2="136.89964" y2="406.48694" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="396" y1="404.29485" x2="493.10034" y2="403.494" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_131">
-        <text transform="translate(318 302)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Many</tspan>
+        <text transform="translate(320 311)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="0" y="17">Many</tspan>
         </text>
       </g>
       <g id="Graphic_133">
-        <text transform="translate(168.132 380)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="39257486e-20" y="15">No</tspan>
+        <text transform="translate(429.336 377.248)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="6679102e-19" y="17">No</tspan>
         </text>
       </g>
       <g id="Line_139">
-        <line x1="261.51445" y1="270" x2="118.61908" y2="376.09828" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="375.071" y1="279" x2="509.00504" y2="372.3396" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_140">
-        <text transform="translate(153.888 302)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="5222489e-19" y="15">One</tspan>
+        <text transform="translate(455 311)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="0" y="17">One</tspan>
         </text>
       </g>
       <g id="Graphic_141">
-        <text transform="translate(428 374)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="552447e-18" y="15">Yes</tspan>
+        <text transform="translate(165.426 378.248)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="0" y="17">Yes</tspan>
         </text>
       </g>
       <g id="Graphic_142">
-        <rect x="242" y="18" width="136" height="90" fill="#599a9e"/>
-        <rect x="242" y="18" width="136" height="90" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(247 35.328003)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="2.392" y="15">Do you use code </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="11.584" y="33.448">that can throw </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="22.848" y="51.895996">Exception?</tspan>
+        <rect x="225" y="9" width="171" height="108" fill="#599a9e"/>
+        <rect x="225" y="9" width="171" height="108" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 30.744003)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="12.316" y="17">Do you use code </tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="22.657" y="38.504">that can throw </tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="35.329" y="60.007996">Exception?</tspan>
         </text>
       </g>
       <g id="Line_144">
-        <line x1="310" y1="108" x2="310" y2="188.1" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="310.5" y1="117" x2="310.5" y2="179.1" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_145">
-        <text transform="translate(320 139.276)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="39257486e-20" y="15">No</tspan>
-        </text>
-      </g>
-      <g id="Graphic_146">
-        <rect x="27" y="9" width="100" height="50" fill="#599a9e"/>
-        <rect x="27" y="9" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(32 24.776)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="36.848" y="15">IO</tspan>
+        <text transform="translate(320 139.248)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="6679102e-19" y="17">No</tspan>
         </text>
       </g>
       <g id="Graphic_147">
-        <rect x="27" y="94" width="100" height="50" fill="#599a9e"/>
-        <rect x="27" y="94" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(32 109.776)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="34.48" y="15">Try</tspan>
+        <rect x="27" y="36" width="100" height="50" fill="#70a3d8"/>
+        <rect x="27" y="36" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(32 50.248)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="33.165" y="17">Try</tspan>
         </text>
-      </g>
-      <g id="Line_148">
-        <line x1="242" y1="54.53648" x2="136.8242" y2="41.44593" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Line_149">
-        <line x1="242" y1="79.34335" x2="136.62588" y2="104.66932" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      </g>
-      <g id="Graphic_150">
-        <text transform="translate(176 23)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="552447e-18" y="15">Yes</tspan>
-        </text>
+        <line x1="225" y1="62.267666" x2="136.89964" y2="61.51306" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_151">
-        <text transform="translate(176 68)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="552447e-18" y="15">Yes</tspan>
-        </text>
-      </g>
-      <g id="Line_152">
-        <line x1="127" y1="143.67811" x2="233.12243" y2="196.05613" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      </g>
-      <g id="Graphic_154">
-        <text transform="translate(176 142)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Then</tspan>
+        <text transform="translate(165.426 36.248)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="0" y="17">Yes</tspan>
         </text>
       </g>
       <g id="Line_155">
-        <line x1="396" y1="405.7583" x2="476.1004" y2="406.46874" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="225" y1="404.26767" x2="136.89964" y2="403.51306" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
     </g>
   </g>
