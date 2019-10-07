@@ -77,7 +77,7 @@ background-image: url(img/errorhandling/partial-function-2.svg)
 
 1. Force caller to deal with errors
 
-1. Limit the noise over success path
+1. Make it easy to fail
 ]
 
 ---
@@ -171,7 +171,7 @@ public OrderState submitOrder(OrderState state) `throws EmptyBasketError, Invali
 ]
 
 ---
-.h1[# Function with Side Effects are not Pure]
+.h1[# Functions with side effects are not pure]
 
 .half-left[![Partial Function](img/errorhandling/side-effect.svg)]
 
@@ -193,7 +193,7 @@ def deleteDebitCard(userId: UserId): DebitCard = {
 ]
 
 ---
-.h1[# Pure Side Effect and Exception with IO]
+.h1[# Pure side effects and exceptions with IO]
 
 .half-left[
 ![IO](img/errorhandling/io.svg)
@@ -260,7 +260,7 @@ background-image: url(img/errorhandling/pure-error-handling.svg)
 ---
 class: center, middle
 
-# What types can we use to encode errors (except IO)?
+# Which types can be used to encode errors (except IO)?
 
 ---
 .h1[# Type constructors with an error channel]
@@ -283,7 +283,7 @@ class: center, middle
 .large[
 * Look at use cases and API of `Option`, `Try` and `Either`
 
-* Practice the design of error ADT (Algebraic Data Type)
+* Practice the design of error ADTs (Algebraic Data Type)
 
 * How to use `Option` and `Either` in conjunction with `IO`
 ]
@@ -310,7 +310,7 @@ object Option {
 
 
 ---
-.h1[# Option documents which values can be null]
+.h1[# Option documents which values are optional]
 
 .half-left[
 ```tut:silent
