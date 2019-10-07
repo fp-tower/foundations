@@ -692,50 +692,59 @@ background-image: url(img/errorhandling/error-conversion.svg)
 background-image: url(img/errorhandling/error-decision-tree.svg)
 
 ---
-# Error Types with IO
+# Option with IO
 
-```scala
-trait DbApi {
+```tut:invisible
+case class UserId(value: Long)
+case class OrderId(value: Long)
+
+case class User()
+case class Order()
+case class OrderDetails()
+```
+
+```tut:silent
+trait OrderApi {
   def getUser(userId: UserId): IO[Option[User]]
   def getOrder(orderId: OrderId): IO[Option[Order]]
 }
 
-def getOrderDetails(db: DbApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
   for {
-    optUser  <- db.getUser(userId)
-    optOrder <- db.getOrder(orderId)
+    optUser  <- api.getUser(userId)
+    optOrder <- api.getOrder(orderId)
   } yield ???
 ```
 
 ---
-# Error Types with IO
+# Option with IO
 
-```scala
-trait DbApi {
+```tut:silent
+trait OrderApi {
   def getUser(userId: UserId): IO[Option[User]]
   def getOrder(orderId: OrderId): IO[Option[Order]]
 }
 
-def getOrderDetails(db: DbApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
   for {
-    optUser  <- db.getUser(userId)
-    optOrder <- db.getOrder(orderId)
+    optUser  <- api.getUser(userId)
+    optOrder <- api.getOrder(orderId)
     user     <- optUser match {
       case None    => IO.fail(new Exception(s"User not found $userId"))
       case Some(x) => IO.succeed(x)
     }
     order    <- optOrder match {
-      case None    => IO.fail(new Exception(s"Order not found orderId"))
+      case None    => IO.fail(new Exception(s"Order not found $orderId"))
       case Some(x) => IO.succeed(x)
     }
   } yield ???
 ```
 
 ---
-# Error Types with IO
+# Option with IO
 
-```scala
-trait DbApi {
+```tut:silent
+trait OrderApi {
   def getUser(userId: UserId): IO[Option[User]]
   def getOrder(orderId: OrderId): IO[Option[Order]]
 }
@@ -746,53 +755,53 @@ def fromOption[A](opt: Option[A])(error: => Throwable): IO[A] =
     case Some(x) => IO.succeed(x)
   }
 
-def getOrderDetails(db: DbApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
   for {
-    user  <- db.getUser(userId).flatMap(fromOption(_)(new Exception(s"User not found $userId")))
-    order <- db.getOrder(orderId).flatMap(fromOption(_)(new Exception(s"Order not found orderId")))
+    user  <- api.getUser(userId).flatMap(fromOption(_)(new Exception(s"User not found $userId")))
+    order <- api.getOrder(orderId).flatMap(fromOption(_)(new Exception(s"Order not found $orderId")))
   } yield ???
 ```
 
 ---
-# Error Types with IO
+# Option with IO
 
-```scala
-sealed trait ApplicationError extends `Exception`
-case class UserNotFound(userId: UserId) extends ApplicationError
-case class OrderNotFound(orderId: OrderId) extends ApplicationError
-
-trait DbApi {
-  def getUser(userId: UserId): IO[Option[User]]
-  def getOrder(orderId: OrderId): IO[Option[Order]]
-}
-
-def getOrderDetails(db: DbApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
-  for {
-    user  <- db.getUser(userId).flatMap(fromOption(_)(UserNotFound(userId)))
-    order <- db.getOrder(orderId).flatMap(fromOption(_)(OrderNotFound(orderId)))
-  } yield ???
-```
-
----
-# Error Types with IO
-
-```scala
+```tut:silent
 sealed trait ApplicationError extends Exception
 case class UserNotFound(userId: UserId) extends ApplicationError
 case class OrderNotFound(orderId: OrderId) extends ApplicationError
 
-trait DbApi {
+trait OrderApi {
+  def getUser(userId: UserId): IO[Option[User]]
+  def getOrder(orderId: OrderId): IO[Option[Order]]
+}
+
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+  for {
+    user  <- api.getUser(userId).flatMap(fromOption(_)(UserNotFound(userId)))
+    order <- api.getOrder(orderId).flatMap(fromOption(_)(OrderNotFound(orderId)))
+  } yield ???
+```
+
+---
+# Option with IO
+
+```tut:silent
+sealed trait ApplicationError extends Exception
+case class UserNotFound(userId: UserId) extends ApplicationError
+case class OrderNotFound(orderId: OrderId) extends ApplicationError
+
+trait OrderApi {
   def getUserOpt(userId: UserId): IO[Option[User]]
   def getOrderOpt(orderId: OrderId): IO[Option[Order]]
 
-  def getUser(userId: UserId): IO[User]     = getUser(userId).flatMap(fromOption(_)(UserNotFound(userId)))
-  def getOrder(orderId: OrderId): IO[Order] = getOrder(userId).flatMap(fromOption(_)(OrderNotFound(orderId)))
+  def getUser(userId: UserId): IO[User]     = getUserOpt(userId).flatMap(fromOption(_)(UserNotFound(userId)))
+  def getOrder(orderId: OrderId): IO[Order] = getOrderOpt(orderId).flatMap(fromOption(_)(OrderNotFound(orderId)))
 }
 
-def getOrderDetails(db: DbApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
   for {
-    user  <- db.getUser(userId)
-    order <- db.getOrder(orderId)
+    user  <- api.getUser(userId)
+    order <- api.getOrder(orderId)
   } yield ???
 ```
 
@@ -837,14 +846,27 @@ type IOOptionT[A]   = OptionT[IO, A]
 type ListOptionT[A] = OptionT[List, A]
 ```
 
---
-
 ```tut:silent
 case class EitherT[F[+_], +E, +A](value: F[Either[E, A]])
 
 type IOEitherT[E, A]   = EitherT[IO, E, A]
 type ListEitherT[E, A] = EitherT[List, E, A]
 ```
+
+---
+.h1[# Conclusion]
+
+<br>
+
+.large[
+* Option and Either are the two main types to encode non side effecting failures
+
+* Try is a helpful helper to catch Exception
+
+* Error ADTs are as granular as we want (at a cost)
+
+* Option and Either can be used in conjunction with IO
+]
 
 ---
 # Resources and further study
