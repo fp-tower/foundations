@@ -580,37 +580,70 @@ class: center, middle
 ---
 class: center, middle
 
-# |A => B|
+# `|A => B|`
 
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Function is a mapping
+# Function is a mapping between two types
 
 ---
-background-image: url(img/count-A-to-B-1.jpg)
+background-image: url(img/type/get-currency-1.svg)
 
-# |A => B|
-
----
-background-image: url(img/count-A-to-B-2.jpg)
-
-# |A => B|
+# |Country => Currency|
 
 ---
-background-image: url(img/count-A-to-B-3.jpg)
+background-image: url(img/type/get-currency-2.svg)
 
-# |A => B|
+# `|3 => 2|`
 
 ---
-background-image: url(img/count-A-to-B-4.jpg)
+background-image: url(img/type/get-currency-3.svg)
 
-# |A => B|
+# `|2 => 2| = 4`
+
+---
+background-image: url(img/type/get-currency-4.svg)
+
+# `|3 => 2|`
+
+---
+background-image: url(img/type/get-currency-5.svg)
+
+# `|3 => 2| = |2 => 2| + |2 => 2|`
 
 ---
 class: center, middle
 
-# Exercise 5
+# `|3 => 2| = 2 * |2 => 2|`
+
+---
+class: center, middle
+
+### `|3 => 2| = 2 * |2 => 2|`
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * |1 => 2|`
+
+---
+background-image: url(img/type/get-currency-6.svg)
+
+# |1 => 2| = 2
+
+---
+class: center, middle
+
+### `|3 => 2| = 2 * |2 => 2|`
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * |1 => 2|`
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * 2`
+
+---
+class: center, middle
+
+# `|A => B| = |B| * |A|`
+
+---
+class: center, middle
+
+# Exercise 5: Tests
 
 `exercises.types.TypeExercises.scala`
 
