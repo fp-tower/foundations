@@ -18,29 +18,14 @@ object TypeExercises extends TypeToImpl {
   // 1. Misused types
   ////////////////////////
 
-  case class Country(value: String)
-
-  val UK: Country          = Country("United Kingdom")
-  val France: Country      = Country("France")
-  val Switzerland: Country = Country("Switzerland")
-
-  // 1a. Implement `getCurrency` for UK, France and Switzerland
-  // such as getCurrency(Country("France")) == "EUR"
-  // What is wrong with this function? How could you improve it?
-  def getCurrency(country: Country): String = ???
-
-  val UKShort: Country  = Country("UK")
-  val UKIban: Country   = Country("GBR") // https://www.iban.com/country-codes
-  val UKFrench: Country = Country("Royaume-Uni")
-
-  // 1b. Implement `compareChar` that indicates if `c1` is smaller, equal to or larger than `c2`
+  // 1a. Implement `compareChar` that indicates if `c1` is smaller, equal to or larger than `c2`
   // such as compareChar('a', 'c') == -1
   //         compareChar('c', 'c') ==  0
   //         compareChar('c', 'a') ==  1
   // What is wrong with this function? How could you improve it?
   def compareChar(c1: Char, c2: Char): Int = ???
 
-  // 1c. Implement `mostRecentBlogs` that returns the `n` most recent blog posts
+  // 1b. Implement `mostRecentBlogs` that returns the `n` most recent blog posts
   // such as mostRecentBlogs(1)(List(
   //   BlogPost(1,First blog,2019-09-18T16:21:06.681768Z)
   //   BlogPost(23,Thoughts of the day,2019-09-21T08:14:06.702836Z)
@@ -50,14 +35,14 @@ object TypeExercises extends TypeToImpl {
 
   def mostRecentBlogs(n: Int)(blogs: List[BlogPost]): List[BlogPost] = ???
 
-  // 1d. Implement `User#address` that returns the full address for a User (e.g. to send a parcel)
+  // 1c. Implement `User#address` that returns the full address for a User (e.g. to send a parcel)
   // such as User("John Doe", Some(108), Some("Cannon Street"), Some("EC4N 6EU")) == "108 Canon Street EC4N 6EU"
   // What is wrong with this function? How could you improve it?
   case class User(name: String, streetNumber: Option[Int], streetName: Option[String], postCode: Option[String]) {
     def address: String = ???
   }
 
-  // 1e. Implement `Order#total` that returns the total price of an Order then implement
+  // 1d. Implement `Order#total` that returns the total price of an Order then implement
   // `Order#totalWithDiscountedFirstItem`. The latter should calculate the total applying a
   // discount only on the first item, e.g. totalWithDiscountedFirstItem(0.3) would apply a 30% discount.
   // What is wrong with this function? How could you improve it?
@@ -71,7 +56,7 @@ object TypeExercises extends TypeToImpl {
     def totalWithDiscountedFirstItem(discountPercent: Double): Double = ???
   }
 
-  // 1f. Implement `getItemCount` that return how many items are part of the order.
+  // 1e. Implement `getItemCount` that returns how many items are part of the order.
   // In other words, it sums up items quantities without looking at prices.
   // Use `getOrder` to implement `getItemCount`.
   // What is wrong with this function? How could you improve it?

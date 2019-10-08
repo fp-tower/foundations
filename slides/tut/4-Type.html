@@ -56,21 +56,134 @@ layout: true
 ---
 .h1[# Plan]
 
+<br>
+
 .large[
 * What is the cost of misusing types?
 ]
 
 .large[
-* How to use Algebraic Data Type (ADT) to encode data
+* How to use ADTs to encode data
 ]
 
 .large[
-* Learn how to count types and tests
+* Learn how to measure types and tests
 ]
 
 .large[
 * Explore relationship between types, algebra and logic
 ]
+
+---
+# Cost of misusing types
+
+```tut:silent
+case class Country(value: String)
+
+val UK: Country      = Country("United Kingdom")
+val France: Country  = Country("France")
+val Germany: Country = Country("Germany")
+```
+
+--
+
+```tut:silent
+def getCurrency(country: Country): String = ???
+```
+
+such as
+
+```scala
+getCurrency("United Kingdom") == "GBP"
+getCurrency("France")         == "EUR"
+getCurrency("Germany")        == "EUR"
+```
+
+---
+# Cost of misusing types
+
+```tut:invisible
+def getCurrency(country: Country): Option[String] =
+  country.value match {
+    case "United Kingdom"     => Some("GBP")
+    case "France" | "Germany" => Some("EUR")
+    case _                    => None
+  }
+```
+
+```scala
+def getCurrency(country: Country): `Option`[String] =
+  country.value match {
+    case "United Kingdom"     => Some("GBP")
+    case "France" | "Germany" => Some("EUR")
+    case _                    => None
+  }
+```
+
+--
+
+```tut
+getCurrency(Country("UK"))
+getCurrency(Country("GBR"))
+getCurrency(Country("Royaume-Uni"))
+```
+
+---
+# Cost of misusing types
+
+```tut:silent
+sealed trait Country
+
+object Country {
+  case object UnitedKingdom extends Country
+  case object France        extends Country
+  case object Germany       extends Country
+}
+```
+
+```tut:silent
+import Country._
+
+def getCurrency(country: Country): String =
+  country match {
+    case UnitedKingdom    => "GBP"
+    case France | Germany => "EUR"
+  }
+```
+
+```tut:silent
+def parseCountry(country: String): Option[Country] = ???
+```
+
+---
+# Cost of misusing types
+
+```tut:silent
+sealed trait Country
+
+object Country {
+  case object UnitedKingdom extends Country
+  case object France        extends Country
+  case object Germany       extends Country
+}
+
+sealed trait Currency
+
+object Currency {
+  case object BritishPound extends Currency
+  case object Euro         extends Currency
+}
+```
+
+```tut:silent
+import Country._, Currency._
+
+def getCurrency(country: Country): Currency =
+  country match {
+    case UnitedKingdom    => BritishPound
+    case France | Germany => Euro
+  }
+```
 
 ---
 class: center, middle
@@ -239,8 +352,6 @@ def getCurrency(country: Country): String
 ```scala
 def getCurrency(country: String): Option[Currency]
 ```
-
---
 
 ### How much benefit do we get by reducing both?
 
