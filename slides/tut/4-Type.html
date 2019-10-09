@@ -573,7 +573,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercise 4: Advanced Cardinality
+# Exercise 4a-f: Advanced Cardinality
 
 `exercises.types.TypeExercises.scala`
 
@@ -634,6 +634,13 @@ class: center, middle
 ### `|3 => 2| = 2 * |2 => 2|`
 ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * |1 => 2|`
 ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * 2`
+
+---
+class: center, middle
+
+### `|3 => 2| = 2 * |2 => 2|`
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * |1 => 2|`
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 * 2 * 2`
 ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`= 2 ^ 3`
 
 ---
@@ -644,17 +651,17 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercise 5: Tests
+# Finish Exercise 4
 
 `exercises.types.TypeExercises.scala`
 
 ---
-background-image: url(img/int-to-int-type-1.jpg)
+background-image: url(img/type/function-set-2.svg)
 
-# Function is a set!
+# Functions are Sets!
 
 ---
-background-image: url(img/int-to-int-type-test.jpg)
+background-image: url(img/type/unit-test.svg)
 
 # Unit Tests
 
@@ -664,39 +671,22 @@ class: center, middle
 # Valid Implementation Count (VIC)
 
 ---
-class: center, middle
-
-# VIC(f: A => B) = number of impl - impl invalid by tests
+background-image: url(img/type/vic.svg)
 
 ---
-background-image: url(img/VIC-increment.jpg)
+background-image: url(img/type/vic-explained.svg)
 
 ---
-class: center, middle
+background-image: url(img/type/vic-1.svg)
 
-# The smaller is VIC, the more f is constrained
-
----
-background-image: url(img/VIC-1.jpg)
-
-.center[
 # VIC(f) = 1
-]
 
 ---
 class: center, middle
 
-# VIC(f: A => B) = <span style="color:blue">**number of impl**</span>  - impl invalid by tests
+# Exercise 5: Tests
 
----
-class: center, middle
-
-# |A => B| = |B| ^ |A|
-
----
-class: center, middle
-
-# VIC(f: A => B) = number of impl - <span style="color:blue">**impl invalid by tests**</span>
+`exercises.types.TypeExercises.scala`
 
 ---
 # Unit Test
@@ -790,6 +780,8 @@ class: center, middle
 ---
 .h1[# Type Algebra]
 
+<br>
+<br>
 
 .center[
 | Type        | Algebra   |
@@ -809,23 +801,11 @@ class: center, middle
 
 [Propositions as types](https://www.youtube.com/watch?v=IOiZatlZtGU) from Philip Wadler
 
-
 ---
 .h1[# Type Algebra Logic]
 
-.center[
-| Type        | Algebra   | Logic                 |
-|:-----------:| :--------:|:---------------------:|
-|Nothing      | 0         | ⊥ (false)             |
-|Unit         | 1         | ⊤ (true)              |
-|Either[A, B] | A + B     | A ∨ B (or)            |
-|(A, B)       | A * B     | A ∧ B (and)           |
-| A => B      | B ^ A     | A → B (implies)       |
-| Isomorphism | A == B    | A ⇔ B (equivalence)   |
-]
-
----
-.h1[# Type Algebra Logic]
+<br>
+<br>
 
 .center[
 | Type        | Algebra   | Logic |
@@ -957,11 +937,18 @@ inc('c')
 inc(java.time.Instant.ofEpochMilli(0))
 ```
 
+---
+class: center, middle
+
+# VIC(Any => Any) = |Any| ^ (|Any| - n)
+
+### where n is the number of unit tests
 
 ---
 # Resources and further study
 
 * [Programming with Algebra](https://blog.developer.atlassian.com/programming-with-algebra/): property based testing with storage
+* [Much Ado About Testing](https://www.youtube.com/watch?v=Jhzc7fxY5lw&t=): property based testing best practices and pitfalls
 * [Choosing properties for property-based testing](https://fsharpforfunandprofit.com/posts/property-based-testing-2/)
 * [Property-Based Testing in a Screencast Editor](https://wickstrom.tech/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
 * [Property-Based Testing The Ugly Parts: Case Studies from Komposition](https://www.youtube.com/watch?v=z2ete8VZnZY&feature=youtu.be)

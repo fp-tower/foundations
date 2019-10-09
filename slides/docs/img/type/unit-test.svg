@@ -21,13 +21,21 @@
   <metadata> Produced by OmniGraffle 7.11.3 
     <dc:date>2019-10-09 20:06:03 +0000</dc:date>
   </metadata>
-  <g id="function-set-2" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
-    <title>function-set-2</title>
-    <g id="function-set-2: Layer 1">
+  <g id="unit-test" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+    <title>unit-test</title>
+    <g id="unit-test: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_99">
         <circle cx="324" cy="225" r="162.000258860107" fill="#589b9d"/>
         <circle cx="324" cy="225" r="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_174">
+        <ellipse cx="279" cy="333" rx="45.0000719055854" ry="36.0000575244682" fill="#ff8080"/>
+        <ellipse cx="279" cy="333" rx="45.0000719055854" ry="36.0000575244682" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_173">
+        <ellipse cx="427" cy="171" rx="45.0000719055854" ry="36.0000575244683" fill="#ff8080"/>
+        <ellipse cx="427" cy="171" rx="45.0000719055854" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_113">
         <text transform="translate(279.908 23)" fill="#589b9d">
@@ -173,6 +181,22 @@
       </g>
       <g id="Line_172">
         <line x1="531.8147" y1="315" x2="414.37023" y2="281.1012" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_175">
+        <line x1="535.0507" y1="87.56" x2="469.5869" y2="138.11313" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_176">
+        <text transform="translate(482 59)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="black" x="6394885e-19" y="19">assert( f(0) == 0 )</tspan>
+        </text>
+      </g>
+      <g id="Graphic_177">
+        <text transform="translate(4.999999 358.44)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="black" x="6394885e-19" y="19">assert( f(2) == 6 )</tspan>
+        </text>
+      </g>
+      <g id="Line_178">
+        <line x1="159.56" y1="355.3148" x2="222.49255" y2="343.5572" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>

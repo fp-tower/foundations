@@ -199,6 +199,10 @@ object TypeExercises extends TypeToImpl {
       def cardinality: Card = ???
     }
 
+  ///////////////////////
+  // GO BACK TO SLIDES
+  ///////////////////////
+
   // 4g. Implement isAdult1 and isAdult2, which one is better?
   def isAdult1: Cardinality[Int => Boolean] = new Cardinality[Int => Boolean] {
     def cardinality: Card = ???
@@ -232,24 +236,22 @@ object TypeExercises extends TypeToImpl {
   // 5. Tests
   ////////////////////////
 
-  // 5a. Given sign type signature and one unit test:
-  // assert(sign(5) = true)
-  // how many valid implementations exist for sign, i.e. how many pass type checker and tests
+  // 5a. Given `getCurrency` signature, what is the VIC of of `getCurrency`
+  // if we have one unit test, e.g. assert(getCurrency(France) == EUR)?
+  // If we have two unit test, e.g. assert(getCurrency(France) == EUR) and assert(getCurrency(Germany) = EUR)?
+  def getCurrency(country: Country): Currency = ???
+
+  // 5b. Given `sign` signature, what is the VIC of of `sign`
+  // if we have one unit test, e.g. assert(sign(-2) == false)?
+  // If we have two unit test, e.g. assert(sign(-2) == false), assert(sign(0) == true) and assert(sign(5) == true) ?
   def sign(x: Int): Boolean = ???
 
-  // 5b. what if have 3 unit tests
-  // assert(sign(-2) = false)
-  // assert(sign( 0) = true)
-  // assert(sign( 5) = true)
-  // can you generalise for n unit tests?
+  // 5c. Can you define the VIC formula for any function A => B with n different unit tests?
 
-  // 5c. How many implementations remain valid if I have the following property
+  // 5d. What is the VIC of of `sign` if it has the following property based test:
   // forAll(x: Int => sign(x) == !sign(-x))
 
-  // 5d. Can you think of other ways to reduce the number of valid implementations?
-  // check out the following resources for more details:
-  // Property-Based Testing in a Screencast Editor (by Oskar Wickström): https://wickstrom.tech/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html
-  // Types vs Tests (by Julien Truffaut): https://skillsmatter.com/skillscasts/12658-types-vs-tests
+  // 5e. Can you define the VIC formula for any function A => B with n different property based tests?
 
   ////////////////////////
   // 6. Parametricity
