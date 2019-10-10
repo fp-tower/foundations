@@ -34,7 +34,4 @@ case class IOAsyncRef[A](ref: AtomicReference[A]) {
 object IOAsyncRef {
   def apply[A](value: A): IOAsync[IOAsyncRef[A]] =
     IOAsync.effect(IOAsyncRef(new AtomicReference(value)))
-
-  def unsafe[A](value: A): IOAsyncRef[A] =
-    IOAsyncRef(new AtomicReference(value))
 }

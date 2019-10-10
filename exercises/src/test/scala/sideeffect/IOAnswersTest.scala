@@ -3,7 +3,7 @@ package sideeffect
 import java.time.Instant
 
 import answers.sideeffect.IOAnswers._
-import exercises.sideeffect.IORef
+import answers.sideeffect.IORef
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -85,15 +85,19 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
 
   test("read user from Console") {
     val in: List[String] = List("John", "24")
-    val console          = safeTestConsole(in)
     val now              = Instant.ofEpochMilli(100)
     val clock            = testClock(now)
 
-    val user   = userConsoleProgram2(console, clock).unsafeRun()
-    val output = console.out.get.unsafeRun()
+    val tests = for {
+      console <- safeTestConsole(in)
+      user    <- userConsoleProgram2(console, clock)
+      output  <- console.out.get
+    } yield {
+      user shouldEqual User("John", 24, now)
+      output shouldEqual List("What's your name?", "What's your age?")
+    }
 
-    user shouldEqual User("John", 24, now)
-    output shouldEqual List("What's your name?", "What's your age?")
+    tests.unsafeRun()
   }
 
   ////////////////////////

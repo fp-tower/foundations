@@ -3,8 +3,6 @@ package answers.sideeffect
 import java.time.Instant
 
 import cats.Monad
-import exercises.sideeffect.IOExercises.IO
-import exercises.sideeffect.IORef
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
@@ -232,12 +230,13 @@ object IOAnswers {
       createdAt <- clock.readNow
     } yield User(name, age, createdAt)
 
-  def safeTestConsole(in: List[String]): TestConsole =
-    TestConsole(IORef.unsafe(in))
+  def safeTestConsole(in: List[String]): IO[TestConsole] =
+    for {
+      in  <- IORef(List.empty[String])
+      out <- IORef(List.empty[String])
+    } yield TestConsole(in, out)
 
-  case class TestConsole(in: IORef[List[String]]) extends Console {
-    val out: IORef[List[String]] = IORef.unsafe(List.empty[String])
-
+  case class TestConsole(in: IORef[List[String]], out: IORef[List[String]]) extends Console {
     val readLine: IO[String] =
       in.modify {
         case x :: xs => (xs, x)

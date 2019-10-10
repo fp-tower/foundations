@@ -1,8 +1,8 @@
-package exercises.sideeffect
+package answers.sideeffect
 
 import java.util.concurrent.atomic.AtomicReference
 
-import exercises.sideeffect.IOExercises.IO
+import answers.sideeffect.IOAnswers.IO
 
 import scala.annotation.tailrec
 
