@@ -2,12 +2,12 @@ package sideeffect
 
 import java.util.concurrent.ExecutorService
 
-import answers.sideeffect.{IOAsync, IOAsyncRef}
-import exercises.sideeffect.{IORef, ThreadPoolUtil}
+import answers.sideeffect.{IOAsync, IOAsyncRef, IORef}
+import exercises.sideeffect.ThreadPoolUtil
+import exercises.sideeffect.ThreadPoolUtil.CounterExecutionContext
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import exercises.sideeffect.ThreadPoolUtil.CounterExecutionContext
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
