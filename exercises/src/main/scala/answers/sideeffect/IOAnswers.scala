@@ -230,9 +230,9 @@ object IOAnswers {
       createdAt <- clock.readNow
     } yield User(name, age, createdAt)
 
-  def safeTestConsole(in: List[String]): IO[TestConsole] =
+  def safeTestConsole(inputLines: List[String]): IO[TestConsole] =
     for {
-      in  <- IORef(List.empty[String])
+      in  <- IORef(inputLines)
       out <- IORef(List.empty[String])
     } yield TestConsole(in, out)
 
