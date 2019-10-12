@@ -23,14 +23,8 @@
     table { border-collapse: collapse; display: inline-block; }
     th, td { padding: 10px; border: 1px solid black; }
     tr:nth-child(even) {background-color: #f2f2f2;}
-    .reference {
-    font-size: 16px;
-    position: fixed;
-    left: 50%;
-    bottom: 12px;
-    transform: translate(-50%, -50%);
-    margin: 0 auto;
-    }
+    .reference {font-size: 16px; position: fixed; left: 50%; bottom: 12px; transform: translate(-50%, -50%); margin: 0 auto;}
+    .reference-top-left {font-size: 16px; position: fixed; left: 12px; top: 12px;}
   </style>
 </head>
 <body>
@@ -832,6 +826,13 @@ def deleteOrdersSequential(orderId1: OrderId,orderId2: OrderId)
 <br>
 ![Sequence Diagram](img/sideeffect/delete-orders-2.svg)
 ]
+
+---
+class: center, middle
+
+![Future vs IO](img/side-effect-dynamite.png)
+
+.reference-top-left[[@impurepics](https://twitter.com/impurepics)]
 
 ---
 class: center, middle
