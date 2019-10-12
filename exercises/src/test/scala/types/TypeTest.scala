@@ -106,13 +106,33 @@ class TypeExercisesTest extends TypeToImplTest(TypeExercises) {
 class TypeAnswersTest extends TypeToImplTest(TypeAnswers) {
   import TypeAnswers._
 
+  def days(x: Int): Duration = Duration.ofDays(x)
+
+  test("mostRecentBlogs") {
+    val now = Instant.now()
+    val b1  = BlogPost("123", "foo", now)
+    val b2  = BlogPost("222", "bar", now.plus(days(3)))
+    val b3  = BlogPost("444", "fuzz", now.plus(days(9)))
+
+    mostRecentBlogs(2)(List(b3, b1, b2)) shouldEqual List(b1, b2)
+  }
+
+  test("invoice") {
+    val invoice = Invoice("111",
+                          NonEmptyList.of(
+                            InvoiceItem("a", 2, 10),
+                            InvoiceItem("a", 5, 4)
+                          ))
+    invoice.total shouldEqual 40
+    invoice.totalWithDiscountedFirstItem(0.5) shouldEqual 30
+  }
+
   test("deliver") {
-    val now          = Instant.now()
-    def days(x: Int) = Duration.ofDays(x)
-    val orderId      = OrderId(UUID.randomUUID())
-    val itemId       = ItemId(UUID.randomUUID())
-    val address      = Address(10, "EXC1 7TW")
-    val order        = Order(orderId, now, Submitted(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3))))
+    val now     = Instant.now()
+    val orderId = OrderId(UUID.randomUUID())
+    val itemId  = ItemId(UUID.randomUUID())
+    val address = Address(10, "EXC1 7TW")
+    val order   = Order(orderId, now, Submitted(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3))))
 
     deliver(order, now.plus(days(4))) shouldEqual Right(
       Order(orderId, now, Delivered(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3)), now.plus(days(4))))

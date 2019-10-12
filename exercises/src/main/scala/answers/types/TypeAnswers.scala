@@ -4,10 +4,10 @@ import java.time.Instant
 import java.util.UUID
 
 import answers.types.Comparison._
-import answers.types.TypeAnswers.OrderStatus.{Cancelled, Checkout, Delivered, Draft, Submitted}
 import cats.data.NonEmptyList
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
+import eu.timepit.refined.types.numeric.PosInt
 import exercises.sideeffect.IOExercises.IO
 import exercises.types.Card._
 import exercises.types.TypeExercises.{Branch, Func, One, Pair}
@@ -15,6 +15,45 @@ import exercises.types._
 import toimpl.types.TypeToImpl
 
 object TypeAnswers extends TypeToImpl {
+
+  ////////////////////////
+  // 1. Misused types
+  ////////////////////////
+
+  def compareChar(x: Char, y: Char): Comparison =
+    if (x < y) LessThan
+    else if (x > y) GreaterThan
+    else EqualTo
+
+  case class BlogPost(id: String, title: String, createAt: Instant)
+
+  def mostRecentBlogs(n: Int)(blogs: List[BlogPost]): List[BlogPost] =
+    blogs.sortBy(_.createAt).take(n)
+
+  def mostRecentBlogs_V2(n: PosInt)(blogs: List[BlogPost]): List[BlogPost] =
+    blogs.sortBy(_.createAt).take(n.value)
+
+  case class User(name: String, address: Option[UserAddress])
+
+  case class UserAddress(streetNumber: Int, streetName: String, postCode: String) {
+    def fullAddress: String = s"$streetNumber $streetName $postCode"
+  }
+
+  case class InvoiceItem(id: String, quantity: Int, price: Double) {
+    def value: Double = quantity * price
+  }
+  case class Invoice(id: String, items: NonEmptyList[InvoiceItem]) {
+    def total: Double = items.toList.map(_.value).sum
+
+    def totalWithDiscountedFirstItem(discountPercent: Double): Double = {
+      val discountedItem    = items.head.copy(price = items.head.price * (1 - discountPercent))
+      val discountedInvoice = copy(items = NonEmptyList(discountedItem, items.tail))
+      discountedInvoice.total
+    }
+  }
+
+  def getItemCount(invoice: Invoice): Int =
+    invoice.items.map(_.quantity).toList.sum
 
   ////////////////////////
   // 2. Data Encoding
@@ -40,6 +79,8 @@ object TypeAnswers extends TypeToImpl {
   case class Item(id: ItemId, quantity: Long, price: BigDecimal)
 
   case class Address(streetNumber: Int, postCode: String)
+
+  import answers.types.TypeAnswers.OrderStatus._
 
   def deliver(order: Order, now: Instant): Either[OrderError.InvalidStatus, Order] =
     order.status match {

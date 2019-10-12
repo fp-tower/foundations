@@ -46,11 +46,9 @@ object TypeExercises extends TypeToImpl {
   // `Invoice#totalWithDiscountedFirstItem`. The latter should calculate the total applying a
   // discount only on the first item, e.g. totalWithDiscountedFirstItem(0.3) would apply a 30% discount.
   // What is wrong with this function? How could you improve it?
-
-  // quantity must be positive
-  case class Item(id: String, quantity: Int, price: Double)
+  case class InvoiceItem(id: String, quantity: Int, price: Double)
   // an invoice must have at least one item
-  case class Invoice(id: String, items: List[Item]) {
+  case class Invoice(id: String, items: List[InvoiceItem]) {
     def total: Double = ???
 
     def totalWithDiscountedFirstItem(discountPercent: Double): Double = ???
@@ -62,7 +60,7 @@ object TypeExercises extends TypeToImpl {
   // What is wrong with this function? How could you improve it?
   def getInvoice(id: String): IO[Invoice] =
     if (id == "123")
-      IO.succeed(Invoice("123", List(Item("aa", 10, 2.5), Item("x", 2, 13.4))))
+      IO.succeed(Invoice("123", List(InvoiceItem("aa", 10, 2.5), InvoiceItem("x", 2, 13.4))))
     else
       IO.fail(new Exception(s"No Invoice found for id $id"))
 
