@@ -1,6 +1,11 @@
 package types
 
+import java.time.{Duration, Instant}
+import java.util.UUID
+
 import answers.types.TypeAnswers
+import answers.types.TypeAnswers.OrderStatus.{Cancelled, Delivered, Draft, Submitted}
+import cats.data.NonEmptyList
 import exercises.typeclass.Eq
 import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
@@ -100,6 +105,39 @@ class TypeExercisesTest extends TypeToImplTest(TypeExercises) {
 
 class TypeAnswersTest extends TypeToImplTest(TypeAnswers) {
   import TypeAnswers._
+
+  test("deliver") {
+    val now          = Instant.now()
+    def days(x: Int) = Duration.ofDays(x)
+    val orderId      = OrderId(UUID.randomUUID())
+    val itemId       = ItemId(UUID.randomUUID())
+    val address      = Address(10, "EXC1 7TW")
+    val order        = Order(orderId, now, Submitted(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3))))
+
+    deliver(order, now.plus(days(4))) shouldEqual Right(
+      Order(orderId, now, Delivered(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3)), now.plus(days(4))))
+    )
+
+    val draftOrder = order.copy(status = Draft(Nil))
+    deliver(draftOrder, now.plus(days(4))) shouldEqual Left(OrderError.InvalidStatus(draftOrder.status))
+  }
+
+  test("cancel") {
+    val now          = Instant.now()
+    def days(x: Int) = Duration.ofDays(x)
+    val orderId      = OrderId(UUID.randomUUID())
+    val itemId       = ItemId(UUID.randomUUID())
+    val address      = Address(10, "EXC1 7TW")
+    val submitted    = Submitted(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3)))
+    val order        = Order(orderId, now, submitted)
+
+    TypeAnswers.cancel(order, now.plus(days(4))) shouldEqual Right(
+      Order(orderId, now, Cancelled(Right(submitted), now.plus(days(4))))
+    )
+
+    val draftOrder = order.copy(status = Draft(Nil))
+    TypeAnswers.cancel(draftOrder, now.plus(days(4))) shouldEqual Left(OrderError.InvalidStatus(draftOrder.status))
+  }
 
   test("Two") {
     Cardinality.of[Two].eval shouldEqual Some(BigInt(2))

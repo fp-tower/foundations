@@ -42,29 +42,29 @@ object TypeExercises extends TypeToImpl {
     def address: String = ???
   }
 
-  // 1d. Implement `Order#total` that returns the total price of an Order then implement
-  // `Order#totalWithDiscountedFirstItem`. The latter should calculate the total applying a
+  // 1d. Implement `Invoice#total` that returns the total price of an invoice then implement
+  // `Invoice#totalWithDiscountedFirstItem`. The latter should calculate the total applying a
   // discount only on the first item, e.g. totalWithDiscountedFirstItem(0.3) would apply a 30% discount.
   // What is wrong with this function? How could you improve it?
 
   // quantity must be positive
   case class Item(id: String, quantity: Int, price: Double)
-  // order must have at least one item
-  case class Order(id: String, items: List[Item]) {
+  // an invoice must have at least one item
+  case class Invoice(id: String, items: List[Item]) {
     def total: Double = ???
 
     def totalWithDiscountedFirstItem(discountPercent: Double): Double = ???
   }
 
-  // 1e. Implement `getItemCount` that returns how many items are part of the order.
+  // 1e. Implement `getItemCount` that returns how many items are part of the invoice.
   // In other words, it sums up items quantities without looking at prices.
-  // Use `getOrder` to implement `getItemCount`.
+  // Use `getInvoice` to implement `getItemCount`.
   // What is wrong with this function? How could you improve it?
-  def getOrder(id: String): IO[Order] =
+  def getInvoice(id: String): IO[Invoice] =
     if (id == "123")
-      IO.succeed(Order("123", List(Item("aa", 10, 2.5), Item("x", 2, 13.4))))
+      IO.succeed(Invoice("123", List(Item("aa", 10, 2.5), Item("x", 2, 13.4))))
     else
-      IO.fail(new Exception(s"No Order found for id $id"))
+      IO.fail(new Exception(s"No Invoice found for id $id"))
 
   def getItemCount(id: String): IO[Int] = ???
 
@@ -74,14 +74,27 @@ object TypeExercises extends TypeToImpl {
 
   // 2a. Create types that encode the following business requirements:
   // An order contains an order id (UUID), a created timestamp (Instant), an order status, and a basket of items.
-  // An order status is either a draft, submitted, delivered or cancelled.
+  // An order status is either a draft, checkout, submitted, delivered.
   // An item consists of an item id (UUID), a quantity and a price.
   // A basket can be empty in draft otherwise it must contain at least one item.
-  // When an order is in draft, it may have a delivery address.
+  // When an order is in checkout, it may have a delivery address.
   // When an order is in submitted, it must have a delivery address and a submitted timestamp (Instant).
   // When an order is in delivered, it must have a delivery address, a submitted and delivered timestamps (Instant).
-  // When an order is cancelled, it must contains a cancellation timestamp (Instant).
   // An address consists of a street number and a post code.
+  trait Order
+
+  // 2b. Implement `deliver` which encodes the order transition between submitted to delivered status.
+  // Verify all pre and post conditions are satisfied and if not encode the errors in an ADT.
+  // You may need to modify your encoding to eliminate runtime errors.
+  def deliver = ???
+
+  // 2c. Add a cancelled status.
+  // An order can be cancelled only if it is in checkout or submitted state.
+  // A cancelled order must have a cancelled timestamp (Instant).
+
+  // 2d. Implement `cancel` which encodes the order transition between checkout or submitted to cancelled status.
+  // Verify all pre and post conditions are satisfied and if not encode the errors in an ADT.
+  // You may need to modify your encoding to eliminate runtime errors.
 
   ////////////////////////
   // 3. Cardinality
