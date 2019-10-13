@@ -160,10 +160,20 @@ object EitherExercises {
       b <- fb
     } yield f(a, b)
 
+  def toListError[E, A](fa: Either[E, A]): Either[List[E], A] =
+    fa.left.map(List(_))
+
   // 4b. Implement `validateUserPar` which behaves similarly to `validateUser` but this time we should
   // return all errors that occur. For example, we want to know if both username and country are invalid.
   // What should be the return type of `validateUserPar`?
   // Note: try to use parMap2
   def validateUserPar(username: String, country: String) = ???
+
+  // 4c. Implement `parSequence` which accumulate successes if all `Either` are `Right` or accumulates
+  // failures if at least one `Either` is `Left`.
+  // parSequence(List(Right(1), Right(2), Right(3))) == Right(List(1,2,3))
+  // parSequence(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) == Left(List("e1", "e2", "e3"))
+  // Note: you may find it useful to reuse `parMap2`
+  def parSequence[E, A](xs: List[Either[List[E], A]]): Either[List[E], List[A]] = ???
 
 }

@@ -177,4 +177,7 @@ object EitherAnswers {
     )((_, _) => Username(trimmed))
   }
 
+  def parSequence[E, A](xs: List[Either[List[E], A]]): Either[List[E], List[A]] =
+    xs.foldLeft[Either[List[E], List[A]]](Right(Nil))(parMap2(_, _)((acc, a) => a :: acc)).map(_.reverse)
+
 }

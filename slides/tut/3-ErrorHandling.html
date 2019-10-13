@@ -691,15 +691,20 @@ background-image: url(img/errorhandling/error-conversion.svg)
 <br>
 
 .large[
-* Use when many causes of failure need to be captured
+* Use when you need to capture details about failure
 
-* Fail early with `flatMap`
+* ADTs are generally the best way to encode errors
 
-* Accumulate failures with `parMap`, `parTraverse`
+* Two modes:
+  * Fail early with `flatMap`
+  * Accumulate failures with `parMap`, `parSequence`
 ]
 
 ---
 background-image: url(img/errorhandling/error-decision-tree.svg)
+
+---
+background-image: url(img/errorhandling/error-decision-tree-2.svg)
 
 ---
 # Option with IO
@@ -869,11 +874,11 @@ type ListEitherT[E, A] = EitherT[List, E, A]
 <br>
 
 .large[
-* Option and Either are the two main types to encode non side effecting failures
+* Option and Either are the two main types to encode failures
 
 * Try is a helpful helper to catch Exception
 
-* Error ADTs are as granular as we want (at a cost)
+* Error ADTs can be as granular as we want
 
 * Option and Either can be used in conjunction with IO
 ]

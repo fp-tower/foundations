@@ -112,4 +112,9 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
     )
   }
 
+  test("parSequence") {
+    parSequence(List(Right(1), Right(2), Right(3))) shouldEqual Right(List(1, 2, 3))
+    parSequence(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) shouldEqual Left(List("e1", "e2", "e3"))
+  }
+
 }
