@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 595 514" width="595" height="514">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 595 514" width="595" height="514">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="24" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -28,10 +28,10 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.11.3 
-    <dc:date>2019-10-09 20:06:03 +0000</dc:date>
+  <metadata> Produced by OmniGraffle 7.11.4 
+    <dc:date>2019-10-13 19:53:06 +0000</dc:date>
   </metadata>
-  <g id="nothing-2" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+  <g id="nothing-2" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1" stroke="none">
     <title>nothing-2</title>
     <g id="nothing-2: Layer 1">
       <title>Layer 1</title>
@@ -46,7 +46,7 @@
           <ellipse cx="103.5" cy="99" rx="103.500165382846" ry="99.0001581922877" fill="#599a9e"/>
         </clipPath>
         <text clip-path="url(#clip_path)" transform="translate(342 117)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="89.8847" y="28">Int</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="89.94" y="23">Int</tspan>
         </text>
       </g>
       <g id="Graphic_102">
@@ -116,7 +116,7 @@
           <ellipse cx="112.5" cy="45" rx="112.500179763963" ry="45.0000719055853" fill="#599a9e"/>
         </clipPath>
         <text clip-path="url(#clip_path_2)" transform="translate(171 351)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="68.22894" y="28">Boolean</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="68.28" y="23">Boolean</tspan>
         </text>
       </g>
       <g id="Graphic_136">
@@ -140,7 +140,7 @@
           <ellipse cx="81" cy="40.5" rx="81.0001294300536" ry="40.5000647150268" fill="#599a9e"/>
         </clipPath>
         <text clip-path="url(#clip_path_3)" transform="translate(405 333)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="49.15423" y="28">String</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="49.224" y="23">String</tspan>
         </text>
       </g>
       <g id="Graphic_143">
@@ -150,7 +150,7 @@
           <ellipse cx="72" cy="40.5" rx="72.0001150489365" ry="40.5000647150268" fill="#599a9e"/>
         </clipPath>
         <text clip-path="url(#clip_path_4)" transform="translate(225 261)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="51.25808" y="28">Foo</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="51.336" y="23">Foo</tspan>
         </text>
       </g>
       <g id="Graphic_144">
@@ -160,7 +160,7 @@
           <ellipse cx="85.5" cy="40.5" rx="85.5001366206121" ry="40.5000647150268" fill="#599a9e"/>
         </clipPath>
         <text clip-path="url(#clip_path_5)" transform="translate(144 171)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="46.5417" y="28">List[Int]</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="46.608" y="23">List[Int]</tspan>
         </text>
       </g>
       <g id="Graphic_146">
@@ -170,7 +170,7 @@
           <ellipse cx="67.5" cy="31.5" rx="67.500107858378" ry="31.5000503339097" fill="#599a9e"/>
         </clipPath>
         <text clip-path="url(#clip_path_6)" transform="translate(315 441)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="55.41724" y="40">…</tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="400" fill="white" x="55.5" y="23">…</tspan>
         </text>
       </g>
       <g id="Graphic_147">

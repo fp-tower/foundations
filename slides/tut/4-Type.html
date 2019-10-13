@@ -689,53 +689,43 @@ class: center, middle
 ---
 # Unit Test
 
-```scala
-sealed trait DayOfWeek
+```tut:silent
+sealed trait Country
+object Country {
+  case object UnitedKingdom extends Country
+  case object France        extends Country
+  case object Germany       extends Country
+}
 
-case object Monday  extends DayOfWeek
-case object Tuesday extends DayOfWeek
-// ...
-case object Sunday  extends DayOfWeek
-```
+sealed trait Currency
+object Currency {
+  case object GBP extends Currency
+  case object EUR extends Currency
+}
 
-```tut:invisible
-sealed trait DayOfWeek
-
-case object Monday  extends DayOfWeek
-case object Tuesday extends DayOfWeek
-case object Sunday  extends DayOfWeek
-```
-
-
-```scala
-val f: DayOfWeek => Boolean = ???
+def getCurrency(country: Country): Currency = ???
 ```
 
 such as
 
 ```scala
-assert(f(Tuesday) == false)
+assert(getCurrency(France) == EUR)
 ```
 
 ---
-background-image: url(img/count-day-week-to-boolean-1.jpg)
+background-image: url(img/type/unit-test-1.svg)
 
-# Unit Test
-
----
-background-image: url(img/count-day-week-to-boolean-2.jpg)
-
-# Unit Test
+# VIC(getCurrency) = `2 * ...`
 
 ---
-background-image: url(img/count-day-week-to-boolean-3.jpg)
+background-image: url(img/type/unit-test-2.svg)
 
-# Unit Test
+# VIC(getCurrency) = `2 * 1 * ...`
 
 ---
-background-image: url(img/count-day-week-to-boolean-4.jpg)
+background-image: url(img/type/unit-test-3.svg)
 
-# Unit Test
+# VIC(getCurrency) = `2 * 1 * 2`
 
 ---
 .h1[# One Unit Test]
