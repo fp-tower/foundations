@@ -4,7 +4,7 @@ import java.time.{Duration, Instant}
 import java.util.UUID
 
 import answers.types.TypeAnswers
-import answers.types.TypeAnswers.OrderStatus.{Cancelled, Delivered, Draft, Submitted}
+import answers.types.TypeAnswers.OrderStatus.{Cancelled, Checkout, Delivered, Draft, Submitted}
 import cats.data.NonEmptyList
 import exercises.typeclass.Eq
 import exercises.types.{Cardinality, TypeExercises}
@@ -125,6 +125,25 @@ class TypeAnswersTest extends TypeToImplTest(TypeAnswers) {
                           ))
     invoice.total shouldEqual 40
     invoice.totalWithDiscountedFirstItem(0.5) shouldEqual 30
+  }
+
+  test("submit") {
+    val now     = Instant.now()
+    val orderId = OrderId(UUID.randomUUID())
+    val itemId  = ItemId(UUID.randomUUID())
+    val address = Address(10, "EXC1 7TW")
+    val status  = Checkout(NonEmptyList.of(Item(itemId, 1, 2)), Some(address))
+    val order   = Order(orderId, now, status)
+
+    submit(order, now.plus(days(3))) shouldEqual Right(
+      Order(orderId, now, Submitted(NonEmptyList.of(Item(itemId, 1, 2)), address, now.plus(days(3))))
+    )
+
+    val noAddress = order.copy(status = status.copy(deliveryAddress = None))
+    submit(noAddress, now.plus(days(3))) shouldEqual Left(OrderError.MissingDeliveryAddress(noAddress.status))
+
+    val draftOrder = order.copy(status = Draft(Nil))
+    submit(draftOrder, now.plus(days(3))) shouldEqual Left(OrderError.InvalidStatus(draftOrder.status))
   }
 
   test("deliver") {

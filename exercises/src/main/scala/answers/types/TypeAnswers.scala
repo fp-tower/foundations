@@ -82,12 +82,25 @@ object TypeAnswers extends TypeToImpl {
 
   import answers.types.TypeAnswers.OrderStatus._
 
+  def submit(order: Order, now: Instant): Either[OrderError, Order] =
+    order.status match {
+      case x: Checkout =>
+        x.deliveryAddress match {
+          case None => Left(OrderError.MissingDeliveryAddress(x))
+          case Some(address) =>
+            val newStatus = Submitted(x.basket, address, submittedAt = now)
+            Right(order.copy(status = newStatus))
+        }
+      case _: Draft | _: Submitted | _: Delivered | _: Cancelled =>
+        Left(OrderError.InvalidStatus(order.status))
+    }
+
   def deliver(order: Order, now: Instant): Either[OrderError.InvalidStatus, Order] =
     order.status match {
       case x: Submitted =>
         val newStatus = Delivered(x.basket, x.deliveryAddress, x.submittedAt, deliveredAt = now)
         Right(order.copy(status = newStatus))
-      case _: Draft | _: Checkout | _: Submitted | _: Delivered | _: Cancelled =>
+      case _: Draft | _: Checkout | _: Delivered | _: Cancelled =>
         Left(OrderError.InvalidStatus(order.status))
     }
 
@@ -99,16 +112,22 @@ object TypeAnswers extends TypeToImpl {
       case x: Submitted =>
         val newStatus = Cancelled(Right(x), cancelledAt = now)
         Right(order.copy(status = newStatus))
-      case _: Draft | _: Submitted | _: Delivered | _: Cancelled =>
+      case _: Draft | _: Delivered | _: Cancelled =>
         Left(OrderError.InvalidStatus(order.status))
     }
 
   sealed trait OrderError
   object OrderError {
-    case class InvalidStatus(status: OrderStatus) extends OrderError
+    case class MissingDeliveryAddress(status: OrderStatus) extends OrderError
+    case class InvalidStatus(status: OrderStatus)          extends OrderError
   }
 
   case class Order_V2[A](id: OrderId, createdAt: Instant, value: A)
+
+  def submit_V2(order: Order_V2[Checkout], deliveryAddress: Address, now: Instant): Order_V2[Submitted] = {
+    val newStatus = Submitted(order.value.basket, deliveryAddress, submittedAt = now)
+    order.copy(value = newStatus)
+  }
 
   def deliver_V2(order: Order_V2[Submitted], now: Instant): Order_V2[Delivered] = {
     val Submitted(basket, deliveryAddress, submittedAt) = order.value

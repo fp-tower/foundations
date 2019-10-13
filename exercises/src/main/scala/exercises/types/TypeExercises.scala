@@ -1,5 +1,7 @@
 package exercises.types
 
+import java.time.Instant
+
 import eu.timepit.refined.types.numeric.PosInt
 import exercises.sideeffect.IOExercises.IO
 import exercises.types.Card._
@@ -81,16 +83,21 @@ object TypeExercises extends TypeToImpl {
   // An address consists of a street number and a post code.
   trait Order
 
-  // 2b. Implement `deliver` which encodes the order transition between submitted to delivered status.
+  // 2b. Implement `submit` which encodes the order transition between `Checkout` to `Submitted`.
+  // Verify all pre and post conditions are satisfied and if not encode the errors in an ADT.
+  // What parameters should submit takes?
+  def submit = ???
+
+  // 2c. Implement `deliver` which encodes the order transition between submitted to delivered status.
   // Verify all pre and post conditions are satisfied and if not encode the errors in an ADT.
   // You may need to modify your encoding to eliminate runtime errors.
   def deliver = ???
 
-  // 2c. Add a cancelled status.
+  // 2d. Add a cancelled status.
   // An order can be cancelled only if it is in checkout or submitted state.
   // A cancelled order must have a cancelled timestamp (Instant).
 
-  // 2d. Implement `cancel` which encodes the order transition between checkout or submitted to cancelled status.
+  // 2e. Implement `cancel` which encodes the order transition between checkout or submitted to cancelled status.
   // Verify all pre and post conditions are satisfied and if not encode the errors in an ADT.
   // You may need to modify your encoding to eliminate runtime errors.
 

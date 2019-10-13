@@ -16,15 +16,15 @@ object EitherExercises {
   // 1. Use cases
   ////////////////////////
 
-  // 1a. Implement `getUserEmail` which looks a user by its id then return user's email if it exists
+  // 1a. Implement `getUserEmail` which looks up a user using its id, then it returns the user's email if it exists
   // val userMap = Map(
   //   222 -> User(222, "john" , "j@x.com"),
   //   123 -> User(123, "elisa", "e@y.com"),
   //   444 -> User(444, "bob")
   // )
   // getUserEmail(123, userMap) == Right("e@y.com")
-  // getUserEmail(444, userMap) == Left(UserNotFound(444))
-  // getUserEmail(111, userMap) == Left(EmailNotFound(111))
+  // getUserEmail(111, userMap) == Left(UserNotFound(444))
+  // getUserEmail(444, userMap) == Left(EmailNotFound(111))
   def getUserEmail(id: UserId, users: Map[UserId, OptionExercises.User]): Either[UserEmailError, Email] = ???
 
   sealed trait UserEmailError
@@ -34,7 +34,7 @@ object EitherExercises {
   }
 
   // 1b. Implement `checkout` which encodes the order transition between `Draft` to `Checkout`.
-  // For `checkout` to be successful it needs to have a `Draft` status and have at least one item in its basket.
+  // `checkout` is successful if the order has a `Draft` status and the basket is not empty.
   // If `checkout` succeeds, it move the status from `Draft` to `Checkout`.
   // Bonus: encode the error with an enum.
   def checkout(order: Order): Either[String, Order] = ???
@@ -50,13 +50,13 @@ object EitherExercises {
   )
 
   // 1c. Implement `submit` which encodes the order transition between `Checkout` to `Submitted`.
-  // For `submit` to be successful it needs to have a `Checkout` status and an address.
+  // `submit` is successful if the order has a `Checkout` status and an address.
   // If `checkout` succeeds, it move the status from `Checkout` to `Submitted` and stores the submitted timestamp.
   // Bonus: encode the error with an enum.
   def submit(order: Order, now: Instant): Either[String, Order] = ???
 
   // 1d. Implement `deliver` which encodes the order transition between `Submitted` to `Delivered`.
-  // If `deliver` succeeds, it returns a new `Order` with a `Delivered` status and the time it took to deliver it.
+  // If `deliver` succeeds, it returns a new `Order` with a `Delivered` status and the time it took to deliver the order.
   // Try to find out all error scenarios and eventually encode them with an enum.
   def deliver(order: Order, now: Instant): Either[String, (Order, Duration)] = ???
 
@@ -65,31 +65,32 @@ object EitherExercises {
   //////////////////////////////////
 
   // 2a. Implement `parseUUID` which safely parse a String into UUID using `UUID.fromString`.
-  // `UUID.fromString` is unsafe, it throws Exception if the input string is invalid.
-  // Note: You can capture Exception using try { ... } catch { case t: Throwable => ... }
+  // `UUID.fromString` is unsafe, it throws an `Exception` if the input string is invalid.
+  // Note: You can capture an `Exception` using try { ... } catch { case t: Throwable => ... }
   // or using `Try(...)` from `scala.util`
   def parseUUID(uuidStr: String): Either[Throwable, UUID] = ???
 
   //////////////////////////////////
-  // 3. Advanced API
+  // 3. Error ADT
   //////////////////////////////////
 
-  // 3a. Implement `validateUsername` by trimming username and then applying both
+  // 3a. Implement `validateUsername` by trimming an input String and the applying the following two validations:
   // `validateUsernameSize` and `validateUsernameCharacters`
   // such as validateUsername("foo")    == Right(Username("foo"))
   //         validateUsername("  foo ") == Right(Username("foo"))
   //         validateUsername("a!bc@£") == Left(InvalidCharacters("!@£"))
   //         validateUsername(" yo")    == Left(TooSmall)
   //         validateUsername(" !o")    == Left(TooSmall)
-  // Note: you can use " foo ".trim to remove white spaces at the beginning and at the end
+  // Note: you can use " foo ".trim to remove white spaces at the beginning and at the end of a String.
   def validateUsername(username: String): Either[UsernameError, Username] = ???
 
   case class Username(value: String)
 
-  // 3b. Implement `validateUsernameSize` (at least 3 characters long)
+  // 3b. Implement `validateUsernameSize` which checks a username is at least 3 characters long
   // such as validateUsernameSize("moreThan3Char") == Right(())
   //         validateUsernameSize("foo") == Right(())
   //         validateUsernameSize("fo") == Left(TooSmall)
+  // Note: we assume username has already been trimmed.
   def validateUsernameSize(username: String): Either[TooSmall, Unit] = ???
 
   // 3c. Implement `validateUsernameCharacters` such as it accepts:
@@ -99,7 +100,8 @@ object EitherExercises {
   // For example:
   // validateUsernameCharacters("abcABC123-_") == Right(())
   // validateUsernameCharacters("foo!~23}AD") == Left(InvalidCharacters(List('!', '~', '}')))
-  // Note: you can use `isValidUsernameCharacter` to check if a character is valid
+  // Note: you can use `isValidUsernameCharacter` to check if a character is valid.
+  // Note: we assume username has already been trimmed.
   def validateUsernameCharacters(username: String): Either[InvalidCharacters, Unit] = ???
 
   def isValidUsernameCharacter(c: Char): Boolean =
@@ -112,12 +114,10 @@ object EitherExercises {
   }
 
   // 3d. Implement `validateUser` which validates both username and country using
-  // `validateUsername` and `validateCountry` (defined below).
+  // `validateUsername` and `validateCountry`.
   // If both username and country are invalid, only return the username error.
   // What should be the return type of `validateUser`? You may need to create or modify some types.
   def validateUser(username: String, country: String) = ???
-
-  case class User(userName: Username, country: Country)
 
   def validateCountry(country: String): Either[CountryError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
@@ -128,6 +128,8 @@ object EitherExercises {
         case "GBR" => Right(Country.UnitedKingdom)
         case _     => Left(UnsupportedCountry(country))
       } else Left(InvalidFormat(country))
+
+  case class User(userName: Username, country: Country)
 
   sealed trait Country
   object Country {
@@ -143,9 +145,25 @@ object EitherExercises {
     case class UnsupportedCountry(country: String) extends CountryError
   }
 
-  // 3e. Implement `validateUserPar` which behaves similarly to `validateUser` but this time we should
-  // return all errors that occur. For example, we want to know if both username and country is invalid.
+  //////////////////////////////////
+  // 4. Advanced API
+  //////////////////////////////////
+
+  // 4a. Implement `parMap2` which behaves similarly to `map2` but if the two `Either` fail, `parMap2` accumulates the errors
+  // such as parMap2(Right(1), Right(1))(_ + _) == Right(2)
+  // but     parMap2(Left(List("error 1", "error 2")), Left(List("error a"))) == Left(List("error 1", "error 2", "error a"))
+  def parMap2[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] = ???
+
+  def map2[E, A, B, C](fa: Either[E, A], fb: Either[E, B])(f: (A, B) => C): Either[E, C] =
+    for {
+      a <- fa
+      b <- fb
+    } yield f(a, b)
+
+  // 4b. Implement `validateUserPar` which behaves similarly to `validateUser` but this time we should
+  // return all errors that occur. For example, we want to know if both username and country are invalid.
   // What should be the return type of `validateUserPar`?
+  // Note: try to use parMap2
   def validateUserPar(username: String, country: String) = ???
 
 }

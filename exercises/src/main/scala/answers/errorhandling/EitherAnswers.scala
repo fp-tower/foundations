@@ -86,7 +86,7 @@ object EitherAnswers {
     Try(UUID.fromString(uuidStr)).toEither
 
   //////////////////////////////////
-  // 3. Advanced API
+  // 3. Error ADT
   //////////////////////////////////
 
   def validateUsername(username: String): Either[UsernameError, Username] = {
@@ -151,6 +151,18 @@ object EitherAnswers {
     case object UnitedKingdom extends Country
   }
 
+  //////////////////////////////////
+  // 4. Advanced API
+  //////////////////////////////////
+
+  def parMap2[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] =
+    (fa, fb) match {
+      case (Right(a), Right(b))   => Right(f(a, b))
+      case (Left(es), Right(_))   => Left(es)
+      case (Right(_), Left(es))   => Left(es)
+      case (Left(es1), Left(es2)) => Left(es1 ++ es2)
+    }
+
   def validateUserPar(username: String, country: String): Either[List[UserError], User] =
     parMap2(
       validateUsernamePar(username),
@@ -164,13 +176,5 @@ object EitherAnswers {
       validateUsernameCharacters(trimmed).left.map(List(_))
     )((_, _) => Username(trimmed))
   }
-
-  def parMap2[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] =
-    (fa, fb) match {
-      case (Right(a), Right(b))   => Right(f(a, b))
-      case (Left(es), Right(_))   => Left(es)
-      case (Right(_), Left(es))   => Left(es)
-      case (Left(es1), Left(es2)) => Left(es1 ++ es2)
-    }
 
 }

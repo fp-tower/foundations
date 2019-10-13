@@ -55,7 +55,7 @@ layout: true
 ---
 class: center, middle
 
-# How to deal with predicable runtime errors
+# How to deal with runtime errors
 
 
 ---
@@ -86,19 +86,19 @@ background-image: url(img/errorhandling/partial-function-2.svg)
 ```tut:silent
 case class Item(id: Long, unitPrice: Double, quantity: Int)
 
-case class OrderState(status: String, basket: List[Item])
+case class Order(status: String, basket: List[Item])
 
-def submitOrder(state: OrderState): OrderState =
-  state.status match {
-    case "Draft" if state.basket.nonEmpty =>
-      state.copy(status = "Submitted")
+def submit(order: Order): Order =
+  order.status match {
+    case "Draft" if order.basket.nonEmpty =>
+      order.copy(status = "Submitted")
     case other =>
       throw new Exception("Invalid Command")
   }
 ```
 
 ```tut:fail
-submitOrder(OrderState("Draft", Nil))
+submit(Order("Draft", Nil))
 ```
 
 ---
@@ -107,36 +107,34 @@ submitOrder(OrderState("Draft", Nil))
 ```tut:silent
 case class Item(id: Long, unitPrice: Double, quantity: Int)
 
-case class OrderState(status: String, basket: List[Item])
+case class Order(status: String, basket: List[Item])
 
 case object EmptyBasketError extends Exception
-case class InvalidCommandError(command: String, state: OrderState) extends Exception
+case class InvalidCommandError(command: String, order: Order) extends Exception
 
-def submitOrder(state: OrderState): OrderState =
-  state.status match {
+def submit(order: Order): Order =
+  order.status match {
     case "Draft" =>
-      if(state.basket.isEmpty)
-         throw EmptyBasketError
-      else
-         state.copy(status = "Submitted")
+      if(order.basket.isEmpty) throw EmptyBasketError
+      else order.copy(status = "Submitted")
     case other =>
-      throw new InvalidCommandError("submit", state)
+      throw new InvalidCommandError("submit", order)
   }
 ```
 
 ```tut:fail
-submitOrder(OrderState("Draft", Nil))
+submit(Order("Draft", Nil))
 ```
 
 ---
-# Exception
+# Exceptions are not documented
 
 ```tut:silent
-def submitOrder(state: OrderState): OrderState = ???
+def submit(order: Order): Order = ???
 
-def canSubmitOrder(state: OrderState): Boolean =
+def canSubmit(order: Order): Boolean =
   try {
-    submitOrder(state)
+    submit(order)
     true
   } catch {
     case EmptyBasketError       => false
@@ -151,7 +149,7 @@ def canSubmitOrder(state: OrderState): Boolean =
 ### In Java, you have checked Exception
 
 ```java
-public OrderState submitOrder(OrderState state) `throws EmptyBasketError, InvalidCommandError`
+public Order submit(Order order) `throws EmptyBasketError, InvalidCommandError`
 ```
 
 ---
@@ -228,7 +226,7 @@ def deleteCard(userId: UserId): IO[DebitCard] = ???
 val httpRoute = {
   case DELETE -> Root / "user" / UserId(x) / "card" =>
     deleteCard(x)
-      .map(Ok(_))
+      .flatMap(Ok(_))
       .handleErrorWith {
         case _: UserMissing | _: CardMissing => NotFound()
         case _: ExpiredCard                  => BadRequest()
@@ -243,14 +241,9 @@ background-image: url(img/errorhandling/io-big.svg)
 # IO can be too many things
 
 ---
-class: center, middle
-
-# Can we use a type dedicated to error handling?
-
----
 background-image: url(img/errorhandling/partial-function-1.svg)
 
-# Partial Function
+# Can we use a type dedicated to error handling?
 
 ---
 background-image: url(img/errorhandling/pure-error-handling.svg)
@@ -260,7 +253,7 @@ background-image: url(img/errorhandling/pure-error-handling.svg)
 ---
 class: center, middle
 
-# Which types can be used to encode errors (except IO)?
+# Which types can we use?
 
 ---
 .h1[# Type constructors with an error channel]
@@ -281,7 +274,7 @@ class: center, middle
 <br>
 
 .large[
-* Look at use cases and API of `Option`, `Try` and `Either`
+* Look at use cases for `Option`, `Try` and `Either`
 
 * Practice the design of error ADTs (Algebraic Data Type)
 
@@ -297,11 +290,8 @@ class: center, middle
 sealed trait Option[+A]
 
 object Option {
-
   case class Some[+A](value: A) extends Option[A]
-
   case object None extends Option[Nothing]
-
 }
 ```
 ]
@@ -485,7 +475,7 @@ object Either {
 .medium-right[![Either](img/errorhandling/either.svg)]
 
 ---
-# Either is the Canonical OR
+# Either is the canonical encoding of OR
 
 ```tut:invisible
 import answers.sideeffect.IOAnswers.IO
@@ -515,6 +505,21 @@ def getUser(userIdOrEmail: Either[UserId, Email]): IO[User] =
 
 --
 
+### How would you encode a UserId AND an Email?
+
+---
+# Either is the canonical encoding of OR
+
+```tut:silent
+def getUser(userIdOrEmail: Either[UserId, Email]): IO[User] =
+  userIdOrEmail match {
+    case Left(userId) => db.getUserById(userId)
+    case Right(email) => db.getUserByEmail(email)
+  }
+```
+
+### Either[UserId, Email] represents a UserId OR an Email
+
 ### (UserId, Email) represents a UserId AND an Email
 
 ---
@@ -526,20 +531,20 @@ class: center, middle
 # String Error
 
 ```tut:silent
-def submitOrder(state: OrderState): Either[String, OrderState] =
-  state.status match {
+def submit(order: Order): Either[String, Order] =
+  order.status match {
     case "Draft" =>
-      if(state.basket.isEmpty) Left("Basket is empty")
-      else Right(state.copy(status = "Submitted"))
+      if(order.basket.isEmpty) Left("Basket is empty")
+      else Right(order.copy(status = "Submitted"))
     case _ =>
-      Left(s"Cannot submit an order in ${state.status}")
+      Left(s"Cannot submit an order in ${order.status}")
   }
 ```
 
 ```tut
-submitOrder(OrderState("Draft", List(Item(111, 12.25, 2))))
-submitOrder(OrderState("Draft", Nil))
-submitOrder(OrderState("Delivered", Nil))
+submit(Order("Draft", List(Item(111, 12.25, 2))))
+submit(Order("Draft", Nil))
+submit(Order("Delivered", Nil))
 ```
 
 ---
@@ -550,29 +555,29 @@ sealed trait OrderError
 case object EmptyBasketError extends OrderError
 case class InvalidAction(action: String, status: String) extends OrderError
 
-def submitOrder(state: OrderState): Either[OrderError, OrderState] =
-  state.status match {
+def submit(order: Order): Either[OrderError, Order] =
+  order.status match {
     case "Draft" =>
-      if(state.basket.isEmpty) Left(EmptyBasketError)
-      else Right(state.copy(status = "Submitted"))
+      if(order.basket.isEmpty) Left(EmptyBasketError)
+      else Right(order.copy(status = "Submitted"))
     case _ =>
-      Left(InvalidAction("submit", state.status))
+      Left(InvalidAction("submit", order.status))
   }
 ```
 
 ```tut
-submitOrder(OrderState("Draft", List(Item(111, 12.25, 2))))
-submitOrder(OrderState("Draft", Nil))
-submitOrder(OrderState("Delivered", Nil))
+submit(Order("Draft", List(Item(111, 12.25, 2))))
+submit(Order("Draft", Nil))
+submit(Order("Delivered", Nil))
 ```
 
 ---
 # Enum Error
 
 ```scala
-def canSubmitOrder(state: OrderState): Boolean =
-  submitOrder(currentState) match {
-    case Right(newState)        => true
+def canSubmit(order: Order): Boolean =
+  submit(order) match {
+    case Right(_)               => true
     case Left(EmptyBasket)      => false
     case Left(_: InvalidAction) => false
   }
@@ -582,9 +587,9 @@ def canSubmitOrder(state: OrderState): Boolean =
 # Enum Error
 
 ```scala
-def canSubmitOrder(state: OrderState): Boolean =
-  submitOrder(currentState) match {
-    case Right(newState)        => true
+def canSubmit(order: Order): Boolean =
+  submit(order) match {
+    case Right(_)               => true
     case Left(_: InvalidAction) => false
   }
 ```
@@ -617,6 +622,11 @@ parseLocalDate("12 July 1996")
 class: center, middle
 
 # Why do we use Left for error and Right for success?
+
+---
+class: center, middle
+
+# It is completely arbitrary
 
 ---
 # Either is Right biased

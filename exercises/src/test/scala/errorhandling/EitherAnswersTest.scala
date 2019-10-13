@@ -25,9 +25,9 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
       UserId(444) -> User(UserId(444), "bob", None)
     )
 
-    getUserEmail(UserId(123), userMap) == Right("e@y.com")
-    getUserEmail(UserId(444), userMap) == Left(UserNotFound(UserId(444)))
-    getUserEmail(UserId(111), userMap) == Left(EmailNotFound(UserId(111)))
+    getUserEmail(UserId(123), userMap) shouldEqual Right(Email("e@y.com"))
+    getUserEmail(UserId(111), userMap) shouldEqual Left(UserNotFound(UserId(111)))
+    getUserEmail(UserId(444), userMap) shouldEqual Left(EmailNotFound(UserId(444)))
   }
 
   test("checkout") {
