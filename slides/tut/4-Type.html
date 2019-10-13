@@ -67,7 +67,7 @@ layout: true
 ]
 
 .large[
-* Learn how to measure types and tests
+* Learn how to measure impact of types and tests
 ]
 
 .large[
@@ -94,9 +94,9 @@ def getCurrency(country: Country): String = ???
 such as
 
 ```scala
-getCurrency("United Kingdom") == "GBP"
-getCurrency("France")         == "EUR"
-getCurrency("Germany")        == "EUR"
+getCurrency(Country("United Kingdom")) == "GBP"
+getCurrency(Country("France"))         == "EUR"
+getCurrency(Country("Germany"))        == "EUR"
 ```
 
 ---
@@ -160,7 +160,6 @@ def parseCountry(country: String): Option[Country] = ???
 
 ```tut:silent
 sealed trait Country
-
 object Country {
   case object UnitedKingdom extends Country
   case object France        extends Country
@@ -168,7 +167,6 @@ object Country {
 }
 
 sealed trait Currency
-
 object Currency {
   case object BritishPound extends Currency
   case object Euro         extends Currency
@@ -324,7 +322,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Nested AND and OR can be used to encode any data precisely
+# Nested AND and OR can be used to encode data precisely
 
 ### OR is generally underused
 
