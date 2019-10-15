@@ -105,10 +105,6 @@ submit(Order("Draft", Nil))
 # Exception
 
 ```tut:silent
-case class Item(id: Long, unitPrice: Double, quantity: Int)
-
-case class Order(status: String, basket: List[Item])
-
 case object EmptyBasketError extends Exception
 case class InvalidCommandError(command: String, order: Order) extends Exception
 
@@ -124,6 +120,7 @@ def submit(order: Order): Order =
 
 ```tut:fail
 submit(Order("Draft", Nil))
+submit(Order("Delivered", Nil))
 ```
 
 ---
@@ -233,6 +230,10 @@ val httpRoute = {
         case _: Throwable                    => InternalServerError()
       }
 }
+```
+
+```scala
+def handleErrorWith[A, B](io: IO[A])(f: `Throwable` => IO[B]): IO[B] = ???
 ```
 
 ---
