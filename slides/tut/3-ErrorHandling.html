@@ -440,6 +440,22 @@ background-image: url(img/errorhandling/covariance.svg)
 background-image: url(img/errorhandling/type-hierarchy-option.svg)
 
 ---
+# Variance is type checked
+
+```scala
+sealed trait Option[`-`A]
+
+object Option {
+  case class Some[`-`A](value: A) extends Option[A]
+  case object None extends Option[Nothing]
+}
+
+
+scala> contravariant type A occurs in covariant position in type => A of value value
+  case class Some[-A](value: A) extends Option[A]
+```
+
+---
 class: center, middle
 
 # Option Exercises 2, 3 and 4

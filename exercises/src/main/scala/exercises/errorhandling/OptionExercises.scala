@@ -1,6 +1,7 @@
 package exercises.errorhandling
 
 import answers.sideeffect.IOAnswers.IO
+import exercises.errorhandling.OptionExercises.Shape.{Circle, Rectangle}
 import io.circe.{parser, Json}
 
 import scala.concurrent.duration._
@@ -69,7 +70,7 @@ object OptionExercises {
   //         parseRectangle("R 0")    == None
   // Note: `parseCircle` does something similar for `Circle`
   // Note: `parseRectangle` returns an `InvariantOption` which is like a standard `Option` but with an invariant type parameter
-  def parseRectangle(inputLine: String): InvariantOption[Shape.Rectangle] =
+  def parseRectangle(inputLine: String): InvariantOption[Rectangle] =
     ???
 
   // 2b. Implement `parseShape` which parses a user input line (e.g. from the command line) into a `Shape`.
@@ -84,9 +85,9 @@ object OptionExercises {
     case class Rectangle(width: Int, height: Int) extends Shape
   }
 
-  def parseCircle(inputLine: String): InvariantOption[Shape.Circle] =
+  def parseCircle(inputLine: String): InvariantOption[Circle] =
     inputLine.split(" ").toList match {
-      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Shape.Circle(radius))
+      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Circle(radius))
       case _                               => InvariantOption.None()
     }
 

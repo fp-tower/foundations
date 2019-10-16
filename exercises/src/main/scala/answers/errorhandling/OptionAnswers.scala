@@ -1,5 +1,6 @@
 package answers.errorhandling
 
+import answers.errorhandling.OptionAnswers.Shape.{Circle, Rectangle}
 import answers.sideeffect.IOAnswers.IO
 import answers.sideeffect.IOAsync
 import exercises.errorhandling.InvariantOption
@@ -65,15 +66,15 @@ object OptionAnswers {
     case class Rectangle(width: Int, height: Int) extends Shape
   }
 
-  def parseCircle(inputLine: String): InvariantOption[Shape.Circle] =
+  def parseCircle(inputLine: String): InvariantOption[Circle] =
     inputLine.split(" ").toList match {
-      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Shape.Circle(radius))
+      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Circle(radius))
       case _                               => InvariantOption.None()
     }
 
-  def parseRectangle(inputLine: String): InvariantOption[Shape.Rectangle] =
+  def parseRectangle(inputLine: String): InvariantOption[Rectangle] =
     inputLine.split(" ").toList match {
-      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvariantOption.Some(Shape.Rectangle(width, height))
+      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvariantOption.Some(Rectangle(width, height))
       case _                                                   => InvariantOption.None()
     }
 
