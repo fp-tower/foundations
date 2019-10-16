@@ -728,30 +728,6 @@ background-image: url(img/type/unit-test-3.svg)
 # VIC(getCurrency) = `2 * 1 * 2`
 
 ---
-.h1[# One Unit Test]
-
-.center[
-```scala
-VIC(f: A => B) = |A => B| / |B|
-                = |B| ^ |A| / |B|
-                = |B| ^ (|A| - 1)
-```
-]
-
---
-
-# Two Unit Tests
-
-.center[
-```scala
-VIC(f: A => B) = |A => B| / |B| / |B|
-                = |B| ^ |A| / |B| / |B|
-                  = (|B| ^ |A|) / (|B| ^ 2)
-          = |B| ^ (|A| - 2)
-```
-]
-
----
 class: center, middle
 
 # `VIC(f: A => B) = |B| ^ (|A| - n)`
