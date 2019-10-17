@@ -13,7 +13,7 @@ object OptionExercises {
   // 1. Use cases
   ////////////////////////
 
-  // 1a. Implement `getUserEmail` which looks up a user using its id, then it returns the user's email if it exists
+  // 1a. Implement `getUserEmail` which looks up a user using its id, then it returns the user's email if it exists.
   // val userMap = Map(
   //   222 -> User(222, "john" , "j@x.com"),
   //   123 -> User(123, "elisa", "e@y.com"),
@@ -68,14 +68,14 @@ object OptionExercises {
   // such as parseRectangle("R 20 5") == Some(Rectangle(20, 5))
   // but     parseRectangle("C 20 5") == None
   //         parseRectangle("R 0")    == None
-  // Note: `parseCircle` does something similar for `Circle`
-  // Note: `parseRectangle` returns an `InvariantOption` which is like a standard `Option` but with an invariant type parameter
+  // Note: `parseCircle` does something similar for `Circle`.
+  // Note: `parseRectangle` returns an `InvariantOption` which is like a standard `Option` but with an invariant type parameter.
   def parseRectangle(inputLine: String): InvariantOption[Rectangle] =
     ???
 
   // 2b. Implement `parseShape` which parses a user input line (e.g. from the command line) into a `Shape`.
   // Try to reuse `parseCircle` and `parseRectangle`.
-  // Note: You may need to `map` the `InvariantOption`
+  // Note: You may need to `map` the `InvariantOption`.
   def parseShape(inputLine: String): InvariantOption[Shape] =
     ???
 
@@ -102,7 +102,7 @@ object OptionExercises {
 
   // 3a. Implement `filterDigits` which only keeps the digits from the list
   // such as filterDigits(List('a', '1', 'b', 'c', '4')) == List(1, 4)
-  // Note: use `charToDigit`
+  // Note: use `charToDigit`.
   def filterDigits(xs: List[Char]): List[Int] = ???
 
   def charToDigit(c: Char): Option[Int] =
@@ -120,10 +120,10 @@ object OptionExercises {
       case _   => None
     }
 
-  // 3b. Implement `checkAllDigits` which verifies all input characters are digits
+  // 3b. Implement `checkAllDigits` which verifies that all input characters are digits
   // such as checkAllDigits(List('1', '2', '3')) == Some(List(1, 2, 3))
   // but     checkAllDigits(List('a', '1', 'b', 'c', '4')) == None
-  // Note: you may want to use listSequence or listTraverse defined below
+  // Note: you may want to use listSequence or listTraverse defined below.
   def checkAllDigits(orders: List[Char]): Option[List[Int]] = ???
 
   def listSequence[A](xs: List[Option[A]]): Option[List[A]] =
@@ -146,8 +146,8 @@ object OptionExercises {
   ///////////////////
 
   // 4a. Implement `sendUserEmail` which attempts to send an email to a user.
-  // If the user is missing from the db, we will retry in 100 millis
-  // but if a user exists and it doesn't have an email address, then we fail the IO
+  // If the user is missing from the db, we will retry in 100 millis,
+  // but if a user exists and it doesn't have an email address, then we fail the IO.
   // Can you reuse `getUserEmail`? Why?
   def sendUserEmail(db: DbApi, emailClient: EmailClient)(userId: UserId, emailBody: String): IO[Unit] =
     ???
@@ -162,8 +162,8 @@ object OptionExercises {
 
   // 4b. Implement `parsingJsonMessage` which attempts to parse a `String` into `Json` and returns either
   // a successful message in case of success (e.g. "OK") or
-  // a descriptive error message in case of a failure (e.g. "invalid syntax at line 3: `foo :-: 4`'")
-  // Note: assume you can only use `parseJson`
+  // a descriptive error message in case of a failure (e.g. "invalid syntax at line 3: `foo :-: 4`'").
+  // Note: assume you can only use `parseJson`.
   def parsingJsonMessage(jsonStr: String): String =
     ???
 

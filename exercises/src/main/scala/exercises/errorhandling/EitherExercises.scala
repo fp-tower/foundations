@@ -16,7 +16,7 @@ object EitherExercises {
   // 1. Use cases
   ////////////////////////
 
-  // 1a. Implement `getUserEmail` which looks up a user using its id, then it returns the user's email if it exists
+  // 1a. Implement `getUserEmail` which looks up a user using its id, then it returns the user's email if it exists.
   // val userMap = Map(
   //   222 -> User(222, "john" , "j@x.com"),
   //   123 -> User(123, "elisa", "e@y.com"),
@@ -35,7 +35,7 @@ object EitherExercises {
 
   // 1b. Implement `checkout` which encodes the order transition between `Draft` to `Checkout`.
   // `checkout` is successful if the order has a `Draft` status and the basket is not empty.
-  // If `checkout` succeeds, it move the status from `Draft` to `Checkout`.
+  // If `checkout` succeeds, it moves the status from `Draft` to `Checkout`.
   // Bonus: encode the error with an enum.
   def checkout(order: Order): Either[String, Order] = ???
 
@@ -51,7 +51,7 @@ object EitherExercises {
 
   // 1c. Implement `submit` which encodes the order transition between `Checkout` to `Submitted`.
   // `submit` is successful if the order has a `Checkout` status and an address.
-  // If `checkout` succeeds, it move the status from `Checkout` to `Submitted` and stores the submitted timestamp.
+  // If `checkout` succeeds, it moves the status from `Checkout` to `Submitted` and stores the submitted timestamp.
   // Bonus: encode the error with an enum.
   def submit(order: Order, now: Instant): Either[String, Order] = ???
 
@@ -64,9 +64,9 @@ object EitherExercises {
   // 2. Import code with Exception
   //////////////////////////////////
 
-  // 2a. Implement `parseUUID` which safely parse a String into UUID using `UUID.fromString`.
+  // 2a. Implement `parseUUID` which safely parses a String into UUID using `UUID.fromString`.
   // `UUID.fromString` is unsafe, it throws an `Exception` if the input string is invalid.
-  // Note: You can capture an `Exception` using try { ... } catch { case t: Throwable => ... }
+  // Note: You can capture an `Exception` using `try { ... } catch { case t: Throwable => ... }`
   // or using `Try(...)` from `scala.util`
   def parseUUID(uuidStr: String): Either[Throwable, UUID] = ???
 
@@ -74,7 +74,7 @@ object EitherExercises {
   // 3. Error ADT
   //////////////////////////////////
 
-  // 3a. Implement `validateUsername` by trimming an input String and the applying the following two validations:
+  // 3a. Implement `validateUsername` by trimming an input String and then applying the following two validations:
   // `validateUsernameSize` and `validateUsernameCharacters`
   // such as validateUsername("foo")    == Right(Username("foo"))
   //         validateUsername("  foo ") == Right(Username("foo"))
@@ -86,7 +86,7 @@ object EitherExercises {
 
   case class Username(value: String)
 
-  // 3b. Implement `validateUsernameSize` which checks a username is at least 3 characters long
+  // 3b. Implement `validateUsernameSize` which checks if a username is at least 3 characters long
   // such as validateUsernameSize("moreThan3Char") == Right(())
   //         validateUsernameSize("foo") == Right(())
   //         validateUsernameSize("fo") == Left(TooSmall)
@@ -169,7 +169,7 @@ object EitherExercises {
   // Note: try to use parMap2
   def validateUserPar(username: String, country: String) = ???
 
-  // 4c. Implement `parSequence` which accumulate successes if all `Either` are `Right` or accumulates
+  // 4c. Implement `parSequence` which accumulates successes if all `Either` are `Right` or accumulates
   // failures if at least one `Either` is `Left`.
   // parSequence(List(Right(1), Right(2), Right(3))) == Right(List(1,2,3))
   // parSequence(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) == Left(List("e1", "e2", "e3"))
