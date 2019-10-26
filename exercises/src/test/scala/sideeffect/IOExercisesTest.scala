@@ -36,9 +36,9 @@ class IOExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPro
     // TODO
   }
 
-  ////////////////////
-  // 3. Programs
-  ////////////////////
+  ////////////////////////
+  // 4. Testing
+  ////////////////////////
 
   test("read user from Console") {
     val in: List[String]        = ???
@@ -46,5 +46,13 @@ class IOExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPro
     val console                 = testConsole(in, out)
 
   }
+
+  ////////////////////////
+  // 5. Advanced API
+  ////////////////////////
+
+  test("deleteTwoOrders") {}
+
+  test("deleteAllUserOrders") {}
 
 }

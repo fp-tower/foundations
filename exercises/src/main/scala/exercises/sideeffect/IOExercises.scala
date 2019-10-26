@@ -20,13 +20,41 @@ object IOExercises {
   /////////////////////////
 
   object IO {
-    // 1a. Implement `succeed` a smart constructor that lifts a pure value into an IO
+    // 1a. Implement `succeed` a smart constructor that lifts a constant into an IO
     // such as succeed(x).unsafeRun() == x
-    // Note that `succeed` is strict, it means the same value will be returned every time it is run.
-    // It also means it is unsafe to throw an Exception when you call `succeed`, e.g. succeed(throw new Exception("")).
-    def succeed[A](value: A): IO[A] =
+    // Note that `succeed` is strict, it means the same value will be returned every time the IO is run.
+    // It also means `succeed` should NOT be used with a parameter that throws exceptions or perform side effects.
+    def succeed[A](constant: A): IO[A] =
       new IO[A] {
         def unsafeRun(): A = ???
+      }
+
+    // 1b. Implement `fail` a smart constructor that lifts a `Throwable` into an IO.
+    // `fail` creates an IO that will always throw an exception when it is run.
+    // Try to test for `fail` in IOExercisesTest.scala.
+    def fail[A](error: Throwable): IO[A] =
+      new IO[A] {
+        def unsafeRun(): A = ???
+      }
+
+    // 1c. What is the type of `boom`? Try to guess without using your IDE or REPL.
+    val boom = fail(new Exception("Boom!"))
+
+    // 1d. Implement `effect` that lifts a pure or impure block of code effect into an IO
+    // such as effect(4) == succeed(4)
+    // and     effect(throw new Exception("")) == fail(new Exception(""))
+    // Use case:
+    // effect(println("hello"))
+    // effect(http.delete("http://foo.com/order/1234"))
+    def effect[A](block: => A): IO[A] =
+      new IO[A] {
+        def unsafeRun(): A = ???
+      }
+
+    def fromTry[A](fa: Try[A]): IO[A] =
+      fa match {
+        case Success(a) => succeed(a)
+        case Failure(e) => fail(e)
       }
 
     // common alias for `succeed`
@@ -34,50 +62,27 @@ object IOExercises {
     def pure[A](value: A): IO[A] =
       succeed(value)
 
-    // 1b. Implement `fail` a smart constructor that creates a failing IO.
-    // Note that the following code does not throw:
-    // val error = fail(new Exception(""))
-    // The Exception is only thrown when unsafeRun is called, e.g. error.unsafeRun().
-    def fail[A](error: Throwable): IO[A] =
-      new IO[A] {
-        def unsafeRun(): A = ???
-      }
-
-    // 1c. Write a test for `fail` in IOExercisesTest
-
-    // 1d. What is the type of `boom`? Try to guess without using your IDE.
-    val boom = fail(new Exception("Boom!"))
-
-    def fromTry[A](fa: Try[A]): IO[A] =
-      fa.fold(fail, succeed)
-
-    // 1e. Implement `effect` that imports a block of code with a potential side effect into an IO
-    // such as effect(4) == succeed(4)
-    // and     effect(throw new Exception("")) == fail(new Exception(""))
-    // Use case:
-    // effect(println("hello"))
-    // effect(http.delete("http://foo.com/order/1234"))
-    // What's the difference between `effect` and `succeed`?
-    def effect[A](block: => A): IO[A] =
-      new IO[A] {
-        def unsafeRun(): A = ???
-      }
-
     // common alias for `effect`
     // IO { println("hello") } instead of effect(println("hello"))
     def apply[A](fa: => A): IO[A] =
       effect(fa)
 
+    // equivalent of `???` but for IO
+    // This is useful when we want to write an IO but we don't know how to implement it yet, e.g.
+    // val getUserFromDb: IO[User] = IO.notImplemented
+    // If we used `???` it will throw an exception immediately because it is a val.
     def notImplemented[A]: IO[A] =
       fail(new NotImplementedError)
 
-    // 1f. Implement `sleep`, see Thread.sleep
-    // What is the issue with this implementation?
+    // 1e. Implement `sleep` such as when run the IO will do nothing for `duration` period of time,
+    // then it will return `()`.
+    // Note: `Unit` is a type with a single value `()`.
+    // see `Thread.sleep`
     def sleep(duration: FiniteDuration): IO[Unit] =
       ???
 
-    // 1g. Implement `never` an IO that never completes
-    // This should be an equivalent to`sleep` with an Infinite duration.
+    // 1f. Implement `never` an IO that never completes.
+    // This should be an equivalent to `sleep` with an Infinite duration.
     // Why `never` has a different return type than `sleep`?
     val never: IO[Nothing] =
       new IO[Nothing] {
@@ -97,7 +102,7 @@ object IOExercises {
     // 2a. Implement `map`
     // such as succeed(x).map(f) == succeed(f(x))
     // and     fail(e).map(f) == fail(e)
-    // Note that f is a pure function, you should NOT use it to do another side effect e.g. succeed(4).map(println).
+    // `f` must be a pure function, you should NOT use it to do another side effect e.g. succeed(4).map(println).
     def map[B](f: A => B): IO[B] =
       ???
 
@@ -144,7 +149,7 @@ object IOExercises {
     // Try[A] is either a Success(a: A) or a Failure(e: Throwable)
     // such as succeed(x).attempt == succeed(Success(x))
     //         fail(new Exception("")).attempt == succeed(Failure(new Exception(""))).
-    // Note that `attempt` guarantees that unsafeRun() will not throw an Exception.
+    // Note that `attempt` guarantees `unsafeRun()` will not throw an exception.
     def attempt: IO[Try[A]] = ???
 
     // 2d. Implement `handleErrorWith` which allows to catch failing IO
@@ -163,7 +168,7 @@ object IOExercises {
     // 2f. Implement `retryUntilSuccess`
     // similar to `retryOnce` but it retries until the IO succeeds (potentially indefinitely)
     // sleep `waitBeforeRetry` between each retry
-    // How would you update this method to implement an exponential backoff?
+    // How would you update this method to implement an exponential back-off?
     def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IO[A] = ???
   }
 
@@ -199,19 +204,15 @@ object IOExercises {
 
   // 3c. Implement `readInt` which reads an Int from the command line
   // such as readInt.unsafeRun() == 32 if user types "32"
-  // and     readInt.unsafeRun() throws an Exception if user types "hello"
+  // and     readInt.unsafeRun() throws an exception if user types "hello"
   // use `parseInt` and `readLine`
-  def parseInt(x: String): Try[Int] =
-    Try(x.toInt)
-
   val readInt: IO[Int] =
     IO.notImplemented
 
+  def parseInt(x: String): Try[Int] =
+    Try(x.toInt)
+
   // 3d. Implement `userConsoleProgram` such as it is a pure version of `unsafeUserConsoleProgram`
-  case class User(name: String, age: Int, createdAt: Instant)
-
-  val readNow: IO[Instant] = IO.effect(Instant.now())
-
   val userConsoleProgram: IO[User] =
     IO.notImplemented
 
@@ -222,6 +223,11 @@ object IOExercises {
     val age = scala.io.StdIn.readLine().toInt
     User(name, age, createdAt = Instant.now())
   }
+
+  case class User(name: String, age: Int, createdAt: Instant)
+
+  val readNow: IO[Instant] =
+    IO.effect(Instant.now())
 
   // 3e. How would you test `userConsoleProgram`?
   // What are the issues with the current implementation?
@@ -239,7 +245,7 @@ object IOExercises {
   }
 
   // 4a. Implement `testClock` which facilitates testing of a Clock API.
-  def testClock: Clock = ???
+  def testClock(constant: Instant): Clock = ???
 
   trait Console {
     val readLine: IO[String]
@@ -268,37 +274,24 @@ object IOExercises {
 
   // 4c. Now our production code is "pure" (free of side effect) but our test code is not.
   // How would you fix this?
-  // Try to implement `safeTestConsole` such as:
-  // - it is a pure Console implementation
-  // - it makes unit testing convenient
+  // Try to implement `safeTestConsole` such as it does perform any side effects or mutation.
   def safeTestConsole: Console = ???
 
   ////////////////////////
   // 5. Advanced API
   ////////////////////////
 
-  // 5a. Implement `sequence` which runs sequentially a list of IO and collects the results.
-  // sequence(List(succeed(1), succeed(2))) == succeed(List(1,2))
-  // sequence(List(succeed(1), notImplemented, succeed(3))) == succeed(1) *> notImplemented
-  // use case:
-  // val userIds: List[UserId] = ...
-  // sequence(userIds.map(fetchUser)): IO[List[User]]
-  def sequence[A](xs: List[IO[A]]): IO[List[A]] =
-    IO.notImplemented
+  // 5a. Implement `deleteTwoOrders` such as it call twice `UserOrderApi#deleteOrder`
+  // How would you test `deleteTwoOrders`?
+  def deleteTwoOrders(api: UserOrderApi)(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+    ???
 
-  // 5b. Implement `traverse`
-  // traverse(List(1,2,3))(succeed) == succeed(List(1,2,3))
-  // traverse(List(1,2,3))(x => if(x > 1) notImplemented else succeed(x)) == succeed(1) *> notImplemented
-  // use case:
-  // val userIds: List[UserId] = ...
-  // userIds.traverse(fetchUser): IO[List[User]]
-  def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
-    IO.notImplemented
-
-  // 5c. Implement `deleteAllUserOrders` such as it fetches a user: User_V2 and delete all associated orders
+  // 5b. Implement `deleteAllUserOrders` such as it fetches a user: User_V2 and delete all associated orders
   // e.g. if `getUser` returns User_V2(UserId("1234"), "Rob", List(OrderId("1111"), OrderId("5555")))
   //      Then we would call deleteOrder(OrderId("1111")) and deleteOrder(OrderId("5555")).
-  // Try to use `sequence` or `traverse`.
+  def deleteAllUserOrders(api: UserOrderApi)(userId: UserId): IO[Unit] =
+    ???
+
   case class UserId(value: String)
   case class OrderId(value: String)
 
@@ -309,10 +302,19 @@ object IOExercises {
     def deleteOrder(orderId: OrderId): IO[Unit]
   }
 
-  def deleteTwoOrders(api: UserOrderApi)(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-    ???
+  // 5c. Implement `sequence` which runs sequentially a list of IO and collects the results.
+  // sequence(List(succeed(1), succeed(2))) == succeed(List(1,2))
+  // sequence(List(succeed(1), notImplemented, succeed(3))) == succeed(1) *> notImplemented
+  // use case:
+  // val userIds: List[UserId] = ...
+  // sequence(userIds.map(fetchUser)): IO[List[User]]
+  def sequence[A](xs: List[IO[A]]): IO[List[A]] =
+    IO.notImplemented
 
-  def deleteAllUserOrders(api: UserOrderApi)(userId: UserId): IO[Unit] =
-    ???
-
+  // `traverse` captures a common use case of `map` followed by `sequence`
+  // val userIds: List[UserId] = ...
+  // def fetchUser(userId: UserId): IO[User] = ...
+  // traverse(userIds)(fetchUser): IO[List[User]]
+  def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] =
+    sequence(xs.map(f))
 }
