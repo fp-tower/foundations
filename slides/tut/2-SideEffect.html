@@ -74,22 +74,17 @@ He actually said Haskell is useless
 ---
 class: center, middle
 
-# What is the solution?
+# A pure function cannot do anything
+# it can only produce a value
 
 ---
 class: center, middle
 
-# A pure function cannot DO anything
-# it can only produce a VALUE
-
----
-class: center, middle
-
-# Create a VALUE that describes actions
+# Create a value that describes actions
 
 --
 
-# INTERPRET the value with side effects in Main
+# Interpret this value in Main
 
 ---
 ### 1. Encode description of actions
@@ -374,26 +369,9 @@ object Main extends App {
 ### Discuss with your neighbour 3-4 min
 
 ---
-# How is it executed?
+.h1[# How is it executed?]
 
-```tut:silent
-def deleteAllUserOrders(userId: UserId): IO[Unit] =
-  for {
-    user    <- getUser(userId)
-    deletes  = user.orderIds.map(deleteOrder): List[IO[Unit]]
-    _       <- sequence(deletes)             : IO[List[Unit]]
-  } yield ()
-
-object Main extends App {
-
-  deleteAllUserOrders(UserId("1234")).unsafeRun()
-
-}
-```
-
----
-# How is it executed?
-
+.large-left[
 ```tut:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
@@ -409,6 +387,7 @@ object Main extends App {
 
 }
 ```
+]
 
 ---
 .h1[# IO execution is sequential]
@@ -436,14 +415,7 @@ object Main extends App {
 ]
 
 ---
-class: center, middle
-
-# How can we evaluate IO concurrently?
-
-# Which IO can be evaluated concurrently?
-
----
-.h1[# Which IO can be evaluated concurrently?]
+.h1[# Which IO could be evaluated concurrently?]
 
 .large-left[
 ```tut:silent
@@ -474,7 +446,7 @@ object Main extends App {
 ---
 .h1[# For comprehension cannot be done concurrently]
 
-.pull-left[
+.large-left[
 ```scala
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
@@ -486,7 +458,7 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 ```
 ]
 
-.pull-right[
+.small-right[
 ![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
 ]
 
@@ -515,6 +487,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 
 ```tut:silent
 def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
+
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   parExec(deleteOrder(orderId1), deleteOrder(orderId2))
@@ -612,6 +585,53 @@ def delete2Orders(
 .small-right[
 ![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
 ]
+
+---
+.large-left[
+.h1[# Creating a Future is not Pure]
+
+```tut:invisible
+def deleteOrder(orderId: OrderId)(implicit ec: ExecutionContext): Future[Unit] =
+  Future { ??? }
+```
+
+```tut:silent
+def deleteOrdersConcurrent(orderId1: OrderId,orderId2: OrderId)
+  (implicit ec: ExecutionContext): Future[Unit] = {
+
+  val delete1 = deleteOrder(orderId1) // (1)
+  val delete2 = deleteOrder(orderId2) // (2)
+
+  for {
+    _ /* (3) */ <- delete1
+    _ /* (4) */ <- delete2
+  } yield ()
+}
+```
+
+```tut:silent
+def deleteOrdersSequential(orderId1: OrderId,orderId2: OrderId)
+  (implicit ec: ExecutionContext): Future[Unit] =
+  for {
+    _ /* (2) */ <- deleteOrder(orderId1) // (1)
+    _ /* (4) */ <- deleteOrder(orderId2) // (3)
+  } yield ()
+```
+]
+
+.small-right[
+![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+<br>
+<br>
+![Sequence Diagram](img/sideeffect/delete-orders-2.svg)
+]
+
+---
+class: center, middle
+
+![Future vs IO](img/side-effect-dynamite.png)
+
+.reference-top-left[[@impurepics](https://twitter.com/impurepics)]
 
 ---
 .h1[# Execution Context]
@@ -788,53 +808,6 @@ def delete2Orders(
 ]
 
 ---
-.large-left[
-.h1[# Future is not referentially transparent]
-
-```tut:invisible
-def deleteOrder(orderId: OrderId)(implicit ec: ExecutionContext): Future[Unit] =
-  Future { ??? }
-```
-
-```tut:silent
-def deleteOrdersConcurrent(orderId1: OrderId,orderId2: OrderId)
-  (implicit ec: ExecutionContext): Future[Unit] = {
-
-  val delete1 = deleteOrder(orderId1) // (1)
-  val delete2 = deleteOrder(orderId2) // (2)
-
-  for {
-    _ /* (3) */ <- delete1
-    _ /* (4) */ <- delete2
-  } yield ()
-}
-```
-
-```tut:silent
-def deleteOrdersSequential(orderId1: OrderId,orderId2: OrderId)
-  (implicit ec: ExecutionContext): Future[Unit] =
-  for {
-    _ /* (2) */ <- deleteOrder(orderId1) // (1)
-    _ /* (4) */ <- deleteOrder(orderId2) // (3)
-  } yield ()
-```
-]
-
-.small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
-<br>
-<br>
-![Sequence Diagram](img/sideeffect/delete-orders-2.svg)
-]
-
----
-class: center, middle
-
-![Future vs IO](img/side-effect-dynamite.png)
-
-.reference-top-left[[@impurepics](https://twitter.com/impurepics)]
-
----
 class: center, middle
 
 # How can we adapt Future behaviour to pure IO?
@@ -858,32 +831,6 @@ trait IO[+A] {
 ```scala
 trait IO[+A] {
   def start(ec: ExecutionContext): IO[???]
-}
-```
-
----
-# Concurrent IO
-
-```scala
-trait IO[+A] {
-  def start(ec: ExecutionContext): IO[Foo[A]]
-}
-
-trait Foo[A] {
-  def await: ???
-}
-```
-
----
-# Concurrent IO
-
-```scala
-trait IO[+A] {
-  def start(ec: ExecutionContext): IO[Foo[A]]
-}
-
-trait Foo[A] {
-  def await: IO[A]
 }
 ```
 
@@ -1012,109 +959,9 @@ object IO {
 
 ### An IO is either a Thunk or a Async computation with a CallBack
 
----
-# Concurrent IO with Async
+--
 
-```tut:silent
-type Callback[-A] = Either[Throwable, A] => Unit
-
-sealed trait IO[+A]
-
-object IO {
-  case class Thunk[+A](f: () => A) extends IO[A]
-
-  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
-}
-```
-
-### Continuation-passing style (CPS)
-
-```tut:silent
-def add(a: Int, b: Int): Int = a + b
-
-def add(a: Int, b: Int)(rest: Int => Unit): Unit = {
-  val res = a + b
-  rest(res)
-}
-```
-
-.reference[[How do Fibers work](http://systemfw.org/Scala-World-2019/#/)]
-
----
-# Concurrent IO with Async
-
-```tut:silent
-type Callback[-A] = Either[Throwable, A] => Unit
-
-sealed trait IO[+A]
-
-object IO {
-  case class Thunk[+A](f: () => A) extends IO[A]
-
-  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
-}
-```
-
-```tut:invisible
-import IO._
-import scala.util.Try
-```
-
-```tut:silent
-def unsafeRunAsync[A](fa: IO[A])(cb: Callback[A]): Unit =
-  fa match {
-    case Thunk(f) =>
-      val res: Either[Throwable, A] = Try(f()).toEither
-      cb(res)
-    case Async(f, ec) =>
-      ec.execute(new Runnable {
-         def run(): Unit = f(cb)
-      })
-  }
-```
-
----
-# EvalOn
-
-```scala
-type Callback[-A] = Either[Throwable, A] => Unit
-
-sealed trait IO[+A]
-
-object IO {
-  case class Thunk[+A](f: () => A) extends IO[A]
-
-  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
-}
-```
-
-```tut:silent
-val threadName: IO[String] = IO.Thunk(() => Thread.currentThread().getName)
-
-def evalOn[A](fa: IO[A])(ec: ExecutionContext): IO[A] =
-  IO.Async(unsafeRunAsync(fa), ec)
-```
-
-```tut:invisible
-def unsafeRun[A](fa: IO[A]): A = {
-  val latch = new java.util.concurrent.CountDownLatch(1)
-  var res: Either[Throwable, A] = null
-
-  unsafeRunAsync(fa) { eOrA =>
-    res = eOrA
-    latch.countDown()
-  }
-
-  latch.await()
-
-  res.fold(throw _, identity)
-}
-```
-
-```tut
-unsafeRun(threadName)
-unsafeRun(evalOn(threadName)(scala.concurrent.ExecutionContext.global))
-```
+### More details in [How do Fibers work](https://www.youtube.com/watch?v=x5_MmZVLiSM) from Fabio Labella
 
 ---
 class: center, middle
@@ -1124,7 +971,7 @@ class: center, middle
 `exercises.sideeffect.IOAsyncExercises.scala`
 
 ---
-.h1[# Library IO implementations do much more]
+.h1[# Libraries do much more]
 
 .large[
 * Stack safety and JVM optimisation
@@ -1404,8 +1251,66 @@ object Main extends App {
 }
 ```
 
-```tut
-Main.main(Array.empty)
+```scala
+scala> Main.main(Array.empty)
+[
+  {
+    "login" : "fp-tower",
+    "id" : 50878186,
+    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjUwODc4MTg2",
+    "url" : "https://api.github.com/orgs/fp-tower",
+    "repos_url" : "https://api.github.com/orgs/fp-tower/repos",
+    "events_url" : "https://api.github.com/orgs/fp-tower/events",
+    "hooks_url" : "https://api.github.com/orgs/fp-tower/hooks",
+    "issues_url" : "https://api.github.com/orgs/fp-tower/issues",
+    "members_url" : "https://api.github.com/orgs/fp-tower/members{/member}",
+    "public_members_url" : "https://api.github.com/orgs/fp-tower/public_members{/member}",
+    "avatar_url" : "https://avatars1.githubusercontent.com/u/50878186?v=4",
+    "description" : ""
+  },
+  {
+    "login" : "typelevel",
+    "id" : 3731824,
+    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjM3MzE4MjQ=",
+    "url" : "https://api.github.com/orgs/typelevel",
+    "repos_url" : "https://api.github.com/orgs/typelevel/repos",
+    "events_url" : "https://api.github.com/orgs/typelevel/events",
+    "hooks_url" : "https://api.github.com/orgs/typelevel/hooks",
+    "issues_url" : "https://api.github.com/orgs/typelevel/issues",
+    "members_url" : "https://api.github.com/orgs/typelevel/members{/member}",
+    "public_members_url" : "https://api.github.com/orgs/typelevel/public_members{/member}",
+    "avatar_url" : "https://avatars0.githubusercontent.com/u/3731824?v=4",
+    "description" : "Let the Scala compiler work for you."
+  },
+  {
+    "login" : "http4s",
+    "id" : 1527492,
+    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjE1Mjc0OTI=",
+    "url" : "https://api.github.com/orgs/http4s",
+    "repos_url" : "https://api.github.com/orgs/http4s/repos",
+    "events_url" : "https://api.github.com/orgs/http4s/events",
+    "hooks_url" : "https://api.github.com/orgs/http4s/hooks",
+    "issues_url" : "https://api.github.com/orgs/http4s/issues",
+    "members_url" : "https://api.github.com/orgs/http4s/members{/member}",
+    "public_members_url" : "https://api.github.com/orgs/http4s/public_members{/member}",
+    "avatar_url" : "https://avatars3.githubusercontent.com/u/1527492?v=4",
+    "description" : ""
+  },
+  {
+    "login" : "argonaut-io",
+    "id" : 5205720,
+    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjUyMDU3MjA=",
+    "url" : "https://api.github.com/orgs/argonaut-io",
+    "repos_url" : "https://api.github.com/orgs/argonaut-io/repos",
+    "events_url" : "https://api.github.com/orgs/argonaut-io/events",
+    "hooks_url" : "https://api.github.com/orgs/argonaut-io/hooks",
+    "issues_url" : "https://api.github.com/orgs/argonaut-io/issues",
+    "members_url" : "https://api.github.com/orgs/argonaut-io/members{/member}",
+    "public_members_url" : "https://api.github.com/orgs/argonaut-io/public_members{/member}",
+    "avatar_url" : "https://avatars1.githubusercontent.com/u/5205720?v=4",
+    "description" : null
+  }
+]
 ```
 
 ---
@@ -1460,7 +1365,7 @@ class: center, middle
 
 * [Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)
 * [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)
-* [How do Fibers work](http://systemfw.org/Scala-World-2019/#/)
+* [How do Fibers work](https://www.youtube.com/watch?v=x5_MmZVLiSM)
 
 ---
 class: center, middle

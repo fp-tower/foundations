@@ -3,11 +3,11 @@ package errorhandling
 import java.time.{Duration, LocalDate, ZoneOffset}
 import java.util.UUID
 
-import answers.errorhandling.EitherAnswers.CountryError.InvalidFormat
-import answers.errorhandling.EitherAnswers.UserEmailError.{EmailNotFound, UserNotFound}
-import answers.errorhandling.EitherAnswers.UsernameError.{InvalidCharacters, TooSmall}
-import answers.errorhandling.EitherAnswers._
-import answers.errorhandling.OptionAnswers
+import exercises.errorhandling.EitherExercises.CountryError.InvalidFormat
+import exercises.errorhandling.EitherExercises.UserEmailError.{EmailNotFound, UserNotFound}
+import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacters, TooSmall}
+import exercises.errorhandling.EitherExercises._
+import exercises.errorhandling.OptionExercises
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -18,7 +18,7 @@ class EitherExercisesTest extends AnyFunSuite with Matchers {
   ////////////////////////
 
   test("getUserEmail") {
-    import OptionAnswers.{Email, User, UserId}
+    import OptionExercises.{Email, User, UserId}
     val userMap = Map(
       UserId(222) -> User(UserId(222), "john", Some(Email("j@x.com"))),
       UserId(123) -> User(UserId(123), "elisa", Some(Email("e@y.com"))),
@@ -35,8 +35,6 @@ class EitherExercisesTest extends AnyFunSuite with Matchers {
     val baseOrder = Order("123", "Draft", List(item), None, None, None)
 
     checkout(baseOrder) shouldEqual Right(baseOrder.copy(status = "Checkout"))
-    checkout(baseOrder.copy(basket = Nil)) shouldEqual Left(OrderError.EmptyBasket)
-    checkout(baseOrder.copy(status = "Delivered")) shouldEqual Left(OrderError.InvalidStatus("checkout", "Delivered"))
   }
 
   test("submit") {}

@@ -38,7 +38,7 @@ object OptionExercises {
     // Note: you can pattern match on Role using `this match { case Reader(...) => ... }`
     def optSingleAccountId: Option[AccountId] = ???
 
-    // 1c. Implement `getEditor` which checks if the current `Role` is an `Editor`
+    // 1c. Implement `optEditor` which checks if the current `Role` is an `Editor`
     // such as Editor(123, "Comic Sans").optEditor == Some(Editor(123, "Comic Sans"))
     // but     Reader(123, premiumUser = true).optEditor == None
     def optEditor: Option[Role.Editor] = ???

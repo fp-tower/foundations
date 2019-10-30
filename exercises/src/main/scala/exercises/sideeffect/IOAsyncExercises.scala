@@ -15,45 +15,13 @@ object IOAsyncExercisesApp extends App {
   val es: ExecutorService  = ThreadPoolUtil.fixedSize(2, "IOAsyncExercises")
   val ec: ExecutionContext = ExecutionContext.fromExecutorService(es)
 
-  parMap2(printThreadName, printThreadName)((_, _) => ())(ec).unsafeRun()
+  printThreadName.parTuple2(printThreadName)(ec).unsafeRun()
 }
 
 object IOAsyncExercises {
 
-  ////////////////////////
-  // 1. Concurrent API
-  ////////////////////////
-
-  // 1a. Implement parMap2 such as both IO are executed concurrently
-  def parMap2[A, B, C](fa: IO[A], fb: IO[B])(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
-    IO.notImplemented
-
-  // 1b. Implement parMap3 such as all 3 IO are executed concurrently
-  // try to reuse parMap2
-  def parMap3[A, B, C, D](fa: IO[A], fb: IO[B], fc: IO[B])(f: (A, B, C) => D)(ec: ExecutionContext): IO[D] =
-    IO.notImplemented
-
-  // 1c. Implement parSequence such as each IO within the list is executed concurrently
-  def sequence[A](xs: List[IO[A]]): IO[List[A]] =
-    xs.foldLeft(succeed(List.empty[A]))(
-        (facc: IO[List[A]], fa: IO[A]) =>
-          for {
-            acc <- facc
-            a   <- fa
-          } yield a :: acc
-      )
-      .map(_.reverse)
-
-  def parSequence[A](xs: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
-    IO.notImplemented
-
-  // 1d. Implement never such as it is never returns when executed
-  // try to implement it without sleep or other blocking operation
-  val never: IO[Nothing] =
-    IO.notImplemented
-
   /////////////////////////
-  // 2. Concurrent Program
+  // 1. Concurrent Program
   /////////////////////////
 
   case class UserId(value: String)
@@ -65,15 +33,43 @@ object IOAsyncExercises {
     def deleteOrder(orderId: OrderId): IO[Unit]
   }
 
-  // 2a. Implement deleteAllUserOrders such as it fetches a user: User and delete all orders concurrently
+  // 1a. Implement `deleteTwoOrders` such as it call `UserOrderApi#deleteOrder` concurrently
+  def deleteTwoOrders(api: UserOrderApi, ec: ExecutionContext)(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
+    ???
+
+  // 1b. Implement `deleteAllUserOrders` such as it fetches a user and delete all of its orders concurrently
   // e.g. if getUser returns User(UserId("1234"), "Rob", List(OrderId("1111"), OrderId("5555")))
   //      then we would call deleteOrder(OrderId("1111")) and deleteOrder(OrderId("5555")) concurrently
   def deleteAllUserOrders(api: UserOrderApi)(userId: UserId): IO[Unit] =
+    ???
+
+  ////////////////////////
+  // 2. Advanced API
+  ////////////////////////
+
+  // 2a. Implement `parSequence` which behaves like `sequence` except that all the IO are executed concurrently.
+  // Could this create a problem?
+  def parSequence[A](xs: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    IO.notImplemented
+
+  def sequence[A](xs: List[IO[A]]): IO[List[A]] =
+    xs.foldLeft(succeed(List.empty[A]))(
+        (facc: IO[List[A]], fa: IO[A]) =>
+          for {
+            acc <- facc
+            a   <- fa
+          } yield a :: acc
+      )
+      .map(_.reverse)
+
+  // 2b. Implement never such as it is never returns when executed
+  // try to implement it without sleep or other blocking operation
+  val never: IO[Nothing] =
     IO.notImplemented
 
   /**
-    *    Basic IO implementation with Thunk and Async primitive
-    *   This implementation is not fully async, map, flatMap and attempt are blocking
+    *  Basic IO implementation with Thunk and Async primitive
+    * This implementation is not fully async, map, flatMap and attempt are blocking
     */
   sealed trait IO[+A] { self =>
     import IO._
@@ -103,6 +99,17 @@ object IOAsyncExercises {
         a <- this
         b <- other
       } yield f(a, b)
+
+    def parMap2[B, C](other: IO[B])(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
+      for {
+        awaitForA <- this.start(ec)
+        awaitForB <- other.start(ec)
+        a         <- awaitForA
+        b         <- awaitForB
+      } yield f(a, b)
+
+    def parTuple2[B](other: IO[B])(ec: ExecutionContext): IO[(A, B)] =
+      parMap2(other)((_, _))(ec)
 
     def *>[B](other: IO[B]): IO[B] =
       flatMap(_ => other)

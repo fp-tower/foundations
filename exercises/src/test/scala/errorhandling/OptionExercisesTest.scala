@@ -1,6 +1,6 @@
 package errorhandling
 
-import answers.errorhandling.OptionAnswers._
+import exercises.errorhandling.OptionExercises._
 import exercises.errorhandling.InvariantOption
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
