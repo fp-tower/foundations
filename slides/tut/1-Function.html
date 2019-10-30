@@ -48,15 +48,11 @@ layout: true
 </div>
 
 ---
-class: center, middle
-
-# __Function__al Programming
-
----
 # First class function
 
 ```tut:silent
-def inc(x: Int): Int = x + 1
+def inc(x: Int): Int =
+  x + 1
 ```
 
 ```tut
@@ -66,7 +62,8 @@ inc(10)
 <br>
 
 ```tut:silent
-val inc: Int => Int = (x: Int) => x + 1
+val inc: Int => Int =
+  (x: Int) => x + 1
 ```
 
 ```tut
@@ -82,13 +79,7 @@ val dec   : Int => Int = (x: Int) => x - 1
 val double: Int => Int = (x: Int) => x * 2
 
 val list = List(inc, dec, double)
-```
 
-```tut
-list.map(func => func(10))
-```
-
-```tut:silent
 val dictionary = Map(
   "foo"  -> inc,
   "bar"  -> dec,
@@ -96,20 +87,28 @@ val dictionary = Map(
 )
 ```
 
+```tut
+dictionary("bar")(10)
+dictionary("fizz")(10)
+```
+
 ---
-# First class function: Higher Order
+# Higher Order Function
+
+<br>
 
 ```scala
 def map(xs: List[Int])(`f: Int => Int`): List[Int] = ???
 ```
 
---
+```tut
+List(1,2,3).map(inc)
+```
 
 <br>
 
-
-```tut
-List(1,2,3).map(inc)
+```scala
+def takeWhile(xs: List[String])(`f: String => Boolean`): List[String] = ???
 ```
 
 ```tut
@@ -117,7 +116,7 @@ List("hello", "world", "is", "a", "common", "String").takeWhile(_.length > 2)
 ```
 
 ---
-# First class function: Currying
+# Currying
 
 ```tut:invisible
 def formatDouble(scale: Int)(value: Double): String =
