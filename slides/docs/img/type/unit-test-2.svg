@@ -21,9 +21,9 @@
   <metadata> Produced by OmniGraffle 7.11.4 
     <dc:date>2019-10-14 15:19:01 +0000</dc:date>
   </metadata>
-  <g id="get-currency-2" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1" fill="none" stroke="none">
-    <title>get-currency-2</title>
-    <g id="get-currency-2: Layer 1">
+  <g id="unit-test-2" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1" fill="none" stroke="none">
+    <title>unit-test-2</title>
+    <g id="unit-test-2: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_98">
         <ellipse cx="121.5" cy="193.5" rx="94.5001510017292" ry="139.500222907315" fill="#70a3d8"/>
@@ -48,13 +48,13 @@
         </text>
       </g>
       <g id="Graphic_112">
-        <text transform="translate(115.904 14)" fill="#70a3d8">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="4805045e-19" y="23">3</tspan>
+        <text transform="translate(77 14)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">Country</tspan>
         </text>
       </g>
       <g id="Graphic_113">
-        <text transform="translate(410.576 14)" fill="#599a9e">
-          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" x="4805045e-19" y="23">2</tspan>
+        <text transform="translate(365 14)" fill="#599a9e">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" x="0" y="23">Currency</tspan>
         </text>
       </g>
       <g id="Graphic_115">
@@ -71,12 +71,6 @@
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="2.9" y="15">Germany</tspan>
         </text>
       </g>
-      <g id="Line_127">
-        <line x1="121.00685" y1="202.43836" x2="397.19277" y2="236.9616" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-      </g>
-      <g id="Line_128">
-        <line x1="172.19277" y1="273.79518" x2="396.73737" y2="248.49438" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-      </g>
       <g id="Graphic_129">
         <path d="M 409.5 99 L 450 135 L 409.5 171 L 369 135 Z" fill="#70a3d8"/>
         <path d="M 409.5 99 L 450 135 L 409.5 171 L 369 135 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
@@ -84,8 +78,8 @@
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.639" y="15">GBP</tspan>
         </text>
       </g>
-      <g id="Line_130">
-        <line x1="168.2594" y1="119.43609" x2="358.86737" y2="131.73338" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <g id="Line_131">
+        <line x1="121.00685" y1="202.43836" x2="397.19277" y2="236.9616" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>

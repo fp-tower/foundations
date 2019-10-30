@@ -25,9 +25,9 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
       UserId(444) -> User(UserId(444), "bob", None)
     )
 
-    getUserEmail(UserId(123), userMap) == Right("e@y.com")
-    getUserEmail(UserId(444), userMap) == Left(UserNotFound(UserId(444)))
-    getUserEmail(UserId(111), userMap) == Left(EmailNotFound(UserId(111)))
+    getUserEmail(UserId(123), userMap) shouldEqual Right(Email("e@y.com"))
+    getUserEmail(UserId(111), userMap) shouldEqual Left(UserNotFound(UserId(111)))
+    getUserEmail(UserId(444), userMap) shouldEqual Left(EmailNotFound(UserId(444)))
   }
 
   test("checkout") {
@@ -110,6 +110,11 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
     validateUserPar("~a", "UK") shouldEqual Left(
       List(TooSmall(2), InvalidCharacters(List('~')), CountryError.InvalidFormat("UK"))
     )
+  }
+
+  test("parSequence") {
+    parSequence(List(Right(1), Right(2), Right(3))) shouldEqual Right(List(1, 2, 3))
+    parSequence(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) shouldEqual Left(List("e1", "e2", "e3"))
   }
 
 }

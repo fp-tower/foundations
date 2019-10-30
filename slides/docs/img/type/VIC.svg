@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 334 496" width="334" height="496">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 334 496" width="334" height="496">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="32" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
       <font-face-src>
@@ -8,10 +8,10 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.11.3 
-    <dc:date>2019-10-09 20:06:03 +0000</dc:date>
+  <metadata> Produced by OmniGraffle 7.11.4 
+    <dc:date>2019-10-14 15:19:01 +0000</dc:date>
   </metadata>
-  <g id="vic" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+  <g id="vic" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1" fill="none" stroke="none">
     <title>vic</title>
     <g id="vic: Layer 1">
       <title>Layer 1</title>
@@ -157,8 +157,8 @@
         <circle cx="243.5" cy="145.5" r="22.5000359527927" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_180">
-        <path d="M 244.5 131 L 258 144.5 L 244.5 158 L 231 144.5 Z" fill="#9dc1e3"/>
-        <path d="M 244.5 131 L 258 144.5 L 244.5 158 L 231 144.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 244.04348 131.54348 L 257.54348 145.04348 L 244.04348 158.54348 L 230.54348 145.04348 Z" fill="#9dc1e3"/>
+        <path d="M 244.04348 131.54348 L 257.54348 145.04348 L 244.04348 158.54348 L 230.54348 145.04348 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_182">
         <text transform="translate(200 122)" fill="#589b9d">

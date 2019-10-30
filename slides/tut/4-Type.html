@@ -59,7 +59,7 @@ layout: true
 <br>
 
 .large[
-* What is the cost of misusing types?
+* What is the cost of misusing types
 ]
 
 .large[
@@ -67,7 +67,7 @@ layout: true
 ]
 
 .large[
-* Learn how to measure types and tests
+* Learn how to measure impact of types and tests
 ]
 
 .large[
@@ -94,9 +94,9 @@ def getCurrency(country: Country): String = ???
 such as
 
 ```scala
-getCurrency("United Kingdom") == "GBP"
-getCurrency("France")         == "EUR"
-getCurrency("Germany")        == "EUR"
+getCurrency(Country("United Kingdom")) == "GBP"
+getCurrency(Country("France"))         == "EUR"
+getCurrency(Country("Germany"))        == "EUR"
 ```
 
 ---
@@ -160,7 +160,6 @@ def parseCountry(country: String): Option[Country] = ???
 
 ```tut:silent
 sealed trait Country
-
 object Country {
   case object UnitedKingdom extends Country
   case object France        extends Country
@@ -168,7 +167,6 @@ object Country {
 }
 
 sealed trait Currency
-
 object Currency {
   case object BritishPound extends Currency
   case object Euro         extends Currency
@@ -272,7 +270,7 @@ enum ConfigValue {
 .h1[# AND]
 
 .large[
-* a `User` is an `userId` .hl[AND] a `name` .hl[AND] an `address`
+* a `User` is a `userId` .hl[AND] a `name` .hl[AND] an `address`
 * a `ZonedDateTime` is a `dateTime` .hl[AND] a `timeZone`
 * a `Cons` is a `head` .hl[AND] a `tail`
 * a `Tuple2` is a `_1` .hl[AND] a `_2`
@@ -282,7 +280,7 @@ enum ConfigValue {
 class: center, middle
 
 # How should we encode AND?
-### A `User` is an `userId` AND a `name` AND an `address`
+### A `User` is a `userId` AND a `name` AND an `address`
 
 ---
 # AND Encoding
@@ -324,7 +322,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Nested AND and OR can be used to encode any data precisely
+# Nested AND and OR can be used to encode data precisely
 
 ### OR is generally underused
 
@@ -691,77 +689,43 @@ class: center, middle
 ---
 # Unit Test
 
-```scala
-sealed trait DayOfWeek
+```tut:silent
+sealed trait Country
+object Country {
+  case object UnitedKingdom extends Country
+  case object France        extends Country
+  case object Germany       extends Country
+}
 
-case object Monday  extends DayOfWeek
-case object Tuesday extends DayOfWeek
-// ...
-case object Sunday  extends DayOfWeek
-```
+sealed trait Currency
+object Currency {
+  case object GBP extends Currency
+  case object EUR extends Currency
+}
 
-```tut:invisible
-sealed trait DayOfWeek
-
-case object Monday  extends DayOfWeek
-case object Tuesday extends DayOfWeek
-case object Sunday  extends DayOfWeek
-```
-
-
-```scala
-val f: DayOfWeek => Boolean = ???
+def getCurrency(country: Country): Currency = ???
 ```
 
 such as
 
 ```scala
-assert(f(Tuesday) == false)
+assert(getCurrency(France) == EUR)
 ```
 
 ---
-background-image: url(img/count-day-week-to-boolean-1.jpg)
+background-image: url(img/type/unit-test-1.svg)
 
-# Unit Test
-
----
-background-image: url(img/count-day-week-to-boolean-2.jpg)
-
-# Unit Test
+# VIC(getCurrency) = `2 * ...`
 
 ---
-background-image: url(img/count-day-week-to-boolean-3.jpg)
+background-image: url(img/type/unit-test-2.svg)
 
-# Unit Test
-
----
-background-image: url(img/count-day-week-to-boolean-4.jpg)
-
-# Unit Test
+# VIC(getCurrency) = `2 * 1 * ...`
 
 ---
-.h1[# One Unit Test]
+background-image: url(img/type/unit-test-3.svg)
 
-.center[
-```scala
-VIC(f: A => B) = |A => B| / |B|
-                = |B| ^ |A| / |B|
-                = |B| ^ (|A| - 1)
-```
-]
-
---
-
-# Two Unit Tests
-
-.center[
-```scala
-VIC(f: A => B) = |A => B| / |B| / |B|
-                = |B| ^ |A| / |B| / |B|
-                  = (|B| ^ |A|) / (|B| ^ 2)
-          = |B| ^ (|A| - 2)
-```
-]
+# VIC(getCurrency) = `2 * 1 * 2`
 
 ---
 class: center, middle
@@ -892,7 +856,7 @@ Either[A, B] => C = (A ∨ B) → C
 .h1[# Summary]
 
 .large[
-* Cardinality of types matter
+* Cardinality of types matters
 
 * Unit tests offer almost no benefit in term of correctness
 
