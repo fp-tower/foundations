@@ -51,28 +51,28 @@ layout: true
 ---
 # First class function
 
+<br>
+
 ```tut:silent
-def inc(x: Int): Int =
-  x + 1
+val x: Int = 3
+
+val message: String = "Hello World!"
+
+val increment: Int => Int = (x: Int) => x + 1
 ```
 
-```tut
-inc(10)
-```
+--
 
 <br>
 
 ```tut:silent
-val inc: Int => Int =
-  (x: Int) => x + 1
-```
-
-```tut
-inc(10)
+def increment(x: Int): Int = x + 1
 ```
 
 ---
 # First class function
+
+<br>
 
 ```tut:silent
 val inc   : Int => Int = (x: Int) => x + 1
@@ -82,19 +82,18 @@ val double: Int => Int = (x: Int) => x * 2
 val list = List(inc, dec, double)
 
 val dictionary = Map(
-  "foo"  -> inc,
-  "bar"  -> dec,
-  "fizz" -> double,
+  "increment"  -> inc,
+  "decrement"  -> dec,
+  "double"     -> double,
 )
 ```
 
 ```tut
-dictionary("bar")(10)
-dictionary("fizz")(10)
+dictionary("double")(10)
 ```
 
 ---
-# Higher Order Function
+# Higher order function
 
 <br>
 
@@ -103,21 +102,17 @@ def map(xs: List[Int])(`f: Int => Int`): List[Int] = ???
 ```
 
 ```tut
-List(1,2,3).map(inc)
-```
+List(1,2,3).map(x => x + 1)
 
-<br>
+List(1,2,3).map(x => x * 2)
 
-```scala
-def takeWhile(xs: List[String])(`f: String => Boolean`): List[String] = ???
-```
-
-```tut
-List("hello", "world", "is", "a", "common", "String").takeWhile(_.length > 2)
+List(1,2,3).map(x => 0)
 ```
 
 ---
-# Currying
+# Partial application
+
+<br>
 
 ```tut:invisible
 def formatDouble(scale: Int)(value: Double): String =
@@ -128,8 +123,11 @@ val format5D: Double => String = formatDouble(5)
 ```
 
 ```scala
-def formatDouble(`scale: Int)(value: Double`): String =
-  BigDecimal(value).setScale(scale, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
+def formatDouble(scale: Int)(value: Double): String =
+  BigDecimal(value)
+    .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
+    .toDouble
+    .toString
 
 val format2D: Double => String = formatDouble(2)
 val format5D: Double => String = formatDouble(5)
