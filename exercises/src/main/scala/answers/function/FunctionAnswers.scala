@@ -56,18 +56,8 @@ object FunctionAnswers {
 
   def const[A, B](a: A)(b: B): A = a
 
-  case class User(name: String, age: Int)
-
-  def updateAge(f: Int => Int): List[User] =
-    List(User("John", 26), User("Lisa", 5)).map { p =>
-      p.copy(age = f(p.age))
-    }
-
-  def setUsersAge(value: Int): List[User] =
-    updateAge(const(value))
-
-  val getUsers: List[User] =
-    updateAge(identity)
+  def setOption[A, B](option: Option[A])(value: B): Option[B] =
+    option.map(const(value))
 
   def andThen[A, B, C](f: A => B, g: B => C): A => C =
     a => g(f(a))

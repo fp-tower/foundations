@@ -23,16 +23,16 @@ object FunctionExercises {
   // 1a. Implement `isEven` a function that checks if a number is even
   // such as isEven(2) == true
   // but     isEven(3) == false
-  // Note: You can use `%` (modulo)
+  // Note: You can use `x % 2` for x modulo 2
   def isEven(x: Int): Boolean =
     ???
 
-  // 1b. Now, we are going to experiment with the val syntax for functions.
+  // 1b. Now, we are going to experiment with functions val syntax.
   // Implement `isEvenVal` which behaves exactly like `isEven`.
   val isEvenVal: Int => Boolean =
     ???
 
-  // 1c. Implement `isEvenDefToVal` by transforming `isEven` function into a val.
+  // 1c. Implement `isEvenDefToVal` by transforming `isEven` def function into a val.
   // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
   val isEvenDefToVal: Int => Boolean =
     ???
@@ -45,7 +45,7 @@ object FunctionExercises {
 
   // 1e. Implement `keepNumbersSmallThan` which removes all the numbers above a threshold
   // such as keepNumbersSmallThan(List(1,6,3,10))(3) == List(1,3)
-  // Try to define your predicate function with an inline function, e.g. xs.filter(x => x % 2 == 0)
+  // Try to define a predicate function inline, e.g. xs.filter(x => x == 0)
   def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
     ???
 
@@ -75,7 +75,8 @@ object FunctionExercises {
   // but     mapOption(Option.empty[Int], increment) == None
   // Note: Option is a enumeration with two constructor Some and None.
   //       None is safer version of null.
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B] = ???
+  def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
+    ???
 
   def sizeOption[A](option: Option[A]): Int =
     option match {
@@ -88,60 +89,45 @@ object FunctionExercises {
   def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] =
     mapOption(option, f)
 
-  // 2c. Implement identity
+  // 2c. Implement `identity` which returns its input unchanged
   // such as identity(1) == 1
   //         identity("foo") == "foo"
-  // Imagine you were a hacker trying to introduce a bug in identity.
-  // Which other implementations of identity could you use such as it
-  // satisfies the type checker.
   def identity[A](x: A): A = ???
 
   // 2d. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
-  // What is the type of identityVal?
   val identityVal = ???
 
-  // 2e. Implement const
+  // 2e. Implement `const` which returns its first input unchanged and discards its second input
   // such as const(5)("foo") == 5
-  //         List(1,2,3).map(const(0)) == List(0,0,0)
+  // For example, you can use const in conjunction with `map` to set the values in a List or String:
+  // List(1,2,3).map(const(0)) == List(0,0,0)
+  // "FooBar86".map(const(*))  == "********"
   def const[A, B](a: A)(b: B): A = ???
 
-  // 2f. Implement setUsersAge which updates the age of all users
-  // such as setUsersAge(10) == List(User("John", 10), User("Lisa", 10))
-  // hint: use updateUsersAge with one of the polymorphic functions we just saw
-  case class User(name: String, age: Int)
+  // 2f. Implement `setOption` which replaces the value inside of an Option (if it is a Some)
+  // such as setOption(Some(5))("Hello") == Some("Hello")
+  // but     setOption(None   )("Hello") == None
+  // Bonus: Can you generalise `setOption` to accept a value for an arbitrary `B`, not only String.
+  def setOption[A](option: Option[A])(value: String): Option[String] =
+    ???
 
-  def updateUsersAge(f: Int => Int): List[User] =
-    List(User("John", 26), User("Lisa", 5)).map { p =>
-      p.copy(age = f(p.age))
-    }
-
-  def setUsersAge(value: Int): List[User] = ???
-
-  // 2h. implement getUsers which returns all users
-  // such as getUsers == List(User("John", 26), User("Lisa", 5))
-  // hint: use updateUsersAge with one of the polymorphic functions we just saw
-  def getUsers: List[User] = ???
-
-  // 2i. Implement andThen and compose
-  // such as
-  // val isEven: Int => Boolean = _ % 2 == 0
-  // val inc   : Int => Int = _ + 1
-  // compose(isEven, inc)(10) == false
-  // andThen(inc, isEven)(10) == false
+  // 2g. Implement `andThen` and `compose` which pipes the result of one function to the input of another function
+  // such as compose(isEven, increment)(10) == false
+  // and     andThen(increment, isEven)(10) == false
   def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 2j. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 2h. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
-  val doubleInc: Int => Int = identity // ???
+  val doubleInc: Int => Int = ???
 
-  // 2k. Same for f(x) = 2 * (x + 1)
-  val incDouble: Int => Int = identity // ???
+  // 2i. Same for f(x) = 2 * (x + 1)
+  val incDouble: Int => Int = ???
 
-  // 2l. inc and double are a special case of function where the input and output type is the same.
+  // 2j. inc and double are a special case of function where the input and output type is the same.
   // These functions are called endofunctions.
   // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
   // Can you think of a common design pattern that relies on endofunctions?

@@ -42,7 +42,6 @@ lazy val exercises = project
 lazy val slides = project
   .dependsOn(exercises)
   .settings(moduleName := "foundation-slides")
-  .settings(moduleName := "foundation-slides")
   .settings(baseSettings: _*)
   .settings(
     tutSourceDirectory := baseDirectory.value / "tut",

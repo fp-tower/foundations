@@ -50,12 +50,9 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
   }
 
-  test("setUsersAge") {
-    setUsersAge(10) shouldEqual List(User("John", 10), User("Lisa", 10))
-  }
-
-  test("getUsers") {
-    getUsers shouldEqual List(User("John", 26), User("Lisa", 5))
+  test("setOption") {
+    setOption(Some(5))("Hello") shouldEqual Some("Hello")
+    setOption(None)("Hello") shouldEqual None
   }
 
   test("andThen") {
@@ -169,6 +166,10 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
           f(xs)(_ == -1) shouldEqual None
         }
   }
+
+  ////////////////////////
+  // 5. Memoization
+  ////////////////////////
 
   test("memoize") {
     def inc(x: Int): Int                         = x + 1
