@@ -11,8 +11,7 @@ import scala.util.Random
 object FunctionApp extends App {
   import FunctionExercises._
 
-  println(plus(3, 4))
-
+  println("Hello World!")
 }
 
 object FunctionExercises {
