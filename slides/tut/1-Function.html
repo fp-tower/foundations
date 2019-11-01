@@ -14,7 +14,11 @@
     .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     .medium { font-size: 28px; }
     .large { font-size: 36px; }
-
+    .pull-left { float: left; width: 47%; }
+    .pull-right { float: right; width: 47%; }
+    .large-left { float: left; width: 67%; }
+    .small-right { float: right; width: 27%; }
+    .medium-right { float: right; width: 37%; }
     .cols { display: flex; }
     .fifty { flex: 50%; }
     .fortyfive { flex: 45%; }
@@ -54,14 +58,35 @@ layout: true
 <br>
 
 ```tut:silent
-val x: Int = 3
+val counter  : Int        = 3
 
-val message: String = "Hello World!"
+val message  : String     = "Hello World!"
 
 val increment: Int => Int = (x: Int) => x + 1
 ```
 
 --
+
+<br>
+
+```tut:silent
+val increment: Function1[Int, Int] = (x: Int) => x + 1
+
+val plus: Function2[Int, Int, Int] = (x: Int, y: Int) => x + y
+```
+
+---
+# First class function
+
+<br>
+
+```tut:silent
+val counter  : Int        = 3
+
+val message  : String     = "Hello World!"
+
+val increment: Int => Int = (x: Int) => x + 1
+```
 
 <br>
 
@@ -93,24 +118,89 @@ dictionary("double")(10)
 ```
 
 ---
+.h1[# Higher order function]
+
+<br>
+
+```tut:invisible
+def upperCase(s: String): String = {
+  val characters = s.toArray
+  for (i <- 0 until s.length) {
+    characters(i) = characters(i).toUpper
+  }
+  new String(characters)
+}
+
+def lowerCase(s: String): String = {
+  val characters = s.toArray
+  for (i <- 0 until s.length) {
+    characters(i) = characters(i).toLower
+  }
+  new String(characters)
+}
+```
+
+.pull-left[
+```scala
+def upperCase(s: String): String = {
+  val characters = s.toArray
+  for (i <- 0 until s.length) {
+    characters(i) = characters(i).`toUpper`
+  }
+  new String(characters)
+}
+```
+
+```tut
+upperCase("Hello")
+```
+]
+
+.pull-right[
+```scala
+def lowerCase(s: String): String = {
+  val characters = s.toArray
+  for (i <- 0 until s.length) {
+    characters(i) = characters(i).`toLower`
+  }
+  new String(characters)
+}
+```
+
+```tut
+lowerCase("Hello")
+```
+]
+
+
+
+---
 # Higher order function
 
 <br>
 
 ```scala
-def map(xs: List[Int])(`f: Int => Int`): List[Int] = ???
+def map(s: String)(f: `Char => Char`): String = {
+  val characters = s.toArray
+  for (i <- 0 until s.length) {
+    characters(i) = `f`(characters(i))
+  }
+  new String(characters)
+}
 ```
 
-```tut
-List(1,2,3).map(x => x + 1)
+--
 
-List(1,2,3).map(x => x * 2)
+```tut:silent
+def upperCase(s: String): String = s.map(c => c.toUpper)
 
-List(1,2,3).map(x => 0)
+def lowerCase(s: String): String = s.map(c => c.toLower)
+
+def  password(s: String): String = s.map(c => '*')
 ```
 
 ---
-# Partial application
+# Partial function application
 
 <br>
 
@@ -121,6 +211,61 @@ def formatDouble(scale: Int)(value: Double): String =
 val format2D: Double => String = formatDouble(2)
 val format5D: Double => String = formatDouble(5)
 ```
+
+```scala
+def formatDouble(scale: Int)(value: Double): String =
+  BigDecimal(value)
+    .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
+    .toDouble
+    .toString
+```
+
+<br>
+
+```tut
+formatDouble(2)(1.123456789)
+formatDouble(5)(1.123456789)
+```
+
+---
+# Partial function application
+
+<br>
+
+```tut:invisible
+val formatDouble: Int => (Double => String) =
+  (scale: Int) => {
+    (value: Double) => {
+      BigDecimal(value).setScale(scale, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
+    }
+  }
+```
+
+```scala
+val formatDouble: Int => (Double => String) =
+  (scale: Int) => {
+    (value: Double) => {
+      BigDecimal(value)
+        .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
+        .toDouble
+        .toString
+     }
+  }
+```
+
+--
+
+<br>
+
+```tut:silent
+val format2D: Double => String = formatDouble(2)
+val format5D: Double => String = formatDouble(5)
+```
+
+---
+# Partial function application
+
+<br>
 
 ```scala
 def formatDouble(scale: Int)(value: Double): String =
