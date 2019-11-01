@@ -38,9 +38,19 @@ object FunctionAnswers {
       case Down => x - 1
     }
 
+  val increment: Int => Int = move(Up)
+
+  val decrement: Int => Int = move(Down)
+
   ////////////////////////////
   // 2. polymorphic functions
   ////////////////////////////
+
+  def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
+    option match {
+      case None    => None
+      case Some(a) => Some(f(a))
+    }
 
   def identity[A](x: A): A = x
 

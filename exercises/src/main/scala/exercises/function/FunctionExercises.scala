@@ -49,7 +49,7 @@ object FunctionExercises {
   def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
     ???
 
-  // 1f. Implement `move` that increases or decreases a number based on a `Direction` (enumeration)
+  // 1f. Implement `move` which increases or decreases a number based on a `Direction` (enumeration)
   // such as move(Up)(5) == 6
   // but     move(Down)(5) == 4
   sealed trait Direction
@@ -58,21 +58,37 @@ object FunctionExercises {
 
   def move(direction: Direction)(x: Int): Int = ???
 
-  // 1e. what's the difference between all these versions of move?
-  def move2(direction: Direction, x: Int): Int =
-    move(direction)(x)
+  // 1g. Implement `increment` and `decrement` by reusing `move`
+  // such as increment(10) == 11
+  // such as decrement(10) == 9
+  val increment: Int => Int = ???
 
-  val move3: (Direction, Int) => Int =
-    (direction, x) => move(direction)(x)
-
-  val move4: Direction => Int => Int =
-    direction => x => move(direction)(x)
+  val decrement: Int => Int = ???
 
   ////////////////////////////
   // 2. polymorphic functions
   ////////////////////////////
 
-  // 2a. Implement identity
+  // 2a. Implement `mapOption` using patter matching on Option see `sizeOption`
+  // such as mapOption(Some(2), isEven)    == Some(true)
+  //         mapOption(Some(2), increment) == Some(3)
+  // but     mapOption(Option.empty[Int], increment) == None
+  // Note: Option is a enumeration with two constructor Some and None.
+  //       None is safer version of null.
+  def mapOption[A, B](option: Option[A], f: A => B): Option[B] = ???
+
+  def sizeOption[A](option: Option[A]): Int =
+    option match {
+      case None    => 0
+      case Some(a) => 1
+    }
+
+  // 2b. What is the difference between `mapOption` and `mapOption2`?
+  // Which one should you use?
+  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] =
+    mapOption(option, f)
+
+  // 2c. Implement identity
   // such as identity(1) == 1
   //         identity("foo") == "foo"
   // Imagine you were a hacker trying to introduce a bug in identity.
@@ -80,12 +96,16 @@ object FunctionExercises {
   // satisfies the type checker.
   def identity[A](x: A): A = ???
 
-  // 2b. Implement const
+  // 2d. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
+  // What is the type of identityVal?
+  val identityVal = ???
+
+  // 2e. Implement const
   // such as const(5)("foo") == 5
   //         List(1,2,3).map(const(0)) == List(0,0,0)
   def const[A, B](a: A)(b: B): A = ???
 
-  // 2c. Implement setUsersAge which updates the age of all users
+  // 2f. Implement setUsersAge which updates the age of all users
   // such as setUsersAge(10) == List(User("John", 10), User("Lisa", 10))
   // hint: use updateUsersAge with one of the polymorphic functions we just saw
   case class User(name: String, age: Int)
@@ -97,20 +117,12 @@ object FunctionExercises {
 
   def setUsersAge(value: Int): List[User] = ???
 
-  // 2d. implement getUsers which returns all users
+  // 2h. implement getUsers which returns all users
   // such as getUsers == List(User("John", 26), User("Lisa", 5))
   // hint: use updateUsersAge with one of the polymorphic functions we just saw
   def getUsers: List[User] = ???
 
-  // 2e. Transform identity into a function (val). See Eta expansion https://stackoverflow.com/a/39446986
-  // val idVal = ???
-
-  // 2f. what's the difference between mapOption and mapOption2?
-  // Which one should you use?
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B]  = option.map(f)
-  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] = option.map(f)
-
-  // 2g. Implement andThen and compose
+  // 2i. Implement andThen and compose
   // such as
   // val isEven: Int => Boolean = _ % 2 == 0
   // val inc   : Int => Int = _ + 1
@@ -120,16 +132,16 @@ object FunctionExercises {
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 2h. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 2j. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = identity // ???
 
-  // 2i. Same for f(x) = 2 * (x + 1)
+  // 2k. Same for f(x) = 2 * (x + 1)
   val incDouble: Int => Int = identity // ???
 
-  // 2j. inc and double are a special case of function where the input and output type is the same.
+  // 2l. inc and double are a special case of function where the input and output type is the same.
   // These functions are called endofunctions.
   // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
   // Can you think of a common design pattern that relies on endofunctions?
