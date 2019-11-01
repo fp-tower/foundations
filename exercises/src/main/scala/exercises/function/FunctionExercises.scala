@@ -2,7 +2,6 @@ package exercises.function
 
 import exercises.function.HttpClientBuilder
 import exercises.function.HttpClientBuilder._
-import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
 import scala.concurrent.duration._
@@ -16,35 +15,47 @@ object FunctionApp extends App {
 
 }
 
-object FunctionExercises extends FunctionToImpl {
+object FunctionExercises {
 
   ////////////////////////////
   // 1. first class functions
   ////////////////////////////
 
-  // 1a. Implement tripleVal such as it behaves in the same way as triple
-  def triple(x: Int): Int = 3 * x
+  // 1a. Implement `isEven` a function that checks if a number is even
+  // such as isEven(2) == true
+  // but     isEven(3) == false
+  // Note: You can use `%` (modulo)
+  def isEven(x: Int): Boolean =
+    ???
 
-  val tripleVal: Int => Int =
-    (x: Int) => ???
+  // 1b. Now, we are going to experiment with the val syntax for functions.
+  // Implement `isEvenVal` which behaves exactly like `isEven`.
+  val isEvenVal: Int => Boolean =
+    ???
 
-  // 1b. Implement tripleList by reusing triple or tripleVal, what's the difference?
-  // such as tripleList(List(1,2,3)) == List(3,6,9)
-  // hint: you can use map from List
-  def tripleList(xs: List[Int]): List[Int] = ???
+  // 1c. Implement `isEvenDefToVal` by transforming `isEven` function into a val.
+  // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
+  val isEvenDefToVal: Int => Boolean =
+    ???
 
-  // 1c. Implement tripleVal2 by transforming triple into a val
-  // You may want to read about eta expansion
-  val tripleVal2: Int => Int = _ => ???
+  // 1d. Implement `keepEvenNumbers` which removes all the odd numbers from a list
+  // such as keepEvenNumbers(List(1,2,3,4)) == List(2,4)
+  // Note: You can use `filter` method from `List`
+  def keepEvenNumbers(xs: List[Int]): List[Int] =
+    ???
 
-  // 1d. Implement move that increase or decrease an Int based on a Direction
+  // 1e. Implement `keepNumbersSmallThan` which removes all the numbers above a threshold
+  // such as keepNumbersSmallThan(List(1,6,3,10))(3) == List(1,3)
+  // Try to define your predicate function with an inline function, e.g. xs.filter(x => x % 2 == 0)
+  def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
+    ???
+
+  // 1f. Implement `move` that increases or decreases a number based on a `Direction` (enumeration)
   // such as move(Up)(5) == 6
   // but     move(Down)(5) == 4
   sealed trait Direction
-  object Direction {
-    case object Up   extends Direction
-    case object Down extends Direction
-  }
+  case object Up   extends Direction
+  case object Down extends Direction
 
   def move(direction: Direction)(x: Int): Int = ???
 
@@ -218,14 +229,14 @@ object FunctionExercises extends FunctionToImpl {
   def take[A](xs: List[A])(x: Int): List[Int] = ???
 
   // 3j. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
-  def isEven(x: Int): Boolean =
-    if (x > 0) isOdd(x - 1)
-    else if (x < 0) isOdd(x + 1)
+  def isEvenRec(x: Int): Boolean =
+    if (x > 0) isOddRec(x - 1)
+    else if (x < 0) isOddRec(x + 1)
     else true
 
-  def isOdd(x: Int): Boolean =
-    if (x > 0) isEven(x - 1)
-    else if (x < 0) isEven(x + 1)
+  def isOddRec(x: Int): Boolean =
+    if (x > 0) isEvenRec(x - 1)
+    else if (x < 0) isEvenRec(x + 1)
     else false
 
   // 3k. does the commented function below compile? If yes, what happens when you call it

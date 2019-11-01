@@ -1,36 +1,38 @@
 package function
 
+import answers.function.FunctionAnswers._
 import answers.function.FunctionAnswers
-import exercises.function.FunctionExercises
-import exercises.function.FunctionExercises.{Direction, User}
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import toimpl.function.FunctionToImpl
 
 import scala.collection.mutable.ListBuffer
 
-class FunctionAnswersTest   extends FunctionToImplTest(FunctionAnswers)
-class FunctionExercisesTest extends FunctionToImplTest(FunctionExercises)
-
-class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
-  import impl._
+class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
   ////////////////////////////
   // 1. first class functions
   ////////////////////////////
 
-  test("tripleVal") {
-    tripleVal(5) shouldEqual 15
+  test("isEven") {
+    isEven(2) shouldEqual true
+    isEven(3) shouldEqual false
+
+    isEven(-2) shouldEqual true
+    isEven(-3) shouldEqual false
   }
 
-  test("tripleList") {
-    tripleList(List(1, 2, 3)) shouldEqual List(3, 6, 9)
+  test("isEvenVal") {
+    forAll((x: Int) => isEvenVal(x) shouldEqual isEven(x))
+  }
+
+  test("isEvenDefToVal") {
+    forAll((x: Int) => isEvenDefToVal(x) shouldEqual isEven(x))
   }
 
   test("move") {
-    move(Direction.Up)(5) shouldEqual 6
-    move(Direction.Down)(5) shouldEqual 4
+    move(Up)(5) shouldEqual 6
+    move(Down)(5) shouldEqual 4
   }
 
   ////////////////////////////
@@ -121,7 +123,7 @@ class FunctionToImplTest(impl: FunctionToImpl) extends AnyFunSuite with Matchers
     forAll((xs: List[Int], p: Int => Boolean) => filter(xs)(p) shouldEqual xs.filter(p))
   }
 
-  List(impl.forAll _, forAll2 _).zipWithIndex.foreach {
+  List(FunctionAnswers.forAll _, FunctionAnswers.forAll2 _).zipWithIndex.foreach {
     case (f, i) =>
       test(s"forAll $i") {
         f(List(true, true, true)) shouldEqual true

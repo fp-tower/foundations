@@ -1,35 +1,41 @@
 package answers.function
 
-import exercises.function.FunctionExercises.{double, inc, Direction, User}
 import exercises.function.HttpClientBuilder
 import exercises.function.HttpClientBuilder._
-import toimpl.function.FunctionToImpl
 
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.concurrent.duration._
 
-object FunctionAnswers extends FunctionToImpl {
+object FunctionAnswers {
 
   ////////////////////////////
   // 1. first class functions
   ////////////////////////////
 
-  def triple(x: Int): Int =
-    3 * x
+  def isEven(x: Int): Boolean =
+    x % 2 == 0
 
-  val tripleVal: Int => Int =
-    (x: Int) => 3 * x
+  val isEvenVal: Int => Boolean =
+    (x: Int) => x % 2 == 0
 
-  def tripleList(xs: List[Int]): List[Int] =
-    xs.map(tripleVal)
+  val isEvenDefToVal: Int => Boolean =
+    isEven _ // or just isEven
 
-  val tripleVal2: Int => Int = triple _
+  def keepEvenNumbers(xs: List[Int]): List[Int] =
+    xs.filter(isEven)
+
+  def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
+    xs.filter(_ <= threshold)
+
+  sealed trait Direction
+  case object Up   extends Direction
+  case object Down extends Direction
 
   def move(direction: Direction)(x: Int): Int =
     direction match {
-      case Direction.Down => x - 1
-      case Direction.Up   => x + 1
+      case Up   => x + 1
+      case Down => x - 1
     }
 
   ////////////////////////////
@@ -40,9 +46,7 @@ object FunctionAnswers extends FunctionToImpl {
 
   def const[A, B](a: A)(b: B): A = a
 
-  def apply[A, B](value: A, f: A => B): B = f(value)
-
-  def apply2[A, B](value: A)(f: A => B): B = f(value)
+  case class User(name: String, age: Int)
 
   def updateAge(f: Int => Int): List[User] =
     List(User("John", 26), User("Lisa", 5)).map { p =>
@@ -60,6 +64,9 @@ object FunctionAnswers extends FunctionToImpl {
 
   def compose[A, B, C](f: B => C, g: A => B): A => C =
     a => f(g(a))
+
+  val inc: Int => Int    = x => x + 1
+  val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = andThen(double, inc)
 
