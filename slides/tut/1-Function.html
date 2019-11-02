@@ -70,9 +70,7 @@ val increment: Int => Int = (x: Int) => x + 1
 <br>
 
 ```tut:silent
-val increment: Function1[Int, Int] = (x: Int) => x + 1
-
-val plus: Function2[Int, Int, Int] = (x: Int, y: Int) => x + y
+def increment(x: Int): Int = x + 1
 ```
 
 ---
@@ -91,7 +89,9 @@ val increment: Int => Int = (x: Int) => x + 1
 <br>
 
 ```tut:silent
-def increment(x: Int): Int = x + 1
+val increment: Function1[Int, Int] = (x: Int) => x + 1
+
+val plus: Function2[Int, Int, Int] = (x: Int, y: Int) => x + y
 ```
 
 ---
@@ -232,6 +232,27 @@ formatDouble(5)(1.123456789)
 
 <br>
 
+```scala
+def formatDouble(scale: Int)(value: Double): String =
+  BigDecimal(value)
+    .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
+    .toDouble
+    .toString
+
+val format2D = formatDouble(2)
+val format5D = formatDouble(5)
+```
+
+```tut
+format2D(1.123456789)
+format5D(1.123456789)
+```
+
+---
+# Partial function application
+
+<br>
+
 ```tut:invisible
 val formatDouble: Int => (Double => String) =
   (scale: Int) => {
@@ -260,27 +281,6 @@ val formatDouble: Int => (Double => String) =
 ```tut:silent
 val format2D: Double => String = formatDouble(2)
 val format5D: Double => String = formatDouble(5)
-```
-
----
-# Partial function application
-
-<br>
-
-```scala
-def formatDouble(scale: Int)(value: Double): String =
-  BigDecimal(value)
-    .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
-    .toDouble
-    .toString
-
-val format2D: Double => String = formatDouble(2)
-val format5D: Double => String = formatDouble(5)
-```
-
-```tut
-format2D(1.123456789)
-format5D(1.123456789)
 ```
 
 ---
