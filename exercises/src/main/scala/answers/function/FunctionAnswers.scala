@@ -46,6 +46,11 @@ object FunctionAnswers {
   // 2. polymorphic functions
   ////////////////////////////
 
+  case class Pair[A](first: A, second: A) {
+    def map[B](f: A => B): Pair[B] =
+      Pair(f(first), f(second))
+  }
+
   def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
     option match {
       case None    => None

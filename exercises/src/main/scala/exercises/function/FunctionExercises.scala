@@ -69,12 +69,22 @@ object FunctionExercises {
   // 2. polymorphic functions
   ////////////////////////////
 
-  // 2a. Implement `mapOption` using patter matching on Option see `sizeOption`
+  val zero: Pair[Int]        = Pair(0, 0)
+  val fullName: Pair[String] = Pair("John", "Doe")
+
+  case class Pair[A](first: A, second: A) {
+    // 2a. Implement `map` which applies a function to `first` and `second`
+    // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
+    def map[B](f: A => B): Pair[B] =
+      ???
+  }
+
+  // 2b. Implement `mapOption` which applies a function to an Option if it is a `Some`.
+  // Use patter matching on Option (see `sizeOption`) instead of using Option API
   // such as mapOption(Some(2), isEven)    == Some(true)
   //         mapOption(Some(2), increment) == Some(3)
   // but     mapOption(Option.empty[Int], increment) == None
-  // Note: Option is a enumeration with two constructor Some and None.
-  //       None is safer version of null.
+  // Note: Option is a enumeration with two constructors `Some` and `None`.
   def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
     ???
 
@@ -84,32 +94,25 @@ object FunctionExercises {
       case Some(a) => 1
     }
 
-  // 2b. What is the difference between `mapOption` and `mapOption2`?
+  // 2c. What is the difference between `mapOption` and `mapOption2`?
   // Which one should you use?
   def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] =
     mapOption(option, f)
 
-  // 2c. Implement `identity` which returns its input unchanged
+  // 2d. Implement `identity` which returns its input unchanged
   // such as identity(1) == 1
   //         identity("foo") == "foo"
   def identity[A](x: A): A = ???
 
-  // 2d. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
+  // 2e. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
   val identityVal = ???
 
-  // 2e. Implement `const` which returns its first input unchanged and discards its second input
+  // 2f. Implement `const` which returns its first input unchanged and discards its second input
   // such as const(5)("foo") == 5
   // For example, you can use const in conjunction with `map` to set the values in a List or String:
   // List(1,2,3).map(const(0)) == List(0,0,0)
   // "FooBar86".map(const(*))  == "********"
   def const[A, B](a: A)(b: B): A = ???
-
-  // 2f. Implement `setOption` which replaces the value inside of an Option (if it is a Some)
-  // such as setOption(Some(5))("Hello") == Some("Hello")
-  // but     setOption(None   )("Hello") == None
-  // Bonus: Can you generalise `setOption` to accept a value for an arbitrary `B`, not only String.
-  def setOption[A](option: Option[A])(value: String): Option[String] =
-    ???
 
   // 2g. Implement `andThen` and `compose` which pipes the result of one function to the input of another function
   // such as compose(isEven, increment)(10) == false

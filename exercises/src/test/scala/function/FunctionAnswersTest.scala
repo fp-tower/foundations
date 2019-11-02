@@ -39,26 +39,23 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
   // 2. polymorphic functions
   ////////////////////////////
 
+  test("Pair#map") {
+    Pair("John", "Doe").map(_.length) shouldEqual Pair(4, 3)
+  }
+
   test("identity") {
-    identity(3) shouldEqual 3
-    identity("foo") shouldEqual "foo"
+    forAll((x: Int) => identity(x) shouldEqual x)
   }
 
   test("const") {
-    const("foo")(5) shouldEqual "foo"
-    const(5)("foo") shouldEqual 5
+    forAll((x: Int, y: String) => const(x)(y) shouldEqual x)
+
     List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
   }
 
   test("setOption") {
     setOption(Some(5))("Hello") shouldEqual Some("Hello")
     setOption(None)("Hello") shouldEqual None
-  }
-
-  test("andThen") {
-    val isEven = (_: Int) % 2 == 0
-    val inc    = (_: Int) + 1
-    andThen(inc, isEven)(10) shouldEqual false
   }
 
   test("andThen - compose") {
