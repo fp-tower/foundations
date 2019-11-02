@@ -164,6 +164,12 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
         }
   }
 
+  test("headOption") {
+    headOption(List(1, 2, 3, 4)) shouldEqual Some(1)
+    headOption(Nil) shouldEqual None
+    headOption(List.fill(10000000)(1)) shouldEqual Some(1)
+  }
+
   ////////////////////////
   // 5. Memoization
   ////////////////////////

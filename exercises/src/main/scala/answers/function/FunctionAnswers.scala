@@ -158,13 +158,22 @@ object FunctionAnswers {
       case true :: xs => forAll(xs)
     }
 
-  def find2[A](xs: List[A])(p: A => Boolean): Option[A] =
-    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
-
   def forAll2(xs: List[Boolean]): Boolean =
     foldRight(xs, true) {
       case (false, _)   => false
       case (true, rest) => rest
+    }
+
+  def headOption[A](xs: List[A]): Option[A] =
+    foldRight(xs, Option.empty[A])((a, _) => Some(a))
+
+  def find2[A](xs: List[A])(p: A => Boolean): Option[A] =
+    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
+
+  def min(xs: List[Int]): Option[Int] =
+    foldLeft(xs, Option.empty[Int]) {
+      case (None, a)             => Some(a)
+      case (Some(currentMin), a) => Some(currentMin.min(a))
     }
 
   ////////////////////////

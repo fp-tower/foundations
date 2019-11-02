@@ -121,13 +121,15 @@ object FunctionExercises {
 
   def compose[A, B, C](f: B => C, g: A => B): A => C = ???
 
-  // 2h. Implement the function f(x) = 2 * x + 1 using inc, double with compose or andThen
+  // 2h. Implement `doubleInc` using `inc`, `double` with `compose` or `andThen`
+  // such as `doubleInc` is equivalent to the maths function: f(x) = (2 * x) + 1
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
   val doubleInc: Int => Int = ???
 
-  // 2i. Same for f(x) = 2 * (x + 1)
+  // 2i. Implement `incDouble` using `inc`, `double` with `compose` or `andThen`
+  // such as `incDouble` is equivalent to the maths function: f(x) = 2 * (x + 1)
   val incDouble: Int => Int = ???
 
   // 2j. inc and double are a special case of function where the input and output type is the same.
@@ -141,19 +143,20 @@ object FunctionExercises {
   // 3. Recursion & Laziness
   ///////////////////////////
 
-  // 3a. Implement sumList using an imperative approach (while, for loop)
+  // 3a. Implement `sumList` using an imperative approach (while, for loop)
   // such as sumList(List(1,5,2)) == 8
-  def sumList(xs: List[Int]): Int = ???
+  def sumList(xs: List[Int]): Int =
+    ???
 
-  // 3b. Use recursion to implement sumList2
-  // does your implementation work with a large list? e.g. sumList2(List.fill(1000000)(1))
-  val largeList: List[Int] = List.fill(1000000)(1) // List(1,1,1,1, ...)
+  // 3b.  Implement `sumList2` using recursion.
+  // Does your implementation work with a large list? e.g. List.fill(1000000)(1)
+  def sumList2(xs: List[Int]): Int =
+    ???
 
-  def sumList2(xs: List[Int]): Int = ???
-
-  // 3c. Implement mkString, you can use an imperative approach or recursion
+  // 3c. Implement `mkString` using an imperative approach (while, for loop)
   // such as mkString(List('H', 'e', 'l', 'l', 'o')) == "Hello"
-  def mkString(xs: List[Char]): String = ???
+  def mkString(xs: List[Char]): String =
+    ???
 
   ///////////////////////
   // GO BACK TO SLIDES
@@ -179,56 +182,58 @@ object FunctionExercises {
   def sumList3(xs: List[Int]): Int =
     foldLeft(xs, 0)(_ + _)
 
+  // 3d. Implement `mkString2` using `foldLeft` (same behaviour than `mkString`)
   def mkString2(xs: List[Char]): String =
-    foldLeft(xs, "")(_ + _)
+    ???
 
-  // 3d. Implement multiply using foldLeft
-  // such as multiply(List(3,2,4)) == 24
-  def multiply(xs: List[Int]): Int = ???
+  // 3e. Implement `multiply` using `foldLeft`
+  // such as multiply(List(3,2,4)) == 3 * 2 * 4 = 24
+  // and     multiply(Nil) == 1
+  def multiply(xs: List[Int]): Int =
+    ???
 
-  // 3e. Implement filter using foldLeft
-  // such as filter(List(1,2,3,4))(isEven) == List(2,4)
-  def filter[A](xs: List[A])(p: A => Boolean): List[A] = ???
-
-  // 3f. Implement forAll using a recursion or loop
-  // forAll returns true if all the elements in the List are true
+  // 3f. Implement `forAll` which checks if all elements in a List are true
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
   // does your implementation terminate early? e.g. forAll(List(false, false, false)) does not go through the entire list
   // does your implementation work with a large list? e.g. forAll(List.fill(1000000)(true))
-  def forAll(xs: List[Boolean]): Boolean = ???
+  def forAll(xs: List[Boolean]): Boolean =
+    ???
 
-  // 3g. Implement find using a recursion or loop
-  // find returns the first element of a List that matches the predicate `p`
+  // 3g. Implement `find` which returns the first element in a List where the predicate function returns true
   // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
-  // but     find(List(1,2,3))(_ == -1) == None
+  // but     find(List(1,2,3))(_ > 5) == None
   // does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
   // does your implementation work with a large list? e.g. find(1.to(1000000).toList)(_ == -1)
-  def find[A](xs: List[A])(p: A => Boolean): Option[A] = ???
+  def find[A](xs: List[A])(predicate: A => Boolean): Option[A] =
+    ???
 
   ///////////////////////
   // GO BACK TO SLIDES
   ///////////////////////
 
-  // 3h. Implement forAll2 and find2 using foldRight
-  // foldRight is an abstraction over recursion that can terminate early
-  // early termination is achieved by laziness (see call by name `=> B`)
   def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
     xs match {
       case Nil    => z
       case h :: t => f(h, foldRight(t, z)(f))
     }
 
-  def forAll2(xs: List[Boolean]): Boolean = ???
+  // 3h. Implement `forAll2` using `foldRight` (same behaviour than `forAll`)
+  def forAll2(xs: List[Boolean]): Boolean =
+    ???
 
-  def find2[A](xs: List[A])(p: A => Boolean): Option[A] = ???
+  // 3i. Implement `headOption` using `foldRight`.
+  // `headOption` returns the first element of a List if it exists
+  // such as headOption(List(1,2,3)) == Some(1)
+  // but     headOption(Nil) == None
+  def headOption[A](xs: List[A]): Option[A] =
+    ???
 
-  // 3i. which fold (left or right) would you use to implement the following min and take? Why
+  // 3j. What fold (left or right) would you use to implement `min`? Why?
   def min(xs: List[Int]): Option[Int] = ???
 
-  def take[A](xs: List[A])(x: Int): List[Int] = ???
-
-  // 3j. Run isEven / isOdd for small and large input. Search for mutual tail recursion in scala
+  // 3k. Run `isEven` or `isOdd` for small and large input.
+  // Search for mutual tail recursion in Scala.
   def isEvenRec(x: Int): Boolean =
     if (x > 0) isOddRec(x - 1)
     else if (x < 0) isOddRec(x + 1)
@@ -239,10 +244,9 @@ object FunctionExercises {
     else if (x < 0) isEvenRec(x + 1)
     else false
 
-  // 3k. does the commented function below compile? If yes, what happens when you call it
-  // Search for General recursion
-  // or https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
-  //  def foo: Int = foo
+  // 3l. What happens when we call `foo`? Search for General recursion
+  // or read https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
+  def foo: Int = foo
 
   ////////////////////////
   // 4. Pure functions
