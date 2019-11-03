@@ -58,23 +58,19 @@ class: center, middle
 
 ### Pure function, Recursion, Lazyness
 
-### Side effect, IO
+### Side effects, IO
+
+### Option, Either
 
 ### Algebraic Data Type (ADT), Parametricity
-
-### Either, Option, Validated
-
-### Typeclasses, Monoid, Functor, Applicative, Traverse
 
 
 ---
 .h1[# 2. Develop your FP intuition]
 
-<br>
+.h3[### How do you reverse a String?]
 
-
-### How do you reverse a String?
-
+.pull-left[
 ```tut:silent
 def reverseString(x: String): String = {
   val charArray   = x.toCharArray
@@ -90,30 +86,49 @@ def reverseString(x: String): String = {
   String.valueOf(charArray)
 }
 ```
+]
+
+--
+
+.pull-right[
+```tut:silent
+def reverseString(x: String): String =
+  x.foldLeft("")(
+    (accumulator: String, currentChar: Char) =>
+      accumulator + currentChar
+  )
+```
+]
 
 ---
 .h1[# 2. Develop your FP intuition]
 
-<br>
+.h3[### How do you reverse a String?]
 
-### How do you reverse a String?
+.pull-left[
+```tut:silent
+def reverseString(x: String): String = {
+  val charArray   = x.toCharArray
+  val lastIndex   = x.length - 1
+  val middleIndex = x.length / 2
 
-```scala
-def reverseString(x: String): String =
-  x.`foldLeft`("")((acc: String, c: Char) => acc.prepended(c)) // or with StringBuffer
+  for (i <- 0 until middleIndex) {
+    val tmp = charArray(i)
+    charArray(i) = charArray(lastIndex - i)
+    charArray(lastIndex - i) = tmp
+  }
+
+  String.valueOf(charArray)
+}
 ```
+]
 
----
-.h1[# 2. Develop your FP intuition]
-
-<br>
-
-### How do you reverse a String?
-
-```scala
+.pull-right[
+```tut:silent
 def reverseString(x: String): String =
-  x.foldLeft(`""`)((acc: String, c: Char) => acc.`prepended`(c)) // or with StringBuffer
+  x.foldLeft("")(_ + _)
 ```
+]
 
 ---
 class: center, middle
@@ -131,11 +146,11 @@ class: center, middle
 
 <br>
 
-### Scala/JVM low level optimisations
+### Library specific API
 
 <br>
 
-### Library specific API
+### Scala/JVM low level optimisations
 
 ---
 .h1[# Course main features]

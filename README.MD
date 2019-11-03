@@ -13,30 +13,29 @@
 ### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)
 * First class functions
 * Polymorphic functions
+* Recursion, Lazyness
 * Pure functions
-* Recursion
 * Memoization
 
 ### Module 2: [Side Effect](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
-* Side effect with referential transparency
-* IO / Thunk
-* Restricted algebra
+* How to control effects
+* Thunk / IO
 * IO vs Future
-* Async
+* Async IO
+* Restricted algebra
 
 ### Module 3: [Error Handling](https://fp-tower.github.io/foundation/3-ErrorHandling.html#1)
-* How to safely deal with predictable runtime errors
-* Compare error types: Option, Either, Validated, Try
+* How to safely deal with runtime errors
+* Compare error types: Option, Try, Either
 * Covariance
 * Introduction to OptionT, EitherT
 
 ### Module 4: [Type](https://fp-tower.github.io/foundation/4-Type.html#1)
 * Unrepresentable state
 * Cardinality
-* Algebra of types
-* Types and Tests, Valid Implementation Count (VIC)
+* How to measure impacts of types and tests
 * Parametricity
-* Logic and types
+* Relationship between logic, algebra and types
 
 ### Module 5: Reader / Writer / State
 
