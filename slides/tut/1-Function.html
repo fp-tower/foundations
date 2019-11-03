@@ -286,7 +286,75 @@ val format5D: Double => String = formatDouble(5)
 ---
 class: center, middle
 
-# Exercises 1, 2 and 3a-b
+# Exercise 1
+
+`exercises.function.FunctionExercises.scala`
+
+---
+# Parametric types
+
+<br>
+
+```scala
+Int
+String
+Direction
+```
+
+```scala
+List[Int]
+Map[Int, String]
+```
+
+---
+# Parametric types
+
+<br>
+
+```tut:silent
+case class Point(x: Int, y: Int)
+
+case class Pair[A](first: A, second: A)
+```
+
+--
+
+```tut:silent
+case class WithId[A](id: Long, value: A)
+```
+
+```tut
+WithId(45, "John Doe")
+WithId(12, Point(0, 0))
+```
+
+---
+# Parametric functions
+
+<br>
+
+```tut:silent
+def getFirst[A](pair: Pair[A]): A =
+  pair.first
+```
+
+--
+
+<br>
+
+```scala
+def getFirst(pair: Pair[A]): A =
+  pair.first
+
+On line 2: error: not found: type A
+       def getFirst(pair: Pair[A]): A =
+                               ^
+```
+
+---
+class: center, middle
+
+# Exercises 2 and 3a-b
 
 `exercises.function.FunctionExercises.scala`
 
