@@ -317,7 +317,10 @@ case class Point(x: Int, y: Int)
 case class Pair[A](first: A, second: A)
 ```
 
---
+---
+# Parametric types
+
+<br>
 
 ```tut:silent
 case class WithId[A](id: Long, value: A)
@@ -334,22 +337,66 @@ WithId(12, Point(0, 0))
 <br>
 
 ```tut:silent
-def getFirst[A](pair: Pair[A]): A =
-  pair.first
+def getId[A](withId: WithId[A]): Long =
+  withId.id
+
+def bumpId[A](withId: WithId[A]): WithId[A] = {
+  val currentId = getId(withId)
+  val newId     = currentId + 1
+  withId.copy(id = newId)
+}
 ```
 
---
+```tut
+bumpId(WithId(45, "John Doe"))
+```
+
+---
+# 1. Type parameters must be defined before we use them
 
 <br>
 
 ```scala
-def getFirst(pair: Pair[A]): A =
-  pair.first
+case class WithId[`A`](id: Long, value: A)
+
+def getId[`A`](withId: WithId[A]): Long =
+  withId.id
+```
+
+<br>
+
+```scala
+def getId(withId: WithId[A]): Long =
+  withId.id
 
 On line 2: error: not found: type A
-       def getFirst(pair: Pair[A]): A =
-                               ^
+       def getId(withId: WithId[A]): Long =
+                                ^
 ```
+
+---
+# 2. Type parameters must not be introspected
+
+<br>
+
+```tut:silent
+def getId[A](withId: WithId[A]): Long =
+  withId match {
+    case _: WithId[Int]    => 0
+    case _: WithId[String] => 1
+    case _                 => withId.id
+  }
+```
+
+```tut
+getId(WithId(10, 99))
+getId(WithId(10, "Hello"))
+```
+
+---
+class: center, middle
+
+# A type parameter is a form of encapsulation
 
 ---
 class: center, middle
