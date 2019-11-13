@@ -370,7 +370,7 @@ def getId(withId: WithId[A]): Long =
   withId.id
 
 On line 2: error: not found: type A
-       def getId(withId: WithId[A]): Long =
+def getId(withId: WithId[A]): Long =
                                 ^
 ```
 
@@ -439,13 +439,13 @@ def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
 
 
 .fortyfive[
-![Fold left](img/function/fold-left-all.svg)
+![FoldLeft](img/function/fold-left-all.svg)
 ]]
 
 ---
 .cols[
 .fortyfive[
-# Fold Left
+# FoldLeft
 
 <br>
 <br>
@@ -469,7 +469,7 @@ sum(List(2,3,10,4))
 ---
 .cols[
 .fortyfive[
-# Fold Left
+# FoldLeft
 
 <br>
 <br>
@@ -566,7 +566,7 @@ foldRight(xs, z)(f) == foldRight(Cons(1, Cons(2, Cons(3, Nil()))), z)(f)
 
 --
 
-### Home exercise: How would you "replace constructors" for Option or Binary Tree?
+### Home exercise: How would you "replace constructors" for an Option or a Binary Tree?
 
 ---
 class: center, middle
@@ -587,24 +587,19 @@ class: center, middle
 ---
 class: center, middle
 
-# Pure Function
-
----
-background-image: url(img/function/mapping-1.svg)
-
-# Pure functions are mapping between two sets
+# Pure function
 
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Pure functions are mapping between two sets
+# Pure functions are a mapping between two sets
 
 ---
 class: center, middle
 
 # Programming function
 # !=
-# Pure Function
+# Pure function
 
 ---
 background-image: url(img/function/partial-function.svg)
@@ -631,7 +626,7 @@ head(Nil)
 ```
 
 ---
-# Exceptions make function partial
+# Exception
 
 ```tut:silent
 case class Item(id: Long, unitPrice: Double, quantity: Int)
@@ -675,7 +670,7 @@ Instant.now()
 ```
 
 ---
-# Mutation creates nondeterministim
+# Mutation
 
 ```tut:silent
 class User(initialAge: Int) {
@@ -744,7 +739,7 @@ class: center, middle
 # A function without side effects only returns a value
 
 ---
-.h1[# Pure Function]
+.h1[# Pure function]
 
 .large[
 * total (not partial)
@@ -761,7 +756,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Functional subset = Pure function + ...
+# Functional subset = pure function + ...
 
 ---
 background-image: url(img/function/null-1.svg)
@@ -792,7 +787,7 @@ def getAge(user: User): Int = {
 
 ### `null` causes NullPointerException
 
-### We cannot remove `null` from the language (maybe in 3.0)
+### We cannot remove `null` from the language (maybe in Scala 3)
 
 ### So we ignore null: don't return it, don't handle it
 
@@ -814,13 +809,9 @@ trait OrderApi {
 ```
 
 ```scala
-class DbOrderApi(db: DB) extends OrderApi {
-  ...
-}
+class DbOrderApi(db: DB) extends OrderApi { ... }
 
-class OrderApiWithAuth(api: OrderApi, auth: AuthService) extends OrderApi {
-  ...
-}
+class OrderApiWithAuth(api: OrderApi, auth: AuthService) extends OrderApi { ... }
 ```
 
 
@@ -851,13 +842,9 @@ trait OrderApi {
 ```
 
 ```scala
-class DbOrderApi(db: DB) extends OrderApi {
-  ...
-}
+class DbOrderApi(db: DB) extends OrderApi { ... }
 
-class OrderApiWithAuth(api: OrderApi, auth: AuthService) extends OrderApi {
-  ...
-}
+class OrderApiWithAuth(api: OrderApi, auth: AuthService) extends OrderApi { ... }
 ```
 
 
@@ -911,7 +898,7 @@ object ConfigValue {
 <br>
 
 ```scala
-def getTag(a: Any): Int = a match {
+def getTag(any: Any): Int = any match {
   case x: Int         =>  1 ❌
   case x: String      =>  2 ❌
   case x: ConfigValue =>  3 ❌
@@ -964,7 +951,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Why shall we use functional subset?
+# Why should we use the functional subset?
 
 ---
 .h1[# 1. Refactoring: remove unused code]
@@ -1001,7 +988,7 @@ def h(id: Int): Unit = globalVar += 1
 ```
 
 ---
-.h1[# Refactoring: reorder variables]
+.h1[# 1. Refactoring: reorder variables]
 
 .cols[
 .fortyfive[
@@ -1039,7 +1026,7 @@ hello_2(foo, bar) // print barfoo
 ```
 
 ---
-.h1[# Refactoring: extract - inline]
+.h1[# 1. Refactoring: extract - inline]
 
 .cols[
 .fortyfive[
@@ -1078,7 +1065,7 @@ hello_inline (foo, bar) // false
 ```
 
 ---
-# Refactoring: extract - inline
+# 1. Refactoring: extract - inline
 
 ```tut:silent
 import scala.concurrent.Future
@@ -1104,7 +1091,7 @@ for {
 ```
 
 ---
-.h1[# Refactoring: de-duplicate]
+.h1[# 1. Refactoring: de-duplicate]
 
 .cols[
 .fortyfive[
@@ -1222,7 +1209,7 @@ def getOrElse[A](fa: Option[A])(orElse: `=> A`): A = ???
 
 def parseJson(x: String): `Either[ParsingError`, Json] = ???
 
-def void[`A`](fa: Option[`A`]): Option[Unit] = ???
+def mapOption[`A`, `B`](fa: Option[`A`])(f: `A` => `B`): Option[`B`] = ???
 
 def none: Option[`Nothing`] = ???
 ```
