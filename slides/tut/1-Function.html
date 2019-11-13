@@ -375,7 +375,7 @@ On line 2: error: not found: type A
 ```
 
 ---
-# 2. Type parameters must not be introspected
+# 2. Type parameters should not be introspected
 
 <br>
 
@@ -592,12 +592,12 @@ class: center, middle
 ---
 background-image: url(img/function/mapping-1.svg)
 
-# Pure Function is a mapping
+# Pure functions are mapping between two sets
 
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Pure Function is a mapping
+# Pure functions are mapping between two sets
 
 ---
 class: center, middle
@@ -617,27 +617,39 @@ background-image: url(img/function/exception.svg)
 # Partial function
 
 ---
-background-image: url(img/function/null-1.svg)
+# Partial function
 
-# Null
+```tut:reset:silent
+def head(list: List[Int]): Int =
+  list match {
+    case x :: xs => x
+  }
+```
+
+```tut:fail
+head(Nil)
+```
 
 ---
-background-image: url(img/function/null-2.svg)
+# Exceptions make function partial
 
-# Null
+```tut:silent
+case class Item(id: Long, unitPrice: Double, quantity: Int)
 
----
-.h1[# Null handling]
+case class Order(status: String, basket: List[Item])
 
-<br>
+def submit(order: Order): Order =
+  order.status match {
+    case "Draft" if order.basket.nonEmpty =>
+      order.copy(status = "Submitted")
+    case other =>
+      throw new Exception("Invalid Command")
+  }
+```
 
-.large[
-We cannot remove `null` from the language (maybe in 3.0)
-
-We cannot handle it for all functions
-
-So we ignore null: don't return it, don't handle it
-]
+```tut:fail
+submit(Order("Delivered", Nil))
+```
 
 ---
 background-image: url(img/function/nondeterministic.svg)
@@ -648,23 +660,44 @@ background-image: url(img/function/nondeterministic.svg)
 # Nondeterministic
 
 ```tut:silent
-import scala.util.Random
-```
-
-```tut
-Random.nextInt(100)
-Random.nextInt(100)
-Random.nextInt(100)
-```
-
-```tut:silent
+import java.util.UUID
 import java.time.Instant
 ```
 
 ```tut
+UUID.randomUUID()
+UUID.randomUUID()
+```
+
+```tut
 Instant.now()
 Instant.now()
 ```
+
+---
+# Mutation creates nondeterministim
+
+```tut:silent
+class User(initialAge: Int) {
+  var age: Int = initialAge
+
+  def getAge: Int = age
+
+  def setAge(newAge: Int): Unit =
+    age = newAge
+}
+
+val john = new User(24)
+```
+
+```tut
+john.getAge
+
+john.setAge(32)
+
+john.getAge
+```
+
 
 ---
 background-image: url(img/function/side-effect-1.svg)
@@ -689,8 +722,9 @@ val x = println("Hello")
 
 --
 
-```tut
-scala.io.Source.fromURL("http://google.com")("ISO-8859-1").take(100).mkString
+```scala
+scala> scala.io.Source.fromURL("http://google.com")("ISO-8859-1").take(100).mkString
+res21: String = <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="fr"><head>
 ```
 
 --
@@ -705,9 +739,62 @@ def count(): Int = {
 ```
 
 ---
-background-image: url(img/function/side-effect-3.svg)
+class: center, middle
 
-# Side effect
+# A function without side effects only returns a value
+
+---
+.h1[# Pure Function]
+
+.large[
+* total (not partial)
+
+* no exception
+
+* deterministic (not nondeterministic)
+
+* no mutation
+
+* no side effect
+]
+
+---
+class: center, middle
+
+# Functional subset = Pure function + ...
+
+---
+background-image: url(img/function/null-1.svg)
+
+# Null
+
+---
+background-image: url(img/function/null-2.svg)
+
+# Null
+
+---
+# Null
+
+```tut:silent
+case class User(name: String, age: Int)
+
+def getAge(user: User): Int = {
+  if(user == null) -1
+  else user.age
+}
+```
+
+--
+
+<br>
+
+
+### `null` causes NullPointerException
+
+### We cannot remove `null` from the language (maybe in 3.0)
+
+### So we ignore null: don't return it, don't handle it
 
 ---
 # Reflection
@@ -783,7 +870,7 @@ def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] = {
 ```
 
 ---
-# A Trait or Class is equivalent to a Record of Functions
+# An OPEN trait/class is equivalent to a record of functions
 
 ```tut:silent
 trait OrderApi {
@@ -797,8 +884,12 @@ case class OrderApi(
 )
 ```
 
+<br>
+
+### An OrderApi is any pair of functions `(addOrder, getOrder)`
+
 ---
-# A SEALED Trait or Class is equivalent to an Enumeration
+# A SEALED trait/class is equivalent to an enumeration
 
 ```tut:silent
 sealed trait ConfigValue
@@ -815,39 +906,46 @@ object ConfigValue {
 ### A ConfigValue is either an Int, a String or Empty
 
 ---
-# Reflection for generics and Any
-
-```tut:silent
-def foo[A](a: A): A = a match {
-  case x: Int    => (x + 1).asInstanceOf[A]
-  case x: String => x.reverse.asInstanceOf[A]
-  case _         => a
-}
-
-def bar(a: Any): Int = a match {
-  case x: Int         =>  1
-  case x: String      =>  2
-  case x: ConfigValue =>  3
-  case _              => -1
-}
-```
+# Any, AnyRef, AnyVal are all OPEN trait
 
 <br>
 
-### A generic type or Any is equivalent to a trait with no methods
+```scala
+def getTag(a: Any): Int = a match {
+  case x: Int         =>  1 ❌
+  case x: String      =>  2 ❌
+  case x: ConfigValue =>  3 ❌
+  case _              => -1 ❌
+}
+```
 
 ---
-.h1[# Pure Function (aka Scalazzi subset)]
+.h1[# Functional subset (aka Scalazzi subset)]
 
+.cols[
+.fortyfive-middle[
 .large[
-* deterministic
-* total (not partial)
-* no mutation
+* total
+
 * no exception
-* no null
+
+* deterministic
+
+* no mutation
+
 * no side effect
+]]
+
+
+.fortyfive[
+.large[
+* no null
+
 * no reflection
 ]
+]]
+
+
 
 ---
 class: center, middle
@@ -866,28 +964,13 @@ class: center, middle
 ---
 class: center, middle
 
-# Why Pure Function?
+# Why shall we use functional subset?
 
 ---
-class: center, middle
+.h1[# 1. Refactoring: remove unused code]
 
-# 1. Refactoring
-
----
-# Refactoring
-
-```scala
-def hello_1(foo: Foo, bar: Bar) = {
-  val x = f(foo)
-  val y = g(bar)
-  h(y)
-  y
-}
-```
-
----
-# Refactoring: remove unused code
-
+.cols[
+.fortyfive[
 ```scala
 def hello_1(foo: Foo, bar: Bar) = {
   `val x = f(foo)`
@@ -896,25 +979,16 @@ def hello_1(foo: Foo, bar: Bar) = {
   y
 }
 ```
+]
 
----
-# Refactoring: remove unused code
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
 
+.fortyfive[
 ```scala
-def hello_1(foo: Foo, bar: Bar) = {
-  `val x = f(foo)`
-  val y = g(bar)
-  `h(y)`
-  y
-}
-```
-
-should be equivalent to
-
-```scala
-def hello_2(foo: Foo, bar: Bar): Int =
+def hello_2(foo: Foo, bar: Bar) =
   g(bar)
 ```
+]]
 
 --
 
@@ -999,8 +1073,8 @@ def g(bar: Bar): Boolean = throw new Exception("Boom!")
 
 def h(b1: Boolean, b2:` =>` Boolean): Boolean = b1 && b2
 
-hello_inline (foo, bar) // false
 hello_extract(foo, bar) // throw Exception
+hello_inline (foo, bar) // false
 ```
 
 ---
@@ -1015,14 +1089,13 @@ def doSomethingExpensive(x: Int): Future[Int] =
 
 for {
   x <- doSomethingExpensive(5)
-  y <- doSomethingExpensive(8) // sequential, only starts when first Future is complete
-                               // will not be called if first Future fails
+  y <- doSomethingExpensive(8) // sequential, 2nd Future starts when 1st Future is complete
 } yield x + y
 ```
 
 ```tut:silent
 val fx = doSomethingExpensive(5)
-val fy = doSomethingExpensive(8) // both Future are started in parallel
+val fy = doSomethingExpensive(8) // both Futures start in parallel
 
 for {
   x <- fx
@@ -1069,19 +1142,14 @@ hello_simplified(foo) // print foo
 ---
 class: center, middle
 
-# Pure Function
+# Pure function
 
 # means
 
 # fearless refactoring
 
 ---
-class: center, middle
-
 # 2. Local reasoning
-
----
-# Local reasoning
 
 ```scala
 def hello(foo: Foo, bar: Bar): Int = {
@@ -1091,7 +1159,7 @@ def hello(foo: Foo, bar: Bar): Int = {
 ```
 
 ---
-# Local reasoning
+# 2. Local reasoning
 
 ```scala
 class HelloWorld(fizz: Fizz) {
@@ -1107,7 +1175,7 @@ class HelloWorld(fizz: Fizz) {
 ```
 
 ---
-# Local reasoning
+# 2. Local reasoning
 
 ```scala
 class HelloWorld(fizz: Fizz) {
@@ -1128,17 +1196,24 @@ object FarAwayObject {
 ```
 
 ---
-class: center, middle
+# 3. Easier to test
 
-# 3. Easier testing
+```scala
+test("submit") {
+  val item  = Item("xxx", 2, 12.34)
+  val now   = Instant.now()
+  val order = Order("123", "Checkout", List(item), submittedAt = None)
+
+  submit(order, `now`) shouldEqual order.`copy`(status = "Submitted", submittedAt = Some(`now`))
+}
+```
+
+### Dependency injection is given by local reasoning
+
+### No mutation, no randomness, no side effect
 
 ---
-class: center, middle
-
 # 4. Better documentation
-
----
-# Better documentation
 
 ```scala
 def getAge(user: User): `Int` = ???
@@ -1150,14 +1225,7 @@ def parseJson(x: String): `Either[ParsingError`, Json] = ???
 def void[`A`](fa: Option[`A`]): Option[Unit] = ???
 
 def none: Option[`Nothing`] = ???
-
-def forever[A](fa: IO[A]): IO[`Nothing`] = ???
 ```
-
----
-class: center, middle
-
-# 5. Potential compiler optimisations
 
 ---
 # 5. Potential compiler optimisations
@@ -1186,7 +1254,7 @@ class: center, middle
 ---
 class: center, middle
 
-# With Pure Function, you cannot __DO__ anything
+# With pure function, you cannot __DO__ anything
 
 ---
 # Resources and further study

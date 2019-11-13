@@ -1,6 +1,6 @@
 package errorhandling
 
-import java.time.{Duration, LocalDate, ZoneOffset}
+import java.time.{Duration, Instant, LocalDate, ZoneOffset}
 import java.util.UUID
 
 import answers.errorhandling.EitherAnswers.CountryError.InvalidFormat
@@ -12,6 +12,9 @@ import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 
 class EitherAnswersTest extends AnyFunSuite with Matchers {
+
+  def startOfDay(year: Int, month: Int, day: Int): Instant =
+    LocalDate.of(year, month, day).atStartOfDay.toInstant(ZoneOffset.UTC)
 
   ////////////////////////
   // 1. Use cases
@@ -41,7 +44,7 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
 
   test("submit") {
     val item      = Item("xxx", 2, 12.34)
-    val now       = LocalDate.of(2019, 6, 12).atStartOfDay.toInstant(ZoneOffset.UTC)
+    val now       = startOfDay(2019, 6, 12)
     val baseOrder = Order("123", "Checkout", List(item), Some("10 high street"), None, None)
 
     submit(baseOrder, now) shouldEqual Right(baseOrder.copy(status = "Submitted", submittedAt = Some(now)))
@@ -51,8 +54,8 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
 
   test("deliver") {
     val item        = Item("xxx", 2, 12.34)
-    val submittedAt = LocalDate.of(2019, 6, 12).atStartOfDay.toInstant(ZoneOffset.UTC)
-    val now         = LocalDate.of(2019, 6, 15).atStartOfDay.toInstant(ZoneOffset.UTC)
+    val submittedAt = startOfDay(2019, 6, 12)
+    val now         = startOfDay(2019, 6, 15)
     val baseOrder   = Order("123", "Submitted", List(item), Some("10 high street"), Some(submittedAt), None)
 
     deliver(baseOrder, now) shouldEqual Right(

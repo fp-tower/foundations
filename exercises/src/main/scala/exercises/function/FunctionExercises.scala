@@ -252,56 +252,53 @@ object FunctionExercises {
   // 4. Pure functions
   ////////////////////////
 
-  // 4a. is plus a pure function? why?
+  // 4a. is `plus` a pure function? why?
   def plus(a: Int, b: Int): Int = a + b
 
-  // 4b. is div a pure function? why?
+  // 4b. is `div` a pure function? why?
   def div(a: Int, b: Int): Int =
     if (b == 0) sys.error("Cannot divide by 0")
     else a / b
 
-  // 4c. is times2 a pure function? why?
+  // 4c. is `times2` a pure function? why?
   var counterTimes2 = 0
   def times2(i: Int): Int = {
     counterTimes2 += 1
     i * 2
   }
 
-  // 4d. is boolToInt a pure function? why?
+  // 4d. is `boolToInt` a pure function? why?
   def boolToInt(b: Boolean): Int =
     if (b) 5
     else Random.nextInt() / 2
 
-  // 4e. is mapLookup a pure function? why?
+  // 4e. is `mapLookup` a pure function? why?
   def mapLookup(map: Map[String, Int], key: String): Int =
     map(key)
 
-  // 4f. is times3 a pure function? why?
+  // 4f. is `times3` a pure function? why?
   def times3(i: Int): Int = {
     println("do something here") // could be a database access or http call
     i * 3
   }
 
-  // 4g. is circleArea a pure function? why?
+  // 4g. is `circleArea` a pure function? why?
   val pi = 3.14
   def circleArea(radius: Double): Double =
     radius * radius * pi
 
-  // 4h. is inc or inc_v2 a pure function? why?
-  def inc(xs: Array[Int]): Unit =
-    for { i <- 0 to xs.length } xs(i) = xs(i) + 1
-
+  // 4h. is `inc` or inc_v2 a pure function? why?
   def inc_v2(xs: Array[Int]): Unit =
     for { i <- xs.indices } xs(i) = xs(i) + 1
 
-  // 4i. is incAll a pure function? why?
+  // 4i. is `incAll` a pure function? why?
   def incAll(value: Any): Any = value match {
     case x: Int    => x + 1
     case x: Long   => x + 1
     case x: Double => x + 1
   }
 
-  // 4j. is incAll_v2 a pure function? why?
+  // 4j. is `incAll_v`2 a pure function? why?
   def incAll_v2(value: Any): Any = value match {
     case x: Int    => x + 1
     case x: Long   => x + 1
@@ -309,7 +306,7 @@ object FunctionExercises {
     case _         => 0
   }
 
-  // 4k. is sum a pure function? why?
+  // 4k. is `sum` a pure function? why?
   def sum(xs: List[Int]): Int = {
     var acc = 0
     xs.foreach(x => acc += x)
@@ -320,7 +317,7 @@ object FunctionExercises {
   // 5. Memoization
   ////////////////////////
 
-  // 5a. Implement memoize such as
+  // 5a. Implement `memoize` such as
   // val cachedInc = memoize((_: Int) + 1)
   // cachedInc(3) // 4 calculated
   // cachedInc(3) // from cache
@@ -328,7 +325,7 @@ object FunctionExercises {
   // or https://github.com/scalaz/scalaz/blob/series/7.3.x/tests/src/test/scala/scalaz/MemoTest.scala
   def memoize[A, B](f: A => B): A => B = ???
 
-  // 5b. How would you adapt memoize to work on recursive function e.g. fibonacci
+  // 5b. How would you adapt `memoize` to work on recursive function e.g. fibonacci
   // can you generalise the pattern?
   def memoize2 = ???
 
