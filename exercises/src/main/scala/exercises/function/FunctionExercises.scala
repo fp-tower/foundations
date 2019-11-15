@@ -173,10 +173,10 @@ object FunctionExercises {
   }
 
   @tailrec
-  def foldLeftRec[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+  def foldLeftRec[A, B](xs: List[A], b: B)(f: (B, A) => B): B =
     xs match {
-      case Nil    => z
-      case h :: t => foldLeftRec(t, f(z, h))(f)
+      case Nil    => b
+      case h :: t => foldLeftRec(t, f(b, h))(f)
     }
 
   def sumList3(xs: List[Int]): Int =
@@ -212,10 +212,10 @@ object FunctionExercises {
   // GO BACK TO SLIDES
   ///////////////////////
 
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
+  def foldRight[A, B](xs: List[A], b: B)(f: (A, => B) => B): B =
     xs match {
-      case Nil    => z
-      case h :: t => f(h, foldRight(t, z)(f))
+      case Nil    => b
+      case h :: t => f(h, foldRight(t, b)(f))
     }
 
   // 3h. Implement `forAll2` using `foldRight` (same behaviour than `forAll`)
