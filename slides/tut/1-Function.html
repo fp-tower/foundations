@@ -179,6 +179,16 @@ lowerCase("Hello")
 
 <br>
 
+```tut:invisible
+def map(s: String, f: Char => Char): String = {
+  val characters = s.toArray
+  for (i <- 0 until s.length) {
+    characters(i) = f(characters(i))
+  }
+  new String(characters)
+}
+```
+
 ```scala
 def map(s: String, f: `Char => Char`): String = {
   val characters = s.toArray
@@ -192,11 +202,11 @@ def map(s: String, f: `Char => Char`): String = {
 --
 
 ```tut:silent
-def upperCase(s: String): String = s.map(c => c.toUpper)
+def upperCase(s: String): String = map(s, c => c.toUpper)
 
-def lowerCase(s: String): String = s.map(c => c.toLower)
+def lowerCase(s: String): String = map(s, c => c.toLower)
 
-def  password(s: String): String = s.map(c => '*')
+def  password(s: String): String = map(s, c => '*')
 ```
 
 ---
