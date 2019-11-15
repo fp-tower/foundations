@@ -180,7 +180,7 @@ lowerCase("Hello")
 <br>
 
 ```scala
-def map(s: String)(f: `Char => Char`): String = {
+def map(s: String, f: `Char => Char`): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
     characters(i) = `f`(characters(i))
