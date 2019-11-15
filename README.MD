@@ -33,7 +33,7 @@
 ### Module 4: [Type](https://fp-tower.github.io/foundation/4-Type.html#1)
 * Unrepresentable state
 * Cardinality
-* How to measure impacts of types and tests
+* How to measure the impact of types and tests
 * Parametricity
 * Relationship between logic, algebra and types
 
