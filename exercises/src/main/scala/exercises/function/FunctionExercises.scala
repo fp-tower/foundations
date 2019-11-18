@@ -56,7 +56,8 @@ object FunctionExercises {
   case object Up   extends Direction
   case object Down extends Direction
 
-  def move(direction: Direction)(x: Int): Int = ???
+  def move(direction: Direction)(x: Int): Int =
+    ???
 
   // 1g. Implement `increment` and `decrement` by reusing `move`
   // such as increment(10) == 11
@@ -105,7 +106,8 @@ object FunctionExercises {
   def identity[A](x: A): A = ???
 
   // 2e. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
-  val identityVal = ???
+  // TODO uncomment
+  //val identityVal = ???
 
   // 2f. Implement `const` which returns its first input unchanged and discards its second input
   // such as const(5)("foo") == 5
@@ -126,11 +128,13 @@ object FunctionExercises {
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
-  val doubleInc: Int => Int = ???
+  // TODO uncomment
+  //val doubleInc: Int => Int = ???
 
   // 2i. Implement `incDouble` using `inc`, `double` with `compose` or `andThen`
   // such as `incDouble` is equivalent to the maths function: f(x) = 2 * (x + 1)
-  val incDouble: Int => Int = ???
+  // TODO uncomment
+  //val incDouble: Int => Int = ???
 
   // 2j. inc and double are a special case of function where the input and output type is the same.
   // These functions are called endofunctions.
