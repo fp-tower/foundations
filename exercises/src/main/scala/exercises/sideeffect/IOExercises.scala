@@ -2,6 +2,7 @@ package exercises.sideeffect
 
 import java.time.Instant
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.duration._
@@ -150,9 +151,10 @@ object IOExercises {
     // such as succeed(x).attempt == succeed(Success(x))
     //         fail(new Exception("")).attempt == succeed(Failure(new Exception(""))).
     // Note that `attempt` guarantees `unsafeRun()` will not throw an exception.
-    def attempt: IO[Try[A]] = ???
+    def attempt: IO[Try[A]] =
+      ???
 
-    // 2d. Implement `handleErrorWith` which allows to catch failing IO
+    // 2d. Implement `handleErrorWith` which allows to catch a failing IO
     // such as fail(new Exception("")).handleErrorWith(_ => someIO) == someIO
     //         fail(new Exception("foo")).handleErrorWith{
     //            case e: IllegalArgumentException => succeed(1)
@@ -160,10 +162,13 @@ object IOExercises {
     //         } == succeed(2)
     // Use case:
     // handleErrorWith(e => IO.effect(log.error("Operation failed"), e))
-    def handleErrorWith(f: Throwable => IO[A]): IO[A] = ???
+    def handleErrorWith(f: Throwable => IO[A]): IO[A] =
+      ???
 
     // 2e. Implement `retryOnce` which re-runs the current IO if it fails.
-    def retryOnce: IO[A] = ???
+    // Try first to use `attempt`
+    def retryOnce: IO[A] =
+      ???
 
     // 2f. Implement `retryUntilSuccess`
     // similar to `retryOnce` but it retries until the IO succeeds (potentially indefinitely)
@@ -261,7 +266,8 @@ object IOExercises {
 
   // 4b. Implement `testConsole` which facilitates testing of a Console API.
   // Use both `testClock` and `testConsole` to write a test for `userConsoleProgram2` in IOExercisesTest
-  def testConsole(in: List[String], out: ListBuffer[String]): Console = ???
+  def testConsole(in: ListBuffer[String], out: ListBuffer[String]): Console =
+    ???
 
   def userConsoleProgram2(console: Console, clock: Clock): IO[User] =
     for {

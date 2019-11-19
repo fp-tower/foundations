@@ -1,5 +1,6 @@
 package function
 
+import exercises.function.FunctionExercises
 import exercises.function.FunctionExercises._
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite

@@ -1,12 +1,14 @@
 package sideeffect
 
-import exercises.sideeffect.IOExercises.{testConsole, IO}
+import java.time.Instant
+
+import exercises.sideeffect.IOExercises._
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
-import scala.util.{Failure, Try}
+import scala.util.{Failure, Success, Try}
 
 class IOExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
@@ -41,10 +43,13 @@ class IOExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPro
   ////////////////////////
 
   test("read user from Console") {
-    val in: List[String]        = ???
-    val out: ListBuffer[String] = new ListBuffer[String]()
+    val now                     = Instant.now()
+    val in: ListBuffer[String]  = ListBuffer("John", "24")
+    val out: ListBuffer[String] = ListBuffer.empty[String]
     val console                 = testConsole(in, out)
+    val clock                   = testClock(now)
 
+    userConsoleProgram2(console, clock).unsafeRun() shouldEqual User("John", 24, now)
   }
 
   ////////////////////////
