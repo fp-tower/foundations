@@ -152,14 +152,14 @@ object FunctionExercises {
   def sumList(xs: List[Int]): Int =
     ???
 
-  // 3b.  Implement `sumList2` using recursion.
-  // Does your implementation work with a large list? e.g. List.fill(1000000)(1)
-  def sumList2(xs: List[Int]): Int =
-    ???
-
-  // 3c. Implement `mkString` using an imperative approach (while, for loop)
+  // 3b. Implement `mkString` using an imperative approach (while, for loop)
   // such as mkString(List('H', 'e', 'l', 'l', 'o')) == "Hello"
   def mkString(xs: List[Char]): String =
+    ???
+
+  // 3c. Implement `sumList2` using recursion (same behaviour than `sumList`).
+  // Does your implementation work with a large list? e.g. List.fill(1000000)(1)
+  def sumList2(xs: List[Int]): Int =
     ???
 
   ///////////////////////
