@@ -291,6 +291,25 @@ class: center, middle
 `exercises.sideeffect.IOExercises.scala`
 
 ---
+# Smart constructors
+
+```tut:silent
+object IO {
+
+  def succeed[A](constant: A): IO[A] = ???
+
+  def effect[A](block: => A): IO[A] = ???
+
+  def fail[A](error: Throwable): IO[A] = ???
+
+}
+
+trait IO[A] {
+  def unsafeRun(): A
+}
+```
+
+---
 .h1[# IO Summary]
 
 <br>
