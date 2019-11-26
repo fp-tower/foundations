@@ -1062,7 +1062,7 @@ import answers.functors.FunctorsAnswers.validatedApplicative
 ```
 
 ```tut:silent
-import exercises.errorhandling.{Country, User, Username}
+import answers.errorhandling.EitherAnswers.{Country, User, Username}
 import answers.functors.FunctorsAnswers.DefaultMonad
 
 def validateUsername(x: String): ValidatedNel[String, Username] = {
