@@ -5,7 +5,7 @@ cp -r slides/docs docs/
 
 for file in docs/*.html
 do
- decktape "$file" "${file%.html}.pdf"
+ decktape "$file" "${file%.html}.pdf" --chrome-arg=--allow-file-access-from-files
 done
 
 mkdir -p docs/pdf
