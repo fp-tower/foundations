@@ -443,15 +443,19 @@ background-image: url(img/function/fold-left-all.svg)
 ---
 
 .cols[
-.fortyfive-middle[
+.fortyfive[
+# FoldLeft
+
+<br>
+<br>
+<br>
+
 ```tut:silent
 def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
   var acc = b
-
   for (a <- fa) {
     acc = f(acc, a)
   }
-
   acc
 }
 ```
@@ -823,7 +827,7 @@ import scala.concurrent.Future
 
 ```tut:silent
 trait OrderApi {
-  def addOrder(order: Order): Future[Unit]
+  def insertOrder(order: Order): Future[Unit]
   def getOrder(orderId: OrderId): Future[Order]
 }
 ```
@@ -856,7 +860,7 @@ import scala.concurrent.Future
 
 ```tut:silent
 trait OrderApi {
-  def addOrder(order: Order): Future[Unit]
+  def insertOrder(order: Order): Future[Unit]
   def getOrder(orderId: OrderId): Future[Order]
 }
 ```
@@ -881,19 +885,19 @@ def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] = {
 
 ```tut:silent
 trait OrderApi {
-  def addOrder(order: Order): Future[Unit]
+  def insertOrder(order: Order): Future[Unit]
   def getOrder(orderId: OrderId): Future[Order]
 }
 
 case class OrderApi(
-  addOrder: Order   => Future[Unit],
-  getOrder: OrderId => Future[Order]
+  insertOrder: Order   => Future[Unit],
+  getOrder   : OrderId => Future[Order]
 )
 ```
 
 <br>
 
-### An OrderApi is any pair of functions `(addOrder, getOrder)`
+### An OrderApi is any pair of functions `(insertOrder, getOrder)`
 
 ---
 # A SEALED trait/class is equivalent to an enumeration

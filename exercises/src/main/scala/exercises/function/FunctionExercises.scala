@@ -136,7 +136,7 @@ object FunctionExercises {
   // TODO uncomment
   //val incDouble: Int => Int = ???
 
-  // 2j. inc and double are a special case of function where the input and output type is the same.
+  // 2j. inc and double are a special case of functions where the input and output type is the same.
   // These functions are called endofunctions.
   // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
   // Can you think of a common design pattern that relies on endofunctions?
@@ -168,19 +168,19 @@ object FunctionExercises {
 
   def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
     var acc = b
-
     for (a <- fa) {
       acc = f(acc, a)
     }
-
     acc
   }
 
   @tailrec
   def foldLeftRec[A, B](xs: List[A], b: B)(f: (B, A) => B): B =
     xs match {
-      case Nil    => b
-      case h :: t => foldLeftRec(t, f(b, h))(f)
+      case Nil => b
+      case h :: t =>
+        val newB = f(b, h)
+        foldLeftRec(t, newB)(f)
     }
 
   def sumList3(xs: List[Int]): Int =
@@ -302,15 +302,7 @@ object FunctionExercises {
     case x: Double => x + 1
   }
 
-  // 4j. is `incAll_v`2 a pure function? why?
-  def incAll_v2(value: Any): Any = value match {
-    case x: Int    => x + 1
-    case x: Long   => x + 1
-    case x: Double => x + 1
-    case _         => 0
-  }
-
-  // 4k. is `sum` a pure function? why?
+  // 4j. is `sum` a pure function? why?
   def sum(xs: List[Int]): Int = {
     var acc = 0
     xs.foreach(x => acc += x)
