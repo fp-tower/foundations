@@ -308,6 +308,13 @@ case class Point(x: Int, y: Int)
 case class Pair[A](first: A, second: A)
 ```
 
+```tut
+Point(3, 4)
+Pair(3, 4)
+
+Pair("John", "Doe")
+```
+
 ---
 # Parametric types
 
@@ -382,6 +389,28 @@ def getId[A](withId: WithId[A]): Long =
 ```tut
 getId(WithId(10, 99))
 getId(WithId(10, "Hello"))
+```
+
+---
+# 2. Type parameters should not be introspected
+
+<br>
+
+```tut:silent
+def polyInc[A](value: A): A =
+  value match {
+    case x: Int       => (x + 1).asInstanceOf[A]
+    case x: Double    => (x + 1).asInstanceOf[A]
+    case x: String    => (x + 1).asInstanceOf[A]
+    case _            => value
+  }
+```
+
+```tut
+polyInc(1)
+polyInc(2.3)
+polyInc("Foo")
+polyInc(false)
 ```
 
 ---
