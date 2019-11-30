@@ -54,27 +54,6 @@ layout: true
 </div>
 
 ---
-.h1[# Plan]
-
-<br>
-
-.large[
-* What is the cost of misusing types
-]
-
-.large[
-* How to use ADTs to encode data
-]
-
-.large[
-* Learn how to measure impact of types and tests
-]
-
-.large[
-* Explore relationship between types, algebra and logic
-]
-
----
 # Cost of misusing types
 
 ```tut:silent
@@ -182,6 +161,27 @@ def getCurrency(country: Country): Currency =
     case France | Germany => Euro
   }
 ```
+
+---
+.h1[# Plan]
+
+<br>
+
+.large[
+* What is the cost of misusing types
+]
+
+.large[
+* How to use ADTs to encode data
+]
+
+.large[
+* Learn how to measure impact of types and tests
+]
+
+.large[
+* Explore relationship between types, algebra and logic
+]
 
 ---
 class: center, middle
@@ -315,7 +315,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Case Class and Sealed Trait map exactly to business language AND and OR
+# Case class and sealed trait map exactly to business language AND and OR
 
 ### Together, they form what is called Algebraic Data Types (ADTs)
 
@@ -327,15 +327,7 @@ class: center, middle
 ### OR is generally underused
 
 ---
-class: center, middle
-
-# What else can we do to .hl[improve precision] of our encoding?
-
-
-# What else can we do to .hl[reduce errors] caused by our encoding?
-
----
-# How can we measure benefits of two encodings?
+# How can we compare two encodings?
 
 ```scala
 def getCurrency(country: String): Option[String]
@@ -351,7 +343,7 @@ def getCurrency(country: Country): String
 def getCurrency(country: String): Option[Currency]
 ```
 
-### How much benefit do we get by reducing both?
+### How much better it is to reduce both?
 
 ```scala
 def getCurrency(country: Country): Currency
@@ -360,7 +352,7 @@ def getCurrency(country: Country): Currency
 ---
 background-image: url(img/type/cardinality-1.svg)
 
-# Type is a Set
+# Type is a set
 
 ---
 background-image: url(img/type/cardinality-2.svg)
@@ -434,10 +426,10 @@ background-image: url(img/type/io-unit.svg)
 ---
 background-image: url(img/function/mapping-2.svg)
 
-# Function is a mapping between Types
+# Function is mappings between two sets
 
 ---
-# A => B is a Type
+# A => B is a type
 
 <br>
 <br>
@@ -455,26 +447,26 @@ val increment: Int => Int =
 ---
 class: center, middle
 
-# A => B is a Type
+# A => B is a type
 
 # &&
 
-# Type is a Set
+# A type is a set of values
 
 ---
 background-image: url(img/type/function-set-1.svg)
 
-# A => B is a Set!
+# A => B is a set of values!
 
 ---
 background-image: url(img/type/function-set-2.svg)
 
-# Functions are Sets!
+# A function type is a set of implementations!
 
 ---
 class: center, middle
 
-# How many elements are in the A => B Set?
+# How many elements are in the set A => B?
 
 # How many implementations satisfy the type checker?
 
@@ -501,7 +493,7 @@ class: center, middle
 `exercises.types.TypeExercises.scala`
 
 ---
-# Sealed Trait
+# Sealed trait
 
 ```tut:silent
 sealed trait IntOrBoolean
@@ -529,7 +521,7 @@ ABoolean(true)
 ```
 
 ---
-# Case Class
+# Case class
 
 ```tut:silent
 case class IntAndBoolean(i: Int, b: Boolean)
@@ -558,9 +550,9 @@ IntAndBoolean(Int.MaxValue, true) // ~ +2 billion
 ---
 class: center, middle
 
-# A Sealed Trait is called a .hl[Sum] type
+# A sealed trait is called a .hl[sum] type
 
-# A Case Class is called a .hl[Product] type
+# A case class is called a .hl[product] type
 
 ---
 class: center, middle
@@ -579,11 +571,6 @@ class: center, middle
 class: center, middle
 
 # `|A => B|`
-
----
-background-image: url(img/function/mapping-2.svg)
-
-# Function is a mapping between two types
 
 ---
 background-image: url(img/type/get-currency-1.svg)
@@ -656,12 +643,12 @@ class: center, middle
 ---
 background-image: url(img/type/function-set-2.svg)
 
-# Functions are Sets!
+# Functions are sets!
 
 ---
 background-image: url(img/type/unit-test.svg)
 
-# Unit Tests
+# Unit tests
 
 ---
 class: center, middle

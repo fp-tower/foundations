@@ -124,7 +124,7 @@ object OptionExercises {
   // such as checkAllDigits(List('1', '2', '3')) == Some(List(1, 2, 3))
   // but     checkAllDigits(List('a', '1', 'b', 'c', '4')) == None
   // Note: you may want to use listSequence or listTraverse defined below.
-  def checkAllDigits(orders: List[Char]): Option[List[Int]] = ???
+  def checkAllDigits(xs: List[Char]): Option[List[Int]] = ???
 
   def listSequence[A](xs: List[Option[A]]): Option[List[A]] =
     xs.foldRight(Option(List.empty[A]))(
