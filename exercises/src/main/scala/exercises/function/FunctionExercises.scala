@@ -29,12 +29,14 @@ object FunctionExercises {
 
   // 1b. Now, we are going to experiment with functions val syntax.
   // Implement `isEvenVal` which behaves exactly like `isEven`.
-  val isEvenVal: Int => Boolean =
+  // Note: `isEvenVal` is marked as `lazy` because using `???` in a val throws an exception when the file is loaded (e.g. for tests)
+  // You can remove the lazy keyword as soon you implement `isEvenVal`
+  lazy val isEvenVal: Int => Boolean =
     ???
 
   // 1c. Implement `isEvenDefToVal` by transforming `isEven` def function into a val.
   // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
-  val isEvenDefToVal: Int => Boolean =
+  lazy val isEvenDefToVal: Int => Boolean =
     ???
 
   // 1d. Implement `keepEvenNumbers` which removes all the odd numbers from a list
@@ -62,9 +64,9 @@ object FunctionExercises {
   // 1g. Implement `increment` and `decrement` by reusing `move`
   // such as increment(10) == 11
   // such as decrement(10) == 9
-  val increment: Int => Int = ???
+  lazy val increment: Int => Int = ???
 
-  val decrement: Int => Int = ???
+  lazy val decrement: Int => Int = ???
 
   ////////////////////////////
   // 2. polymorphic functions
@@ -106,8 +108,7 @@ object FunctionExercises {
   def identity[A](x: A): A = ???
 
   // 2e. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
-  // TODO uncomment
-  //val identityVal = ???
+  lazy val identityVal = ???
 
   // 2f. Implement `const` which returns its first input unchanged and discards its second input
   // such as const(5)("foo") == 5
@@ -128,13 +129,11 @@ object FunctionExercises {
   val inc: Int => Int    = x => x + 1
   val double: Int => Int = x => 2 * x
 
-  // TODO uncomment
-  //val doubleInc: Int => Int = ???
+  lazy val doubleInc: Int => Int = ???
 
   // 2i. Implement `incDouble` using `inc`, `double` with `compose` or `andThen`
   // such as `incDouble` is equivalent to the maths function: f(x) = 2 * (x + 1)
-  // TODO uncomment
-  //val incDouble: Int => Int = ???
+  lazy val incDouble: Int => Int = ???
 
   // 2j. inc and double are a special case of functions where the input and output type is the same.
   // These functions are called endofunctions.
