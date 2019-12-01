@@ -4,9 +4,10 @@ import java.time.{Duration, Instant}
 import java.util.UUID
 
 import answers.types.TypeAnswers
-import answers.types.TypeAnswers.OrderStatus.{Cancelled, Checkout, Delivered, Draft, Submitted}
+import answers.types.TypeAnswers.OrderStatus._
+import cats.Eq
 import cats.data.NonEmptyList
-import exercises.typeclass.Eq
+import cats.implicits._
 import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
 import org.scalatest.Matchers

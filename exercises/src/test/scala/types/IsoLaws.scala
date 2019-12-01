@@ -1,7 +1,7 @@
 package types
 
-import exercises.typeclass.Eq
-import exercises.typeclass.Eq.syntax._
+import cats.Eq
+import cats.syntax.eq._
 import exercises.types.Iso
 import org.scalacheck.Arbitrary
 import org.scalacheck.Prop._

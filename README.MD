@@ -34,25 +34,6 @@
 * Parametricity
 * Relationship between logic, algebra and types
 
-### Module 5: Reader / Writer / State
-
-### Module 6: [Typeclass](https://fp-tower.github.io/foundation/6-Typeclass.html#1)
-* Different implementations of ad-hoc polymorphism
-* Eq, Monoid
-* Typeclass laws
-* Instance uniqueness, location
-* Typeclass hierarchy with Semigroup, CommutativeMonoid
-* Use case with distributed computing (e.g. Spark)
-* Higher kinded typeclass with Foldable
-* Typeclass abuses
-
-### Module 7: [Functors](https://fp-tower.github.io/foundation/7-Functors.html#1)
-* Functor, Applicative, Monad, Traverse
-* Combining effects
-* Variance
-* Typeclass coherence
-* Typeclass granularity
-
 
 ## FAQ
 
