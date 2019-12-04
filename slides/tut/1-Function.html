@@ -316,37 +316,18 @@ Pair("John", "Doe")
 ```
 
 ---
-# Parametric types
-
-<br>
-
-```tut:silent
-case class WithId[A](id: Long, value: A)
-```
-
-```tut
-WithId(45, "John Doe")
-WithId(12, Point(0, 0))
-```
-
----
 # Parametric functions
 
 <br>
 
 ```tut:silent
-def getId[A](withId: WithId[A]): Long =
-  withId.id
-
-def bumpId[A](withId: WithId[A]): WithId[A] = {
-  val currentId = getId(withId)
-  val newId     = currentId + 1
-  withId.copy(id = newId)
-}
+def swap[A](pair: Pair[A]): Pair[A] =
+  Pair(pair.second, pair.first)
 ```
 
 ```tut
-bumpId(WithId(45, "John Doe"))
+swap(Pair(1, 5))
+swap(Pair("John", "Doe"))
 ```
 
 ---
@@ -355,21 +336,21 @@ bumpId(WithId(45, "John Doe"))
 <br>
 
 ```scala
-case class WithId[`A`](id: Long, value: A)
+case class Pair[`A`](first: A, second: A)
 
-def getId[`A`](withId: WithId[A]): Long =
-  withId.id
+def swap[`A`](pair: Pair[A]): Pair[A] =
+  Pair(pair.second, pair.first)
 ```
 
 <br>
 
 ```scala
-def getId(withId: WithId[A]): Long =
-  withId.id
+def swap[A](pair: Pair[A]): Pair[A] =
+  Pair(pair.second, pair.first)
 
 On line 2: error: not found: type A
-def getId(withId: WithId[A]): Long =
-                                ^
+swap(pair: Pair[A]): Pair[A] =
+                ^
 ```
 
 ---
@@ -378,17 +359,18 @@ def getId(withId: WithId[A]): Long =
 <br>
 
 ```tut:silent
-def getId[A](withId: WithId[A]): Long =
-  withId match {
-    case _: WithId[Int]    => 0
-    case _: WithId[String] => 1
-    case _                 => withId.id
+def showPair[A](pair: Pair[A]): String =
+  pair match {
+    case p: Pair[Int]    => s"(${p.first}, ${p.second})"
+    case p: Pair[Double] => s"(${format2D(p.first)} , ${format2D(p.second)})"
+    case _               => "N/A"
   }
 ```
 
 ```tut
-getId(WithId(10, 99))
-getId(WithId(10, "Hello"))
+showPair(Pair(10, 99))
+showPair(Pair(1.12345, 0.000001))
+showPair(Pair("John", "Doe"))
 ```
 
 ---
@@ -397,20 +379,18 @@ getId(WithId(10, "Hello"))
 <br>
 
 ```tut:silent
-def polyInc[A](value: A): A =
+def show[A](value: A): String =
   value match {
-    case x: Int       => (x + 1).asInstanceOf[A]
-    case x: Double    => (x + 1).asInstanceOf[A]
-    case x: String    => (x + 1).asInstanceOf[A]
-    case _            => value
+    case x: Int       => x.toString
+    case x: Double    => format2D(x)
+    case _            => "N/A"
   }
 ```
 
 ```tut
-polyInc(1)
-polyInc(2.3)
-polyInc("Foo")
-polyInc(false)
+show(1)
+show(2.3)
+show("Foo")
 ```
 
 ---
