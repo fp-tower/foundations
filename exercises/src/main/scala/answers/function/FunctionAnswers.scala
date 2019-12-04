@@ -159,10 +159,7 @@ object FunctionAnswers {
     }
 
   def forAll2(xs: List[Boolean]): Boolean =
-    foldRight(xs, true) {
-      case (false, _)   => false
-      case (true, rest) => rest
-    }
+    foldRight(xs, true)(_ && _)
 
   def headOption[A](xs: List[A]): Option[A] =
     foldRight(xs, Option.empty[A])((a, _) => Some(a))
@@ -171,9 +168,9 @@ object FunctionAnswers {
     foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
 
   def min(xs: List[Int]): Option[Int] =
-    foldLeft(xs, Option.empty[Int]) {
-      case (None, a)             => Some(a)
-      case (Some(currentMin), a) => Some(currentMin.min(a))
+    xs match {
+      case Nil          => None
+      case head :: tail => Some(foldLeft(tail, head)(_ min _))
     }
 
   ////////////////////////
