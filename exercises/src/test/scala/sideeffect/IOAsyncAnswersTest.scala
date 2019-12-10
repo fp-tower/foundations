@@ -150,6 +150,18 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     forAll((e: Exception) => IOAsync.fail(e).attempt.unsafeRun() shouldEqual Left(e))
   }
 
+  test("retryOnce") {
+    val error = new Exception("Unsupported odd number")
+    def action(ref: IOAsyncRef[Int]): IOAsync[String] =
+      ref.updateGetNew(_ + 1).map(_ % 2 == 0).flatMap {
+        case true  => IOAsync.succeed("OK")
+        case false => IOAsync.fail(error)
+      }
+
+    IOAsyncRef(0).flatMap(action).attempt.unsafeRun() shouldEqual Left(error)
+    IOAsyncRef(0).flatMap(action(_).retryOnce).unsafeRun() shouldEqual "OK"
+  }
+
   // TODO use Resource or handmade equivalent
   def withExecutionContext[A](makeES: => ExecutorService)(f: ExecutionContext => A): A = {
     val es = makeES

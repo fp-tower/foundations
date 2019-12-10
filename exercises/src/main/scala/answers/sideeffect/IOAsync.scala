@@ -22,20 +22,26 @@ sealed trait IOAsync[+A] { self =>
   def attempt: IOAsync[Either[Throwable, A]] =
     Attempt(this)
 
-  def tuple[B](other: IOAsync[B]): IOAsync[(A, B)] =
-    map2(other)((_, _))
-
   def map2[B, C](other: IOAsync[B])(f: (A, B) => C): IOAsync[C] =
     for {
       a <- this
       b <- other
     } yield f(a, b)
 
-  def *>[B](other: IOAsync[B]): IOAsync[B] =
-    flatMap(_ => other)
+  def tuple2[B](other: IOAsync[B]): IOAsync[(A, B)] =
+    map2(other)((_, _))
 
-  def <*[B](other: IOAsync[B]): IOAsync[A] =
-    other.*>(this)
+  def productL[B](fb: IOAsync[B]): IOAsync[A] =
+    tuple2(fb).map(_._1)
+
+  def productR[B](fb: IOAsync[B]): IOAsync[B] =
+    tuple2(fb).map(_._2)
+
+  // common alias for productL
+  def <*[B](fb: IOAsync[B]): IOAsync[A] = productL(fb)
+
+  // common alias for productR
+  def *>[B](fb: IOAsync[B]): IOAsync[B] = productR(fb)
 
   def parTuple[B](other: IOAsync[B])(ec: ExecutionContext): IOAsync[(A, B)] =
     parMap2(other)((_, _))(ec)
@@ -46,6 +52,15 @@ sealed trait IOAsync[+A] { self =>
       fb <- other.start(ec)
       c  <- fa.map2(fb)(f)
     } yield c
+
+  def handleErrorWith[B >: A](f: Throwable => IOAsync[B]): IOAsync[B] =
+    attempt.flatMap(_.fold(f, succeed))
+
+  def retryOnce: IOAsync[A] =
+    handleErrorWith(_ => this)
+
+  def retryUntilSuccess(waitBeforeRetry: FiniteDuration): IOAsync[A] =
+    handleErrorWith(_ => sleep(waitBeforeRetry) *> retryUntilSuccess(waitBeforeRetry))
 
   def start(ec: ExecutionContext): IOAsync[IOAsync[A]] =
     effect {

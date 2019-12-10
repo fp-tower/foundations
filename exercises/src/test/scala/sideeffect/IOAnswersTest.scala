@@ -62,6 +62,26 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
     forAll((x: Int, e: Exception) => IO.fail(e).flatMap(_ => IO.succeed(x)).attempt.unsafeRun() shouldEqual Failure(e))
   }
 
+  test("*>") {
+    val io = for {
+      ref <- IORef(0)
+      _   <- ref.update(_ + 1) *> ref.update(_ * 2)
+      res <- ref.get
+    } yield res
+
+    io.unsafeRun() shouldEqual 2
+  }
+
+  test("<*") {
+    val io = for {
+      ref <- IORef(0)
+      _   <- ref.update(_ + 1) <* ref.update(_ * 2)
+      res <- ref.get
+    } yield res
+
+    io.unsafeRun() shouldEqual 2
+  }
+
   test("attempt") {
     forAll((x: Int) => IO.succeed(x).attempt.unsafeRun() shouldEqual Success(x))
     forAll((e: Exception) => IO.fail(e).attempt.unsafeRun() shouldEqual Failure(e))
