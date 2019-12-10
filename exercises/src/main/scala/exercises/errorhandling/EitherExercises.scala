@@ -129,7 +129,7 @@ object EitherExercises {
         case _     => Left(UnsupportedCountry(country))
       } else Left(InvalidFormat(country))
 
-  case class User(userName: Username, country: Country)
+  case class User(username: Username, country: Country)
 
   sealed trait Country
   object Country {

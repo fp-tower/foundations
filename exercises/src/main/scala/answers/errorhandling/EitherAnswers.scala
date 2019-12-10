@@ -131,7 +131,7 @@ object EitherAnswers {
       country  <- validateCountry(country)
     } yield User(username, country)
 
-  case class User(userName: Username, country: Country)
+  case class User(username: Username, country: Country)
 
   def validateCountry(country: String): Either[CountryError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
