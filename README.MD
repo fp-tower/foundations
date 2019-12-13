@@ -3,9 +3,34 @@
 [![Join the chat at https://gitter.im/fp-tower/foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)][gitter]
 <span class="badge-patreon"><a href="https://www.patreon.com/bePatron?u=10482033" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
 
-## Synopsis
+## Target audience
 
-### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
+* New Scala developers 
+* Experienced Scala developers who mostly used the object-oriented side of Scala
+
+We had both successes with people utterly new to Scala and Scala developers with more 
+than eight years of experience. The course will be useful to you except if you are already 
+an expert in functional programming.
+
+## Requirements
+Some familiarity with Scala syntax. For example, a couple of month of professional experience 
+in Scala or attending a Scala [MOOC](https://www.coursera.org/learn/progfun1)
+
+## Plan
+
+### Theme 1: Essential of functional programming
+
+We look at what is functional programming, what are the benefits and restrictions of using this 
+paradigm in Scala. The goal is to be able to write an entire program following functional programming 
+principles.
+
+| Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)  | Module 2: [Side Effect](https://fp-tower.github.io/foundation/2-SideEffect.html#1) |
+| :--------------------- | ----------------------- |
+| First class functions  | How to control effects  |
+| Polymorphic functions  | Thunk / IO              |
+| Recursion, Lazyness    | IO vs Future            |
+| Pure functions         | Async IO                |
+| Memoization            | Restricted algebra      |
 
 ### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)
 * First class functions
