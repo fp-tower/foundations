@@ -22,17 +22,17 @@ in Scala or attending a Scala [MOOC](https://www.coursera.org/learn/progfun1)
 ### Part 1: Essential of functional programming
 
 In this section, we look at what is functional programming, what are the benefits and restrictions of 
-using this paradigm in Scala. The goal is to be able to write an entire program following functional 
-programming principles.
+using this paradigm in Scala. 
 
 ### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)
 
-This module concentrates on the impact of first-class functions, and the use of recursion and laziness. 
-We also go through the definition of a pure function and why we want to restrict ourselves to this
-narrow subset.
+Scala is a language with first-class functions, this simple fact has a tremendous impact on how we can program.
+In this module, we analyse the various syntax and concepts around functions in Scala. We also go through the 
+definition of a functional programming subset and what benefits do we get from using it.
 
 Goals:
-* Getting familiar with the various function encodings in Scala (val/def, curried/uncurried).
+* Getting familiar with the various function encodings in Scala (val/def, curried/uncurried, lazy/strict parameters).
+* Understand rules of type inference.
 * Learn to detect if a function satisfies the functional programming subset.
 
 ### Module 2: [Side Effect](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
@@ -42,8 +42,9 @@ the limitation of pure functions. In this module, we examine Thunk, IO and restr
 We also have some initiation to concurrency in Scala and how it can be incorporated into IO.
 
 Goals:
-* Getting experience working with a parametric API.
+* Being able to write an entire program following functional programming principles.
 * Learn how to test IO and laziness.
+* Getting experience working with an API using type parameters.
 
 ### Part 2: Errors
 
@@ -62,7 +63,7 @@ Goals:
 
 We all have tendencies to use types that are too large for our purpose. This leads to either runtime 
 exceptions or a lot of error handling logic. In this module, we look at using Algebraic Data Types (ADT) and
-type paramaters to constraint our programs.
+type parameters to constraint our programs.
 
 Goals:
 * Learn how to encode business requirements in types.
