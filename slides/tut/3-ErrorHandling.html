@@ -277,7 +277,7 @@ class: center, middle
 .large[
 * Look at use cases for `Option`, `Try` and `Either`
 
-* Practice the design of error ADTs (Algebraic Data Type)
+* Practice the design of error types
 
 * How to use `Option` and `Either` in conjunction with `IO`
 ]
@@ -744,7 +744,7 @@ background-image: url(img/errorhandling/error-conversion.svg)
 .large[
 * Use when you need to capture details about failure
 
-* ADTs are generally the best way to encode errors
+* Enums are generally the best way to encode errors
 
 * Two modes:
   * Fail early with `flatMap`
@@ -929,7 +929,7 @@ type ListEitherT[E, A] = EitherT[List, E, A]
 
 * Try is a helpful tool to catch Exception
 
-* Error ADTs can be as granular as we want
+* Error Enums can be as precise as we want (trade-offs)
 
 * Option and Either can be used in conjunction with IO
 ]
