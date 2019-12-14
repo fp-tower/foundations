@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 1045 541" width="1045" height="541">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 946 541" width="946" height="541">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -19,16 +19,12 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.11.4 
-    <dc:date>2019-10-13 15:31:28 +0000</dc:date>
+    <dc:date>2019-12-14 09:35:14 +0000</dc:date>
   </metadata>
-  <g id="type-hierarchy-option" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1" stroke="none">
+  <g id="type-hierarchy-option" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>type-hierarchy-option</title>
     <g id="type-hierarchy-option: Layer 1">
       <title>Layer 1</title>
-      <g id="Graphic_137">
-        <rect x="648" y="169" width="396" height="234" fill="#acbdd0"/>
-        <rect x="648" y="169" width="396" height="234" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      </g>
       <g id="Graphic_99">
         <ellipse cx="336.2034" cy="39.056604" rx="45.3051571388435" ry="30.0566518010891" fill="#599a9e"/>
         <ellipse cx="336.2034" cy="39.056604" rx="45.3051571388435" ry="30.0566518010891" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
@@ -51,16 +47,16 @@
         </text>
       </g>
       <g id="Graphic_119">
-        <ellipse cx="532.5254" cy="159.28302" rx="60.4068761851247" ry="30.0566518010891" fill="#599a9e"/>
-        <ellipse cx="532.5254" cy="159.28302" rx="60.4068761851247" ry="30.0566518010891" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(489.2 145.97502)" fill="white">
+        <ellipse cx="487.5254" cy="159.28302" rx="60.4068761851247" ry="30.0566518010891" fill="#599a9e"/>
+        <ellipse cx="487.5254" cy="159.28302" rx="60.4068761851247" ry="30.0566518010891" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(444.2 145.97502)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="7.883424" y="21">AnyRef</tspan>
         </text>
       </g>
       <g id="Graphic_120">
-        <ellipse cx="542.5932" cy="419.7736" rx="60.4068761851247" ry="30.0566518010891" fill="#599a9e"/>
-        <ellipse cx="542.5932" cy="419.7736" rx="60.4068761851247" ry="30.0566518010891" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(499.2678 406.4656)" fill="white">
+        <ellipse cx="506.5932" cy="437.7736" rx="60.4068761851247" ry="30.056651801089" fill="#599a9e"/>
+        <ellipse cx="506.5932" cy="437.7736" rx="60.4068761851247" ry="30.056651801089" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(463.2678 424.4656)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.383424" y="21">Null</tspan>
         </text>
       </g>
@@ -79,9 +75,9 @@
         </text>
       </g>
       <g id="Graphic_124">
-        <ellipse cx="446.94915" cy="299.54717" rx="65.4407825338851" ry="30.0566518010891" fill="#599a9e"/>
-        <ellipse cx="446.94915" cy="299.54717" rx="65.4407825338851" ry="30.0566518010891" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(399.5966 286.23917)" fill="white">
+        <ellipse cx="401.94915" cy="299.54717" rx="65.4407825338851" ry="30.0566518010891" fill="#599a9e"/>
+        <ellipse cx="401.94915" cy="299.54717" rx="65.4407825338851" ry="30.0566518010891" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(354.5966 286.23917)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="18.224543" y="21">String</tspan>
         </text>
       </g>
@@ -89,7 +85,7 @@
         <line x1="181.10963" y1="136.5345" x2="292.39193" y2="66.59253" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_127">
-        <line x1="494.4304" y1="135.95386" x2="380.49524" y2="66.18066" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="455.45637" y1="133.80393" x2="375.34353" y2="70.15372" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_128">
         <line x1="72.15638" y1="271.91345" x2="119.58853" y2="198.48869" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -98,10 +94,10 @@
         <line x1="208.76647" y1="270.4796" x2="167.81956" y2="199.17076" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_130">
-        <line x1="464.6099" y1="270.60026" x2="508.25626" y2="199.0615" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="419.6099" y1="270.60026" x2="463.25626" y2="199.0615" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_132">
-        <line x1="520.35494" y1="391.81964" x2="477.44435" y2="337.8802" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="485.2943" y1="409.6394" x2="431.23253" y2="338.22816" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_134">
         <line x1="320.82337" y1="480.72424" x2="246.84624" y2="340.18153" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -110,109 +106,126 @@
         <line x1="301.89832" y1="484.33963" x2="94.74308" y2="329.72827" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_136">
-        <line x1="383.6192" y1="489.22787" x2="485.3785" y2="444.7702" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="384.3114" y1="489.5669" x2="448.71456" y2="462.2885" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_157">
-        <ellipse cx="841.5659" cy="189.57143" rx="39.9070405116199" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="841.5659" cy="189.57143" rx="39.9070405116199" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(814.6403 183.43143)" fill="white">
+        <ellipse cx="732.5659" cy="201.57143" rx="39.9070405116198" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="732.5659" cy="201.57143" rx="39.9070405116198" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(705.6403 195.43143)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x=".715581" y="10">Option[Any]</tspan>
         </text>
       </g>
       <g id="Graphic_156">
-        <ellipse cx="839.3488" cy="379.74286" rx="50.9923295426253" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="839.3488" cy="379.74286" rx="50.9923295426253" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(803.555 373.60286)" fill="white">
+        <ellipse cx="730.3488" cy="400.74286" rx="50.9923295426254" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="730.3488" cy="400.74286" rx="50.9923295426254" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(694.555 394.60286)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x=".50880035" y="10">Option[Nothing]</tspan>
         </text>
       </g>
       <g id="Graphic_155">
-        <ellipse cx="739.5814" cy="237.11429" rx="48.7752717364243" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="739.5814" cy="237.11429" rx="48.7752717364243" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(705.5612 230.9743)" fill="white">
+        <ellipse cx="630.5814" cy="249.1143" rx="48.7752717364244" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="630.5814" cy="249.1143" rx="48.7752717364244" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(596.56124 242.9743)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x="1.2351569" y="10">Option[AnyVal]</tspan>
         </text>
       </g>
       <g id="Graphic_154">
-        <ellipse cx="945.7674" cy="237.11429" rx="50.9923295426253" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="945.7674" cy="237.11429" rx="50.9923295426253" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(909.9736 230.9743)" fill="white">
+        <ellipse cx="836.7674" cy="249.1143" rx="50.9923295426254" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="836.7674" cy="249.1143" rx="50.9923295426254" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(800.9736 242.9743)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x="1.9938004" y="10">Option[AnyRef]</tspan>
         </text>
       </g>
       <g id="Graphic_153">
-        <ellipse cx="947.9845" cy="340.1238" rx="39.9070405116198" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="947.9845" cy="340.1238" rx="39.9070405116198" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(921.0589 333.9838)" fill="white">
+        <ellipse cx="838.9845" cy="370.1238" rx="39.9070405116198" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="838.9845" cy="370.1238" rx="39.9070405116198" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(812.0589 363.9838)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x=".625581" y="10">Option[Null]</tspan>
         </text>
       </g>
       <g id="Graphic_152">
-        <ellipse cx="690.8062" cy="292.58095" rx="35.4729248992176" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="690.8062" cy="292.58095" rx="35.4729248992176" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(667.4279 286.44095)" fill="white">
+        <ellipse cx="581.8062" cy="304.58095" rx="35.4729248992176" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="581.8062" cy="304.58095" rx="35.4729248992176" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(558.4279 298.44095)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x=".03829399" y="10">Option[Int]</tspan>
         </text>
       </g>
       <g id="Graphic_151">
-        <ellipse cx="788.3566" cy="292.58095" rx="53.2093873488264" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="788.3566" cy="292.58095" rx="53.2093873488264" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(750.78915 286.44095)" fill="white">
+        <ellipse cx="679.3566" cy="304.58095" rx="53.2093873488264" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="679.3566" cy="304.58095" rx="53.2093873488264" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(641.78915 298.44095)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x="1.45244" y="10">Option[Boolean]</tspan>
         </text>
       </g>
       <g id="Graphic_150">
-        <ellipse cx="901.4264" cy="292.58095" rx="46.5582139302231" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="901.4264" cy="292.58095" rx="46.5582139302231" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(869.1798 286.44095)" fill="white">
+        <ellipse cx="792.4264" cy="304.58095" rx="46.5582139302231" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="792.4264" cy="304.58095" rx="46.5582139302231" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(760.1798 298.44095)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x="1.3165134" y="10">Option[String]</tspan>
         </text>
       </g>
       <g id="Graphic_149">
-        <ellipse cx="996.7597" cy="292.58095" rx="39.9070405116199" ry="11.8857332779197" fill="#599a9e"/>
-        <ellipse cx="996.7597" cy="292.58095" rx="39.9070405116199" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(969.8341 286.44095)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x=".625581" y="10">Option[Foo]</tspan>
+        <ellipse cx="896.4264" cy="295.58095" rx="48.5737210267691" ry="11.8857332779197" fill="#599a9e"/>
+        <ellipse cx="896.4264" cy="295.58095" rx="48.5737210267691" ry="11.8857332779197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(862.5674 289.44095)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="10" font-weight="400" fill="white" x="1.8139134" y="10">Option[Shape]</tspan>
         </text>
       </g>
       <g id="Line_148">
-        <line x1="762.18275" y1="226.57805" x2="808.3839" y2="205.04012" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="653.18275" y1="238.57805" x2="699.3839" y2="217.04012" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_147">
-        <line x1="922.5628" y1="226.52694" x2="875.1205" y2="204.881" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="813.56275" y1="238.52694" x2="766.1205" y2="216.881" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_146">
-        <line x1="700.8338" y1="281.17767" x2="720.84175" y2="258.42482" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="591.8338" y1="293.17767" x2="611.84175" y2="270.42482" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_145">
-        <line x1="778.0997" y1="280.9169" x2="758.321" y2="258.42482" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="669.0997" y1="292.9169" x2="649.32104" y2="270.42482" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_144">
-        <line x1="910.7371" y1="280.934" x2="928.3707" y2="258.87605" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="801.7371" y1="292.934" x2="819.3707" y2="270.87605" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_143">
-        <line x1="986.2189" y1="281.11523" x2="965.1837" y2="258.23422" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="881.8648" y1="284.23934" x2="861.567" y2="268.43" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_142">
-        <line x1="936.8085" y1="328.7114" x2="921.7458" y2="313.33016" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="830.7234" y1="358.49414" x2="808.2051" y2="326.7937" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_141">
-        <line x1="959.6484" y1="328.75464" x2="975.8582" y2="312.95436" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="850.2102" y1="358.7157" x2="858.1897" y2="350.60664" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_140">
-        <line x1="832.4587" y1="367.9655" x2="801.7658" y2="315.50157" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="724.0935" y1="388.94637" x2="691.6592" y2="327.78144" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_139">
-        <line x1="820.5191" y1="368.69392" x2="719.5267" y2="309.43356" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="713.0703" y1="389.5573" x2="608.94495" y2="322.14974" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_138">
-        <line x1="866.8157" y1="369.7258" x2="910.6209" y2="353.7502" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="762.8482" y1="391.5829" x2="797.5825" y2="381.793" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
-      <g id="Line_158">
-        <line x1="587.8054" y1="399.8393" x2="636.1964" y2="378.5035" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <g id="Line_160">
+        <line x1="563.9251" y1="428.28537" x2="676.03745" y2="409.7312" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
-      <g id="Line_159">
-        <line x1="648" y1="205.96173" x2="591.37335" y2="183.07133" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <g id="Line_161">
+        <line x1="698.0282" y1="195.611" x2="557.322" y2="171.32832" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_164">
+        <ellipse cx="873.9264" cy="334.6143" rx="17.0736706928594" ry="7.38572608736116" fill="#599a9e"/>
+        <ellipse cx="873.9264" cy="334.6143" rx="17.0736706928594" ry="7.38572608736116" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_165">
+        <ellipse cx="917.0736" cy="334.6143" rx="17.0736706928594" ry="7.38572608736116" fill="#599a9e"/>
+        <ellipse cx="917.0736" cy="334.6143" rx="17.0736706928594" ry="7.38572608736116" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_166">
+        <line x1="860.8542" y1="360.17896" x2="893.5628" y2="345.30537" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_167">
+        <line x1="878.0578" y1="327.44692" x2="883.1995" y2="318.52702" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_168">
+        <line x1="913.2648" y1="327.4137" x2="908.6936" y2="318.7719" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>

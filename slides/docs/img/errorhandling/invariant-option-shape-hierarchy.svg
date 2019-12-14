@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 739 82" width="739" height="82">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.11.4 
+    <dc:date>2019-12-14 09:35:14 +0000</dc:date>
+  </metadata>
+  <g id="invariant-option-hierarchy" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>invariant-option-shape-hierarchy</title>
+    <g id="invariant-option-hierarchy: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_99">
+        <ellipse cx="355.5" cy="45" rx="94.5001510017292" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="355.5" cy="45" rx="94.5001510017292" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(284.9 31.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x=".10099847" y="21">Option[Shape]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <ellipse cx="103.5" cy="45" rx="94.5001510017292" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="103.5" cy="45" rx="94.5001510017292" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(32.9 31.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.5769985" y="21">Option[Circle]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_119">
+        <ellipse cx="621" cy="45" rx="117.000186954522" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="621" cy="45" rx="117.000186954522" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(532.4 31.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x=".18199847" y="21">Option[Rectangle]</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

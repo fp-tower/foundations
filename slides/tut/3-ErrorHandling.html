@@ -409,6 +409,42 @@ trait Foo[ A] // Foo is invariant
 ```
 
 ---
+.h1[# Shape]
+
+<br>
+<br>
+<br>
+
+.medium-left[
+![Shape Hierarchy](img/errorhandling/shape-hierarchy.svg)
+]
+
+.large-right[
+```tut:silent
+sealed trait Shape
+
+case class Circle(radius: Int) extends Shape
+
+case class Rectangle(width: Int, height: Int) extends Shape
+```
+]
+
+---
+background-image: url(img/errorhandling/option-shape-hierarchy-1.svg)
+
+# What is the relationship for Option[Shape]?
+
+---
+background-image: url(img/errorhandling/option-shape-hierarchy-2.svg)
+
+# Option is covariant
+
+---
+background-image: url(img/errorhandling/invariant-option-shape-hierarchy.svg)
+
+# If Option were invariant
+
+---
 .h1[# Type hierarchy]
 
 .half-left[
@@ -419,13 +455,11 @@ trait Foo[ A] // Foo is invariant
 ```tut:silent
 val bool: Boolean = true
 val five: Int = 5
-
-case class Foo(i: Int, s: String)
 val hello: String = "Hello"
-val foo: Foo = Foo(0, "")
+val shape: Shape = Circle(5)
 
 val anyVals: List[AnyVal] = List(bool, five)
-val anyRefs: List[AnyRef] = List(hello, foo, null)
+val anyRefs: List[AnyRef] = List(hello, shape, null)
 
 val anys: List[Any] = anyVals ++ anyRefs
 ```

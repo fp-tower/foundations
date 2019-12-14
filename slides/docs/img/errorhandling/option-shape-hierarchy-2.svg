@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 577 217" width="577" height="217">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.11.4 
+    <dc:date>2019-12-14 09:35:14 +0000</dc:date>
+  </metadata>
+  <g id="option-shape-hierarchy-2" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>option-shape-hierarchy-2</title>
+    <g id="option-shape-hierarchy-2: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_99">
+        <ellipse cx="274.5" cy="45" rx="94.5001510017292" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="274.5" cy="45" rx="94.5001510017292" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(203.9 31.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x=".10099847" y="21">Option[Shape]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <ellipse cx="103.5" cy="180" rx="94.5001510017292" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="103.5" cy="180" rx="94.5001510017292" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(32.9 166.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.5769985" y="21">Option[Circle]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_119">
+        <ellipse cx="459" cy="180" rx="117.000186954522" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="459" cy="180" rx="117.000186954522" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(370.4 166.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x=".18199847" y="21">Option[Rectangle]</tspan>
+        </text>
+      </g>
+      <g id="Line_120">
+        <line x1="144.57986" y1="147.56853" x2="223.29515" y2="85.42488" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_121">
+        <line x1="413.63483" y1="146.80597" x2="328.5621" y2="84.55763" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>
