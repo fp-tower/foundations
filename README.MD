@@ -19,55 +19,52 @@ in Scala or attending a Scala [MOOC](https://www.coursera.org/learn/progfun1)
 
 ## Course content
 
-### Part 1: Essential of functional programming
-
-In this section, we look at what is functional programming, what are the benefits and restrictions of 
-using this paradigm in Scala. 
-
 ### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)
 
-Scala is a language with first-class functions, this simple fact has a tremendous impact on how we can program.
-In this module, we analyse the various syntax and concepts around functions in Scala. We also go through the 
-definition of a functional programming subset and what benefits do we get from using it.
+Scala is a language with first-class functions. This simple fact has a tremendous impact on how we program. 
+In this module, we analyse the various syntax and concepts around functions in Scala. 
+We also look at what is the functional programming subset of Scala and what are the benefits and 
+restrictions of using it.
 
-Goals:
+**Objectives**:
 * Getting familiar with the various function encodings in Scala (val/def, curried/uncurried, lazy/strict parameters).
 * Understand rules of type inference.
 * Learn to detect if a function satisfies the functional programming subset.
 
 ### Module 2: [Side Effect](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
 
-We tackle the workarounds functional programmers found to interact with the outside world while respecting
-the limitation of pure functions. In this module, we examine Thunk, IO and restricted algebra. 
-We also have some initiation to concurrency in Scala and how it can be incorporated into IO.
+Functional programming is considerably restrictive. For example, we cannot do any actions like sending 
+an email to our users or update a record in the database. Yet, that's something we need to do in our daily
+job. In this section, we will discuss the workarounds functional programmers found to interact with the
+outside world while respecting the limitation of functional programming. In particular, we examine Thunk,
+IO, restricted algebra and some initiation to concurrency.
 
-Goals:
+**Objectives**:
 * Being able to write an entire program following functional programming principles.
 * Learn how to test IO and laziness.
-* Getting experience working with an API using type parameters.
-
-### Part 2: Errors
+* Getting familiar with abstract API based on type parameters.
 
 ### Module 3: [Error Handling](https://fp-tower.github.io/foundation/3-ErrorHandling.html#1)
 
-They are many ways to deal with runtime errors. The easiest and most common method consists of throwing
-exceptions. Unfortunately, it is not compatible with the functional programming paradigm.
-In this module, we look at the problems caused by exceptions and the various ways we can safely encode
-errors in Scala.
+They are many ways to deal with runtime errors. The easiest and most common method consists of throwing 
+exceptions. Unfortunately, it is not compatible with the functional programming paradigm. In this module,
+we look at the problems caused by exceptions and the various ways we can safely encode errors in Scala.
 
-Goals:
+**Objectives**:
 * Learn when to use Option, Try and Either.
-* Getting comfortable with error encoding using ADT and its various trade-offs.
+* Learn how to encode errors with Algebraic Data Type (ADT) and the various trade-offs.
+* Practice how to accumulate errors or fail early.
 
 ### Module 4: [Type](https://fp-tower.github.io/foundation/4-Type.html#1)
 
 We all have tendencies to use types that are too large for our purpose. This leads to either runtime 
-exceptions or a lot of error handling logic. In this module, we look at using Algebraic Data Types (ADT) and
-type parameters to constraint our programs.
+exceptions or a lot of error handling logic. In this module, we look at using Algebraic Data Types (ADT)
+and type parameters to constraint our programs. We will also discuss various testing strategies and the
+best way to use types and tests together.
 
-Goals:
-* Learn how to encode business requirements in types.
-* Start to get familiar with Scala type hierarchy and type parameters.
+**Objectives**:
+* Learn how to encode precisely business requirements with types.
+* Getting more familiar with Scala type hierarchy and type parameters.
 
 
 ## FAQ
