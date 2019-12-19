@@ -3,6 +3,9 @@
 [![Join the chat at https://gitter.im/fp-tower/foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)][gitter]
 <span class="badge-patreon"><a href="https://www.patreon.com/bePatron?u=10482033" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
 
+### ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Public training ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
+* **Saturday 18th January 2020** [Error Handling in London](https://www.eventbrite.co.uk/e/foundation-of-functional-programming-error-handling-registration-84888599085)
+
 ## Target audience
 
 1. New Scala developers 
