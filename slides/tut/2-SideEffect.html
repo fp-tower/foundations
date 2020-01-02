@@ -223,7 +223,7 @@ unsafeRun(google).take(1).toList
 ```tut:silent
 trait IO[A] {
 
-  def unsafeRun(): A // single abstract method
+  def unsafeRun(): A // unique abstract method
 
   def map[B](f: A => B): IO[B] = ???
   def flatMap[B](f: A => IO[B]): IO[B] = ???
@@ -247,26 +247,9 @@ helloWorld.unsafeRun()
 ```
 
 ---
-.h1[# Plan]
-
-<br>
-
-.large[
-* Implement our own IO
-
-* Use IO to encode and test side effecting programs
-
-* Discuss how to add asynchronicity
-
-* Brief introduction to Free structures
-]
-
----
 class: center, middle
 
-# IO Exercises
-
-`exercises.sideeffect.IOExercises.scala`
+# Implement our own IO
 
 ---
 # Smart constructors
@@ -286,6 +269,13 @@ trait IO[A] {
   def unsafeRun(): A
 }
 ```
+
+---
+class: center, middle
+
+# IO Exercises
+
+`exercises.sideeffect.IOExercises.scala`
 
 ---
 .h1[# IO Summary]
@@ -483,11 +473,11 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 .large-left[
 
 ```tut:silent
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
 
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parExec(deleteOrder(orderId1), deleteOrder(orderId2))
+  concurrentExec(deleteOrder(orderId1), deleteOrder(orderId2))
 ```
 ]
 
@@ -496,23 +486,23 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 ---
-# parExec is loosely defined
+# concurrentExec is loosely defined
 
 
 ```tut:silent
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   io1
 
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   io2
 
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   for {
     _ <- io1
     _ <- io2
   } yield ()
 
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   IO.succeed(())
 ```
 
@@ -522,21 +512,21 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
 .large-left[
 
 ```tut:invisible
-def parMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
+def concurrentMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parMap2(
+  concurrentMap2(
     deleteOrder(orderId1),
     deleteOrder(orderId2)
   )((_,_) => ())
 ```
 
 ```scala
-def parMap2[A, B, C](fa: IO[`A`], fb: IO[`B`])
-                    (f: (`A`, `B`) => `C`): IO[`C`] = ???
+def concurrentMap2[A, B, C](fa: IO[`A`], fb: IO[`B`])
+                           (f: (`A`, `B`) => `C`): IO[`C`] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parMap2(
+  concurrentMap2(
     deleteOrder(orderId1),
     deleteOrder(orderId2)
   )((_,_) => ())
@@ -585,7 +575,7 @@ def delete2Orders(
 
 ---
 .large-left[
-.h1[# Creating a Future is not Pure]
+.h1[# Creating a Future is a side effect]
 
 ```tut:invisible
 def deleteOrder(orderId: OrderId)(implicit ec: ExecutionContext): Future[Unit] =
@@ -854,7 +844,7 @@ def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
 ---
-.h1[# Concurrent IO: parMap2]
+.h1[# Concurrent IO: concurrentMap2]
 
 .large-left[
 ```scala
@@ -864,7 +854,7 @@ trait IO[+A] {
 ```
 
 ```tut:silent
-def parMap2[A, B, C](
+def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] = ???
@@ -877,7 +867,7 @@ def parMap2[A, B, C](
 
 
 ---
-.h1[# Concurrent IO: parMap2]
+.h1[# Concurrent IO: concurrentMap2]
 
 .large-left[
 ```scala
@@ -887,7 +877,7 @@ trait IO[+A] {
 ```
 
 ```tut:silent
-def parMap2[A, B, C](
+def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
@@ -915,7 +905,7 @@ trait IO[+A] {
 ```
 
 ```tut:silent
-def parMap2[A, B, C](
+def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] = {

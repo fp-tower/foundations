@@ -15,7 +15,7 @@ object IOAsyncExercisesApp extends App {
   val es: ExecutorService  = ThreadPoolUtil.fixedSize(2, "IOAsyncExercises")
   val ec: ExecutionContext = ExecutionContext.fromExecutorService(es)
 
-  printThreadName.parTuple2(printThreadName)(ec).unsafeRun()
+  printThreadName.concurrentTuple(printThreadName)(ec).unsafeRun()
 }
 
 object IOAsyncExercises {
@@ -47,9 +47,9 @@ object IOAsyncExercises {
   // 2. Advanced API
   ////////////////////////
 
-  // 2a. Implement `parSequence` which behaves like `sequence` except that all the IO are executed concurrently.
+  // 2a. Implement `concurrentSequence` which behaves like `sequence` except that all the IO are executed concurrently.
   // Could this create a problem?
-  def parSequence[A](xs: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+  def concurrentSequence[A](xs: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
     IO.notImplemented
 
   def sequence[A](xs: List[IO[A]]): IO[List[A]] =
@@ -100,7 +100,7 @@ object IOAsyncExercises {
         b <- other
       } yield f(a, b)
 
-    def parMap2[B, C](other: IO[B])(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
+    def concurrentMap2[B, C](other: IO[B])(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
       for {
         awaitForA <- this.start(ec)
         awaitForB <- other.start(ec)
@@ -108,8 +108,8 @@ object IOAsyncExercises {
         b         <- awaitForB
       } yield f(a, b)
 
-    def parTuple2[B](other: IO[B])(ec: ExecutionContext): IO[(A, B)] =
-      parMap2(other)((_, _))(ec)
+    def concurrentTuple[B](other: IO[B])(ec: ExecutionContext): IO[(A, B)] =
+      concurrentMap2(other)((_, _))(ec)
 
     def *>[B](other: IO[B]): IO[B] =
       flatMap(_ => other)

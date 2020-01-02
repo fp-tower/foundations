@@ -43,10 +43,10 @@ sealed trait IOAsync[+A] { self =>
   // common alias for productR
   def *>[B](fb: IOAsync[B]): IOAsync[B] = productR(fb)
 
-  def parTuple[B](other: IOAsync[B])(ec: ExecutionContext): IOAsync[(A, B)] =
-    parMap2(other)((_, _))(ec)
+  def concurrentTuple[B](other: IOAsync[B])(ec: ExecutionContext): IOAsync[(A, B)] =
+    concurrentMap2(other)((_, _))(ec)
 
-  def parMap2[B, C](other: IOAsync[B])(f: (A, B) => C)(ec: ExecutionContext): IOAsync[C] =
+  def concurrentMap2[B, C](other: IOAsync[B])(f: (A, B) => C)(ec: ExecutionContext): IOAsync[C] =
     for {
       fa <- this.start(ec)
       fb <- other.start(ec)
@@ -194,7 +194,7 @@ object IOAsync {
       )
       .map(_.reverse)
 
-  def parTraverse[A, B](xs: List[A])(f: A => IOAsync[B])(ec: ExecutionContext): IOAsync[List[B]] =
+  def concurrentTraverse[A, B](xs: List[A])(f: A => IOAsync[B])(ec: ExecutionContext): IOAsync[List[B]] =
     traverse(xs)(f(_).start(ec)).flatMap(sequence)
 
 }

@@ -67,6 +67,6 @@ class EitherExercisesTest extends AnyFunSuite with Matchers {
 
   test("validateUserPar") {}
 
-  test("parSequence") {}
+  test("concurrentSequence") {}
 
 }
