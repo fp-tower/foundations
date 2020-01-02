@@ -40,7 +40,7 @@ Functional programming is considerably restrictive. For example, we cannot do an
 an email to our users or update a record in the database. Yet, that's something we need to do in our daily
 job. In this section, we will discuss the workarounds functional programmers found to interact with the
 outside world while respecting the limitation of functional programming. In particular, we examine Thunk,
-IO, restricted algebra and some initiation to concurrency.
+IO and some initiation to concurrency.
 
 **Objectives**:
 * Being able to write an entire program following functional programming principles.
