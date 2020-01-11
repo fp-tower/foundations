@@ -10,11 +10,9 @@ import eu.timepit.refined.numeric._
 import eu.timepit.refined.types.numeric.PosInt
 import exercises.sideeffect.IOExercises.IO
 import exercises.types.Card._
-import exercises.types.TypeExercises.{Branch, Func, One, Pair}
-import exercises.types._
-import toimpl.types.TypeToImpl
+import exercises.types.{Card, Cardinality, Iso}
 
-object TypeAnswers extends TypeToImpl {
+object TypeAnswers {
 
   ////////////////////////
   // 1. Misused types
@@ -150,11 +148,11 @@ object TypeAnswers extends TypeToImpl {
   ////////////////////////
 
   val boolean: Cardinality[Boolean] = new Cardinality[Boolean] {
-    def cardinality: Card = Lit(2)
+    def cardinality: Card = Constant(2)
   }
 
   val int: Cardinality[Int] = new Cardinality[Int] {
-    def cardinality: Card = Lit(2) ^ Lit(32)
+    def cardinality: Card = Constant(2) ^ Constant(32)
   }
 
   val any: Cardinality[Any] = new Cardinality[Any] {
@@ -162,11 +160,11 @@ object TypeAnswers extends TypeToImpl {
   }
 
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
-    def cardinality: Card = Lit(0)
+    def cardinality: Card = Constant(0)
   }
 
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
-    def cardinality: Card = Lit(1)
+    def cardinality: Card = Constant(1)
   }
 
   val ioUnit: Cardinality[IO[Unit]] = new Cardinality[IO[Unit]] {
@@ -174,23 +172,29 @@ object TypeAnswers extends TypeToImpl {
   }
 
   val byte: Cardinality[Byte] = new Cardinality[Byte] {
-    def cardinality: Card = Lit(2) ^ Lit(8)
+    def cardinality: Card = Constant(2) ^ Constant(8)
   }
 
   val char: Cardinality[Char] = new Cardinality[Char] {
-    def cardinality: Card = Lit(2) ^ Lit(16)
+    def cardinality: Card = Constant(2) ^ Constant(16)
   }
 
   val optUnit: Cardinality[Option[Unit]] = new Cardinality[Option[Unit]] {
-    def cardinality: Card = unit.cardinality + Lit(1)
+    def cardinality: Card = unit.cardinality + Constant(1)
   }
 
   val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
-    def cardinality: Card = boolean.cardinality + Lit(1)
+    def cardinality: Card = boolean.cardinality + Constant(1)
   }
 
   val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
     def cardinality: Card = int.cardinality + boolean.cardinality
+  }
+
+  sealed trait IntOrBoolean
+  object IntOrBoolean {
+    case class AnInt(value: Int)        extends IntOrBoolean
+    case class ABoolean(value: Boolean) extends IntOrBoolean
   }
 
   val boolUnit: Cardinality[(Boolean, Unit)] = new Cardinality[(Boolean, Unit)] {
@@ -205,12 +209,14 @@ object TypeAnswers extends TypeToImpl {
     def cardinality: Card = int.cardinality * boolean.cardinality
   }
 
+  case class IntAndBoolean(i: Int, b: Boolean)
+
   val listUnit: Cardinality[List[Unit]] = new Cardinality[List[Unit]] {
     def cardinality: Card = Inf
   }
 
   val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
-    def cardinality: Card = nothing.cardinality + Lit(1)
+    def cardinality: Card = nothing.cardinality + Constant(1)
   }
 
   val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
@@ -219,13 +225,13 @@ object TypeAnswers extends TypeToImpl {
 
   def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
     new Cardinality[Option[A]] {
-      def cardinality: Card = a.cardinality + Lit(1)
+      def cardinality: Card = a.cardinality + Constant(1)
     }
 
   def list[A](a: Cardinality[A]): Cardinality[List[A]] =
     new Cardinality[List[A]] {
       def cardinality: Card =
-        if (a.cardinality == Lit(0)) Lit(1)
+        if (a.cardinality == Constant(0)) Constant(1)
         else Inf
     }
 
@@ -241,7 +247,7 @@ object TypeAnswers extends TypeToImpl {
 
   val string: Cardinality[String] = new Cardinality[String] {
     def cardinality: Card =
-      0.to(Int.MaxValue).foldLeft(Lit(BigInt(0)): Card)((acc, i) => acc + (char.cardinality ^ Lit(i)))
+      0.to(Int.MaxValue).foldLeft(Constant(BigInt(0)): Card)((acc, i) => acc + (char.cardinality ^ Constant(i)))
   }
 
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
@@ -290,13 +296,5 @@ object TypeAnswers extends TypeToImpl {
     if (x < y) LessThan
     else if (x > y) GreaterThan
     else EqualTo
-
-  type Two    = Branch[One, One]
-  type Three  = Branch[One, Two]
-  type Four_1 = Pair[Two, Two]
-  type Four_2 = Branch[Two, Two]
-  type Five_1 = Branch[Four_1, One]
-  type Five_2 = Branch[Three, Two]
-  type Eight  = Func[Three, Two]
 
 }

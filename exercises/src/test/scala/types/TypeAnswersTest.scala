@@ -5,19 +5,16 @@ import java.util.UUID
 
 import answers.types.TypeAnswers
 import answers.types.TypeAnswers.OrderStatus._
+import answers.types.TypeAnswers._
 import cats.Eq
 import cats.data.NonEmptyList
 import cats.implicits._
-import exercises.types.{Cardinality, TypeExercises}
 import org.scalacheck.Arbitrary
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.typelevel.discipline.scalatest.Discipline
-import toimpl.types.TypeToImpl
 
-class TypeToImplTest(impl: TypeToImpl) extends AnyFunSuite with Discipline with Matchers {
-  import impl._
-
+class TypeAnswersTest extends AnyFunSuite with Discipline with Matchers {
   test("boolean - optUnit") {
     boolean.cardinality.eval shouldEqual optUnit.cardinality.eval
   }
@@ -77,35 +74,6 @@ class TypeToImplTest(impl: TypeToImpl) extends AnyFunSuite with Discipline with 
 
   implicit def eqUnitToA[A: Eq]: Eq[Unit => A] =
     Eq.by(_.apply(()))
-}
-
-class TypeExercisesTest extends TypeToImplTest(TypeExercises) {
-  import TypeExercises._
-
-  test("Two") {
-    Cardinality.of[Two].eval shouldEqual Some(BigInt(2))
-  }
-
-  test("Three") {
-    Cardinality.of[Three].eval shouldEqual Some(BigInt(3))
-  }
-
-  test("Four") {
-    Cardinality.of[Four].eval shouldEqual Some(BigInt(4))
-  }
-
-  test("Five") {
-    Cardinality.of[Five].eval shouldEqual Some(BigInt(5))
-  }
-
-  test("Eight") {
-    Cardinality.of[Eight].eval shouldEqual Some(BigInt(8))
-  }
-
-}
-
-class TypeAnswersTest extends TypeToImplTest(TypeAnswers) {
-  import TypeAnswers._
 
   def days(x: Int): Duration = Duration.ofDays(x)
 
@@ -177,28 +145,6 @@ class TypeAnswersTest extends TypeToImplTest(TypeAnswers) {
 
     val draftOrder = order.copy(status = Draft(Nil))
     TypeAnswers.cancel(draftOrder, now.plus(days(4))) shouldEqual Left(OrderError.InvalidStatus(draftOrder.status))
-  }
-
-  test("Two") {
-    Cardinality.of[Two].eval shouldEqual Some(BigInt(2))
-  }
-
-  test("Three") {
-    Cardinality.of[Three].eval shouldEqual Some(BigInt(3))
-  }
-
-  test("Four") {
-    Cardinality.of[Four_1].eval shouldEqual Some(BigInt(4))
-    Cardinality.of[Four_2].eval shouldEqual Some(BigInt(4))
-  }
-
-  test("Five") {
-    Cardinality.of[Five_1].eval shouldEqual Some(BigInt(5))
-    Cardinality.of[Five_2].eval shouldEqual Some(BigInt(5))
-  }
-
-  test("Eight") {
-    Cardinality.of[Eight].eval shouldEqual Some(BigInt(8))
   }
 
 }
