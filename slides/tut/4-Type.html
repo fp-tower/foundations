@@ -226,12 +226,13 @@ class: center, middle
 ---
 .h1[# OR]
 
+<br>
+
 .large[
 * a `Boolean` is `true` .hl[OR] `false`
 * an Int is a `-10` .hl[OR] `0` .hl[OR] `1` .hl[OR] ...
 * a `DayOfTheWeek` is `Monday` .hl[OR] `Tuesday` .hl[OR] `Wednesday` .hl[OR] ...
 * an `Option` is a `Some` .hl[OR] a `None`
-* a `List` is a `Nil` .hl[OR] a `Cons`
 * a `Json` is a `JsonNumber` .hl[OR] a `JsonString` .hl[OR] a `JsonArray` .hl[OR] a `JsonObject` .hl[OR] ...
 ]
 
@@ -269,10 +270,12 @@ enum ConfigValue {
 ---
 .h1[# AND]
 
+<br>
+
 .large[
 * a `User` is a `userId` .hl[AND] a `name` .hl[AND] an `address`
 * a `ZonedDateTime` is a `dateTime` .hl[AND] a `timeZone`
-* a `Cons` is a `head` .hl[AND] a `tail`
+* a `NonEmptyList` is a `head` .hl[AND] a `tail`
 * a `Tuple2` is a `_1` .hl[AND] a `_2`
 ]
 
@@ -306,6 +309,21 @@ User(UUID.randomUUID(), "John Doe", Address(108, "Cannon Street", "EC4N 6EU"))
 ```
 
 ---
+.h1[# Algebraic data types mix AND and OR]
+
+```tut:silent
+sealed trait Role
+
+object Role {
+  case class Reader(accountId: Long, premiumUser: Boolean) extends Role
+  case class Editor(accountId: Long, favoriteFont: Option[String]) extends Role
+  case object Admin extends Role
+}
+
+case class User(userId: Long, role: Role, address: Option[Address])
+```
+
+---
 class: center, middle
 
 # Exercise 2: Data Encoding
@@ -317,14 +335,12 @@ class: center, middle
 
 # Case class and sealed trait map exactly to business language AND and OR
 
-### Together, they form what is called Algebraic Data Types (ADTs)
+### Nested AND and OR form what is called Algebraic Data Types (ADTs)
 
 ---
 class: center, middle
 
-# Nested AND and OR can be used to encode data precisely
-
-### OR is generally underused
+# ADT allow to encode data precisely
 
 ---
 # How can we compare two encodings?
@@ -914,8 +930,7 @@ class: center, middle
 # [Module 6: Typeclass](6-Typeclass.html#1)
 
 </textarea>
-<script src="https://remarkjs.com/downloads/remark-latest.min.js">
-</script>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>
     var slideshow = remark.create({
         ratio: "16:9",
