@@ -73,8 +73,8 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     }
   }
 
-  test("parTraverse") {
-    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parTraverse-evalOn")) { ec =>
+  test("concurrentTraverse") {
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "concurrentTraverse-evalOn")) { ec =>
       val counterEC = new CounterExecutionContext(ec)
 
       def bump(ref: IOAsyncRef[Int]): IOAsync[Unit] =
@@ -83,7 +83,7 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
       val io = for {
         ref <- IOAsyncRef(0)
         _   <- IOAsync.printThreadName
-        _   <- IOAsync.parTraverse(List.fill(10)(0))(_ => bump(ref))(counterEC)
+        _   <- IOAsync.concurrentTraverse(List.fill(10)(0))(_ => bump(ref))(counterEC)
         _   <- IOAsync.printThreadName
         res <- ref.get
       } yield res
@@ -93,8 +93,8 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
     }
   }
 
-  test("parMap2") {
-    withExecutionContext(ThreadPoolUtil.fixedSize(4, "parMap2")) { ec =>
+  test("concurrentMap2") {
+    withExecutionContext(ThreadPoolUtil.fixedSize(4, "concurrentMap2")) { ec =>
       val counterEC = new CounterExecutionContext(ec)
 
       def bump(ref: IOAsyncRef[Int]): IOAsync[Unit] =
@@ -102,7 +102,7 @@ class IOAsyncAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriven
 
       val io = for {
         ref <- IOAsyncRef(0)
-        _   <- bump(ref).parTuple(bump(ref))(counterEC)
+        _   <- bump(ref).concurrentTuple(bump(ref))(counterEC)
         res <- ref.get
       } yield res
 

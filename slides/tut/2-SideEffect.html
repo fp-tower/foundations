@@ -223,7 +223,7 @@ unsafeRun(google).take(1).toList
 ```tut:silent
 trait IO[A] {
 
-  def unsafeRun(): A // single abstract method
+  def unsafeRun(): A // unique abstract method
 
   def map[B](f: A => B): IO[B] = ???
   def flatMap[B](f: A => IO[B]): IO[B] = ???
@@ -247,26 +247,9 @@ helloWorld.unsafeRun()
 ```
 
 ---
-.h1[# Plan]
-
-<br>
-
-.large[
-* Implement our own IO
-
-* Use IO to encode and test side effecting programs
-
-* Discuss how to add asynchronicity
-
-* Brief introduction to Free structures
-]
-
----
 class: center, middle
 
-# IO Exercises
-
-`exercises.sideeffect.IOExercises.scala`
+# Implement our own IO
 
 ---
 # Smart constructors
@@ -286,6 +269,13 @@ trait IO[A] {
   def unsafeRun(): A
 }
 ```
+
+---
+class: center, middle
+
+# IO Exercises
+
+`exercises.sideeffect.IOExercises.scala`
 
 ---
 .h1[# IO Summary]
@@ -483,11 +473,11 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 .large-left[
 
 ```tut:silent
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
 
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parExec(deleteOrder(orderId1), deleteOrder(orderId2))
+  concurrentExec(deleteOrder(orderId1), deleteOrder(orderId2))
 ```
 ]
 
@@ -496,23 +486,23 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 ---
-# parExec is loosely defined
+# concurrentExec is loosely defined
 
 
 ```tut:silent
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   io1
 
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   io2
 
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   for {
     _ <- io1
     _ <- io2
   } yield ()
 
-def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
+def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   IO.succeed(())
 ```
 
@@ -522,21 +512,21 @@ def parExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
 .large-left[
 
 ```tut:invisible
-def parMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
+def concurrentMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parMap2(
+  concurrentMap2(
     deleteOrder(orderId1),
     deleteOrder(orderId2)
   )((_,_) => ())
 ```
 
 ```scala
-def parMap2[A, B, C](fa: IO[`A`], fb: IO[`B`])
-                    (f: (`A`, `B`) => `C`): IO[`C`] = ???
+def concurrentMap2[A, B, C](fa: IO[`A`], fb: IO[`B`])
+                           (f: (`A`, `B`) => `C`): IO[`C`] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
-  parMap2(
+  concurrentMap2(
     deleteOrder(orderId1),
     deleteOrder(orderId2)
   )((_,_) => ())
@@ -585,7 +575,7 @@ def delete2Orders(
 
 ---
 .large-left[
-.h1[# Creating a Future is not Pure]
+.h1[# Creating a Future is a side effect]
 
 ```tut:invisible
 def deleteOrder(orderId: OrderId)(implicit ec: ExecutionContext): Future[Unit] =
@@ -854,7 +844,7 @@ def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
 ---
-.h1[# Concurrent IO: parMap2]
+.h1[# Concurrent IO: concurrentMap2]
 
 .large-left[
 ```scala
@@ -864,7 +854,7 @@ trait IO[+A] {
 ```
 
 ```tut:silent
-def parMap2[A, B, C](
+def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] = ???
@@ -877,7 +867,7 @@ def parMap2[A, B, C](
 
 
 ---
-.h1[# Concurrent IO: parMap2]
+.h1[# Concurrent IO: concurrentMap2]
 
 .large-left[
 ```scala
@@ -887,7 +877,7 @@ trait IO[+A] {
 ```
 
 ```tut:silent
-def parMap2[A, B, C](
+def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] =
@@ -915,7 +905,7 @@ trait IO[+A] {
 ```
 
 ```tut:silent
-def parMap2[A, B, C](
+def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
 )(f: (A, B) => C)(ec: ExecutionContext): IO[C] = {
@@ -981,381 +971,6 @@ class: center, middle
 
 * Help to chose right thread pool for different type of work: blocking, compute, dispatcher
 ]
-
----
-class: center, middle
-
-# What are the limitations of IO?
-
----
-background-image: url(img/sideeffect/IO-introspection.svg)
-
-# IO cannot be introspected
-
----
-background-image: url(img/sideeffect/IO-composition-1.svg)
-
-# IO cannot be introspected
-
----
-class: center, middle
-
-# How can we encode side effects more precisely?
-
----
-class: center, middle
-
-# Warning: this is an advanced technique
-
----
-# Effect Algebra
-
-```tut:silent
-sealed trait Description[A]
-
-object Description {
-  case object Today                      extends Description[LocalDate]
-  case class  FetchString(url: String)   extends Description[String]
-  case class  WriteLine(message: String) extends Description[Unit]
-}
-```
-
---
-
-```tut:invisible
-import scala.io.Source
-```
-
-```tut:silent
-import Description._
-
-def unsafeRun[A](fa: Description[A]): A =
-  fa match {
-    case Today            => LocalDate.now()
-    case FetchString(url) => Source.fromURL(url).mkString("")
-    case WriteLine(msg)   => println(msg)
-  }
-```
-
----
-# Effect Algebra
-
-```tut:silent
-object Main extends App {
-
-  val description: Description[Unit] = WriteLine("Hello World")
-
-  unsafeRun(description)
-
-}
-```
-
-```tut
-Main.main(Array.empty)
-```
-
----
-# Interpret algebra in different ways
-
-```tut:silent
-def testInterpreter[A](fa: Description[A]): A =
-  fa match {
-    case Today            => LocalDate.of(2019, 8, 17)
-    case FetchString(url) => "Hello World"
-    case WriteLine(msg)   => ()
-  }
-```
-
-```tut:silent
-def loggerInterpreter[A](fa: Description[A]): String =
-  fa match {
-    case Today            =>  "call Today"
-    case FetchString(url) => s"call FetchString for $url"
-    case WriteLine(msg)   => s"call WriteLine with $msg"
-  }
-```
-
----
-class: center, middle
-
-# How to add new descriptions?
-
-# How to combine description together?
-
----
-# How to add new descriptions?
-
-```tut:silent
-sealed trait Description[A]
-object Description {
-  case object Today                      extends Description[LocalDate]
-  case class  FetchString(url: String)   extends Description[String]
-  case class  WriteLine(message: String) extends Description[Unit]
-}
-```
-
---
-
-### 1. Add primitive (👎 not really scalable)
-
-```scala
-case object FetchJson extends Description[Json]
-```
-
---
-
-### 2. Transform existing actions (👍 composable)
-
-```scala
-FetchString.map(parseJson)
-```
-
----
-# Problem
-
-```tut:silent
-sealed trait Description[A]
-
-object Description {
-  case object Today                      extends Description[LocalDate]
-  case class  FetchString(url: String)   extends Description[String]
-  case class  WriteLine(message: String) extends Description[Unit]
-}
-```
-
-```tut:silent
-import Description._
-
-def map[A, B](fa: Description[A])(f: A => B): Description[B] =
-  fa match {
-    case Today            => ???
-    case FetchString(url) => ???
-    case WriteLine(msg)   => ???
-  }
-```
-
----
-# Free structures (brief introduction)
-
-```tut:invisible:silent
-sealed trait FreeMap[A]
-
-object FreeMap {
-  case class Map[X, A](description: Description[X], update: X => A) extends FreeMap[A]
-}
-```
-
-```scala
-sealed trait FreeMap[A]
-
-object FreeMap {
-  case class Map[`X`, A](description: Description[`X`], update: `X` => A) extends FreeMap[A]
-}
-```
-
---
-
-```tut:invisible
-import Description._
-import FreeMap.Map
-```
-
-```tut:silent
-import io.circe.Json
-
-def parseJson(x: String): Json =
-  io.circe.parser.parse(x).getOrElse(Json.obj())
-
-def fetchJson(url: String): FreeMap[Json] =
-  Map(FetchString(url), parseJson)
-```
-
----
-# Free structures
-
-```tut:silent
-sealed trait FreeMap[A] {
-  def map[C](f: A => C): FreeMap[C]
-}
-
-object FreeMap {
-  def lift[A](description: Description[A]): FreeMap[A] =
-    Map(description, identity[A])
-
-  case class Map[X, A](description: Description[X], update: X => A) extends FreeMap[A] {
-    def map[C](f: A => C): FreeMap[C] = Map(description, update andThen f)
-  }
-}
-```
-
-```tut:invisible
-import Description._
-import FreeMap.Map
-```
-
-```tut:silent
-def fetchString(url: String): FreeMap[String] = FreeMap.lift(FetchString(url))
-
-def fetchJson(url: String)   : FreeMap[Json]  = fetchString(url).map(parseJson)
-```
-
----
-# Free structures
-
-### 1. Primitives
-
-```tut:silent
-val today                   : FreeMap[LocalDate] = FreeMap.lift(Today)
-def fetchString(url: String): FreeMap[String]    = FreeMap.lift(FetchString(url))
-def writeLine(msg: String)  : FreeMap[Unit]      = FreeMap.lift(WriteLine(msg))
-```
-
-### 2. Derived description
-
-```tut:silent
-def fetchJson(url: String): FreeMap[Json] = fetchString(url).map(parseJson)
-```
-
----
-# Free structures
-
-### 3. Interpreters
-
-```tut:silent
-def unsafeRun[A](fa: Description[A]): A =
-  fa match {
-    case Today            => LocalDate.now()
-    case FetchString(url) => Source.fromURL(url).mkString("")
-    case WriteLine(msg)   => println(msg)
-  }
-
-def unsafeRunFree[A](fa: FreeMap[A]): A =
-  fa match {
-    case Map(fa, f) => f(unsafeRun(fa))
-  }
-```
-
----
-# Tadam!
-
-```tut:silent
-object Main extends App {
-
-  val description: FreeMap[Json] = fetchJson("https://api.github.com/users/julien-truffaut/orgs")
-
-  println(unsafeRunFree(description))
-
-}
-```
-
-```scala
-scala> Main.main(Array.empty)
-[
-  {
-    "login" : "fp-tower",
-    "id" : 50878186,
-    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjUwODc4MTg2",
-    "url" : "https://api.github.com/orgs/fp-tower",
-    "repos_url" : "https://api.github.com/orgs/fp-tower/repos",
-    "events_url" : "https://api.github.com/orgs/fp-tower/events",
-    "hooks_url" : "https://api.github.com/orgs/fp-tower/hooks",
-    "issues_url" : "https://api.github.com/orgs/fp-tower/issues",
-    "members_url" : "https://api.github.com/orgs/fp-tower/members{/member}",
-    "public_members_url" : "https://api.github.com/orgs/fp-tower/public_members{/member}",
-    "avatar_url" : "https://avatars1.githubusercontent.com/u/50878186?v=4",
-    "description" : ""
-  },
-  {
-    "login" : "typelevel",
-    "id" : 3731824,
-    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjM3MzE4MjQ=",
-    "url" : "https://api.github.com/orgs/typelevel",
-    "repos_url" : "https://api.github.com/orgs/typelevel/repos",
-    "events_url" : "https://api.github.com/orgs/typelevel/events",
-    "hooks_url" : "https://api.github.com/orgs/typelevel/hooks",
-    "issues_url" : "https://api.github.com/orgs/typelevel/issues",
-    "members_url" : "https://api.github.com/orgs/typelevel/members{/member}",
-    "public_members_url" : "https://api.github.com/orgs/typelevel/public_members{/member}",
-    "avatar_url" : "https://avatars0.githubusercontent.com/u/3731824?v=4",
-    "description" : "Let the Scala compiler work for you."
-  },
-  {
-    "login" : "http4s",
-    "id" : 1527492,
-    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjE1Mjc0OTI=",
-    "url" : "https://api.github.com/orgs/http4s",
-    "repos_url" : "https://api.github.com/orgs/http4s/repos",
-    "events_url" : "https://api.github.com/orgs/http4s/events",
-    "hooks_url" : "https://api.github.com/orgs/http4s/hooks",
-    "issues_url" : "https://api.github.com/orgs/http4s/issues",
-    "members_url" : "https://api.github.com/orgs/http4s/members{/member}",
-    "public_members_url" : "https://api.github.com/orgs/http4s/public_members{/member}",
-    "avatar_url" : "https://avatars3.githubusercontent.com/u/1527492?v=4",
-    "description" : ""
-  },
-  {
-    "login" : "argonaut-io",
-    "id" : 5205720,
-    "node_id" : "MDEyOk9yZ2FuaXphdGlvbjUyMDU3MjA=",
-    "url" : "https://api.github.com/orgs/argonaut-io",
-    "repos_url" : "https://api.github.com/orgs/argonaut-io/repos",
-    "events_url" : "https://api.github.com/orgs/argonaut-io/events",
-    "hooks_url" : "https://api.github.com/orgs/argonaut-io/hooks",
-    "issues_url" : "https://api.github.com/orgs/argonaut-io/issues",
-    "members_url" : "https://api.github.com/orgs/argonaut-io/members{/member}",
-    "public_members_url" : "https://api.github.com/orgs/argonaut-io/public_members{/member}",
-    "avatar_url" : "https://avatars1.githubusercontent.com/u/5205720?v=4",
-    "description" : null
-  }
-]
-```
-
----
-# Free translates functions to data structures (GADT)
-
-
-```scala
-def         readLine :                   String
-case object ReadLine extends Description[String]
-
-def         writeLine(message: String) :                   Unit
-case object WriteLine(message: String) extends Description[Unit]
-
-def        map[X, A](action: Description[X], update: X => A) :       Description[A]
-case class Map[X, A](action: Description[X], update: X => A) extends     FreeMap[A]
-```
-
----
-class: center, middle
-
-# Algebra Exercises
-
-`exercises.sideeffect.AlgebraExercises.scala`
-
----
-.h1[# Free Summary]
-
-.large[
-* Free translates code into data
-
-* Easy to interpret an algebra in many ways (log, test, real, metrics)
-
-* Complex (GADT, natural transformation, Coproduct, ...)
-
-* Can miss some features from target effect like parallel execution, resource handling
-]
-
----
-class: center, middle
-
-# All problems in computer science can be solved by another level of indirection
-
-David Wheeler
-
----
-class: center, middle
-
-# Free is several orders of magnitude more complex than IO
 
 ---
 # Resources and further study
