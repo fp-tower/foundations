@@ -3,30 +3,7 @@
 <head>
   <title>Error Handling</title>
   <meta charset="utf-8">
-  <style>
-    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-    body { font-family: 'Droid Serif'; color: #333333; }
-    h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
-    h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
-    .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-    .medium { font-size: 28px; }
-    .large { font-size: 36px; }
-    .medium-left { float: left; width: 37%; }
-    .half-left { float: left; width: 47%; }
-    .large-left { float: left; width: 57%; }
-    .small-right { float: right; width: 27%; }
-    .medium-right { float: right; width: 37%; }
-    .half-right { float: right; width: 47%; }
-    .large-right { float: right; width: 57%; }
-    .footer { position: absolute; bottom: 12px; left: 45px }
-    table { border-collapse: collapse; display: inline-block; }
-    th, td { padding: 10px; border: 1px solid black; }
-    tr:nth-child(even) {background-color: #f2f2f2;}
-    .hl { color : blue }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
 <textarea id="source">
@@ -150,9 +127,35 @@ public Order submit(Order order) `throws EmptyBasketError, InvalidCommandError`
 ```
 
 ---
-.h1[# Pure Function is a mapping between types]
+.h1[# Functional subset]
 
-.large-left[![Partial Function](img/errorhandling/pure-function-1.svg)]
+.cols[
+.fortyfive-middle[
+.large[
+* Total
+
+* .hl[No exception]
+
+* Deterministic
+
+* No mutation
+
+* No side effect
+]]
+
+
+.fortyfive[
+.large[
+* No null
+
+* No reflection
+]
+]]
+
+---
+.h1[# Functional subset]
+
+.fifty-seven-left[![Partial Function](img/errorhandling/pure-function-1.svg)]
 
 .medium-right[
 .medium[
@@ -161,40 +164,18 @@ public Order submit(Order order) `throws EmptyBasketError, InvalidCommandError`
 * Local reasoning
 * Easier to test
 * Potential performance optimisation
-* Better documentation
+* .hl[Better documentation]
 ]
 ]
 
 ---
-.h1[# Functions with side effects are not pure]
+.h1[# IO workaround]
 
-.half-left[![Partial Function](img/errorhandling/side-effect.svg)]
-
-.half-right[
-```scala
-def getDebitCard(userId: UserId): DebitCard = {
-  val user = db.getUser(userId)
-  user.debitCard
-}
-
-
-def deleteDebitCard(userId: UserId): DebitCard = {
-  val user = db.getUser(userId)
-  val debitCard = user.debitCard
-  db.upsertDebitCard(userId, null)
-  debitCard
-}
-```
-]
-
----
-.h1[# Pure side effects and exceptions with IO]
-
-.half-left[
+.pull-left[
 ![IO](img/errorhandling/io.svg)
 ]
 
-.half-right[
+.pull-right[
 <br>
 ```scala
 def extractDebitCard(user: User): IO[DebitCard] = {
@@ -215,7 +196,7 @@ def deleteDebitCard(db: DbApi, userId: UserId): IO[DebitCard] =
 ]
 
 ---
-# IO error handling is fragile
+# IO error also lacks documentation
 
 ```scala
 def deleteCard(userId: UserId): IO[DebitCard] = ???
@@ -244,12 +225,12 @@ background-image: url(img/errorhandling/io-big.svg)
 ---
 background-image: url(img/errorhandling/partial-function-1.svg)
 
-# Can we use a type dedicated to error handling?
+# Can we do pure error handling without IO?
 
 ---
 background-image: url(img/errorhandling/pure-error-handling.svg)
 
-# Pure Error Handling
+# FP error handling
 
 ---
 class: center, middle
@@ -286,7 +267,7 @@ class: center, middle
 ---
 .h1[# Option]
 
-.half-left[
+.pull-left[
 ```scala
 sealed trait Option[+A]
 
@@ -297,13 +278,13 @@ object Option {
 ```
 ]
 
-.half-right[![Option](img/errorhandling/option.svg)]
+.pull-right[![Option](img/errorhandling/option.svg)]
 
 
 ---
 .h1[# Option documents which values are optional]
 
-.half-left[
+.pull-left[
 ```tut:silent
 case class User(
   id     : java.util.UUID,
@@ -315,7 +296,7 @@ case class User(
 ```
 ]
 
-.half-right[
+.pull-right[
 ```sql
 CREATE TABLE users (
   id      UUID NOT NULL,
@@ -330,7 +311,7 @@ CREATE TABLE users (
 ---
 .h1[# Option forces us to think about empty case]
 
-.half-left[
+.pull-left[
 ```tut:silent
 def longest(xs: List[String]): Option[String] = {
   var current: Option[String] = None
@@ -349,7 +330,7 @@ def longest(xs: List[String]): Option[String] = {
 ```
 ]
 
-.half-right[
+.pull-right[
 ```tut:silent
 def longest(xs: List[String]): String = {
   var current: String = null
@@ -395,7 +376,7 @@ object Option {
 
   case class Some[`+`A](value: A) extends Option[A]
 
-  case object None extends Option[Nothing]
+  case object None extends Option[`Nothing`]
 
 }
 ```
@@ -420,38 +401,121 @@ trait Foo[ A] // Foo is invariant
 ]
 
 .large-right[
+<br>
 ```tut:silent
 sealed trait Shape
 
-case class Circle(radius: Int) extends Shape
-
+case class Circle(radius: Int)                extends Shape
 case class Rectangle(width: Int, height: Int) extends Shape
 ```
 ]
 
 ---
-background-image: url(img/errorhandling/option-shape-hierarchy-1.svg)
+# What is the inferred type of circle?
 
-# What is the relationship for Option[Shape]?
+```tut:silent
+val circle = Circle(12)
+```
 
 ---
-background-image: url(img/errorhandling/option-shape-hierarchy-2.svg)
+# What is the inferred type of circle?
+
+```tut
+val circle = Circle(12)
+```
+
+---
+# What is the inferred type of shapes?
+
+```tut:silent
+val optCircle   : Option[Circle]    = Some(Circle(12))
+val optRectangle: Option[Rectangle] = Some(Rectangle(5, 8))
+```
+
+```tut:silent
+val shape = optCircle.orElse(optRectangle)
+```
+
+---
+# What is the inferred type of shape?
+
+```tut:silent
+val optCircle   : Option[Circle]    = Some(Circle(12))
+val optRectangle: Option[Rectangle] = Some(Rectangle(5, 8))
+```
+
+```tut
+val shape = optCircle.orElse(optRectangle)
+```
+
+---
+.h1[# Shape]
+
+<br>
+
+.center[
+![Real Shape Hierarchy](img/errorhandling/real-shape-hierarchy.svg)
+]
+
+<br>
+```scala
+sealed trait Shape
+
+case class Circle(radius: Int)                extends Shape `with Product with Serializable`
+case class Rectangle(width: Int, height: Int) extends Shape `with Product with Serializable`
+```
+
+---
+# Shape
+
+```tut:silent
+sealed trait Shape extends Product with Serializable
+
+case class Circle(radius: Int)                extends Shape with Product with Serializable
+case class Rectangle(width: Int, height: Int) extends Shape with Product with Serializable
+```
+
+```tut:silent
+val optCircle   : Option[Circle]    = Some(Circle(12))
+val optRectangle: Option[Rectangle] = Some(Rectangle(5, 8))
+```
+
+```tut
+val shape = optCircle.orElse(optRectangle)
+```
+
+--
+
+## Why shape is an Option[Shape]?
+
+---
+background-image: url(img/errorhandling/option-covariant.svg)
 
 # Option is covariant
 
 ---
-background-image: url(img/errorhandling/invariant-option-shape-hierarchy.svg)
+# What about Nothing?
 
-# If Option were invariant
+```scala
+sealed trait Option[+A]
+
+object Option {
+
+  case class Some[+A](value: A) extends Option[A]
+
+  case object None              extends Option[`Nothing`]
+
+}
+```
 
 ---
 .h1[# Type hierarchy]
 
-.half-left[
+.pull-left[
 ![Type Hierarchy](img/errorhandling/type-hierarchy.svg)
 ]
 
-.half-right[
+.pull-right[
 ```tut:silent
 val bool: Boolean = true
 val five: Int = 5
@@ -471,7 +535,53 @@ background-image: url(img/errorhandling/covariance.svg)
 .h1[# Covariance]
 
 ---
-background-image: url(img/errorhandling/type-hierarchy-option.svg)
+# None
+
+```scala
+sealed trait Option[+A]
+
+object Option {
+  case class Some[+A](value: A) extends Option[A]
+  case object None              extends Option[`Nothing`]
+}
+```
+
+```tut:silent
+val optNothing: Option[Nothing] = None
+val optInt    : Option[Int]     = None
+val optCircle : Option[Circle]  = None
+```
+
+---
+.h1[# If Option were invariant]
+
+<br>
+<br>
+
+
+.center[
+![Invariant Option](img/errorhandling/invariant-option-shape-hierarchy.svg)
+]
+
+<br>
+
+```scala
+sealed trait Option[A]
+
+object Option {
+  case class Some[A](value: A) extends Option[A]
+  case class None[A]()         extends Option[A]
+}
+```
+
+
+
+---
+class: center, middle
+
+# Option Exercise 2
+
+`exercises.errorhandling.OptionExercises.scala`
 
 ---
 # Variance is type checked
@@ -490,9 +600,31 @@ scala> contravariant type A occurs in covariant position in type => A of value v
 ```
 
 ---
+.h1[# Variance]
+
+<br>
+<br>
+<br>
+
+.center[
+|  Type        | A             | B         |
+|:------------:|:-------------:|:---------:|
+| (A, B)       | Covariant     | Covariant |
+| Either[A, B] | Covariant     | Covariant |
+| A => B       | Contravariant | Covariant |
+| A => A       | Invariant     | N/A       |
+]
+
+<br>
+
+.center[
+[Thinking with types](https://leanpub.com/thinking-with-types) by Sandy Maguire
+]
+
+---
 class: center, middle
 
-# Option Exercises 2, 3 and 4
+# Option Exercises 3 and 4
 
 `exercises.errorhandling.OptionExercises.scala`
 
@@ -512,7 +644,7 @@ class: center, middle
 ---
 .h1[# Either]
 
-.large-left[
+.fifty-seven-left[
 ```scala
 sealed trait Either[+E, +A]
 
