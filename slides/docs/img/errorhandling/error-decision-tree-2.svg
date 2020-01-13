@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 677 577" width="677" height="577">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 677 581" width="677" height="581">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -24,12 +24,16 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.12.1 
-    <dc:date>2020-01-13 17:07:08 +0000</dc:date>
+    <dc:date>2020-01-13 21:19:28 +0000</dc:date>
   </metadata>
-  <g id="error-decision-tree-2" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none" fill-opacity="1">
+  <g id="error-decision-tree-2" stroke-opacity="1" fill="none" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>error-decision-tree-2</title>
     <g id="error-decision-tree-2: Layer 1">
       <title>Layer 1</title>
+      <g id="Graphic_170">
+        <path d="M 214.79428 444.4651 L 226 449 L 214.79428 453.5349 L 224.5052 459.5473 L 212.32792 462.5 L 220.17223 469.6723 L 207.39826 470.8322 L 213.0761 478.9527 L 200.22562 478.4257 L 203.58856 487.18016 L 191.1114 484.85924 L 191.93302 493.93016 L 180.42895 489.9223 L 178.71076 498.8863 L 168.55003 493.40204 L 164.36701 501.94484 L 155.92447 495.0901 L 149.5 503 L 143.00056 495.0901 L 134.55802 501.94484 L 130.44997 493.40204 L 120.21427 498.8863 L 118.49608 489.9223 L 106.99201 493.93016 L 107.81362 484.85924 L 95.338 487.18016 L 98.69941 478.4257 L 85.84894 478.9527 L 91.52677 470.8322 L 78.7528 469.6723 L 86.59711 462.5 L 74.41984 459.5473 L 84.13075 453.5349 L 73 449 L 84.13075 444.4651 L 74.41984 438.4527 L 86.59711 435.5 L 78.7528 428.3277 L 91.52677 427.1678 L 85.84894 419.0473 L 98.69941 419.5743 L 95.338 410.81984 L 107.81362 413.14076 L 106.99201 404.06984 L 118.49608 408.0777 L 120.21427 399.1137 L 130.44997 404.59796 L 134.55802 396.05516 L 143.00056 402.80516 L 149.42503 395 L 155.92447 402.80516 L 164.36701 396.05516 L 168.55003 404.59796 L 178.71076 399.1137 L 180.42895 408.0777 L 191.93302 404.06984 L 191.1114 413.14076 L 203.58856 410.81984 L 200.22562 419.5743 L 213.0761 419.0473 L 207.39826 427.1678 L 220.17223 428.3277 L 212.32792 435.5 L 224.5052 438.4527 L 214.79428 444.4651 Z" fill="#ff8080"/>
+        <path d="M 214.79428 444.4651 L 226 449 L 214.79428 453.5349 L 224.5052 459.5473 L 212.32792 462.5 L 220.17223 469.6723 L 207.39826 470.8322 L 213.0761 478.9527 L 200.22562 478.4257 L 203.58856 487.18016 L 191.1114 484.85924 L 191.93302 493.93016 L 180.42895 489.9223 L 178.71076 498.8863 L 168.55003 493.40204 L 164.36701 501.94484 L 155.92447 495.0901 L 149.5 503 L 143.00056 495.0901 L 134.55802 501.94484 L 130.44997 493.40204 L 120.21427 498.8863 L 118.49608 489.9223 L 106.99201 493.93016 L 107.81362 484.85924 L 95.338 487.18016 L 98.69941 478.4257 L 85.84894 478.9527 L 91.52677 470.8322 L 78.7528 469.6723 L 86.59711 462.5 L 74.41984 459.5473 L 84.13075 453.5349 L 73 449 L 84.13075 444.4651 L 74.41984 438.4527 L 86.59711 435.5 L 78.7528 428.3277 L 91.52677 427.1678 L 85.84894 419.0473 L 98.69941 419.5743 L 95.338 410.81984 L 107.81362 413.14076 L 106.99201 404.06984 L 118.49608 408.0777 L 120.21427 399.1137 L 130.44997 404.59796 L 134.55802 396.05516 L 143.00056 402.80516 L 149.42503 395 L 155.92447 402.80516 L 164.36701 396.05516 L 168.55003 404.59796 L 178.71076 399.1137 L 180.42895 408.0777 L 191.93302 404.06984 L 191.1114 413.14076 L 203.58856 410.81984 L 200.22562 419.5743 L 213.0761 419.0473 L 207.39826 427.1678 L 220.17223 428.3277 L 212.32792 435.5 L 224.5052 438.4527 L 214.79428 444.4651 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
       <g id="Graphic_118">
         <rect x="576" y="423" width="100" height="50" fill="#70a3d8"/>
         <rect x="576" y="423" width="100" height="50" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
@@ -137,18 +141,23 @@
         </text>
       </g>
       <g id="Graphic_165">
-        <text transform="translate(522.986 104)" fill="#424242">
+        <text transform="translate(590 59)" fill="#424242">
           <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="#424242" x="4902745e-19" y="17">toOption</tspan>
         </text>
       </g>
       <g id="Graphic_166">
-        <text transform="translate(80.222 525.9819)" fill="#424242">
-          <tspan font-family="Helvetica Neue" font-size="18" font-weight="700" fill="#424242" x="6.462" y="18">What you want </tspan>
-          <tspan font-family="Helvetica Neue" font-size="18" font-weight="700" fill="#424242" x="6252776e-19" y="40.522125">most of the time</tspan>
+        <text transform="translate(80.222 516.9819)" fill="#ff7f7f">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="700" fill="#ff7f7f" x="6.462" y="18">What you want </tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="700" fill="#ff7f7f" x="6252776e-19" y="40.522125">most of the time</tspan>
         </text>
       </g>
-      <g id="Line_167">
-        <path d="M 75.222 524.5099 C 45.46801 512.99707 18.174782 498.9259 18 486 C 17.801801 471.34235 52.5233 461.7056 86.26466 455.80477" marker-end="url(#FilledArrow_Marker_2)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <g id="Line_168">
+        <path d="M 600.2701 473 C 565.3989 502.9099 496.8535 549 405.5651 549 C 321.101 549 241.99207 509.54336 194.54076 479.9531" marker-end="url(#FilledArrow_Marker_2)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8.0,8.0" stroke-width="2"/>
+      </g>
+      <g id="Graphic_169">
+        <text transform="translate(374 554)" fill="#424242">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="#424242" x="0" y="17">toRight</tspan>
+        </text>
       </g>
     </g>
   </g>

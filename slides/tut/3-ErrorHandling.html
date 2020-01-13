@@ -390,7 +390,7 @@ trait Foo[ A] // Foo is invariant
 ```
 
 ---
-.h1[# Shape]
+.h1[# Shape is an enumeration]
 
 <br>
 <br>
@@ -553,28 +553,24 @@ val optCircle : Option[Circle]  = None
 ```
 
 ---
-.h1[# If Option were invariant]
+# If Option were invariant
 
-<br>
-<br>
+```tut:silent
+sealed trait InvOption[A]
 
-
-.center[
-![Invariant Option](img/errorhandling/invariant-option-shape-hierarchy.svg)
-]
-
-<br>
-
-```scala
-sealed trait Option[A]
-
-object Option {
-  case class Some[A](value: A) extends Option[A]
-  case class None[A]()         extends Option[A]
+object InvOption {
+  case class Some[A](value: A) extends InvOption[A]
+  case class None[A]()         extends InvOption[A]
 }
+
+val optInt   : InvOption[Int]   = InvOption.None()
+val optCircle: InvOption[Circle]= InvOption.None()
 ```
 
+---
+background-image: url(img/errorhandling/option-invariant.svg)
 
+# If Option were invariant
 
 ---
 class: center, middle
@@ -584,23 +580,7 @@ class: center, middle
 `exercises.errorhandling.OptionExercises.scala`
 
 ---
-# Variance is type checked
-
-```scala
-sealed trait Option[`-`A]
-
-object Option {
-  case class Some[`-`A](value: A) extends Option[A]
-  case object None extends Option[Nothing]
-}
-
-
-scala> contravariant type A occurs in covariant position in type => A of value value
-  case class Some[-A](value: A) extends Option[A]
-```
-
----
-.h1[# Variance]
+.h1[# Variance rules]
 
 <br>
 <br>
@@ -620,6 +600,22 @@ scala> contravariant type A occurs in covariant position in type => A of value v
 .center[
 [Thinking with types](https://leanpub.com/thinking-with-types) by Sandy Maguire
 ]
+
+---
+# Variance is type checked
+
+```scala
+sealed trait Option[`-`A]
+
+object Option {
+  case class Some[`-`A](value: A) extends Option[A]
+  case object None extends Option[Nothing]
+}
+
+
+scala> contravariant type A occurs in covariant position in type => A of value value
+  case class Some[-A](value: A) extends Option[A]
+```
 
 ---
 class: center, middle
