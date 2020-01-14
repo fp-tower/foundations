@@ -155,7 +155,7 @@ object EitherAnswers {
   // 4. Advanced API
   //////////////////////////////////
 
-  def parMap2[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] =
+  def map2Acc[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] =
     (fa, fb) match {
       case (Right(a), Right(b))   => Right(f(a, b))
       case (Left(es), Right(_))   => Left(es)
@@ -163,21 +163,21 @@ object EitherAnswers {
       case (Left(es1), Left(es2)) => Left(es1 ++ es2)
     }
 
-  def validateUserPar(username: String, country: String): Either[List[UserError], User] =
-    parMap2(
-      validateUsernamePar(username),
+  def validateUserAcc(username: String, country: String): Either[List[UserError], User] =
+    map2Acc(
+      validateUsernameAcc(username),
       validateCountry(country).left.map(List(_))
     )(User)
 
-  def validateUsernamePar(username: String): Either[List[UsernameError], Username] = {
+  def validateUsernameAcc(username: String): Either[List[UsernameError], Username] = {
     val trimmed = username.trim
-    parMap2(
+    map2Acc(
       validateUsernameSize(trimmed).left.map(List(_)),
       validateUsernameCharacters(trimmed).left.map(List(_))
     )((_, _) => Username(trimmed))
   }
 
-  def parSequence[E, A](xs: List[Either[List[E], A]]): Either[List[E], List[A]] =
-    xs.foldLeft[Either[List[E], List[A]]](Right(Nil))(parMap2(_, _)((acc, a) => a :: acc)).map(_.reverse)
+  def sequenceAcc[E, A](xs: List[Either[List[E], A]]): Either[List[E], List[A]] =
+    xs.foldLeft[Either[List[E], List[A]]](Right(Nil))(map2Acc(_, _)((acc, a) => a :: acc)).map(_.reverse)
 
 }

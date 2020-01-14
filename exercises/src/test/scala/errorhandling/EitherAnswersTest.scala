@@ -106,18 +106,18 @@ class EitherAnswersTest extends AnyFunSuite with Matchers {
     validateUser("~a", "UK") shouldEqual Left(TooSmall(2))
   }
 
-  test("validateUserPar") {
-    validateUserPar("  foo ", "FRA") shouldEqual Right(User(Username("foo"), Country.France))
-    validateUserPar("~a", "FRA") shouldEqual Left(List(TooSmall(2), InvalidCharacters(List('~'))))
-    validateUserPar("  foo ", "UK") shouldEqual Left(List(InvalidFormat("UK")))
-    validateUserPar("~a", "UK") shouldEqual Left(
+  test("validateUserAcc") {
+    validateUserAcc("  foo ", "FRA") shouldEqual Right(User(Username("foo"), Country.France))
+    validateUserAcc("~a", "FRA") shouldEqual Left(List(TooSmall(2), InvalidCharacters(List('~'))))
+    validateUserAcc("  foo ", "UK") shouldEqual Left(List(InvalidFormat("UK")))
+    validateUserAcc("~a", "UK") shouldEqual Left(
       List(TooSmall(2), InvalidCharacters(List('~')), CountryError.InvalidFormat("UK"))
     )
   }
 
-  test("concurrentSequence") {
-    parSequence(List(Right(1), Right(2), Right(3))) shouldEqual Right(List(1, 2, 3))
-    parSequence(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) shouldEqual Left(List("e1", "e2", "e3"))
+  test("sequenceAcc") {
+    sequenceAcc(List(Right(1), Right(2), Right(3))) shouldEqual Right(List(1, 2, 3))
+    sequenceAcc(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) shouldEqual Left(List("e1", "e2", "e3"))
   }
 
 }

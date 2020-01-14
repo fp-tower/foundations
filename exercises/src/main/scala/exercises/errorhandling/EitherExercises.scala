@@ -149,10 +149,10 @@ object EitherExercises {
   // 4. Advanced API
   //////////////////////////////////
 
-  // 4a. Implement `concurrentMap2` which behaves similarly to `map2` but if the two `Either` fail, `concurrentMap2` accumulates the errors
-  // such as concurrentMap2(Right(1), Right(1))(_ + _) == Right(2)
-  // but     concurrentMap2(Left(List("error 1", "error 2")), Left(List("error a"))) == Left(List("error 1", "error 2", "error a"))
-  def parMap2[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] = ???
+  // 4a. Implement `map2Acc` which behaves similarly to `map2` but if the two `Either` fail, `map2Acc` accumulates the errors
+  // such as map2Acc(Right(1), Right(1))(_ + _) == Right(2)
+  // but     map2Acc(Left(List("error 1", "error 2")), Left(List("error a"))) == Left(List("error 1", "error 2", "error a"))
+  def map2Acc[E, A, B, C](fa: Either[List[E], A], fb: Either[List[E], B])(f: (A, B) => C): Either[List[E], C] = ???
 
   def map2[E, A, B, C](fa: Either[E, A], fb: Either[E, B])(f: (A, B) => C): Either[E, C] =
     for {
@@ -163,17 +163,17 @@ object EitherExercises {
   def toListError[E, A](fa: Either[E, A]): Either[List[E], A] =
     fa.left.map(List(_))
 
-  // 4b. Implement `validateUserPar` which behaves similarly to `validateUser` but this time we should
+  // 4b. Implement `validateUserAcc` which behaves similarly to `validateUser` but this time we should
   // return all errors that occur. For example, we want to know if both username and country are invalid.
-  // What should be the return type of `validateUserPar`?
+  // What should be the return type of `validateUserAcc`?
   // Note: try to use concurrentMap2
-  def validateUserPar(username: String, country: String) = ???
+  def validateUserAcc(username: String, country: String) = ???
 
-  // 4c. Implement `concurrentSequence` which accumulates successes if all `Either` are `Right` or accumulates
+  // 4c. Implement `sequenceAcc` which accumulates successes if all `Either` are `Right` or accumulates
   // failures if at least one `Either` is `Left`.
-  // concurrentSequence(List(Right(1), Right(2), Right(3))) == Right(List(1,2,3))
-  // concurrentSequence(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) == Left(List("e1", "e2", "e3"))
-  // Note: you may find it useful to reuse `concurrentMap2`
-  def parSequence[E, A](xs: List[Either[List[E], A]]): Either[List[E], List[A]] = ???
+  // sequenceAcc(List(Right(1), Right(2), Right(3))) == Right(List(1,2,3))
+  // sequenceAcc(List(Left(List("e1", "e2")), Right(1), Left(List("e3")))) == Left(List("e1", "e2", "e3"))
+  // Note: you may find it useful to reuse `map2Acc`
+  def sequenceAcc[E, A](xs: List[Either[List[E], A]]): Either[List[E], List[A]] = ???
 
 }
