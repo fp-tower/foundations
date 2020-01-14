@@ -690,7 +690,7 @@ trait JsonCodec[A]{
 
 <br>
 
-## 1. It is the only way to get great API and type inference in Scala
+## 1. It is the only way to get an ergonomic API in Scala
 
 ## 2. Variance is type checked
 
@@ -1038,7 +1038,7 @@ background-image: url(img/errorhandling/error-decision-tree.svg)
 background-image: url(img/errorhandling/error-decision-tree-2.svg)
 
 ---
-# Option with IO
+# IO with Option
 
 ```tut:invisible
 case class UserId(value: Long)
@@ -1051,23 +1051,43 @@ case class OrderDetails()
 
 ```tut:silent
 trait OrderApi {
-  def getUser(userId: UserId): IO[Option[User]]
+  def getUser(  userId: UserId ): IO[Option[User]]
   def getOrder(orderId: OrderId): IO[Option[Order]]
 }
 
 def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
   for {
-    optUser  <- api.getUser(userId)
-    optOrder <- api.getOrder(orderId)
+    user  <- api.getUser(userId)
+    order <- api.getOrder(orderId)
+  } yield ???
+```
+
+<br>
+
+## What is the type of user and order?
+
+---
+# IO with Option
+
+```tut:silent
+trait OrderApi {
+  def getUser(  userId: UserId ): IO[Option[User]]
+  def getOrder(orderId: OrderId): IO[Option[Order]]
+}
+
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+  for {
+    user  /* Option[User]  */ <- api.getUser(userId)
+    order /* Option[Order] */ <- api.getOrder(orderId)
   } yield ???
 ```
 
 ---
-# Option with IO
+# IO with Option
 
 ```tut:silent
 trait OrderApi {
-  def getUser(userId: UserId): IO[Option[User]]
+  def getUser(  userId: UserId ): IO[Option[User]]
   def getOrder(orderId: OrderId): IO[Option[Order]]
 }
 
@@ -1087,18 +1107,18 @@ def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDe
 ```
 
 ---
-# Option with IO
+# IO with Option
 
 ```tut:silent
 trait OrderApi {
-  def getUser(userId: UserId): IO[Option[User]]
+  def getUser(  userId: UserId ): IO[Option[User]]
   def getOrder(orderId: OrderId): IO[Option[Order]]
 }
 
 def fromOption[A](opt: Option[A])(error: => Throwable): IO[A] =
   opt match {
     case None    => IO.fail(error)
-    case Some(x) => IO.succeed(x)
+    case Some(a) => IO.succeed(a)
   }
 
 def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
@@ -1109,107 +1129,88 @@ def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDe
 ```
 
 ---
-# Option with IO
+# IO with Either
 
-```tut:silent
+```tut:invisible
 sealed trait ApplicationError extends Exception
-case class UserNotFound(userId: UserId) extends ApplicationError
+case class UserNotFound(userId: UserId)    extends ApplicationError
 case class OrderNotFound(orderId: OrderId) extends ApplicationError
 
 trait OrderApi {
-  def getUser(userId: UserId): IO[Option[User]]
-  def getOrder(orderId: OrderId): IO[Option[Order]]
+  def getUser(  userId: UserId ): IO[Either[UserNotFound , User]]
+  def getOrder(orderId: OrderId): IO[Either[OrderNotFound, Order]]
 }
-
-def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
-  for {
-    user  <- api.getUser(userId).flatMap(fromOption(_)(UserNotFound(userId)))
-    order <- api.getOrder(orderId).flatMap(fromOption(_)(OrderNotFound(orderId)))
-  } yield ???
 ```
 
----
-# Option with IO
-
-```tut:silent
-sealed trait ApplicationError extends Exception
-case class UserNotFound(userId: UserId) extends ApplicationError
+```scala
+sealed trait ApplicationError `extends Exception`
+case class UserNotFound(userId: UserId)    extends ApplicationError
 case class OrderNotFound(orderId: OrderId) extends ApplicationError
 
 trait OrderApi {
-  def getUserOpt(userId: UserId): IO[Option[User]]
-  def getOrderOpt(orderId: OrderId): IO[Option[Order]]
-
-  def getUser(userId: UserId): IO[User]     = getUserOpt(userId).flatMap(fromOption(_)(UserNotFound(userId)))
-  def getOrder(orderId: OrderId): IO[Order] = getOrderOpt(orderId).flatMap(fromOption(_)(OrderNotFound(orderId)))
-}
-
-def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
-  for {
-    user  <- api.getUser(userId)
-    order <- api.getOrder(orderId)
-  } yield ???
-```
-
----
-# OptionT
-
-```tut:silent
-case class OptionT[+A](value: IO[Option[A]]) {
-  def map[B](f: A => B): OptionT[B] =
-    OptionT(value.map(_.map(f)))
-
-  def flatMap[B](f: A => OptionT[B]): OptionT[B] =
-    OptionT(value.flatMap {
-      case None    => IO.succeed(None)
-      case Some(a) => f(a).value
-    })
+  def getUser(  userId: UserId ): IO[Either[UserNotFound , User]]
+  def getOrder(orderId: OrderId): IO[Either[OrderNotFound, Order]]
 }
 ```
 
 --
 
-```scala
-trait DbApi {
-  def getUser(userId: UserId): OptionT[User]
-  def getOrder(orderId: OrderId): OptionT[Order]
-}
+```tut:invisible
+def failOnLeft[E <: Exception, A](io: IO[Either[E, A]]): IO[A] =
+  io.flatMap {
+    case Left(e)  => IO.fail(e)
+    case Right(a) => IO.succeed(a)
+  }
+```
 
-def getOrderDetails(db: DbApi)(userId: UserId, orderId: OrderId): OptionT[OrderDetails] =
+```scala
+def failOnLeft[`E <: Exception`, A](io: `IO[Either[E, A]]`): `IO[A]` =
+  io.flatMap {
+    case Left(e)  => IO.fail(e)
+    case Right(a) => IO.succeed(a)
+  }
+```
+
+--
+
+```tut:silent
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
   for {
-    user  <- db.getUser(userId)
-    order <- db.getOrder(orderId)
+    user  <- failOnLeft(api.getUser(userId))
+    order <- failOnLeft(api.getOrder(orderId))
   } yield ???
 ```
 
 ---
-# More general pattern
+# Extension methods
 
 ```tut:silent
-case class OptionT[F[+_], +A](value: F[Option[A]])
-
-type IOOptionT[A]   = OptionT[IO, A]
-type ListOptionT[A] = OptionT[List, A]
+implicit class IOEitherSyntax[E <: Exception, A](io: IO[Either[E, A]]){
+  def failOnLeft: IO[A] =
+    io.flatMap {
+      case Left(e)  => IO.fail(e)
+      case Right(a) => IO.succeed(a)
+    }
+}
 ```
 
 ```tut:silent
-case class EitherT[F[+_], +E, +A](value: F[Either[E, A]])
-
-type IOEitherT[E, A]   = EitherT[IO, E, A]
-type ListEitherT[E, A] = EitherT[List, E, A]
+def getOrderDetails(api: OrderApi)(userId: UserId, orderId: OrderId): IO[OrderDetails] =
+  for {
+    user  <- api.getUser(userId).failOnLeft
+    order <- api.getOrder(orderId).failOnLeft
+  } yield ???
 ```
 
 ---
 .h1[# Conclusion]
-
-<br>
 
 .large[
 * Option and Either are the two main types to encode failures
 
 * Try is a helpful tool to catch Exception
 
-* Error Enums can be as precise as we want (trade-offs)
+* Enums can encode errors as precisely as we want (trade-offs)
 
 * Option and Either can be used in conjunction with IO
 ]
