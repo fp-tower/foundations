@@ -920,7 +920,76 @@ for {
 ---
 class: center, middle
 
-# Either Exercises
+# Either Exercises 1 to 3
+
+`exercises.errorhandling.EitherExercises.scala`
+
+---
+# Error Hierarchy
+
+```tut:silent
+sealed trait UsernameError
+object UsernameError {
+  case class TooSmall(length: Int)               extends UsernameError
+  case class InvalidCharacters(char: List[Char]) extends UsernameError
+}
+
+sealed trait CountryError
+object CountryError {
+  case class InvalidFormat(country: String) extends CountryError
+  case class NotSupported(country: String)  extends CountryError
+}
+```
+
+---
+background-image: url(img/errorhandling/error-hierarchy-1.svg)
+
+# Error Hierarchy
+
+---
+background-image: url(img/errorhandling/error-hierarchy-2.svg)
+
+# Error Hierarchy
+
+---
+# Error Hierarchy
+
+```scala
+sealed trait UserError
+
+sealed trait UsernameError `extends UserError`
+object UsernameError {
+  case class TooSmall(length: Int)               extends UsernameError
+  case class InvalidCharacters(char: List[Char]) extends UsernameError
+}
+
+sealed trait CountryError `extends UserError`
+object CountryError {
+  case class InvalidFormat(country: String) extends CountryError
+  case class NotSupported(country: String)  extends CountryError
+}
+```
+
+---
+background-image: url(img/errorhandling/error-hierarchy-3.svg)
+
+# Error Hierarchy
+
+---
+# Union types in Scala 3
+
+<br>
+
+```scala
+type UserError = UsernameError | CountryError
+```
+
+
+
+---
+class: center, middle
+
+# Either Exercise 4
 
 `exercises.errorhandling.EitherExercises.scala`
 
