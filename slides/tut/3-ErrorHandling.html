@@ -367,7 +367,7 @@ class: center, middle
 `exercises.errorhandling.OptionExercises.scala`
 
 ---
-# Variance
+# Variance digression
 
 ```scala
 sealed trait Option[`+`A]
@@ -601,20 +601,103 @@ class: center, middle
 [Thinking with types](https://leanpub.com/thinking-with-types) by Sandy Maguire
 ]
 
+
 ---
-# Variance is type checked
+# What is the variance of JsonDecoder?
 
-```scala
-sealed trait Option[`-`A]
+```tut:invisible
+type Json = String
+```
 
-object Option {
-  case class Some[`-`A](value: A) extends Option[A]
-  case object None extends Option[Nothing]
+```tut:silent
+trait JsonDecoder[A]{
+  def decode(value: Json): A
+}
+```
+
+---
+# JsonDecoder is covariant
+
+```tut:silent
+trait JsonDecoder[+A]{
+  def decode(value: Json): A
 }
 
+val circleDecoder: JsonDecoder[Circle] = (value: Json) => ???
+val shapeDecoder : JsonDecoder[Shape]  = circleDecoder
+```
 
-scala> contravariant type A occurs in covariant position in type => A of value value
-  case class Some[-A](value: A) extends Option[A]
+```tut:fail
+val rectangleDecoder: JsonDecoder[Rectangle] = shapeDecoder
+```
+
+---
+# What is the variance of JsonEncoder?
+
+```tut:silent
+trait JsonEncoder[A]{
+  def encode(value: A): Json
+}
+```
+
+---
+# JsonEncoder is contravariant
+
+```tut:silent
+trait JsonEncoder[-A]{
+  def encode(value: A): Json
+}
+
+val shapeDecoder : JsonEncoder[Shape]  = (value: Shape) => ???
+val circleDecoder: JsonEncoder[Circle] = shapeDecoder
+```
+
+```tut:fail
+val shapeDecoder2: JsonEncoder[Shape] = circleDecoder
+```
+
+---
+# What is the variance of JsonCodec?
+
+```tut:silent
+trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
+```
+
+```tut:silent
+trait JsonCodec[A]{
+  def decode(value: Json): A
+  def encode(value: A   ): Json
+}
+```
+
+---
+# JsonCodec is invariant
+
+```tut:silent
+trait JsonCodec[A] extends JsonDecoder[A] with JsonEncoder[A]
+```
+
+```tut:silent
+trait JsonCodec[A]{
+  def decode(value: Json): A
+  def encode(value: A   ): Json
+}
+```
+
+
+---
+# Variance summary
+
+<br>
+
+## 1. It is the only way to get great API and type inference in Scala
+
+## 2. Variance is type checked
+
+```tut:fail
+trait JsonEncoder[+A]{
+  def encode(value: A): Json
+}
 ```
 
 ---
