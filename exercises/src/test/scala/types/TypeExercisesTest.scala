@@ -19,22 +19,9 @@ class TypeExercisesTest extends AnyFunSuite with Discipline with Matchers {
     intAndBoolean.cardinality.eval shouldEqual Some(BigInt(2).pow(33))
   }
 
-  test("option") {
-    option(boolean).cardinality.eval shouldEqual Some(BigInt(3))
-    option(unit).cardinality.eval shouldEqual Some(BigInt(2))
-  }
-
-  test("list") {
-    list(boolean).cardinality.eval shouldEqual None
-    list[Nothing](nothing).cardinality.eval shouldEqual Some(BigInt(1))
-  }
-
   test("func") {
     func(boolean, boolean).cardinality.eval shouldEqual Some(BigInt(4))
     func(boolean, unit).cardinality.eval shouldEqual Some(BigInt(1))
-    func[Nothing, List[Boolean]](nothing, list(boolean)).cardinality.eval shouldEqual Some(BigInt(1))
-    func(list(boolean), unit).cardinality.eval shouldEqual Some(BigInt(1))
-    func[List[Boolean], Nothing](list(boolean), nothing).cardinality.eval shouldEqual Some(BigInt(0))
   }
 
   checkAll("a * 1 == a", IsoLaws(aUnitToA[Int]))

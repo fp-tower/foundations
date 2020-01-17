@@ -59,9 +59,9 @@ layout: true
 ```tut:silent
 case class Country(value: String)
 
-val UK: Country      = Country("United Kingdom")
-val France: Country  = Country("France")
-val Germany: Country = Country("Germany")
+val UK      = Country("United Kingdom")
+val France  = Country("France")
+val Germany = Country("Germany")
 ```
 
 --
@@ -376,132 +376,6 @@ background-image: url(img/type/cardinality-2.svg)
 # Cardinality
 
 ---
-.pull-left[
-.h1[# Cardinality: Any]
-
-```tut:silent
-val x: Int = 3
-
-val hello: String = "hello"
-
-case class User(name: String, age: Int)
-
-val john: User = User("John", 53)
-```
-
-```tut
-x: Any
-
-john: Any
-
-
-List(x, hello, john)
-```
-]
-
-.pull-right[
-<br>
-![Any](img/type/any.svg)
-]
-
----
-background-image: url(img/type/nothing-1.svg)
-
-# Cardinality: Nothing
-
----
-.medium-left[
-.h1[# Cardinality: Nothing]
-
-```scala
-sealed trait Nothing
-  extends Int
-  with    Boolean
-  with    String
-  with    Foo
-  with    List[Int]
-  with    Any
-```
-]
-
-.large-right[
-<br>
-![Nothing](img/type/nothing-2.svg)
-]
-
----
-background-image: url(img/type/unit.svg)
-
-# Cardinality: Unit
-
----
-background-image: url(img/type/io-unit.svg)
-
-# Cardinality: IO
-
----
-background-image: url(img/function/mapping-2.svg)
-
-# Function is mappings between two sets
-
----
-# A => B is a type
-
-<br>
-<br>
-<br>
-
-```tut:silent
-val isEven: Int => Boolean =
-  (x: Int) => x % 2 == 0
-
-
-val increment: Int => Int =
-  (x: Int) => x + 1
-```
-
----
-class: center, middle
-
-# A => B is a type
-
-# &&
-
-# A type is a set of values
-
----
-background-image: url(img/type/function-set-1.svg)
-
-# A => B is a set of values!
-
----
-background-image: url(img/type/function-set-2.svg)
-
-# A function type is a set of implementations!
-
----
-class: center, middle
-
-# How many elements are in the set A => B?
-
-# How many implementations satisfy the type checker?
-
----
-class: center, middle
-
-# |A => B|
-
----
-class: center, middle
-
-# The smaller |A => B|, the better
-
----
-class: center, middle
-
-# Perfect case is when |A => B| = 1
-
----
 class: center, middle
 
 # Exercise 3: Cardinality
@@ -579,14 +453,9 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercise 4a-f: Advanced Cardinality
+# Finish Exercise 3
 
 `exercises.types.TypeExercises.scala`
-
----
-class: center, middle
-
-# `|A => B|`
 
 ---
 background-image: url(img/type/get-currency-1.svg)
@@ -652,7 +521,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Finish Exercise 4
+# Exercise 4: Parametricity
 
 `exercises.types.TypeExercises.scala`
 
@@ -740,7 +609,7 @@ class: center, middle
 ---
 class: center, middle
 
-# Exercises 6 and 7
+# Exercise 6: Type Algebra
 
 `exercises.types.TypeExercises.scala`
 

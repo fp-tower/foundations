@@ -1,6 +1,7 @@
 package exercises.types
 
 import java.time.Instant
+import java.util.UUID
 
 import eu.timepit.refined.types.numeric.PosInt
 import exercises.sideeffect.IOExercises.IO
@@ -43,29 +44,25 @@ object TypeExercises {
     def address: String = ???
   }
 
-  // 1d. Implement `Invoice#total` that returns the total price of an invoice then implement
-  // `Invoice#totalWithDiscountedFirstItem`. The latter should calculate the total applying a
-  // discount only on the first item, e.g. totalWithDiscountedFirstItem(0.3) would apply a 30% discount.
+  // 1d. Implement `Invoice#discountFirstItem` that returns a new invoice with the first item discounted.
+  // For example, discountFirstItem(0.3) would apply a 30% discount.
   // What is wrong with this function? How could you improve it?
   case class InvoiceItem(id: String, quantity: Int, price: Double)
   // An invoice must have at least one item.
   case class Invoice(id: String, items: List[InvoiceItem]) {
-    def total: Double = ???
-
-    def totalWithDiscountedFirstItem(discountPercent: Double): Double = ???
+    def discountFirstItem(discountPercent: Double): Invoice = ???
   }
 
-  // 1e. Implement `getItemCount` that returns how many items are part of the invoice.
-  // In other words, it sums up items quantities without looking at prices.
-  // Use `getInvoice` to implement `getItemCount`.
+  // 1e. Implement `createTicket` that instantiates a Ticket with 0 story point,
+  // a random ticket id (see `genTicketId`) and the current time (see `readNow`).
   // What is wrong with this function? How could you improve it?
-  def getInvoice(id: String): IO[Invoice] =
-    if (id == "123")
-      IO.succeed(Invoice("123", List(InvoiceItem("aa", 10, 2.5), InvoiceItem("x", 2, 13.4))))
-    else
-      IO.fail(new Exception(s"No Invoice found for id $id"))
+  def createTicket(title: String): IO[Ticket] = ???
 
-  def getItemCount(id: String): IO[Int] = ???
+  def genTicketId: IO[TicketId] = IO.effect(TicketId(UUID.randomUUID()))
+  def readNow: IO[Instant]      = IO.effect(Instant.now())
+
+  case class TicketId(value: UUID)
+  case class Ticket(id: TicketId, title: String, storyPoints: Int, createdAt: Instant)
 
   ////////////////////////
   // 2. Data Encoding
@@ -112,30 +109,32 @@ object TypeExercises {
     def cardinality: Card = Constant(2) ^ Constant(32)
   }
 
+  // 3a. How many possible values exist of type Any?
   val any: Cardinality[Any] = new Cardinality[Any] {
     def cardinality: Card = Inf
   }
 
+  // 3b. How many possible values exist of type Nothing?
   val nothing: Cardinality[Nothing] = new Cardinality[Nothing] {
     def cardinality: Card = Constant(0)
   }
 
-  // 3a. How many possible values exist of type Unit?
+  // 3c. How many possible values exist of type Unit?
   val unit: Cardinality[Unit] = new Cardinality[Unit] {
     def cardinality: Card = ???
   }
 
-  // 3b. How many possible values exist of type Byte?
+  // 3d. How many possible values exist of type Byte?
   val ioUnit: Cardinality[IO[Unit]] = new Cardinality[IO[Unit]] {
     def cardinality: Card = ???
   }
 
-  // 3c. How many possible values exist of type Option[Boolean]?
+  // 3e. How many possible values exist of type Option[Boolean]?
   val optBoolean: Cardinality[Option[Boolean]] = new Cardinality[Option[Boolean]] {
     def cardinality: Card = ???
   }
 
-  // 3d. How many possible values exist of type IntOrBoolean?
+  // 3f. How many possible values exist of type IntOrBoolean?
   val intOrBoolean: Cardinality[IntOrBoolean] = new Cardinality[IntOrBoolean] {
     def cardinality: Card = ???
   }
@@ -146,66 +145,66 @@ object TypeExercises {
     case class ABoolean(value: Boolean) extends IntOrBoolean
   }
 
-  // 3e. How many possible values exist of type IntAndBoolean?
+  // 3g. How many possible values exist of type IntAndBoolean?
   val intAndBoolean: Cardinality[IntAndBoolean] = new Cardinality[IntAndBoolean] {
     def cardinality: Card = ???
   }
 
   case class IntAndBoolean(i: Int, b: Boolean)
 
-  // 3f. How many possible values exist of type Option[Nothing]?
-  val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
-    def cardinality: Card = ???
-  }
-
-  // 3g. How many possible values exist of type (Boolean, Nothing)?
-  val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
-    def cardinality: Card = ???
-  }
-
   ///////////////////////
   // GO BACK TO SLIDES
   ///////////////////////
 
-  ///////////////////////////
-  // 4. Advanced Cardinality
-  ///////////////////////////
-
-  // 4a. How many possible values exist of type Option[A]?
-  def option[A](a: Cardinality[A]): Cardinality[Option[A]] =
-    new Cardinality[Option[A]] {
-      def cardinality: Card = ???
-    }
-
-  // 4b. How many possible values exist of type List[A]?
-  def list[A](a: Cardinality[A]): Cardinality[List[A]] = new Cardinality[List[A]] {
+  // 3h. How many possible values exist of type Option[Nothing]?
+  val optNothing: Cardinality[Option[Nothing]] = new Cardinality[Option[Nothing]] {
     def cardinality: Card = ???
   }
 
-  // 4f. How many possible values exist of type A => B?
+  // 3i. How many possible values exist of type (Boolean, Nothing)?
+  val boolNothing: Cardinality[(Boolean, Nothing)] = new Cardinality[(Boolean, Nothing)] {
+    def cardinality: Card = ???
+  }
+
+  // 3j. How many possible implementation exist for `getCurrency`?
+  def getCurrency: Cardinality[Country => Currency] = new Cardinality[Country => Currency] {
+    def cardinality: Card = ???
+  }
+
+  // 3k. How many possible implementation exist for `getCurrencyString`? Is it more or less than `getCurrency`?
+  def getCurrencyString: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
+    def cardinality: Card = ???
+  }
+
+  // 3l. How many possible values exist of type A => B?
   def func[A, B](a: Cardinality[A], b: Cardinality[B]): Cardinality[A => B] =
     new Cardinality[A => B] {
       def cardinality: Card = ???
     }
 
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
-
-  // 4g. How many implementations exist for `getCurrency1` and `getCurrency2`? Which one is better?
-  def getCurrency1: Cardinality[String => Option[String]] = new Cardinality[String => Option[String]] {
-    def cardinality: Card = ???
-  }
-
-  def getCurrency2: Cardinality[Country => Currency] = new Cardinality[Country => Currency] {
-    def cardinality: Card = ???
-  }
-
-  // 4h. Can you think of a function signature with only one implementation?
+  // 3m. Can you think of a function signature with only one implementation?
   // i.e. find A1, A2 such as |A1 => A2| = 1.
 
-  // 4i. Can you provide an example of a function signature with no implementation?
+  // 3n. Can you provide an example of a function signature with no implementation?
   // i.e. find A1, A2 such as |A1 => A2| = 0.
+
+  ////////////////////////
+  // 4. Parametricity
+  ////////////////////////
+
+  // 4a. How many implementations exist for `id` (assume we are using functional subset)?
+  def id[A](a: A): A = ???
+
+  // 4b. How many implementations exist for `mapOption`?
+  def mapOption[A, B](opt: Option[A])(f: A => B): Option[B] = ???
+
+  // 4c. How many implementations exist for `mapOptionIntToBool`?
+  def mapOptionIntToBool(opt: Option[Int])(f: Int => Boolean): Option[Boolean] = ???
+
+  // 4d. How would you test `mapOption` to be sure there is no bug?
+
+  // 4e. How many implementations exist for `mapList`? How would you test it?
+  def mapList[A, B](xs: List[A])(f: A => B): List[B] = ???
 
   ////////////////////////
   // 5. Tests
@@ -242,35 +241,10 @@ object TypeExercises {
   // 5e. Can you define the VIC formula for any function A => B with n different property based tests?
 
   ////////////////////////
-  // 6. Parametricity
+  // 6. Type Algebra
   ////////////////////////
 
-  // 6a. How many implementations exist for `id`, `const` (assume we are using scalazzi subset)?
-  def id[A](a: A): A = ???
-
-  def const[A, B](a: A)(b: B): A = ???
-
-  // 6b. How many implementations exist for `mapOption`?
-  def mapOption[A, B](opt: Option[A])(f: A => B): Option[B] = ???
-
-  // 6c. How many implementations exist for `mapOptionIntToBool`?
-  def mapOptionIntToBool(opt: Option[Int])(f: Int => Boolean): Option[Boolean] = ???
-
-  // 6d. How many implementations exist for `flatMapOption`?
-  def flatMapOption[A, B](opt: Option[A])(f: A => Option[B]): Option[B] = ???
-
-  // 6e. How would you test `mapOption` and `flatMapOption` to achieve a VIC of 1?
-
-  // 6f. How many implementations exist for `mapList`?
-  def mapList[A, B](xs: List[A])(f: A => B): List[B] = ???
-
-  // 6g. How would you test `mapList` to achieve a VIC of 1?
-
-  ////////////////////////
-  // 7. Algebra
-  ////////////////////////
-
-  // 7a. In basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
+  // 6a. In basic algebra, a * 1 = 1 * a = a and a + 0 = 0 + a = a (we say that 1 is the unit of * and 0 is the unit of +).
   // Is it also true with types?
   // To prove that two types A and B are equivalent you need to provide a pair of functions `to` and `from`
   // such as for all a: A, from(to(a)) == a, and equivalent for B.
@@ -283,21 +257,21 @@ object TypeExercises {
   def aOrNothingToA[A]: Iso[Either[A, Nothing], A] =
     Iso(_ => ???, _ => ???)
 
-  // 7b. Prove that `Option[A]` is equivalent to `Either[Unit, A]`.
+  // 6b. Prove that `Option[A]` is equivalent to `Either[Unit, A]`.
   def optionToEitherUnit[A]: Iso[Option[A], Either[Unit, A]] =
     Iso(_ => ???, _ => ???)
 
-  // 7c. Prove that a * (b + c) = a * b + a * c.
+  // 6c. Prove that a * (b + c) = a * b + a * c.
   def distributeTuple[A, B, C]: Iso[(A, Either[B, C]), Either[(A, B), (A, C)]] =
     Iso(_ => ???, _ => ???)
 
-  // 7d. Prove that a ^ 1 = a.
+  // 6d. Prove that a ^ 1 = a.
   def power1[A]: Iso[Unit => A, A] =
     new Iso[Unit => A, A](
       _ => ???,
       _ => ???
     )
 
-  // 7e. Can you think of any other properties that types and algebra have in common?
+  // 6e. Can you think of any other properties that types and algebra have in common?
 
 }

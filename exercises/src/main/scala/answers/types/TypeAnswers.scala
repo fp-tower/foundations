@@ -38,20 +38,35 @@ object TypeAnswers {
   }
 
   case class InvoiceItem(id: String, quantity: Int, price: Double) {
-    def value: Double = quantity * price
+    def discount(discountPercent: Double): InvoiceItem =
+      copy(price = price * (1 - discountPercent))
   }
   case class Invoice(id: String, items: NonEmptyList[InvoiceItem]) {
-    def total: Double = items.toList.map(_.value).sum
-
-    def totalWithDiscountedFirstItem(discountPercent: Double): Double = {
-      val discountedItem    = items.head.copy(price = items.head.price * (1 - discountPercent))
-      val discountedInvoice = copy(items = NonEmptyList(discountedItem, items.tail))
-      discountedInvoice.total
+    def discountFirstItem(discountPercent: Double): Invoice = {
+      val newItem = items.head.discount(discountPercent)
+      copy(items = items.copy(head = newItem))
     }
   }
 
-  def getItemCount(invoice: Invoice): Int =
-    invoice.items.map(_.quantity).toList.sum
+  def genTicket(title: String): IO[Ticket] =
+    for {
+      ticketId  <- genTicketId
+      createdAt <- readNow
+    } yield createTicket(ticketId, title, createdAt)
+
+  def createTicket(ticketId: TicketId, title: String, createdAt: Instant): Ticket =
+    Ticket(
+      id = ticketId,
+      title = title,
+      storyPoints = 0,
+      createdAt = createdAt
+    )
+
+  def genTicketId: IO[TicketId] = IO.effect(TicketId(UUID.randomUUID()))
+  def readNow: IO[Instant]      = IO.effect(Instant.now())
+
+  case class TicketId(value: UUID)
+  case class Ticket(id: TicketId, title: String, storyPoints: Int, createdAt: Instant)
 
   ////////////////////////
   // 2. Data Encoding

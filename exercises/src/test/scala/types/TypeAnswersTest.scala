@@ -92,8 +92,11 @@ class TypeAnswersTest extends AnyFunSuite with Discipline with Matchers {
                             InvoiceItem("a", 2, 10),
                             InvoiceItem("a", 5, 4)
                           ))
-    invoice.total shouldEqual 40
-    invoice.totalWithDiscountedFirstItem(0.5) shouldEqual 30
+    invoice.discountFirstItem(0.5) shouldEqual Invoice("111",
+                                                       NonEmptyList.of(
+                                                         InvoiceItem("a", 2, 5),
+                                                         InvoiceItem("a", 5, 4)
+                                                       ))
   }
 
   test("submit") {
