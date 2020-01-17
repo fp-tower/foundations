@@ -69,14 +69,14 @@ object OptionExercises {
   // but     parseRectangle("C 20 5") == None
   //         parseRectangle("R 0")    == None
   // Note: `parseCircle` does something similar for `Circle`.
-  // Note: `parseRectangle` returns an `InvariantOption` which is like a standard `Option` but with an invariant type parameter.
-  def parseRectangle(inputLine: String): InvariantOption[Rectangle] =
+  // Note: `parseRectangle` returns an `InvOption` which is like a standard `Option` but with an invariant type parameter.
+  def parseRectangle(inputLine: String): InvOption[Rectangle] =
     ???
 
   // 2b. Implement `parseShape` which parses a user input line (e.g. from the command line) into a `Shape`.
   // Try to reuse `parseCircle` and `parseRectangle`.
-  // Note: You may need to `map` the `InvariantOption`.
-  def parseShape(inputLine: String): InvariantOption[Shape] =
+  // Note: You may need to `map` the `InvOption`.
+  def parseShape(inputLine: String): InvOption[Shape] =
     ???
 
   sealed trait Shape
@@ -85,10 +85,10 @@ object OptionExercises {
     case class Rectangle(width: Int, height: Int) extends Shape
   }
 
-  def parseCircle(inputLine: String): InvariantOption[Circle] =
+  def parseCircle(inputLine: String): InvOption[Circle] =
     inputLine.split(" ").toList match {
-      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Circle(radius))
-      case _                               => InvariantOption.None()
+      case "C" :: IntParser(radius) :: Nil => InvOption.Some(Circle(radius))
+      case _                               => InvOption.None()
     }
 
   object IntParser {

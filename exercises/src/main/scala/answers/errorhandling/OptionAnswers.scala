@@ -3,7 +3,7 @@ package answers.errorhandling
 import answers.errorhandling.OptionAnswers.Shape.{Circle, Rectangle}
 import answers.sideeffect.IOAnswers.IO
 import answers.sideeffect.IOAsync
-import exercises.errorhandling.InvariantOption
+import exercises.errorhandling.InvOption
 
 import scala.concurrent.duration._
 import scala.util.Try
@@ -52,12 +52,12 @@ object OptionAnswers {
   // 2. Variance
   ////////////////////////
 
-  def parseShape(inputLine: String): InvariantOption[Shape] =
+  def parseShape(inputLine: String): InvOption[Shape] =
     widen[Shape.Circle, Shape](parseCircle(inputLine)).orElse(
       widen[Shape.Rectangle, Shape](parseRectangle(inputLine))
     )
 
-  def widen[A, B >: A](fa: InvariantOption[A]): InvariantOption[B] =
+  def widen[A, B >: A](fa: InvOption[A]): InvOption[B] =
     fa.map(a => a: B)
 
   sealed trait Shape
@@ -66,16 +66,16 @@ object OptionAnswers {
     case class Rectangle(width: Int, height: Int) extends Shape
   }
 
-  def parseCircle(inputLine: String): InvariantOption[Circle] =
+  def parseCircle(inputLine: String): InvOption[Circle] =
     inputLine.split(" ").toList match {
-      case "C" :: IntParser(radius) :: Nil => InvariantOption.Some(Circle(radius))
-      case _                               => InvariantOption.None()
+      case "C" :: IntParser(radius) :: Nil => InvOption.Some(Circle(radius))
+      case _                               => InvOption.None()
     }
 
-  def parseRectangle(inputLine: String): InvariantOption[Rectangle] =
+  def parseRectangle(inputLine: String): InvOption[Rectangle] =
     inputLine.split(" ").toList match {
-      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvariantOption.Some(Rectangle(width, height))
-      case _                                                   => InvariantOption.None()
+      case "R" :: IntParser(width) :: IntParser(height) :: Nil => InvOption.Some(Rectangle(width, height))
+      case _                                                   => InvOption.None()
     }
 
   object IntParser {

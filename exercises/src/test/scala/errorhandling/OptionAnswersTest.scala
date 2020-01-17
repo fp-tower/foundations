@@ -3,7 +3,7 @@ package errorhandling
 import answers.errorhandling.OptionAnswers.Role._
 import answers.errorhandling.OptionAnswers._
 import answers.sideeffect.{IOAsync, IOAsyncRef}
-import exercises.errorhandling.InvariantOption
+import exercises.errorhandling.InvOption
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import scala.concurrent.duration._
@@ -36,11 +36,11 @@ class OptionAnswersTest extends AnyFunSuite with Matchers {
   }
 
   test("parseShape") {
-    parseShape("C 5") shouldEqual InvariantOption.Some(Shape.Circle(5))
-    parseShape("R 2 5") shouldEqual InvariantOption.Some(Shape.Rectangle(2, 5))
-    parseShape("R 2") shouldEqual InvariantOption.None()
-    parseShape("C 2 3") shouldEqual InvariantOption.None()
-    parseShape("W 2 5") shouldEqual InvariantOption.None()
+    parseShape("C 5") shouldEqual InvOption.Some(Shape.Circle(5))
+    parseShape("R 2 5") shouldEqual InvOption.Some(Shape.Rectangle(2, 5))
+    parseShape("R 2") shouldEqual InvOption.None()
+    parseShape("C 2 3") shouldEqual InvOption.None()
+    parseShape("W 2 5") shouldEqual InvOption.None()
   }
 
   test("filterDigits") {

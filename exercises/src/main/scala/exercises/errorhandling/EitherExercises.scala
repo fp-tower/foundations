@@ -3,7 +3,7 @@ package exercises.errorhandling
 import java.time.{Duration, Instant}
 import java.util.UUID
 
-import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, UnsupportedCountry}
+import exercises.errorhandling.EitherExercises.CountryError.{InvalidFormat, NotSupported}
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacters, TooSmall}
 import exercises.errorhandling.EitherExercises.UserEmailError.{EmailNotFound, UserNotFound}
 import exercises.errorhandling.OptionExercises.{Email, UserId}
@@ -126,7 +126,7 @@ object EitherExercises {
         case "DEU" => Right(Country.Germany)
         case "CHE" => Right(Country.Switzerland)
         case "GBR" => Right(Country.UnitedKingdom)
-        case _     => Left(UnsupportedCountry(country))
+        case _     => Left(NotSupported(country))
       } else Left(InvalidFormat(country))
 
   case class User(username: Username, country: Country)
@@ -141,8 +141,8 @@ object EitherExercises {
 
   sealed trait CountryError
   object CountryError {
-    case class InvalidFormat(country: String)      extends CountryError
-    case class UnsupportedCountry(country: String) extends CountryError
+    case class InvalidFormat(country: String) extends CountryError
+    case class NotSupported(country: String)  extends CountryError
   }
 
   //////////////////////////////////

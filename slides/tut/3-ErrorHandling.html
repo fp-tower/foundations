@@ -177,26 +177,22 @@ public Order submit(Order order) `throws EmptyBasketError, InvalidCommandError`
 
 .pull-right[
 <br>
+<br>
+<br>
 ```scala
-def extractDebitCard(user: User): IO[DebitCard] = {
+def getDebitCard(user: User): IO[DebitCard] = {
   if(user.debitCard == null)
     IO.fail(new Exception("No debit card"))
+  else if (user.debitCard.hasExpired)
+    IO.fail(new Exception("Expired debit card"))
   else
     IO.succeed(user.debitCard)
 }
-
-
-def deleteDebitCard(db: DbApi, userId: UserId): IO[DebitCard] =
-  for {
-    user      <- db.getUser(userId)
-    debitCard <- extractDebitCard(user)
-    _         <- db.upsertDebitCard(userId, null)
-  } yield debitCard
 ```
 ]
 
 ---
-# IO error also lacks documentation
+# IO does not document errors
 
 ```scala
 def deleteCard(userId: UserId): IO[DebitCard] = ???
@@ -233,12 +229,7 @@ background-image: url(img/errorhandling/pure-error-handling.svg)
 # FP error handling
 
 ---
-class: center, middle
-
-# Which types can we use?
-
----
-.h1[# Type constructors with an error channel]
+.h1[# Types with an error channel]
 
 <br>
 
@@ -274,6 +265,15 @@ sealed trait Option[+A]
 object Option {
   case class Some[+A](value: A) extends Option[A]
   case object None extends Option[Nothing]
+}
+```
+
+### In Scala 3
+
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
 }
 ```
 ]
@@ -486,12 +486,17 @@ val shape = optCircle.orElse(optRectangle)
 
 --
 
-## Why shape is an Option[Shape]?
+### Why shape is an Option[Shape]?
 
 ---
 background-image: url(img/errorhandling/option-covariant.svg)
 
 # Option is covariant
+
+---
+background-image: url(img/errorhandling/option-invariant.svg)
+
+# If Option were invariant
 
 ---
 # What about Nothing?
@@ -509,7 +514,7 @@ object Option {
 ```
 
 ---
-.h1[# Type hierarchy]
+.h1[# Scala Type hierarchy]
 
 .pull-left[
 ![Type Hierarchy](img/errorhandling/type-hierarchy.svg)
@@ -568,11 +573,6 @@ val optCircle: InvOption[Circle]= InvOption.None()
 ```
 
 ---
-background-image: url(img/errorhandling/option-invariant.svg)
-
-# If Option were invariant
-
----
 class: center, middle
 
 # Option Exercise 2
@@ -627,6 +627,8 @@ val circleDecoder: JsonDecoder[Circle] = (value: Json) => ???
 val shapeDecoder : JsonDecoder[Shape]  = circleDecoder
 ```
 
+### But
+
 ```tut:fail
 val rectangleDecoder: JsonDecoder[Rectangle] = shapeDecoder
 ```
@@ -651,6 +653,8 @@ trait JsonEncoder[-A]{
 val shapeDecoder : JsonEncoder[Shape]  = (value: Shape) => ???
 val circleDecoder: JsonEncoder[Circle] = shapeDecoder
 ```
+
+### But
 
 ```tut:fail
 val shapeDecoder2: JsonEncoder[Shape] = circleDecoder
@@ -730,6 +734,15 @@ sealed trait Either[+E, +A]
 object Either {
   case class  Left[+E](value: E) extends Either[E, Nothing]
   case class Right[+A](value: A) extends Either[Nothing, A]
+}
+```
+
+### In Scala 3
+
+```scala
+enum Either[+E, +A] {
+  case Left (value: E)
+  case Right(value: A)
 }
 ```
 ]
@@ -981,7 +994,7 @@ background-image: url(img/errorhandling/error-hierarchy-3.svg)
 <br>
 
 ```scala
-type UserError = UsernameError | CountryError
+type UserError = UsernameError | CountryError | OtherError
 ```
 
 

@@ -3,7 +3,7 @@ package answers.errorhandling
 import java.time.{Duration, Instant}
 import java.util.UUID
 
-import answers.errorhandling.EitherAnswers.CountryError.{InvalidFormat, UnsupportedCountry}
+import answers.errorhandling.EitherAnswers.CountryError.{InvalidFormat, NotSupported}
 import answers.errorhandling.EitherAnswers.UserEmailError.{EmailNotFound, UserNotFound}
 import answers.errorhandling.EitherAnswers.UsernameError.{InvalidCharacters, TooSmall}
 import answers.errorhandling.OptionAnswers.{Email, UserId}
@@ -121,8 +121,8 @@ object EitherAnswers {
 
   sealed trait CountryError extends UserError
   object CountryError {
-    case class InvalidFormat(country: String)      extends CountryError
-    case class UnsupportedCountry(country: String) extends CountryError
+    case class InvalidFormat(country: String) extends CountryError
+    case class NotSupported(country: String)  extends CountryError
   }
 
   def validateUser(username: String, country: String): Either[UserError, User] =
@@ -140,7 +140,7 @@ object EitherAnswers {
         case "DEU" => Right(Country.Germany)
         case "CHE" => Right(Country.Switzerland)
         case "GBR" => Right(Country.UnitedKingdom)
-        case _     => Left(UnsupportedCountry(country))
+        case _     => Left(NotSupported(country))
       } else Left(InvalidFormat(country))
 
   sealed trait Country

@@ -1,7 +1,7 @@
 package errorhandling
 
 import exercises.errorhandling.OptionExercises._
-import exercises.errorhandling.InvariantOption
+import exercises.errorhandling.InvOption
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -24,7 +24,7 @@ class OptionExercisesTest extends AnyFunSuite with Matchers {
   test("optEditor") {}
 
   test("parseShape") {
-    parseShape("C 5") shouldEqual InvariantOption.Some(Shape.Circle(5))
+    parseShape("C 5") shouldEqual InvOption.Some(Shape.Circle(5))
   }
 
   test("filterDigits") {}
