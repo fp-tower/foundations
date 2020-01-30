@@ -166,7 +166,7 @@ object EitherExercises {
   // 4b. Implement `validateUserAcc` which behaves similarly to `validateUser` but this time we should
   // return all errors that occur. For example, we want to know if both username and country are invalid.
   // What should be the return type of `validateUserAcc`?
-  // Note: try to use concurrentMap2
+  // Note: try to use `map2Acc`
   def validateUserAcc(username: String, country: String) = ???
 
   // 4c. Implement `sequenceAcc` which accumulates successes if all `Either` are `Right` or accumulates
