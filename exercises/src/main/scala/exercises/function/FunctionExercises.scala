@@ -16,32 +16,28 @@ object FunctionApp extends App {
 
 object FunctionExercises {
 
-  ////////////////////////////
-  // 1. first class functions
-  ////////////////////////////
+  ///////////////////////////////////////////////////
+  // 1. Functions as input (aka higher order functions)
+  ///////////////////////////////////////////////////
 
-  // 1a. Implement `isEven` a function that checks if a number is even
+  // `isEven` checks if a number is even
   // such as isEven(2) == true
   // but     isEven(3) == false
-  // Note: You can use `x % 2` for x modulo 2
   def isEven(x: Int): Boolean =
-    ???
+    x % 2 == 0
 
-  // 1b. Now, we are going to experiment with functions val syntax.
+  // 1a. Now, we are going to experiment with the val function syntax.
   // Implement `isEvenVal` which behaves exactly like `isEven`.
-  // Note: `isEvenVal` is marked as `lazy` because using `???` in a val throws an exception when the file is loaded (e.g. for tests)
+  // Note: `isEvenVal` is marked as `lazy` because we use `???` to say it is not yet implemented.
+  // However, when we load a file  with `val foo = ???` (e.g. for tests), it would throw an exception.
   // You can remove the lazy keyword as soon you implement `isEvenVal`
   lazy val isEvenVal: Int => Boolean =
     ???
 
-  // 1c. Implement `isEvenDefToVal` by transforming `isEven` def function into a val.
-  // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
-  lazy val isEvenDefToVal: Int => Boolean =
-    ???
-
-  // 1d. Implement `keepEvenNumbers` which removes all the odd numbers from a list
+  // 1b. Implement `keepEvenNumbers` which removes all the odd numbers from a list
   // such as keepEvenNumbers(List(1,2,3,4)) == List(2,4)
   // Note: You can use `filter` method from `List`
+  // Can you re-use `isEven` or `isEvenVal` or both?
   def keepEvenNumbers(xs: List[Int]): List[Int] =
     ???
 
@@ -49,6 +45,11 @@ object FunctionExercises {
   // such as keepNumbersSmallThan(List(1,6,3,10))(3) == List(1,3)
   // Try to define a predicate function inline, e.g. xs.filter(x => x == 0)
   def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
+    ???
+
+  // 1c. Implement `isEvenDefToVal` by transforming `isEven` def function into a val.
+  // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
+  lazy val isEvenDefToVal: Int => Boolean =
     ???
 
   // 1f. Implement `move` which increases or decreases a number based on a `Direction` (enumeration)

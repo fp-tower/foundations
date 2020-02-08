@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Functional Programming</title>
+  <title>Function</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
@@ -18,7 +18,7 @@ class: center, middle
 <br>
 
 
-# Functional Programming
+# Function
 
 ---
 layout: true
@@ -29,8 +29,14 @@ layout: true
   </a>
 </div>
 
+
 ---
-# First class function
+class: center, middle
+
+# What makes a programming language functional?
+
+---
+# Functions are normal objects
 
 <br>
 
@@ -38,20 +44,16 @@ layout: true
 val counter  : Int        = 3
 
 val message  : String     = "Hello World!"
-
-val increment: Int => Int = (x: Int) => x + 1
 ```
-
---
 
 <br>
 
 ```tut:silent
-def increment(x: Int): Int = x + 1
+val increment: Int => Int = (x: Int) => x + 1
 ```
 
 ---
-# Function in data structure
+# Functions in data structure
 
 <br>
 
@@ -63,74 +65,89 @@ val double   : Int => Int = (x: Int) => x * 2
 val list = List(increment, decrement, double)
 
 val dictionary = Map(
-  "increment"  -> increment,
-  "decrement"  -> decrement,
-  "double"     -> double,
+  "plus1"  -> increment,
+  "minus1" -> decrement,
+  "twice"  -> double,
 )
 ```
 
-```tut
-dictionary("increment")(10)
-dictionary("double")(10)
-```
-
----
-# Function in data structure
-
-```tut:silent
-case class Message(id: Long, action: String => String)
-
-val m1 = Message(0, (s: String) => s.take(12))
-val m2 = Message(1, (s: String) => s ++ s)
-```
-
---
-
-```tut:silent
-var state: String = "Hello world is the most famous String!"
-
-def applyMessage(message: Message): String = {
-  state = message.action(state)
-  state
-}
-```
-
 --
 
 ```tut
-applyMessage(m1)
-applyMessage(m2)
+dictionary("plus1")(10)
+dictionary("twice")(10)
 ```
 
+
 ---
-.h1[# Code duplication]
+# Syntax
+
+<br>
+
+.medium-left[
+## Val function
+
+```tut:silent
+val plus: (Int, Int) => Int =
+  (x, y) => x + y
+```
+]
+
+.pull-right[
+## Def function (Method)
+
+```tut:silent
+def plus(x: Int, y: Int): Int =
+  x + y
+```
+]
+
+
+---
+class: center, middle
+
+# Two main features of first class functions
+
+---
+# #1 Functions as input
 
 <br>
 
 ```tut:invisible
+def filter(list: List[String], predicate: String => Boolean): List[String] =
+  list.filter(predicate)
+```
+
+```scala
+def filter(list: List[String], predicate: String => Boolean): List[String] = ...
+```
+
+--
+
+<br>
+
+```tut:silent
+val words = List("Hello", "World", "Hey")
+```
+
+```tut
+filter(words, (s: String) => s.startsWith("H"))
+
+
+filter(words, (s: String) => s.length > 3)
+```
+
+---
+.h1[# Reduce code duplication]
+
+<br>
+
+.pull-left[
+```tut:silent
 def upperCase(s: String): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
     characters(i) = characters(i).toUpper
-  }
-  new String(characters)
-}
-
-def lowerCase(s: String): String = {
-  val characters = s.toArray
-  for (i <- 0 until s.length) {
-    characters(i) = characters(i).toLower
-  }
-  new String(characters)
-}
-```
-
-.pull-left[
-```scala
-def upperCase(s: String): String = {
-  val characters = s.toArray
-  for (i <- 0 until s.length) {
-    characters(i) = characters(i).`toUpper`
   }
   new String(characters)
 }
@@ -142,11 +159,11 @@ upperCase("Hello")
 ]
 
 .pull-right[
-```scala
+```tut:silent
 def lowerCase(s: String): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
-    characters(i) = characters(i).`toLower`
+    characters(i) = characters(i).toLower
   }
   new String(characters)
 }
@@ -157,14 +174,12 @@ lowerCase("Hello")
 ```
 ]
 
-
-
 ---
-# Higher order function
+# Capture pattern with a higher order function
 
 <br>
 
-```tut:invisible
+```tut:silent
 def map(s: String, f: Char => Char): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
@@ -172,34 +187,64 @@ def map(s: String, f: Char => Char): String = {
   }
   new String(characters)
 }
-```
 
-```scala
-def map(s: String, f: `Char => Char`): String = {
-  val characters = s.toArray
-  for (i <- 0 until s.length) {
-    characters(i) = `f`(characters(i))
-  }
-  new String(characters)
-}
-```
-
---
-
-```tut:silent
 def upperCase(s: String): String = map(s, c => c.toUpper)
 
 def lowerCase(s: String): String = map(s, c => c.toLower)
-
-def  password(s: String): String = map(s, c => '*')
-```
-
-```tut
-password("123456")
 ```
 
 ---
-# Partial function application
+# Write tricky code once
+
+```tut:silent
+import scala.io.Source
+
+def usingFile(fileName: String, f: Iterator[String] => String): String = {
+  val source = Source.fromResource(fileName)
+  try {
+    f(source.getLines())
+  } finally {
+    source.close()
+  }
+}
+```
+
+---
+.h1[# Write tricky code once]
+
+<br>
+
+.pull-left[
+```tut:silent
+def readFirstLine(fileName: String): String =
+  usingFile(fileName, lines => lines.next())
+```
+
+```tut
+readFirstLine("test.conf")
+```
+]
+
+.pull-right[
+```tut:silent
+def readEntireFile(fileName: String): String =
+  usingFile(fileName, lines => lines.mkString("\n"))
+```
+
+```tut
+readEntireFile("test.conf")
+```
+]
+
+---
+class: center, middle
+
+# Exercise 1: Functions as input
+
+`exercises.function.FunctionExercises.scala`
+
+---
+# #2 Functions as output
 
 <br>
 
