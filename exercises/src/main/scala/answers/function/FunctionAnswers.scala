@@ -9,24 +9,28 @@ import scala.concurrent.duration._
 
 object FunctionAnswers {
 
-  ////////////////////////////
-  // 1. first class functions
-  ////////////////////////////
+  //////////////////////////////////////////////////////
+  // 1. Functions as input (aka higher order functions)
+  //////////////////////////////////////////////////////
 
-  def isEven(x: Int): Boolean =
-    x % 2 == 0
+  def keepLetters(s: String): String =
+    s.filter(c => c.isLetter)
 
-  val isEvenVal: Int => Boolean =
-    (x: Int) => x % 2 == 0
+  def secret(s: String): String =
+    s.map(_ => '*')
 
-  val isEvenDefToVal: Int => Boolean =
-    isEven _ // or just isEven
+  def isValidUsernameCharacter(c: Char): Boolean =
+    c.isLetterOrDigit || c == '-' || c == '_'
 
-  def keepEvenNumbers(xs: List[Int]): List[Int] =
-    xs.filter(isEven)
+  lazy val _isValidUsernameCharacter: Char => Boolean =
+    c => c.isLetterOrDigit || c == '-' || c == '_'
 
-  def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
-    xs.filter(_ <= threshold)
+  def isValidUsername(username: String): Boolean =
+    username.forall(isValidUsernameCharacter)
+
+  /////////////////////////////////////////////////
+  // 2. functions as output (aka curried function)
+  /////////////////////////////////////////////////
 
   sealed trait Direction
   case object Up   extends Direction

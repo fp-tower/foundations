@@ -16,41 +16,44 @@ object FunctionApp extends App {
 
 object FunctionExercises {
 
-  ///////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
   // 1. Functions as input (aka higher order functions)
-  ///////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
 
-  // `isEven` checks if a number is even
-  // such as isEven(2) == true
-  // but     isEven(3) == false
-  def isEven(x: Int): Boolean =
-    x % 2 == 0
+  // 1a. Implement `keepLetters` which iterates over a String and only keep the characters that are letters.
+  // such as keepLetters("123foo0-!Bar~+3") == "fooBar"
+  // Note: You can use `filter` method from `String`, also check out the API of Char
+  def keepLetters(s: String): String = ???
 
-  // 1a. Now, we are going to experiment with the val function syntax.
-  // Implement `isEvenVal` which behaves exactly like `isEven`.
-  // Note: `isEvenVal` is marked as `lazy` because we use `???` to say it is not yet implemented.
-  // However, when we load a file  with `val foo = ???` (e.g. for tests), it would throw an exception.
-  // You can remove the lazy keyword as soon you implement `isEvenVal`
-  lazy val isEvenVal: Int => Boolean =
-    ???
+  // 1b. Implement `secret` which transforms all characters in a String to '*'
+  // such as secret("Welcome123") == "**********"
+  // Note: You can use `map` method from `String`
+  def secret(s: String): String = ???
 
-  // 1b. Implement `keepEvenNumbers` which removes all the odd numbers from a list
-  // such as keepEvenNumbers(List(1,2,3,4)) == List(2,4)
-  // Note: You can use `filter` method from `List`
-  // Can you re-use `isEven` or `isEvenVal` or both?
-  def keepEvenNumbers(xs: List[Int]): List[Int] =
-    ???
+  // 1c. Implement `isValidUsernameCharacter` which checks if a character is suitable for a username.
+  // We accept:
+  // * lower and upper case letters
+  // * digits
+  // * special characters: '-' and '_'
+  // For example, isValidUsernameCharacter('3') == true
+  // but          isValidUsernameCharacter('^') == false
+  def isValidUsernameCharacter(c: Char): Boolean = ???
 
-  // 1e. Implement `keepNumbersSmallThan` which removes all the numbers above a threshold
-  // such as keepNumbersSmallThan(List(1,6,3,10))(3) == List(1,3)
-  // Try to define a predicate function inline, e.g. xs.filter(x => x == 0)
-  def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
-    ???
+  // 1d. Now, we are going to experiment with the val function syntax.
+  // Implement `_isValidUsernameCharacter` which behaves exactly like `isValidUsernameCharacter`.
+  // Note: You can remove the lazy keyword as soon you implement `_isValidUsernameCharacter`.
+  // It is only required to avoid tests throwing an exception.
+  lazy val _isValidUsernameCharacter: Char => Boolean = ???
 
-  // 1c. Implement `isEvenDefToVal` by transforming `isEven` def function into a val.
-  // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
-  lazy val isEvenDefToVal: Int => Boolean =
-    ???
+  // 1e. Implements `isValidUsername` which checks that all the characters in a String are valid
+  // such as isValidUsername("john-doe") == true
+  // but     isValidUsername("*john*") == false
+  // Can you re-use `isValidUsernameCharacter` or `_isValidUsernameCharacter` or both?
+  def isValidUsername(username: String): Boolean = ???
+
+  /////////////////////////////////////////////////
+  // 2. functions as output (aka curried function)
+  /////////////////////////////////////////////////
 
   // 1f. Implement `move` which increases or decreases a number based on a `Direction` (enumeration)
   // such as move(Up)(5) == 6

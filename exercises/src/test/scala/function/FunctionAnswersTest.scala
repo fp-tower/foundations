@@ -14,20 +14,27 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
   // 1. first class functions
   ////////////////////////////
 
-  test("isEven") {
-    isEven(2) shouldEqual true
-    isEven(3) shouldEqual false
-
-    isEven(-2) shouldEqual true
-    isEven(-3) shouldEqual false
+  test("keepLetters") {
+    keepLetters("123foo0-!Bar~+3") shouldEqual "fooBar"
   }
 
-  test("isEvenVal") {
-    forAll((x: Int) => isEvenVal(x) shouldEqual isEven(x))
+  test("secret") {
+    secret("abc123") shouldEqual "******"
   }
 
-  test("isEvenDefToVal") {
-    forAll((x: Int) => isEvenDefToVal(x) shouldEqual isEven(x))
+  test("isValidUsernameCharacter") {
+    isValidUsernameCharacter('a') shouldEqual true
+    isValidUsernameCharacter('A') shouldEqual true
+    isValidUsernameCharacter('1') shouldEqual true
+    isValidUsernameCharacter('-') shouldEqual true
+    isValidUsernameCharacter('_') shouldEqual true
+    isValidUsernameCharacter('~') shouldEqual false
+    isValidUsernameCharacter('!') shouldEqual false
+  }
+
+  test("isValidUsername") {
+    isValidUsername("john-doe") shouldEqual true
+    isValidUsername("*john*") shouldEqual false
   }
 
   test("move") {

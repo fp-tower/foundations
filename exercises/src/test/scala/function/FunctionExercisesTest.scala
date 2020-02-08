@@ -8,23 +8,23 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
-  ////////////////////////////
-  // 1. first class functions
-  ////////////////////////////
+  /////////////////////////////////////////////////////
+  // 1. Functions as input (aka higher order functions)
+  /////////////////////////////////////////////////////
 
-  test("isEven") {
-    isEven(2) shouldEqual true
-    isEven(3) shouldEqual false
-
-    isEven(-2) shouldEqual true
-    isEven(-3) shouldEqual false
+  test("keepLetters") {
+    keepLetters("123foo0-!Bar~+3") shouldEqual "fooBar"
   }
 
-  test("isEvenVal") {
-    forAll((x: Int) => isEvenVal(x) shouldEqual isEven(x))
+  test("secret") {
+    secret("abc123") shouldEqual "******"
   }
 
-  test("isEvenDefToVal") {}
+  test("isValidUsernameCharacter") {}
+
+  test("_isValidUsernameCharacter") {}
+
+  test("isValidUsername") {}
 
   test("move") {}
 
