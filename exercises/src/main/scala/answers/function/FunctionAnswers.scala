@@ -32,19 +32,10 @@ object FunctionAnswers {
   // 2. functions as output (aka curried function)
   /////////////////////////////////////////////////
 
-  sealed trait Direction
-  case object Up   extends Direction
-  case object Down extends Direction
+  def add(x: Int)(y: Int): Int = x + y
 
-  def move(direction: Direction)(x: Int): Int =
-    direction match {
-      case Up   => x + 1
-      case Down => x - 1
-    }
-
-  val increment: Int => Int = move(Up)
-
-  val decrement: Int => Int = move(Down)
+  lazy val increment: Int => Int = add(1)
+  lazy val decrement: Int => Int = add(-1)
 
   ////////////////////////////
   // 2. polymorphic functions

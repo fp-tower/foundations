@@ -48,26 +48,19 @@ object FunctionExercises {
   // 1e. Implements `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
-  // Can you re-use `isValidUsernameCharacter` or `_isValidUsernameCharacter` or both?
+  // Can you re-use `isValidUsernameCharacter` or `_isValidUsernameCharacter` or both? Why?
   def isValidUsername(username: String): Boolean = ???
 
-  /////////////////////////////////////////////////
-  // 2. functions as output (aka curried function)
-  /////////////////////////////////////////////////
+  //////////////////////////////////////////////////
+  // 2. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
 
-  // 1f. Implement `move` which increases or decreases a number based on a `Direction` (enumeration)
-  // such as move(Up)(5) == 6
-  // but     move(Down)(5) == 4
-  sealed trait Direction
-  case object Up   extends Direction
-  case object Down extends Direction
+  // 2a. Implement `increment` and `decrement` using `add`
+  // such as increment(5) == 6
+  // and     decrement(5) == 4
+  // Note: You can remove the lazy keyword as soon you `increment` and `decrement`.
+  def add(x: Int)(y: Int): Int = x + y
 
-  def move(direction: Direction)(x: Int): Int =
-    ???
-
-  // 1g. Implement `increment` and `decrement` by reusing `move`
-  // such as increment(10) == 11
-  // such as decrement(10) == 9
   lazy val increment: Int => Int = ???
 
   lazy val decrement: Int => Int = ???

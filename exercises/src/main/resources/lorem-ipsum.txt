@@ -10,8 +10,4 @@ lectus proin nibh nisl condimentum. Consequat nisl vel
 pretium lectus. Nulla porttitor massa id neque aliquam.
 Volutpat commodo sed egestas egestas fringilla phasellus.
 Sagittis aliquam malesuada bibendum arcu vitae elementum
-curabitur vitae. Ut diam quam nulla porttitor massa. A
-diam maecenas sed enim ut sem viverra aliquet eget. Enim
-diam vulputate ut pharetra sit amet aliquam id diam. Est
-ullamcorper eget nulla facilisi. Sed odio morbi quis commodo
-odio. Turpis egestas pretium aenean pharetra magna ac.
+curabitur vitae. Ut diam quam nulla porttitor massa.

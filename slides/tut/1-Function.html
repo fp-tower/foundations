@@ -65,17 +65,17 @@ val double   : Int => Int = (x: Int) => x * 2
 val list = List(increment, decrement, double)
 
 val dictionary = Map(
-  "plus1"  -> increment,
-  "minus1" -> decrement,
-  "twice"  -> double,
+  "increment" -> increment,
+  "decrement" -> decrement,
+  "double"    -> double,
 )
 ```
 
 --
 
 ```tut
-dictionary("plus1")(10)
-dictionary("twice")(10)
+dictionary("increment")(10)
+dictionary("double")(10)
 ```
 
 
@@ -127,7 +127,7 @@ def filter(list: List[String], predicate: String => Boolean): List[String] = ...
 <br>
 
 ```tut:silent
-val words = List("Hello", "World", "Hey")
+val words = List("Hello", " ", "World", "Hey")
 ```
 
 ```tut
@@ -249,17 +249,14 @@ class: center, middle
 <br>
 
 ```tut:invisible
-def formatDouble(scale: Int)(value: Double): String =
-  BigDecimal(value).setScale(scale, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
-
-val format2D: Double => String = formatDouble(2)
-val format5D: Double => String = formatDouble(5)
+def formatDouble(digits: Int, number: Double): String =
+  BigDecimal(number).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
 ```
 
 ```scala
-def formatDouble(scale: Int)(value: Double): String =
-  BigDecimal(value)
-    .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
+def formatDouble(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
     .toDouble
     .toString
 ```
@@ -267,8 +264,53 @@ def formatDouble(scale: Int)(value: Double): String =
 <br>
 
 ```tut
+formatDouble(2, 1.123456789)
+formatDouble(5, 1.123456789)
+```
+
+---
+# #2 Functions as output
+
+.pull-left[
+```scala
+def formatDouble(digits: Int, number: Double): String
+```
+
+```tut
+formatDouble(2, 1.123456789)
+```
+<br>
+]
+
+.pull-right[
+```tut:invisible
+def formatDouble(digits: Int): Double => String =
+  BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
+
+val format2D: Double => String = formatDouble(2)
+val format5D: Double => String = formatDouble(5)
+```
+
+```scala
+def formatDouble(digits: Int): Double => String
+```
+
+```tut
 formatDouble(2)(1.123456789)
-formatDouble(5)(1.123456789)
+```
+<br>
+]
+
+--
+
+
+
+## Currying
+
+```scala
+val function3: (Int , Int  , Int) => Int
+
+val function3: Int => Int => Int  => Int
 ```
 
 ---
@@ -277,15 +319,19 @@ formatDouble(5)(1.123456789)
 <br>
 
 ```scala
-def formatDouble(scale: Int)(value: Double): String =
-  BigDecimal(value)
-    .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
+def formatDouble(digits: Int): Double => String =
+  number => BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
     .toDouble
     .toString
-
-val format2D = formatDouble(2)
-val format5D = formatDouble(5)
 ```
+
+```scala
+val format2D: Double => String = formatDouble(2)
+val format5D: Double => String = formatDouble(5)
+```
+
+--
 
 ```tut
 format2D(1.123456789)
@@ -293,44 +339,21 @@ format5D(1.123456789)
 ```
 
 ---
-# Partial function application
+# Alternative syntax
 
 <br>
-
-```tut:invisible
-val formatDouble: Int => (Double => String) =
-  (scale: Int) => {
-    (value: Double) => {
-      BigDecimal(value).setScale(scale, BigDecimal.RoundingMode.HALF_DOWN).toDouble.toString
-    }
-  }
-```
 
 ```scala
-val formatDouble: Int => (Double => String) =
-  (scale: Int) => {
-    (value: Double) => {
-      BigDecimal(value)
-        .setScale(scale, BigDecimal.RoundingMode.HALF_DOWN)
-        .toDouble
-        .toString
-     }
-  }
+def formatDouble(digits: Int): Double        => String
+
+def formatDouble(digits: Int)(number: Double):  String
 ```
 
---
-
-<br>
-
-```tut:silent
-val format2D: Double => String = formatDouble(2)
-val format5D: Double => String = formatDouble(5)
-```
 
 ---
 class: center, middle
 
-# Exercise 1
+# Exercise 2: Functions as output
 
 `exercises.function.FunctionExercises.scala`
 
