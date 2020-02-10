@@ -10,9 +10,9 @@ import scala.collection.mutable.ListBuffer
 
 class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
-  ////////////////////////////
-  // 1. first class functions
-  ////////////////////////////
+  //////////////////////////////////////////////////////
+  // 1. Functions as input (aka higher order functions)
+  //////////////////////////////////////////////////////
 
   test("keepLetters") {
     keepLetters("123foo0-!Bar~+3") shouldEqual "fooBar"
@@ -37,9 +37,13 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     isValidUsername("*john*") shouldEqual false
   }
 
-  test("move") {
-    move(Up)(5) shouldEqual 6
-    move(Down)(5) shouldEqual 4
+  //////////////////////////////////////////////////
+  // 2. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
+
+  test("increment - decrement") {
+    increment(5) shouldEqual 6
+    decrement(5) shouldEqual 4
   }
 
   ////////////////////////////

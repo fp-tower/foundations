@@ -28,9 +28,9 @@ object FunctionAnswers {
   def isValidUsername(username: String): Boolean =
     username.forall(isValidUsernameCharacter)
 
-  /////////////////////////////////////////////////
-  // 2. functions as output (aka curried function)
-  /////////////////////////////////////////////////
+  //////////////////////////////////////////////////
+  // 2. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
 
   def add(x: Int)(y: Int): Int = x + y
 
