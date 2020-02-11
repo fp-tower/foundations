@@ -358,37 +358,30 @@ class: center, middle
 `exercises.function.FunctionExercises.scala`
 
 ---
-# Parametric types
-
-<br>
-
-```scala
-Int
-String
-Direction
-```
-
-```scala
-List[Int]
-Map[Int, String]
-```
-
----
-# Parametric types
+# Functions
 
 <br>
 
 ```tut:silent
-case class Point(x: Int, y: Int)
-
-case class Pair[A](first: A, second: A)
+def map(s: String, f: Char => Char): String = ???
 ```
 
-```tut
-Point(3, 4)
-Pair(3, 4)
+--
 
-Pair("John", "Doe")
+<br>
+
+```tut:silent
+def map(list: List[Int]   , f: Int    => Int   ): List[Int]    = ???
+
+def map(list: List[String], f: String => String): List[String] = ???
+```
+
+--
+
+<br>
+
+```tut:silent
+def map(list: List[Int]   , f: Int    => String): List[String] = ???
 ```
 
 ---
@@ -397,87 +390,147 @@ Pair("John", "Doe")
 <br>
 
 ```tut:silent
-def swap[A](pair: Pair[A]): Pair[A] =
-  Pair(pair.second, pair.first)
+def map[To](list: List[Int], f: Int => To): List[To] = ???
 ```
+
+```tut:invisible
+def map[To](list: List[Int], f: Int => To): List[To] = list.map(f)
+```
+
+<br>
 
 ```tut
-swap(Pair(1, 5))
-swap(Pair("John", "Doe"))
+map(List(1,2,3,4), (x: Int) => x + 1)
+map(List(1,2,3,4), (x: Int) => x / 2.0)
 ```
 
 ---
-# 1. Type parameters must be defined before we use them
-
-<br>
-
-```scala
-case class Pair[`A`](first: A, second: A)
-
-def swap[`A`](pair: Pair[A]): Pair[A] =
-  Pair(pair.second, pair.first)
-```
-
-<br>
-
-```scala
-def swap(pair: Pair[A]): Pair[A] =
-  Pair(pair.second, pair.first)
-
-On line 2: error: not found: type A
-swap(pair: Pair[A]): Pair[A] =
-                ^
-```
-
----
-# 2. Type parameters should not be introspected
+# Parametric functions
 
 <br>
 
 ```tut:silent
-def showPair[A](pair: Pair[A]): String =
-  pair match {
-    case p: Pair[Int]    => s"(${p.first}, ${p.second})"
-    case p: Pair[Double] => s"(${format2D(p.first)} , ${format2D(p.second)})"
-    case _               => "N/A"
-  }
+def map[From, To](list: List[From], f: From => To): List[To] = ???
 ```
+
+```tut:invisible
+def map[From, To](list: List[From], f: From => To): List[To] = list.map(f)
+```
+
+<br>
 
 ```tut
-showPair(Pair(10, 99))
-showPair(Pair(1.12345, 0.000001))
-showPair(Pair("John", "Doe"))
+map(List(1,2,3,4), (x: Int) => x / 2.0)
+map(List("Hello", "World"), (x: String) => x.toCharArray)
 ```
 
+<br>
+
+.center[
+## #1 Benefit: code reuse
+]
+
 ---
-# 2. Type parameters should not be introspected
+# Interpretation
 
 <br>
 
 ```tut:silent
-def show[A](value: A): String =
-  value match {
-    case x: Int       => x.toString
-    case x: Double    => format2D(x)
-    case _            => "N/A"
-  }
+def map[From, To](list: List[From], f: From => To): List[To] = ???
 ```
 
-```tut
-show(1)
-show(2.3)
-show("Foo")
+<br>
+
+.medium[
+For all types `From` and `To`, `map` transforms a `List[From]` into a `List[To]` using a function `From => To`
+]
+
+---
+# Interpretation
+
+<br>
+
+```tut:silent
+def map[From, To](list: List[From], f: From => To): List[To] = ???
 ```
+
+<br>
+
+.medium[
+The callers of `map` decide what `From` and `To` are.
+
+But `map` doesn't know what `From` and `To` are.
+]
+
+---
+# How can we implement `map`?
+
+<br>
+
+```tut:silent
+def map[From, To](list: List[From], f: From => To): List[To] = ???
+```
+
+--
+
+<br>
+
+.medium[
+* Always return `Nil` (`List.empty`)
+]
+
+--
+
+.medium[
+* Somehow call `f` on the elements of `list`
+]
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], f: From => To): List[To] =
+  List(1,2,3)
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], f: From => To): List[To] =
+  List(1,2,3)
+
+On line 3: error: type mismatch;
+        found   : Int(1)
+        required: To
+```
+
+--
+
+<br>
+
+```tut:silent
+def map(list: List[Int], f: Int => Int): List[Int] =
+  List(1,2,3)
+```
+
+--
+
+<br>
+
+.center[
+## #2 Benefit: Require less tests
+]
+
 
 ---
 class: center, middle
 
-# A type parameter is a form of encapsulation
-
----
-class: center, middle
-
-# Exercises 2 and 3a-b
+# Exercises 3: Parametric functions
 
 `exercises.function.FunctionExercises.scala`
 
@@ -1333,6 +1386,212 @@ class: center, middle
 class: center, middle
 
 # [Module 2: Side Effect](2-SideEffect.html#1)
+
+
+---
+# Parametric types
+
+<br>
+
+.pull-left[
+```tut:silent
+case class Point(x: Int, y: Int)
+```
+
+<br>
+
+```tut
+Point(3, 4)
+```
+]
+
+.pull-right[
+```tut:silent
+case class Pair[A](first: A, second: A)
+```
+
+<br>
+
+```tut
+Pair(3, 4)
+
+Pair("John", "Doe")
+```
+]
+
+---
+# Parametric functions
+
+<br>
+
+```tut:silent
+def swap[A](pair: Pair[A]): Pair[A] =
+  Pair(pair.second, pair.first)
+```
+
+```tut
+swap(Pair(1, 5))
+swap(Pair("John", "Doe"))
+```
+
+---
+# Pattern match
+
+<br>
+
+```tut:silent
+def swap[A](pair: Pair[A]): Pair[A] =
+  pair match {
+    case x: Pair[Int]    => Pair(x.first + 1, x.second - 1)
+    case x: Pair[String] => Pair(x.first    , x.second.reverse)
+    case other           => Pair(pair.second, pair.first)
+  }
+```
+
+--
+
+```tut
+swap(Pair(1, 5))
+```
+
+```tut:fail
+swap(Pair("John", "Doe"))
+```
+
+---
+# Type erasure
+
+<br>
+
+```scala
+def swap(pair: Pair[Any]): Pair[Any] =
+  pair match {
+    case x     => Pair(x.first + 1, x.second - 1)
+    case x     => Pair(x.first    , x.second.reverse)
+    case other => Pair(pair.second, pair.first)
+  }
+```
+
+---
+# Type erasure is a good thing <sup>TM<sup>
+
+<br>
+
+```tut:silent
+def swap[A](pair: Pair[A]): Pair[A] = ???
+```
+
+> For all type A, `swap` takes a `Pair` of `A` and returns a `Pair` of `A`.
+
+
+
+---
+# 1. Type parameters must be defined before we use them
+
+<br>
+
+```scala
+case class Pair[`A`](first: A, second: A)
+
+def swap[`A`](pair: Pair[A]): Pair[A] =
+  Pair(pair.second, pair.first)
+```
+
+<br>
+
+```scala
+def swap(pair: Pair[A]): Pair[A] =
+  Pair(pair.second, pair.first)
+
+On line 2: error: not found: type A
+swap(pair: Pair[A]): Pair[A] =
+                ^
+```
+
+---
+# 2. Type parameters should not be introspected
+
+<br>
+
+```scala
+def showPair[A](pair: Pair[A]): String =
+  pair match {
+    case p: Pair[Int]    => s"(${p.first}, ${p.second})"
+    case p: Pair[Double] => s"(${format2D(p.first)} , ${format2D(p.second)})"
+    case _               => "N/A"
+  }
+```
+
+```scala
+showPair(Pair(10, 99))
+showPair(Pair(1.12345, 0.000001))
+showPair(Pair("John", "Doe"))
+```
+
+---
+# 2. Type parameters should not be introspected
+
+<br>
+
+```scala
+def show[A](value: A): String =
+  value match {
+    case x: Int       => x.toString
+    case x: Double    => format2D(x)
+    case _            => "N/A"
+  }
+```
+
+```scala
+show(1)
+show(2.3)
+show("Foo")
+```
+
+---
+class: center, middle
+
+# A type parameter is a form of encapsulation
+
+---
+# Types vs Type constructors
+
+<br>
+
+.pull-left[
+```scala
+Int
+String
+Direction
+```
+]
+
+.pull-right[
+```scala
+List
+Map
+Ordering
+```
+]
+
+
+<br>
+<br>
+
+.pull-left[
+```tut:silent
+val counter: Int = 5
+
+val message: String = "Welcome!"
+```
+]
+
+.pull-right[
+```tut:fail
+val elems: List = List(1, 2, 3)
+```
+]
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

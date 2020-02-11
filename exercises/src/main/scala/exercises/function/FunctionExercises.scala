@@ -66,7 +66,7 @@ object FunctionExercises {
   lazy val decrement: Int => Int = ???
 
   ////////////////////////////
-  // 2. polymorphic functions
+  // 3. parametric functions
   ////////////////////////////
 
   val zero: Pair[Int]        = Pair(0, 0)
