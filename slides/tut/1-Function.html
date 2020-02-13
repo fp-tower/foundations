@@ -524,11 +524,11 @@ class: center, middle
 ---
 # Type inference
 
+<br>
+
 ```tut:silent
 case class Pair[A](first: A, second: A) {
   def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ???
-
-  def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ???
 }
 ```
 
@@ -539,19 +539,16 @@ case class Pair[A](first: A, second: A) {
       combine(first , other.first),
       combine(second, other.second)
     )
-
-  def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
-    zipWith(other, combine)
 }
 ```
-
---
 
 <br>
 
 ```tut
 Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y)
 ```
+
+--
 
 ```tut:fail
 Pair(0, 2).zipWith(Pair(3, 3), (x, y) => x + y)
@@ -560,18 +557,28 @@ Pair(0, 2).zipWith(Pair(3, 3), (x, y) => x + y)
 ---
 # Type inference
 
-```scala
-case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ???
+<br>
 
-  def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ???
+```tut:silent
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ???
+}
+```
+
+```tut:invisible
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
+    Pair(
+      combine(first , other.first),
+      combine(second, other.second)
+    )
 }
 ```
 
 <br>
 
 ```tut
-Pair(0, 2).zipWithCurried(Pair(3, 3))((x, y) => x + y)
+Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y)
 ```
 
 --
@@ -579,8 +586,17 @@ Pair(0, 2).zipWithCurried(Pair(3, 3))((x, y) => x + y)
 <br>
 
 ```tut
-Pair(0, 2).zipWithCurried(Pair(3, 3))(_ + _)
+Pair(0, 2).zipWith(Pair(3, 3))(_ + _)
 ```
+
+---
+# Scala API design
+
+TODO
+
+--
+
+## Not relevant in Scala 3
 
 ---
 background-image: url(img/function/fold.svg)
