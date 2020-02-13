@@ -73,31 +73,34 @@ object FunctionExercises {
   val fullName: Pair[String] = Pair("John", "Doe")
 
   case class Pair[A](first: A, second: A) {
-    // 2a. Implement `map` which applies a function to `first` and `second`
+    // 3a. Implement `swap` which exchanges `first` and `second`
+    // such as Pair("John", "Doe").swap == Pair("Doe", "John")
+    // Bonus: how many implementations of `swap` would compile?
+    def swap: Pair[A] =
+      ???
+
+    // 3b. Implement `map` which applies a function to `first` and `second`
     // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
     def map[B](f: A => B): Pair[B] =
       ???
+
+    // 3c. Implement `forAll` which check if a predicate is true for both `first` and `second`
+    // such as Pair( 2,  6).forAll(_ > 0) == true
+    // but     Pair( 2, -1).forAll(_ > 0) == false
+    //         Pair(-2, -1).forAll(_ > 0) == false
+    def forAll(predicate: A => Boolean): Boolean =
+      ???
+
+    // 3d. Implement `zipWith` which merges two `Pair` using a `combine` function
+    // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
+    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+      ???
+
+    // 3e. Would you rather define `zipWith` with one input parameter list (like above) or two
+    // parameter lists (like below)? In other words, is there any benefits to curry `zipWith`?
+    def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
+      zipWith(other, combine)
   }
-
-  // 2b. Implement `mapOption` which applies a function to an Option if it is a `Some`.
-  // Use patter matching on Option (see `sizeOption`) instead of using Option API
-  // such as mapOption(Some(2), isEven)    == Some(true)
-  //         mapOption(Some(2), increment) == Some(3)
-  // but     mapOption(Option.empty[Int], increment) == None
-  // Note: Option is a enumeration with two constructors `Some` and `None`.
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
-    ???
-
-  def sizeOption[A](option: Option[A]): Int =
-    option match {
-      case None    => 0
-      case Some(a) => 1
-    }
-
-  // 2c. What is the difference between `mapOption` and `mapOption2`?
-  // Which one should you use?
-  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] =
-    mapOption(option, f)
 
   // 2d. Implement `identity` which returns its input unchanged
   // such as identity(1) == 1

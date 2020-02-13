@@ -38,12 +38,24 @@ object FunctionAnswers {
   lazy val decrement: Int => Int = add(-1)
 
   ////////////////////////////
-  // 2. polymorphic functions
+  // 3. parametric functions
   ////////////////////////////
 
   case class Pair[A](first: A, second: A) {
+    def swap: Pair[A] =
+      Pair(second, first)
+
     def map[B](f: A => B): Pair[B] =
       Pair(f(first), f(second))
+
+    def forAll(predicate: A => Boolean): Boolean =
+      predicate(first) && predicate(second)
+
+    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+      Pair(combine(first, other.first), combine(second, other.second))
+
+    def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
+      zipWith(other, combine)
   }
 
   def mapOption[A, B](option: Option[A], f: A => B): Option[B] =

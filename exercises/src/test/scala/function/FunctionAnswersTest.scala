@@ -47,11 +47,29 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
   }
 
   ////////////////////////////
-  // 2. polymorphic functions
+  // 3. parametric functions
   ////////////////////////////
+
+  test("Pair#swap") {
+    Pair("John", "Doe").swap shouldEqual Pair("Doe", "John")
+  }
 
   test("Pair#map") {
     Pair("John", "Doe").map(_.length) shouldEqual Pair(4, 3)
+  }
+
+  test("Pair#forAll") {
+    Pair("John", "Doe").forAll(_.length > 2) shouldEqual true
+    Pair("John", "Doe").forAll(_.startsWith("J")) shouldEqual false
+    Pair("John", "Doe").forAll(_.startsWith("H")) shouldEqual false
+  }
+
+  test("Pair#zipWith") {
+    Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) shouldEqual Pair(3, 5)
+  }
+
+  test("Pair#zipWithCurried") {
+    Pair(0, 2).zipWithCurried(Pair(3, 3))(_ + _) shouldEqual Pair(3, 5)
   }
 
   test("identity") {
