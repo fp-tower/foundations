@@ -22,7 +22,7 @@ object FunctionAnswers {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetterOrDigit || c == '-' || c == '_'
 
-  lazy val _isValidUsernameCharacter: Char => Boolean =
+  val _isValidUsernameCharacter: Char => Boolean =
     c => c.isLetterOrDigit || c == '-' || c == '_'
 
   def isValidUsername(username: String): Boolean =
@@ -34,8 +34,8 @@ object FunctionAnswers {
 
   def add(x: Int)(y: Int): Int = x + y
 
-  lazy val increment: Int => Int = add(1)
-  lazy val decrement: Int => Int = add(-1)
+  val increment: Int => Int = add(1)
+  val decrement: Int => Int = add(-1)
 
   ////////////////////////////
   // 3. parametric functions
@@ -57,6 +57,16 @@ object FunctionAnswers {
     def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
       zipWith(other, combine)
   }
+
+  val names: Pair[String] = Pair("John", "Elisabeth")
+  val ages: Pair[Int]     = Pair(32, 46)
+  case class User(name: String, age: Int)
+
+  val users: Pair[User] =
+    names.zipWithCurried(ages)(User)
+
+  val longerThan5: Boolean =
+    names.map(_.length).forAll(_ >= 5)
 
   def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
     option match {

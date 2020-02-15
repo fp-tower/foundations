@@ -72,6 +72,14 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     Pair(0, 2).zipWithCurried(Pair(3, 3))(_ + _) shouldEqual Pair(3, 5)
   }
 
+  test("users") {
+    users shouldEqual Pair(User("John", 32), User("Elisabeth", 46))
+  }
+
+  test("longerThan5") {
+    longerThan5 shouldEqual false
+  }
+
   test("identity") {
     forAll((x: Int) => identity(x) shouldEqual x)
   }

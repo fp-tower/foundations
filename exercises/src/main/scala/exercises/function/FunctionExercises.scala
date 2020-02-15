@@ -69,9 +69,6 @@ object FunctionExercises {
   // 3. parametric functions
   ////////////////////////////
 
-  val zero: Pair[Int]        = Pair(0, 0)
-  val fullName: Pair[String] = Pair("John", "Doe")
-
   case class Pair[A](first: A, second: A) {
     // 3a. Implement `swap` which exchanges `first` and `second`
     // such as Pair("John", "Doe").swap == Pair("Doe", "John")
@@ -85,9 +82,9 @@ object FunctionExercises {
       ???
 
     // 3c. Implement `forAll` which check if a predicate is true for both `first` and `second`
-    // such as Pair( 2,  6).forAll(_ > 0) == true
-    // but     Pair( 2, -1).forAll(_ > 0) == false
-    //         Pair(-2, -1).forAll(_ > 0) == false
+    // such as Pair(2, 6).forAll(_ > 0) == true
+    // but     Pair(2, 6).forAll(_ > 2) == false
+    //         Pair(2, 6).forAll(_ > 9) == false
     def forAll(predicate: A => Boolean): Boolean =
       ???
 
@@ -101,6 +98,17 @@ object FunctionExercises {
     def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
       zipWith(other, combine)
   }
+
+  val names: Pair[String] = Pair("John", "Elisabeth")
+  val ages: Pair[Int]     = Pair(32, 46)
+  case class User(name: String, age: Int)
+
+  // 3f. Combine `names` and `ages` into `users` using Pair API
+  // such as users == Pair(User("John", 32), User("Elisabeth", 46))
+  lazy val users: Pair[User] = ???
+
+  // 3g. Check that the length of each string in `names` is strictly longer than 5 using Pair API
+  lazy val longerThan5: Boolean = ???
 
   // 2d. Implement `identity` which returns its input unchanged
   // such as identity(1) == 1
