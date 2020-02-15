@@ -20,13 +20,21 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
     secret("abc123") shouldEqual "******"
   }
 
-  test("isValidUsernameCharacter") {}
+  //////////////////////////////////////////////////
+  // 2. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
 
-  test("_isValidUsernameCharacter") {}
+  test("increment") {
+    increment(5) shouldEqual 6
+  }
 
-  test("isValidUsername") {}
+  ////////////////////////////
+  // 3. parametric functions
+  ////////////////////////////
 
-  test("move") {}
+  test("Pair#swap") {
+    Pair("John", "Doe").swap shouldEqual Pair("Doe", "John")
+  }
 
   ///////////////////////////
   // 3. Recursion & Laziness
