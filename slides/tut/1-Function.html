@@ -806,7 +806,14 @@ trait Config {
 ```
 
 ---
-# Parametric val function
+# What is the type of `identityVal`?
+
+<br>
+
+```tut:silent
+def identity[A](value: A): A =
+  value
+```
 
 <br>
 
@@ -814,14 +821,15 @@ trait Config {
 val identityVal = identity _
 ```
 
+---
+# What is the type of `identityVal`?
+
 <br>
 
-.center[
-## What is the type of `identityVal`?
-]
-
----
-# Parametric val function
+```tut:silent
+def identity[A](value: A): A =
+  value
+```
 
 <br>
 
@@ -836,7 +844,16 @@ identityVal(4)
 ```
 
 ---
-# Parametric val function
+# Val cannot have type parameters
+
+<br>
+
+```tut:silent
+def identity[A](value: A): A =
+  value
+```
+
+<br>
 
 ```tut:silent
 val identityVal: Int => Int = identity[Int] _
