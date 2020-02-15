@@ -424,6 +424,8 @@ map(List(1,2,3,4), (x: Int) => x / 2.0)
 map(List("Hello", "World"), (x: String) => x.toCharArray)
 ```
 
+--
+
 <br>
 
 .center[
@@ -439,13 +441,26 @@ map(List("Hello", "World"), (x: String) => x.toCharArray)
 def map[From, To](list: List[From], f: From => To): List[To] = ???
 ```
 
+```tut:invisible
+def map[From, To](list: List[From], f: From => To): List[To] =
+  list.map(f)
+```
+
 --
 
 <br>
 
 .medium[
 The callers of `map` decide what `From` and `To` are.
+]
 
+```tut
+map[Int, String](List(1,2,3), (x: Int) => x.toString)
+```
+
+--
+
+.medium[
 But `map` doesn't know what `From` and `To` are.
 ]
 
@@ -592,11 +607,246 @@ Pair(0, 2).zipWith(Pair(3, 3))(_ + _)
 ---
 # Scala API design
 
-TODO
+<br>
+
+```scala
+def function[A, B, C](first: A, second: B)(f: (A, B) => C): C
+```
+
+---
+# Scala API design
+
+<br>
+
+```scala
+def function[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
+```
+
+---
+# Two apparently useless parametric functions
+
+<br>
 
 --
 
-## Not relevant in Scala 3
+.pull-left[
+```tut:silent
+def identity[A](value: A): A =
+  value
+```
+
+```tut
+identity(5)
+identity("Hello")
+```
+]
+
+--
+
+.pull-right[
+```tut:silent
+def constant[A, B](value: A)(discarded: B): A =
+  value
+```
+
+```tut
+constant(5)("Hello")
+
+constant("Hello")(5)
+```
+]
+
+---
+# Two apparently useless parametric functions
+
+```tut:silent
+object Config {
+  private var flag: Boolean = true
+
+  def modifyFlag(f: Boolean => Boolean): Boolean = {
+    val previousValue = flag
+    flag = f(previousValue)
+    previousValue
+  }
+}
+```
+
+--
+
+<br>
+
+```tut
+Config.modifyFlag(x => !x)
+
+Config.modifyFlag(x => !x)
+```
+
+---
+# Two apparently useless parametric functions
+
+```tut:silent
+object Config {
+  private var flag: Boolean = true
+
+  def modifyFlag(f: Boolean => Boolean): Boolean = {
+    val previousValue = flag
+    flag = f(previousValue)
+    previousValue
+  }
+}
+```
+
+## How would you implement?
+
+.pull-left[
+```tut:silent
+def disable(): Boolean = ???
+```
+]
+
+---
+# Two apparently useless parametric functions
+
+```tut:silent
+object Config {
+  private var flag: Boolean = true
+
+  def modifyFlag(f: Boolean => Boolean): Boolean = {
+    val previousValue = flag
+    flag = f(previousValue)
+    previousValue
+  }
+}
+```
+
+## How would you implement?
+
+.pull-left[
+```tut:silent
+def disable(): Boolean =
+  Config.modifyFlag(constant(false))
+```
+]
+
+--
+
+.pull-right[
+```tut:silent
+def disable(): Boolean =
+  Config.modifyFlag(_ => false)
+```
+]
+
+---
+# Two apparently useless parametric functions
+
+```tut:silent
+object Config {
+  private var flag: Boolean = true
+
+  def modifyFlag(f: Boolean => Boolean): Boolean = {
+    val previousValue = flag
+    flag = f(previousValue)
+    previousValue
+  }
+}
+```
+
+## How would you implement?
+
+```tut:silent
+def getFlag: Boolean = ???
+```
+
+---
+# Two apparently useless parametric functions
+
+```tut:silent
+object Config {
+  private var flag: Boolean = true
+
+  def modifyFlag(f: Boolean => Boolean): Boolean = {
+    val previousValue = flag
+    flag = f(previousValue)
+    previousValue
+  }
+}
+```
+
+## How would you implement?
+
+```tut:silent
+def getFlag: Boolean =
+  Config.modifyFlag(identity)
+```
+
+---
+# Default implementation / Consistent API
+
+<br>
+
+```tut:silent
+trait Config {
+
+  def modifyFlag(f: Boolean => Boolean): Boolean
+
+  def toggle(): Boolean =
+    modifyFlag(x => !x)
+
+  def disable(): Boolean =
+    modifyFlag(constant(false))
+
+  def enable(): Boolean =
+    modifyFlag(constant(true))
+
+  def get: Boolean =
+    modifyFlag(identity)
+
+}
+```
+
+---
+# Parametric val function
+
+<br>
+
+```tut:silent
+val identityVal = identity _
+```
+
+<br>
+
+.center[
+## What is the type of `identityVal`?
+]
+
+---
+# Parametric val function
+
+<br>
+
+```tut:silent
+val identityVal: Nothing => Nothing = identity _
+```
+
+<br>
+
+```tut:fail
+identityVal(4)
+```
+
+---
+# Parametric val function
+
+```tut:silent
+val identityVal: Int => Int = identity[Int] _
+```
+
+<br>
+
+```tut
+identityVal(4)
+```
 
 ---
 background-image: url(img/function/fold.svg)
