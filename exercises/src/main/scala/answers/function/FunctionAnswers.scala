@@ -1,8 +1,5 @@
 package answers.function
 
-import exercises.function.HttpClientBuilder
-import exercises.function.HttpClientBuilder._
-
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.concurrent.duration._
@@ -67,44 +64,6 @@ object FunctionAnswers {
 
   val longerThan5: Boolean =
     names.map(_.length).forAll(_ >= 5)
-
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
-    option match {
-      case None    => None
-      case Some(a) => Some(f(a))
-    }
-
-  def identity[A](x: A): A = x
-
-  def const[A, B](a: A)(b: B): A = a
-
-  def setOption[A, B](option: Option[A])(value: B): Option[B] =
-    option.map(const(value))
-
-  def andThen[A, B, C](f: A => B, g: B => C): A => C =
-    a => g(f(a))
-
-  def compose[A, B, C](f: B => C, g: A => B): A => C =
-    a => f(g(a))
-
-  val inc: Int => Int    = x => x + 1
-  val double: Int => Int = x => 2 * x
-
-  val doubleInc: Int => Int = andThen(double, inc)
-
-  val incDouble: Int => Int = compose(double, inc)
-
-  val default: HttpClientBuilder = HttpClientBuilder.default("localhost", 8080)
-
-  val clientBuilder1: HttpClientBuilder = default
-    .withTimeout(10.seconds)
-    .withFollowRedirect(true)
-    .withMaxParallelRequest(3)
-
-  val clientBuilder2: HttpClientBuilder =
-    (withTimeout(10.seconds) compose
-      withFollowRedirect(true) compose
-      withMaxParallelRequest(3)).apply(default)
 
   ///////////////////////////
   // 3. Recursion & Laziness

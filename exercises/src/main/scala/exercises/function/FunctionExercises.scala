@@ -1,8 +1,5 @@
 package exercises.function
 
-import exercises.function.HttpClientBuilder
-import exercises.function.HttpClientBuilder._
-
 import scala.annotation.tailrec
 import scala.concurrent.duration._
 import scala.util.Random
@@ -109,46 +106,6 @@ object FunctionExercises {
 
   // 3g. Check that the length of each string in `names` is strictly longer than 5 using Pair API
   lazy val longerThan5: Boolean = ???
-
-  // 2d. Implement `identity` which returns its input unchanged
-  // such as identity(1) == 1
-  //         identity("foo") == "foo"
-  def identity[A](x: A): A = ???
-
-  // 2e. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
-  lazy val identityVal = ???
-
-  // 2f. Implement `const` which returns its first input unchanged and discards its second input
-  // such as const(5)("foo") == 5
-  // For example, you can use const in conjunction with `map` to set the values in a List or String:
-  // List(1,2,3).map(const(0)) == List(0,0,0)
-  // "FooBar86".map(const(*))  == "********"
-  def const[A, B](a: A)(b: B): A = ???
-
-  // 2g. Implement `andThen` and `compose` which pipes the result of one function to the input of another function
-  // such as compose(isEven, increment)(10) == false
-  // and     andThen(increment, isEven)(10) == false
-  def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
-
-  def compose[A, B, C](f: B => C, g: A => B): A => C = ???
-
-  // 2h. Implement `doubleInc` using `inc`, `double` with `compose` or `andThen`
-  // such as `doubleInc` is equivalent to the maths function: f(x) = (2 * x) + 1
-  val inc: Int => Int    = x => x + 1
-  val double: Int => Int = x => 2 * x
-
-  lazy val doubleInc: Int => Int = ???
-
-  // 2i. Implement `incDouble` using `inc`, `double` with `compose` or `andThen`
-  // such as `incDouble` is equivalent to the maths function: f(x) = 2 * (x + 1)
-  lazy val incDouble: Int => Int = ???
-
-  // 2j. inc and double are a special case of functions where the input and output type is the same.
-  // These functions are called endofunctions.
-  // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
-  // Can you think of a common design pattern that relies on endofunctions?
-  type Endo[A] = A => A
-  def composeEndo[A](f: Endo[A], g: Endo[A]): Endo[A] = f compose g
 
   ///////////////////////////
   // 3. Recursion & Laziness

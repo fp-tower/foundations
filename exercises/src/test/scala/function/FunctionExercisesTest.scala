@@ -28,21 +28,6 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
 
   test("move") {}
 
-  ////////////////////////////
-  // 2. polymorphic functions
-  ////////////////////////////
-
-  test("identity") {
-    identity(3) shouldEqual 3
-    identity("foo") shouldEqual "foo"
-  }
-
-  test("const") {
-    const("foo")(5) shouldEqual "foo"
-    const(5)("foo") shouldEqual 5
-    List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
-  }
-
   ///////////////////////////
   // 3. Recursion & Laziness
   ///////////////////////////

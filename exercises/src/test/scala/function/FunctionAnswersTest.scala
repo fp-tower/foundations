@@ -84,34 +84,6 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     forAll((x: Int) => identity(x) shouldEqual x)
   }
 
-  test("const") {
-    forAll((x: Int, y: String) => const(x)(y) shouldEqual x)
-
-    List(1, 2, 3).map(const(0)) shouldEqual List(0, 0, 0)
-  }
-
-  test("setOption") {
-    setOption(Some(5))("Hello") shouldEqual Some("Hello")
-    setOption(None)("Hello") shouldEqual None
-  }
-
-  test("andThen - compose") {
-    val isEven = (_: Int) % 2 == 0
-    val inc    = (_: Int) + 1
-    compose(isEven, inc)(10) shouldEqual false
-    andThen(inc, isEven)(10) shouldEqual false
-  }
-
-  test("doubleInc") {
-    doubleInc(0) shouldEqual 1
-    doubleInc(6) shouldEqual 13
-  }
-
-  test("incDouble") {
-    incDouble(0) shouldEqual 2
-    incDouble(6) shouldEqual 14
-  }
-
   ///////////////////////////
   // 3. Recursion & Laziness
   ///////////////////////////
