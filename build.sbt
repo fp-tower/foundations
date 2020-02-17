@@ -1,7 +1,7 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.13.0",
+  scalaVersion := "2.13.1",
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
@@ -41,10 +41,10 @@ lazy val slides = project
   .settings(moduleName := "foundation-slides")
   .settings(baseSettings: _*)
   .settings(
-    tutSourceDirectory := baseDirectory.value / "tut",
-    tutTargetDirectory := baseDirectory.value / "docs"
+    mdocIn := baseDirectory.value / "mdoc",
+    mdocOut := baseDirectory.value / "docs",
   )
-  .enablePlugins(TutPlugin)
+  .enablePlugins(MdocPlugin)
 
 
 addCommandAlias("testAnswers", "testOnly *AnswersTest")

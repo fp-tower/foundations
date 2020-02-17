@@ -40,7 +40,7 @@ class: center, middle
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 val counter  : Int        = 3
 
 val message  : String     = "Hello World!"
@@ -48,7 +48,7 @@ val message  : String     = "Hello World!"
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 val increment: Int => Int = (x: Int) => x + 1
 ```
 
@@ -57,7 +57,7 @@ val increment: Int => Int = (x: Int) => x + 1
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:silent
 val increment: Int => Int = (x: Int) => x + 1
 val decrement: Int => Int = (x: Int) => x - 1
 val double   : Int => Int = (x: Int) => x * 2
@@ -73,8 +73,9 @@ val dictionary = Map(
 
 --
 
-```tut
+```scala mdoc
 dictionary("increment")(10)
+
 dictionary("double")(10)
 ```
 
@@ -87,7 +88,7 @@ dictionary("double")(10)
 .medium-left[
 ## Val function
 
-```tut:silent
+```scala mdoc:silent
 val plus: (Int, Int) => Int =
   (x, y) => x + y
 ```
@@ -96,7 +97,7 @@ val plus: (Int, Int) => Int =
 .pull-right[
 ## Def function (Method)
 
-```tut:silent
+```scala mdoc:nest:silent
 def plus(x: Int, y: Int): Int =
   x + y
 ```
@@ -113,7 +114,7 @@ class: center, middle
 
 <br>
 
-```tut:invisible
+```scala mdoc:invisible
 def filter(list: List[String], predicate: String => Boolean): List[String] =
   list.filter(predicate)
 ```
@@ -126,11 +127,11 @@ def filter(list: List[String], predicate: String => Boolean): List[String] = ...
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 val words = List("Hello", " ", "World", "Hey")
 ```
 
-```tut
+```scala mdoc
 filter(words, (s: String) => s.startsWith("H"))
 
 
@@ -143,7 +144,7 @@ filter(words, (s: String) => s.length > 3)
 <br>
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 def upperCase(s: String): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
@@ -153,13 +154,13 @@ def upperCase(s: String): String = {
 }
 ```
 
-```tut
+```scala mdoc
 upperCase("Hello")
 ```
 ]
 
 .pull-right[
-```tut:silent
+```scala mdoc:silent
 def lowerCase(s: String): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
@@ -169,7 +170,7 @@ def lowerCase(s: String): String = {
 }
 ```
 
-```tut
+```scala mdoc
 lowerCase("Hello")
 ```
 ]
@@ -179,7 +180,7 @@ lowerCase("Hello")
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:silent
 def map(s: String, f: Char => Char): String = {
   val characters = s.toArray
   for (i <- 0 until s.length) {
@@ -196,7 +197,7 @@ def lowerCase(s: String): String = map(s, c => c.toLower)
 ---
 # Write tricky code once
 
-```tut:silent
+```scala mdoc:silent
 import scala.io.Source
 
 def usingFile(fileName: String, f: Iterator[String] => String): String = {
@@ -215,23 +216,23 @@ def usingFile(fileName: String, f: Iterator[String] => String): String = {
 <br>
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 def readFirstLine(fileName: String): String =
   usingFile(fileName, lines => lines.next())
 ```
 
-```tut
+```scala mdoc
 readFirstLine("lorem-ipsum.txt")
 ```
 ]
 
 .pull-right[
-```tut:silent
+```scala mdoc:silent
 def readEntireFile(fileName: String): String =
   usingFile(fileName, lines => lines.mkString("\n"))
 ```
 
-```tut
+```scala mdoc
 readEntireFile("lorem-ipsum.txt")
 ```
 ]
@@ -248,12 +249,7 @@ class: center, middle
 
 <br>
 
-```tut:invisible
-def formatDouble(digits: Int, number: Double): String =
-  BigDecimal(number).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
-```
-
-```scala
+```scala mdoc:silent
 def formatDouble(digits: Int, number: Double): String =
   BigDecimal(number)
     .setScale(digits, BigDecimal.RoundingMode.FLOOR)
@@ -263,8 +259,9 @@ def formatDouble(digits: Int, number: Double): String =
 
 <br>
 
-```tut
+```scala mdoc
 formatDouble(2, 1.123456789)
+
 formatDouble(5, 1.123456789)
 ```
 
@@ -276,14 +273,14 @@ formatDouble(5, 1.123456789)
 def formatDouble(digits: Int, number: Double): String
 ```
 
-```tut
+```scala mdoc
 formatDouble(2, 1.123456789)
 ```
 <br>
 ]
 
 .pull-right[
-```tut:invisible
+```scala mdoc:reset:invisible
 def formatDouble(digits: Int): Double => String =
   BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
 
@@ -295,7 +292,7 @@ val format5D: Double => String = formatDouble(5)
 def formatDouble(digits: Int): Double => String
 ```
 
-```tut
+```scala mdoc
 formatDouble(2)(1.123456789)
 ```
 <br>
@@ -333,8 +330,9 @@ val format5D: Double => String = formatDouble(5)
 
 --
 
-```tut
+```scala mdoc
 format2D(1.123456789)
+
 format5D(1.123456789)
 ```
 
@@ -362,7 +360,7 @@ class: center, middle
 
 <br>
 
-```tut:silent
+```scala
 def map(s: String, f: Char => Char): String = ???
 ```
 
@@ -370,7 +368,7 @@ def map(s: String, f: Char => Char): String = ???
 
 <br>
 
-```tut:silent
+```scala
 def map(list: List[Int]   , f: Int    => Int   ): List[Int]    = ???
 
 def map(list: List[String], f: String => String): List[String] = ???
@@ -380,7 +378,7 @@ def map(list: List[String], f: String => String): List[String] = ???
 
 <br>
 
-```tut:silent
+```scala
 def map(list: List[Int]   , f: Int    => String): List[String] = ???
 ```
 
@@ -389,18 +387,19 @@ def map(list: List[Int]   , f: Int    => String): List[String] = ???
 
 <br>
 
-```tut:silent
+```scala
 def map[To](list: List[Int], f: Int => To): List[To] = ???
 ```
 
-```tut:invisible
+```scala mdoc:invisible
 def map[To](list: List[Int], f: Int => To): List[To] = list.map(f)
 ```
 
 <br>
 
-```tut
+```scala mdoc
 map(List(1,2,3,4), (x: Int) => x + 1)
+
 map(List(1,2,3,4), (x: Int) => x / 2.0)
 ```
 
@@ -409,18 +408,19 @@ map(List(1,2,3,4), (x: Int) => x / 2.0)
 
 <br>
 
-```tut:silent
+```scala
 def map[From, To](list: List[From], f: From => To): List[To] = ???
 ```
 
-```tut:invisible
+```scala mdoc:reset:invisible
 def map[From, To](list: List[From], f: From => To): List[To] = list.map(f)
 ```
 
 <br>
 
-```tut
+```scala mdoc
 map(List(1,2,3,4), (x: Int) => x / 2.0)
+
 map(List("Hello", "World"), (x: String) => x.toCharArray)
 ```
 
@@ -437,13 +437,8 @@ map(List("Hello", "World"), (x: String) => x.toCharArray)
 
 <br>
 
-```tut:silent
+```scala
 def map[From, To](list: List[From], f: From => To): List[To] = ???
-```
-
-```tut:invisible
-def map[From, To](list: List[From], f: From => To): List[To] =
-  list.map(f)
 ```
 
 --
@@ -454,7 +449,7 @@ def map[From, To](list: List[From], f: From => To): List[To] =
 The callers of `map` decide what `From` and `To` are.
 ]
 
-```tut
+```scala mdoc
 map[Int, String](List(1,2,3), (x: Int) => x.toString)
 ```
 
@@ -469,7 +464,7 @@ But `map` doesn't know what `From` and `To` are.
 
 <br>
 
-```tut:silent
+```scala
 def map[From, To](list: List[From], f: From => To): List[To] = ???
 ```
 
@@ -515,7 +510,7 @@ On line 3: error: type mismatch;
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:silent
 def map(list: List[Int], f: Int => Int): List[Int] =
   List(1,2,3)
 ```
@@ -541,13 +536,13 @@ class: center, middle
 
 <br>
 
-```tut:silent
+```scala
 case class Pair[A](first: A, second: A) {
   def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ???
 }
 ```
 
-```tut:invisible
+```scala mdoc:invisible
 case class Pair[A](first: A, second: A) {
   def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
     Pair(
@@ -559,13 +554,13 @@ case class Pair[A](first: A, second: A) {
 
 <br>
 
-```tut
+```scala mdoc
 Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y)
 ```
 
 --
 
-```tut:fail
+```scala mdoc:fail
 Pair(0, 2).zipWith(Pair(3, 3), (x, y) => x + y)
 ```
 
@@ -574,13 +569,13 @@ Pair(0, 2).zipWith(Pair(3, 3), (x, y) => x + y)
 
 <br>
 
-```tut:silent
+```scala
 case class Pair[A](first: A, second: A) {
   def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ???
 }
 ```
 
-```tut:invisible
+```scala mdoc:reset:invisible
 case class Pair[A](first: A, second: A) {
   def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
     Pair(
@@ -592,7 +587,7 @@ case class Pair[A](first: A, second: A) {
 
 <br>
 
-```tut
+```scala mdoc
 Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y)
 ```
 
@@ -600,7 +595,7 @@ Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y)
 
 <br>
 
-```tut
+```scala mdoc
 Pair(0, 2).zipWith(Pair(3, 3))(_ + _)
 ```
 
@@ -630,12 +625,12 @@ def function[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
 --
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 def identity[A](value: A): A =
   value
 ```
 
-```tut
+```scala mdoc
 identity(5)
 identity("Hello")
 ```
@@ -644,12 +639,12 @@ identity("Hello")
 --
 
 .pull-right[
-```tut:silent
+```scala mdoc:silent
 def constant[A, B](value: A)(discarded: B): A =
   value
 ```
 
-```tut
+```scala mdoc
 constant(5)("Hello")
 
 constant("Hello")(5)
@@ -659,7 +654,7 @@ constant("Hello")(5)
 ---
 # Two apparently useless parametric functions
 
-```tut:silent
+```scala mdoc:silent
 object Config {
   private var flag: Boolean = true
 
@@ -675,7 +670,7 @@ object Config {
 
 <br>
 
-```tut
+```scala mdoc
 Config.modifyFlag(x => !x)
 
 Config.modifyFlag(x => !x)
@@ -684,7 +679,7 @@ Config.modifyFlag(x => !x)
 ---
 # Two apparently useless parametric functions
 
-```tut:silent
+```scala
 object Config {
   private var flag: Boolean = true
 
@@ -699,7 +694,7 @@ object Config {
 ## How would you implement?
 
 .pull-left[
-```tut:silent
+```scala
 def disable(): Boolean = ???
 ```
 ]
@@ -707,7 +702,7 @@ def disable(): Boolean = ???
 ---
 # Two apparently useless parametric functions
 
-```tut:silent
+```scala
 object Config {
   private var flag: Boolean = true
 
@@ -722,7 +717,7 @@ object Config {
 ## How would you implement?
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 def disable(): Boolean =
   Config.modifyFlag(constant(false))
 ```
@@ -731,7 +726,7 @@ def disable(): Boolean =
 --
 
 .pull-right[
-```tut:silent
+```scala
 def disable(): Boolean =
   Config.modifyFlag(_ => false)
 ```
@@ -740,7 +735,7 @@ def disable(): Boolean =
 ---
 # Two apparently useless parametric functions
 
-```tut:silent
+```scala
 object Config {
   private var flag: Boolean = true
 
@@ -754,14 +749,14 @@ object Config {
 
 ## How would you implement?
 
-```tut:silent
+```scala
 def getFlag: Boolean = ???
 ```
 
 ---
 # Two apparently useless parametric functions
 
-```tut:silent
+```scala
 object Config {
   private var flag: Boolean = true
 
@@ -775,7 +770,7 @@ object Config {
 
 ## How would you implement?
 
-```tut:silent
+```scala mdoc:silent
 def getFlag: Boolean =
   Config.modifyFlag(identity)
 ```
@@ -785,7 +780,12 @@ def getFlag: Boolean =
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:invisible
+def identity[A](value: A): A = value
+def constant[A, B](value: A)(discarded: B): A = value
+```
+
+```scala mdoc:silent
 trait Config {
 
   def modifyFlag(f: Boolean => Boolean): Boolean
@@ -810,14 +810,14 @@ trait Config {
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:silent
 def identity[A](value: A): A =
   value
 ```
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 val identityVal = identity _
 ```
 
@@ -826,42 +826,42 @@ val identityVal = identity _
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:silent
 def identity[A](value: A): A =
   value
 ```
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 val identityVal: Nothing => Nothing = identity _
 ```
 
 <br>
 
-```tut:fail
+```scala mdoc:fail
 identityVal(4)
 ```
 
 ---
-# Val cannot have type parameters
+# What is the type of `identityVal`?
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:silent
 def identity[A](value: A): A =
   value
 ```
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 val identityVal: Int => Int = identity[Int] _
 ```
 
 <br>
 
-```tut
+```scala mdoc
 identityVal(4)
 ```
 
@@ -890,7 +890,7 @@ background-image: url(img/function/fold-left-all.svg)
 <br>
 <br>
 
-```tut:silent
+```scala mdoc:silent
 def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
   var acc = b
   for (a <- fa) {
@@ -915,12 +915,12 @@ def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
 <br>
 <br>
 
-```tut:silent
+```scala mdoc:silent
 def sum(xs: List[Int]): Int =
   foldLeft(xs, 0)(_ + _)
 ```
 
-```tut
+```scala mdoc
 sum(List(2,3,10,4))
 ```
 ]
@@ -939,12 +939,12 @@ sum(List(2,3,10,4))
 <br>
 <br>
 
-```tut:silent
+```scala mdoc:silent
 def reverse[A](xs: List[A]): List[A] =
   foldLeft(xs, List.empty[A])((acc, a) => a :: acc)
 ```
 
-```tut
+```scala mdoc
 reverse(List(1,2,3,4))
 ```
 ]
@@ -1008,14 +1008,14 @@ background-image: url(img/function/fold-right-stack-safety.svg)
 ---
 # FoldRight replaces constructors
 
-```tut:silent
+```scala
 sealed trait List[A]
 
 case class Nil[A]() extends List[A]
 case class Cons[A](head: A, tail: List[A]) extends List[A]
 ```
 
-```tut
+```scala
 val xs: List[Int] = Cons(1, Cons(2, Cons(3, Nil())))
 ```
 
@@ -1078,21 +1078,21 @@ background-image: url(img/function/exception.svg)
 ---
 # Partial function
 
-```tut:reset:silent
+```scala mdoc:reset:silent
 def head(list: List[Int]): Int =
   list match {
     case x :: xs => x
   }
 ```
 
-```tut:fail
+```scala mdoc:crash
 head(Nil)
 ```
 
 ---
 # Exception
 
-```tut:silent
+```scala mdoc:silent
 case class Item(id: Long, unitPrice: Double, quantity: Int)
 
 case class Order(status: String, basket: List[Item])
@@ -1106,7 +1106,7 @@ def submit(order: Order): Order =
   }
 ```
 
-```tut:fail
+```scala mdoc:crash
 submit(Order("Delivered", Nil))
 ```
 
@@ -1118,25 +1118,27 @@ background-image: url(img/function/nondeterministic.svg)
 ---
 # Nondeterministic
 
-```tut:silent
+```scala mdoc:silent
 import java.util.UUID
 import java.time.Instant
 ```
 
-```tut
+```scala mdoc
 UUID.randomUUID()
+
 UUID.randomUUID()
 ```
 
-```tut
+```scala mdoc
 Instant.now()
+
 Instant.now()
 ```
 
 ---
 # Mutation
 
-```tut:silent
+```scala mdoc:silent
 class User(initialAge: Int) {
   var age: Int = initialAge
 
@@ -1149,7 +1151,7 @@ class User(initialAge: Int) {
 val john = new User(24)
 ```
 
-```tut
+```scala mdoc
 john.getAge
 
 john.setAge(32)
@@ -1175,7 +1177,7 @@ background-image: url(img/function/side-effect-2.svg)
 def println(message: String): Unit = ...
 ```
 
-```tut
+```scala mdoc
 val x = println("Hello")
 ```
 
@@ -1188,7 +1190,7 @@ res21: String = <!doctype html><html itemscope="" itemtype="http://schema.org/We
 
 --
 
-```tut:silent
+```scala mdoc:reset:silent
 var x: Int = 0
 
 def count(): Int = {
@@ -1235,7 +1237,7 @@ background-image: url(img/function/null-2.svg)
 ---
 # Null
 
-```tut:silent
+```scala mdoc:reset:silent
 case class User(name: String, age: Int)
 
 def getAge(user: User): Int = {
@@ -1258,14 +1260,14 @@ def getAge(user: User): Int = {
 ---
 # Reflection
 
-```tut:invisible
+```scala mdoc:invisible
 case class OrderId(value: String)
 case class Order(id: OrderId, quantity: Int)
 
 import scala.concurrent.Future
 ```
 
-```tut:silent
+```scala mdoc:silent
 trait OrderApi {
   def insertOrder(order: Order): Future[Unit]
   def getOrder(orderId: OrderId): Future[Order]
@@ -1291,14 +1293,14 @@ def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] =
 ---
 # Reflection
 
-```tut:invisible
+```scala mdoc:reset:invisible
 case class OrderId(value: String)
 case class Order(id: OrderId, quantity: Int)
 
 import scala.concurrent.Future
 ```
 
-```tut:silent
+```scala mdoc:silent
 trait OrderApi {
   def insertOrder(order: Order): Future[Unit]
   def getOrder(orderId: OrderId): Future[Order]
@@ -1323,7 +1325,7 @@ def getAll(api: OrderApi)(orderIds: List[OrderId]): Future[List[Order]] = {
 ---
 # An OPEN trait/class is equivalent to a record of functions
 
-```tut:silent
+```scala
 trait OrderApi {
   def insertOrder(order: Order): Future[Unit]
   def getOrder(orderId: OrderId): Future[Order]
@@ -1342,7 +1344,7 @@ case class OrderApi(
 ---
 # A SEALED trait/class is equivalent to an enumeration
 
-```tut:silent
+```scala mdoc:silent
 sealed trait ConfigValue
 
 object ConfigValue {
@@ -1531,7 +1533,7 @@ hello_inline (foo, bar) // false
 ---
 # 1. Refactoring: extract - inline
 
-```tut:silent
+```scala mdoc:silent
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -1544,7 +1546,7 @@ for {
 } yield x + y
 ```
 
-```tut:silent
+```scala mdoc:silent
 val fx = doSomethingExpensive(5)
 val fy = doSomethingExpensive(8) // both Futures start in parallel
 
@@ -1725,25 +1727,25 @@ class: center, middle
 <br>
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 case class Point(x: Int, y: Int)
 ```
 
 <br>
 
-```tut
+```scala mdoc
 Point(3, 4)
 ```
 ]
 
 .pull-right[
-```tut:silent
+```scala mdoc:silent
 case class Pair[A](first: A, second: A)
 ```
 
 <br>
 
-```tut
+```scala mdoc
 Pair(3, 4)
 
 Pair("John", "Doe")
@@ -1755,12 +1757,12 @@ Pair("John", "Doe")
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 def swap[A](pair: Pair[A]): Pair[A] =
   Pair(pair.second, pair.first)
 ```
 
-```tut
+```scala mdoc
 swap(Pair(1, 5))
 swap(Pair("John", "Doe"))
 ```
@@ -1770,7 +1772,11 @@ swap(Pair("John", "Doe"))
 
 <br>
 
-```tut:silent
+```scala mdoc:reset:invisible
+case class Pair[A](first: A, second: A)
+```
+
+```scala mdoc:silent
 def swap[A](pair: Pair[A]): Pair[A] =
   pair match {
     case x: Pair[Int]    => Pair(x.first + 1, x.second - 1)
@@ -1781,11 +1787,11 @@ def swap[A](pair: Pair[A]): Pair[A] =
 
 --
 
-```tut
+```scala mdoc
 swap(Pair(1, 5))
 ```
 
-```tut:fail
+```scala mdoc:crash
 swap(Pair("John", "Doe"))
 ```
 
@@ -1808,7 +1814,7 @@ def swap(pair: Pair[Any]): Pair[Any] =
 
 <br>
 
-```tut:silent
+```scala
 def swap[A](pair: Pair[A]): Pair[A] = ???
 ```
 
@@ -1910,7 +1916,7 @@ Ordering
 <br>
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 val counter: Int = 5
 
 val message: String = "Welcome!"
@@ -1918,7 +1924,7 @@ val message: String = "Welcome!"
 ]
 
 .pull-right[
-```tut:fail
+```scala mdoc:fail
 val elems: List = List(1, 2, 3)
 ```
 ]
