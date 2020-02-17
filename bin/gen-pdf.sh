@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sbt tut
+sbt slides/mdoc
 cp -r slides/docs docs/
 
 for file in docs/*.html
