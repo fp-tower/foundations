@@ -1,7 +1,6 @@
 package exercises.function
 
 import scala.annotation.tailrec
-import scala.concurrent.duration._
 import scala.util.Random
 
 // you can run and print things here
@@ -107,78 +106,94 @@ object FunctionExercises {
   // 3g. Check that the length of each string in `names` is strictly longer than 5 using Pair API
   lazy val longerThan5: Boolean = ???
 
-  ///////////////////////////
-  // 3. Recursion & Laziness
-  ///////////////////////////
+  /////////////////
+  // 4. Iteration
+  /////////////////
 
-  // 3a. Implement `sumList` using an imperative approach (while, for loop)
-  // such as sumList(List(1,5,2)) == 8
-  def sumList(xs: List[Int]): Int =
+  // 4a. Implement `sum` using an imperative approach (while or for loop)
+  // such as sum(List(1,5,2)) == 8
+  // and     sum(List()) == 0
+  def sum(xs: List[Int]): Int =
     ???
 
-  // 3b. Implement `mkString` using an imperative approach (while, for loop)
+  // 4b. Implement `mkString` using an imperative approach (while or for loop)
   // such as mkString(List('H', 'e', 'l', 'l', 'o')) == "Hello"
+  // and     mkString(List()) == ""
   def mkString(xs: List[Char]): String =
     ???
 
-  // 3c. Implement `sumList2` using recursion (same behaviour than `sumList`).
-  // Does your implementation work with a large list? e.g. List.fill(1000000)(1)
-  def sumList2(xs: List[Int]): Int =
+  // 4c. Implement `letterCount` using an imperative approach (while or for loop).
+  // `letterCount` tells us how many times each letter appear in a `List`
+  // such as letterCount(List('l', 'o', 'l')) == Map('l' -> 2, 'o' -> 1)
+  // and     letterCount(List()) == Map()
+  def letterCount(xs: List[Char]): Map[Char, Int] =
     ???
 
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
+  // 4d. `sum`, `mkString`, `letterCount` are quite similar. Could you write a higher order function
+  // that generalise them?
+  // Hint: this method is called `foldLeft`.
+  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = ???
 
-  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
-    var acc = b
-    for (a <- fa) {
-      acc = f(acc, a)
-    }
-    acc
-  }
+  // 4e. Re-implement `sum` using `foldLeft`
+  def sumFoldLeft(xs: List[Int]): Int =
+    ???
 
-  @tailrec
-  def foldLeftRec[A, B](xs: List[A], b: B)(f: (B, A) => B): B =
+  // 4f. Re-implement `mkString` using `foldLeft`
+  def mkStringFoldLeft(xs: List[Char]): String =
+    ???
+
+  // 4g. Re-implement `letterCount` using `foldLeft`
+  def letterCountFoldLeft(xs: List[Char]): Map[Char, Int] =
+    ???
+
+  /////////////////
+  // 5. Recursion
+  /////////////////
+
+  // 5a. `sumRecursive` and `letterCountRecursive` are versions of `sum` and `letterCount` using recursion.
+  // These implementations have an issue, what is it?
+  // Write a test to exhibit the problem and if you can, try to fix it (it is hard).
+  def sumRecursive(xs: List[Int]): Int =
     xs match {
-      case Nil => b
-      case h :: t =>
-        val newB = f(b, h)
-        foldLeftRec(t, newB)(f)
+      case Nil          => 0
+      case head :: tail => head + sumRecursive(tail)
     }
 
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
+  def letterCountRecursive(xs: List[Char]): Map[Char, Int] =
+    xs match {
+      case Nil => Map.empty
+      case head :: tail =>
+        val letters      = letterCount(tail)
+        val currentCount = letters.getOrElse(head, 0)
+        letters.updated(head, currentCount + 1)
+    }
 
-  // 3d. Implement `mkString2` using `foldLeft` (same behaviour than `mkString`)
-  def mkString2(xs: List[Char]): String =
+  // 5b. Implement `foldLeftRecursive`, a recursive version of `foldLeft`.
+  // If possible, try to make this implementation work on large list, e.g. List.fill(1000000)(1).
+  def foldLeftRecursive[A, B](xs: List[A], b: B)(f: (B, A) => B): B =
     ???
 
-  // 3e. Implement `multiply` using `foldLeft`
-  // such as multiply(List(3,2,4)) == 3 * 2 * 4 = 24
-  // and     multiply(Nil) == 1
-  def multiply(xs: List[Int]): Int =
-    ???
+  ///////////////
+  // 6. Laziness
+  ///////////////
 
-  // 3f. Implement `forAll` which checks if all elements in a List are true
+  // 6a. Implement `forAll` which checks if all elements in a List are true
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
-  // does your implementation terminate early? e.g. forAll(List(false, false, false)) does not go through the entire list
-  // does your implementation work with a large list? e.g. forAll(List.fill(1000000)(true))
+  // Can you use foldLeft?
+  // Does your implementation work with a large list? e.g. forAll(List.fill(1000000)(true)).
+  // Does your implementation terminate early? e.g. forAll(List(false, false, false)) stops after seeing the first false.
   def forAll(xs: List[Boolean]): Boolean =
     ???
 
-  // 3g. Implement `find` which returns the first element in a List where the predicate function returns true
+  // 6b. Implement `find` which returns the first element in a List where the predicate function returns true
   // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
   // but     find(List(1,2,3))(_ > 5) == None
-  // does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
-  // does your implementation work with a large list? e.g. find(1.to(1000000).toList)(_ == -1)
+  // Can you use foldLeft?
+  // Does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
+  // Does your implementation work with a large list? e.g. find(1.to(1000000).toList)(_ == -1)
   def find[A](xs: List[A])(predicate: A => Boolean): Option[A] =
     ???
-
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
 
   def foldRight[A, B](xs: List[A], b: B)(f: (A, => B) => B): B =
     xs match {
@@ -186,38 +201,30 @@ object FunctionExercises {
       case h :: t => f(h, foldRight(t, b)(f))
     }
 
-  // 3h. Implement `forAll2` using `foldRight` (same behaviour than `forAll`)
-  def forAll2(xs: List[Boolean]): Boolean =
+  // 6c. Implement `forAllFoldRight` using `foldRight` (same behaviour than `forAll`)
+  def forAllFoldRight(xs: List[Boolean]): Boolean =
     ???
 
-  // 3i. Implement `headOption` using `foldRight`.
+  // 6d. Implement `findFoldRight` using `foldRight` (same behaviour than `find`)
+  def findFoldRight[A](xs: List[A])(predicate: A => Boolean): Option[A] =
+    ???
+
+  // 6e. Implement `headOption` using `foldRight`.
   // `headOption` returns the first element of a List if it exists
   // such as headOption(List(1,2,3)) == Some(1)
   // but     headOption(Nil) == None
   def headOption[A](xs: List[A]): Option[A] =
     ???
 
-  // 3j. What fold (left or right) would you use to implement `min`? Why?
+  // 6f. Which fold would you use (left or right) to implement the following functions?
+  def multiply(xs: List[Int]): Int = ???
+
   def min(xs: List[Int]): Option[Int] = ???
 
-  // 3k. Run `isEven` or `isOdd` for small and large input.
-  // Search for mutual tail recursion in Scala.
-  def isEvenRec(x: Int): Boolean =
-    if (x > 0) isOddRec(x - 1)
-    else if (x < 0) isOddRec(x + 1)
-    else true
-
-  def isOddRec(x: Int): Boolean =
-    if (x > 0) isEvenRec(x - 1)
-    else if (x < 0) isEvenRec(x + 1)
-    else false
-
-  // 3l. What happens when we call `foo`? Search for General recursion
-  // or read https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
-  def foo: Int = foo
+  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] = ???
 
   ////////////////////////
-  // 4. Pure functions
+  // 7. Pure functions
   ////////////////////////
 
   // 4a. is `plus` a pure function? why?
@@ -266,8 +273,8 @@ object FunctionExercises {
     case x: Double => x + 1
   }
 
-  // 4j. is `sum` a pure function? why?
-  def sum(xs: List[Int]): Int = {
+  // 4j. is `sumList` a pure function? why?
+  def sumList(xs: List[Int]): Int = {
     var acc = 0
     xs.foreach(x => acc += x)
     acc

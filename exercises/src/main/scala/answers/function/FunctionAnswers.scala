@@ -1,8 +1,9 @@
 package answers.function
 
+import cats.Eval
+
 import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.concurrent.duration._
 
 object FunctionAnswers {
 
@@ -65,29 +66,15 @@ object FunctionAnswers {
   val longerThan5: Boolean =
     names.map(_.length).forAll(_ >= 5)
 
-  ///////////////////////////
-  // 3. Recursion & Laziness
-  ///////////////////////////
+  /////////////////
+  // 4. Iteration
+  /////////////////
 
-  def sumList(xs: List[Int]): Int = {
+  def sum(xs: List[Int]): Int = {
     var sum = 0
     for (x <- xs) sum += x
     sum
   }
-
-  def sumList2(xs: List[Int]): Int = {
-    @tailrec
-    def _sumList(ys: List[Int], acc: Int): Int =
-      ys match {
-        case Nil    => acc
-        case h :: t => _sumList(t, acc + h)
-      }
-
-    _sumList(xs, 0)
-  }
-
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
 
   def mkString(xs: List[Char]): String = {
     var str = ""
@@ -95,36 +82,69 @@ object FunctionAnswers {
     str
   }
 
-  def mkString2(xs: List[Char]): String =
+  def letterCount(xs: List[Char]): Map[Char, Int] = {
+    var letters = Map.empty[Char, Int]
+    for (x <- xs) {
+      letters = addLetter(letters, x)
+    }
+    letters
+  }
+
+  def addLetter(letters: Map[Char, Int], char: Char): Map[Char, Int] =
+    letters.updatedWith(char) {
+      case None    => Some(1)
+      case Some(n) => Some(n + 1)
+    }
+
+  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
+    var acc = b
+    for (a <- fa) acc = f(acc, a)
+    acc
+  }
+
+  def sumFoldLeft(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
+
+  def mkStringFoldLeft(xs: List[Char]): String =
     foldLeft(xs, "")(_ + _)
 
+  def letterCountFoldLeft(xs: List[Char]): Map[Char, Int] =
+    foldLeft(xs, Map.empty[Char, Int])(addLetter)
+
+  /////////////////
+  // 5. Recursion
+  /////////////////
+
+  def sumRecursive(xs: List[Int]): Int = {
+    @tailrec
+    def _sumRecursive(ys: List[Int], acc: Int): Int =
+      ys match {
+        case Nil          => acc
+        case head :: tail => _sumRecursive(tail, head + acc)
+      }
+    _sumRecursive(xs, 0)
+  }
+
+  def letterCountRecursive(xs: List[Char]): Map[Char, Int] = {
+    def _letterCountRecursive(ys: List[Char], acc: Map[Char, Int]): Map[Char, Int] =
+      xs match {
+        case Nil          => acc
+        case head :: tail => _letterCountRecursive(tail, addLetter(acc, head))
+      }
+
+    _letterCountRecursive(xs, Map.empty)
+  }
+
   @tailrec
-  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+  def foldLeftRecursive[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
     xs match {
       case Nil    => z
-      case h :: t => foldLeft(t, f(z, h))(f)
+      case h :: t => foldLeftRecursive(t, f(z, h))(f)
     }
 
-  def reverse[A](xs: List[A]): List[A] =
-    foldLeft(xs, List.empty[A])(_.::(_))
-
-  def multiply(xs: List[Int]): Int = foldLeft(xs, 1)(_ * _)
-
-  def filter[A](xs: List[A])(p: A => Boolean): List[A] =
-    foldLeft(xs, List.empty[A])((acc, a) => if (p(a)) a :: acc else acc).reverse
-
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
-    xs match {
-      case Nil    => z
-      case h :: t => f(h, foldRight(t, z)(f))
-    }
-
-  @tailrec
-  def find[A](fa: List[A])(p: A => Boolean): Option[A] =
-    fa match {
-      case Nil     => None
-      case x :: xs => if (p(x)) Some(x) else find(xs)(p)
-    }
+  ///////////////////////////
+  // 6. Laziness
+  ///////////////////////////
 
   @tailrec
   def forAll(fa: List[Boolean]): Boolean =
@@ -134,20 +154,50 @@ object FunctionAnswers {
       case true :: xs => forAll(xs)
     }
 
-  def forAll2(xs: List[Boolean]): Boolean =
-    foldRight(xs, true)(_ && _)
+  @tailrec
+  def find[A](fa: List[A])(p: A => Boolean): Option[A] =
+    fa match {
+      case Nil     => None
+      case x :: xs => if (p(x)) Some(x) else find(xs)(p)
+    }
+
+  def foldRight[A, B](xs: List[A], b: B)(f: (A, => B) => B): B =
+    xs match {
+      case Nil    => b
+      case h :: t => f(h, foldRight(t, b)(f))
+    }
+
+  def foldRightCats[A, B](xs: List[A], b: Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B] =
+    Eval.defer(
+      xs match {
+        case Nil    => b
+        case h :: t => f(h, foldRightCats(t, b)(f))
+      }
+    )
+
+  def forAllFoldRight(xs: List[Boolean]): Boolean =
+    foldRightCats(xs, Eval.now(true)) {
+      case (false, _)   => Eval.now(false)
+      case (true, rest) => rest
+    }.value
+
+  def findFoldRight[A](xs: List[A])(predicate: A => Boolean): Option[A] =
+    foldRightCats(xs, Eval.now(Option.empty[A]))((a, rest) => if (predicate(a)) Eval.now(Some(a)) else rest).value
 
   def headOption[A](xs: List[A]): Option[A] =
     foldRight(xs, Option.empty[A])((a, _) => Some(a))
 
-  def find2[A](xs: List[A])(p: A => Boolean): Option[A] =
-    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
+  def multiply(xs: List[Int]): Int =
+    foldLeft(xs, 1)(_ * _)
 
   def min(xs: List[Int]): Option[Int] =
     xs match {
       case Nil          => None
       case head :: tail => Some(foldLeft(tail, head)(_ min _))
     }
+
+  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] =
+    foldLeft(xs, List.empty[A])((acc, a) => if (predicate(a)) a :: acc else acc).reverse
 
   ////////////////////////
   // 5. Memoization

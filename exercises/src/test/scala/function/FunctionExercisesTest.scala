@@ -36,19 +36,13 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
     Pair("John", "Doe").swap shouldEqual Pair("Doe", "John")
   }
 
-  ///////////////////////////
-  // 3. Recursion & Laziness
-  ///////////////////////////
+  /////////////////
+  // 4. Iteration
+  /////////////////
 
-  test("sumList small") {
-    sumList(List(1, 2, 3, 10)) shouldEqual 16
-    sumList(Nil) shouldEqual 0
-  }
-
-  test("sumList large") {
-    val xs = 1.to(1000000).toList
-
-    sumList(xs) shouldEqual xs.sum
+  test("sum") {
+    sum(List(1, 2, 3, 10)) shouldEqual 16
+    sum(Nil) shouldEqual 0
   }
 
 }

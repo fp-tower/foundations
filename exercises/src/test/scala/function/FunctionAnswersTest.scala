@@ -1,7 +1,7 @@
 package function
 
-import answers.function.FunctionAnswers._
 import answers.function.FunctionAnswers
+import answers.function.FunctionAnswers._
 import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -84,28 +84,27 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     forAll((x: Int) => identity(x) shouldEqual x)
   }
 
-  ///////////////////////////
-  // 3. Recursion & Laziness
-  ///////////////////////////
+  /////////////////////////////////////////
+  // 4-6. Iteration & Recursion & Laziness
+  /////////////////////////////////////////
 
-  List(sumList _, sumList2 _, sumList3 _).zipWithIndex.foreach {
+  val largeSize = 1000000
+
+  List(sum _, sumFoldLeft _, sumRecursive _).zipWithIndex.foreach {
     case (f, i) =>
       test(s"sumList $i small") {
         f(List(1, 2, 3, 10)) shouldEqual 16
         f(Nil) shouldEqual 0
       }
-  }
 
-  List(sumList2 _, sumList3 _).zipWithIndex.foreach {
-    case (f, i) =>
       test(s"sumList $i large") {
-        val xs = 1.to(1000000).toList
+        val xs = 1.to(largeSize).toList
 
         f(xs) shouldEqual xs.sum
       }
   }
 
-  List(mkString _, mkString2 _).zipWithIndex.foreach {
+  List(mkString _, mkStringFoldLeft _).zipWithIndex.foreach {
     case (f, i) =>
       test(s"mkString $i") {
         forAll((s: String) => f(s.toList) shouldEqual s)
@@ -126,23 +125,23 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     forAll((xs: List[Int], p: Int => Boolean) => filter(xs)(p) shouldEqual xs.filter(p))
   }
 
-  List(FunctionAnswers.forAll _, FunctionAnswers.forAll2 _).zipWithIndex.foreach {
-    case (f, i) =>
-      test(s"forAll $i") {
-        f(List(true, true, true)) shouldEqual true
-        f(List(true, false, true)) shouldEqual false
-        f(Nil) shouldEqual true
-      }
+  List(FunctionAnswers.forAll _, FunctionAnswers.forAllFoldRight _).zipWithIndex
+    .foreach {
+      case (f, i) =>
+        test(s"forAll $i") {
+          f(List(true, true, true)) shouldEqual true
+          f(List(true, false, true)) shouldEqual false
+          f(Nil) shouldEqual true
+        }
 
-      if (i == 0)
         test(s"forAll $i is stack safe") {
-          val xs = List.fill(1000000)(true)
+          val xs = List.fill(largeSize)(true)
 
           f(xs) shouldEqual true
         }
-  }
+    }
 
-  List(find[Int] _, find2[Int] _).zipWithIndex.foreach {
+  List(find[Int] _, findFoldRight[Int] _).zipWithIndex.foreach {
     case (f, i) =>
       test(s"find $i") {
         val xs = 1.to(100).toList
@@ -152,7 +151,7 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
       }
 
       test(s"find $i is lazy") {
-        val xs = 1.to(1000000).toList
+        val xs = 1.to(largeSize).toList
 
         val seen = ListBuffer.empty[Int]
 
@@ -164,19 +163,18 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
         seen.size shouldEqual 11
       }
 
-      if (i == 0)
-        test(s"find $i is stack safe") {
-          val xs = 1.to(10000000).toList
+      test(s"find $i is stack safe") {
+        val xs = 1.to(largeSize).toList
 
-          f(xs)(_ == 5) shouldEqual Some(5)
-          f(xs)(_ == -1) shouldEqual None
-        }
+        f(xs)(_ == 5) shouldEqual Some(5)
+        f(xs)(_ == -1) shouldEqual None
+      }
   }
 
   test("headOption") {
     headOption(List(1, 2, 3, 4)) shouldEqual Some(1)
     headOption(Nil) shouldEqual None
-    headOption(List.fill(10000000)(1)) shouldEqual Some(1)
+    headOption(List.fill(largeSize)(1)) shouldEqual Some(1)
   }
 
   ////////////////////////
