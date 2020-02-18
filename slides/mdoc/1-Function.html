@@ -867,6 +867,52 @@ identityVal(4)
 ```
 
 ---
+background-image: url(img/function/list.svg)
+
+# Linked List
+
+---
+# Linked List
+
+<br>
+
+```scala mdoc:silent
+sealed trait List[A]
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+case class Nil[A]() extends List[A]
+```
+
+<br>
+
+```scala mdoc
+val list: List[Int] = Cons(1, Cons(2, Cons(3, Nil())))
+```
+
+---
+# Linked List
+
+<br>
+
+```scala mdoc:reset:silent
+sealed trait List[A]
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+case class Nil[A]() extends List[A]
+
+object List {
+    def apply[A](xs: A*): List[A] =
+      if (xs.isEmpty) Nil() else Cons(xs.head, apply(xs.tail: _*))
+  }
+```
+
+<br>
+
+```scala mdoc
+val list: List[Int] = List(1,2,3)
+```
+
+---
 background-image: url(img/function/fold.svg)
 
 # Folding
@@ -891,7 +937,7 @@ background-image: url(img/function/fold-left-all.svg)
 <br>
 <br>
 
-```scala mdoc:silent
+```scala mdoc:reset:silent
 def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
   var acc = b
   for (a <- fa) {
