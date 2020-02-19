@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Prerequisite</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+<a href="https://github.com/fp-tower/foundation">
+  <img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
+</a>
+
+<br>
+<br>
+
+
+# Prerequisite
+
+---
+layout: true
+
+<div class="footer">
+  <a href="https://github.com/fp-tower/foundation">
+    <img src="img/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
+  </a>
+</div>
+
+
+---
+background-image: url(img/function/list.svg)
+
+# Linked List
+
+---
+# Linked List
+
+<br>
+
+```scala mdoc:silent
+sealed trait List[A]
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+case class Nil[A]() extends List[A]
+```
+
+<br>
+
+```scala mdoc
+val list: List[Int] = Cons(1, Cons(2, Cons(3, Nil())))
+```
+
+---
+# Linked List
+
+<br>
+
+```scala mdoc:reset:silent
+sealed trait List[A] {
+  def ::(head: A): List[A] =
+    Cons(head, this)
+}
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+case class Nil[A]() extends List[A]
+```
+
+<br>
+
+```scala mdoc
+val list: List[Int] = 1 :: 2 :: 3 :: Nil()
+```
+
+---
+# Linked List
+
+<br>
+
+```scala mdoc:reset:silent
+sealed trait List[A]
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+case class Nil[A]() extends List[A]
+
+object List {
+    def apply[A](xs: A*): List[A] =
+      if (xs.isEmpty) Nil() else Cons(xs.head, apply(xs.tail: _*))
+  }
+```
+
+<br>
+
+```scala mdoc
+val list: List[Int] = List(1,2,3)
+```
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '%current%',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
