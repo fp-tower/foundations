@@ -362,12 +362,78 @@ class: center, middle
 `exercises.function.FunctionExercises.scala`
 
 ---
+
+.pull-left[
+# Types
+
+<br>
+
+```scala
+Int
+String
+Person
+```
+<br>
+]
+
+```scala mdoc:invisible
+case class Person(name: String, age: Int)
+```
+
+.pull-right[
+# Parametric types
+
+<br>
+
+```scala
+List
+Map
+JsonEncoder
+```
+<br>
+]
+
+--
+
+.pull-left[
+```scala mdoc:silent
+val counter: Int = 5
+
+val message: String = "Welcome!"
+
+val alice: Person = Person("Alice", 23)
+```
+]
+
+.pull-right[
+```scala mdoc:fail
+val elems: List = List(1, 2, 3)
+```
+]
+
+--
+
+.pull-right[
+```scala mdoc
+val elems: List[Int] = List(1, 2, 3)
+```
+]
+
+---
 # Functions
 
 <br>
 
 ```scala
-def map(s: String, f: Char => Char): String = ???
+def map(s: String, f: Char => Char): String = ...
+```
+
+<br>
+
+```scala
+def map(list: List[Int]   , f: Int    => Int   ): List[Int]    = ...
+
+def map(list: List[String], f: String => String): List[String] = ...
 ```
 
 --
@@ -375,17 +441,7 @@ def map(s: String, f: Char => Char): String = ???
 <br>
 
 ```scala
-def map(list: List[Int]   , f: Int    => Int   ): List[Int]    = ???
-
-def map(list: List[String], f: String => String): List[String] = ???
-```
-
---
-
-<br>
-
-```scala
-def map(list: List[Int]   , f: Int    => String): List[String] = ???
+def map(list: List[Int]   , f: Int    => String): List[String] = ...
 ```
 
 ---
@@ -394,7 +450,7 @@ def map(list: List[Int]   , f: Int    => String): List[String] = ???
 <br>
 
 ```scala
-def map[To](list: List[Int], f: Int => To): List[To] = ???
+def map[To](list: List[Int], f: Int => To): List[To] = ...
 ```
 
 ```scala mdoc:invisible
@@ -415,7 +471,7 @@ map(List(1,2,3,4), (x: Int) => x / 2.0)
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] = ???
+def map[From, To](list: List[From], f: From => To): List[To] = ...
 ```
 
 ```scala mdoc:reset:invisible
@@ -444,7 +500,7 @@ map(List("Hello", "World"), (x: String) => x.toCharArray)
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] = ???
+def map[From, To](list: List[From], f: From => To): List[To] = ...
 ```
 
 --
@@ -452,18 +508,12 @@ def map[From, To](list: List[From], f: From => To): List[To] = ???
 <br>
 
 .medium[
-The callers of `map` decide what `From` and `To` are.
+The callers of `map` choose `From` and `To`.
 ]
 
 ```scala mdoc
 map[Int, String](List(1,2,3), (x: Int) => x.toString)
 ```
-
---
-
-.medium[
-But `map` doesn't know what `From` and `To` are.
-]
 
 ---
 # How can we implement `map`?
@@ -471,7 +521,7 @@ But `map` doesn't know what `From` and `To` are.
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] = ???
+def map[From, To](list: List[From], f: From => To): List[To] = ...
 ```
 
 --
@@ -526,7 +576,7 @@ def map(list: List[Int], f: Int => Int): List[Int] =
 <br>
 
 .center[
-## #2 Benefit: Require less tests
+## #2 Benefit: require less tests
 ]
 
 
@@ -544,7 +594,7 @@ class: center, middle
 
 ```scala
 case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ???
+  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ...
 }
 ```
 
@@ -577,7 +627,7 @@ Pair(0, 2).zipWith(Pair(3, 3), (x, y) => x + y)
 
 ```scala
 case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ???
+  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ...
 }
 ```
 
@@ -628,13 +678,13 @@ def function[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
 
 <br>
 
---
-
 .pull-left[
 ```scala mdoc:silent
 def identity[A](value: A): A =
   value
 ```
+
+<br>
 
 ```scala mdoc
 identity(5)
@@ -643,13 +693,13 @@ identity("Hello")
 ```
 ]
 
---
-
 .pull-right[
 ```scala mdoc:silent
 def constant[A, B](value: A)(discarded: B): A =
   value
 ```
+
+<br>
 
 ```scala mdoc
 constant(5)("Hello")
@@ -675,12 +725,15 @@ object Config {
 
 --
 
-<br>
+```scala mdoc:silent
+def toggle(): Boolean =
+  Config.modifyFlag(x => !x)
+```
 
 ```scala mdoc
-Config.modifyFlag(x => !x)
+toggle()
 
-Config.modifyFlag(x => !x)
+toggle()
 ```
 
 ---
@@ -702,7 +755,7 @@ object Config {
 
 .pull-left[
 ```scala
-def disable(): Boolean = ???
+def disable(): Boolean = ...
 ```
 ]
 
@@ -724,21 +777,21 @@ object Config {
 ## How would you implement?
 
 .pull-left[
-```scala mdoc:silent
-def disable(): Boolean =
-  Config.modifyFlag(constant(false))
-```
-]
-
---
-
-.pull-right[
 ```scala
 def disable(): Boolean =
   Config.modifyFlag(_ => false)
 ```
 ]
 
+--
+
+.pull-right[
+```scala mdoc:silent
+def disable(): Boolean =
+  Config.modifyFlag(constant(false))
+```
+]
+
 ---
 # Two apparently useless parametric functions
 
@@ -756,9 +809,11 @@ object Config {
 
 ## How would you implement?
 
+.pull-left[
 ```scala
-def getFlag: Boolean = ???
+def getFlag: Boolean = ...
 ```
+]
 
 ---
 # Two apparently useless parametric functions
@@ -777,10 +832,12 @@ object Config {
 
 ## How would you implement?
 
+.pull-left[
 ```scala mdoc:silent
 def getFlag: Boolean =
   Config.modifyFlag(identity)
 ```
+]
 
 ---
 # Consistent API
