@@ -115,12 +115,12 @@ class: center, middle
 <br>
 
 ```scala mdoc:invisible
-def filter(list: List[String], predicate: String => Boolean): List[String] =
-  list.filter(predicate)
+def filter(s: String, predicate: Char => Boolean): String =
+  s.filter(predicate)
 ```
 
 ```scala
-def filter(list: List[String], predicate: String => Boolean): List[String] = ...
+def filter(s: String, predicate: Char => Boolean): String = ...
 ```
 
 --
@@ -128,14 +128,14 @@ def filter(list: List[String], predicate: String => Boolean): List[String] = ...
 <br>
 
 ```scala mdoc:silent
-val words = List("Hello", " ", "World", "Hey")
+val word = "Hello World!"
 ```
 
 ```scala mdoc
-filter(words, (s: String) => s.startsWith("H"))
+filter(word, (c: Char) => c.isUpper)
 
 
-filter(words, (s: String) => s.length > 3)
+filter(word, (c: Char) => c.isLetter)
 ```
 
 ---
