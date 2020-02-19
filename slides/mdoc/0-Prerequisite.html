@@ -31,7 +31,12 @@ layout: true
 
 
 ---
-background-image: url(img/function/list.svg)
+background-image: url(img/prerequisite/int-linked-list.svg)
+
+# Linked List
+
+---
+background-image: url(img/prerequisite/string-linked-list.svg)
 
 # Linked List
 
@@ -43,9 +48,11 @@ background-image: url(img/function/list.svg)
 ```scala mdoc:silent
 sealed trait List[A]
 
-case class Cons[A](head: A, tail: List[A]) extends List[A]
 case class Nil[A]() extends List[A]
+case class Cons[A](head: A, tail: List[A]) extends List[A]
 ```
+
+--
 
 <br>
 
@@ -64,8 +71,8 @@ sealed trait List[A] {
     Cons(head, this)
 }
 
-case class Cons[A](head: A, tail: List[A]) extends List[A]
 case class Nil[A]() extends List[A]
+case class Cons[A](head: A, tail: List[A]) extends List[A]
 ```
 
 <br>
@@ -82,8 +89,8 @@ val list: List[Int] = 1 :: 2 :: 3 :: Nil()
 ```scala mdoc:reset:silent
 sealed trait List[A]
 
-case class Cons[A](head: A, tail: List[A]) extends List[A]
 case class Nil[A]() extends List[A]
+case class Cons[A](head: A, tail: List[A]) extends List[A]
 
 object List {
     def apply[A](xs: A*): List[A] =
