@@ -337,14 +337,20 @@ format5D(1.123456789)
 ```
 
 ---
-# Alternative syntax
+# Syntax
 
-<br>
+## Curried
 
 ```scala
 def formatDouble(digits: Int): Double        => String
 
 def formatDouble(digits: Int)(number: Double):  String
+```
+
+## Uncurried
+
+```scala
+def formatDouble(digits: Int, number: Double):  String
 ```
 
 
