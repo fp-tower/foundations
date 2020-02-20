@@ -4,6 +4,8 @@ import cats.Eval
 
 import scala.annotation.tailrec
 import scala.collection.mutable
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.RoundingMode
 
 object FunctionAnswers {
 
@@ -34,6 +36,21 @@ object FunctionAnswers {
 
   val increment: Int => Int = add(1)
   val decrement: Int => Int = add(-1)
+
+  def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
+    BigDecimal(number)
+      .setScale(digits, roundingMode)
+      .toDouble
+      .toString
+
+  val formatDoubleCurried: RoundingMode => Int => Double => String =
+    roundingMode => digits => number => formatDouble(roundingMode, digits, number)
+
+  val formatDoubleCurried2: RoundingMode => Int => Double => String =
+    (formatDouble _).curried
+
+  val format2Ceiling: Double => String =
+    formatDoubleCurried(RoundingMode.CEILING)(2)
 
   ////////////////////////////
   // 3. parametric functions

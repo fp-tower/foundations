@@ -46,6 +46,10 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
     decrement(5) shouldEqual 4
   }
 
+  test("format2Ceiling") {
+    format2Ceiling(0.123456) shouldEqual "0.13"
+  }
+
   ////////////////////////////
   // 3. parametric functions
   ////////////////////////////

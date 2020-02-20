@@ -1,6 +1,8 @@
 package exercises.function
 
 import scala.annotation.tailrec
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.RoundingMode
 import scala.util.Random
 
 // you can run and print things here
@@ -60,6 +62,22 @@ object FunctionExercises {
   lazy val increment: Int => Int = ???
 
   lazy val decrement: Int => Int = ???
+
+  // 2b. Implement `formatDoubleCurried`, a curried version of `formatDouble`.
+  def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
+    BigDecimal(number)
+      .setScale(digits, roundingMode)
+      .toDouble
+      .toString
+
+  lazy val formatDoubleCurried: RoundingMode => Int => Double => String =
+    ???
+
+  // 2c. Implement `format2Ceiling` using `formatDoubleCurried`
+  // such as format2Ceiling(0.12345) == 0.13
+  // Note: You can try various
+  lazy val format2Ceiling: Double => String =
+    ???
 
   ////////////////////////////
   // 3. parametric functions

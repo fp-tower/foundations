@@ -339,20 +339,21 @@ format5D(1.123456789)
 ---
 # Syntax
 
-## Curried
-
-```scala
-def formatDouble(digits: Int): Double        => String
-
-def formatDouble(digits: Int)(number: Double):  String
-```
-
 ## Uncurried
 
 ```scala
 def formatDouble(digits: Int, number: Double):  String
 ```
 
+## Curried
+
+```scala
+def formatDouble(digits: Int)(number: Double): String
+
+def formatDouble(digits: Int): Double => String
+
+val formatDouble: Int => Double => String
+```
 
 ---
 class: center, middle
