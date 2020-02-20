@@ -10,11 +10,13 @@ import cats.Eq
 import cats.data.NonEmptyList
 import cats.implicits._
 import org.scalacheck.Arbitrary
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
-import org.typelevel.discipline.scalatest.Discipline
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.scalacheck.Checkers
+import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 
-class TypeAnswersTest extends AnyFunSuite with Discipline with Matchers {
+class TypeAnswersTest extends AnyFunSuite with FunSuiteDiscipline with Checkers with Matchers {
+
   test("boolean - optUnit") {
     boolean.cardinality.eval shouldEqual optUnit.cardinality.eval
   }

@@ -5,11 +5,12 @@ import cats.Eq
 import cats.implicits._
 import exercises.types.TypeExercises._
 import org.scalacheck.Arbitrary
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funsuite.AnyFunSuite
-import org.typelevel.discipline.scalatest.Discipline
+import org.scalatestplus.scalacheck.Checkers
+import org.typelevel.discipline.scalatest.{Discipline, FunSuiteDiscipline}
 
-class TypeExercisesTest extends AnyFunSuite with Discipline with Matchers {
+class TypeExercisesTest extends AnyFunSuite with FunSuiteDiscipline with Checkers with Matchers {
 
   test("intOrBoolean") {
     intOrBoolean.cardinality.eval shouldEqual Some(BigInt(2).pow(32) + 2)
