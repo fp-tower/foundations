@@ -408,7 +408,7 @@ val alice: Person = Person("Alice", 23)
 
 .pull-right[
 ```scala mdoc:fail
-val elems: List = List(1, 2, 3)
+val numbers: List = List(1, 2, 3)
 ```
 ]
 
@@ -416,7 +416,9 @@ val elems: List = List(1, 2, 3)
 
 .pull-right[
 ```scala mdoc
-val elems: List[Int] = List(1, 2, 3)
+val numbers: List[Int] = List(1, 2, 3)
+
+val words: List[String] = List("Hello", "World")
 ```
 ]
 
@@ -509,7 +511,7 @@ def map[From, To](list: List[From], f: From => To): List[To] = ...
 <br>
 
 .medium[
-The callers of `map` choose `From` and `To`.
+The callers of `map` choose `From` and `To`
 ]
 
 ```scala mdoc
