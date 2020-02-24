@@ -13,8 +13,8 @@ object FunctionAnswers {
   // 1. Functions as input (aka higher order functions)
   //////////////////////////////////////////////////////
 
-  def keepLetters(s: String): String =
-    s.filter(c => c.isLetter)
+  def keepDigits(s: String): String =
+    s.filter(c => c.isDigit)
 
   def secret(s: String): String =
     s.map(_ => '*')

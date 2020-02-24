@@ -18,10 +18,10 @@ object FunctionExercises {
   // 1. Functions as input (aka higher order functions)
   /////////////////////////////////////////////////////
 
-  // 1a. Implement `keepLetters` which iterates over a String and only keep the characters that are letters.
-  // such as keepLetters("123foo0-!Bar~+3") == "fooBar"
+  // 1a. Implement `keepDigits` which iterates over a String and only keep the characters that are digits.
+  // such as keepLetters("123foo0-!Bar~+3") == "12303"
   // Note: You can use `filter` method from `String`, also check out the API of Char
-  def keepLetters(s: String): String = ???
+  def keepDigits(s: String): String = ???
 
   // 1b. Implement `secret` which transforms all characters in a String to '*'
   // such as secret("Welcome123") == "**********"

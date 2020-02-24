@@ -2,8 +2,8 @@ package examples
 
 import cats.data.NonEmptyList
 import examples.Introduction._
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class IntroductionTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {

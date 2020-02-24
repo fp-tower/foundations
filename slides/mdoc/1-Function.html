@@ -11,14 +11,8 @@
 class: center, middle
 
 <a href="https://github.com/fp-tower/foundation">
-  <img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
+  <img src="img/solid-color-logo.svg" alt="logo" style="width:800px;"/>
 </a>
-
-<br>
-<br>
-
-
-# Function
 
 ---
 layout: true
@@ -36,7 +30,7 @@ class: center, middle
 # What makes a programming language functional?
 
 ---
-# Functions are normal objects
+# Functions are ordinary objects
 
 <br>
 
@@ -50,6 +44,27 @@ val message  : String     = "Hello World!"
 
 ```scala mdoc:silent
 val increment: Int => Int = (x: Int) => x + 1
+```
+
+---
+# Functions are ordinary objects
+
+<br>
+
+```scala mdoc:reset:silent
+val counter  : Int                 = 3
+
+val message  : String              = "Hello World!"
+```
+
+<br>
+
+```scala mdoc:silent
+val increment: Int => Int          = (x: Int) => x + 1
+```
+
+```scala mdoc:reset:silent
+val increment: Function1[Int, Int] = (x: Int) => x + 1
 ```
 
 ---
@@ -107,7 +122,7 @@ def plus(x: Int, y: Int): Int =
 ---
 class: center, middle
 
-# Two main usages of first class functions
+# Two main usages of 1st class functions
 
 ---
 # #1 Functions as input
@@ -188,14 +203,35 @@ def map(s: String, f: Char => Char): String = {
   }
   new String(characters)
 }
+```
 
+<br>
+
+```scala mdoc:silent
 def upperCase(s: String): String = map(s, c => c.toUpper)
 
 def lowerCase(s: String): String = map(s, c => c.toLower)
 ```
 
 ---
+background-image: url(img/function/file-processing.svg)
+
+# File processing
+
+---
+background-image: url(img/function/file-processing-fail.svg)
+
+# File processing
+
+---
+background-image: url(img/function/file-processing-fail-safe.svg)
+
+# File processing
+
+---
 # Write tricky code once
+
+<br>
 
 ```scala mdoc:silent
 import scala.io.Source

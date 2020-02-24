@@ -2,7 +2,7 @@ package function
 
 import answers.function.FunctionAnswers
 import answers.function.FunctionAnswers._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -14,8 +14,8 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
   // 1. Functions as input (aka higher order functions)
   //////////////////////////////////////////////////////
 
-  test("keepLetters") {
-    keepLetters("123foo0-!Bar~+3") shouldEqual "fooBar"
+  test("keepDigits") {
+    keepDigits("123foo0-!Bar~+3") shouldEqual "12303"
   }
 
   test("secret") {

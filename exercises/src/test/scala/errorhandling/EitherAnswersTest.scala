@@ -8,8 +8,8 @@ import answers.errorhandling.EitherAnswers.UserEmailError.{EmailNotFound, UserNo
 import answers.errorhandling.EitherAnswers.UsernameError.{InvalidCharacters, TooSmall}
 import answers.errorhandling.EitherAnswers._
 import answers.errorhandling.OptionAnswers
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
 class EitherAnswersTest extends AnyFunSuite with Matchers {
 

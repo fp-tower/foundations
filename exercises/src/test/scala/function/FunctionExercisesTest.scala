@@ -2,8 +2,8 @@ package function
 
 import exercises.function.FunctionExercises
 import exercises.function.FunctionExercises._
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
@@ -12,8 +12,8 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
   // 1. Functions as input (aka higher order functions)
   /////////////////////////////////////////////////////
 
-  test("keepLetters") {
-    keepLetters("123foo0-!Bar~+3") shouldEqual "fooBar"
+  test("keepDigits") {
+    keepDigits("123foo0-!Bar~+3") shouldEqual "12303"
   }
 
   test("secret") {

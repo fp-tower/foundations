@@ -4,8 +4,8 @@ import java.time.Instant
 
 import answers.sideeffect.IOAnswers._
 import answers.sideeffect.IORef
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.util.{Failure, Success, Try}
