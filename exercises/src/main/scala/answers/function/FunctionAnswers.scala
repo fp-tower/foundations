@@ -19,10 +19,7 @@ object FunctionAnswers {
   def secret(s: String): String =
     s.map(_ => '*')
 
-  def isValidUsernameCharacter(c: Char): Boolean =
-    c.isLetterOrDigit || c == '-' || c == '_'
-
-  val _isValidUsernameCharacter: Char => Boolean =
+  val isValidUsernameCharacter: Char => Boolean =
     c => c.isLetterOrDigit || c == '-' || c == '_'
 
   def isValidUsername(username: String): Boolean =

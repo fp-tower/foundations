@@ -118,12 +118,6 @@ def plus(x: Int, y: Int): Int =
 ```
 ]
 
-
----
-class: center, middle
-
-# Two main usages of 1st class functions
-
 ---
 # #1 Functions as input
 
@@ -143,14 +137,14 @@ def filter(s: String, predicate: Char => Boolean): String = ...
 <br>
 
 ```scala mdoc:silent
-val word = "Hello World!"
+val text = "Hello World!"
 ```
 
 ```scala mdoc
-filter(word, (c: Char) => c.isUpper)
+filter(text, (c: Char) => c.isUpper)
 
 
-filter(word, (c: Char) => c.isLetter)
+filter(text, (c: Char) => c.isLetter)
 ```
 
 ---
@@ -195,6 +189,7 @@ lowerCase("Hello")
 
 <br>
 
+.pull-left[
 ```scala mdoc:reset:silent
 def map(s: String, f: Char => Char): String = {
   val characters = s.toArray
@@ -208,10 +203,36 @@ def map(s: String, f: Char => Char): String = {
 <br>
 
 ```scala mdoc:silent
-def upperCase(s: String): String = map(s, c => c.toUpper)
+def upperCase(s: String): String =
+  map(s, c => c.toUpper)
 
-def lowerCase(s: String): String = map(s, c => c.toLower)
+def lowerCase(s: String): String =
+  map(s, c => c.toLower)
 ```
+]
+
+--
+
+.pull-right[
+```scala mdoc:silent
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+
+class MapTest extends AnyFunSuite
+  with Matchers with ScalaCheckDrivenPropertyChecks {
+
+  test("map does not change size") {
+
+    forAll((s: String, f: Char => Char) =>
+       map(s, f).length shouldEqual s.length
+    )
+
+  }
+
+}
+```
+]
 
 ---
 background-image: url(img/function/file-processing.svg)
@@ -246,30 +267,30 @@ def usingFile(fileName: String, f: Iterator[String] => String): String = {
 }
 ```
 
+--
+
+```scala mdoc:silent
+val firstLine: Iterator[String] => String =
+  lines => lines.next()
+
+val concatLines: Iterator[String] => String =
+  lines => lines.mkString("\n")
+```
+
 ---
 .h1[# Write tricky code once]
 
 <br>
 
 .pull-left[
-```scala mdoc:silent
-def readFirstLine(fileName: String): String =
-  usingFile(fileName, lines => lines.next())
-```
-
 ```scala mdoc
-readFirstLine("lorem-ipsum.txt")
+usingFile("lorem-ipsum.txt", firstLine)
 ```
 ]
 
 .pull-right[
-```scala mdoc:silent
-def readEntireFile(fileName: String): String =
-  usingFile(fileName, lines => lines.mkString("\n"))
-```
-
 ```scala mdoc
-readEntireFile("lorem-ipsum.txt")
+usingFile("lorem-ipsum.txt", concatLines)
 ```
 ]
 

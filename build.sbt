@@ -20,7 +20,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     refined,
     circe,
     scalacheck,
-    disciplineTest % Test
+    disciplineTest
   )
 )
 

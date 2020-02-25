@@ -30,24 +30,21 @@ object FunctionExercises {
 
   // 1c. Implement `isValidUsernameCharacter` which checks if a character is suitable for a username.
   // We accept:
-  // * lower and upper case letters
-  // * digits
-  // * special characters: '-' and '_'
+  // - lower and upper case letters
+  // - digits
+  // - special characters: '-' and '_'
   // For example, isValidUsernameCharacter('3') == true
+  //              isValidUsernameCharacter('a') == true
   // but          isValidUsernameCharacter('^') == false
-  def isValidUsernameCharacter(c: Char): Boolean = ???
-
-  // 1d. Now, we are going to experiment with the val function syntax.
-  // Implement `_isValidUsernameCharacter` which behaves exactly like `isValidUsernameCharacter`.
-  // Note: You can remove the lazy keyword as soon you implement `_isValidUsernameCharacter`.
+  // Note: You can remove the lazy keyword as soon you implement `isValidUsernameCharacter`.
   // It is only required to avoid tests throwing an exception.
-  lazy val _isValidUsernameCharacter: Char => Boolean = ???
+  lazy val isValidUsernameCharacter: Char => Boolean = ???
 
-  // 1e. Implements `isValidUsername` which checks that all the characters in a String are valid
+  // 1d. Implements `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
-  // Can you re-use `isValidUsernameCharacter` or `_isValidUsernameCharacter` or both? Why?
-  def isValidUsername(username: String): Boolean = ???
+  // Note: You can use `forAll` method from `String`
+  def isValidUsername(s: String): Boolean = ???
 
   //////////////////////////////////////////////////
   // 2. functions as output (aka curried functions)
