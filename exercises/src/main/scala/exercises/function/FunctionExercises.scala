@@ -21,12 +21,14 @@ object FunctionExercises {
   // 1a. Implement `keepDigits` which iterates over a String and only keep the characters that are digits.
   // such as keepLetters("123foo0-!Bar~+3") == "12303"
   // Note: You can use `filter` method from `String`, also check out the API of Char
-  def keepDigits(s: String): String = ???
+  def keepDigits(s: String): String =
+    ???
 
   // 1b. Implement `secret` which transforms all characters in a String to '*'
   // such as secret("Welcome123") == "**********"
   // Note: You can use `map` method from `String`
-  def secret(s: String): String = ???
+  def secret(s: String): String =
+    ???
 
   // 1c. Implement `isValidUsernameCharacter` which checks if a character is suitable for a username.
   // We accept:
@@ -38,13 +40,42 @@ object FunctionExercises {
   // but          isValidUsernameCharacter('^') == false
   // Note: You can remove the lazy keyword as soon you implement `isValidUsernameCharacter`.
   // It is only required to avoid tests throwing an exception.
-  lazy val isValidUsernameCharacter: Char => Boolean = ???
+  lazy val isValidUsernameCharacter: Char => Boolean =
+    ???
 
-  // 1d. Implements `isValidUsername` which checks that all the characters in a String are valid
+  // 1d. Implement `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
   // Note: You can use `forAll` method from `String`
-  def isValidUsername(s: String): Boolean = ???
+  def isValidUsername(s: String): Boolean =
+    ???
+
+  case class Point(x: Int, y: Int) {
+    // 1e. Implement `isPositive` which returns true if both `x` and `y` are greater or equal to 0, false otherwise
+    // such as Point(2,  3).isPositive == true
+    //         Point(0,  0).isPositive == true
+    // but     Point(0, -2).isPositive == false
+    // Note: `isPositive` is function define within `Point` class, so `isPositive` has access to `x` and `y`.
+    // It is almost equivalent to define `isPositive` outside of `Point` with the following signature:
+    // def isPositive(point: Point): Boolean
+    def isPositive: Boolean =
+      ???
+
+    // 1f. Implement `isEven` which returns true if both `x` and `y` are even numbers, false otherwise
+    // such as Point(2,  4).isEven == true
+    // such as Point(0, -8).isEven == true
+    // but     Point(3, -2).isEven == false
+    def isEven: Boolean =
+      ???
+
+    // 1g. Both `isPositive` and `isEven` check that a predicate holds for both `x` and `y`.
+    // Let's try to capture this pattern with a higher order function like `forAll`
+    // such as Point(1,1).forAll(_ == 1) == true
+    // but     Point(1,2).forAll(_ == 1) == false
+    // Then, re-implement `isPositive` and `isEven` using `forAll`
+    def forAll(predicate: Int => Boolean): Boolean =
+      ???
+  }
 
   //////////////////////////////////////////////////
   // 2. functions as output (aka curried functions)

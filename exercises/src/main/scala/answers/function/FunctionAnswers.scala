@@ -25,6 +25,23 @@ object FunctionAnswers {
   def isValidUsername(username: String): Boolean =
     username.forall(isValidUsernameCharacter)
 
+  case class Point(x: Int, y: Int) {
+    def isPositive: Boolean =
+      x >= 0 && y >= 0
+
+    def isEven: Boolean =
+      (x % 2 == 0) && (y % 2 == 0)
+
+    def forAll(predicate: Int => Boolean): Boolean =
+      predicate(x) && predicate(y)
+
+    def isPositiveForAll: Boolean =
+      forAll(_ >= 0)
+
+    def isEvenForAll: Boolean =
+      forAll(_ % 2 == 0)
+  }
+
   //////////////////////////////////////////////////
   // 2. functions as output (aka curried functions)
   //////////////////////////////////////////////////

@@ -119,7 +119,7 @@ def plus(x: Int, y: Int): Int =
 ]
 
 ---
-# #1 Functions as input
+# Functions as input
 
 <br>
 
@@ -129,7 +129,7 @@ def filter(s: String, predicate: Char => Boolean): String =
 ```
 
 ```scala
-def filter(s: String, predicate: Char => Boolean): String = ...
+def filter(text: String, predicate: Char => Boolean): String = ...
 ```
 
 --
@@ -154,9 +154,9 @@ filter(text, (c: Char) => c.isLetter)
 
 .pull-left[
 ```scala mdoc:silent
-def upperCase(s: String): String = {
-  val characters = s.toArray
-  for (i <- 0 until s.length) {
+def upperCase(text: String): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
     characters(i) = characters(i).toUpper
   }
   new String(characters)
@@ -170,9 +170,9 @@ upperCase("Hello")
 
 .pull-right[
 ```scala mdoc:silent
-def lowerCase(s: String): String = {
-  val characters = s.toArray
-  for (i <- 0 until s.length) {
+def lowerCase(text: String): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
     characters(i) = characters(i).toLower
   }
   new String(characters)
@@ -191,10 +191,10 @@ lowerCase("Hello")
 
 .pull-left[
 ```scala mdoc:reset:silent
-def map(s: String, f: Char => Char): String = {
-  val characters = s.toArray
-  for (i <- 0 until s.length) {
-    characters(i) = f(characters(i))
+def map(text: String, update: Char => Char): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
+    characters(i) = update(characters(i))
   }
   new String(characters)
 }
@@ -203,33 +203,25 @@ def map(s: String, f: Char => Char): String = {
 <br>
 
 ```scala mdoc:silent
-def upperCase(s: String): String =
-  map(s, c => c.toUpper)
+def upperCase(text: String): String =
+  map(text, c => c.toUpper)
 
-def lowerCase(s: String): String =
-  map(s, c => c.toLower)
+def lowerCase(text: String): String =
+  map(text, c => c.toLower)
 ```
 ]
 
 --
 
 .pull-right[
-```scala mdoc:silent
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.funsuite.AnyFunSuite
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-
-class MapTest extends AnyFunSuite
-  with Matchers with ScalaCheckDrivenPropertyChecks {
-
-  test("map does not change size") {
-
-    forAll((s: String, f: Char => Char) =>
-       map(s, f).length shouldEqual s.length
-    )
-
-  }
-
+```scala
+test("map does not change the size") {
+  forAll((
+    text  : String,
+    update: Char => Char
+  ) =>
+    map(text, update).length == text.length
+  )
 }
 ```
 ]
@@ -257,10 +249,10 @@ background-image: url(img/function/file-processing-fail-safe.svg)
 ```scala mdoc:silent
 import scala.io.Source
 
-def usingFile(fileName: String, f: Iterator[String] => String): String = {
+def usingFile(fileName: String, processing: Iterator[String] => Int): Int = {
   val source = Source.fromResource(fileName)
   try {
-    f(source.getLines())
+    processing(source.getLines())
   } finally {
     source.close()
   }
@@ -270,27 +262,50 @@ def usingFile(fileName: String, f: Iterator[String] => String): String = {
 --
 
 ```scala mdoc:silent
-val firstLine: Iterator[String] => String =
-  lines => lines.next()
+val countLines: Iterator[String] => Int =
+  lines => lines.size
+```
 
-val concatLines: Iterator[String] => String =
-  lines => lines.mkString("\n")
+```scala
+val countWords: Iterator[String] => Int =
+  lines => ...
 ```
 
 ---
-.h1[# Write tricky code once]
+# Write tricky code once
 
 <br>
 
+```scala mdoc:reset:silent
+import scala.io.Source
+
+def usingFile(fileName: String, processing: Iterator[String] => Int): Int = {
+  val source = Source.fromResource(fileName)
+  try {
+    processing(source.getLines())
+  } finally {
+    source.close()
+  }
+}
+```
+
+```scala mdoc:invisible
+val countLines: Iterator[String] => Int =
+  _.size
+
+val countWords: Iterator[String] => Int =
+  _.map(_.split(" ").size).reduce(_ + _)
+```
+
 .pull-left[
 ```scala mdoc
-usingFile("lorem-ipsum.txt", firstLine)
+usingFile("50-word-count.txt", countLines)
 ```
 ]
 
 .pull-right[
 ```scala mdoc
-usingFile("lorem-ipsum.txt", concatLines)
+usingFile("50-word-count.txt", countWords)
 ```
 ]
 
@@ -302,7 +317,7 @@ class: center, middle
 `exercises.function.FunctionExercises.scala`
 
 ---
-# #2 Functions as output
+# Functions as output
 
 <br>
 
@@ -323,7 +338,7 @@ formatDouble(5, 1.123456789)
 ```
 
 ---
-# #2 Functions as output
+# Functions as output
 
 .pull-left[
 ```scala
