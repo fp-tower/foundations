@@ -33,45 +33,25 @@ class: center, middle
 # Functions are ordinary objects
 
 <br>
-
-```scala mdoc:silent
-val counter  : Int        = 3
-
-val message  : String     = "Hello World!"
-```
-
 <br>
 
+
 ```scala mdoc:silent
-val increment: Int => Int = (x: Int) => x + 1
+val counter   : Int        = 3
+
+
+val message   : String     = "Hello World!"
+
+
+val increment : Int => Int = (x: Int) => x + 1
 ```
 
 ---
-# Functions are ordinary objects
+# Storing functions
 
 <br>
 
-```scala mdoc:reset:silent
-val counter  : Int                 = 3
-
-val message  : String              = "Hello World!"
-```
-
-<br>
-
-```scala mdoc:silent
-val increment: Int => Int          = (x: Int) => x + 1
-```
-
-```scala mdoc:reset:silent
-val increment: Function1[Int, Int] = (x: Int) => x + 1
-```
-
----
-# Functions in data structure
-
-<br>
-
+.pull-left[
 ```scala mdoc:reset:silent
 val increment: Int => Int = (x: Int) => x + 1
 val decrement: Int => Int = (x: Int) => x - 1
@@ -85,38 +65,400 @@ val dictionary = Map(
   "double"    -> double,
 )
 ```
+]
 
 --
 
+.pull-right[
 ```scala mdoc
-dictionary("increment")(10)
+list(0)(10)
+
 
 dictionary("double")(10)
 ```
-
+]
 
 ---
-# Syntax
+# Functions
 
-<br>
 
-.medium-left[
-## Val function
+.pull-left[
+## Def function (Method)
 
-```scala mdoc:silent
-val plus: (Int, Int) => Int =
-  (x, y) => x + y
+```scala
+def replicate(text: String, n: Int): String =
+  ...
 ```
 ]
 
 .pull-right[
-## Def function (Method)
+## Val function
 
-```scala mdoc:nest:silent
-def plus(x: Int, y: Int): Int =
-  x + y
+```scala
+val replicate: (String, Int) => String =
+  (text, n) => ...
 ```
 ]
+
+---
+# Functions
+
+
+.pull-left[
+## Def function (Method)
+
+```scala
+def replicate(text: String, n: Int): String =
+  ...
+```
+
+```scala mdoc:invisible
+def replicate(text: String, n: Int): String =
+  List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc
+replicate("Hello ", 3)
+```
+]
+
+.pull-right[
+## Val function
+
+```scala
+val replicate: (String, Int) => String =
+  (text, n) => ...
+```
+
+```scala mdoc:reset:invisible
+val replicate: (String, Int) => String =
+  (text, n) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc
+replicate("Hello ", 3)
+```
+]
+
+---
+# Def function (Method)
+
+.pull-left[
+## In Scala
+
+```scala
+def replicate(text: String, n: Int): String
+```
+]
+
+.pull-right[
+## In Java
+
+```java
+String replicate(String text, int n)
+```
+]
+
+---
+# Val function
+
+<br>
+
+```scala
+val replicate : (String, Int) => String = (text, n) => ...
+```
+
+--
+
+<br>
+
+```scala mdoc:silent
+val counter   : Int                     = 3
+
+val message   : String                  = "Hello World!"
+```
+
+---
+# Val function
+
+<br>
+
+```scala
+val replicate : Function2[String, Int, String] = (text, n) => ...
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val counter   : Int                            = 3
+
+val message   : String                         = "Hello World!"
+```
+
+---
+# Val function
+
+<br>
+
+```scala mdoc:silent
+val replicate: Function2[String, Int, String] =
+  new Function2[String, Int, String] {
+
+    def apply(text: String, n: Int): String =
+       List.fill(n)(text).mkString
+
+}
+```
+
+--
+
+<br>
+
+```scala mdoc
+replicate.apply("Hello ", 3)
+
+replicate("Hello ", 3)
+```
+
+---
+# Name of arguments
+
+<br>
+
+```scala mdoc:silent
+import java.time.LocalDate
+
+/**
+  * Create a [[java.time.LocalDate]]
+  * @param year
+  * @param month
+  * @param dayOfMonth
+  */
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+--
+
+<br>
+
+```scala mdoc
+createDate(dayOfMonth = 20, month = 6, year = 2020)
+```
+
+---
+# Name of arguments
+
+<br>
+
+```scala mdoc:reset:silent
+import java.time.LocalDate
+
+/**
+  * Create a [[java.time.LocalDate]]
+  * @param year
+  * @param month
+  * @param dayOfMonth
+  */
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+<br>
+
+```scala mdoc:silent
+val createDate: (Int, Int, Int) => LocalDate =
+  (year, month, dayOfMonth) => LocalDate.of(year, month, dayOfMonth)
+```
+
+---
+# Aliasing
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: (String, Int) => String =
+  (text, n) => List.fill(n)(text).mkString
+
+val repeat: (String, Int) => String =
+  replicate
+```
+
+---
+# Aliasing
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: (String, Int) => String =
+  (text, n) => List.fill(n)(text).mkString
+
+val repeat = replicate
+```
+
+--
+
+<br>
+
+```scala mdoc:reset:silent
+def replicate(text: String, n: Int): String =
+  List.fill(n)(text).mkString
+
+def repeat(text: String, n: Int): String =
+  replicate(text, n)
+```
+
+---
+# Val function cannot have more than 22 inputs
+
+<br>
+
+```scala mdoc:fail
+val function23: (Int, Int, Int, Int, Int,
+                 Int, Int, Int, Int, Int,
+                 Int, Int, Int, Int, Int,
+                 Int, Int, Int, Int, Int,
+                 Int, Int, Int) => Boolean = ???
+```
+
+--
+
+<br>
+
+```scala mdoc:silent
+def function23(x01: Int, x02:Int, x03:Int, x04:Int, x05:Int,
+               x06: Int, x07:Int, x08:Int, x09:Int, x10:Int,
+               x11: Int, x12:Int, x13:Int, x14:Int, x15:Int,
+               x16: Int, x17:Int, x18:Int, x19:Int, x20:Int,
+               x21: Int, x22:Int, x23:Int): Boolean = ???
+```
+
+---
+# Unimplemented functions
+
+<br>
+
+```scala mdoc:silent
+def sendNotification(userId: Long): Unit =
+  ???
+```
+
+--
+
+<br>
+
+```scala
+def ??? : Nothing = throw new NotImplementedError
+```
+
+---
+# Unimplemented functions
+
+<br>
+
+```scala mdoc:reset:silent
+def sendNotification(userId: Long): Unit =
+  ???
+```
+
+<br>
+
+```scala mdoc:crash
+val sendNotification: Long => Unit =
+  ???
+```
+
+---
+# Unimplemented functions
+
+<br>
+
+```scala mdoc:reset:silent
+def sendNotification(userId: Long): Unit =
+  ???
+```
+
+<br>
+
+```scala mdoc:silent
+val sendNotification: Long => Unit =
+  _ => ???
+```
+
+<br>
+
+```scala mdoc:reset:silent
+lazy val sendNotification: Long => Unit =
+  ???
+```
+
+
+---
+# Conversion def to val
+
+<br>
+
+```scala
+def replicate(text: String, n: Int): String
+```
+
+<br>
+
+```scala mdoc:reset:invisible
+def replicate(text: String, n: Int): String =
+  List.fill(n)(text).mkString
+```
+
+```scala mdoc:silent
+val replicateVal: (String, Int) => String =
+  replicate _
+```
+
+---
+# Conversion def to val
+
+<br>
+
+```scala
+def replicate(text: String, n: Int): String
+```
+
+<br>
+
+```scala mdoc:reset:invisible
+def replicate(text: String, n: Int): String =
+  List.fill(n)(text).mkString
+```
+
+```scala mdoc:silent
+val replicateVal: (String, Int) => String =
+  replicate
+```
+
+---
+# Conversion val to def
+
+<br>
+
+```scala
+val replicate: (String, Int) => String
+```
+
+<br>
+
+```scala mdoc:reset:invisible
+val replicate: (String, Int) => String =
+  (text, n) => List.fill(n)(text).mkString
+```
+
+```scala mdoc:silent
+def replicateDef(text: String, n: Int): String =
+  replicate(text, n)
+```
 
 ---
 # Functions as input
