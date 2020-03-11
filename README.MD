@@ -46,7 +46,7 @@ IO and some initiation to concurrency.
 
 ### Module 3: [Error Handling](https://fp-tower.github.io/foundation/3-ErrorHandling.html#1)
 
-They are many ways to deal with runtime errors. The easiest and most common method consists of throwing 
+There are many ways to deal with runtime errors. The easiest and most common method consists of throwing 
 exceptions. Unfortunately, it is not compatible with the functional programming paradigm. In this module,
 we look at the problems caused by exceptions and the various ways we can safely encode errors in Scala.
 
@@ -57,14 +57,14 @@ we look at the problems caused by exceptions and the various ways we can safely 
 
 ### Module 4: [Type](https://fp-tower.github.io/foundation/4-Type.html#1)
 
-We all have tendencies to use types that are too large for our purpose. This leads to either runtime 
+We all have the tendency to use types that are too large for our purpose. This leads to either runtime 
 exceptions or a lot of error handling logic. In this module, we look at using Algebraic Data Types (ADT)
 and type parameters to constraint our programs. We will also discuss various testing strategies and the
 best way to use types and tests together.
 
 **Objectives**:
-* Learn how to encode precisely business requirements with types.
-* Getting more familiar with Scala type hierarchy and type parameters.
+* Learn how to precisely encode business requirements with types.
+* Getting more familiar with Scala's type hierarchy and type parameters.
 
 
 ## FAQ
@@ -72,10 +72,10 @@ best way to use types and tests together.
 ### Where should I start?
 
 Each module has:
-* a set of slides (linked above) located at `docs/$module.html`
-* one or more Scala objects containing exercises located at `exercises/src/main/scala/exercises/$module/...Exercises.scala`
-* one or more Scala objects containing all answers located at `exercises/src/main/scala/answers/$module/...Answers.scala`
-* two test suites (one for exercises, one for answers) located at `exercises/src/test/scala/exercises/$module/...Test.scala`
+* A set of slides (linked above) located at `docs/$module.html`
+* One or more Scala objects containing exercises located at `exercises/src/main/scala/exercises/$module/...Exercises.scala`
+* One or more Scala objects containing all answers located at `exercises/src/main/scala/answers/$module/...Answers.scala`
+* Two test suites (one for exercises, one for answers) located at `exercises/src/test/scala/exercises/$module/...Test.scala`
 
 Start each module with the slides, at some point you will be prompted to work on some exercises. 
 Do the exercises and check your answers are correct by running the tests for this module.
