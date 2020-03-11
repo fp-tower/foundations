@@ -63,8 +63,8 @@ and type parameters to constraint our programs. We will also discuss various tes
 best way to use types and tests together.
 
 **Objectives**:
-* Learn how to encode precisely business requirements with types.
-* Getting more familiar with Scala type hierarchy and type parameters.
+* Learn how to precisely encode business requirements with types.
+* Getting more familiar with Scala's type hierarchy and type parameters.
 
 
 ## FAQ
