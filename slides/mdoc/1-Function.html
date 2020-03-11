@@ -41,7 +41,7 @@ def replicate(text: String, n: Int): String =
 
 ```scala
 val replicate: (String, Int) => String =
-  (text, n) => ...
+  (text: String, n: Int) => ...
 ```
 ]
 
@@ -74,12 +74,12 @@ replicate("Hello ", 3)
 
 ```scala
 val replicate: (String, Int) => String =
-  (text, n) => ...
+  (text: String, n: Int) => ...
 ```
 
 ```scala mdoc:reset:invisible
 val replicate: (String, Int) => String =
-  (text, n) => List.fill(n)(text).mkString
+  (text: String, n: Int) => List.fill(n)(text).mkString
 ```
 
 <br>
@@ -114,7 +114,7 @@ String replicate(String text, int n)
 <br>
 
 ```scala
-val replicate : (String, Int) => String = (text, n) => ...
+val replicate : (String, Int) => String = (text: String, n: Int) => ...
 ```
 
 ---
@@ -123,7 +123,7 @@ val replicate : (String, Int) => String = (text, n) => ...
 <br>
 
 ```scala
-val replicate : (String, Int) => String = (text, n) => ...
+val replicate : (String, Int) => String = (text: String, n: Int) => ...
 ```
 
 <br>
@@ -167,7 +167,7 @@ dictionary("double")(10)
 ]
 
 ---
-# Val function
+# Val function are ordinary objects
 
 <br>
 
@@ -229,22 +229,23 @@ replicate("Hello ", 3)
 ---
 class: center, middle
 
-# Use case and limitations
+# Differences between def and val
 
 ---
 # Argument names
 
 <br>
 
-```scala mdoc:silent
+```scala
 import java.time.LocalDate
 
-/**
-  * Create a [[java.time.LocalDate]]
-  * @param year
-  * @param month
-  * @param dayOfMonth
-  */
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+```scala mdoc:invisible
+import java.time.LocalDate
+
 def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
   LocalDate.of(year, month, dayOfMonth)
 ```
@@ -254,6 +255,8 @@ def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
 <br>
 
 ```scala mdoc
+createDate(2020, 6, 20)
+
 createDate(dayOfMonth = 20, month = 6, year = 2020)
 ```
 
@@ -262,24 +265,24 @@ createDate(dayOfMonth = 20, month = 6, year = 2020)
 
 <br>
 
-```scala mdoc:reset:silent
+```scala mdoc:reset:invisible
 import java.time.LocalDate
 
-/**
-  * Create a [[java.time.LocalDate]]
-  * @param year
-  * @param month
-  * @param dayOfMonth
-  */
-def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
-  LocalDate.of(year, month, dayOfMonth)
+val createDate: (Int, Int, Int) => LocalDate =
+  (year, month, dayOfMonth) => LocalDate.of(year, month, dayOfMonth)
+```
+
+```scala
+import java.time.LocalDate
+
+val createDate: (Int, Int, Int) => LocalDate =
+  (year, month, dayOfMonth) => ...
 ```
 
 <br>
 
-```scala mdoc:silent
-val createDate: (Int, Int, Int) => LocalDate =
-  (year, month, dayOfMonth) => LocalDate.of(year, month, dayOfMonth)
+```scala mdoc:fail
+createDate(dayOfMonth = 20, month = 6, year = 2020)
 ```
 
 ---
@@ -486,6 +489,26 @@ repeat("Hello ", 3)
 <br>
 
 ```scala mdoc:reset:silent
+def repeat(text: String, n: Int): String =
+  replicate(text, n)
+
+def replicate(text: String, n: Int): String =
+  List.fill(n)(text).mkString
+```
+
+<br>
+
+
+```scala mdoc
+repeat("Hello ", 3)
+```
+
+---
+# Definition order
+
+<br>
+
+```scala mdoc:reset:silent
 lazy val repeat = replicate
 
 lazy val replicate: (String, Int) => String =
@@ -504,8 +527,9 @@ repeat("Hello ", 3)
 
 <br>
 
-```scala mdoc:silent
-def sendNotification(userId: Long): Unit = ???
+```scala mdoc:reset:silent
+def repeat(text: String, n: Int): String =
+  ???
 ```
 
 --
@@ -522,13 +546,15 @@ def ??? : Nothing = throw new NotImplementedError
 <br>
 
 ```scala mdoc:reset:silent
-def sendNotification(userId: Long): Unit = ???
+def repeat(text: String, n: Int): String =
+  ???
 ```
 
 <br>
 
 ```scala mdoc:crash
-val sendNotification: Long => Unit = ???
+val replicate: (String, Int) => String =
+  ???
 ```
 
 ---
@@ -537,13 +563,15 @@ val sendNotification: Long => Unit = ???
 <br>
 
 ```scala mdoc:reset:silent
-def sendNotification(userId: Long): Unit = ???
+def repeat(text: String, n: Int): String =
+  ???
 ```
 
 <br>
 
-```scala mdoc:reset:silent
-lazy val sendNotification: Long => Unit = ???
+```scala mdoc:silent
+lazy val replicate: (String, Int) => String =
+  ???
 ```
 
 ---
@@ -570,6 +598,11 @@ def function23(x01: Int, x02:Int, x03:Int, x04:Int, x05:Int,
                x16: Int, x17:Int, x18:Int, x19:Int, x20:Int,
                x21: Int, x22:Int, x23:Int): Boolean = ???
 ```
+
+---
+class: center, middle
+
+# Conversion between def and val
 
 ---
 # Conversion def to val
@@ -635,15 +668,17 @@ def replicateDef(text: String, n: Int): String =
 ```
 
 ---
-# Summary val vs def function
+# Summary def and val function
 
 <br>
 
-### Use def by default (better documentation)
+.large[
+* Use def by default (better documentation)
 
-### Easy to convert def to val
+* Easy to convert def to val
 
-### Use val for inline anonymous functions
+* Use val for inline anonymous functions
+]
 
 ---
 # Functions as input
