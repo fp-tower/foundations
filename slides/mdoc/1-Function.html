@@ -139,32 +139,21 @@ val message   : String                  = "Hello World!"
 
 <br>
 
-.pull-left[
-```scala mdoc:reset:silent
-val increment: Int => Int = (x: Int) => x + 1
-val decrement: Int => Int = (x: Int) => x - 1
-val double   : Int => Int = (x: Int) => x * 2
+```scala mdoc:reset
+val numbers   = List(1,2,3)
 
-val list = List(increment, decrement, double)
-
-val dictionary = Map(
-  "increment" -> increment,
-  "decrement" -> decrement,
-  "double"    -> double,
-)
+val functions = List((x: Int) => x + 1, (x: Int) => x - 1, (x: Int) => x * 2)
 ```
-]
 
 --
 
-.pull-right[
+<br>
+
 ```scala mdoc
-list(0)(10)
+functions(0)(10)
 
-
-dictionary("double")(10)
+functions(2)(10)
 ```
-]
 
 ---
 # Val function are ordinary objects
@@ -175,13 +164,6 @@ dictionary("double")(10)
 val replicate : (String, Int) => String = (text, n) => ...
 ```
 
-<br>
-
-```scala mdoc:reset:silent
-val counter   : Int                     = 3
-
-val message   : String                  = "Hello World!"
-```
 
 ---
 # Val function desugared
@@ -192,14 +174,6 @@ val message   : String                  = "Hello World!"
 val replicate : Function2[String, Int, String] = (text, n) => ...
 ```
 
-<br>
-
-```scala mdoc:reset:silent
-val counter   : Int                            = 3
-
-val message   : String                         = "Hello World!"
-```
-
 ---
 # Val function desugared
 
@@ -208,11 +182,9 @@ val message   : String                         = "Hello World!"
 ```scala mdoc:silent
 val replicate: Function2[String, Int, String] =
   new Function2[String, Int, String] {
-
     def apply(text: String, n: Int): String =
        List.fill(n)(text).mkString
-
-}
+  }
 ```
 
 --
@@ -250,13 +222,15 @@ def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
   LocalDate.of(year, month, dayOfMonth)
 ```
 
---
-
 <br>
 
 ```scala mdoc
 createDate(2020, 6, 20)
+```
 
+--
+
+```scala mdoc
 createDate(dayOfMonth = 20, month = 6, year = 2020)
 ```
 
@@ -278,6 +252,8 @@ import java.time.LocalDate
 val createDate: (Int, Int, Int) => LocalDate =
   (year, month, dayOfMonth) => ...
 ```
+
+--
 
 <br>
 
