@@ -1052,14 +1052,24 @@ class: center, middle
 ```scala
 Int
 String
-Person
+User
 ```
 <br>
-]
 
 ```scala mdoc:invisible
-case class Person(name: String, age: Int)
+case class User(name: String, age: Int)
 ```
+
+```scala mdoc:silent
+val counter: Int = 5
+
+val message: String = "Welcome!"
+
+val alice: User = User("Alice", 23)
+```
+]
+
+
 
 .pull-right[
 # Parametric types
@@ -1072,21 +1082,7 @@ Map
 JsonEncoder
 ```
 <br>
-]
 
---
-
-.pull-left[
-```scala mdoc:silent
-val counter: Int = 5
-
-val message: String = "Welcome!"
-
-val alice: Person = Person("Alice", 23)
-```
-]
-
-.pull-right[
 ```scala mdoc:fail
 val numbers: List = List(1, 2, 3)
 ```
