@@ -860,7 +860,7 @@ class: center, middle
 <br>
 
 ```scala mdoc:silent
-def formatDouble(digits: Int, number: Double): String =
+def truncate(digits: Int, number: Double): String =
   BigDecimal(number)
     .setScale(digits, BigDecimal.RoundingMode.FLOOR)
     .toDouble
@@ -870,9 +870,33 @@ def formatDouble(digits: Int, number: Double): String =
 <br>
 
 ```scala mdoc
-formatDouble(2, 1.123456789)
+truncate(2, 0.123456789)
 
-formatDouble(5, 1.123456789)
+truncate(5, 0.123456789)
+```
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:reset:silent
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+
+def truncate2D(number: Double): String = truncate(2, number)
+def truncate5D(number: Double): String = truncate(5, number)
+```
+
+<br>
+
+```scala mdoc
+truncate2D(0.123456789)
+
+truncate5D(0.123456789)
 ```
 
 ---
@@ -880,30 +904,38 @@ formatDouble(5, 1.123456789)
 
 .pull-left[
 ```scala
-def formatDouble(digits: Int, number: Double): String
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
 ```
 
 ```scala mdoc
-formatDouble(2, 1.123456789)
+truncate(2, 1.123456789)
 ```
 <br>
 ]
 
 .pull-right[
 ```scala mdoc:reset:invisible
-def formatDouble(digits: Int): Double => String =
+def truncate(digits: Int): Double => String =
   BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
 
-val format2D: Double => String = formatDouble(2)
-val format5D: Double => String = formatDouble(5)
+val truncate2D: Double => String = truncate(2)
+val truncate5D: Double => String = truncate(5)
 ```
 
 ```scala
-def formatDouble(digits: Int): Double => String
+def truncate(digits: Int): Double => String
 ```
 
 ```scala mdoc
-formatDouble(2)(1.123456789)
+truncate(2)(0.123456789)
 ```
 <br>
 ]
@@ -926,24 +958,25 @@ val function3: Int => Int => Int  => Int
 <br>
 
 ```scala
-def formatDouble(digits: Int): Double => String =
-  number => BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
+def truncate(digits: Int): Double => String =
+  (number: Int) => ...
 ```
 
+<br>
+
 ```scala
-val format2D: Double => String = formatDouble(2)
-val format5D: Double => String = formatDouble(5)
+val truncate2D: Double => String = truncate(2)
+val truncate5D: Double => String = truncate(5)
 ```
 
 --
 
-```scala mdoc
-format2D(1.123456789)
+<br>
 
-format5D(1.123456789)
+```scala mdoc
+truncate2D(0.123456789)
+
+truncate5D(0.123456789)
 ```
 
 ---
@@ -952,17 +985,54 @@ format5D(1.123456789)
 ## Uncurried
 
 ```scala
-def formatDouble(digits: Int, number: Double):  String
+def truncate(digits: Int, number: Double): String
 ```
 
 ## Curried
 
 ```scala
-def formatDouble(digits: Int)(number: Double): String
+def truncate(digits: Int)(number: Double): String
 
-def formatDouble(digits: Int): Double => String
+def truncate(digits: Int): Double => String
 
-val formatDouble: Int => Double => String
+val truncate: Int => Double => String
+```
+
+---
+# Conversion
+
+<br>
+
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+--
+
+<br>
+
+```scala mdoc
+truncate _
+```
+
+--
+
+```scala mdoc
+(truncate _).curried
+```
+
+--
+
+```scala mdoc
+(truncate _).curried(2)(1.23456789)
 ```
 
 ---
@@ -2531,7 +2601,7 @@ swap(pair: Pair[A]): Pair[A] =
 def showPair[A](pair: Pair[A]): String =
   pair match {
     case p: Pair[Int]    => s"(${p.first}, ${p.second})"
-    case p: Pair[Double] => s"(${format2D(p.first)} , ${format2D(p.second)})"
+    case p: Pair[Double] => s"(${truncate2(p.first)} , ${truncate2(p.second)})"
     case _               => "N/A"
   }
 ```
@@ -2551,7 +2621,7 @@ showPair(Pair("John", "Doe"))
 def show[A](value: A): String =
   value match {
     case x: Int       => x.toString
-    case x: Double    => format2D(x)
+    case x: Double    => truncate2(x)
     case _            => "N/A"
   }
 ```
