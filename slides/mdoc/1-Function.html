@@ -31,7 +31,7 @@ layout: true
 ## Def function (Method)
 
 ```scala
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   ...
 ```
 ]
@@ -40,8 +40,8 @@ def replicate(text: String, n: Int): String =
 ## Val function
 
 ```scala
-val replicate: (String, Int) => String =
-  (text: String, n: Int) => ...
+val replicate: (Int, String) => String =
+  (n: Int, text: String) => ...
 ```
 ]
 
@@ -53,19 +53,19 @@ val replicate: (String, Int) => String =
 ## Def function (Method)
 
 ```scala
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   ...
 ```
 
 ```scala mdoc:invisible
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   List.fill(n)(text).mkString
 ```
 
 <br>
 
 ```scala mdoc
-replicate("Hello ", 3)
+replicate(3, "Hello ")
 ```
 ]
 
@@ -73,19 +73,19 @@ replicate("Hello ", 3)
 ## Val function
 
 ```scala
-val replicate: (String, Int) => String =
-  (text: String, n: Int) => ...
+val replicate: (Int, String) => String =
+  (n: Int, text: String) => ...
 ```
 
 ```scala mdoc:reset:invisible
-val replicate: (String, Int) => String =
-  (text: String, n: Int) => List.fill(n)(text).mkString
+val replicate: (Int, String) => String =
+  (n: Int, text: String) => List.fill(n)(text).mkString
 ```
 
 <br>
 
 ```scala mdoc
-replicate("Hello ", 3)
+replicate(3, "Hello ")
 ```
 ]
 
@@ -96,7 +96,7 @@ replicate("Hello ", 3)
 ## In Scala
 
 ```scala
-def replicate(text: String, n: Int): String
+def replicate(n: Int, text: String): String
 ```
 ]
 
@@ -104,7 +104,7 @@ def replicate(text: String, n: Int): String
 ## In Java
 
 ```java
-String replicate(String text, int n)
+String replicate(int n, String text)
 ```
 ]
 
@@ -114,7 +114,7 @@ String replicate(String text, int n)
 <br>
 
 ```scala
-val replicate : (String, Int) => String = (text: String, n: Int) => ...
+val replicate : (Int, String) => String = (n: Int, text: String) => ...
 ```
 
 ---
@@ -123,7 +123,7 @@ val replicate : (String, Int) => String = (text: String, n: Int) => ...
 <br>
 
 ```scala
-val replicate : (String, Int) => String = (text: String, n: Int) => ...
+val replicate : (Int, String) => String = (n: Int, text: String) => ...
 ```
 
 <br>
@@ -161,7 +161,7 @@ functions(2)(10)
 <br>
 
 ```scala
-val replicate : (String, Int) => String = (text, n) => ...
+val replicate : (Int, String) => String = (n, text) => ...
 ```
 
 
@@ -171,7 +171,7 @@ val replicate : (String, Int) => String = (text, n) => ...
 <br>
 
 ```scala
-val replicate : Function2[String, Int, String] = (text, n) => ...
+val replicate : Function2[Int, String, String] = (n, text) => ...
 ```
 
 ---
@@ -180,9 +180,9 @@ val replicate : Function2[String, Int, String] = (text, n) => ...
 <br>
 
 ```scala mdoc:silent
-val replicate: Function2[String, Int, String] =
-  new Function2[String, Int, String] {
-    def apply(text: String, n: Int): String =
+val replicate: Function2[Int, String, String] =
+  new Function2[Int, String, String] {
+    def apply(n: Int, text: String): String =
        List.fill(n)(text).mkString
   }
 ```
@@ -192,9 +192,9 @@ val replicate: Function2[String, Int, String] =
 <br>
 
 ```scala mdoc
-replicate.apply("Hello ", 3)
+replicate.apply(3, "Hello ")
 
-replicate("Hello ", 3)
+replicate(3, "Hello ")
 ```
 
 
@@ -267,10 +267,10 @@ createDate(dayOfMonth = 20, month = 6, year = 2020)
 <br>
 
 ```scala mdoc:reset:silent
-val replicate: (String, Int) => String =
-  (text, n) => List.fill(n)(text).mkString
+val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
 
-val repeat: (String, Int) => String =
+val repeat: (Int, String) => String =
   replicate
 ```
 
@@ -280,8 +280,8 @@ val repeat: (String, Int) => String =
 <br>
 
 ```scala mdoc:reset:silent
-val replicate: (String, Int) => String =
-  (text, n) => List.fill(n)(text).mkString
+val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
 
 val repeat = replicate
 ```
@@ -291,11 +291,11 @@ val repeat = replicate
 <br>
 
 ```scala mdoc:reset:silent
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   List.fill(n)(text).mkString
 
-def repeat(text: String, n: Int): String =
-  replicate(text, n)
+def repeat(n: Int, text: String): String =
+  replicate(n, text)
 ```
 
 ---
@@ -442,8 +442,8 @@ val plus: (Int, Int) => Int =
 ```scala mdoc:reset:silent
 val repeat = replicate
 
-val replicate: (String, Int) => String =
-  (text, n) => List.fill(n)(text).mkString
+val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
 ```
 
 --
@@ -456,7 +456,7 @@ val replicate: (String, Int) => String =
 ```
 
 ```scala mdoc:crash
-repeat("Hello ", 3)
+repeat(3, "Hello ")
 ```
 
 ---
@@ -465,10 +465,10 @@ repeat("Hello ", 3)
 <br>
 
 ```scala mdoc:reset:silent
-def repeat(text: String, n: Int): String =
-  replicate(text, n)
+def repeat(n: Int, text: String): String =
+  replicate(n, text)
 
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   List.fill(n)(text).mkString
 ```
 
@@ -476,7 +476,7 @@ def replicate(text: String, n: Int): String =
 
 
 ```scala mdoc
-repeat("Hello ", 3)
+repeat(3, "Hello ")
 ```
 
 ---
@@ -487,15 +487,15 @@ repeat("Hello ", 3)
 ```scala mdoc:reset:silent
 lazy val repeat = replicate
 
-lazy val replicate: (String, Int) => String =
-  (text, n) => List.fill(n)(text).mkString
+lazy val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
 ```
 
 <br>
 
 
 ```scala mdoc
-repeat("Hello ", 3)
+repeat(3, "Hello ")
 ```
 
 ---
@@ -504,7 +504,7 @@ repeat("Hello ", 3)
 <br>
 
 ```scala mdoc:reset:silent
-def repeat(text: String, n: Int): String =
+def repeat(n: Int, text: String): String =
   ???
 ```
 
@@ -522,14 +522,14 @@ def ??? : Nothing = throw new NotImplementedError
 <br>
 
 ```scala mdoc:reset:silent
-def repeat(text: String, n: Int): String =
+def repeat(n: Int, text: String): String =
   ???
 ```
 
 <br>
 
 ```scala mdoc:crash
-val replicate: (String, Int) => String =
+val replicate: (Int, String) => String =
   ???
 ```
 
@@ -539,14 +539,14 @@ val replicate: (String, Int) => String =
 <br>
 
 ```scala mdoc:reset:silent
-def repeat(text: String, n: Int): String =
+def repeat(n: Int, text: String): String =
   ???
 ```
 
 <br>
 
 ```scala mdoc:silent
-lazy val replicate: (String, Int) => String =
+lazy val replicate: (Int, String) => String =
   ???
 ```
 
@@ -586,18 +586,18 @@ class: center, middle
 <br>
 
 ```scala
-def replicate(text: String, n: Int): String
+def replicate(n: Int, text: String): String
 ```
 
 <br>
 
 ```scala mdoc:reset:invisible
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   List.fill(n)(text).mkString
 ```
 
 ```scala mdoc:silent
-val replicateVal: (String, Int) => String =
+val replicateVal: (Int, String) => String =
   replicate _
 ```
 
@@ -607,18 +607,18 @@ val replicateVal: (String, Int) => String =
 <br>
 
 ```scala
-def replicate(text: String, n: Int): String
+def replicate(n: Int, text: String): String
 ```
 
 <br>
 
 ```scala mdoc:reset:invisible
-def replicate(text: String, n: Int): String =
+def replicate(n: Int, text: String): String =
   List.fill(n)(text).mkString
 ```
 
 ```scala mdoc:silent
-val replicateVal: (String, Int) => String =
+val replicateVal: (Int, String) => String =
   replicate
 ```
 
@@ -628,19 +628,19 @@ val replicateVal: (String, Int) => String =
 <br>
 
 ```scala
-val replicate: (String, Int) => String
+val replicate: (Int, String) => String
 ```
 
 <br>
 
 ```scala mdoc:reset:invisible
-val replicate: (String, Int) => String =
-  (text, n) => List.fill(n)(text).mkString
+val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
 ```
 
 ```scala mdoc:silent
-def replicateDef(text: String, n: Int): String =
-  replicate(text, n)
+def replicateDef(n: Int, text: String): String =
+  replicate(n, text)
 ```
 
 ---
