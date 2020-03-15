@@ -67,19 +67,19 @@ class: center, middle
 ---
 ### 1. Encode description of actions
 
-```tut:silent
+```scala mdoc:silent
 trait Description[A]
 ```
 
 ### 2. Define an interpreter of Description
 
-```tut:silent
+```scala mdoc:silent
 def unsafeRun[A](fa: Description[A]): A = ???
 ```
 
 ### 3. Combine everything in Main
 
-```tut:silent
+```scala mdoc:silent
 object Main extends App {
 
   val description: Description[Unit] = ???
@@ -136,7 +136,7 @@ background-image: url(img/sideeffect/lemon-meringue-2.svg)
 .h1[# Mathematical formula]
 
 .pull-left[
-```tut
+```scala mdoc
 val x = 2
 val y = 3
 val x2 = Math.pow(x, 2)
@@ -156,7 +156,12 @@ val z  = Math.sqrt(x2 + y2)
 
 <br>
 
-```tut
+```scala mdoc:reset:invisible
+val x = 2
+val y = 3
+```
+
+```scala mdoc
 val x2 = Math.pow(x, 2)
 val y2 = Math.pow(y, 2)
 val z  = Math.sqrt(x2 + y2)
@@ -177,7 +182,7 @@ x2 + y2
 
 <br>
 
-```tut:silent
+```scala mdoc:silent
 trait Description[A]
 
 
@@ -187,11 +192,11 @@ def unsafeRun[A](fa: Description[A]): A = ???
 ---
 # Thunk
 
-```tut:invisible
+```scala mdoc:invisible
 import java.time.LocalDate
 ```
 
-```tut:silent
+```scala mdoc:silent
 type Thunk[A] = () => A  // Unit => A
 
 def writeLine(message: String): Thunk[Unit] =
@@ -206,13 +211,13 @@ def fetch(url: String): Thunk[Iterator[String]] =
 
 --
 
-```tut:silent
+```scala mdoc:silent
 def unsafeRun[A](fa: Thunk[A]): A = fa()
 ```
 
 --
 
-```tut
+```scala mdoc
 val google = fetch("http://google.com")
 unsafeRun(google).take(1).toList
 ```
@@ -220,7 +225,7 @@ unsafeRun(google).take(1).toList
 ---
 # IO
 
-```tut:silent
+```scala mdoc:reset:silent
 trait IO[A] {
 
   def unsafeRun(): A // unique abstract method
@@ -233,14 +238,14 @@ trait IO[A] {
 
 --
 
-```tut:silent
+```scala mdoc:silent
 def writeLine(message: String): IO[Unit] =
   new IO[Unit] {
     def unsafeRun(): Unit = println(message)
   }
 ```
 
-```tut
+```scala mdoc
 val helloWorld = writeLine("Hello World")
 
 helloWorld.unsafeRun()
@@ -254,7 +259,7 @@ class: center, middle
 ---
 # Smart constructors
 
-```tut:silent
+```scala mdoc:reset:silent
 object IO {
 
   def succeed[A](constant: A): IO[A] = ???
@@ -323,18 +328,16 @@ def deleteOrder(orderId: OrderId): IO[Unit] =
 ---
 # How is it executed?
 
-```tut:invisible
+```scala mdoc:reset:invisible
 import answers.sideeffect.IOAnswers.IO
-import answers.sideeffect.IOAnswers.IO._
-import answers.sideeffect.IOAnswers.{sequence, traverse}
 
 case class UserId(value: String)
 case class OrderId(value: String)
 
 case class User(userId: UserId, name: String, orderIds: List[OrderId])
 
-def getUser(userId: UserId): IO[User] = IO.notImplemented
-def deleteOrder(orderId: OrderId): IO[Unit] = IO.notImplemented
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
 ```tut:silent
@@ -358,8 +361,20 @@ object Main extends App {
 ---
 .h1[# How is it executed?]
 
+```scala mdoc:reset:invisible
+import answers.sideeffect.IOAnswers.IO
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
+```
+
 .large-left[
-```tut:silent
+```scala mdoc:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
     user <- getUser(userId)
@@ -379,8 +394,20 @@ object Main extends App {
 ---
 .h1[# IO execution is sequential]
 
+```scala mdoc:reset:invisible
+import answers.sideeffect.IOAnswers.IO
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
+```
+
 .large-left[
-```tut:silent
+```scala mdoc:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
     user <- getUser(userId)
@@ -404,8 +431,22 @@ object Main extends App {
 ---
 .h1[# Which IO could be evaluated concurrently?]
 
+```scala mdoc:reset:invisible
+import answers.sideeffect.IOAnswers.IO
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
+```
+
 .large-left[
-```tut:silent
+```scala mdoc:silent
+import answers.sideeffect.IOAnswers.IO
+
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
     user <- getUser(userId)
@@ -454,7 +495,7 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 
 .large-left[
 
-```tut:silent
+```scala mdoc:silent
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
   for {
     `ackOrder1` <- deleteOrder(orderId1)
@@ -472,7 +513,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 
 .large-left[
 
-```tut:silent
+```scala mdoc:silent:nest
 def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
 
 
@@ -489,7 +530,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 # concurrentExec is loosely defined
 
 
-```tut:silent
+```scala
 def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
   io1
 
@@ -509,9 +550,21 @@ def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] =
 ---
 .h1[# Parametricity]
 
+```scala mdoc:reset:invisible
+import answers.sideeffect.IOAnswers.IO
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
+```
+
 .large-left[
 
-```tut:invisible
+```scala mdoc:silent
 def concurrentMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
 
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
@@ -545,8 +598,17 @@ class: center, middle
 ---
 .h1[# Future]
 
+```scala mdoc:reset:invisible
+import answers.sideeffect.IOAnswers.IO
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+```
+
 .large-left[
-```tut:silent
+```scala mdoc:silent
 import scala.concurrent.{ExecutionContext, Future}
 
 def deleteOrder(orderId: OrderId)
@@ -577,12 +639,21 @@ def delete2Orders(
 .large-left[
 .h1[# Creating a Future is a side effect]
 
-```tut:invisible
+```scala mdoc:reset:invisible
+import scala.concurrent.{ExecutionContext, Future}
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+```
+
+```scala mdoc:invisible
 def deleteOrder(orderId: OrderId)(implicit ec: ExecutionContext): Future[Unit] =
   Future { ??? }
 ```
 
-```tut:silent
+```scala mdoc:silent
 def deleteOrdersConcurrent(orderId1: OrderId,orderId2: OrderId)
   (implicit ec: ExecutionContext): Future[Unit] = {
 
@@ -596,7 +667,7 @@ def deleteOrdersConcurrent(orderId1: OrderId,orderId2: OrderId)
 }
 ```
 
-```tut:silent
+```scala mdoc:silent
 def deleteOrdersSequential(orderId1: OrderId,orderId2: OrderId)
   (implicit ec: ExecutionContext): Future[Unit] =
   for {
@@ -624,7 +695,7 @@ class: center, middle
 .h1[# Execution Context]
 
 .large-left[
-```tut:silent
+```scala
 import scala.concurrent.{ExecutionContext, Future}
 
 def deleteOrder(orderId: OrderId)(ec: ExecutionContext): Future[Unit] =
@@ -652,7 +723,7 @@ def delete2Orders(
 ---
 .h1[# Execution Context]
 
-```tut:invisible
+```scala mdoc:invisible
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.ThreadFactory
 
@@ -669,7 +740,7 @@ def threadFactory(prefix: String): ThreadFactory =
 ```
 
 .pull-left[
-```tut:silent
+```scala mdoc:silent
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
@@ -685,7 +756,7 @@ val inc: Runnable = new Runnable {
 ```
 
 
-```tut
+```scala mdoc
 x
 
 (1 to 10).foreach(_ => ec.execute(inc))
@@ -702,7 +773,7 @@ x
 .h1[# Execution Context]
 
 .pull-left[
-```tut:silent
+```scala
 def delete2Orders(
   orderId1: OrderId,
   orderId2: OrderId
@@ -726,7 +797,7 @@ def delete2Orders(
 .h1[# Execution Context]
 
 .pull-left[
-```tut:silent
+```scala
 def delete2Orders(
   orderId1: OrderId,
   orderId2: OrderId
@@ -750,7 +821,7 @@ def delete2Orders(
 .h1[# Execution Context]
 
 .pull-left[
-```tut:silent
+```scala
 def delete2Orders(
   orderId1: OrderId,
   orderId2: OrderId
@@ -774,7 +845,7 @@ def delete2Orders(
 .h1[# Execution Context]
 
 .pull-left[
-```tut:silent
+```scala
 def delete2Orders(
   orderId1: OrderId,
   orderId2: OrderId
@@ -803,7 +874,7 @@ class: center, middle
 # Concurrent IO
 
 ```scala
-trait IO[+A] {
+trait IO[A] {
   def start(ec: ExecutionContext): ???
 }
 ```
@@ -816,7 +887,7 @@ trait IO[+A] {
 # Concurrent IO
 
 ```scala
-trait IO[+A] {
+trait IO[A] {
   def start(ec: ExecutionContext): IO[???]
 }
 ```
@@ -825,13 +896,15 @@ trait IO[+A] {
 # Concurrent IO
 
 ```scala
-trait IO[+A] {
+trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
 }
 ```
 
-```tut:invisible
-trait IO[+A] {
+```scala mdoc:reset:invisible
+import scala.concurrent.ExecutionContext
+
+trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
   def map[B](f: A => B): IO[B]
   def flatMap[B](f: A => IO[B]): IO[B]
@@ -841,6 +914,11 @@ def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] = ???
 def sequence[A](xs: List[IO[A]]): IO[List[A]] = ???
 def getUser(userId: UserId): IO[User] = ???
 def deleteOrder(orderId: OrderId): IO[Unit] = ???
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
 ```
 
 ---
@@ -848,12 +926,12 @@ def deleteOrder(orderId: OrderId): IO[Unit] = ???
 
 .large-left[
 ```scala
-trait IO[+A] {
+trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
 }
 ```
 
-```tut:silent
+```scala mdoc:silent
 def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
@@ -871,12 +949,32 @@ def concurrentMap2[A, B, C](
 
 .large-left[
 ```scala
-trait IO[+A] {
+trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
 }
 ```
 
-```tut:silent
+```scala mdoc:reset:invisible
+import scala.concurrent.ExecutionContext
+
+trait IO[A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+  def map[B](f: A => B): IO[B]
+  def flatMap[B](f: A => IO[B]): IO[B]
+}
+
+def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] = ???
+def sequence[A](xs: List[IO[A]]): IO[List[A]] = ???
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+```
+
+```scala mdoc:silent
 def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
@@ -899,12 +997,32 @@ def concurrentMap2[A, B, C](
 
 .large-left[
 ```scala
-trait IO[+A] {
+trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
 }
 ```
 
-```tut:silent
+```scala mdoc:reset:invisible
+import scala.concurrent.ExecutionContext
+
+trait IO[A] {
+  def start(ec: ExecutionContext): IO[IO[A]]
+  def map[B](f: A => B): IO[B]
+  def flatMap[B](f: A => IO[B]): IO[B]
+}
+
+def traverse[A, B](xs: List[A])(f: A => IO[B]): IO[List[B]] = ???
+def sequence[A](xs: List[IO[A]]): IO[List[A]] = ???
+def getUser(userId: UserId): IO[User] = ???
+def deleteOrder(orderId: OrderId): IO[Unit] = ???
+
+case class UserId(value: String)
+case class OrderId(value: String)
+
+case class User(userId: UserId, name: String, orderIds: List[OrderId])
+```
+
+```scala mdoc:silent
 def concurrentMap2[A, B, C](
   fa: IO[A],
   fb: IO[B]
@@ -930,15 +1048,19 @@ def concurrentMap2[A, B, C](
 ---
 # Concurrent IO with Async
 
-```tut:silent
-type Callback[-A] = Either[Throwable, A] => Unit
+```scala mdoc:reset:invisible
+import scala.concurrent.ExecutionContext
+```
 
-sealed trait IO[+A]
+```scala mdoc:silent
+type Callback[A] = Either[Throwable, A] => Unit
+
+sealed trait IO[A]
 
 object IO {
-  case class Thunk[+A](f: () => A) extends IO[A]
+  case class Thunk[A](f: () => A) extends IO[A]
 
-  case class Async[+A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
+  case class Async[A](f: Callback[A] => Unit, ec: ExecutionContext) extends IO[A]
 }
 ```
 

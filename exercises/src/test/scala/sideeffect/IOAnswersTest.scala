@@ -57,9 +57,13 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
       IORef(x).flatMap(_.updateGetNew(f)).unsafeRun() shouldEqual f(x)
     }
 
-    forAll((e: Exception) => IO.fail(e).flatMap(_ => IO.notImplemented).attempt.unsafeRun() shouldEqual Failure(e))
+    forAll(
+      (e: Exception) => IO.fail[Int](e).flatMap(_ => IO.notImplemented[Int]).attempt.unsafeRun() shouldEqual Failure(e)
+    )
 
-    forAll((x: Int, e: Exception) => IO.fail(e).flatMap(_ => IO.succeed(x)).attempt.unsafeRun() shouldEqual Failure(e))
+    forAll(
+      (x: Int, e: Exception) => IO.fail[Int](e).flatMap(_ => IO.succeed(x)).attempt.unsafeRun() shouldEqual Failure(e)
+    )
   }
 
   test("*>") {
@@ -129,7 +133,7 @@ class IOAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPrope
 
     forAll { xs: List[Exception] =>
       val boom = new Exception("boom")
-      traverse(boom :: xs)(IO.fail).attempt.unsafeRun() shouldEqual Failure(boom)
+      traverse(boom :: xs)(IO.fail[Int]).attempt.unsafeRun() shouldEqual Failure(boom)
     }
   }
 
