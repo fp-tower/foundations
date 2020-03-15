@@ -3,8 +3,8 @@ package sideeffect
 import java.util.concurrent.ExecutorService
 
 import exercises.sideeffect.ThreadPoolUtil
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.concurrent.ExecutionContext

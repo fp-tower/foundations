@@ -1,9 +1,9 @@
 package errorhandling
 
-import exercises.errorhandling.OptionExercises._
 import exercises.errorhandling.InvOption
-import org.scalatest.Matchers
+import exercises.errorhandling.OptionExercises._
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
 class OptionExercisesTest extends AnyFunSuite with Matchers {
 

@@ -1,117 +1,111 @@
 package answers.function
 
-import exercises.function.HttpClientBuilder
-import exercises.function.HttpClientBuilder._
+import cats.Eval
 
 import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.concurrent.duration._
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.RoundingMode
 
 object FunctionAnswers {
 
+  //////////////////////////////////////////////////////
+  // 1. Functions as input (aka higher order functions)
+  //////////////////////////////////////////////////////
+
+  def keepDigits(s: String): String =
+    s.filter(c => c.isDigit)
+
+  def secret(s: String): String =
+    s.map(_ => '*')
+
+  val isValidUsernameCharacter: Char => Boolean =
+    c => c.isLetterOrDigit || c == '-' || c == '_'
+
+  def isValidUsername(username: String): Boolean =
+    username.forall(isValidUsernameCharacter)
+
+  case class Point(x: Int, y: Int) {
+    def isPositive: Boolean =
+      x >= 0 && y >= 0
+
+    def isEven: Boolean =
+      (x % 2 == 0) && (y % 2 == 0)
+
+    def forAll(predicate: Int => Boolean): Boolean =
+      predicate(x) && predicate(y)
+
+    def isPositiveForAll: Boolean =
+      forAll(_ >= 0)
+
+    def isEvenForAll: Boolean =
+      forAll(_ % 2 == 0)
+  }
+
+  //////////////////////////////////////////////////
+  // 2. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
+
+  def add(x: Int)(y: Int): Int = x + y
+
+  val increment: Int => Int = add(1)
+  val decrement: Int => Int = add(-1)
+
+  def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
+    BigDecimal(number)
+      .setScale(digits, roundingMode)
+      .toDouble
+      .toString
+
+  val formatDoubleCurried: RoundingMode => Int => Double => String =
+    roundingMode => digits => number => formatDouble(roundingMode, digits, number)
+
+  val formatDoubleCurried2: RoundingMode => Int => Double => String =
+    (formatDouble _).curried
+
+  val format2Ceiling: Double => String =
+    formatDoubleCurried(RoundingMode.CEILING)(2)
+
   ////////////////////////////
-  // 1. first class functions
-  ////////////////////////////
-
-  def isEven(x: Int): Boolean =
-    x % 2 == 0
-
-  val isEvenVal: Int => Boolean =
-    (x: Int) => x % 2 == 0
-
-  val isEvenDefToVal: Int => Boolean =
-    isEven _ // or just isEven
-
-  def keepEvenNumbers(xs: List[Int]): List[Int] =
-    xs.filter(isEven)
-
-  def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
-    xs.filter(_ <= threshold)
-
-  sealed trait Direction
-  case object Up   extends Direction
-  case object Down extends Direction
-
-  def move(direction: Direction)(x: Int): Int =
-    direction match {
-      case Up   => x + 1
-      case Down => x - 1
-    }
-
-  val increment: Int => Int = move(Up)
-
-  val decrement: Int => Int = move(Down)
-
-  ////////////////////////////
-  // 2. polymorphic functions
+  // 3. parametric functions
   ////////////////////////////
 
   case class Pair[A](first: A, second: A) {
+    def swap: Pair[A] =
+      Pair(second, first)
+
     def map[B](f: A => B): Pair[B] =
       Pair(f(first), f(second))
+
+    def forAll(predicate: A => Boolean): Boolean =
+      predicate(first) && predicate(second)
+
+    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+      Pair(combine(first, other.first), combine(second, other.second))
+
+    def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
+      zipWith(other, combine)
   }
 
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
-    option match {
-      case None    => None
-      case Some(a) => Some(f(a))
-    }
+  val names: Pair[String] = Pair("John", "Elisabeth")
+  val ages: Pair[Int]     = Pair(32, 46)
+  case class User(name: String, age: Int)
 
-  def identity[A](x: A): A = x
+  val users: Pair[User] =
+    names.zipWithCurried(ages)(User)
 
-  def const[A, B](a: A)(b: B): A = a
+  val longerThan5: Boolean =
+    names.map(_.length).forAll(_ >= 5)
 
-  def setOption[A, B](option: Option[A])(value: B): Option[B] =
-    option.map(const(value))
+  /////////////////
+  // 4. Iteration
+  /////////////////
 
-  def andThen[A, B, C](f: A => B, g: B => C): A => C =
-    a => g(f(a))
-
-  def compose[A, B, C](f: B => C, g: A => B): A => C =
-    a => f(g(a))
-
-  val inc: Int => Int    = x => x + 1
-  val double: Int => Int = x => 2 * x
-
-  val doubleInc: Int => Int = andThen(double, inc)
-
-  val incDouble: Int => Int = compose(double, inc)
-
-  val default: HttpClientBuilder = HttpClientBuilder.default("localhost", 8080)
-
-  val clientBuilder1: HttpClientBuilder = default
-    .withTimeout(10.seconds)
-    .withFollowRedirect(true)
-    .withMaxParallelRequest(3)
-
-  val clientBuilder2: HttpClientBuilder =
-    (withTimeout(10.seconds) compose
-      withFollowRedirect(true) compose
-      withMaxParallelRequest(3)).apply(default)
-
-  ///////////////////////////
-  // 3. Recursion & Laziness
-  ///////////////////////////
-
-  def sumList(xs: List[Int]): Int = {
+  def sum(xs: List[Int]): Int = {
     var sum = 0
     for (x <- xs) sum += x
     sum
   }
-
-  def sumList2(xs: List[Int]): Int = {
-    @tailrec
-    def _sumList(ys: List[Int], acc: Int): Int =
-      ys match {
-        case Nil    => acc
-        case h :: t => _sumList(t, acc + h)
-      }
-
-    _sumList(xs, 0)
-  }
-
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
 
   def mkString(xs: List[Char]): String = {
     var str = ""
@@ -119,36 +113,69 @@ object FunctionAnswers {
     str
   }
 
-  def mkString2(xs: List[Char]): String =
+  def letterCount(xs: List[Char]): Map[Char, Int] = {
+    var letters = Map.empty[Char, Int]
+    for (x <- xs) {
+      letters = addLetter(letters, x)
+    }
+    letters
+  }
+
+  def addLetter(letters: Map[Char, Int], char: Char): Map[Char, Int] =
+    letters.updatedWith(char) {
+      case None    => Some(1)
+      case Some(n) => Some(n + 1)
+    }
+
+  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
+    var acc = b
+    for (a <- fa) acc = f(acc, a)
+    acc
+  }
+
+  def sumFoldLeft(xs: List[Int]): Int =
+    foldLeft(xs, 0)(_ + _)
+
+  def mkStringFoldLeft(xs: List[Char]): String =
     foldLeft(xs, "")(_ + _)
 
+  def letterCountFoldLeft(xs: List[Char]): Map[Char, Int] =
+    foldLeft(xs, Map.empty[Char, Int])(addLetter)
+
+  /////////////////
+  // 5. Recursion
+  /////////////////
+
+  def sumRecursive(xs: List[Int]): Int = {
+    @tailrec
+    def _sumRecursive(ys: List[Int], acc: Int): Int =
+      ys match {
+        case Nil          => acc
+        case head :: tail => _sumRecursive(tail, head + acc)
+      }
+    _sumRecursive(xs, 0)
+  }
+
+  def letterCountRecursive(xs: List[Char]): Map[Char, Int] = {
+    def _letterCountRecursive(ys: List[Char], acc: Map[Char, Int]): Map[Char, Int] =
+      xs match {
+        case Nil          => acc
+        case head :: tail => _letterCountRecursive(tail, addLetter(acc, head))
+      }
+
+    _letterCountRecursive(xs, Map.empty)
+  }
+
   @tailrec
-  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+  def foldLeftRecursive[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
     xs match {
       case Nil    => z
-      case h :: t => foldLeft(t, f(z, h))(f)
+      case h :: t => foldLeftRecursive(t, f(z, h))(f)
     }
 
-  def reverse[A](xs: List[A]): List[A] =
-    foldLeft(xs, List.empty[A])(_.::(_))
-
-  def multiply(xs: List[Int]): Int = foldLeft(xs, 1)(_ * _)
-
-  def filter[A](xs: List[A])(p: A => Boolean): List[A] =
-    foldLeft(xs, List.empty[A])((acc, a) => if (p(a)) a :: acc else acc).reverse
-
-  def foldRight[A, B](xs: List[A], z: B)(f: (A, => B) => B): B =
-    xs match {
-      case Nil    => z
-      case h :: t => f(h, foldRight(t, z)(f))
-    }
-
-  @tailrec
-  def find[A](fa: List[A])(p: A => Boolean): Option[A] =
-    fa match {
-      case Nil     => None
-      case x :: xs => if (p(x)) Some(x) else find(xs)(p)
-    }
+  ///////////////////////////
+  // 6. Laziness
+  ///////////////////////////
 
   @tailrec
   def forAll(fa: List[Boolean]): Boolean =
@@ -158,20 +185,50 @@ object FunctionAnswers {
       case true :: xs => forAll(xs)
     }
 
-  def forAll2(xs: List[Boolean]): Boolean =
-    foldRight(xs, true)(_ && _)
+  @tailrec
+  def find[A](fa: List[A])(p: A => Boolean): Option[A] =
+    fa match {
+      case Nil     => None
+      case x :: xs => if (p(x)) Some(x) else find(xs)(p)
+    }
+
+  def foldRight[A, B](xs: List[A], b: B)(f: (A, => B) => B): B =
+    xs match {
+      case Nil    => b
+      case h :: t => f(h, foldRight(t, b)(f))
+    }
+
+  def foldRightCats[A, B](xs: List[A], b: Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B] =
+    Eval.defer(
+      xs match {
+        case Nil    => b
+        case h :: t => f(h, foldRightCats(t, b)(f))
+      }
+    )
+
+  def forAllFoldRight(xs: List[Boolean]): Boolean =
+    foldRightCats(xs, Eval.now(true)) {
+      case (false, _)   => Eval.now(false)
+      case (true, rest) => rest
+    }.value
+
+  def findFoldRight[A](xs: List[A])(predicate: A => Boolean): Option[A] =
+    foldRightCats(xs, Eval.now(Option.empty[A]))((a, rest) => if (predicate(a)) Eval.now(Some(a)) else rest).value
 
   def headOption[A](xs: List[A]): Option[A] =
     foldRight(xs, Option.empty[A])((a, _) => Some(a))
 
-  def find2[A](xs: List[A])(p: A => Boolean): Option[A] =
-    foldRight(xs, Option.empty[A])((a, rest) => if (p(a)) Some(a) else rest)
+  def multiply(xs: List[Int]): Int =
+    foldLeft(xs, 1)(_ * _)
 
   def min(xs: List[Int]): Option[Int] =
     xs match {
       case Nil          => None
       case head :: tail => Some(foldLeft(tail, head)(_ min _))
     }
+
+  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] =
+    foldLeft(xs, List.empty[A])((acc, a) => if (predicate(a)) a :: acc else acc).reverse
 
   ////////////////////////
   // 5. Memoization

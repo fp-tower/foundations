@@ -3,8 +3,8 @@ package sideeffect
 import java.time.Instant
 
 import exercises.sideeffect.IOExercises._
-import org.scalatest.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer

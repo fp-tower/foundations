@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 430 479" width="430" height="479">
+  <defs>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#333">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker_2" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 6 6" markerWidth="6" markerHeight="6" color="#70a3d8">
+      <g>
+        <path d="M 3.2 0 L 0 -1.2 L 0 1.2 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker_3" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 6 6" markerWidth="6" markerHeight="6" color="#599a9e">
+      <g>
+        <path d="M 3.2 0 L 0 -1.2 L 0 1.2 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <font-face font-family="Helvetica Neue" font-size="24" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.13 
+    <dc:date>2020-02-29 10:11:53 +0000</dc:date>
+  </metadata>
+  <g id="file-processing" stroke-dasharray="none" fill-opacity="1" stroke="none" stroke-opacity="1" fill="none">
+    <title>file-processing</title>
+    <g id="file-processing: Layer 1">
+      <title>Layer 1</title>
+      <g id="Line_126">
+        <line x1="65.22" y1="395.54545" x2="349.32002" y2="395.0237" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_119">
+        <line x1="65.22" y1="162.04545" x2="349.32014" y2="163.34986" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_114">
+        <line x1="65.22" y1="108" x2="65.22" y2="458.1" marker-end="url(#FilledArrow_Marker_2)" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Line_115">
+        <line x1="362.22" y1="108" x2="362.22" y2="458.1" marker-end="url(#FilledArrow_Marker_3)" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_124">
+        <rect x="52" y="207" width="27" height="189" fill="#70a3d8"/>
+        <rect x="52" y="207" width="27" height="189" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_116">
+        <text transform="translate(298.928 50)" fill="#599a9e">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" x="0" y="23">FileSystem</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <text transform="translate(14 50)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="68922645e-20" y="23">Program</tspan>
+        </text>
+      </g>
+      <g id="Graphic_121">
+        <text transform="translate(141.372 131)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="7531753e-19" y="21">open file foo.txt</tspan>
+        </text>
+      </g>
+      <g id="Graphic_122">
+        <text transform="translate(138.792 176)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">get InputStream</tspan>
+        </text>
+      </g>
+      <g id="Graphic_127">
+        <text transform="translate(176 364.384)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">close file</tspan>
+        </text>
+      </g>
+      <g id="Graphic_128">
+        <text transform="translate(11.975918 361.6721) rotate(-90)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="5258016e-19" y="23">processing</tspan>
+        </text>
+      </g>
+      <g id="Line_123">
+        <line x1="359.54545" y1="207" x2="75.445455" y2="207" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,10 +1,8 @@
 package exercises.function
 
-import exercises.function.HttpClientBuilder
-import exercises.function.HttpClientBuilder._
-
 import scala.annotation.tailrec
-import scala.concurrent.duration._
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.RoundingMode
 import scala.util.Random
 
 // you can run and print things here
@@ -16,204 +14,232 @@ object FunctionApp extends App {
 
 object FunctionExercises {
 
-  ////////////////////////////
-  // 1. first class functions
-  ////////////////////////////
+  /////////////////////////////////////////////////////
+  // 1. Functions as input (aka higher order functions)
+  /////////////////////////////////////////////////////
 
-  // 1a. Implement `isEven` a function that checks if a number is even
-  // such as isEven(2) == true
-  // but     isEven(3) == false
-  // Note: You can use `x % 2` for x modulo 2
-  def isEven(x: Int): Boolean =
+  // 1a. Implement `keepDigits` which iterates over a String and only keep the characters that are digits.
+  // such as keepLetters("123foo0-!Bar~+3") == "12303"
+  // Note: You can use `filter` method from `String`, also check out the API of Char
+  def keepDigits(s: String): String =
     ???
 
-  // 1b. Now, we are going to experiment with functions val syntax.
-  // Implement `isEvenVal` which behaves exactly like `isEven`.
-  // Note: `isEvenVal` is marked as `lazy` because using `???` in a val throws an exception when the file is loaded (e.g. for tests)
-  // You can remove the lazy keyword as soon you implement `isEvenVal`
-  lazy val isEvenVal: Int => Boolean =
+  // 1b. Implement `secret` which transforms all characters in a String to '*'
+  // such as secret("Welcome123") == "**********"
+  // Note: You can use `map` method from `String`
+  def secret(s: String): String =
     ???
 
-  // 1c. Implement `isEvenDefToVal` by transforming `isEven` def function into a val.
-  // Note: This transformation (def to val) is called eta expansion. There is a syntax for it.
-  lazy val isEvenDefToVal: Int => Boolean =
+  // 1c. Implement `isValidUsernameCharacter` which checks if a character is suitable for a username.
+  // We accept:
+  // - lower and upper case letters
+  // - digits
+  // - special characters: '-' and '_'
+  // For example, isValidUsernameCharacter('3') == true
+  //              isValidUsernameCharacter('a') == true
+  // but          isValidUsernameCharacter('^') == false
+  // Note: You can remove the lazy keyword as soon you implement `isValidUsernameCharacter`.
+  // It is only required to avoid tests throwing an exception.
+  lazy val isValidUsernameCharacter: Char => Boolean =
     ???
 
-  // 1d. Implement `keepEvenNumbers` which removes all the odd numbers from a list
-  // such as keepEvenNumbers(List(1,2,3,4)) == List(2,4)
-  // Note: You can use `filter` method from `List`
-  def keepEvenNumbers(xs: List[Int]): List[Int] =
+  // 1d. Implement `isValidUsername` which checks that all the characters in a String are valid
+  // such as isValidUsername("john-doe") == true
+  // but     isValidUsername("*john*") == false
+  // Note: You can use `forAll` method from `String`
+  def isValidUsername(s: String): Boolean =
     ???
 
-  // 1e. Implement `keepNumbersSmallThan` which removes all the numbers above a threshold
-  // such as keepNumbersSmallThan(List(1,6,3,10))(3) == List(1,3)
-  // Try to define a predicate function inline, e.g. xs.filter(x => x == 0)
-  def keepNumbersSmallThan(xs: List[Int])(threshold: Int): List[Int] =
-    ???
+  case class Point(x: Int, y: Int) {
+    // 1e. Implement `isPositive` which returns true if both `x` and `y` are greater or equal to 0, false otherwise
+    // such as Point(2,  3).isPositive == true
+    //         Point(0,  0).isPositive == true
+    // but     Point(0, -2).isPositive == false
+    // Note: `isPositive` is function define within `Point` class, so `isPositive` has access to `x` and `y`.
+    // It is almost equivalent to define `isPositive` outside of `Point` with the following signature:
+    // def isPositive(point: Point): Boolean
+    def isPositive: Boolean =
+      ???
 
-  // 1f. Implement `move` which increases or decreases a number based on a `Direction` (enumeration)
-  // such as move(Up)(5) == 6
-  // but     move(Down)(5) == 4
-  sealed trait Direction
-  case object Up   extends Direction
-  case object Down extends Direction
+    // 1f. Implement `isEven` which returns true if both `x` and `y` are even numbers, false otherwise
+    // such as Point(2,  4).isEven == true
+    // such as Point(0, -8).isEven == true
+    // but     Point(3, -2).isEven == false
+    def isEven: Boolean =
+      ???
 
-  def move(direction: Direction)(x: Int): Int =
-    ???
+    // 1g. Both `isPositive` and `isEven` check that a predicate holds for both `x` and `y`.
+    // Let's try to capture this pattern with a higher order function like `forAll`
+    // such as Point(1,1).forAll(_ == 1) == true
+    // but     Point(1,2).forAll(_ == 1) == false
+    // Then, re-implement `isPositive` and `isEven` using `forAll`
+    def forAll(predicate: Int => Boolean): Boolean =
+      ???
+  }
 
-  // 1g. Implement `increment` and `decrement` by reusing `move`
-  // such as increment(10) == 11
-  // such as decrement(10) == 9
+  //////////////////////////////////////////////////
+  // 2. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
+
+  // 2a. Implement `increment` and `decrement` using `add`
+  // such as increment(5) == 6
+  // and     decrement(5) == 4
+  // Note: You can remove the lazy keyword as soon you `increment` and `decrement`.
+  def add(x: Int)(y: Int): Int = x + y
+
   lazy val increment: Int => Int = ???
 
   lazy val decrement: Int => Int = ???
 
-  ////////////////////////////
-  // 2. polymorphic functions
-  ////////////////////////////
+  // 2b. Implement `formatDoubleCurried`, a curried version of `formatDouble`.
+  def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
+    BigDecimal(number)
+      .setScale(digits, roundingMode)
+      .toDouble
+      .toString
 
-  val zero: Pair[Int]        = Pair(0, 0)
-  val fullName: Pair[String] = Pair("John", "Doe")
+  lazy val formatDoubleCurried: RoundingMode => Int => Double => String =
+    ???
+
+  // 2c. Implement `format2Ceiling` using `formatDoubleCurried`
+  // such as format2Ceiling(0.12345) == 0.13
+  // Note: You can try various
+  lazy val format2Ceiling: Double => String =
+    ???
+
+  ////////////////////////////
+  // 3. parametric functions
+  ////////////////////////////
 
   case class Pair[A](first: A, second: A) {
-    // 2a. Implement `map` which applies a function to `first` and `second`
+    // 3a. Implement `swap` which exchanges `first` and `second`
+    // such as Pair("John", "Doe").swap == Pair("Doe", "John")
+    // Bonus: how many implementations of `swap` would compile?
+    def swap: Pair[A] =
+      ???
+
+    // 3b. Implement `map` which applies a function to `first` and `second`
     // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
     def map[B](f: A => B): Pair[B] =
       ???
+
+    // 3c. Implement `forAll` which check if a predicate is true for both `first` and `second`
+    // such as Pair(2, 6).forAll(_ > 0) == true
+    // but     Pair(2, 6).forAll(_ > 2) == false
+    //         Pair(2, 6).forAll(_ > 9) == false
+    def forAll(predicate: A => Boolean): Boolean =
+      ???
+
+    // 3d. Implement `zipWith` which merges two `Pair` using a `combine` function
+    // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
+    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+      ???
+
+    // 3e. Would you rather define `zipWith` with one input parameter list (like above) or two
+    // parameter lists (like below)? In other words, is there any benefits to curry `zipWith`?
+    def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
+      zipWith(other, combine)
   }
 
-  // 2b. Implement `mapOption` which applies a function to an Option if it is a `Some`.
-  // Use patter matching on Option (see `sizeOption`) instead of using Option API
-  // such as mapOption(Some(2), isEven)    == Some(true)
-  //         mapOption(Some(2), increment) == Some(3)
-  // but     mapOption(Option.empty[Int], increment) == None
-  // Note: Option is a enumeration with two constructors `Some` and `None`.
-  def mapOption[A, B](option: Option[A], f: A => B): Option[B] =
+  val names: Pair[String] = Pair("John", "Elisabeth")
+  val ages: Pair[Int]     = Pair(32, 46)
+  case class User(name: String, age: Int)
+
+  // 3f. Combine `names` and `ages` into `users` using Pair API
+  // such as users == Pair(User("John", 32), User("Elisabeth", 46))
+  lazy val users: Pair[User] = ???
+
+  // 3g. Check that the length of each string in `names` is strictly longer than 5 using Pair API
+  lazy val longerThan5: Boolean = ???
+
+  /////////////////
+  // 4. Iteration
+  /////////////////
+
+  // 4a. Implement `sum` using an imperative approach (while or for loop)
+  // such as sum(List(1,5,2)) == 8
+  // and     sum(List()) == 0
+  def sum(xs: List[Int]): Int =
     ???
 
-  def sizeOption[A](option: Option[A]): Int =
-    option match {
-      case None    => 0
-      case Some(a) => 1
-    }
-
-  // 2c. What is the difference between `mapOption` and `mapOption2`?
-  // Which one should you use?
-  def mapOption2[A, B](option: Option[A])(f: A => B): Option[B] =
-    mapOption(option, f)
-
-  // 2d. Implement `identity` which returns its input unchanged
-  // such as identity(1) == 1
-  //         identity("foo") == "foo"
-  def identity[A](x: A): A = ???
-
-  // 2e. Implement `identityVal` a function which behaves like `identity` but it is a val instead of a def.
-  lazy val identityVal = ???
-
-  // 2f. Implement `const` which returns its first input unchanged and discards its second input
-  // such as const(5)("foo") == 5
-  // For example, you can use const in conjunction with `map` to set the values in a List or String:
-  // List(1,2,3).map(const(0)) == List(0,0,0)
-  // "FooBar86".map(const(*))  == "********"
-  def const[A, B](a: A)(b: B): A = ???
-
-  // 2g. Implement `andThen` and `compose` which pipes the result of one function to the input of another function
-  // such as compose(isEven, increment)(10) == false
-  // and     andThen(increment, isEven)(10) == false
-  def andThen[A, B, C](f: A => B, g: B => C): A => C = ???
-
-  def compose[A, B, C](f: B => C, g: A => B): A => C = ???
-
-  // 2h. Implement `doubleInc` using `inc`, `double` with `compose` or `andThen`
-  // such as `doubleInc` is equivalent to the maths function: f(x) = (2 * x) + 1
-  val inc: Int => Int    = x => x + 1
-  val double: Int => Int = x => 2 * x
-
-  lazy val doubleInc: Int => Int = ???
-
-  // 2i. Implement `incDouble` using `inc`, `double` with `compose` or `andThen`
-  // such as `incDouble` is equivalent to the maths function: f(x) = 2 * (x + 1)
-  lazy val incDouble: Int => Int = ???
-
-  // 2j. inc and double are a special case of functions where the input and output type is the same.
-  // These functions are called endofunctions.
-  // Endofunctions are particularly convenient for API because composing two endofunctions give you an endoufunction
-  // Can you think of a common design pattern that relies on endofunctions?
-  type Endo[A] = A => A
-  def composeEndo[A](f: Endo[A], g: Endo[A]): Endo[A] = f compose g
-
-  ///////////////////////////
-  // 3. Recursion & Laziness
-  ///////////////////////////
-
-  // 3a. Implement `sumList` using an imperative approach (while, for loop)
-  // such as sumList(List(1,5,2)) == 8
-  def sumList(xs: List[Int]): Int =
-    ???
-
-  // 3b. Implement `mkString` using an imperative approach (while, for loop)
+  // 4b. Implement `mkString` using an imperative approach (while or for loop)
   // such as mkString(List('H', 'e', 'l', 'l', 'o')) == "Hello"
+  // and     mkString(List()) == ""
   def mkString(xs: List[Char]): String =
     ???
 
-  // 3c. Implement `sumList2` using recursion (same behaviour than `sumList`).
-  // Does your implementation work with a large list? e.g. List.fill(1000000)(1)
-  def sumList2(xs: List[Int]): Int =
+  // 4c. Implement `letterCount` using an imperative approach (while or for loop).
+  // `letterCount` tells us how many times each letter appear in a `List`
+  // such as letterCount(List('l', 'o', 'l')) == Map('l' -> 2, 'o' -> 1)
+  // and     letterCount(List()) == Map()
+  def letterCount(xs: List[Char]): Map[Char, Int] =
     ???
 
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
+  // 4d. `sum`, `mkString`, `letterCount` are quite similar. Could you write a higher order function
+  // that generalise them?
+  // Hint: this method is called `foldLeft`.
+  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = ???
 
-  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = {
-    var acc = b
-    for (a <- fa) {
-      acc = f(acc, a)
-    }
-    acc
-  }
+  // 4e. Re-implement `sum` using `foldLeft`
+  def sumFoldLeft(xs: List[Int]): Int =
+    ???
 
-  @tailrec
-  def foldLeftRec[A, B](xs: List[A], b: B)(f: (B, A) => B): B =
+  // 4f. Re-implement `mkString` using `foldLeft`
+  def mkStringFoldLeft(xs: List[Char]): String =
+    ???
+
+  // 4g. Re-implement `letterCount` using `foldLeft`
+  def letterCountFoldLeft(xs: List[Char]): Map[Char, Int] =
+    ???
+
+  /////////////////
+  // 5. Recursion
+  /////////////////
+
+  // 5a. `sumRecursive` and `letterCountRecursive` are versions of `sum` and `letterCount` using recursion.
+  // These implementations have an issue, what is it?
+  // Write a test to exhibit the problem and if you can, try to fix it (it is hard).
+  def sumRecursive(xs: List[Int]): Int =
     xs match {
-      case Nil => b
-      case h :: t =>
-        val newB = f(b, h)
-        foldLeftRec(t, newB)(f)
+      case Nil          => 0
+      case head :: tail => head + sumRecursive(tail)
     }
 
-  def sumList3(xs: List[Int]): Int =
-    foldLeft(xs, 0)(_ + _)
+  def letterCountRecursive(xs: List[Char]): Map[Char, Int] =
+    xs match {
+      case Nil => Map.empty
+      case head :: tail =>
+        val letters      = letterCount(tail)
+        val currentCount = letters.getOrElse(head, 0)
+        letters.updated(head, currentCount + 1)
+    }
 
-  // 3d. Implement `mkString2` using `foldLeft` (same behaviour than `mkString`)
-  def mkString2(xs: List[Char]): String =
+  // 5b. Implement `foldLeftRecursive`, a recursive version of `foldLeft`.
+  // If possible, try to make this implementation work on large list, e.g. List.fill(1000000)(1).
+  def foldLeftRecursive[A, B](xs: List[A], b: B)(f: (B, A) => B): B =
     ???
 
-  // 3e. Implement `multiply` using `foldLeft`
-  // such as multiply(List(3,2,4)) == 3 * 2 * 4 = 24
-  // and     multiply(Nil) == 1
-  def multiply(xs: List[Int]): Int =
-    ???
+  ///////////////
+  // 6. Laziness
+  ///////////////
 
-  // 3f. Implement `forAll` which checks if all elements in a List are true
+  // 6a. Implement `forAll` which checks if all elements in a List are true
   // such as forAll(List(true, true , true)) == true
   // but     forAll(List(true, false, true)) == false
-  // does your implementation terminate early? e.g. forAll(List(false, false, false)) does not go through the entire list
-  // does your implementation work with a large list? e.g. forAll(List.fill(1000000)(true))
+  // Can you use foldLeft?
+  // Does your implementation work with a large list? e.g. forAll(List.fill(1000000)(true)).
+  // Does your implementation terminate early? e.g. forAll(List(false, false, false)) stops after seeing the first false.
   def forAll(xs: List[Boolean]): Boolean =
     ???
 
-  // 3g. Implement `find` which returns the first element in a List where the predicate function returns true
+  // 6b. Implement `find` which returns the first element in a List where the predicate function returns true
   // such as find(List(1,3,10,2,6))(_ > 5) == Some(10)
   // but     find(List(1,2,3))(_ > 5) == None
-  // does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
-  // does your implementation work with a large list? e.g. find(1.to(1000000).toList)(_ == -1)
+  // Can you use foldLeft?
+  // Does your implementation terminate early? e.g. find(List(1,2,3,4)(_ == 2) stop iterating as soon as it finds 2
+  // Does your implementation work with a large list? e.g. find(1.to(1000000).toList)(_ == -1)
   def find[A](xs: List[A])(predicate: A => Boolean): Option[A] =
     ???
-
-  ///////////////////////
-  // GO BACK TO SLIDES
-  ///////////////////////
 
   def foldRight[A, B](xs: List[A], b: B)(f: (A, => B) => B): B =
     xs match {
@@ -221,38 +247,30 @@ object FunctionExercises {
       case h :: t => f(h, foldRight(t, b)(f))
     }
 
-  // 3h. Implement `forAll2` using `foldRight` (same behaviour than `forAll`)
-  def forAll2(xs: List[Boolean]): Boolean =
+  // 6c. Implement `forAllFoldRight` using `foldRight` (same behaviour than `forAll`)
+  def forAllFoldRight(xs: List[Boolean]): Boolean =
     ???
 
-  // 3i. Implement `headOption` using `foldRight`.
+  // 6d. Implement `findFoldRight` using `foldRight` (same behaviour than `find`)
+  def findFoldRight[A](xs: List[A])(predicate: A => Boolean): Option[A] =
+    ???
+
+  // 6e. Implement `headOption` using `foldRight`.
   // `headOption` returns the first element of a List if it exists
   // such as headOption(List(1,2,3)) == Some(1)
   // but     headOption(Nil) == None
   def headOption[A](xs: List[A]): Option[A] =
     ???
 
-  // 3j. What fold (left or right) would you use to implement `min`? Why?
+  // 6f. Which fold would you use (left or right) to implement the following functions?
+  def multiply(xs: List[Int]): Int = ???
+
   def min(xs: List[Int]): Option[Int] = ???
 
-  // 3k. Run `isEven` or `isOdd` for small and large input.
-  // Search for mutual tail recursion in Scala.
-  def isEvenRec(x: Int): Boolean =
-    if (x > 0) isOddRec(x - 1)
-    else if (x < 0) isOddRec(x + 1)
-    else true
-
-  def isOddRec(x: Int): Boolean =
-    if (x > 0) isEvenRec(x - 1)
-    else if (x < 0) isEvenRec(x + 1)
-    else false
-
-  // 3l. What happens when we call `foo`? Search for General recursion
-  // or read https://www.quora.com/Whats-the-big-deal-about-recursion-without-a-terminating-condition
-  def foo: Int = foo
+  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] = ???
 
   ////////////////////////
-  // 4. Pure functions
+  // 7. Pure functions
   ////////////////////////
 
   // 4a. is `plus` a pure function? why?
@@ -301,8 +319,8 @@ object FunctionExercises {
     case x: Double => x + 1
   }
 
-  // 4j. is `sum` a pure function? why?
-  def sum(xs: List[Int]): Int = {
+  // 4j. is `sumList` a pure function? why?
+  def sumList(xs: List[Int]): Int = {
     var acc = 0
     xs.foreach(x => acc += x)
     acc

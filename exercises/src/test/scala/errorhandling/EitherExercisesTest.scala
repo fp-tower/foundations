@@ -8,7 +8,7 @@ import exercises.errorhandling.EitherExercises.UserEmailError.{EmailNotFound, Us
 import exercises.errorhandling.EitherExercises.UsernameError.{InvalidCharacters, TooSmall}
 import exercises.errorhandling.EitherExercises._
 import exercises.errorhandling.OptionExercises
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funsuite.AnyFunSuite
 
 class EitherExercisesTest extends AnyFunSuite with Matchers {
