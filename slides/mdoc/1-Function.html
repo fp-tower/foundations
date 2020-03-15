@@ -916,7 +916,7 @@ def truncate(digits: Int, number: Double): String =
 ```
 
 ```scala mdoc
-truncate(2, 1.123456789)
+truncate(2, 0.123456789)
 ```
 <br>
 ]
@@ -965,8 +965,8 @@ def truncate(digits: Int): Double => String =
 <br>
 
 ```scala
-val truncate2D: Double => String = truncate(2)
-val truncate5D: Double => String = truncate(5)
+val truncate2D = truncate(2)
+val truncate5D = truncate(5)
 ```
 
 --
@@ -999,7 +999,7 @@ val truncate: Int => Double => String
 ```
 
 ---
-# Conversion
+# Conversion (Currying)
 
 <br>
 
@@ -1027,12 +1027,6 @@ truncate _
 
 ```scala mdoc
 (truncate _).curried
-```
-
---
-
-```scala mdoc
-(truncate _).curried(2)(1.23456789)
 ```
 
 ---
