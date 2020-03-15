@@ -56,7 +56,7 @@ layout: true
 ---
 # Cost of misusing types
 
-```tut:silent
+```scala mdoc:silent
 case class Country(value: String)
 
 val UK      = Country("United Kingdom")
@@ -66,7 +66,7 @@ val Germany = Country("Germany")
 
 --
 
-```tut:silent
+```scala
 def getCurrency(country: Country): String = ???
 ```
 
@@ -81,7 +81,7 @@ getCurrency(Country("Germany"))        == "EUR"
 ---
 # Cost of misusing types
 
-```tut:invisible
+```scala mdoc:invisible
 def getCurrency(country: Country): Option[String] =
   country.value match {
     case "United Kingdom"     => Some("GBP")
@@ -101,7 +101,7 @@ def getCurrency(country: Country): `Option`[String] =
 
 --
 
-```tut
+```scala mdoc
 getCurrency(Country("UK"))
 getCurrency(Country("GBR"))
 getCurrency(Country("Royaume-Uni"))
@@ -110,7 +110,7 @@ getCurrency(Country("Royaume-Uni"))
 ---
 # Cost of misusing types
 
-```tut:silent
+```scala mdoc:reset:silent
 sealed trait Country
 
 object Country {
@@ -120,7 +120,7 @@ object Country {
 }
 ```
 
-```tut:silent
+```scala mdoc:silent
 import Country._
 
 def getCurrency(country: Country): String =
@@ -130,14 +130,14 @@ def getCurrency(country: Country): String =
   }
 ```
 
-```tut:silent
+```scala mdoc:silent
 def parseCountry(country: String): Option[Country] = ???
 ```
 
 ---
 # Cost of misusing types
 
-```tut:silent
+```scala mdoc:reset:silent
 sealed trait Country
 object Country {
   case object UnitedKingdom extends Country
@@ -152,7 +152,7 @@ object Currency {
 }
 ```
 
-```tut:silent
+```scala mdoc:silent
 import Country._, Currency._
 
 def getCurrency(country: Country): Currency =
@@ -245,7 +245,7 @@ class: center, middle
 ---
 # OR Encoding
 
-```tut:silent
+```scala mdoc:silent
 sealed trait ConfigValue
 
 object ConfigValue {
@@ -288,15 +288,7 @@ class: center, middle
 ---
 # AND Encoding
 
-```tut:invisible
-import java.util.UUID
-
-case class Address(streetNumber: Int, streetName: String, postCode: String)
-
-case class User(userId: UUID, name: String, address: Address)
-```
-
-```scala
+```scala mdoc:silent
 import java.util.UUID
 
 case class User(userId: UUID, name: String, address: Address)
@@ -304,14 +296,18 @@ case class User(userId: UUID, name: String, address: Address)
 case class Address(streetNumber: Int, streetName: String, postCode: String)
 ```
 
-```tut
+```scala mdoc
 User(UUID.randomUUID(), "John Doe", Address(108, "Cannon Street", "EC4N 6EU"))
 ```
 
 ---
 .h1[# Algebraic data types mix AND and OR]
 
-```tut:silent
+```scala mdoc:reset:invisible
+case class Address()
+```
+
+```scala mdoc:silent
 sealed trait Role
 
 object Role {
@@ -385,7 +381,7 @@ class: center, middle
 ---
 # Sealed trait
 
-```tut:silent
+```scala mdoc:silent
 sealed trait IntOrBoolean
 
 case class AnInt(value: Int) extends IntOrBoolean
@@ -413,7 +409,7 @@ ABoolean(true)
 ---
 # Case class
 
-```tut:silent
+```scala mdoc:silent
 case class IntAndBoolean(i: Int, b: Boolean)
 ```
 
@@ -561,7 +557,7 @@ class: center, middle
 ---
 # Unit Test
 
-```tut:silent
+```scala mdoc:silent
 sealed trait Country
 object Country {
   case object UnitedKingdom extends Country
@@ -752,7 +748,7 @@ class: center, middle
 ---
 # Any => Any
 
-```tut:silent
+```scala mdoc:silent
 def inc(value: Any): Any = value match {
   case x: Int    => x + 1
   case x: Double => x + 1
@@ -763,13 +759,13 @@ def inc(value: Any): Any = value match {
 
 --
 
-```tut
+```scala mdoc
 inc(5)
 inc(10.3)
 inc('c')
 ```
 
-```tut:fail
+```scala mdoc:crash
 inc(java.time.Instant.ofEpochMilli(0))
 ```
 
@@ -793,10 +789,6 @@ class: center, middle
 * [Thinking with types](https://leanpub.com/thinking-with-types): type, algebra, logic
 * [Propositions as types](https://www.youtube.com/watch?v=IOiZatlZtGU): Curry–Howard isomorphism
 
----
-class: center, middle
-
-# [Conclusion](Conclusion.html#1)
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
