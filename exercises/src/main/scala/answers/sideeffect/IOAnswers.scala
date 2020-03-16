@@ -48,7 +48,7 @@ object IOAnswers {
 
     val unit: IO[Unit] = succeed(())
 
-    val notImplemented: IO[Nothing] = effect(???)
+    def notImplemented[A]: IO[A] = effect(???)
 
     def fromTry[A](fa: Try[A]): IO[A] =
       fa.fold(fail, succeed)
@@ -79,7 +79,7 @@ object IOAnswers {
   // 2. IO API
   /////////////////////
 
-  trait IO[+A] { self =>
+  trait IO[A] { self =>
     import IO._
 
     def unsafeRun(): A
