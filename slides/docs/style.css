@@ -26,6 +26,7 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .footer { position: absolute; bottom: 12px; left: 45px }
 .reference {font-size: 16px; position: fixed; left: 50%; bottom: 12px; transform: translate(-50%, -50%); margin: 0 auto;}
 .reference-top-left {font-size: 16px; position: fixed; left: 12px; top: 12px;}
+.reference-top-right {font-size: 16px; position: fixed; right: 12px; top: 12px;}
 table { border-collapse: collapse; display: inline-block; }
 th, td { padding: 10px; border: 1px solid black; }
 tr:nth-child(even) {background-color: #f2f2f2;}
