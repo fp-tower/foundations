@@ -1042,6 +1042,11 @@ class: center, middle
 `exercises.function.FunctionExercises.scala`
 
 ---
+class: center, middle
+
+# Parametric functions
+
+---
 
 .pull-left[
 # Types
@@ -1068,10 +1073,56 @@ val alice: User = User("Alice", 23)
 ```
 ]
 
-
+--
 
 .pull-right[
-# Parametric types
+# Parametric types (Generics)
+
+<br>
+
+```scala
+List
+Map
+JsonEncoder
+```
+<br>
+
+```scala mdoc
+val numbers: List[Int] = List(1, 2, 3)
+
+val words: List[String] = List("Hello", "World")
+```
+]
+
+---
+
+.pull-left[
+# Types
+
+<br>
+
+```scala
+Int
+String
+User
+```
+<br>
+
+```scala mdoc:reset:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val counter: Int = 5
+
+val message: String = "Welcome!"
+
+val alice: User = User("Alice", 23)
+```
+]
+
+.pull-right[
+# Parametric types (Generics)
 
 <br>
 
@@ -1084,16 +1135,6 @@ JsonEncoder
 
 ```scala mdoc:fail
 val numbers: List = List(1, 2, 3)
-```
-]
-
---
-
-.pull-right[
-```scala mdoc
-val numbers: List[Int] = List(1, 2, 3)
-
-val words: List[String] = List("Hello", "World")
 ```
 ]
 
@@ -1161,7 +1202,7 @@ def map[From, To](list: List[From], f: From => To): List[To] = list.map(f)
 ```scala mdoc
 map(List(1,2,3,4), (x: Int) => x / 2.0)
 
-map(List("Hello", "World"), (x: String) => x.toCharArray)
+map(List("Hello", "World!"), (x: String) => x.length)
 ```
 
 --
@@ -1190,7 +1231,7 @@ The callers of `map` choose `From` and `To`
 ]
 
 ```scala mdoc
-map[Int, String](List(1,2,3), (x: Int) => x.toString)
+map[String, Int](List("Hello", "World!"), (x: String) => x.length)
 ```
 
 ---
@@ -1254,7 +1295,7 @@ def map(list: List[Int], f: Int => Int): List[Int] =
 <br>
 
 .center[
-## #2 Benefit: require less tests
+## #2 Benefit: require less tests and less documentation
 ]
 
 

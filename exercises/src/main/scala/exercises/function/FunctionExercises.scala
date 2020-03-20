@@ -114,7 +114,6 @@ object FunctionExercises {
   case class Pair[A](first: A, second: A) {
     // 3a. Implement `swap` which exchanges `first` and `second`
     // such as Pair("John", "Doe").swap == Pair("Doe", "John")
-    // Bonus: how many implementations of `swap` would compile?
     def swap: Pair[A] =
       ???
 
@@ -145,11 +144,11 @@ object FunctionExercises {
   val ages: Pair[Int]     = Pair(32, 46)
   case class User(name: String, age: Int)
 
-  // 3f. Combine `names` and `ages` into `users` using Pair API
-  // such as users == Pair(User("John", 32), User("Elisabeth", 46))
+  // 3f. Use Pair API to combine `names` and `ages` into `users`
+  // such as `users` is equal to Pair(User("John", 32), User("Elisabeth", 46))
   lazy val users: Pair[User] = ???
 
-  // 3g. Check that the length of each string in `names` is strictly longer than 5 using Pair API
+  // 3g. Use Pair API to check the length of both String in `names` are strictly longer than 5
   lazy val longerThan5: Boolean = ???
 
   /////////////////
