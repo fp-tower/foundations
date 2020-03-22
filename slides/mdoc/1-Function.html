@@ -1302,7 +1302,7 @@ def map(list: List[Int], f: Int => Int): List[Int] =
 ---
 class: center, middle
 
-# Exercises 3: Parametric functions
+# Exercise 3: Parametric functions
 
 `exercises.function.FunctionExercises.scala`
 
@@ -1329,14 +1329,32 @@ case class Pair[A](first: A, second: A) {
 
 <br>
 
-```scala mdoc
-Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y)
+```scala mdoc:invisible
+def replicate(n: Int, text: String): String =
+  List.fill(n)(text).mkString
 ```
 
---
+```scala mdoc
+Pair(0, 2).zipWith(Pair(7, 3), (x: Int, y: Int) => x + y)
+
+Pair(2, 3).zipWith(Pair("Hello ", "World "), replicate)
+```
+
+---
+# Type inference
+
+<br>
+
+```scala
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ...
+}
+```
+
+<br>
 
 ```scala mdoc:fail
-Pair(0, 2).zipWith(Pair(3, 3), (x, y) => x + y)
+Pair(0, 2).zipWith(Pair(7, 3), (x, y) => x + y)
 ```
 
 ---
@@ -1363,7 +1381,7 @@ case class Pair[A](first: A, second: A) {
 <br>
 
 ```scala mdoc
-Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y)
+Pair(0, 2).zipWith(Pair(7, 3))((x, y) => x + y)
 ```
 
 --
@@ -1371,7 +1389,7 @@ Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y)
 <br>
 
 ```scala mdoc
-Pair(0, 2).zipWith(Pair(3, 3))(_ + _)
+Pair(0, 2).zipWith(Pair(7, 3))(_ + _)
 ```
 
 ---
@@ -1383,14 +1401,18 @@ Pair(0, 2).zipWith(Pair(3, 3))(_ + _)
 def function[A, B, C](first: A, second: B)(f: (A, B) => C): C
 ```
 
----
-# Scala API design
-
 <br>
 
 ```scala
 def function[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
 ```
+
+---
+class: center, middle
+
+# Finish Exercise 3: Parametric functions
+
+`exercises.function.FunctionExercises.scala`
 
 ---
 # Two apparently useless functions

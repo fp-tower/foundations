@@ -138,6 +138,10 @@ object FunctionExercises {
     // parameter lists (like below)? In other words, is there any benefits to curry `zipWith`?
     def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
       zipWith(other, combine)
+
+    ////////////////////////////////////////////////////
+    // Check out next video before finishing exercise 3
+    ////////////////////////////////////////////////////
   }
 
   val names: Pair[String] = Pair("John", "Elisabeth")
