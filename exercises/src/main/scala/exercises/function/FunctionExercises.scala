@@ -103,7 +103,6 @@ object FunctionExercises {
 
   // 2c. Implement `format2Ceiling` using `formatDoubleCurried`
   // such as format2Ceiling(0.12345) == 0.13
-  // Note: You can try various
   lazy val format2Ceiling: Double => String =
     ???
 
@@ -159,19 +158,19 @@ object FunctionExercises {
   // 4. Iteration
   /////////////////
 
-  // 4a. Implement `sum` using an imperative approach (while or for loop)
+  // 4a. Implement `sum` using an imperative approach (for or while loop)
   // such as sum(List(1,5,2)) == 8
   // and     sum(List()) == 0
   def sum(xs: List[Int]): Int =
     ???
 
-  // 4b. Implement `mkString` using an imperative approach (while or for loop)
+  // 4b. Implement `mkString` using an imperative approach (for or while loop)
   // such as mkString(List('H', 'e', 'l', 'l', 'o')) == "Hello"
   // and     mkString(List()) == ""
   def mkString(xs: List[Char]): String =
     ???
 
-  // 4c. Implement `letterCount` using an imperative approach (while or for loop).
+  // 4c. Implement `letterCount` using an imperative approach (for or while loop).
   // `letterCount` tells us how many times each letter appear in a `List`
   // such as letterCount(List('l', 'o', 'l')) == Map('l' -> 2, 'o' -> 1)
   // and     letterCount(List()) == Map()
@@ -179,7 +178,7 @@ object FunctionExercises {
     ???
 
   // 4d. `sum`, `mkString`, `letterCount` are quite similar. Could you write a higher order function
-  // that generalise them?
+  // that capture this pattern?
   // Hint: this method is called `foldLeft`.
   def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = ???
 

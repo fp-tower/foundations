@@ -386,282 +386,6 @@ createDateVal(2020, 1, 5)
 ]
 
 ---
-class: center, middle
-
-# Def vs Val functions details
-
----
-# Def function (Method)
-
-.pull-left[
-## In Scala
-
-```scala
-def replicate(n: Int, text: String): String
-```
-]
-
-.pull-right[
-## In Java
-
-```java
-String replicate(int n, String text)
-```
-]
-
----
-# Conciseness
-
-<br>
-
-.pull-left[
-```scala mdoc:silent
-def plus(x: Int, y: Int): Int =
-  x + y
-```
-]
-
-
-.pull-right[
-```scala mdoc:silent
-val plus: (Int, Int) => Int =
-  (x: Int, y: Int) => x + y
-```
-]
-
----
-# Conciseness
-
-<br>
-
-.pull-left[
-```scala mdoc:reset:silent
-def plus(x: Int, y: Int): Int =
-  x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-def plus(x: Int, y: Int) =
-  x + y
-```
-]
-
-
-.pull-right[
-```scala mdoc:reset:silent
-val plus: (Int, Int) => Int =
-  (x: Int, y: Int) => x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-val plus =
-  (x: Int, y: Int) => x + y
-```
-]
-
----
-# Conciseness
-
-<br>
-
-.pull-left[
-```scala mdoc:reset:silent
-def plus(x: Int, y: Int): Int =
-  x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-def plus(x: Int, y: Int) =
-  x + y
-```
-]
-
-
-.pull-right[
-```scala mdoc:reset:silent
-val plus: (Int, Int) => Int =
-  (x: Int, y: Int) => x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-val plus =
-  (x: Int, y: Int) => x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-val plus: (Int, Int) => Int =
-  (x, y) => x + y
-```
-]
-
----
-# Conciseness
-
-<br>
-
-.pull-left[
-```scala mdoc:reset:silent
-def plus(x: Int, y: Int): Int =
-  x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-def plus(x: Int, y: Int) =
-  x + y
-```
-]
-
-
-.pull-right[
-```scala mdoc:reset:silent
-val plus: (Int, Int) => Int =
-  (x: Int, y: Int) => x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-val plus =
-  (x: Int, y: Int) => x + y
-```
-
-<br>
-
-```scala mdoc:reset:silent
-val plus: (Int, Int) => Int =
-  _ + _
-```
-]
-
----
-# Definition order
-
-<br>
-
-```scala mdoc:reset:silent
-val repeat = replicate
-
-val replicate: (Int, String) => String =
-  (n, text) => List.fill(n)(text).mkString
-```
-
---
-
-<br>
-
-```scala
-// warning: Reference to uninitialized value replicate
-// val repeat = replicate
-```
-
-```scala mdoc:crash
-repeat(3, "Hello ")
-```
-
----
-# Definition order
-
-<br>
-
-```scala mdoc:reset:silent
-def repeat(n: Int, text: String): String =
-  replicate(n, text)
-
-def replicate(n: Int, text: String): String =
-  List.fill(n)(text).mkString
-```
-
-<br>
-
-
-```scala mdoc
-repeat(3, "Hello ")
-```
-
----
-# Definition order
-
-<br>
-
-```scala mdoc:reset:silent
-lazy val repeat = replicate
-
-lazy val replicate: (Int, String) => String =
-  (n, text) => List.fill(n)(text).mkString
-```
-
-<br>
-
-
-```scala mdoc
-repeat(3, "Hello ")
-```
-
----
-# Unimplemented functions
-
-<br>
-
-```scala mdoc:reset:silent
-def repeat(n: Int, text: String): String =
-  ???
-```
-
---
-
-<br>
-
-```scala
-def ??? : Nothing = throw new NotImplementedError
-```
-
----
-# Unimplemented functions
-
-<br>
-
-```scala mdoc:reset:silent
-def repeat(n: Int, text: String): String =
-  ???
-```
-
-<br>
-
-```scala mdoc:crash
-val replicate: (Int, String) => String =
-  ???
-```
-
----
-# Unimplemented functions
-
-<br>
-
-```scala mdoc:reset:silent
-def repeat(n: Int, text: String): String =
-  ???
-```
-
-<br>
-
-```scala mdoc:silent
-lazy val replicate: (Int, String) => String =
-  ???
-```
-
----
 # Functions as input
 
 <br>
@@ -1398,13 +1122,13 @@ Pair(0, 2).zipWith(Pair(7, 3))(_ + _)
 <br>
 
 ```scala
-def function[A, B, C](first: A, second: B)(f: (A, B) => C): C
+def zip[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
 ```
 
 <br>
 
 ```scala
-def function[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
+def mapTwice[A, B, C](values: List[A])(f: A => B)(g: B => C): List[C]
 ```
 
 ---
@@ -2733,6 +2457,282 @@ val message: String = "Welcome!"
 val elems: List = List(1, 2, 3)
 ```
 ]
+
+---
+class: center, middle
+
+# Def vs Val functions details
+
+---
+# Def function (Method)
+
+.pull-left[
+## In Scala
+
+```scala
+def replicate(n: Int, text: String): String
+```
+]
+
+.pull-right[
+## In Java
+
+```java
+String replicate(int n, String text)
+```
+]
+
+---
+# Conciseness
+
+<br>
+
+.pull-left[
+```scala mdoc:silent
+def plus(x: Int, y: Int): Int =
+  x + y
+```
+]
+
+
+.pull-right[
+```scala mdoc:silent
+val plus: (Int, Int) => Int =
+  (x: Int, y: Int) => x + y
+```
+]
+
+---
+# Conciseness
+
+<br>
+
+.pull-left[
+```scala mdoc:reset:silent
+def plus(x: Int, y: Int): Int =
+  x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+def plus(x: Int, y: Int) =
+  x + y
+```
+]
+
+
+.pull-right[
+```scala mdoc:reset:silent
+val plus: (Int, Int) => Int =
+  (x: Int, y: Int) => x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val plus =
+  (x: Int, y: Int) => x + y
+```
+]
+
+---
+# Conciseness
+
+<br>
+
+.pull-left[
+```scala mdoc:reset:silent
+def plus(x: Int, y: Int): Int =
+  x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+def plus(x: Int, y: Int) =
+  x + y
+```
+]
+
+
+.pull-right[
+```scala mdoc:reset:silent
+val plus: (Int, Int) => Int =
+  (x: Int, y: Int) => x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val plus =
+  (x: Int, y: Int) => x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val plus: (Int, Int) => Int =
+  (x, y) => x + y
+```
+]
+
+---
+# Conciseness
+
+<br>
+
+.pull-left[
+```scala mdoc:reset:silent
+def plus(x: Int, y: Int): Int =
+  x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+def plus(x: Int, y: Int) =
+  x + y
+```
+]
+
+
+.pull-right[
+```scala mdoc:reset:silent
+val plus: (Int, Int) => Int =
+  (x: Int, y: Int) => x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val plus =
+  (x: Int, y: Int) => x + y
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val plus: (Int, Int) => Int =
+  _ + _
+```
+]
+
+---
+# Definition order
+
+<br>
+
+```scala mdoc:reset:silent
+val repeat = replicate
+
+val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
+```
+
+--
+
+<br>
+
+```scala
+// warning: Reference to uninitialized value replicate
+// val repeat = replicate
+```
+
+```scala mdoc:crash
+repeat(3, "Hello ")
+```
+
+---
+# Definition order
+
+<br>
+
+```scala mdoc:reset:silent
+def repeat(n: Int, text: String): String =
+  replicate(n, text)
+
+def replicate(n: Int, text: String): String =
+  List.fill(n)(text).mkString
+```
+
+<br>
+
+
+```scala mdoc
+repeat(3, "Hello ")
+```
+
+---
+# Definition order
+
+<br>
+
+```scala mdoc:reset:silent
+lazy val repeat = replicate
+
+lazy val replicate: (Int, String) => String =
+  (n, text) => List.fill(n)(text).mkString
+```
+
+<br>
+
+
+```scala mdoc
+repeat(3, "Hello ")
+```
+
+---
+# Unimplemented functions
+
+<br>
+
+```scala mdoc:reset:silent
+def repeat(n: Int, text: String): String =
+  ???
+```
+
+--
+
+<br>
+
+```scala
+def ??? : Nothing = throw new NotImplementedError
+```
+
+---
+# Unimplemented functions
+
+<br>
+
+```scala mdoc:reset:silent
+def repeat(n: Int, text: String): String =
+  ???
+```
+
+<br>
+
+```scala mdoc:crash
+val replicate: (Int, String) => String =
+  ???
+```
+
+---
+# Unimplemented functions
+
+<br>
+
+```scala mdoc:reset:silent
+def repeat(n: Int, text: String): String =
+  ???
+```
+
+<br>
+
+```scala mdoc:silent
+lazy val replicate: (Int, String) => String =
+  ???
+```
 
 
 </textarea>
