@@ -415,6 +415,46 @@ filter(text, (c: Char) => c.isLetter)
 ```
 
 ---
+# Functions as input
+
+<br>
+
+.medium-left[
+<br>
+<br>
+```scala mdoc
+filter(
+  "Hello World!",
+  (c: Char) => c.isUpper
+)
+```
+]
+
+.large-right[
+<img src="img/function/filter-isUpper.svg" alt="isUpper" style="width:600px;"/>
+]
+
+---
+# Functions as input
+
+<br>
+
+.medium-left[
+<br>
+<br>
+```scala mdoc
+filter(
+  "Hello World!",
+  (c: Char) => c.isLetter
+)
+```
+]
+
+.large-right[
+<img src="img/function/filter-isLetter.svg" alt="isUpper" style="width:600px;"/>
+]
+
+---
 .h1[# Reduce code duplication]
 
 <br>
@@ -1417,9 +1457,9 @@ background-image: url(img/function/linked-list.svg)
 ---
 # Iteration
 
-```scala mdoc:silent
-def wordCount
-```
+<!--```scala mdoc:silent-->
+<!--def wordCount-->
+<!--```-->
 
 ---
 background-image: url(img/function/fold.svg)
