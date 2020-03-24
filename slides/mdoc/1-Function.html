@@ -399,21 +399,6 @@ def filter(s: String, predicate: Char => Boolean): String =
 def filter(text: String, predicate: Char => Boolean): String = ...
 ```
 
---
-
-<br>
-
-```scala mdoc:silent
-val text = "Hello World!"
-```
-
-```scala mdoc
-filter(text, (c: Char) => c.isUpper)
-
-
-filter(text, (c: Char) => c.isLetter)
-```
-
 ---
 # Functions as input
 
@@ -494,6 +479,40 @@ lowerCase("Hello")
 ---
 # Capture pattern
 
+
+.pull-left[
+<br>
+
+```scala mdoc:reset:silent
+def map(text: String, update: Char => Char): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
+    characters(i) = update(characters(i))
+  }
+  new String(characters)
+}
+```
+
+<br>
+
+```scala mdoc:silent
+def upperCase(text: String): String =
+  map(text, c => c.toUpper)
+
+def lowerCase(text: String): String =
+  map(text, c => c.toLower)
+```
+]
+
+--
+
+.pull-right[
+<img src="img/function/map-string.svg" alt="isUpper" style="width:400px;"/>
+]
+
+---
+# Capture pattern
+
 <br>
 
 .pull-left[
@@ -517,8 +536,6 @@ def lowerCase(text: String): String =
   map(text, c => c.toLower)
 ```
 ]
-
---
 
 .pull-right[
 ```scala
