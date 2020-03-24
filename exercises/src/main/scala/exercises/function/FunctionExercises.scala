@@ -180,7 +180,8 @@ object FunctionExercises {
   // 4d. `sum`, `mkString`, `letterCount` are quite similar. Could you write a higher order function
   // that capture this pattern?
   // Hint: this method is called `foldLeft`.
-  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B = ???
+  def foldLeft[A, B](fa: List[A], b: B)(f: (B, A) => B): B =
+    ???
 
   // 4e. Re-implement `sum` using `foldLeft`
   def sumFoldLeft(xs: List[Int]): Int =
@@ -265,11 +266,14 @@ object FunctionExercises {
     ???
 
   // 6f. Which fold would you use (left or right) to implement the following functions?
-  def multiply(xs: List[Int]): Int = ???
+  def multiply(xs: List[Int]): Int =
+    ???
 
-  def min(xs: List[Int]): Option[Int] = ???
+  def min(xs: List[Int]): Option[Int] =
+    ???
 
-  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] = ???
+  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] =
+    ???
 
   ////////////////////////
   // 7. Pure functions

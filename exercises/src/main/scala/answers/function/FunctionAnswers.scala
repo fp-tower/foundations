@@ -1,11 +1,15 @@
 package answers.function
 
+import java.time.Duration
+
 import cats.Eval
 
 import scala.annotation.tailrec
 import scala.collection.mutable
+import scala.concurrent.{Await, Future}
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.RoundingMode
+import scala.util.Random
 
 object FunctionAnswers {
 
@@ -113,16 +117,14 @@ object FunctionAnswers {
     str
   }
 
-  def letterCount(xs: List[Char]): Map[Char, Int] = {
-    var letters = Map.empty[Char, Int]
-    for (x <- xs) {
-      letters = addLetter(letters, x)
-    }
+  def wordCount(xs: List[String]): Map[String, Int] = {
+    var letters = Map.empty[String, Int]
+    for (x <- xs) letters = addWord(letters, x)
     letters
   }
 
-  def addLetter(letters: Map[Char, Int], char: Char): Map[Char, Int] =
-    letters.updatedWith(char) {
+  def addWord(state: Map[String, Int], word: String): Map[String, Int] =
+    state.updatedWith(word) {
       case None    => Some(1)
       case Some(n) => Some(n + 1)
     }
@@ -139,8 +141,21 @@ object FunctionAnswers {
   def mkStringFoldLeft(xs: List[Char]): String =
     foldLeft(xs, "")(_ + _)
 
-  def letterCountFoldLeft(xs: List[Char]): Map[Char, Int] =
-    foldLeft(xs, Map.empty[Char, Int])(addLetter)
+  def wordCountFoldLeft(xs: List[String]): Map[String, Int] =
+    foldLeft(xs, Map.empty[String, Int])(addWord)
+
+  def foldMap[A, B](xs: List[A])(f: A => B)(z: B, combine: (B, B) => B): B =
+    foldLeft(xs, z)((acc, a) => combine(acc, f(a)))
+
+  def splitFoldMap[A, B](xs: List[List[A]])(f: A => B)(z: B, combine: (B, B) => B): B =
+    foldMap(xs)(foldMap(_)(f)(z, combine))(z, combine)
+
+  def splitParFoldMap[A, B](xs: List[List[A]])(f: A => B)(z: B, combine: (B, B) => B): Future[B] = {
+    import scala.concurrent.ExecutionContext.Implicits._
+    Future
+      .traverse(xs)(subList => Future { foldMap(subList)(f)(z, combine) })
+      .map(foldMap(_)(identity)(z, combine))
+  }
 
   /////////////////
   // 5. Recursion
@@ -156,14 +171,14 @@ object FunctionAnswers {
     _sumRecursive(xs, 0)
   }
 
-  def letterCountRecursive(xs: List[Char]): Map[Char, Int] = {
-    def _letterCountRecursive(ys: List[Char], acc: Map[Char, Int]): Map[Char, Int] =
+  def wordCountRecursive(xs: List[String]): Map[String, Int] = {
+    def _wordCountRecursive(ys: List[String], acc: Map[String, Int]): Map[String, Int] =
       xs match {
         case Nil          => acc
-        case head :: tail => _letterCountRecursive(tail, addLetter(acc, head))
+        case head :: tail => _wordCountRecursive(tail, addWord(acc, head))
       }
 
-    _letterCountRecursive(xs, Map.empty)
+    _wordCountRecursive(xs, Map.empty)
   }
 
   @tailrec
@@ -247,4 +262,29 @@ object FunctionAnswers {
         }
       }
   }
+}
+
+object FunctionAnswersApp extends App {
+  import FunctionAnswers._
+
+  def time[R](block: => R): R = {
+    val t0          = System.nanoTime()
+    val result      = block
+    val t1          = System.nanoTime()
+    val duration    = Duration.ofNanos(t1 - t0)
+    val durationStr = String.format("%02d:%02d", duration.toSecondsPart, duration.toMillisPart)
+    println(s"Elapsed time: $durationStr")
+    result
+  }
+
+  val size                            = 10000000
+  val largeList: List[Int]            = List.fill(size)(Random.nextInt())
+  def chunks(n: Int): List[List[Int]] = largeList.grouped(size / n).toList
+  val chunked: List[List[Int]]        = chunks(10)
+
+  time(foldLeft(largeList, 0L)(_ + _))
+  time(foldMap(largeList)(x => x: Long)(0L, _ + _))
+  time(splitFoldMap(chunked)(x => x: Long)(0, _ + _))
+  time(Await.result(splitParFoldMap(chunked)(x => x: Long)(0, _ + _), scala.concurrent.duration.Duration.Inf))
+
 }
