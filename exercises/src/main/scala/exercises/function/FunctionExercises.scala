@@ -21,13 +21,13 @@ object FunctionExercises {
   // 1a. Implement `selectDigits` which iterates over a String and only keep the characters that are digits.
   // such as keepLetters("123foo0-!Bar~+3") == "12303"
   // Note: You can use `filter` method from `String`, also check out the API of Char
-  def selectDigits(s: String): String =
+  def selectDigits(text: String): String =
     ???
 
   // 1b. Implement `secret` which transforms all characters in a String to '*'
   // such as secret("Welcome123") == "**********"
   // Note: You can use `map` method from `String`
-  def secret(s: String): String =
+  def secret(text: String): String =
     ???
 
   // 1c. Implement `isValidUsernameCharacter` which checks if a character is suitable for a username.
@@ -47,7 +47,7 @@ object FunctionExercises {
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
   // Note: You can use `forAll` method from `String`
-  def isValidUsername(s: String): Boolean =
+  def isValidUsername(text: String): Boolean =
     ???
 
   case class Point(x: Int, y: Int) {
