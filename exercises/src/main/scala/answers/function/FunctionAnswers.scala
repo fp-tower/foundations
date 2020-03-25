@@ -17,7 +17,7 @@ object FunctionAnswers {
   // 1. Functions as input (aka higher order functions)
   //////////////////////////////////////////////////////
 
-  def keepDigits(s: String): String =
+  def selectDigits(s: String): String =
     s.filter(c => c.isDigit)
 
   def secret(s: String): String =

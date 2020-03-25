@@ -12,8 +12,8 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
   // 1. Functions as input (aka higher order functions)
   /////////////////////////////////////////////////////
 
-  test("keepDigits") {
-    keepDigits("123foo0-!Bar~+3") shouldEqual "12303"
+  test("selectDigits") {
+    selectDigits("123foo0-!Bar~+3") shouldEqual "12303"
   }
 
   test("secret") {
