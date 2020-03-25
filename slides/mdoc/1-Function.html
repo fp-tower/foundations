@@ -396,7 +396,10 @@ def filter(s: String, predicate: Char => Boolean): String =
 ```
 
 ```scala
-def filter(text: String, predicate: Char => Boolean): String = ...
+def filter(
+  text     : String,
+  predicate: Char => Boolean
+): String = ...
 ```
 
 ---
@@ -504,8 +507,6 @@ def lowerCase(text: String): String =
 ```
 ]
 
---
-
 .pull-right[
 <img src="img/function/map-string.svg" alt="isUpper" style="width:400px;"/>
 ]
@@ -538,17 +539,36 @@ def lowerCase(text: String): String =
 ]
 
 .pull-right[
+<img src="img/function/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
+]
+
+---
+# Capture pattern
+
+<br>
+.pull-left[
+
 ```scala
-test("map does not change the size") {
+test("map does not modify the text size") {
   forAll((
     text  : String,
     update: Char => Char
   ) =>
-    map(text, update).length == text.length
+    val outputText = map(text, update)
+    outputText.length == text.length
   )
 }
 ```
 ]
+
+.pull-right[
+<img src="img/function/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
+]
+
+---
+background-image: url(img/function/higher-order-function-2.svg)
+
+# Higher order function hierarchy
 
 ---
 background-image: url(img/function/file-processing.svg)
@@ -631,6 +651,19 @@ usingFile("50-word-count.txt", countLines)
 ```scala mdoc
 usingFile("50-word-count.txt", countWords)
 ```
+]
+
+---
+# Summary
+
+<br>
+
+.large[
+* Higher order function
+
+* Reduce code duplication
+
+* Improve code quality
 ]
 
 ---
@@ -2824,7 +2857,7 @@ lazy val replicate: (Int, String) => String =
 <script>
     var slideshow = remark.create({
         ratio: "16:9",
-        slideNumberFormat: '%current%',
+        slideNumberFormat: '',
         highlightLines: true,
         highlightSpans: true,
     });
