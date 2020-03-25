@@ -14,6 +14,7 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
 
   test("selectDigits") {
     selectDigits("123foo0-!Bar~+3") shouldEqual "12303"
+    selectDigits("hello") shouldEqual ""
   }
 
   test("secret") {
