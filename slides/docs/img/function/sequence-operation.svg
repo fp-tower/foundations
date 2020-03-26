@@ -9,11 +9,11 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.14 
-    <dc:date>2020-03-26 12:08:02 +0000</dc:date>
+    <dc:date>2020-03-26 14:29:47 +0000</dc:date>
   </metadata>
-  <g id="sequence-operation-1" stroke-dasharray="none" fill="none" stroke-opacity="1" fill-opacity="1" stroke="none">
+  <g id="sequence-operation" stroke-dasharray="none" fill="none" stroke-opacity="1" fill-opacity="1" stroke="none">
     <title>sequence-operation</title>
-    <g id="sequence-operation-1: Layer 1">
+    <g id="sequence-operation: Layer 1">
       <title>Layer 1</title>
       <g id="Graphic_27">
         <rect x="18" y="54" width="378" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
@@ -46,7 +46,7 @@
         <rect x="126" y="234" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_206">
-        <rect x="567" y="216" width="378" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <rect x="567" y="216" width="288" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
       <g id="Graphic_205">
         <rect x="585" y="234" width="72" height="70.714286" fill="#589b9d"/>
@@ -57,12 +57,8 @@
         <rect x="675" y="234" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_208">
-        <rect x="765" y="234" width="72" height="70.714286" fill="#589b9d"/>
+        <rect x="765" y="234" width="72" height="70.714286" fill="#ff8080"/>
         <rect x="765" y="234" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      </g>
-      <g id="Graphic_207">
-        <rect x="855" y="234" width="72" height="70.714286" fill="#70a3d8"/>
-        <rect x="855" y="234" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_209">
         <ellipse cx="612" cy="118.5" rx="36.0000575244683" ry="34.5000551276154" fill="#70a3d8"/>
@@ -75,8 +71,8 @@
         <path d="M 446.13493 282.76364 L 446.13493 263.78182 L 489.8651 263.78182 L 489.8651 249.54545 L 507.8651 273.27273 L 489.8651 297 L 489.8651 282.76364 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_211">
-        <text transform="translate(431.768 212)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">duplicate</tspan>
+        <text transform="translate(410 212)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">concatenate</tspan>
         </text>
       </g>
       <g id="Graphic_213">
@@ -134,6 +130,13 @@
       <g id="Graphic_238">
         <rect x="306" y="405" width="72" height="70.714286" fill="#589b9d"/>
         <rect x="306" y="405" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_255">
+        <rect x="243" y="216" width="108" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_254">
+        <rect x="261" y="234" width="72" height="70.714286" fill="#ff8080"/>
+        <rect x="261" y="234" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
     </g>
   </g>

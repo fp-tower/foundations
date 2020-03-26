@@ -1,6 +1,7 @@
 package answers.function
 
-import java.time.Duration
+import java.time.format.DateTimeFormatter
+import java.time.{Duration, LocalDate}
 
 import cats.Eval
 
@@ -46,32 +47,8 @@ object FunctionAnswers {
       forAll(_ % 2 == 0)
   }
 
-  //////////////////////////////////////////////////
-  // 2. functions as output (aka curried functions)
-  //////////////////////////////////////////////////
-
-  def add(x: Int)(y: Int): Int = x + y
-
-  val increment: Int => Int = add(1)
-  val decrement: Int => Int = add(-1)
-
-  def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
-    BigDecimal(number)
-      .setScale(digits, roundingMode)
-      .toDouble
-      .toString
-
-  val formatDoubleCurried: RoundingMode => Int => Double => String =
-    roundingMode => digits => number => formatDouble(roundingMode, digits, number)
-
-  val formatDoubleCurried2: RoundingMode => Int => Double => String =
-    (formatDouble _).curried
-
-  val format2Ceiling: Double => String =
-    formatDoubleCurried(RoundingMode.CEILING)(2)
-
   ////////////////////////////
-  // 3. parametric functions
+  // 2. parametric functions
   ////////////////////////////
 
   case class Pair[A](first: A, second: A) {
@@ -100,6 +77,67 @@ object FunctionAnswers {
 
   val longerThan5: Boolean =
     names.map(_.length).forAll(_ >= 5)
+
+  case class UserId(id: Int)
+  val userIdEncoder: JsonEncoder[UserId] = new JsonEncoder[UserId] {
+    def encode(value: UserId): Json =
+      intEncoder.encode(value.id)
+  }
+
+  val localDateEncoder: JsonEncoder[LocalDate] = new JsonEncoder[LocalDate] {
+    def encode(value: LocalDate): Json =
+      stringEncoder.encode(value.format(DateTimeFormatter.ISO_LOCAL_DATE))
+  }
+
+  // very basic representation of JSON
+  type Json = String
+
+  trait JsonEncoder[A] {
+    def encode(value: A): Json
+  }
+
+  val intEncoder: JsonEncoder[Int] = new JsonEncoder[Int] {
+    def encode(value: Int): Json = value.toString
+  }
+  val stringEncoder: JsonEncoder[String] = new JsonEncoder[String] {
+    def encode(value: String): Json = value
+  }
+
+  def contraMap[From, To](encoder: JsonEncoder[From], update: To => From): JsonEncoder[To] =
+    new JsonEncoder[To] {
+      def encode(value: To): Json =
+        encoder.encode(update(value))
+    }
+
+  val userIdEncoderV2: JsonEncoder[UserId] =
+    contraMap(intEncoder, (x: UserId) => x.id)
+
+  val localDateEncoderV2: JsonEncoder[LocalDate] =
+    contraMap(stringEncoder, (x: LocalDate) => x.format(DateTimeFormatter.ISO_LOCAL_DATE))
+
+  //////////////////////////////////////////////////
+  // 3. functions as output (aka curried functions)
+  //////////////////////////////////////////////////
+
+  def add(x: Int)(y: Int): Int = x + y
+
+  val increment: Int => Int = add(1)
+  val decrement: Int => Int = add(-1)
+
+  def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
+    BigDecimal(number)
+      .setScale(digits, roundingMode)
+      .toDouble
+      .toString
+
+  val formatDoubleCurried: RoundingMode => Int => Double => String =
+    roundingMode => digits => number => formatDouble(roundingMode, digits, number)
+
+  val formatDoubleCurried2: RoundingMode => Int => Double => String =
+    (formatDouble _).curried
+
+  val format2Ceiling: Double => String =
+    formatDoubleCurried(RoundingMode.CEILING)(2)
 
   /////////////////
   // 4. Iteration

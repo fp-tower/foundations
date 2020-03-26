@@ -681,7 +681,7 @@ class: center, middle
 ---
 background-image: url(img/function/sequences.svg)
 
-# Sequences
+# Sequence
 
 ---
 background-image: url(img/function/sequence-operation.svg)
@@ -689,133 +689,69 @@ background-image: url(img/function/sequence-operation.svg)
 # Generic operations
 
 ---
+# Parametric types (Generics)
+
 
 .pull-left[
-# Types
-
 <br>
-
-```scala
-Int
-String
-User
-```
-<br>
-
-```scala mdoc:invisible
-case class User(name: String, age: Int)
-```
-
 ```scala mdoc:silent
-val counter: Int = 5
+val numbers: List[Int]    = List(1, 2, 3)
 
-val message: String = "Welcome!"
-
-val alice: User = User("Alice", 23)
+val words  : List[String] = List("Hello", "World")
 ```
+]
+
+.pull-right[
+<img src="img/function/linked-lists.svg" alt="Linked list" style="width:400px;"/>
 ]
 
 --
 
-.pull-right[
-# Parametric types (Generics)
-
 <br>
-
-```scala
-List
-Map
-JsonEncoder
-```
 <br>
-
-```scala mdoc
-val numbers: List[Int] = List(1, 2, 3)
-
-val words: List[String] = List("Hello", "World")
-```
-]
-
----
+<br>
+<br>
+<br>
+<br>
 
 .pull-left[
-# Types
-
-<br>
-
-```scala
-Int
-String
-User
-```
-<br>
-
-```scala mdoc:reset:invisible
-case class User(name: String, age: Int)
-```
-
-```scala mdoc:silent
-val counter: Int = 5
-
-val message: String = "Welcome!"
-
-val alice: User = User("Alice", 23)
-```
-]
-
-.pull-right[
-# Parametric types (Generics)
-
-<br>
-
-```scala
-List
-Map
-JsonEncoder
-```
-<br>
-
 ```scala mdoc:fail
 val numbers: List = List(1, 2, 3)
 ```
 ]
 
+
 ---
-# Functions
+# How to parametrise a function?
 
 <br>
 
 ```scala
-def map(s: String, f: Char => Char): String = ...
-```
+def map(list: List[Int]   , update: Int    => Int   ): List[Int]    = ...
 
-<br>
-
-```scala
-def map(list: List[Int]   , f: Int    => Int   ): List[Int]    = ...
-
-def map(list: List[String], f: String => String): List[String] = ...
+def map(list: List[String], update: String => String): List[String] = ...
 ```
 
 --
 
 <br>
+<br>
 
 ```scala
-def map(list: List[Int]   , f: Int    => String): List[String] = ...
+def map[A](list: List[A], update: A => A): List[A] = ...
 ```
 
 ---
-# Parametric functions
+# How to parametrise a function?
 
 <br>
 
 ```scala
-def map[To](list: List[Int], f: Int => To): List[To] = ...
+def map[A](list: List[A], update: A => A): List[A] = ...
 ```
 
 ```scala mdoc:invisible
-def map[To](list: List[Int], f: Int => To): List[To] = list.map(f)
+def map[A](list: List[A], update: A => A): List[A] = list.map(update)
 ```
 
 <br>
@@ -823,28 +759,35 @@ def map[To](list: List[Int], f: Int => To): List[To] = list.map(f)
 ```scala mdoc
 map(List(1,2,3,4), (x: Int) => x + 1)
 
-map(List(1,2,3,4), (x: Int) => x / 2.0)
+map(List("Hello", "World"), (x: String) => x.reverse)
 ```
 
 ---
-# Parametric functions
+# How to parametrise a function?
 
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] = ...
+def map[From, To](list: List[From], update: From => To): List[To] = ...
 ```
 
 ```scala mdoc:reset:invisible
-def map[From, To](list: List[From], f: From => To): List[To] = list.map(f)
+def map[From, To](list: List[From], update: From => To): List[To] = list.map(update)
 ```
 
+--
 <br>
 
-```scala mdoc
-map(List(1,2,3,4), (x: Int) => x / 2.0)
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
 
-map(List("Hello", "World!"), (x: String) => x.length)
+```scala mdoc:silent
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc
+map(users, (x: User) => x.age)
 ```
 
 --
@@ -861,7 +804,7 @@ map(List("Hello", "World!"), (x: String) => x.length)
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] = ...
+def map[From, To](list: List[From], update: From => To): List[To] = ...
 ```
 
 --
@@ -938,6 +881,17 @@ def map(list: List[Int], f: Int => Int): List[Int] =
 
 .center[
 ## #2 Benefit: require less tests and less documentation
+]
+
+---
+# Summary parametric functions
+
+.large[
+* More generic, more reusable functions
+
+* Lots of details encoded in the signature
+
+* Applicable to most data structures, but not only ...
 ]
 
 ---

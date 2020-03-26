@@ -1,5 +1,8 @@
 package exercises.function
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 import scala.annotation.tailrec
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.RoundingMode
@@ -95,7 +98,7 @@ object FunctionExercises {
 
     // 2b. Implement `map` which applies a function to `first` and `second`
     // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
-    def map[B](f: A => B): Pair[B] =
+    def map[To](update: A => To): Pair[To] =
       ???
 
     // 2c. Implement `forAll` which check if a predicate is true for both `first` and `second`
@@ -107,7 +110,7 @@ object FunctionExercises {
 
     // 2d. Implement `zipWith` which merges two `Pair` using a `combine` function
     // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
-    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+    def zipWith[B, To](other: Pair[B], combine: (A, B) => To): Pair[To] =
       ???
   }
 
@@ -121,6 +124,49 @@ object FunctionExercises {
 
   // 2g. Use Pair API to check the length of both String in `names` are strictly longer than 5
   lazy val longerThan5: Boolean = ???
+
+  // 2h. Implement `userIdEncoder`, a `JsonEncoder` for `UserId`
+  // such as userIdEncoder.encoder(UserId(1234)) == "1234"
+  // Note: Try to re-use `intEncoder` defined below.
+  case class UserId(id: Int)
+  val userIdEncoder: JsonEncoder[UserId] = new JsonEncoder[UserId] {
+    def encode(value: UserId): Json = ???
+  }
+
+  // 2i. Implement `localDateEncoder`, a `JsonEncoder` for `LocalDate`
+  // such as userIdEncoder.encoder(LocalDate.of(2020,26,03)) == "2020-26-03"
+  // Note: You can format a `LocalDate` using a java.time.format.DateTimeFormatter
+  //       Try to re-use `stringEncoder` defined below.
+  val localDateEncoder: JsonEncoder[LocalDate] = new JsonEncoder[LocalDate] {
+    def encode(value: LocalDate): Json = ???
+  }
+
+  // very basic representation of JSON
+  type Json = String
+
+  trait JsonEncoder[A] {
+    def encode(value: A): Json
+  }
+
+  val intEncoder: JsonEncoder[Int] = new JsonEncoder[Int] {
+    def encode(value: Int): Json = value.toString
+  }
+  val stringEncoder: JsonEncoder[String] = new JsonEncoder[String] {
+    def encode(value: String): Json = value
+  }
+
+  // 2j. Implement `contraMap` a generic method that converts a `JsonEncoder`
+  // of one type into a `JsonEncoder` of another type.
+  def contraMap[From, To](encoder: JsonEncoder[From], update: To => From): JsonEncoder[To] =
+    new JsonEncoder[To] {
+      def encode(value: To): Json =
+        ???
+    }
+
+  // 2k. Re-implement a `JsonEncoder` for `UserId and `LocalDate` using `contraMap`
+  lazy val userIdEncoderV2: JsonEncoder[UserId] = ???
+
+  lazy val localDateEncoderV2: JsonEncoder[LocalDate] = ???
 
   //////////////////////////////////////////////////
   // 3. functions as output (aka curried functions)
