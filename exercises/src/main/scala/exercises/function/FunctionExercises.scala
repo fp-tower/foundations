@@ -83,11 +83,50 @@ object FunctionExercises {
       ???
   }
 
+  ////////////////////////////
+  // 2. parametric functions
+  ////////////////////////////
+
+  case class Pair[A](first: A, second: A) {
+    // 2a. Implement `swap` which exchanges `first` and `second`
+    // such as Pair("John", "Doe").swap == Pair("Doe", "John")
+    def swap: Pair[A] =
+      ???
+
+    // 2b. Implement `map` which applies a function to `first` and `second`
+    // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
+    def map[B](f: A => B): Pair[B] =
+      ???
+
+    // 2c. Implement `forAll` which check if a predicate is true for both `first` and `second`
+    // such as Pair(2, 6).forAll(_ > 0) == true
+    // but     Pair(2, 6).forAll(_ > 2) == false
+    //         Pair(2, 6).forAll(_ > 9) == false
+    def forAll(predicate: A => Boolean): Boolean =
+      ???
+
+    // 2d. Implement `zipWith` which merges two `Pair` using a `combine` function
+    // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
+    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+      ???
+  }
+
+  val names: Pair[String] = Pair("John", "Elisabeth")
+  val ages: Pair[Int]     = Pair(32, 46)
+  case class User(name: String, age: Int)
+
+  // 2f. Use Pair API to combine `names` and `ages` into `users`
+  // such as `users` is equal to Pair(User("John", 32), User("Elisabeth", 46))
+  lazy val users: Pair[User] = ???
+
+  // 2g. Use Pair API to check the length of both String in `names` are strictly longer than 5
+  lazy val longerThan5: Boolean = ???
+
   //////////////////////////////////////////////////
-  // 2. functions as output (aka curried functions)
+  // 3. functions as output (aka curried functions)
   //////////////////////////////////////////////////
 
-  // 2a. Implement `increment` and `decrement` using `add`
+  // 3a. Implement `increment` and `decrement` using `add`
   // such as increment(5) == 6
   // and     decrement(5) == 4
   // Note: You can remove the lazy keyword as soon you `increment` and `decrement`.
@@ -97,7 +136,7 @@ object FunctionExercises {
 
   lazy val decrement: Int => Int = ???
 
-  // 2b. Implement `formatDoubleCurried`, a curried version of `formatDouble`.
+  // 3b. Implement `formatDoubleCurried`, a curried version of `formatDouble`.
   def formatDouble(roundingMode: RoundingMode, digits: Int, number: Double): String =
     BigDecimal(number)
       .setScale(digits, roundingMode)
@@ -107,58 +146,10 @@ object FunctionExercises {
   lazy val formatDoubleCurried: RoundingMode => Int => Double => String =
     ???
 
-  // 2c. Implement `format2Ceiling` using `formatDoubleCurried`
+  // 3c. Implement `format2Ceiling` using `formatDoubleCurried`
   // such as format2Ceiling(0.12345) == 0.13
   lazy val format2Ceiling: Double => String =
     ???
-
-  ////////////////////////////
-  // 3. parametric functions
-  ////////////////////////////
-
-  case class Pair[A](first: A, second: A) {
-    // 3a. Implement `swap` which exchanges `first` and `second`
-    // such as Pair("John", "Doe").swap == Pair("Doe", "John")
-    def swap: Pair[A] =
-      ???
-
-    // 3b. Implement `map` which applies a function to `first` and `second`
-    // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
-    def map[B](f: A => B): Pair[B] =
-      ???
-
-    // 3c. Implement `forAll` which check if a predicate is true for both `first` and `second`
-    // such as Pair(2, 6).forAll(_ > 0) == true
-    // but     Pair(2, 6).forAll(_ > 2) == false
-    //         Pair(2, 6).forAll(_ > 9) == false
-    def forAll(predicate: A => Boolean): Boolean =
-      ???
-
-    // 3d. Implement `zipWith` which merges two `Pair` using a `combine` function
-    // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
-    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
-      ???
-
-    // 3e. Would you rather define `zipWith` with one input parameter list (like above) or two
-    // parameter lists (like below)? In other words, is there any benefits to curry `zipWith`?
-    def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
-      zipWith(other, combine)
-
-    ////////////////////////////////////////////////////
-    // Check out next video before finishing exercise 3
-    ////////////////////////////////////////////////////
-  }
-
-  val names: Pair[String] = Pair("John", "Elisabeth")
-  val ages: Pair[Int]     = Pair(32, 46)
-  case class User(name: String, age: Int)
-
-  // 3f. Use Pair API to combine `names` and `ages` into `users`
-  // such as `users` is equal to Pair(User("John", 32), User("Elisabeth", 46))
-  lazy val users: Pair[User] = ???
-
-  // 3g. Use Pair API to check the length of both String in `names` are strictly longer than 5
-  lazy val longerThan5: Boolean = ???
 
   /////////////////
   // 4. Iteration

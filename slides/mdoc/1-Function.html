@@ -674,191 +674,19 @@ class: center, middle
 `exercises.function.FunctionExercises.scala`
 
 ---
-# Functions as output
-
-<br>
-
-```scala mdoc:silent
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
-<br>
-
-```scala mdoc
-truncate(2, 0.123456789)
-
-truncate(5, 0.123456789)
-```
-
----
-# Functions as output
-
-<br>
-
-```scala mdoc:reset:silent
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-
-def truncate2D(number: Double): String = truncate(2, number)
-def truncate5D(number: Double): String = truncate(5, number)
-```
-
-<br>
-
-```scala mdoc
-truncate2D(0.123456789)
-
-truncate5D(0.123456789)
-```
-
----
-# Functions as output
-
-.pull-left[
-```scala
-def truncate(digits: Int, number: Double): String
-```
-
-```scala mdoc:reset:invisible
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
-```scala mdoc
-truncate(2, 0.123456789)
-```
-<br>
-]
-
-.pull-right[
-```scala mdoc:reset:invisible
-def truncate(digits: Int): Double => String =
-  BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
-
-val truncate2D: Double => String = truncate(2)
-val truncate5D: Double => String = truncate(5)
-```
-
-```scala
-def truncate(digits: Int): Double => String
-```
-
-```scala mdoc
-truncate(2)(0.123456789)
-```
-<br>
-]
-
---
-
-
-
-## Currying
-
-```scala
-val function3: (Int , Int  , Int) => Int
-
-val function3: Int => Int => Int  => Int
-```
-
----
-# Partial function application
-
-<br>
-
-```scala
-def truncate(digits: Int): Double => String =
-  (number: Int) => ...
-```
-
-<br>
-
-```scala
-val truncate2D = truncate(2)
-val truncate5D = truncate(5)
-```
-
---
-
-<br>
-
-```scala mdoc
-truncate2D(0.123456789)
-
-truncate5D(0.123456789)
-```
-
----
-# Syntax
-
-## Uncurried
-
-```scala
-def truncate(digits: Int, number: Double): String
-```
-
-## Curried
-
-```scala
-def truncate(digits: Int)(number: Double): String
-
-def truncate(digits: Int): Double => String
-
-val truncate: Int => Double => String
-```
-
----
-# Conversion (Currying)
-
-<br>
-
-```scala
-def truncate(digits: Int, number: Double): String
-```
-
-```scala mdoc:reset:invisible
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
---
-
-<br>
-
-```scala mdoc
-truncate _
-```
-
---
-
-```scala mdoc
-(truncate _).curried
-```
-
----
-class: center, middle
-
-# Exercise 2: Functions as output
-
-`exercises.function.FunctionExercises.scala`
-
----
 class: center, middle
 
 # Parametric functions
+
+---
+background-image: url(img/function/sequences.svg)
+
+# Sequences
+
+---
+background-image: url(img/function/sequence-operation.svg)
+
+# Generic operations
 
 ---
 
@@ -1112,13 +940,193 @@ def map(list: List[Int], f: Int => Int): List[Int] =
 ## #2 Benefit: require less tests and less documentation
 ]
 
+---
+class: center, middle
+
+# Exercise 2: Parametric functions
+
+`exercises.function.FunctionExercises.scala`
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:silent
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+<br>
+
+```scala mdoc
+truncate(2, 0.123456789)
+
+truncate(5, 0.123456789)
+```
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:reset:silent
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+
+def truncate2D(number: Double): String = truncate(2, number)
+def truncate5D(number: Double): String = truncate(5, number)
+```
+
+<br>
+
+```scala mdoc
+truncate2D(0.123456789)
+
+truncate5D(0.123456789)
+```
+
+---
+# Functions as output
+
+.pull-left[
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc
+truncate(2, 0.123456789)
+```
+<br>
+]
+
+.pull-right[
+```scala mdoc:reset:invisible
+def truncate(digits: Int): Double => String =
+  BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
+
+val truncate2D: Double => String = truncate(2)
+val truncate5D: Double => String = truncate(5)
+```
+
+```scala
+def truncate(digits: Int): Double => String
+```
+
+```scala mdoc
+truncate(2)(0.123456789)
+```
+<br>
+]
+
+--
+
+## Currying
+
+```scala
+val function3: (Int , Int  , Int) => Int
+
+val function3: Int => Int => Int  => Int
+```
+
+---
+# Partial function application
+
+<br>
+
+```scala
+def truncate(digits: Int): Double => String =
+  (number: Int) => ...
+```
+
+<br>
+
+```scala
+val truncate2D = truncate(2)
+val truncate5D = truncate(5)
+```
+
+--
+
+<br>
+
+```scala mdoc
+truncate2D(0.123456789)
+
+truncate5D(0.123456789)
+```
+
+---
+# Syntax
+
+## Uncurried
+
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+## Curried
+
+```scala
+def truncate(digits: Int)(number: Double): String
+
+def truncate(digits: Int): Double => String
+
+val truncate: Int => Double => String
+```
+
+---
+# Conversion (Currying)
+
+<br>
+
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+--
+
+<br>
+
+```scala mdoc
+truncate _
+```
+
+--
+
+```scala mdoc
+(truncate _).curried
+```
 
 ---
 class: center, middle
 
-# Exercise 3: Parametric functions
+# Exercise 3: Functions as output
 
 `exercises.function.FunctionExercises.scala`
+
 
 ---
 # Type inference

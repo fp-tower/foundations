@@ -8,10 +8,6 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
-  /////////////////////////////////////////////////////
-  // 1. Functions as input (aka higher order functions)
-  /////////////////////////////////////////////////////
-
   test("selectDigits") {
     selectDigits("123foo0-!Bar~+3") shouldEqual "12303"
     selectDigits("hello") shouldEqual ""
@@ -19,31 +15,6 @@ class FunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDri
 
   test("secret") {
     secret("abc123") shouldEqual "******"
-  }
-
-  //////////////////////////////////////////////////
-  // 2. functions as output (aka curried functions)
-  //////////////////////////////////////////////////
-
-  test("increment") {
-    increment(5) shouldEqual 6
-  }
-
-  ////////////////////////////
-  // 3. parametric functions
-  ////////////////////////////
-
-  test("Pair#swap") {
-    Pair("John", "Doe").swap shouldEqual Pair("Doe", "John")
-  }
-
-  /////////////////
-  // 4. Iteration
-  /////////////////
-
-  test("sum") {
-    sum(List(1, 2, 3, 10)) shouldEqual 16
-    sum(Nil) shouldEqual 0
   }
 
 }
