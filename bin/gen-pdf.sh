@@ -5,15 +5,14 @@ cp -r slides/docs docs/
 
 cd docs
 
-mkdir pdf img
+mkdir pdf screenshots
 
 for file in *.html
 do
- mkdir "img/${file%.html}"
  decktape remark "$file" "pdf/${file%.html}.pdf" --chrome-arg=--allow-file-access-from-files \
-  --screenshots --size 1920x1080 --screenshots-directory "img/${file%.html}"
+  --screenshots --size 1920x1080 --screenshots-directory screenshots
 done
 
 cd ..
 
-tar -czf docs/pdf/foundation.tar.gz docs/pdf/*.pdf docs/img
+tar -czf docs/pdf/foundation.tar.gz docs/pdf/*.pdf docs/screenshots
