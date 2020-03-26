@@ -3,14 +3,17 @@
 sbt slides/mdoc
 cp -r slides/docs docs/
 
-for file in docs/*.html
+cd docs
+
+mkdir pdf img
+
+for file in *.html
 do
- mkdir ${file%.html}
- decktape remark "$file" "${file%.html}.pdf" --chrome-arg=--allow-file-access-from-files \
-  --screenshots --size 1200x900 --screenshots-directory ${file%.html}
+ mkdir "img/${file%.html}"
+ decktape remark "$file" "pdf/${file%.html}.pdf" --chrome-arg=--allow-file-access-from-files \
+  --screenshots --size 1920x1080 --screenshots-directory "img/${file%.html}"
 done
 
-mkdir -p docs/pdf
-mv docs/*.pdf docs/pdf
+cd ..
 
-tar -czf docs/pdf/foundation.tar.gz docs/pdf/*.pdf
+tar -czf docs/pdf/foundation.tar.gz docs/pdf/*.pdf docs/img
