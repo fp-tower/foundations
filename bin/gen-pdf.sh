@@ -9,10 +9,12 @@ mkdir pdf screenshots
 
 for file in *.html
 do
- decktape remark "$file" "pdf/${file%.html}.pdf" --chrome-arg=--allow-file-access-from-files \
+ decktape remark "$file" "${file%.html}.pdf" --chrome-arg=--allow-file-access-from-files \
   --screenshots --size 1920x1080 --screenshots-directory screenshots
 done
 
+mv *.pdf pdf
 cd ..
+
 
 tar -czf docs/pdf/foundation.tar.gz docs/pdf/*.pdf docs/screenshots
