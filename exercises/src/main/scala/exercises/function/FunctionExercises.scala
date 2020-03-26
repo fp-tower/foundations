@@ -18,6 +18,11 @@ object FunctionExercises {
   // 1. Functions as input (aka higher order functions)
   /////////////////////////////////////////////////////
 
+  // Goals:
+  // 1. Practice using standard higher order functions (e.g. map, filter)
+  // 2. Get familiar with anonymous function syntax
+  // 3. Start writing our own higher order functions
+
   // 1a. Implement `selectDigits` which iterates over a String and only keep the characters that are digits.
   // such as selectDigits("123foo0-!Bar~+3") == "12303"
   // but     selectDigits("hello") == ""
