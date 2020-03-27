@@ -90,6 +90,9 @@ object FunctionExercises {
   // 2. parametric functions
   ////////////////////////////
 
+  val names: Pair[String] = Pair("John", "Elisabeth")
+  val ages: Pair[Int]     = Pair(32, 46)
+
   case class Pair[A](first: A, second: A) {
     // 2a. Implement `swap` which exchanges `first` and `second`
     // such as Pair("John", "Doe").swap == Pair("Doe", "John")
@@ -114,8 +117,6 @@ object FunctionExercises {
       ???
   }
 
-  val names: Pair[String] = Pair("John", "Elisabeth")
-  val ages: Pair[Int]     = Pair(32, 46)
   case class User(name: String, age: Int)
 
   // 2f. Use Pair API to combine `names` and `ages` into `users`
