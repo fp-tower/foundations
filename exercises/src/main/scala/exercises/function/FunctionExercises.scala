@@ -97,22 +97,23 @@ object FunctionExercises {
     // 2a. Implement `swap` which exchanges `first` and `second`
     // such as Pair("John", "Doe").swap == Pair("Doe", "John")
     def swap: Pair[A] =
-      ???
+      Pair(second, first)
 
     // 2b. Implement `map` which applies a function to `first` and `second`
     // such as Pair("John", "Doe").map(_.length) == Pair(4,3)
     def map[To](update: A => To): Pair[To] =
-      ???
+      Pair(update(first), update(second))
 
     // 2c. Implement `forAll` which check if a predicate is true for both `first` and `second`
     // such as Pair(2, 6).forAll(_ > 0) == true
     // but     Pair(2, 6).forAll(_ > 2) == false
     //         Pair(2, 6).forAll(_ > 9) == false
     def forAll(predicate: A => Boolean): Boolean =
-      ???
+      predicate(first) && predicate(second)
 
     // 2d. Implement `zipWith` which merges two `Pair` using a `combine` function
     // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
+    //         Pair(2, 3).zipWith(Pair("Hello ", "World "), replicate) == Pair("Hello Hello ", "World World World ")
     def zipWith[B, To](other: Pair[B], combine: (A, B) => To): Pair[To] =
       ???
   }
@@ -165,9 +166,17 @@ object FunctionExercises {
     }
 
   // 2k. Re-implement a `JsonEncoder` for `UserId and `LocalDate` using `contraMap`
-  lazy val userIdEncoderV2: JsonEncoder[UserId] = ???
+  lazy val userIdEncoderV2: JsonEncoder[UserId] =
+    ???
 
-  lazy val localDateEncoderV2: JsonEncoder[LocalDate] = ???
+  lazy val localDateEncoderV2: JsonEncoder[LocalDate] =
+    ???
+
+  // 2i. How would define and implement a `JsonEncoder` for generic `List`?
+  // For example, we should be able to use it to encode a `List[Int]`, `List[String]` or
+  // `List[LocaDate]`.
+  def listEncoder[A]: JsonEncoder[List[A]] =
+    ???
 
   //////////////////////////////////////////////////
   // 3. functions as output (aka curried functions)
