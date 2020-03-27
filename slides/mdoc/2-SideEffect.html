@@ -367,7 +367,7 @@ def getUser(userId: UserId): IO[User] = ???
 def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
-.large-left[
+.extra-extra-large-left[
 ```scala mdoc:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
@@ -400,7 +400,7 @@ def getUser(userId: UserId): IO[User] = ???
 def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
-.large-left[
+.extra-extra-large-left[
 ```scala mdoc:silent
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
@@ -437,7 +437,7 @@ def getUser(userId: UserId): IO[User] = ???
 def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
-.large-left[
+.extra-large-left[
 ```scala mdoc:silent
 import answers.sideeffect.IOAnswers.IO
 
@@ -468,7 +468,7 @@ object Main extends App {
 ---
 .h1[# For comprehension cannot be done concurrently]
 
-.large-left[
+.extra-large-left[
 ```scala
 def deleteAllUserOrders(userId: UserId): IO[Unit] =
   for {
@@ -487,7 +487,7 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 ---
 .h1[# For comprehension cannot be done concurrently]
 
-.large-left[
+.extra-large-left[
 
 ```scala mdoc:silent
 def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
@@ -505,7 +505,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ---
 .h1[# Concurrent execution]
 
-.large-left[
+.extra-large-left[
 
 ```scala mdoc:silent:nest
 def concurrentExec(io1: IO[Unit], io2: IO[Unit]): IO[Unit] = ???
@@ -556,7 +556,7 @@ def getUser(userId: UserId): IO[User] = ???
 def deleteOrder(orderId: OrderId): IO[Unit] = ???
 ```
 
-.large-left[
+.extra-large-left[
 
 ```scala mdoc:silent
 def concurrentMap2[A, B, C](fa: IO[A],fb: IO[B])(f: (A, B) => C): IO[C] = ???
@@ -601,7 +601,7 @@ case class OrderId(value: String)
 case class User(userId: UserId, name: String, orderIds: List[OrderId])
 ```
 
-.large-left[
+.extra-large-left[
 ```scala mdoc:silent
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -630,7 +630,7 @@ def delete2Orders(
 ]
 
 ---
-.large-left[
+.extra-large-left[
 .h1[# Creating a Future is a side effect]
 
 ```scala mdoc:reset:invisible
@@ -688,7 +688,7 @@ class: center, middle
 ---
 .h1[# Execution Context]
 
-.large-left[
+.extra-large-left[
 ```scala
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -918,7 +918,7 @@ case class User(userId: UserId, name: String, orderIds: List[OrderId])
 ---
 .h1[# Concurrent IO: concurrentMap2]
 
-.large-left[
+.extra-large-left[
 ```scala
 trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
@@ -941,7 +941,7 @@ def concurrentMap2[A, B, C](
 ---
 .h1[# Concurrent IO: concurrentMap2]
 
-.large-left[
+.extra-large-left[
 ```scala
 trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]
@@ -989,7 +989,7 @@ def concurrentMap2[A, B, C](
 ---
 .h1[# Concurrent IO is referentially transparent]
 
-.large-left[
+.extra-large-left[
 ```scala
 trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]]

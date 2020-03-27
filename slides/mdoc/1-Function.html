@@ -932,309 +932,24 @@ def map(list: List[Int], update: Int => Int): List[Int] =
 ]
 
 ---
-# Summary parametric functions
+# Summary
+
+<br>
 
 .large[
-* More generic, more reusable functions
+* More reusable
 
-* Lots of details encoded in the signature
+* Caller decides which underlying type to use
 
-* Applicable to most data structures, but not only ...
+* Implementation must be generic
+   * more documentation
+   * less tests
 ]
 
 ---
 class: center, middle
 
 # Exercise 2: Parametric functions
-
-`exercises.function.FunctionExercises.scala`
-
----
-# Functions as output
-
-<br>
-
-```scala mdoc:silent
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
-<br>
-
-```scala mdoc
-truncate(2, 0.123456789)
-
-truncate(5, 0.123456789)
-```
-
----
-# Functions as output
-
-<br>
-
-```scala mdoc:reset:silent
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-
-def truncate2D(number: Double): String = truncate(2, number)
-def truncate5D(number: Double): String = truncate(5, number)
-```
-
-<br>
-
-```scala mdoc
-truncate2D(0.123456789)
-
-truncate5D(0.123456789)
-```
-
----
-# Functions as output
-
-.pull-left[
-```scala
-def truncate(digits: Int, number: Double): String
-```
-
-```scala mdoc:reset:invisible
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
-```scala mdoc
-truncate(2, 0.123456789)
-```
-<br>
-]
-
-.pull-right[
-```scala mdoc:reset:invisible
-def truncate(digits: Int): Double => String =
-  BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
-
-val truncate2D: Double => String = truncate(2)
-val truncate5D: Double => String = truncate(5)
-```
-
-```scala
-def truncate(digits: Int): Double => String
-```
-
-```scala mdoc
-truncate(2)(0.123456789)
-```
-<br>
-]
-
---
-
-## Currying
-
-```scala
-val function3: (Int , Int  , Int) => Int
-
-val function3: Int => Int => Int  => Int
-```
-
----
-# Partial function application
-
-<br>
-
-```scala
-def truncate(digits: Int): Double => String =
-  (number: Int) => ...
-```
-
-<br>
-
-```scala
-val truncate2D = truncate(2)
-val truncate5D = truncate(5)
-```
-
---
-
-<br>
-
-```scala mdoc
-truncate2D(0.123456789)
-
-truncate5D(0.123456789)
-```
-
----
-# Syntax
-
-## Uncurried
-
-```scala
-def truncate(digits: Int, number: Double): String
-```
-
-## Curried
-
-```scala
-def truncate(digits: Int)(number: Double): String
-
-def truncate(digits: Int): Double => String
-
-val truncate: Int => Double => String
-```
-
----
-# Conversion (Currying)
-
-<br>
-
-```scala
-def truncate(digits: Int, number: Double): String
-```
-
-```scala mdoc:reset:invisible
-def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
---
-
-<br>
-
-```scala mdoc
-truncate _
-```
-
---
-
-```scala mdoc
-(truncate _).curried
-```
-
----
-class: center, middle
-
-# Exercise 3: Functions as output
-
-`exercises.function.FunctionExercises.scala`
-
-
----
-# Type inference
-
-<br>
-
-```scala
-case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ...
-}
-```
-
-```scala mdoc:invisible
-case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
-    Pair(
-      combine(first , other.first),
-      combine(second, other.second)
-    )
-}
-```
-
-<br>
-
-```scala mdoc:invisible
-def replicate(n: Int, text: String): String =
-  List.fill(n)(text).mkString
-```
-
-```scala mdoc
-Pair(0, 2).zipWith(Pair(7, 3), (x: Int, y: Int) => x + y)
-
-Pair(2, 3).zipWith(Pair("Hello ", "World "), replicate)
-```
-
----
-# Type inference
-
-<br>
-
-```scala
-case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ...
-}
-```
-
-<br>
-
-```scala mdoc:fail
-Pair(0, 2).zipWith(Pair(7, 3), (x, y) => x + y)
-```
-
----
-# Type inference
-
-<br>
-
-```scala
-case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ...
-}
-```
-
-```scala mdoc:reset:invisible
-case class Pair[A](first: A, second: A) {
-  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
-    Pair(
-      combine(first , other.first),
-      combine(second, other.second)
-    )
-}
-```
-
-<br>
-
-```scala mdoc
-Pair(0, 2).zipWith(Pair(7, 3))((x, y) => x + y)
-```
-
---
-
-<br>
-
-```scala mdoc
-Pair(0, 2).zipWith(Pair(7, 3))(_ + _)
-```
-
----
-# Scala API design
-
-<br>
-
-```scala
-def zip[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
-```
-
-<br>
-
-```scala
-def mapTwice[A, B, C](values: List[A])(f: A => B)(g: B => C): List[C]
-```
-
----
-class: center, middle
-
-# Finish Exercise 3: Parametric functions
 
 `exercises.function.FunctionExercises.scala`
 
@@ -1414,6 +1129,7 @@ def identity[A](value: A): A = value
 def constant[A, B](value: A)(discarded: B): A = value
 ```
 
+.pull-left[
 ```scala mdoc:silent
 trait Config {
 
@@ -1430,9 +1146,32 @@ trait Config {
 
   def get: Boolean =
     modifyFlag(identity)
-
 }
 ```
+]
+
+--
+
+.pull-right[
+```scala
+class FastConfig extends Config {
+  def modifyFlag(f: Boolean => Boolean): Boolean =
+    ...
+
+  def get: Boolean =
+    ...
+}
+```
+
+```scala
+test("get is consistent"){
+  forAll((config: FastConfig) =>
+    config.get shouldEqual
+      config.modifyFlag(identity)
+  )
+}
+```
+]
 
 ---
 # What is the type of `identityVal`?
@@ -1493,6 +1232,409 @@ val identityVal: Int => Int = identity[Int] _
 ```scala mdoc
 identityVal(4)
 ```
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:silent
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+<br>
+
+```scala mdoc
+truncate(2, 0.123456789)
+
+truncate(5, 0.123456789)
+```
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:reset:silent
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+
+def truncate2D(number: Double): String = truncate(2, number)
+def truncate5D(number: Double): String = truncate(5, number)
+```
+
+<br>
+
+```scala mdoc
+truncate2D(0.123456789)
+
+truncate5D(0.123456789)
+```
+
+---
+# Functions as output
+
+<br>
+
+```scala
+def publishEvent(
+  environment: Environment, // DEV, UAT, PRD
+  topic: String,
+  event: Event,
+  parameters: Config
+): Unit
+```
+
+--
+
+.pull-left[
+```scala
+def publishEventToDev(
+  topic: String,
+  event: Event,
+  parameters: Config
+): Unit =
+  publishEvent(DEV, topic, event, parameters)
+```
+]
+
+.pull-right[
+```scala
+def publishEventToUat(
+  topic: String,
+  event: Event,
+  parameters: Config
+): Unit =
+  publishEvent(UAT, topic, event, parameters)
+```
+]
+
+---
+# Functions as output
+
+<br>
+
+```scala
+def publishEvent(
+  environment: Environment, // DEV, UAT, PRD
+  topic: String,
+  event: Event,
+  parameters: Config
+): Unit
+```
+
+<br>
+
+.pull-left[
+```scala
+def publishEventToDev = publishEvent(DEV)
+def publishEventToUat = publishEvent(UAT)
+```
+]
+
+.pull-right[
+## Pseudocode
+]
+
+
+---
+# Functions as output
+
+.pull-left[
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc
+truncate(2, 0.123456789)
+```
+<br>
+]
+
+.pull-right[
+```scala mdoc:reset:invisible
+def truncate(digits: Int): Double => String =
+  BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
+
+val truncate2D: Double => String = truncate(2)
+val truncate5D: Double => String = truncate(5)
+```
+
+```scala
+def truncate(digits: Int): Double => String
+```
+
+```scala mdoc
+truncate(2)(0.123456789)
+```
+<br>
+]
+
+--
+
+## Currying
+
+```scala
+val function3: (Int ,  Int  ,  Int) => Int
+
+val function3: Int => (Int => (Int  => Int))
+```
+
+---
+# Functions as output
+
+.pull-left[
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc
+truncate(2, 0.123456789)
+```
+<br>
+]
+
+.pull-right[
+```scala mdoc:reset:invisible
+def truncate(digits: Int): Double => String =
+  BigDecimal(_).setScale(digits, BigDecimal.RoundingMode.FLOOR).toDouble.toString
+
+val truncate2D: Double => String = truncate(2)
+val truncate5D: Double => String = truncate(5)
+```
+
+```scala
+def truncate(digits: Int): Double => String
+```
+
+```scala mdoc
+truncate(2)(0.123456789)
+```
+<br>
+]
+
+## Currying
+
+```scala
+val function3: (Int ,  Int  ,  Int) => Int
+
+val function3: Int =>  Int =>  Int  => Int
+```
+
+---
+# Partial function application
+
+<br>
+
+```scala
+def truncate(digits: Int): Double => String =
+  (number: Int) => ...
+```
+
+<br>
+
+```scala
+val truncate2D = truncate(2)
+val truncate5D = truncate(5)
+```
+
+--
+
+<br>
+
+```scala mdoc
+truncate2D(0.123456789)
+
+truncate5D(0.123456789)
+```
+
+---
+# Syntax
+
+## Uncurried
+
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+## Curried
+
+```scala
+def truncate(digits: Int)(number: Double): String
+
+def truncate(digits: Int): Double => String
+
+val truncate: Int => Double => String
+```
+
+---
+# Conversion (Currying)
+
+<br>
+
+```scala
+def truncate(digits: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def truncate(digits: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+--
+
+<br>
+
+```scala mdoc
+truncate _
+```
+
+--
+
+```scala mdoc
+(truncate _).curried
+```
+
+---
+# Type inference
+
+<br>
+
+```scala
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ...
+}
+```
+
+```scala mdoc:invisible
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
+    Pair(
+      combine(first , other.first),
+      combine(second, other.second)
+    )
+}
+```
+
+<br>
+
+```scala mdoc:invisible
+def replicate(n: Int, text: String): String =
+  List.fill(n)(text).mkString
+```
+
+```scala mdoc
+Pair(0, 2).zipWith(Pair(7, 3), (x: Int, y: Int) => x + y)
+
+Pair(2, 3).zipWith(Pair("Hello ", "World "), replicate)
+```
+
+---
+# Type inference
+
+<br>
+
+```scala
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] = ...
+}
+```
+
+<br>
+
+```scala mdoc:fail
+Pair(0, 2).zipWith(Pair(7, 3), (x, y) => x + y)
+```
+
+---
+# Type inference
+
+<br>
+
+```scala
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] = ...
+}
+```
+
+```scala mdoc:reset:invisible
+case class Pair[A](first: A, second: A) {
+  def zipWith[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
+    Pair(
+      combine(first , other.first),
+      combine(second, other.second)
+    )
+}
+```
+
+<br>
+
+```scala mdoc
+Pair(0, 2).zipWith(Pair(7, 3))((x, y) => x + y)
+```
+
+--
+
+<br>
+
+```scala mdoc
+Pair(0, 2).zipWith(Pair(7, 3))(_ + _)
+```
+
+---
+# Scala API design
+
+<br>
+
+```scala
+def zip[A, B, C](first: List[A], second: List[B])(f: (A, B) => C): List[C]
+```
+
+<br>
+
+```scala
+def mapTwice[A, B, C](values: List[A])(f: A => B)(g: B => C): List[C]
+```
+
+---
+# Summary
+
+<br>
+
+.large[
+* Currying
+
+* A curried function can be partially applied
+
+* It als help type inference in Scala 2
+]
+
 
 ---
 class: center, middle

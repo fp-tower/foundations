@@ -12,11 +12,11 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .hl { color : blue }
 .medium-left { float: left; width: 37%; }
 .pull-left { float: left; width: 47%; }
-.large-left { float: left; width: 67%; }
+.large-left { float: left; width: 57%; }
+.extra-large-left { float: left; width: 67%; }
 .small-right { float: right; width: 27%; }
 .medium-right { float: right; width: 37%; }
 .pull-right { float: right; width: 47%; }
-.fifty-seven-left { float: left; width: 57%; }
 .large-right { float: right; width: 57%; }
 .cols { display: flex; }
 .fifty { flex: 50%; }
