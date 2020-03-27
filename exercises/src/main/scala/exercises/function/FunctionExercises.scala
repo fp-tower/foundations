@@ -172,9 +172,9 @@ object FunctionExercises {
   lazy val localDateEncoderV2: JsonEncoder[LocalDate] =
     ???
 
-  // 2i. How would define and implement a `JsonEncoder` for generic `List`?
-  // For example, we should be able to use it to encode a `List[Int]`, `List[String]` or
-  // `List[LocaDate]`.
+  // 2i. How would you define and implement a `JsonEncoder` for generic `List`?
+  // For example, we should be able to use `listEncoder` to encode a `List[Int]`,
+  // `List[String]` or `List[LocaDate]`.
   def listEncoder[A]: JsonEncoder[List[A]] =
     ???
 
