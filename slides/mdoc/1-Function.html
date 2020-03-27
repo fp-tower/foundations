@@ -681,7 +681,7 @@ class: center, middle
 ---
 background-image: url(img/function/sequences.svg)
 
-# Sequence
+# Sequence is a generic data structure
 
 ---
 background-image: url(img/function/sequence-operation.svg)
@@ -689,7 +689,7 @@ background-image: url(img/function/sequence-operation.svg)
 # Generic operations
 
 ---
-# Parametric types (Generics)
+# Linked List
 
 
 .pull-left[
@@ -715,8 +715,12 @@ val words  : List[String] = List("Hello", "World")
 <br>
 
 .pull-left[
-```scala mdoc:fail
+
+```scala
 val numbers: List = List(1, 2, 3)
+// error: type List takes type parameters
+// val numbers: List = List(1, 2, 3)
+//              ^^^^
 ```
 ]
 
@@ -768,6 +772,48 @@ map(List("Hello", "World"), (x: String) => x.reverse)
 <br>
 
 ```scala
+def map[A](list: List[A], update: A => A): List[A] = ...
+```
+
+<br>
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map(users, (x: User) => x.age)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A] = ...
+```
+
+<br>
+
+```scala
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map[User](users, (x: User) => x.age)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
 def map[From, To](list: List[From], update: From => To): List[To] = ...
 ```
 
@@ -788,6 +834,8 @@ val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
 
 ```scala mdoc
 map(users, (x: User) => x.age)
+
+map(List(1,2,3,4), (x: Int) => x + 1)
 ```
 
 --
@@ -825,7 +873,7 @@ map[String, Int](List("Hello", "World!"), (x: String) => x.length)
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] = ...
+def map[From, To](list: List[From], update: From => To): List[To] = ...
 ```
 
 --
@@ -848,7 +896,7 @@ def map[From, To](list: List[From], f: From => To): List[To] = ...
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] =
+def map[From, To](list: List[From], update: From => To): List[To] =
   List(1,2,3)
 ```
 
@@ -858,7 +906,7 @@ def map[From, To](list: List[From], f: From => To): List[To] =
 <br>
 
 ```scala
-def map[From, To](list: List[From], f: From => To): List[To] =
+def map[From, To](list: List[From], update: From => To): List[To] =
   List(1,2,3)
 
 On line 3: error: type mismatch;
@@ -871,7 +919,7 @@ On line 3: error: type mismatch;
 <br>
 
 ```scala mdoc:reset:silent
-def map(list: List[Int], f: Int => Int): List[Int] =
+def map(list: List[Int], update: Int => Int): List[Int] =
   List(1,2,3)
 ```
 
