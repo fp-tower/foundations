@@ -38,25 +38,9 @@ layout: true
 ]
 
 ---
-# Functions
+class: center, middle
 
-.pull-left[
-## Val function (Lambda)
-
-```scala
-val replicate: (Int, String) => String =
-  (n: Int, text: String) => ...
-```
-]
-
-.pull-right[
-## Def function (Method)
-
-```scala
-def replicate(n: Int, text: String): String =
-  ...
-```
-]
+# Val vs Def functions
 
 ---
 # Functions
@@ -110,7 +94,14 @@ replicate(3, "Hello ")
 (n: Int, text: String) => List.fill(n)(text).mkString
 ```
 
---
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala mdoc:reset:silent
+(n: Int, text: String) => List.fill(n)(text).mkString
+```
 
 ```scala mdoc:invisible
 case class User(name: String, age: Int)
@@ -226,7 +217,11 @@ val replicate: Function2[Int, String, String] = new Function2[Int, String, Strin
 
 ```scala mdoc
 replicate.apply(3, "Hello ")
+```
 
+--
+
+```scala mdoc
 replicate(3, "Hello ")
 ```
 
