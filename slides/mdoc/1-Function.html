@@ -230,71 +230,6 @@ replicate(3, "Hello ")
 
 <br>
 
-```scala mdoc:reset:silent
-def replicate(n: Int, text: String): String =
-  List.fill(n)(text).mkString
-```
-
---
-
-<br>
-
-```scala mdoc:fail
-List(replicate)
-```
-
----
-# Def function (Method)
-
-<br>
-
-```scala mdoc:reset:silent
-def replicate(n: Int, text: String): String =
-  List.fill(n)(text).mkString
-```
-
-<br>
-
-```scala mdoc
-List(replicate _)
-```
-
---
-
-<br>
-
-```scala mdoc
-val replicateVal = replicate _
-```
-
----
-# Def function (Method)
-
-<br>
-
-```scala mdoc:reset:silent
-def replicate(n: Int, text: String): String =
-  List.fill(n)(text).mkString
-```
-
-<br>
-
-```scala mdoc:silent
-List(replicate): List[(Int, String) => String]
-```
-
-
-<br>
-
-```scala mdoc:silent
-val replicateVal: (Int, String) => String = replicate
-```
-
----
-# Function arguments
-
-<br>
-
 ```scala
 import java.time.LocalDate
 
@@ -313,12 +248,6 @@ def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
 
 ```scala mdoc
 createDate(2020, 1, 5)
-```
-
---
-
-```scala mdoc
-createDate(dayOfMonth = 5, month = 1, year = 2020)
 ```
 
 ---
@@ -347,12 +276,6 @@ val createDateVal: (Int, Int, Int) => LocalDate =
   (year, month, dayOfMonth) => LocalDate.of(year, month, dayOfMonth)
 ```
 
-```scala mdoc
-createDate(2020, 1, 5)
-
-createDateVal(2020, 1, 5)
-```
-
 ---
 
 <br>
@@ -361,11 +284,108 @@ createDateVal(2020, 1, 5)
 
 <img src="img/ide-doc.png" alt="IDE documentation" style="width:800px;"/>
 
---
-
 ## Javadoc
 
 <img src="img/javadoc.png" alt="Java documentation" style="width:800px;"/>
+
+---
+# Named arguments
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+```scala mdoc:reset:invisible
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+<br>
+
+```scala mdoc
+createDate(2020, 1, 5)
+```
+
+```scala mdoc
+createDate(dayOfMonth = 5, month = 1, year = 2020)
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala mdoc:fail
+List(createDate)
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala mdoc
+List(createDate _)
+```
+
+--
+
+<br>
+
+```scala mdoc
+val createDateVal = createDate _
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala mdoc:reset:invisible
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala mdoc:silent
+List(createDate): List[(Int, Int, Int) => LocalDate]
+```
+
+
+<br>
+
+```scala mdoc:silent
+val createDateVal: (Int, Int, Int) => LocalDate = createDate
+```
 
 ---
 # Summary
@@ -3004,9 +3024,7 @@ lazy val replicate: (Int, String) => String =
 <script>
     var slideshow = remark.create({
         ratio: "16:9",
-        slideNumberFormat: '',
-        highlightLines: true,
-        highlightSpans: true,
+        slideNumberFormat: ''
     });
 </script>
 </body>
