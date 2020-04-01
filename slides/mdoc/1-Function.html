@@ -401,6 +401,11 @@ val createDateVal: (Int, Int, Int) => LocalDate = createDate
 ]
 
 ---
+class: center, middle
+
+# Functions as input
+
+---
 # Functions as input
 
 <br>
@@ -558,13 +563,13 @@ def lowerCase(text: String): String =
 ]
 
 ---
-# Capture pattern
+# Property based testing
 
 <br>
 .pull-left[
 
 ```scala
-test("map does not modify the text size") {
+test("map does not modify the size of a text") {
   forAll((
     text  : String,
     update: Char => Char
