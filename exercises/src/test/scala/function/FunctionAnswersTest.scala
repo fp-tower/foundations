@@ -16,6 +16,24 @@ class FunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrive
 
   test("selectDigits") {
     selectDigits("123foo0-!Bar~+3") shouldEqual "12303"
+    selectDigits("hello") shouldEqual ""
+  }
+
+  test("selectDigits length is smaller") {
+    forAll((text: String) => selectDigits(text).length <= text.length)
+  }
+
+  test("selectDigits results are all digits") {
+    forAll((text: String) => selectDigits(text).forall(_.isDigit))
+  }
+
+  test("String filter result satisfies predicate") {
+    forAll((text: String, predicate: Char => Boolean) => text.filter(predicate).forall(predicate))
+  }
+
+  test("selectDigits results are all digits (Set)") {
+    val digits = 0.to(9).map(_.toChar).toSet
+    forAll((text: String) => selectDigits(text).forall(digits.contains))
   }
 
   test("secret") {
