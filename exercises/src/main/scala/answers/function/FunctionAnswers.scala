@@ -18,14 +18,14 @@ object FunctionAnswers {
   // 1. Functions as input (aka higher order functions)
   //////////////////////////////////////////////////////
 
-  def selectDigits(s: String): String =
-    s.filter(c => c.isDigit)
+  def selectDigits(text: String): String =
+    text.filter(c => c.isDigit)
 
-  def secret(s: String): String =
-    s.map(_ => '*')
+  def secret(text: String): String =
+    text.map(_ => '*')
 
-  val isValidUsernameCharacter: Char => Boolean =
-    c => c.isLetterOrDigit || c == '-' || c == '_'
+  def isValidUsernameCharacter(x: Char): Boolean =
+    x.isLetterOrDigit || x == '-' || x == '_'
 
   def isValidUsername(username: String): Boolean =
     username.forall(isValidUsernameCharacter)

@@ -21,11 +21,6 @@ object FunctionExercises {
   // 1. Functions as input (aka higher order functions)
   /////////////////////////////////////////////////////
 
-  // Goals:
-  // 1. Practice using standard higher order functions (e.g. map, filter)
-  // 2. Get familiar with anonymous function syntax
-  // 3. Start writing our own higher order functions
-
   // 1a. Implement `selectDigits` which iterates over a String and only keep the characters that are digits.
   // such as selectDigits("123foo0-!Bar~+3") == "12303"
   // but     selectDigits("hello") == ""
@@ -47,16 +42,14 @@ object FunctionExercises {
   // For example, isValidUsernameCharacter('3') == true
   //              isValidUsernameCharacter('a') == true
   // but          isValidUsernameCharacter('^') == false
-  // Note: You can remove the lazy keyword as soon you implement `isValidUsernameCharacter`.
-  // It is only required to avoid tests throwing an exception.
-  lazy val isValidUsernameCharacter: Char => Boolean =
+  def isValidUsernameCharacter(x: Char): Boolean =
     ???
 
   // 1d. Implement `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
   // Note: You can use `forAll` method from `String`
-  def isValidUsername(text: String): Boolean =
+  def isValidUsername(username: String): Boolean =
     ???
 
   case class Point(x: Int, y: Int) {
