@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+<a href="https://github.com/fp-tower/foundation">
+  <img src="img/fp-tower/solid-color-logo.svg" alt="logo" style="width:800px;"/>
+</a>
+
+---
+layout: true
+
+<div class="footer">
+  <a href="https://github.com/fp-tower/foundation">
+    <img src="img/fp-tower/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
+  </a>
+</div>
+
+
+---
+class: center, middle
+
+# List
+
+---
+# List
+
+<br>
+
+
+.medium-code[
+```scala mdoc
+sealed trait List[A]
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
+
+case class Nil[A]() extends List[A]
+```
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>
