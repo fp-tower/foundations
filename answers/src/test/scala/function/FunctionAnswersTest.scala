@@ -2,8 +2,8 @@ package function
 
 import answers.function.FunctionAnswers
 import answers.function.FunctionAnswers._
-import org.scalatest.matchers.should.Matchers
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer

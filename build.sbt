@@ -27,15 +27,19 @@ lazy val foundation = project
   .in(file("."))
   .settings(moduleName := "foundation")
   .settings(baseSettings: _*)
-  .aggregate(exercises, slides)
-  .dependsOn(exercises, slides)
+  .aggregate(exercises, answers, slides)
+  .dependsOn(exercises, answers, slides)
 
 lazy val exercises = project
   .settings(moduleName := "foundation-exercises")
   .settings(baseSettings: _*)
 
+lazy val answers = project
+  .settings(moduleName := "foundation-answers")
+  .settings(baseSettings: _*)
+
 lazy val slides = project
-  .dependsOn(exercises)
+  .dependsOn(answers)
   .settings(moduleName := "foundation-slides")
   .settings(baseSettings: _*)
   .settings(
@@ -45,7 +49,7 @@ lazy val slides = project
   .enablePlugins(MdocPlugin)
 
 
-addCommandAlias("testAnswers", "testOnly *AnswersTest")
+addCommandAlias("testAnswers", "answers/test")
 
-addCommandAlias("testExercises1", "testOnly function.*ExercisesTest")
-addCommandAlias("testExercises2", "testOnly sideeffect.*ExercisesTest")
+addCommandAlias("testExercises1", "exercises/testOnly function*")
+addCommandAlias("testExercises2", "exercises/testOnly sideeffect*")

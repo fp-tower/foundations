@@ -44,29 +44,6 @@ IO and some initiation to concurrency.
 * Learn how to test IO and laziness.
 * Getting familiar with abstract API based on type parameters.
 
-### Module 3: [Error Handling](https://fp-tower.github.io/foundation/3-ErrorHandling.html#1)
-
-There are many ways to deal with runtime errors. The easiest and most common method consists of throwing 
-exceptions. Unfortunately, it is not compatible with the functional programming paradigm. In this module,
-we look at the problems caused by exceptions and the various ways we can safely encode errors in Scala.
-
-**Objectives**:
-* Learn when to use Option, Try and Either.
-* Learn how to encode errors with Algebraic Data Type (ADT) and the various trade-offs.
-* Practice how to accumulate errors or fail early.
-
-### Module 4: [Type](https://fp-tower.github.io/foundation/4-Type.html#1)
-
-We all have the tendency to use types that are too large for our purpose. This leads to either runtime 
-exceptions or a lot of error handling logic. In this module, we look at using Algebraic Data Types (ADT)
-and type parameters to constraint our programs. We will also discuss various testing strategies and the
-best way to use types and tests together.
-
-**Objectives**:
-* Learn how to precisely encode business requirements with types.
-* Getting more familiar with Scala's type hierarchy and type parameters.
-
-
 ## FAQ
 
 ### Where should I start?
