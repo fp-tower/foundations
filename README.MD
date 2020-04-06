@@ -1,6 +1,5 @@
 ![FP Foundation Logo](logo/Foundation.png)<br>
 
-[![Join the chat at https://gitter.im/fp-tower/foundation](https://badges.gitter.im/julien-truffaut/fp-foundation.svg)][gitter]
 <span class="badge-patreon"><a href="https://www.patreon.com/bePatron?u=10482033" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
 
 ## Target audience
@@ -56,7 +55,7 @@ Each module has:
 
 Start each module with the slides, at some point you will be prompted to work on some exercises. 
 Do the exercises and check your answers are correct by running the tests for this module.
-Finally, go back to the slides and repeat the process. If you have any question, please ask them on [gitter][gitter].
+Finally, go back to the slides and repeat the process.
 
 ### How to run the tests?
 
@@ -64,10 +63,10 @@ Finally, go back to the slides and repeat the process. If you have any question,
 sbt testExercises$X
 ```
 
-For example tests for Error Handling module (module 3) is run with:
+For example tests for Error Handling module (module 2) is run with:
 
 ```bash
-sbt testExercises3
+sbt testExercises2
 ```
 
 ### Is this course free?
@@ -78,6 +77,5 @@ version of this course. It will most likely be available mid or end of 2020.
 
 We do encourage people who enjoy the course to make a donation using [patreon][patreon].
 
-[gitter]: https://gitter.im/fp-tower/foundation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 [patreon]: https://www.patreon.com/bePatron?u=10482033
