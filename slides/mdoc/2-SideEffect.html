@@ -11,7 +11,7 @@
 class: center, middle
 
 <a href="https://github.com/fp-tower/foundation">
-  <img src="img/solid-color-logo.svg" alt="logo" style="width:600px;"/>
+  <img src="img/solid-color-logo.svg" alt="logo" style="width:800px;"/>
 </a>
 
 ---
@@ -24,12 +24,12 @@ layout: true
 </div>
 
 ---
-background-image: url(img/sideeffect/pure-function.svg)
+background-image: url(img/graffle/pure-function.svg)
 
 # Pure function
 
 ---
-background-image: url(img/sideeffect/side-effect.svg)
+background-image: url(img/graffle/side-effect.svg)
 
 # Functions with side effects are not pure
 
@@ -84,7 +84,7 @@ object Main extends App {
 ```
 
 ---
-background-image: url(img/sideeffect/effects-on-edges.svg)
+background-image: url(img/graffle/effects-on-edges.svg)
 
 # Run side effects at the edges
 
@@ -115,12 +115,12 @@ Take the recipe and do it at home
 ]
 
 ---
-background-image: url(img/sideeffect/lemon-meringue-1.svg)
+background-image: url(img/graffle/lemon-meringue-1.svg)
 
 .reference[[Seven Sketches in Compositionality: An Invitation to Applied Category Theory](https://arxiv.org/abs/1803.05316)]
 
 ---
-background-image: url(img/sideeffect/lemon-meringue-2.svg)
+background-image: url(img/graffle/lemon-meringue-2.svg)
 
 # String diagrams compose
 
@@ -140,7 +140,7 @@ val z  = Math.sqrt(x2 + y2)
 ]
 
 .pull-right[
-![Right triangle](img/sideeffect/right-triangle-1.svg)
+![Right triangle](img/graffle/right-triangle-1.svg)
 ]
 
 ---
@@ -166,7 +166,7 @@ x2 + y2
 ]
 
 .pull-right[
-![Right triangle](img/sideeffect/right-triangle-2.svg)
+![Right triangle](img/graffle/right-triangle-2.svg)
 ]
 
 .reference[[Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)]
@@ -419,7 +419,7 @@ object Main extends App {
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
+![Sequence Diagram](img/graffle/delete-all-user-orders.svg)
 ]
 
 ---
@@ -462,7 +462,7 @@ object Main extends App {
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
+![Sequence Diagram](img/graffle/delete-all-user-orders.svg)
 ]
 
 ---
@@ -481,7 +481,7 @@ def deleteAllUserOrders(userId: UserId): IO[Unit] =
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-all-user-orders.svg)
+![Sequence Diagram](img/graffle/delete-all-user-orders.svg)
 ]
 
 ---
@@ -499,7 +499,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders.svg)
+![Sequence Diagram](img/graffle/delete-orders.svg)
 ]
 
 ---
@@ -517,7 +517,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent.svg)
 ]
 
 ---
@@ -581,7 +581,7 @@ def delete2Orders(orderId1: OrderId, orderId2: OrderId): IO[Unit] =
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent.svg)
 ]
 
 ---
@@ -626,7 +626,7 @@ def delete2Orders(
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent-2.svg)
 ]
 
 ---
@@ -672,10 +672,10 @@ def deleteOrdersSequential(orderId1: OrderId,orderId2: OrderId)
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent-2.svg)
 <br>
 <br>
-![Sequence Diagram](img/sideeffect/delete-orders-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-2.svg)
 ]
 
 ---
@@ -711,7 +711,7 @@ def delete2Orders(
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent-2.svg)
 ]
 
 ---
@@ -760,7 +760,7 @@ x
 ]
 
 .pull-right[
-![Execution Context](img/sideeffect/execution-context.svg)
+![Execution Context](img/graffle/execution-context.svg)
 ]
 
 ---
@@ -784,7 +784,7 @@ def delete2Orders(
 ]
 
 .pull-right[
-![Sequence Diagram](img/sideeffect/future-ec-1.svg)
+![Sequence Diagram](img/graffle/future-ec-1.svg)
 ]
 
 ---
@@ -808,7 +808,7 @@ def delete2Orders(
 ]
 
 .pull-right[
-![Sequence Diagram](img/sideeffect/future-ec-2.svg)
+![Sequence Diagram](img/graffle/future-ec-2.svg)
 ]
 
 ---
@@ -832,7 +832,7 @@ def delete2Orders(
 ]
 
 .pull-right[
-![Sequence Diagram](img/sideeffect/future-ec-3.svg)
+![Sequence Diagram](img/graffle/future-ec-3.svg)
 ]
 
 ---
@@ -856,7 +856,7 @@ def delete2Orders(
 ]
 
 .pull-right[
-![Sequence Diagram](img/sideeffect/future-ec-4.svg)
+![Sequence Diagram](img/graffle/future-ec-4.svg)
 ]
 
 ---
@@ -934,7 +934,7 @@ def concurrentMap2[A, B, C](
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent-2.svg)
 ]
 
 
@@ -983,7 +983,7 @@ def concurrentMap2[A, B, C](
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent-2.svg)
 ]
 
 ---
@@ -1036,7 +1036,7 @@ def concurrentMap2[A, B, C](
 ]
 
 .small-right[
-![Sequence Diagram](img/sideeffect/delete-orders-concurrent-2.svg)
+![Sequence Diagram](img/graffle/delete-orders-concurrent-2.svg)
 ]
 
 ---
