@@ -17,7 +17,6 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
     cats,
-    refined,
     circe,
     scalacheck,
     disciplineTest
@@ -50,5 +49,3 @@ addCommandAlias("testAnswers", "testOnly *AnswersTest")
 
 addCommandAlias("testExercises1", "testOnly function.*ExercisesTest")
 addCommandAlias("testExercises2", "testOnly sideeffect.*ExercisesTest")
-addCommandAlias("testExercises3", "testOnly errorhandling.*ExercisesTest")
-addCommandAlias("testExercises4", "testOnly types.*ExercisesTest")
