@@ -30,13 +30,125 @@ class: center, middle
 # List
 
 ---
+# Linked list
+
+<br>
+
+.center[
+<img src="img/foundation/linked-list-0.svg" alt="Linked list" style="width:600px;"/>
+]
+
+--
+
+<br>
+<br>
+
+```scala mdoc:silent
+val words = List("Hello", "World", "!")
+```
+
+
+---
+# Linked list
+
+<br>
+
+.center[
+<img src="img/foundation/linked-list-0.svg" alt="Linked list" style="width:600px;"/>
+]
+
+<br>
+<br>
+
+```scala mdoc:reset:silent
+val words = "Hello" :: "World" :: "!" :: Nil
+```
+
+---
+# List is a parametric type
+
+<br>
+
+.center[
+<img src="img/foundation/linked-list-1.svg" alt="Linked list" style="width:600px;"/>
+]
+
+<br>
+
+```scala mdoc:reset:silent
+val numbers: List[Int]    = List(1, 4, 8)
+
+val words  : List[String] = List("Hello", "World")
+```
+
+---
+# Nil is a list of all types
+
+<br>
+
+.center[
+<img src="img/foundation/linked-list-2.svg" alt="Linked list" style="width:600px;"/>
+]
+
+<br>
+
+```scala mdoc:reset:silent
+val numbers: List[Int]    = List(1, 4, 8)
+
+val words  : List[String] = List("Hello", "World")
+```
+
+---
+# List is immutable
+
+.center[
+<img src="img/foundation/linked-list-3.svg" alt="Linked list" style="width:600px;"/>
+]
+
+.pull-left[
+```scala mdoc:reset
+val numbers = List(1, 4, 8)
+```
+]
+
+.pull-right[
+```scala mdoc
+numbers.tail
+```
+]
+
+---
+# List is immutable
+
+.center[
+<img src="img/foundation/linked-list-4.svg" alt="Linked list" style="width:700px;"/>
+]
+
+.pull-left[
+```scala mdoc:reset
+val numbers = List(1, 4, 8)
+```
+]
+
+.pull-right[
+```scala mdoc
+val even = 0 :: numbers.tail
+```
+]
+
+---
+# Pattern matching
+
+<br>
+
+---
 # List
 
 <br>
 
 
 .medium-code[
-```scala mdoc
+```scala mdoc:reset:silent
 sealed trait List[A]
 
 case class Cons[A](head: A, tail: List[A]) extends List[A]
