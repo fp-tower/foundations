@@ -127,7 +127,7 @@ lowerCase("Hello")
 # Capture pattern
 
 
-.pull-left[
+.large-left[
 <br>
 
 ```scala mdoc:reset:silent
@@ -140,7 +140,6 @@ def map(text: String, update: Char => Char): String = {
 }
 ```
 
-<br>
 
 ```scala mdoc:silent
 def upperCase(text: String): String =
@@ -151,7 +150,7 @@ def lowerCase(text: String): String =
 ```
 ]
 
-.pull-right[
+.medium-right[
 <img src="img/foundation/map-string.svg" alt="isUpper" style="width:400px;"/>
 ]
 
@@ -160,7 +159,7 @@ def lowerCase(text: String): String =
 
 <br>
 
-.pull-left[
+.large-left[
 ```scala mdoc:reset:silent
 def map(text: String, update: Char => Char): String = {
   val characters = text.toArray
@@ -171,8 +170,6 @@ def map(text: String, update: Char => Char): String = {
 }
 ```
 
-<br>
-
 ```scala mdoc:silent
 def upperCase(text: String): String =
   map(text, c => c.toUpper)
@@ -182,7 +179,7 @@ def lowerCase(text: String): String =
 ```
 ]
 
-.pull-right[
+.medium-right[
 <img src="img/foundation/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
 ]
 
@@ -190,7 +187,7 @@ def lowerCase(text: String): String =
 # Property based testing
 
 <br>
-.pull-left[
+.large-left[
 
 ```scala
 test("map does not modify the size of a text") {
@@ -205,7 +202,7 @@ test("map does not modify the size of a text") {
 ```
 ]
 
-.pull-right[
+.medium-right[
 <img src="img/foundation/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
 ]
 
@@ -249,15 +246,19 @@ def usingFile(fileName: String, processing: Iterator[String] => Int): Int = {
 
 --
 
+.pull-left[
 ```scala mdoc:silent
 val countLines: Iterator[String] => Int =
   lines => lines.size
 ```
+]
 
+.pull-right[
 ```scala
 val countWords: Iterator[String] => Int =
   lines => ...
 ```
+]
 
 ---
 # Write tricky code once
