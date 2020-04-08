@@ -43,10 +43,11 @@ class: center, middle
 <br>
 <br>
 
+.medium-code[
 ```scala mdoc:silent
 val words = List("Hello", "World", "!")
 ```
-
+]
 
 ---
 # Linked list
@@ -60,9 +61,11 @@ val words = List("Hello", "World", "!")
 <br>
 <br>
 
+.medium-code[
 ```scala mdoc:reset:silent
 val words = "Hello" :: "World" :: "!" :: Nil
 ```
+]
 
 ---
 # List is a parametric type
@@ -75,11 +78,13 @@ val words = "Hello" :: "World" :: "!" :: Nil
 
 <br>
 
+.medium-code[
 ```scala mdoc:reset:silent
 val numbers: List[Int]    = List(1, 4, 8)
 
 val words  : List[String] = List("Hello", "World")
 ```
+]
 
 ---
 # Nil is a list of all types
@@ -92,11 +97,13 @@ val words  : List[String] = List("Hello", "World")
 
 <br>
 
+.medium-code[
 ```scala mdoc:reset:silent
 val numbers: List[Int]    = List(1, 4, 8)
 
 val words  : List[String] = List("Hello", "World")
 ```
+]
 
 ---
 # List is immutable
@@ -105,6 +112,7 @@ val words  : List[String] = List("Hello", "World")
 <img src="img/foundation/linked-list-3.svg" alt="Linked list" style="width:600px;"/>
 ]
 
+.medium-code[
 .pull-left[
 ```scala mdoc:reset
 val numbers = List(1, 4, 8)
@@ -116,6 +124,7 @@ val numbers = List(1, 4, 8)
 numbers.tail
 ```
 ]
+]
 
 ---
 # List is immutable
@@ -124,6 +133,7 @@ numbers.tail
 <img src="img/foundation/linked-list-4.svg" alt="Linked list" style="width:700px;"/>
 ]
 
+.medium-code[
 .pull-left[
 ```scala mdoc:reset
 val numbers = List(1, 4, 8)
@@ -134,6 +144,7 @@ val numbers = List(1, 4, 8)
 ```scala mdoc
 val even = 0 :: numbers.tail
 ```
+]
 ]
 
 ---

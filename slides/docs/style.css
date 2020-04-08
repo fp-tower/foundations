@@ -7,6 +7,7 @@ body { font-family: 'Droid Serif'; color: #333333; }
 h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
 h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+.medium-code .remark-code { font-size: 22px; }
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
 .hl { color : blue }
