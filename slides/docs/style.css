@@ -8,10 +8,12 @@ h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
 h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 .remark-code { font-size: 22px; }
+.medium-code .remark-code { font-size: 20px; }
 .small-code .remark-code { font-size: 18px; }
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
 .hl { color : blue }
+.small-left { float: left; width: 27%; }
 .medium-left { float: left; width: 37%; }
 .pull-left { float: left; width: 47%; }
 .large-left { float: left; width: 57%; }
@@ -20,6 +22,7 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .medium-right { float: right; width: 37%; }
 .pull-right { float: right; width: 47%; }
 .large-right { float: right; width: 57%; }
+.extra-large-right { float: left; width: 67%; }
 .cols { display: flex; }
 .fifty { flex: 50%; }
 .fortyfive { flex: 45%; }

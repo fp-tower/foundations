@@ -33,6 +33,7 @@ class: center, middle
 # Linked list
 
 <br>
+<br>
 
 .center[
 <img src="img/foundation/linked-list-0.svg" alt="Linked list" style="width:600px;"/>
@@ -50,6 +51,7 @@ val words = List("Hello", "World", "!")
 ---
 # Linked list
 
+<br>
 <br>
 
 .center[
@@ -69,7 +71,7 @@ val words = "Hello" :: "World" :: "!" :: Nil
 <br>
 
 .center[
-<img src="img/foundation/linked-list-1.svg" alt="Linked list" style="width:600px;"/>
+<img src="img/foundation/linked-list-1.svg" alt="Linked list" style="width:500px;"/>
 ]
 
 <br>
@@ -86,35 +88,18 @@ val words  : List[String] = List("Hello", "World")
 <br>
 
 .center[
-<img src="img/foundation/linked-list-2.svg" alt="Linked list" style="width:600px;"/>
+<img src="img/foundation/linked-list-2.svg" alt="Linked list" style="width:500px;"/>
 ]
 
 <br>
 
 ```scala mdoc:reset:silent
-val numbers: List[Int]    = List(1, 4, 8)
+val nil = Nil
 
-val words  : List[String] = List("Hello", "World")
+val numbers: List[Int]    = 1 :: 4 :: 8 :: nil
+
+val words  : List[String] = "Hello" :: "World" :: nil
 ```
-
----
-# List is immutable
-
-.center[
-<img src="img/foundation/linked-list-3.svg" alt="Linked list" style="width:600px;"/>
-]
-
-.pull-left[
-```scala mdoc:reset
-val numbers = List(1, 4, 8)
-```
-]
-
-.pull-right[
-```scala mdoc
-numbers.tail
-```
-]
 
 ---
 # List is immutable
@@ -125,7 +110,7 @@ numbers.tail
 
 .pull-left[
 ```scala mdoc:reset
-val numbers = List(1, 4, 8)
+val numbers = 1 :: 4 :: 8 :: Nil
 ```
 ]
 
@@ -136,23 +121,187 @@ val even = 0 :: numbers.tail
 ]
 
 ---
-# Pattern matching
+# List is immutable
 
 <br>
 
----
-# List
+.center[
+<img src="img/foundation/linked-list-append.svg" alt="Linked list" style="width:800px;"/>
+]
 
+<br>
+
+.pull-left[
+```scala mdoc:reset
+val numbers = 1 :: 4 :: 8 :: Nil
+```
+]
+
+.pull-right[
+```scala mdoc
+val append = numbers :+ 0
+```
+]
+
+---
+# Persistent data structure
+
+<br>
+
+```scala mdoc:silent
+case class User(name: String, age: Int)
+
+val users  = List(User("John", 17), User("Alice", 54), User("Bob", 23))
+
+val adults = users.filter(_.age >= 18)
+```
+
+--
+
+.pull-left[
+```scala mdoc
+users.length
+
+adults.length
+```
+]
+
+.pull-right[
+```scala mdoc
+users.length != adults.length
+```
+.center[
+## Easier to test
+]
+]
+
+---
+# Concurrency
+
+<br>
+
+
+.small-left[
+<img src="img/screenshot/corecursive_400x400.jpg" alt="corecursive" style="width:200px;"/>
+]
+
+.extra-large-right[
+## Corecursive podcast
+## Rust and bitter C++ developers with Jim Blandy
+]
+
+---
+class: center, middle
+
+# Why List is so popular?
+
+---
+# List is an enumeration
+
+<br>
+
+.center[
+<img src="img/foundation/linked-list-enum.svg" alt="Linked list enum" style="width:400px;"/>
+]
+
+---
+# List is an enumeration
+
+.pull-left[
+<br>
+<br>
+```scala mdoc:reset:silent
+sealed trait List[+A]
+
+
+case class Cons[+A](head: A, tail: List[A])
+  extends List[A]
+
+
+case object Nil extends List[Nothing]
+```
+]
+
+.pull-right[
+<img src="img/foundation/linked-list-enum.svg" alt="Linked list enum" style="width:400px;"/>
+]
+
+---
+# List is an enumeration
+
+.pull-left[
+<br>
+<br>
+```scala
+enum List[+A] {
+
+  case class Cons(head: A, tail: List[A])
+
+  case object Nil
+
+}
+```
+
+.center[
+<br>
+## In Dotty/Scala 3
+]
+]
+
+.pull-right[
+<img src="img/foundation/linked-list-enum.svg" alt="Linked list enum" style="width:400px;"/>
+]
+
+---
+# Pattern matching
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case Cons(head, tail) => println("list is not empty")
+  case Nil              => println("list is empty")
+}
+```
+
+---
+# Pattern matching with infix Cons
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case head :: tail => println("list is not empty")
+  case Nil          => println("list is empty")
+}
+```
+
+--
 <br>
 
 
 ```scala mdoc:reset:silent
-sealed trait List[A]
-
-case class Cons[A](head: A, tail: List[A]) extends List[A]
-
-case class Nil[A]() extends List[A]
+"Hello" :: "World" :: Nil
 ```
+
+---
+# Summary
+
+<br>
+
+.large[
+* Extremely simple data, good default
+
+* Immutable, parametric, homogeneous
+
+* Easy to test and share
+
+* Some operations are not efficient
+]
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
