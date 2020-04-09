@@ -15,16 +15,6 @@ class: center, middle
 </a>
 
 ---
-layout: true
-
-<div class="footer">
-  <a href="https://github.com/fp-tower/foundation">
-    <img src="img/fp-tower/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
-  </a>
-</div>
-
-
----
 class: center, middle
 
 # List
@@ -267,6 +257,39 @@ list match {
 ```
 
 ---
+# Pattern matching
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case Cons(head, tail) =>
+    tail match {
+      case Cons(second, rest) => println("list is has at least 2 elements")
+      case Nil                => println("list is has 1 element")
+    }
+  case Nil              => println("list is empty")
+}
+```
+
+---
+# Pattern matching
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case Cons(head, Cons(second, tail)) => println("list is has at least 2 elements")
+  case Cons(head, Nil)                => println("list is has 1 element")
+  case Nil                            => println("list is empty")
+}
+```
+
+---
 # Pattern matching with infix Cons
 
 <br>
@@ -275,12 +298,12 @@ list match {
 
 ```scala
 list match {
-  case head :: tail => println("list is not empty")
-  case Nil          => println("list is empty")
+  case head :: second :: tail => println("list is has at least 2 elements")
+  case head :: tail           => println("list is has 1 element")
+  case Nil                    => println("list is empty")
 }
 ```
 
---
 <br>
 
 
@@ -296,11 +319,11 @@ list match {
 .large[
 * Extremely simple data structure
 
-* Immutable, parametric, homogeneous
-
 * Easy to test and safe to share
 
-* Some operations are not efficient
+* Good for pattern matching, prepending elements, iterating
+
+* Bad for appending elements, random access, size
 ]
 
 </textarea>
