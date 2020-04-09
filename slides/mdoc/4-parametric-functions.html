@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parametric functions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+<a href="https://github.com/fp-tower/foundation">
+  <img src="img/fp-tower/solid-color-logo.svg" alt="logo" style="width:800px;"/>
+</a>
+
+---
+layout: true
+
+<div class="footer">
+  <a href="https://github.com/fp-tower/foundation">
+    <img src="img/fp-tower/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
+  </a>
+</div>
+
+
+---
+class: center, middle
+
+# Parametric functions
+
+---
+background-image: url(img/foundation/sequences.svg)
+
+# Sequence is a generic data structure
+
+---
+background-image: url(img/foundation/sequence-operation.svg)
+
+# Generic operations
+
+---
+# Linked List
+
+
+.pull-left[
+<br>
+```scala mdoc:silent
+val numbers: List[Int]    = List(1, 2, 3)
+
+val words  : List[String] = List("Hello", "World")
+```
+]
+
+.pull-right[
+<img src="img/foundation/linked-list-1.svg" alt="Linked list" style="width:400px;"/>
+]
+
+--
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+.pull-left[
+
+```scala
+val numbers: List = List(1, 2, 3)
+// error: type List takes type parameters
+// val numbers: List = List(1, 2, 3)
+//              ^^^^
+```
+]
+
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map(list: List[Int]   , update: Int    => Int   ): List[Int]    = ...
+
+def map(list: List[String], update: String => String): List[String] = ...
+```
+
+--
+
+<br>
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A] = ...
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A] = ...
+```
+
+```scala mdoc:invisible
+def map[A](list: List[A], update: A => A): List[A] = list.map(update)
+```
+
+<br>
+
+```scala mdoc
+map(List(1,2,3,4), (x: Int) => x + 1)
+
+map(List("Hello", "World"), (x: String) => x.reverse)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A] = ...
+```
+
+<br>
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map(users, (x: User) => x.age)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A] = ...
+```
+
+<br>
+
+```scala
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map[User](users, (x: User) => x.age)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] = ...
+```
+
+```scala mdoc:reset:invisible
+def map[From, To](list: List[From], update: From => To): List[To] = list.map(update)
+```
+
+--
+<br>
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc
+map(users, (x: User) => x.age)
+
+map(List(1,2,3,4), (x: Int) => x + 1)
+```
+
+--
+
+<br>
+
+.center[
+## #1 Benefit: code reuse
+]
+
+---
+# Interpretation
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] = ...
+```
+
+--
+
+<br>
+
+.medium[
+The callers of `map` choose `From` and `To`
+]
+
+```scala mdoc
+map[String, Int](List("Hello", "World!"), (x: String) => x.length)
+```
+
+---
+# How can we implement `map`?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] = ...
+```
+
+--
+
+<br>
+
+.medium[
+* Always return `List.empty` (`Nil`)
+]
+
+--
+
+.medium[
+* Somehow call `f` on the elements of `list`
+]
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] =
+  List(1,2,3)
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] =
+  List(1,2,3)
+
+On line 3: error: type mismatch;
+        found   : Int(1)
+        required: To
+```
+
+--
+
+<br>
+
+```scala mdoc:reset:silent
+def map(list: List[Int], update: Int => Int): List[Int] =
+  List(1,2,3)
+```
+
+--
+
+<br>
+
+.center[
+## #2 Benefit: require less tests and less documentation
+]
+
+---
+# Summary
+
+<br>
+
+.large[
+* More reusable
+
+* Caller decides which underlying type to use
+
+* Implementation must be generic
+   * more documentation
+   * less tests
+]
+
+---
+class: center, middle
+
+# Exercise 2: Parametric functions
+
+`exercises.function.FunctionExercises.scala`
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>
