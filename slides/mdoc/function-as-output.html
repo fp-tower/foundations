@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Function as input</title>
+  <title>Function as output</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
@@ -15,31 +15,26 @@ class: center, middle
 </a>
 
 ---
-layout: true
-
-<div class="footer">
-  <a href="https://github.com/fp-tower/foundation">
-    <img src="img/fp-tower/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
-  </a>
-</div>
-
-
----
 class: center, middle
 
-# Function as input
+# Function as output
 
 ---
 # Functions as output
 
 <br>
 
-```scala mdoc:silent
+```scala mdoc:invisible
 def truncate(digits: Int, number: Double): String =
   BigDecimal(number)
     .setScale(digits, BigDecimal.RoundingMode.FLOOR)
     .toDouble
     .toString
+```
+
+```scala
+def truncate(digits: Int, number: Double): String =
+  ...
 ```
 
 <br>
@@ -55,12 +50,14 @@ truncate(5, 0.123456789)
 
 <br>
 
-```scala mdoc:reset:silent
+```scala mdoc:invisible
+def truncate2D(number: Double): String = truncate(2, number)
+def truncate5D(number: Double): String = truncate(5, number)
+```
+
+```scala
 def truncate(digits: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(digits, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
+  ...
 
 def truncate2D(number: Double): String = truncate(2, number)
 def truncate5D(number: Double): String = truncate(5, number)
@@ -80,37 +77,23 @@ truncate5D(0.123456789)
 <br>
 
 ```scala
-def publishEvent(
-  environment: Environment, // DEV, UAT, PRD
-  topic: String,
-  event: Event,
-  parameters: Config
-): Unit
+def publishEvent(hostname: String, port: Int, topic: String, event: Event): Unit
 ```
 
 --
 
-.pull-left[
-```scala
-def publishEventToDev(
-  topic: String,
-  event: Event,
-  parameters: Config
-): Unit =
-  publishEvent(DEV, topic, event, parameters)
-```
-]
+<br>
 
-.pull-right[
 ```scala
-def publishEventToUat(
-  topic: String,
-  event: Event,
-  parameters: Config
-): Unit =
-  publishEvent(UAT, topic, event, parameters)
+def publishLocalEvent(topic: String, event: Event): Unit =
+  publishEvent("localhost", 9000, topic, event)
 ```
-]
+
+
+```scala
+def publishUatEvent(topic: String,event: Event): Unit =
+  publishEvent("uat-acme.com", 12450, topic, event)
+```
 
 ---
 # Functions as output
@@ -118,30 +101,29 @@ def publishEventToUat(
 <br>
 
 ```scala
-def publishEvent(
-  environment: Environment, // DEV, UAT, PRD
-  topic: String,
-  event: Event,
-  parameters: Config
-): Unit
+def publishEvent(hostname: String, port: Int, topic: String, event: Event): Unit
 ```
 
 <br>
 
-.pull-left[
+.extra-large-left[
 ```scala
-def publishEventToDev = publishEvent(DEV)
-def publishEventToUat = publishEvent(UAT)
+def publishLocalEvent = publishEvent("localhost", 9000)
+def publishUatEvent   = publishEvent("uat-acme.com", 12450)
 ```
 ]
 
-.pull-right[
+.small-right[
 ## Pseudocode
 ]
 
 
 ---
+class: small-code
+
 # Functions as output
+
+<br>
 
 .pull-left[
 ```scala
@@ -192,7 +174,11 @@ val function3: Int => (Int => (Int  => Int))
 ```
 
 ---
+class: small-code
+
 # Functions as output
+
+<br>
 
 .pull-left[
 ```scala
