@@ -159,12 +159,16 @@ map(users, (user: User) => user.age)
 
 <br>
 
-```scala
+```scala mdoc:invisible
+type Json = String
+```
+
+```scala mdoc:silent
 trait JsonDecoder[A]{
   def decode(value: Json): A
 }
 
-case class Predicate(value: A => Boolean)
+case class Predicate[A](value: A => Boolean)
 
 trait ConnectionIO[A]
 ```
