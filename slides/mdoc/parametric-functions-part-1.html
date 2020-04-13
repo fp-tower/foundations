@@ -149,7 +149,7 @@ val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
 ```
 
 ```scala mdoc
-map(users, (x: User) => x.age)
+map(users, (user: User) => user.age)
 
 map(List(1,2,3,4), (x: Int) => x + 1)
 ```
