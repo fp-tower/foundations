@@ -83,7 +83,7 @@ map(List("Hello", "World"), (x: String) => x.reverse)
 ```
 
 ---
-# How to parametrise a function?
+# Parametric function
 
 <br>
 
@@ -106,7 +106,7 @@ map(users, (user: User) => user.age)
 ```
 
 ---
-# How to parametrise a function?
+# Parametric function
 
 <br>
 
@@ -125,7 +125,7 @@ map[User](users, (user: User) => user.age)
 ```
 
 ---
-# How to parametrise a function?
+# Parametric function
 
 <br>
 
@@ -149,10 +149,26 @@ val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
 ```
 
 ```scala mdoc
-map(users, (user: User) => user.age)
-
 map(List(1,2,3,4), (x: Int) => x + 1)
+
+map(users, (user: User) => user.age)
 ```
+
+---
+# Applies to all parametric types
+
+<br>
+
+```scala
+trait JsonDecoder[A]{
+  def decode(value: Json): A
+}
+
+case class Predicate(value: A => Boolean)
+
+trait ConnectionIO[A]
+```
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
