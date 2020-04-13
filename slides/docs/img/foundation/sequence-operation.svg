@@ -9,7 +9,7 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.15 
-    <dc:date>2020-04-10 21:01:35 +0000</dc:date>
+    <dc:date>2020-04-12 11:44:44 +0000</dc:date>
   </metadata>
   <g id="sequence-operation" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1" stroke="none">
     <title>sequence-operation</title>
@@ -61,8 +61,8 @@
         <rect x="765" y="234" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_209">
-        <ellipse cx="612" cy="118.5" rx="36.0000575244683" ry="34.5000551276154" fill="#70a3d8"/>
-        <text transform="translate(588.2 105.192)" fill="white">
+        <ellipse cx="612" cy="112.5" rx="36.0000575244683" ry="34.5000551276154" fill="#70a3d8"/>
+        <text transform="translate(588.2 99.192)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="17.684" y="21">4</tspan>
         </text>
       </g>
@@ -76,11 +76,11 @@
         </text>
       </g>
       <g id="Graphic_213">
-        <path d="M 442.26986 138.76364 L 442.26986 119.78182 L 486 119.78182 L 486 105.54545 L 504 129.27273 L 486 153 L 486 138.76364 Z" fill="#70a3d8"/>
-        <path d="M 442.26986 138.76364 L 442.26986 119.78182 L 486 119.78182 L 486 105.54545 L 504 129.27273 L 486 153 L 486 138.76364 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 442.26986 120.76364 L 442.26986 101.78182 L 486 101.78182 L 486 87.54545 L 504 111.27273 L 486 135 L 486 120.76364 Z" fill="#70a3d8"/>
+        <path d="M 442.26986 120.76364 L 442.26986 101.78182 L 486 101.78182 L 486 87.54545 L 504 111.27273 L 486 135 L 486 120.76364 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_212">
-        <text transform="translate(442.872 68)" fill="black">
+        <text transform="translate(442.872 50)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="58264504e-20" y="21">length</tspan>
         </text>
       </g>

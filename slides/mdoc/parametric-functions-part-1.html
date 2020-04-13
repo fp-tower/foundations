@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parametric functions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Parametric functions - Part 1
+
+---
+background-image: url(img/foundation/parametric-list.svg)
+
+# List is a generic data structure
+
+---
+# How to avoid duplication?
+
+
+.medium-left[
+<br>
+<br>
+<br>
+<br>
+```scala
+def size(list: List[Int]   ): Int
+
+def size(list: List[String]): Int
+
+def size(list: List[User]  ): Int
+```
+]
+
+.large-right[
+<img src="img/foundation/parametric-list.svg" alt="Parametric list" style="width:600px;"/>
+]
+
+---
+# How to avoid duplication?
+
+
+<br>
+
+```scala
+def map(list: List[Int]   , update: Int    => Int   ): List[Int]
+
+def map(list: List[String], update: String => String): List[String]
+
+def map(list: List[User]  , update: User   => User): List[User]
+```
+
+<br>
+
+```scala
+def map(list: List[User], update: User => Int   ): List[Int]
+def map(list: List[User], update: User => String): List[String]
+```
+
+
+---
+# Parametric function
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+```scala mdoc:invisible
+def map[A](list: List[A], update: A => A): List[A] = list.map(update)
+```
+
+<br>
+
+```scala mdoc
+map(List(1,2,3,4), (x: Int) => x + 1)
+
+map(List("Hello", "World"), (x: String) => x.reverse)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map(users, (user: User) => user.age)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+```scala
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map[User](users, (user: User) => user.age)
+```
+
+---
+# How to parametrise a function?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To]
+```
+
+```scala mdoc:reset:invisible
+def map[From, To](list: List[From], update: From => To): List[To] = list.map(update)
+```
+
+--
+<br>
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+```
+
+```scala mdoc
+map(users, (x: User) => x.age)
+
+map(List(1,2,3,4), (x: Int) => x + 1)
+```
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

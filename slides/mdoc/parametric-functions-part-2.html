@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parametric functions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+# Parametric functions - Part 2
+
+---
+# Interpretation
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To]
+```
+
+```scala mdoc:invisible
+def map[From, To](list: List[From], update: From => To): List[To] = list.map(update)
+```
+
+--
+
+<br>
+
+.medium[
+1. A parametric function can handle any types
+
+1. All types must be treated .hl[IN THE SAME WAY]
+]
+
+---
+# All types must be treated in the same way
+
+<br>
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] =
+  list match {
+    case ints   : List[Int]    => ...
+    case strings: List[String] => ...
+    case users  : List[User]   => ...
+    case _                     => ...
+  }
+```
+
+---
+# All types must be treated in the same way
+
+<br>
+
+```scala mdoc:invisible
+def truncate(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+.pull-left[
+```scala mdoc:silent
+def show[A](value: A): String =
+  value match {
+    case x: String => x
+    case x: Double => truncate(2, x)
+    case _         => "N/A"
+  }
+```
+]
+.pull-right[
+```scala mdoc
+show("Hello")
+show(123.123456)
+show(true)
+```
+]
+
+---
+class: medium-code
+# Why? Type erasure
+
+<br>
+
+.large-left[
+```scala mdoc:reset:invisible
+def truncate(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc:silent
+def show[A](value: A): String =
+  value match {
+    case x: String       => x
+    case x: Double       => truncate(2, x)
+    case x: List[String] => x.toString
+    case x: List[Double] => x.map(truncate(2, _)).toString
+    case _               => "N/A"
+  }
+```
+]
+
+.medium-right[
+```scala mdoc
+show("Hello")
+show(123.123456)
+show(true)
+show(List("Hello", "World"))
+```
+]
+
+<br><br><br><br><br><br><br><br><br>
+
+```scala mdoc
+show(List(123.123456, 0.1234))
+```
+
+---
+class: medium-code
+# Why? Type erasure
+
+<br>
+
+.large-left[
+```scala
+def show[A](value: A): String =
+  value match {
+    case x: String    => x
+    case x: Double    => truncate(2, x)
+    case x: List[Any] => x.toString
+    case x: List[Any] => x.map(truncate(2, _)).toString
+    case _            => "N/A"
+  }
+```
+]
+
+.medium-right[
+```scala mdoc
+show("Hello")
+show(123.123456)
+show(true)
+show(List("Hello", "World"))
+```
+]
+
+<br><br><br><br><br><br><br><br><br>
+
+```scala mdoc
+show(List(123.123456, 0.1234))
+```
+
+
+---
+class: medium-code
+
+# Why? Bad documentation
+
+<br>
+
+.large-left[
+```scala
+def show[A](value: A): String =
+  value match {
+    case x: String       => x
+    case x: Double       => truncate(2, x)
+    case x: List[String] => x.toString
+    case x: List[Double] => x.map(truncate(2, _)).toString
+    case _               => "N/A"
+  }
+```
+]
+
+---
+class: medium-code
+
+# Solution 1: Overloaded functions
+
+<br>
+
+.pull-left[
+```scala mdoc:reset:invisible
+def truncate(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc:silent
+def show(value: String): String =
+  value
+
+def show(value: Double): String =
+  truncate(2, value)
+
+def defaultShow[A](value: A): String =
+  "N/A"
+```
+]
+
+.pull-right[
+```scala mdoc
+show("Hello")
+show(123.123456)
+defaultShow(true)
+```
+]
+
+--
+
+<br><br><br><br><br><br><br><br><br>
+
+```scala mdoc:fail
+def show(value: List[String]): String = ???
+def show(value: List[Double]): String = ???
+```
+
+---
+class: medium-code
+
+# Solution 2: Enumeration
+
+```scala mdoc:silent
+sealed trait ShowValue
+case class ShowString(value: String) extends ShowValue
+case class ShowDouble(value: Double) extends ShowValue
+case class ShowStrings(value: List[String]) extends ShowValue
+case class ShowDoubles(value: List[Double]) extends ShowValue
+case class ShowDefault[A](value: A) extends ShowValue
+
+def show(value: ShowValue): String =
+  value match {
+    case ShowString(x)  => x
+    case ShowDouble(x)  => truncate(2, x)
+    case ShowStrings(x) => x.toString
+    case ShowDoubles(x) => x.map(truncate(2, _)).toString
+    case ShowDefault(_) => "N/A"
+  }
+```
+
+```scala mdoc
+show(ShowStrings(List("Hello", "World")))
+show(ShowDoubles(List(123.123456, 0.1234)))
+```
+
+---
+# How can we implement `map`?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To]
+```
+
+--
+
+<br>
+
+.medium[
+* Always return `List.empty` (`Nil`)
+]
+
+--
+
+.medium[
+* Somehow call `f` on the elements of `list`
+]
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] =
+  List(1,2,3)
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] =
+  List(1,2,3)
+
+On line 3: error: type mismatch;
+        found   : Int(1)
+        required: To
+```
+
+--
+
+<br>
+
+```scala mdoc:reset:silent
+def map(list: List[Int], update: Int => Int): List[Int] =
+  List(1,2,3)
+```
+
+--
+
+<br>
+
+.center[
+## #2 Benefit: require less tests and less documentation
+]
+
+---
+# Summary
+
+<br>
+
+.large[
+* More reusable
+
+* Caller decides which underlying type to use
+
+* Implementation must be generic
+   * more documentation
+   * less tests
+]
+
+---
+class: center, middle
+
+# Exercise 2: Parametric functions
+
+`exercises.function.FunctionExercises.scala`
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>
