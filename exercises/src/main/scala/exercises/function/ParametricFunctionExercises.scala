@@ -1,6 +1,7 @@
 package exercises.function
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 object ParametricFunctionExercises {
 
@@ -38,14 +39,18 @@ object ParametricFunctionExercises {
 
   case class User(name: String, age: Int)
 
-  // 1f. Use Pair API to combine `names` and `ages` into `users`
+  // 1f. Use Pair API to check the length of both String in `names` (defined at the beginning of the exercise)
+  // are strictly longer than 5.
+  lazy val longerThan5: Boolean =
+    ???
+
+  // 1g. Use Pair API to combine `names` and `ages` into `users`
   // such as `users` is equal to Pair(User("John", 32), User("Elisabeth", 46))
   lazy val users: Pair[User] =
     ???
 
-  // 1g. Use Pair API to check the length of both String in `names` are strictly longer than 5
-  lazy val longerThan5: Boolean =
-    ???
+  // 1h. (difficult) Can you implement a method on `Pair` similar to `zipWith`, but it combines 3 `Pair`
+  // instead of 2? If yes, can you implement this method using `zipWith`?
 
   ////////////////////////////
   // Exercise 2: Predicate
@@ -80,7 +85,7 @@ object ParametricFunctionExercises {
   // such as isAdult(20) == true
   // but     isAdult(6)  == false
   val isAdult: Predicate[Int] =
-    Predicate((x: Int) => ???)
+    Predicate((age: Int) => ???)
 
   // 2e. Implement `longerThan`, a predicate that checks if a text is longer than a constant
   // such as longerThan(5)("hello") == true
@@ -101,59 +106,60 @@ object ParametricFunctionExercises {
   lazy val isValidUser: Predicate[User] =
     ???
 
-  ////////////////////////////
-  // Exercise 3: JsonEncoder
-  ////////////////////////////
+  // 2h. (difficult) Could you generalise `isAdult` and `longerThan`?
 
-  // 3a. Implement `userIdEncoder`, a `JsonEncoder` for `UserId`
-  // such as userIdEncoder.encoder(UserId(1234)) == "1234"
-  // Note: Try to re-use `intEncoder` defined below.
-  case class UserId(id: Int)
-  val userIdEncoder: JsonEncoder[UserId] = new JsonEncoder[UserId] {
-    def encode(value: UserId): Json = ???
-  }
-
-  // 3b. Implement `localDateEncoder`, a `JsonEncoder` for `LocalDate`
-  // such as userIdEncoder.encoder(LocalDate.of(2020,26,03)) == "2020-26-03"
-  // Note: You can format a `LocalDate` using a java.time.format.DateTimeFormatter
-  //       Try to re-use `stringEncoder` defined below.
-  val localDateEncoder: JsonEncoder[LocalDate] = new JsonEncoder[LocalDate] {
-    def encode(value: LocalDate): Json = ???
-  }
+  ////////////////////////////
+  // Exercise 3: JsonDecoder
+  ////////////////////////////
 
   // very basic representation of JSON
   type Json = String
 
-  trait JsonEncoder[A] {
-    def encode(value: A): Json
+  trait JsonDecoder[A] {
+    def decode(json: Json): A
   }
 
-  val intEncoder: JsonEncoder[Int] = new JsonEncoder[Int] {
-    def encode(value: Int): Json = value.toString
+  val stringDecoder: JsonDecoder[String] = new JsonDecoder[String] {
+    def decode(json: Json): String = json
   }
-  val stringEncoder: JsonEncoder[String] = new JsonEncoder[String] {
-    def encode(value: String): Json = value
+  val intDecoder: JsonDecoder[Int] = new JsonDecoder[Int] {
+    def decode(json: Json): Int = json.toInt
   }
 
-  // 3c. Implement `contraMap` a generic method that converts a `JsonEncoder`
-  // of one type into a `JsonEncoder` of another type.
-  def contraMap[From, To](encoder: JsonEncoder[From], update: To => From): JsonEncoder[To] =
-    new JsonEncoder[To] {
-      def encode(value: To): Json =
-        ???
-    }
+  // 3a. Implement `userIdDecoder`, a `JsonDecoder` for `UserId`
+  // such as userIdDecoder.decoder(UserId("1234")) == 1234
+  // Note: Try to re-use `intDecoder` defined below.
+  case class UserId(id: Int)
+  val userIdDecoder: JsonDecoder[UserId] = new JsonDecoder[UserId] {
+    def decode(json: Json): UserId =
+      ???
+  }
 
-  // 3d. Re-implement a `JsonEncoder` for `UserId and `LocalDate` using `contraMap`
-  lazy val userIdEncoderV2: JsonEncoder[UserId] =
+  // 3b. Implement `localDateDecoder`, a `JsonDecoder` for `LocalDate`
+  // such as userIdDecoder.decoder("2020-26-03") == LocalDate.of(2020,26,03)
+  // Note: You can parse a `LocalDate` using `LocalDate.parse` with a java.time.format.DateTimeFormatter
+  //       Try to re-use `stringDecoder` defined below.
+  lazy val localDateDecoder: JsonDecoder[LocalDate] =
     ???
 
-  lazy val localDateEncoderV2: JsonEncoder[LocalDate] =
+  // 3c. Implement `map` a generic method that converts a `JsonDecoder`
+  // of one type into a `JsonDecoder` of another type.
+  def map[From, To](decoder: JsonDecoder[From], update: From => To): JsonDecoder[To] =
     ???
 
-  // 3e. How would you define and implement a `JsonEncoder` for generic `List`?
-  // For example, we should be able to use `listEncoder` to encode a `List[Int]`,
-  // `List[String]` or `List[LocaDate]`.
-  def listEncoder[A]: JsonEncoder[List[A]] =
+  // 3d. Re-implement a `JsonDecoder` for `UserId and `LocalDate` using `map`
+  lazy val userIdDecoderV2: JsonDecoder[UserId] =
+    ???
+
+  lazy val localDateDecoderV2: JsonDecoder[LocalDate] =
+    ???
+
+  // 3e. (difficult) How would you define and implement a `JsonDecoder` for a generic `Option`?
+  // such as we can decode:
+  // * "1" into a Some(1)
+  // * "2020-26-03" into a Some(LocalDate.of(2020,26,03))
+  // * "null" into "None"
+  def optionDecoder[A]: JsonDecoder[Option[A]] =
     ???
 
 }
