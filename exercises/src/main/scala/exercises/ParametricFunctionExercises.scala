@@ -1,7 +1,6 @@
-package exercises.function
+package exercises
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 object ParametricFunctionExercises {
 
