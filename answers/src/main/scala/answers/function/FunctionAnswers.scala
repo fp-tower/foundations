@@ -47,6 +47,10 @@ object FunctionAnswers {
       forAll(_ % 2 == 0)
   }
 
+  class Space
+
+  classOf[Space].getMethod("foo").invoke(new Space)
+
   ////////////////////////////
   // 2. parametric functions
   ////////////////////////////

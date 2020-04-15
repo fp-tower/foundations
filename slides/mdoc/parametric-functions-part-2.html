@@ -30,7 +30,7 @@ def map[From, To](list: List[From], update: From => To): List[To] = list.map(upd
 <br>
 
 .medium[
-1. A parametric function can handle any types
+1. A parametric function accepts all types
 
 1. All types must be treated .hl[IN THE SAME WAY]
 ]
@@ -88,7 +88,7 @@ class: medium-code
 
 <br>
 
-.large-left[
+.large2-left[
 ```scala mdoc:reset:invisible
 def truncate(scale: Int, number: Double): String =
   BigDecimal(number)
@@ -102,14 +102,14 @@ def show[A](value: A): String =
   value match {
     case x: String       => x
     case x: Double       => truncate(2, x)
-    case x: List[String] => x.toString
-    case x: List[Double] => x.map(truncate(2, _)).toString
+    case x: List[String] => x.mkString(",")
+    case x: List[Double] => x.map(truncate(2, _)).mkString(",")
     case _               => "N/A"
   }
 ```
 ]
 
-.medium-right[
+.small2-right[
 ```scala mdoc
 show("Hello")
 show(123.123456)
@@ -130,63 +130,6 @@ class: medium-code
 
 <br>
 
-.large-left[
-```scala
-def show[A](value: A): String =
-  value match {
-    case x: String    => x
-    case x: Double    => truncate(2, x)
-    case x: List[Any] => x.toString
-    case x: List[Any] => x.map(truncate(2, _)).toString
-    case _            => "N/A"
-  }
-```
-]
-
-.medium-right[
-```scala mdoc
-show("Hello")
-show(123.123456)
-show(true)
-show(List("Hello", "World"))
-```
-]
-
-<br><br><br><br><br><br><br><br><br>
-
-```scala mdoc
-show(List(123.123456, 0.1234))
-```
-
-
----
-class: medium-code
-
-# Why? Bad documentation
-
-<br>
-
-.large-left[
-```scala
-def show[A](value: A): String =
-  value match {
-    case x: String       => x
-    case x: Double       => truncate(2, x)
-    case x: List[String] => x.toString
-    case x: List[Double] => x.map(truncate(2, _)).toString
-    case _               => "N/A"
-  }
-```
-]
-
----
-class: medium-code
-
-# Solution 1: Overloaded functions
-
-<br>
-
-.pull-left[
 ```scala mdoc:reset:invisible
 def truncate(scale: Int, number: Double): String =
   BigDecimal(number)
@@ -196,121 +139,59 @@ def truncate(scale: Int, number: Double): String =
 ```
 
 ```scala mdoc:silent
-def show(value: String): String =
-  value
-
-def show(value: Double): String =
-  truncate(2, value)
-
-def defaultShow[A](value: A): String =
-  "N/A"
+def show[A](value: A): String =
+       if(value.isInstanceOf[String]) value.asInstanceOf[String]
+  else if(value.isInstanceOf[Double]) truncate(2, value.asInstanceOf[Double])
+  else if(value.isInstanceOf[List[String]]) value.asInstanceOf[List[String]].mkString(",")
+  else if(value.isInstanceOf[List[Double]]) value.asInstanceOf[List[Double]].map(truncate(2, _)).mkString(",")
+  else "N/A"
 ```
-]
 
-.pull-right[
+.large-left[
 ```scala mdoc
-show("Hello")
-show(123.123456)
-defaultShow(true)
+List(1, 2, 3).isInstanceOf[List[String]]
 ```
-]
-
---
-
-<br><br><br><br><br><br><br><br><br>
-
-```scala mdoc:fail
-def show(value: List[String]): String = ???
-def show(value: List[Double]): String = ???
-```
-
----
-class: medium-code
-
-# Solution 2: Enumeration
-
-```scala mdoc:silent
-sealed trait ShowValue
-case class ShowString(value: String) extends ShowValue
-case class ShowDouble(value: Double) extends ShowValue
-case class ShowStrings(value: List[String]) extends ShowValue
-case class ShowDoubles(value: List[Double]) extends ShowValue
-case class ShowDefault[A](value: A) extends ShowValue
-
-def show(value: ShowValue): String =
-  value match {
-    case ShowString(x)  => x
-    case ShowDouble(x)  => truncate(2, x)
-    case ShowStrings(x) => x.toString
-    case ShowDoubles(x) => x.map(truncate(2, _)).toString
-    case ShowDefault(_) => "N/A"
-  }
-```
-
-```scala mdoc
-show(ShowStrings(List("Hello", "World")))
-show(ShowDoubles(List(123.123456, 0.1234)))
-```
-
----
-class: medium-code
-
-# Solution 2: Enumeration (Dotty)
 
 ```scala
-enum ShowValue {
-  case class ShowString(value: String)
-  case class ShowDouble(value: Double)
-  case class ShowStrings(value: List[String])
-  case class ShowDoubles(value: List[Double])
-  case class ShowDefault[A](value: A)
-}
-
-def show(value: ShowValue): String =
-  value match {
-    case ShowString(x)  => x
-    case ShowDouble(x)  => truncate(2, x)
-    case ShowStrings(x) => x.toString
-    case ShowDoubles(x) => x.map(truncate(2, _)).toString
-    case ShowDefault(_) => "N/A"
-  }
+// warning: fruitless type test: a value of type
+// List[Int] cannot also be a List[String]
 ```
+]
 
-```scala mdoc
-show(ShowStrings(List("Hello", "World")))
-show(ShowDoubles(List(123.123456, 0.1234)))
-```
+.medium-right[
+<img src="img/foundation/list-runtime.svg" alt="List runtime" style="width:400px;"/>
+]
 
 ---
 class: medium-code
 
-# Solution 3: Interface
+# Why? Weak documentation
 
-```scala mdoc:silent
-trait Show[A] {
-  def show(value: A): String
-}
+<br>
 
-val showString: Show[String] = new Show[String] {
-  def show(value: String): String = value
-}
-
-val showDouble: Show[Double] = new Show[Double] {
-  def show(value: Double): String = truncate(2, value)
-}
-
-def showOption[A](showA: Show[A]): Show[Option[A]] = new Show[Option[A]]{
-  def show(value: Option[A]): String =
-    value match {
-      case Some(x) => showA.show(x)
-      case None    => defaultShow.show(value)
-    }
-}
-
-def defaultShow[A]: Show[A] = new Show[A]{
-  def show(value: A): String = "N/A"
-}
+```scala
+def show[A](value: A): String =
+  value match {
+    case x: String       => x
+    case x: Double       => truncate(2, x)
+    case x: List[String] => x.mkString(",")
+    case x: List[Double] => x.map(truncate(2, _)).mkString(",")
+    case _               => "N/A"
+  }
 ```
+
+<br>
+
+.center[
+## How do you test show?
+]
+
+---
+class: center, middle
+
+# Parametric polymorphism (`map`)
+# !=
+# Ad hoc polymorphism (`show`)
 
 
 ---
@@ -324,16 +205,19 @@ def map[From, To](list: List[From], update: From => To): List[To]
 
 --
 
-<br>
-
-.medium[
-* Always return `List.empty` (`Nil`)
+.pull-right[
+<img src="img/foundation/linked-list-enum-2.svg" alt="List enum" style="width:400px;"/>
 ]
 
 --
 
+<br>
+<br>
+
 .medium[
-* Somehow call `f` on the elements of `list`
+1. Always return `Nil`
+
+1. Use `update` on the elements of `list`
 ]
 
 ---
@@ -343,7 +227,7 @@ def map[From, To](list: List[From], update: From => To): List[To]
 
 ```scala
 def map[From, To](list: List[From], update: From => To): List[To] =
-  List(1,2,3)
+  List(1, 2, 3)
 ```
 
 ---
@@ -353,11 +237,11 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 
 ```scala
 def map[From, To](list: List[From], update: From => To): List[To] =
-  List(1,2,3)
+  List(1, 2, 3)
 
-On line 3: error: type mismatch;
-        found   : Int(1)
-        required: To
+// error: type mismatch;
+//   found   : Int(1)
+//   required: To
 ```
 
 --
@@ -366,16 +250,51 @@ On line 3: error: type mismatch;
 
 ```scala mdoc:reset:silent
 def map(list: List[Int], update: Int => Int): List[Int] =
-  List(1,2,3)
+  List(1, 2, 3)
 ```
 
---
+---
+# Does it compile?
 
 <br>
 
-.center[
-## #2 Benefit: require less tests and less documentation
-]
+```scala
+def map[From, To](list: List[From], update: From => To): List[To] =
+  List(1, 2, 3)
+
+// error: type mismatch;
+//   found   : Int(1)
+//   required: To
+```
+
+<br>
+
+```scala mdoc:reset:silent
+def map(list: List[Int], update: Int => Int): List[Int] =
+  List(1, 2, 3)
+
+// [success]
+```
+
+---
+# Not everything in a language is good
+
+<br>
+
+```scala mdoc:silent
+class Spaceship {
+  private def autoDestroy(): Unit =
+    println("Boom!")
+}
+
+val shuttle = new Spaceship()
+val method = classOf[Spaceship].getDeclaredMethod("autoDestroy")
+method.setAccessible(true)
+```
+
+```scala mdoc
+method.invoke(shuttle)
+```
 
 ---
 # Summary
@@ -388,17 +307,16 @@ def map(list: List[Int], update: Int => Int): List[Int] =
 * Caller decides which underlying type to use
 
 * Implementation must be generic
-   * more documentation
+   * better documentation
    * less tests
 ]
 
 ---
 class: center, middle
 
-# Exercise 2: Parametric functions
+# Exercises
 
-`exercises.function.FunctionExercises.scala`
-
+.medium[`ParametricFunctionExercises.scala`]
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

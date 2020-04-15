@@ -4,7 +4,7 @@
 
 
 body { font-family: 'Droid Serif'; color: #333333; }
-h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #074548; }
+h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #004750; }
 h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 .remark-code { font-size: 22px; }
@@ -12,13 +12,15 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .small-code .remark-code { font-size: 18px; }
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
-.hl { color : #7ca7ad; font-weight: bold; }
+.hl { color : #6f9a9c; font-weight: bold; }
 .small-left { float: left; width: 27%; }
 .medium-left { float: left; width: 37%; }
 .pull-left { float: left; width: 47%; }
 .large-left { float: left; width: 57%; }
+.large2-left { float: left; width: 62%; }
 .extra-large-left { float: left; width: 67%; }
 .small-right { float: right; width: 27%; }
+.small2-right { float: right; width: 32%; }
 .medium-right { float: right; width: 37%; }
 .pull-right { float: right; width: 47%; }
 .large-right { float: right; width: 57%; }
