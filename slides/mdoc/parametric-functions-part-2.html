@@ -24,7 +24,6 @@ class: center
 .medium-right[
 <br><br><br><br><br><br><br><br><br>
 # Parametric functions part 2
-
 ]
 
 ---
@@ -74,7 +73,7 @@ def truncate(scale: Int, number: Double): String =
 
 .pull-left[
 ```scala mdoc:silent
-def show[A](value: A): String =
+def format[A](value: A): String =
   value match {
     case x: String => x
     case x: Double => truncate(2, x)
@@ -84,9 +83,9 @@ def show[A](value: A): String =
 ]
 .pull-right[
 ```scala mdoc
-show("Hello")
-show(123.123456)
-show(true)
+format("Hello")
+format(123.123456)
+format(true)
 ```
 ]
 
@@ -106,7 +105,7 @@ def truncate(scale: Int, number: Double): String =
 ```
 
 ```scala mdoc:silent
-def show[A](value: A): String =
+def format[A](value: A): String =
   value match {
     case x: String       => x
     case x: Double       => truncate(2, x)
@@ -119,17 +118,17 @@ def show[A](value: A): String =
 
 .small2-right[
 ```scala mdoc
-show("Hello")
-show(123.123456)
-show(true)
-show(List("Hello", "World"))
+format("Hello")
+format(123.123456)
+format(true)
+format(List("Hello", "World"))
 ```
 ]
 
 <br><br><br><br><br><br><br><br><br>
 
 ```scala mdoc
-show(List(123.123456, 0.1234))
+format(List(123.123456, 0.1234))
 ```
 
 ---
@@ -147,7 +146,7 @@ def truncate(scale: Int, number: Double): String =
 ```
 
 ```scala mdoc:silent
-def show[A](value: A): String =
+def format[A](value: A): String =
        if(value.isInstanceOf[String]) value.asInstanceOf[String]
   else if(value.isInstanceOf[Double]) truncate(2, value.asInstanceOf[Double])
   else if(value.isInstanceOf[List[String]]) value.asInstanceOf[List[String]].mkString(",")
@@ -178,7 +177,7 @@ class: medium-code
 <br>
 
 ```scala
-def show[A](value: A): String =
+def format[A](value: A): String =
   value match {
     case x: String       => x
     case x: Double       => truncate(2, x)
@@ -191,7 +190,7 @@ def show[A](value: A): String =
 <br>
 
 .center[
-## How do you test show?
+## How do you test format?
 ]
 
 ---
@@ -199,7 +198,7 @@ class: center, middle
 
 # Parametric polymorphism (`map`)
 # !=
-# Ad hoc polymorphism (`show`)
+# Ad hoc polymorphism (`format`)
 
 
 ---
