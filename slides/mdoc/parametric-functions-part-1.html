@@ -13,9 +13,26 @@ class: center, middle
 # Parametric functions - Part 1
 
 ---
-background-image: url(img/foundation/parametric-list.svg)
 
 # List is a generic data structure
+
+.small-left[
+<br>
+<br>
+<br>
+<br>
+```scala
+List[Int]
+
+List[String]
+
+List[User]
+```
+]
+
+.large-right[
+<img src="img/foundation/parametric-list.svg" alt="Parametric list" style="width:600px;"/>
+]
 
 ---
 # How to avoid duplication?
@@ -40,26 +57,56 @@ def size(list: List[User]  ): Int
 ]
 
 ---
-# How to avoid duplication?
+# Parametric function
 
 
+.medium-left[
 <br>
+<br>
+```scala mdoc:reset:invisible
+def size[A](list: List[A]): Int = list.size
+```
 
 ```scala
-def map(list: List[Int]   , update: Int    => Int   ): List[Int]
-
-def map(list: List[String], update: String => String): List[String]
-
-def map(list: List[User]  , update: User   => User): List[User]
+def size[A](list: List[A]): Int
 ```
 
 <br>
 
+```scala mdoc
+size(List(1, 4, 8, -3))
+
+size(List("Hello", "World", "!"))
+```
+]
+
+.large-right[
+<img src="img/foundation/parametric-list.svg" alt="Parametric list" style="width:600px;"/>
+]
+
+---
+# Parametric function
+
+.forty-two-left[
+<br>
+<br>
+
 ```scala
-def map(list: List[User], update: User => Int   ): List[Int]
-def map(list: List[User], update: User => String): List[String]
+def size[Elem](list: List[Elem]): Int
 ```
 
+<br>
+
+```scala mdoc
+size(List(1, 4, 8, -3))
+
+size(List("Hello", "World", "!"))
+```
+]
+
+.large-right[
+<img src="img/foundation/parametric-list.svg" alt="Parametric list" style="width:600px;"/>
+]
 
 ---
 # Parametric function
@@ -98,11 +145,11 @@ case class User(name: String, age: Int)
 ```
 
 ```scala mdoc:silent
-val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
 ```
 
 ```scala mdoc:fail
-map(users, (user: User) => user.age)
+map(users, (user: User) => user.name)
 ```
 
 ---
@@ -117,11 +164,11 @@ def map[A](list: List[A], update: A => A): List[A]
 <br>
 
 ```scala
-val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
 ```
 
 ```scala mdoc:fail
-map[User](users, (user: User) => user.age)
+map[User](users, (user: User) => user.name)
 ```
 
 ---
@@ -137,7 +184,6 @@ def map[From, To](list: List[From], update: From => To): List[To]
 def map[From, To](list: List[From], update: From => To): List[To] = list.map(update)
 ```
 
---
 <br>
 
 ```scala mdoc:invisible
@@ -145,18 +191,19 @@ case class User(name: String, age: Int)
 ```
 
 ```scala mdoc:silent
-val users = List(User("John", 23), User("Alice", 37), User("Bob", 18))
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
 ```
 
 ```scala mdoc
-map(List(1,2,3,4), (x: Int) => x + 1)
+map(users, (user: User) => user.name)
 
-map(users, (user: User) => user.age)
+map(List(1,2,3,4), (x: Int) => x + 1)
 ```
 
 ---
 # Applies to all parametric types
 
+<br>
 <br>
 
 ```scala mdoc:invisible
@@ -169,8 +216,6 @@ trait JsonDecoder[A]{
 }
 
 case class Predicate[A](value: A => Boolean)
-
-trait ConnectionIO[A]
 ```
 
 
