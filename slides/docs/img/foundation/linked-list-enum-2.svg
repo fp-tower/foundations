@@ -19,7 +19,7 @@
     </marker>
   </defs>
   <metadata> Produced by OmniGraffle 7.15 
-    <dc:date>2020-04-15 19:26:34 +0000</dc:date>
+    <dc:date>2020-04-18 09:37:02 +0000</dc:date>
   </metadata>
   <g id="linked-list-enum-2" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1" stroke="none">
     <title>linked-list-enum-2</title>
@@ -28,7 +28,6 @@
       <g id="Group_129">
         <g id="Group_131">
           <g id="Graphic_133">
-            <path d="M 56.25 234 L 150.75 234 C 161.928 234 171 250.128 171 270 C 171 289.872 161.928 306 150.75 306 L 56.25 306 C 45.072 306 36 289.872 36 270 C 36 250.128 45.072 234 56.25 234 Z" fill="#589b9d"/>
             <path d="M 56.25 234 L 150.75 234 C 161.928 234 171 250.128 171 270 C 171 289.872 161.928 306 150.75 306 L 56.25 306 C 45.072 306 36 289.872 36 270 C 36 250.128 45.072 234 56.25 234 Z" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
           </g>
           <g id="Graphic_132">
@@ -38,7 +37,6 @@
         </g>
         <g id="Graphic_130">
           <ellipse cx="144.43548" cy="270" rx="8.56452981428882" ry="9.00001438111709" fill="#589b9d"/>
-          <ellipse cx="144.43548" cy="270" rx="8.56452981428882" ry="9.00001438111709" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         </g>
       </g>
       <g id="Line_128">

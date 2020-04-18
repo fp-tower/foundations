@@ -8,35 +8,43 @@
 <body>
 <textarea id="source">
 
-class: center, middle
+class: center
 
-# Parametric functions - Part 2
+.large-left[
+<br>
+<small>
+
+  <a title="Attribution-ShareAlike License" class="cc-license" href="http://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="nofollow">
+  <img src="img/hieroglyphs.jpg" alt="Parametric list" style="width:600px;"/>
+  </a>
+  Photo by <a title="hieroglyph" class="feature-image-credit" href="https://www.flickr.com/photos/andre5/" target="_blank">andre5</a>
+</small>
+]
+
+.medium-right[
+<br><br><br><br><br><br><br><br><br>
+# Parametric functions part 2
+
+]
 
 ---
-# Interpretation
+# 1. Parametric functions accept .hl[ALL] types
 
 <br>
 
 ```scala
 def map[From, To](list: List[From], update: From => To): List[To]
 ```
-
-```scala mdoc:invisible
-def map[From, To](list: List[From], update: From => To): List[To] = list.map(update)
-```
-
---
-
 <br>
 
-.medium[
-1. A parametric function accepts all types
+```scala
+map[String, Int](List(...), ...)
 
-1. All types must be treated .hl[IN THE SAME WAY]
-]
+map[User, Role](List(...), ...)
+```
 
 ---
-# All types must be treated in the same way
+# 2. All types must be treated .hl[IN THE SAME WAY]
 
 <br>
 <br>
@@ -52,7 +60,7 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 ```
 
 ---
-# All types must be treated in the same way
+# All types must be treated .hl[IN THE SAME WAY]
 
 <br>
 
@@ -215,10 +223,138 @@ def map[From, To](list: List[From], update: From => To): List[To]
 <br>
 
 .medium[
-1. Always return `Nil`
+1. Return `Nil` or
 
 1. Use `update` on the elements of `list`
 ]
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+test("map"){
+  map(List(???), ???) shouldEqual ???
+}
+```
+
+---
+# How can we test `map`?
+
+<br>
+
+```scala
+test("map"){
+  map(Nil, _ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    , (x: Int) => ???) shouldEqual ???
+  map(List(1,2,3,4,5), (x: Int) => ???) shouldEqual ???
+
+  map(List("Hello", "World")  , (x: String) => ???) shouldEqual ???
+  map(List("a", "b", "c", "d"), (x: String) => ???) shouldEqual ???
+}
+```
+
+--
+
+<br>
+
+.center[
+## All types must be treated in the same way
+]
+
+---
+# How can we test `map`?
+
+<br>
+
+```scala
+test("map"){
+  map(Nil, _ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    , (x: Int) => x + 1) shouldEqual List(2,3,4)
+  map(List(1,2,3,4,5), (x: Int) => x + 1) shouldEqual List(2,3,4,5,6)
+
+  map(List(1,2,3)    , (x: Int) => x > 2) shouldEqual List(false,false,true)
+  map(List(1,2,3,4,5), (x: Int) => x > 2) shouldEqual List(false,false,true,true,true)
+}
+```
+
+
+--
+
+<br>
+
+.center[
+## All output elements must be produced by `update`
+]
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+test("map"){
+  map(Nil, _ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    , (x: Int) => x) shouldEqual List(1,2,3)
+  map(List(1,2,3,4,5), (x: Int) => x) shouldEqual List(1,2,3,4,5)
+}
+```
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+test("map"){
+  map(Nil, _ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    , identity) shouldEqual List(1,2,3)
+  map(List(1,2,3,4,5), identity) shouldEqual List(1,2,3,4,5)
+}
+```
+
+<br>
+
+```scala:silent
+def identity[A](value: A): A = value
+```
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+def testMap(list: List[Int]) =
+  test(s"map $list"){
+    map(list, identity) shouldEqual list
+  }
+
+testMap(Nil)
+testMap(List(1,2,3))
+testMap(List(1,2,3,4,5))
+```
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+test("map"){
+  forAll{(list: List[Int])) => map(list, identity) shouldEqual list }
+}
+```
 
 ---
 # Does it compile?
@@ -277,26 +413,6 @@ def map(list: List[Int], update: Int => Int): List[Int] =
 ```
 
 ---
-# Not everything in a language is good
-
-<br>
-
-```scala mdoc:silent
-class Spaceship {
-  private def autoDestroy(): Unit =
-    println("Boom!")
-}
-
-val shuttle = new Spaceship()
-val method = classOf[Spaceship].getDeclaredMethod("autoDestroy")
-method.setAccessible(true)
-```
-
-```scala mdoc
-method.invoke(shuttle)
-```
-
----
 # Summary
 
 <br>
@@ -312,11 +428,25 @@ method.invoke(shuttle)
 ]
 
 ---
-class: center, middle
+# Not everything in a language is good
 
-# Exercises
+<br>
 
-.medium[`ParametricFunctionExercises.scala`]
+```scala mdoc:silent
+class Spaceship {
+  private def autoDestroy(): Unit =
+    println("Boom!")
+}
+
+val shuttle = new Spaceship()
+val method = classOf[Spaceship].getDeclaredMethod("autoDestroy")
+method.setAccessible(true)
+```
+
+```scala
+method.invoke(shuttle)
+// Boom!
+```
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
