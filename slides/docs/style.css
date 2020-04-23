@@ -24,6 +24,7 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .small2-right { float: right; width: 32%; }
 .medium-right { float: right; width: 37%; }
 .pull-right { float: right; width: 47%; }
+.fifty-two-right { float: right; width: 52%; }
 .large-right { float: right; width: 57%; }
 .extra-large-right { float: left; width: 67%; }
 .cols { display: flex; }

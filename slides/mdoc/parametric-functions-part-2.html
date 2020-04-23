@@ -39,7 +39,7 @@ def map[From, To](list: List[From], update: From => To): List[To]
 ```scala
 map[String, Int](List(...), ...)
 
-map[User, Role](List(...), ...)
+map[User, Address](List(...), ...)
 ```
 
 ---
@@ -75,7 +75,7 @@ def truncate(scale: Int, number: Double): String =
 ```scala mdoc:silent
 def format[A](value: A): String =
   value match {
-    case x: String => x
+    case x: String => x.toLowerCase
     case x: Double => truncate(2, x)
     case _         => "N/A"
   }
@@ -107,9 +107,9 @@ def truncate(scale: Int, number: Double): String =
 ```scala mdoc:silent
 def format[A](value: A): String =
   value match {
-    case x: String       => x
+    case x: String       => x.toLowerCase
     case x: Double       => truncate(2, x)
-    case x: List[String] => x.mkString(",")
+    case x: List[String] => x.map(_.toLowerCase).mkString(",")
     case x: List[Double] => x.map(truncate(2, _)).mkString(",")
     case _               => "N/A"
   }
@@ -125,9 +125,11 @@ format(List("Hello", "World"))
 ```
 ]
 
+--
+
 <br><br><br><br><br><br><br><br><br>
 
-```scala mdoc
+```scala mdoc:crash
 format(List(123.123456, 0.1234))
 ```
 
@@ -137,61 +139,88 @@ class: medium-code
 
 <br>
 
-```scala mdoc:reset:invisible
-def truncate(scale: Int, number: Double): String =
-  BigDecimal(number)
-    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
-    .toDouble
-    .toString
-```
-
-```scala mdoc:silent
-def format[A](value: A): String =
-       if(value.isInstanceOf[String]) value.asInstanceOf[String]
-  else if(value.isInstanceOf[Double]) truncate(2, value.asInstanceOf[Double])
-  else if(value.isInstanceOf[List[String]]) value.asInstanceOf[List[String]].mkString(",")
-  else if(value.isInstanceOf[List[Double]]) value.asInstanceOf[List[Double]].map(truncate(2, _)).mkString(",")
-  else "N/A"
-```
-
-.large-left[
-```scala mdoc
-List(1, 2, 3).isInstanceOf[List[String]]
-```
-
+.forty-two-left[
 ```scala
-// warning: fruitless type test: a value of type
-// List[Int] cannot also be a List[String]
+def format[A](value: A): String =
+  value match {
+    case x: String       => ...
+    case x: Double       => ...
+    case x: List[String] => ...
+    case x: List[Double] => ...
+    case _               => ...
+  }
 ```
 ]
 
-.medium-right[
-<img src="img/foundation/list-runtime.svg" alt="List runtime" style="width:400px;"/>
+.fifty-two-right[
+```scala
+def format[A](value: A): String =
+
+       if(value.isInstanceOf[String]) ...
+  else if(value.isInstanceOf[Double]) ...
+  else if(value.isInstanceOf[List[String]]) ...
+  else if(value.isInstanceOf[List[Double]]) ...
+  else ...
+```
 ]
 
 ---
 class: medium-code
-
-# Why? Weak documentation
+# Why? Type erasure
 
 <br>
 
+.forty-two-left[
 ```scala
 def format[A](value: A): String =
   value match {
-    case x: String       => x
-    case x: Double       => truncate(2, x)
-    case x: List[String] => x.mkString(",")
-    case x: List[Double] => x.map(truncate(2, _)).mkString(",")
-    case _               => "N/A"
+    case x: String       => ...
+    case x: Double       => ...
+    case x: List[String] => ...
+    case x: List[Double] => ...
+    case _               => ...
   }
 ```
 
 <br>
 
-.center[
-## How do you test format?
+```scala mdoc
+List(1.5,2.0).isInstanceOf[List[String]]
+```
+
+```scala
+// warning: fruitless type test: a value of type
+// List[Double] cannot also be a List[String]
+```
 ]
+
+.fifty-two-right[
+```scala
+def format[A](value: A): String =
+
+       if(value.isInstanceOf[String]) ...
+  else if(value.isInstanceOf[Double]) ...
+  else if(value.isInstanceOf[List[String]]) ...
+  else if(value.isInstanceOf[List[Double]]) ...
+  else ...
+```
+
+<br>
+
+<img src="img/foundation/list-runtime.svg" alt="List runtime" style="width:500px;"/>
+]
+
+---
+class: medium-code
+
+# Why? Poor documentation
+
+<br>
+<br>
+
+```scala
+def format[A](value: A): String
+```
 
 ---
 class: center, middle
@@ -212,8 +241,8 @@ def map[From, To](list: List[From], update: From => To): List[To]
 
 --
 
-.pull-right[
-<img src="img/foundation/linked-list-enum-2.svg" alt="List enum" style="width:400px;"/>
+.large-right[
+<img src="img/foundation/linked-list-enum-2.svg" alt="List enum" style="width:500px;"/>
 ]
 
 --
@@ -224,19 +253,47 @@ def map[From, To](list: List[From], update: From => To): List[To]
 .medium[
 1. Return `Nil` or
 
-1. Use `update` on the elements of `list`
+1. Must use `update` on input `list`
 ]
 
 ---
-# How can we test `map`?
+# Does it compile?
 
-<br>
 <br>
 
 ```scala
-test("map"){
-  map(List(???), ???) shouldEqual ???
-}
+def map[From, To](list: List[From], update: From => To): List[To] =
+  list
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala mdoc:reset:fail
+def map[From, To](list: List[From], update: From => To): List[To] =
+  list
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A] =
+  list
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map(list: List[Int], update: Int => Int): List[Int] =
+  List(1, 2, 3)
 ```
 
 ---
@@ -323,92 +380,9 @@ test("map"){
 <br>
 
 ```scala:silent
-def identity[A](value: A): A = value
-```
-
----
-# How can we test `map`?
-
-<br>
-<br>
-
-```scala
-def testMap(list: List[Int]) =
-  test(s"map $list"){
-    map(list, identity) shouldEqual list
-  }
-
-testMap(Nil)
-testMap(List(1,2,3))
-testMap(List(1,2,3,4,5))
-```
-
----
-# How can we test `map`?
-
-<br>
-<br>
-
-```scala
-test("map"){
-  forAll{(list: List[Int])) => map(list, identity) shouldEqual list }
+object Predef {
+  def identity[A](value: A): A = value
 }
-```
-
----
-# Does it compile?
-
-<br>
-
-```scala
-def map[From, To](list: List[From], update: From => To): List[To] =
-  List(1, 2, 3)
-```
-
----
-# Does it compile?
-
-<br>
-
-```scala
-def map[From, To](list: List[From], update: From => To): List[To] =
-  List(1, 2, 3)
-
-// error: type mismatch;
-//   found   : Int(1)
-//   required: To
-```
-
---
-
-<br>
-
-```scala mdoc:reset:silent
-def map(list: List[Int], update: Int => Int): List[Int] =
-  List(1, 2, 3)
-```
-
----
-# Does it compile?
-
-<br>
-
-```scala
-def map[From, To](list: List[From], update: From => To): List[To] =
-  List(1, 2, 3)
-
-// error: type mismatch;
-//   found   : Int(1)
-//   required: To
-```
-
-<br>
-
-```scala mdoc:reset:silent
-def map(list: List[Int], update: Int => Int): List[Int] =
-  List(1, 2, 3)
-
-// [success]
 ```
 
 ---
@@ -427,7 +401,7 @@ def map(list: List[Int], update: Int => Int): List[Int] =
 ]
 
 ---
-# Not everything in a language is good
+# Not everything in a language should be used
 
 <br>
 
@@ -438,6 +412,27 @@ class Spaceship {
 }
 
 val shuttle = new Spaceship()
+```
+
+```scala mdoc:fail
+shuttle.autoDestroy()
+```
+
+---
+# Not everything in a language should be used
+
+<br>
+
+```scala mdoc:reset:silent
+class Spaceship {
+  private def autoDestroy(): Unit =
+    println("Boom!")
+}
+
+val shuttle = new Spaceship()
+```
+
+```scala mdoc:silent
 val method = classOf[Spaceship].getDeclaredMethod("autoDestroy")
 method.setAccessible(true)
 ```

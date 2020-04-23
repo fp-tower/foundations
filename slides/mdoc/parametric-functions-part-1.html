@@ -201,7 +201,7 @@ map(List(1,2,3,4), (x: Int) => x + 1)
 ```
 
 ---
-# Applies to all parametric types
+# All parametric types are not data structure
 
 <br>
 <br>
@@ -214,6 +214,7 @@ type Json = String
 trait JsonDecoder[A]{
   def decode(value: Json): A
 }
+
 
 case class Predicate[A](value: A => Boolean)
 ```
