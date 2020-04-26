@@ -386,6 +386,33 @@ object Predef {
 ```
 
 ---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+def testMap(list: List[Int]) =
+  test("map"){
+    map(list, identity) shouldEqual list
+  }
+```
+
+---
+# Property Based Testing (PBT
+
+<br>
+<br>
+
+```scala
+test("map"){
+  forAll((list: List[Int]) =>
+    map(list, identity) shouldEqual list
+  )
+}
+```
+
+---
 # Summary
 
 <br>
