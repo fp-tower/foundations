@@ -51,16 +51,16 @@ object ValueFunctionExercises {
       ???
 
     // 2b. Implement `isEven` which returns true if both `x`, `y`, and `z` are even numbers, false otherwise
-    // such as Point(2, 4, 8).isEven == true
-    // such as Point(0,-8,-2).isEven == true
-    // but     Point(3,-2, 0).isEven == false
+    // such as Point3(2, 4, 8).isEven == true
+    //         Point3(0,-8,-2).isEven == true
+    // but     Point3(3,-2, 0).isEven == false
     def isEven: Boolean =
       ???
 
     // 2c. Both `isPositive` and `isEven` check that a predicate holds for both `x` and `y`.
     // Let's try to capture this pattern with a higher order function like `forAll`
-    // such as Point(1,1,1).forAll(_ == 1) == true
-    // but     Point(1,2,5).forAll(_ == 1) == false
+    // such as Point3(1,1,1).forAll(_ == 1) == true
+    // but     Point3(1,2,5).forAll(_ == 1) == false
     // Then, re-implement `isPositive` and `isEven` using `forAll`
     def forAll(predicate: Int => Boolean): Boolean =
       ???
