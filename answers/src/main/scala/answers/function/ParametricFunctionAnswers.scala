@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter
 
 object ParametricFunctionAnswers {
 
-  ////////////////////////////
+  ////////////////////
   // Exercise 1: Pair
-  ////////////////////////////
+  ////////////////////
 
   val names: Pair[String] = Pair("John", "Elisabeth")
   val ages: Pair[Int]     = Pair(32, 46)
@@ -61,10 +61,15 @@ object ParametricFunctionAnswers {
       }
   }
 
+  object Predicate {
+    def True[A]: Predicate[A]  = Predicate(_ => true)
+    def False[A]: Predicate[A] = Predicate(_ => false)
+  }
+
   val isAdult: Predicate[Int] =
     Predicate((age: Int) => age >= 18)
 
-  def longerThan(min: Int): Predicate[String] =
+  def isLongerThan(min: Int): Predicate[String] =
     Predicate((text: String) => text.length >= min)
 
   def contains(char: Char): Predicate[String] =
@@ -72,7 +77,7 @@ object ParametricFunctionAnswers {
 
   val isValidUser: Predicate[User] =
     isAdult.contramap[User](_.age) &&
-      longerThan(3).contramap(_.name)
+      isLongerThan(3).contramap(_.name)
 
   def biggerThan(min: Int): Predicate[Int] =
     Predicate((x: Int) => x >= min)

@@ -1,123 +1,19 @@
 package answers.function
 
-import java.time.format.DateTimeFormatter
-import java.time.{Duration, LocalDate}
-import java.util.concurrent.{CountDownLatch, ExecutorService, Executors, ThreadFactory}
+import java.time.Duration
 import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
+import java.util.concurrent.{CountDownLatch, Executors, ThreadFactory}
 
-import answers.sideeffect.IOAnswers.IO
 import cats.Eval
 
 import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.io.Source
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.RoundingMode
-import scala.util.Random
 
 object FunctionAnswers {
-
-  //////////////////////////////////////////////////////
-  // 1. Functions as input (aka higher order functions)
-  //////////////////////////////////////////////////////
-
-  def selectDigits(text: String): String =
-    text.filter(c => c.isDigit)
-
-  def secret(text: String): String =
-    text.map(_ => '*')
-
-  def isValidUsernameCharacter(x: Char): Boolean =
-    x.isLetterOrDigit || x == '-' || x == '_'
-
-  def isValidUsername(username: String): Boolean =
-    username.forall(isValidUsernameCharacter)
-
-  case class Point(x: Int, y: Int) {
-    def isPositive: Boolean =
-      x >= 0 && y >= 0
-
-    def isEven: Boolean =
-      (x % 2 == 0) && (y % 2 == 0)
-
-    def forAll(predicate: Int => Boolean): Boolean =
-      predicate(x) && predicate(y)
-
-    def isPositiveForAll: Boolean =
-      forAll(_ >= 0)
-
-    def isEvenForAll: Boolean =
-      forAll(_ % 2 == 0)
-  }
-
-  ////////////////////////////
-  // 2. parametric functions
-  ////////////////////////////
-
-  case class Pair[A](first: A, second: A) {
-    def swap: Pair[A] =
-      Pair(second, first)
-
-    def map[B](f: A => B): Pair[B] =
-      Pair(f(first), f(second))
-
-    def forAll(predicate: A => Boolean): Boolean =
-      predicate(first) && predicate(second)
-
-    def zipWith[B, C](other: Pair[B], combine: (A, B) => C): Pair[C] =
-      Pair(combine(first, other.first), combine(second, other.second))
-
-    def zipWithCurried[B, C](other: Pair[B])(combine: (A, B) => C): Pair[C] =
-      zipWith(other, combine)
-  }
-
-  val names: Pair[String] = Pair("John", "Elisabeth")
-  val ages: Pair[Int]     = Pair(32, 46)
-  case class User(name: String, age: Int)
-
-  val users: Pair[User] =
-    names.zipWithCurried(ages)(User)
-
-  val longerThan5: Boolean =
-    names.map(_.length).forAll(_ >= 5)
-
-  case class UserId(id: Int)
-  val userIdEncoder: JsonEncoder[UserId] = new JsonEncoder[UserId] {
-    def encode(value: UserId): Json =
-      intEncoder.encode(value.id)
-  }
-
-  val localDateEncoder: JsonEncoder[LocalDate] = new JsonEncoder[LocalDate] {
-    def encode(value: LocalDate): Json =
-      stringEncoder.encode(value.format(DateTimeFormatter.ISO_LOCAL_DATE))
-  }
-
-  // very basic representation of JSON
-  type Json = String
-
-  trait JsonEncoder[A] {
-    def encode(value: A): Json
-  }
-
-  val intEncoder: JsonEncoder[Int] = new JsonEncoder[Int] {
-    def encode(value: Int): Json = value.toString
-  }
-  val stringEncoder: JsonEncoder[String] = new JsonEncoder[String] {
-    def encode(value: String): Json = value
-  }
-
-  def contraMap[From, To](encoder: JsonEncoder[From], update: To => From): JsonEncoder[To] =
-    new JsonEncoder[To] {
-      def encode(value: To): Json =
-        encoder.encode(update(value))
-    }
-
-  val userIdEncoderV2: JsonEncoder[UserId] =
-    contraMap(intEncoder, (x: UserId) => x.id)
-
-  val localDateEncoderV2: JsonEncoder[LocalDate] =
-    contraMap(stringEncoder, (x: LocalDate) => x.format(DateTimeFormatter.ISO_LOCAL_DATE))
 
   //////////////////////////////////////////////////
   // 3. functions as output (aka curried functions)

@@ -4,9 +4,9 @@ import java.time.LocalDate
 
 object ParametricFunctionExercises {
 
-  ////////////////////////////
+  ////////////////////
   // Exercise 1: Pair
-  ////////////////////////////
+  ////////////////////
 
   val names: Pair[String] = Pair("John", "Elisabeth")
   val ages: Pair[Int]     = Pair(32, 46)
@@ -48,7 +48,7 @@ object ParametricFunctionExercises {
   lazy val users: Pair[User] =
     ???
 
-  // 1h. (difficult) Can you implement a method on `Pair` similar to `zipWith`, but it combines 3 `Pair`
+  // 1h. Can you implement a method on `Pair` similar to `zipWith`, but it combines 3 `Pair`
   // instead of 2? If yes, can you implement this method using `zipWith`?
 
   ////////////////////////////
@@ -86,10 +86,10 @@ object ParametricFunctionExercises {
   val isAdult: Predicate[Int] =
     Predicate((age: Int) => ???)
 
-  // 2e. Implement `longerThan`, a predicate that checks if a text is longer than a constant
-  // such as longerThan(5)("hello") == true
-  // but     longerThan(5)("hey")   == false
-  def longerThan(min: Int): Predicate[String] =
+  // 2e. Implement `isLongerThan`, a predicate that checks if a text is longer than a constant
+  // such as isLongerThan(5)("hello") == true
+  // but     isLongerThan(5)("hey")   == false
+  def isLongerThan(min: Int): Predicate[String] =
     Predicate((text: String) => ???)
 
   // 2f. Implement `contains`, a predicate that checks if a character is present in a text
@@ -105,7 +105,7 @@ object ParametricFunctionExercises {
   lazy val isValidUser: Predicate[User] =
     ???
 
-  // 2h. (difficult) Could you generalise `isAdult` and `longerThan`?
+  // 2h. Could you generalise `isAdult` and `longerThan`?
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
@@ -153,7 +153,7 @@ object ParametricFunctionExercises {
   lazy val localDateDecoderV2: JsonDecoder[LocalDate] =
     ???
 
-  // 3e. (difficult) How would you define and implement a `JsonDecoder` for a generic `Option`?
+  // 3e. How would you define and implement a `JsonDecoder` for a generic `Option`?
   // such as we can decode:
   // * "1" into a Some(1)
   // * "2020-26-03" into a Some(LocalDate.of(2020,26,03))
