@@ -17,9 +17,13 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
   }
 
   test("sum consistent with std library") {
-    forAll((numbers: List[Int]) => sum(numbers) shouldEqual numbers.sum)
+    forAll { (numbers: List[Int]) =>
+      sum(numbers) shouldEqual numbers.sum
+    }
 
-    forAll((xs: List[Int], ys: List[Int]) => (sum(xs) + sum(ys)) shouldEqual sum(xs ++ ys))
+    forAll { (xs: List[Int], ys: List[Int]) =>
+      (sum(xs) + sum(ys)) shouldEqual sum(xs ++ ys)
+    }
   }
 
   test("mkString") {
@@ -28,9 +32,13 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
   }
 
   test("mkString pbt") {
-    forAll((letters: List[Char]) => mkString(letters) shouldEqual letters.mkString)
+    forAll { (letters: List[Char]) =>
+      mkString(letters) shouldEqual letters.mkString
+    }
 
-    forAll((letters: List[Char]) => mkString(letters).reverse shouldEqual mkString(letters.reverse))
+    forAll { (letters: List[Char]) =>
+      mkString(letters).reverse shouldEqual mkString(letters.reverse)
+    }
   }
 
   test("wordCount") {
@@ -51,6 +59,24 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
 
     forAll { (numbers: List[Int]) =>
       foldLeft(numbers, List.empty[Int])((acc, x) => x :: acc) shouldEqual numbers.reverse
+    }
+  }
+
+  test("sumFoldLeft consistent") {
+    forAll { (numbers: List[Int]) =>
+      sumFoldLeft(numbers) shouldEqual sum(numbers)
+    }
+  }
+
+  test("mkStringFoldLeft consistent") {
+    forAll { (letters: List[Char]) =>
+      mkStringFoldLeft(letters) shouldEqual mkString(letters)
+    }
+  }
+
+  test("wordCountFoldLeft consistent") {
+    forAll { (words: List[String]) =>
+      wordCountFoldLeft(words) shouldEqual wordCount(words)
     }
   }
 
