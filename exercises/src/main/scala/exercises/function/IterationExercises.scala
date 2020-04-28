@@ -39,4 +39,14 @@ object IterationExercises {
 
   def wordCountFoldLeft(words: List[String]): Map[String, Int] =
     ???
+
+  ///////////////////////////
+  // Exercise 2: recursion
+  ///////////////////////////
+
+  // 2a. `sumRecursive` is a version of `sum` using recursion.
+  // These implementations have an issue, what is it?
+  // Write a test to exhibit the problem.
+  def sumRecursive(numbers: List[Int]): Int =
+    ???
 }

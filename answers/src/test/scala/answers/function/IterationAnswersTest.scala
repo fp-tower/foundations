@@ -5,6 +5,8 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import IterationAnswers._
 
+import scala.util.Try
+
 class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
 
   ////////////////////////
@@ -20,7 +22,9 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
     forAll { (numbers: List[Int]) =>
       sum(numbers) shouldEqual numbers.sum
     }
+  }
 
+  test("sum split/merge") {
     forAll { (xs: List[Int], ys: List[Int]) =>
       (sum(xs) + sum(ys)) shouldEqual sum(xs ++ ys)
     }
@@ -31,11 +35,13 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
     mkString(List()) shouldEqual ""
   }
 
-  test("mkString pbt") {
+  test("mkString consistent with std library") {
     forAll { (letters: List[Char]) =>
       mkString(letters) shouldEqual letters.mkString
     }
+  }
 
+  test("mkString reverse") {
     forAll { (letters: List[Char]) =>
       mkString(letters).reverse shouldEqual mkString(letters.reverse)
     }
@@ -46,37 +52,58 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
     wordCount(List()) shouldEqual Map()
   }
 
-  test("wordCount pbt") {
+  test("wordCount add 1") {
     forAll { (words: List[String], word: String) =>
       wordCount(word :: words).get(word).get shouldEqual (wordCount(words).get(word).getOrElse(0) + 1)
     }
   }
 
-  test("foldLeft") {
+  test("foldLeft size") {
     forAll { (numbers: List[Int]) =>
       foldLeft(numbers, 0)((acc, _) => acc + 1) shouldEqual numbers.size
     }
+  }
 
+  test("foldLeft reverse") {
     forAll { (numbers: List[Int]) =>
       foldLeft(numbers, List.empty[Int])((acc, x) => x :: acc) shouldEqual numbers.reverse
     }
   }
 
-  test("sumFoldLeft consistent") {
+  test("sumFoldLeft consistent with sum") {
     forAll { (numbers: List[Int]) =>
       sumFoldLeft(numbers) shouldEqual sum(numbers)
     }
   }
 
-  test("mkStringFoldLeft consistent") {
+  test("mkStringFoldLeft consistent with mkString") {
     forAll { (letters: List[Char]) =>
       mkStringFoldLeft(letters) shouldEqual mkString(letters)
     }
   }
 
-  test("wordCountFoldLeft consistent") {
+  test("wordCountFoldLeft consistent with wordCount") {
     forAll { (words: List[String]) =>
       wordCountFoldLeft(words) shouldEqual wordCount(words)
+    }
+  }
+
+  ///////////////////////////
+  // Exercise 2: recursion
+  ///////////////////////////
+
+  test("sumRecursive") {
+    sumRecursive(List(1, 2, 3, 4)) shouldEqual 10
+    sumRecursive(Nil) shouldEqual 0
+  }
+
+  test("sumRecursive is not stack safe") {
+    try {
+      sumRecursive(List.fill(100000)(0))
+      fail("Expected stack overflow")
+    } catch {
+      case _: StackOverflowError => succeed
+      case e                     => fail(e)
     }
   }
 

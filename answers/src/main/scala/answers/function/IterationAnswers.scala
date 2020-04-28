@@ -44,4 +44,14 @@ object IterationAnswers {
 
   def wordCountFoldLeft(words: List[String]): Map[String, Int] =
     foldLeft(words, Map.empty[String, Int])(addKey)
+
+  ///////////////////////////
+  // Exercise 2: recursion
+  ///////////////////////////
+
+  def sumRecursive(numbers: List[Int]): Int =
+    numbers match {
+      case Nil          => 0
+      case head :: tail => head + sumRecursive(tail)
+    }
 }
