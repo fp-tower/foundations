@@ -1,4 +1,4 @@
-package exercises
+package exercises.function
 
 object ValueFunctionExercises {
 
