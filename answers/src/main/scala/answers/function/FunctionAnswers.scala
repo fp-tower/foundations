@@ -2,12 +2,16 @@ package answers.function
 
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDate}
+import java.util.concurrent.{CountDownLatch, ExecutorService, Executors, ThreadFactory}
+import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 
+import answers.sideeffect.IOAnswers.IO
 import cats.Eval
 
 import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
+import scala.io.Source
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.RoundingMode
 import scala.util.Random
@@ -46,10 +50,6 @@ object FunctionAnswers {
     def isEvenForAll: Boolean =
       forAll(_ % 2 == 0)
   }
-
-  class Space
-
-  classOf[Space].getMethod("foo").invoke(new Space)
 
   ////////////////////////////
   // 2. parametric functions
@@ -189,14 +189,61 @@ object FunctionAnswers {
   def foldMap[A, B](xs: List[A])(f: A => B)(z: B, combine: (B, B) => B): B =
     foldLeft(xs, z)((acc, a) => combine(acc, f(a)))
 
-  def splitFoldMap[A, B](xs: List[List[A]])(f: A => B)(z: B, combine: (B, B) => B): B =
-    foldMap(xs)(foldMap(_)(f)(z, combine))(z, combine)
+  def partitionFoldMap[A, B](partitions: List[List[A]])(f: A => B)(default: B, combine: (B, B) => B): B =
+    foldMap(partitions)(foldMap(_)(f)(default, combine))(default, combine)
 
-  def splitParFoldMap[A, B](xs: List[List[A]])(f: A => B)(z: B, combine: (B, B) => B): Future[B] = {
-    import scala.concurrent.ExecutionContext.Implicits._
-    Future
-      .traverse(xs)(subList => Future { foldMap(subList)(f)(z, combine) })
-      .map(foldMap(_)(identity)(z, combine))
+  def parallelPartitionFoldMap[A, B](partitions: List[List[A]])(f: A => B)(default: B, combine: (B, B) => B): B = {
+    implicit val ec: ExecutionContext = fixedSize(partitions.size, "parallelPartitionFoldMap")
+    Await.result(
+      Future
+        .traverse(partitions)(chunk => Future { foldMap(chunk)(f)(default, combine) })
+        .map(foldMap(_)(identity)(default, combine)),
+      scala.concurrent.duration.Duration.Inf
+    )
+  }
+
+  def parallelPartitionFoldMapCommutative[A, B](partitions: List[List[A]])(f: A => B)(default: B,
+                                                                                      combine: (B, B) => B): B = {
+    val numberOfPartitions   = partitions.size
+    val countDownLatch       = new CountDownLatch(numberOfPartitions)
+    val state                = new AtomicReference(default)
+    val ec: ExecutionContext = fixedSize(numberOfPartitions, "parallelPartitionFoldMapCommutative")
+
+    partitions.foreach(
+      chunk =>
+        Future { foldMap(chunk)(f)(default, combine) }(ec).foreach { res =>
+          modify(state)(combine(_, res))
+          countDownLatch.countDown()
+        }(ec)
+    )
+
+    countDownLatch.await()
+    state.get()
+  }
+
+  def fixedSize(threads: Int, prefix: String): ExecutionContext =
+    ExecutionContext.fromExecutor(Executors.newFixedThreadPool(threads, threadFactory(prefix, daemon = true)))
+
+  def threadFactory(prefix: String, daemon: Boolean): ThreadFactory =
+    new ThreadFactory {
+      val ctr = new AtomicInteger(0)
+      def newThread(r: Runnable): Thread = {
+        val back = new Thread(r)
+        back.setName(prefix + "-" + ctr.getAndIncrement())
+        back.setDaemon(daemon)
+        back
+      }
+    }
+
+  def modify[A](ref: AtomicReference[A])(f: A => A): Unit = {
+    @tailrec
+    def spin: Unit = {
+      val current = ref.get
+      val updated = f(current)
+      if (!ref.compareAndSet(current, updated)) spin
+      else ()
+    }
+    spin
   }
 
   /////////////////
@@ -319,14 +366,31 @@ object FunctionAnswersApp extends App {
     result
   }
 
-  val size                            = 10000000
-  val largeList: List[Int]            = List.fill(size)(Random.nextInt())
-  def chunks(n: Int): List[List[Int]] = largeList.grouped(size / n).toList
-  val chunked: List[List[Int]]        = chunks(10)
+  def chunks[A](n: Int, xs: List[A]): List[List[A]] = xs.grouped(xs.size / n).toList
 
-  time(foldLeft(largeList, 0L)(_ + _))
-  time(foldMap(largeList)(x => x: Long)(0L, _ + _))
-  time(splitFoldMap(chunked)(x => x: Long)(0, _ + _))
-  time(Await.result(splitParFoldMap(chunked)(x => x: Long)(0, _ + _), scala.concurrent.duration.Duration.Inf))
+  val files        = List.fill(100)("long-text.txt")
+  val chunkedFiles = chunks(10, files)
+
+  def wordCountByFile(filename: String): Map[String, Int] =
+    Source
+      .fromResource(filename)
+      .getLines()
+      .map(wordCount)
+      .foldLeft(Map.empty[String, Int])(combineMaps)
+
+  def wordCount(text: String): Map[String, Int] =
+    text
+      .split(" ")
+      .toList
+      .foldLeft(Map.empty[String, Int])((acc, word) => acc.updated(word, acc.getOrElse(word, 0) + 1))
+
+  def combineMaps[K](m1: Map[K, Int], m2: Map[K, Int]): Map[K, Int] =
+    m2.foldLeft(m1) {
+      case (acc, (s, n)) => acc.updated(s, (acc.getOrElse(s, 0) + n))
+    }
+
+  time(foldMap(files)(wordCountByFile)(Map.empty, combineMaps))
+  time(parallelPartitionFoldMap(chunks(8, files))(wordCountByFile)(Map.empty, combineMaps))
+  time(parallelPartitionFoldMapCommutative(chunks(8, files))(wordCountByFile)(Map.empty, combineMaps))
 
 }
