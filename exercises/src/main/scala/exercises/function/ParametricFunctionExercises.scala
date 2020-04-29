@@ -106,6 +106,7 @@ object ParametricFunctionExercises {
     ???
 
   // 2h. Could you generalise `isAdult` and `longerThan`?
+  // Try to define a function that will help you re-implement both.
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
@@ -126,7 +127,7 @@ object ParametricFunctionExercises {
   }
 
   // 3a. Implement `userIdDecoder`, a `JsonDecoder` for `UserId`
-  // such as userIdDecoder.decoder(UserId("1234")) == 1234
+  // such as userIdDecoder.decode("1234") == UserId(1234)
   // Note: Try to re-use `intDecoder` defined below.
   case class UserId(id: Int)
   val userIdDecoder: JsonDecoder[UserId] = new JsonDecoder[UserId] {
@@ -135,7 +136,7 @@ object ParametricFunctionExercises {
   }
 
   // 3b. Implement `localDateDecoder`, a `JsonDecoder` for `LocalDate`
-  // such as userIdDecoder.decoder("2020-26-03") == LocalDate.of(2020,26,03)
+  // such as localDateDecoder.decode("2020-03-26") == LocalDate.of(2020,3,26)
   // Note: You can parse a `LocalDate` using `LocalDate.parse` with a java.time.format.DateTimeFormatter
   //       Try to re-use `stringDecoder` defined below.
   lazy val localDateDecoder: JsonDecoder[LocalDate] =
