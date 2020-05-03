@@ -1,8 +1,10 @@
 package answers.function
 
-import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDate, ZoneOffset}
 
 import answers.function.ParametricFunctionAnswers._
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -105,24 +107,27 @@ class ParametricFunctionAnswersTest extends AnyFunSuite with Matchers with Scala
   }
 
   test("JsonDecoder LocalDate") {
-    localDateDecoder.decode("2020-03-26") shouldEqual LocalDate.of(2020, 3, 26)
+    localDateDecoder.decode("\"2020-03-26\"") shouldEqual LocalDate.of(2020, 3, 26)
   }
 
   test("JsonDecoder LocalDate random") {
-    forAll { (year: Int, month: Int, dayOfMonth: Int) =>
-      val normalisedYear       = year.max(0) % 1050 + 1000
-      val normalisedMonth      = (month.max(0) % 11) + 1
-      val normalisedDayOfMonth = (dayOfMonth.max(0) % 27) + 1
-      val formattedMonth       = "%02d".format(normalisedMonth)
-      val formattedDayOfMonth  = "%02d".format(normalisedDayOfMonth)
-
-      localDateDecoder.decode(s"$normalisedYear-$formattedMonth-$formattedDayOfMonth") shouldEqual
-        LocalDate.of(normalisedYear, normalisedMonth, normalisedDayOfMonth)
+    forAll { (localDate: LocalDate) =>
+      val json = "\"" + DateTimeFormatter.ISO_LOCAL_DATE.format(localDate) + "\""
+      localDateDecoder.decode(json) shouldEqual localDate
     }
   }
 
   test("JsonDecoder Option") {
-    optionDecoder(intDecoder).decode("null") shouldEqual None
-    optionDecoder(intDecoder).decode("1234") shouldEqual Some(1234)
+    optionDecoder(stringDecoder).decode("null") shouldEqual None
+    optionDecoder(stringDecoder).decode("\"hello\"") shouldEqual Some("hello")
   }
+
+  implicit val localDateArbitrary: Arbitrary[LocalDate] =
+    Arbitrary(
+      Gen
+        .choose(Instant.MIN.getEpochSecond, Instant.MAX.getEpochSecond)
+        .map(Instant.ofEpochSecond)
+        .map(_.atZone(ZoneOffset.UTC).toLocalDate)
+    )
+
 }

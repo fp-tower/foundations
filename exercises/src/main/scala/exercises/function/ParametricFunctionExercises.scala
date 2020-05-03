@@ -120,7 +120,11 @@ object ParametricFunctionExercises {
   }
 
   val stringDecoder: JsonDecoder[String] = new JsonDecoder[String] {
-    def decode(json: Json): String = json
+    def decode(json: Json): String =
+      if (json.startsWith("\"") && json.endsWith("\""))
+        json.substring(1, json.length - 1)
+      else
+        throw new IllegalArgumentException(s"$json is not a JSON string")
   }
   val intDecoder: JsonDecoder[Int] = new JsonDecoder[Int] {
     def decode(json: Json): Int = json.toInt
