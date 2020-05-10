@@ -21,6 +21,7 @@ _site/
 ## Metals files to ignore
 .metals/
 .bloop/
+project/metals.sbt
 
 ## Mac
 .DS_Store
