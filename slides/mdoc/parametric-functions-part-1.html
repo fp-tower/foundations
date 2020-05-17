@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Parametric functions</title>
+  <title>Generic functions part 1</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
 <textarea id="source">
 
-class: center, middle
+background-image: url(img/fp-tower/website-background.svg)
 
-# Parametric functions <br> part 1
+class: center, middle, white
+
+.title[Generic functions <br> part 1]
 
 ---
-
 # List is a generic data structure
 
 .small-left[
@@ -153,6 +154,36 @@ map(users, (user: User) => user.name)
 ```
 
 ---
+# Least Upper Bound (LUB)
+
+
+<br>
+
+.large-left[
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+```scala mdoc:reset:invisible
+case class User(name: String, age: Int)
+
+def map[A](list: List[A], update: A => A): List[A] = list.map(update)
+
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala mdoc:fail
+map(users, (user: User) => user.name)
+```
+]
+
+.medium-right[
+<img src="img/foundation/list-inference.svg" alt="Parametric list" style="width:400px;"/>
+]
+
+---
 # Parametric function
 
 <br>
@@ -170,6 +201,31 @@ val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
 ```scala mdoc:fail
 map[User](users, (user: User) => user.name)
 ```
+
+---
+# Parametric function in Dotty
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users, (user: User) => user.name)
+// Type Mismatch Error:
+// map(users, (user: User) => user.name)
+//                            ^^^^^^^^^
+//                            Found:    (user.name : String)
+//                            Required: User
+```
+
 
 ---
 # Parametric function
