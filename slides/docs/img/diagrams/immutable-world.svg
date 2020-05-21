@@ -1,0 +1,1829 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 1180 450" width="1180" height="450">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.15.2 
+    <dc:date>2020-05-18 18:48:27 +0000</dc:date>
+  </metadata>
+  <g id="immutable-world" fill-opacity="1" fill="none" stroke-opacity="1" stroke="none" stroke-dasharray="none">
+    <title>immutable-world</title>
+    <rect fill="white" x="0" y="0" width="1180" height="450"/>
+    <g id="immutable-world: Layer 1">
+      <title>Layer 1</title>
+      <g id="Graphic_99">
+        <ellipse cx="657.5" cy="36" rx="40.5000647150269" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="657.5" cy="36" rx="40.5000647150269" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(630.1 26.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.584" y="15">Earth</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <ellipse cx="481.5" cy="144" rx="49.5000790961438" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="481.5" cy="144" rx="49.5000790961438" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(446.9 134.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.2639985" y="15">America</tspan>
+        </text>
+      </g>
+      <g id="Graphic_119">
+        <ellipse cx="846" cy="144" rx="54.0000862867024" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="846" cy="144" rx="54.0000862867024" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(807.8 134.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.712001" y="15">Oceania</tspan>
+        </text>
+      </g>
+      <g id="Line_126">
+        <line x1="514.38697" y1="123.81936" x2="616.7061" y2="61.0326" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_127">
+        <line x1="810.4928" y1="123.65634" x2="699.4098" y2="60.01197" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_142">
+        <ellipse cx="657" cy="144" rx="54.0000862867023" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="657" cy="144" rx="54.0000862867023" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(618.8 134.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="11.832001" y="15">Eurasia</tspan>
+        </text>
+      </g>
+      <g id="Line_143">
+        <line x1="657.125" y1="117.00006" x2="657.3153" y2="75.89975" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_145">
+        <ellipse cx="1017" cy="144" rx="54.0000862867024" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="1017" cy="144" rx="54.0000862867024" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(978.8 134.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="6.200001" y="15">Antartica</tspan>
+        </text>
+      </g>
+      <g id="Graphic_146">
+        <ellipse cx="337.5" cy="144" rx="49.5000790961438" ry="27.0000431433512" fill="#70a3d8"/>
+        <ellipse cx="337.5" cy="144" rx="49.5000790961438" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(302.9 134.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="14.015998" y="15">Africa</tspan>
+        </text>
+      </g>
+      <g id="Line_147">
+        <line x1="379.6032" y1="129.79017" x2="609.1341" y2="52.3235" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_148">
+        <line x1="970.7015" y1="130.09114" x2="706.7887" y2="50.80717" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_149">
+        <ellipse cx="445.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="445.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_150">
+        <ellipse cx="481.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="481.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_151">
+        <ellipse cx="517.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="517.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_152">
+        <ellipse cx="499.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="499.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_153">
+        <ellipse cx="463.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="463.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_154">
+        <ellipse cx="427.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="427.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_155">
+        <ellipse cx="409.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="409.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_156">
+        <ellipse cx="535.5" cy="225" rx="13.5000215716755" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="535.5" cy="225" rx="13.5000215716755" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_157">
+        <ellipse cx="553.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="553.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_166">
+        <ellipse cx="625.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="625.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_165">
+        <ellipse cx="661.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="661.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_164">
+        <ellipse cx="697.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="697.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_163">
+        <ellipse cx="679.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="679.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_162">
+        <ellipse cx="643.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="643.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_161">
+        <ellipse cx="607.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="607.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_160">
+        <ellipse cx="589.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="589.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_159">
+        <ellipse cx="715.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="715.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_158">
+        <ellipse cx="733.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="733.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_175">
+        <ellipse cx="805.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="805.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_174">
+        <ellipse cx="841.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="841.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_173">
+        <ellipse cx="877.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="877.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_172">
+        <ellipse cx="859.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="859.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_171">
+        <ellipse cx="823.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="823.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_170">
+        <ellipse cx="787.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="787.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_169">
+        <ellipse cx="769.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="769.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_168">
+        <ellipse cx="895.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="895.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_167">
+        <ellipse cx="913.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="913.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_184">
+        <ellipse cx="265.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="265.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_183">
+        <ellipse cx="301.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="301.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_182">
+        <ellipse cx="337.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="337.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_181">
+        <ellipse cx="319.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="319.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_180">
+        <ellipse cx="283.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="283.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_179">
+        <ellipse cx="247.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="247.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_178">
+        <ellipse cx="229.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="229.5" cy="243" rx="13.5000215716756" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_177">
+        <ellipse cx="355.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="355.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_176">
+        <ellipse cx="373.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="373.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_185">
+        <line x1="255.53664" y1="217.76702" x2="302.2496" y2="175.72535" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_186">
+        <line x1="288.98435" y1="216.77348" x2="313.42405" y2="180.11392" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_187">
+        <line x1="321.47853" y1="216.0966" x2="328.74493" y2="183.3978" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_188">
+        <line x1="353.52147" y1="216.0966" x2="346.25507" y2="183.3978" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_194">
+        <rect x="9" y="0" width="135" height="90" fill="#589b9d"/>
+        <text transform="translate(14 35.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="39.98" y="15">Planet</tspan>
+        </text>
+      </g>
+      <g id="Graphic_195">
+        <rect x="9" y="90" width="135" height="90" fill="#70a3d8"/>
+        <text transform="translate(14 125.776)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="23.676" y="15">Continents</tspan>
+        </text>
+      </g>
+      <g id="Graphic_196">
+        <rect x="9" y="180" width="135" height="90" fill="#589b9d"/>
+        <text transform="translate(14 197.328)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="22.78" y="15">Mountains, </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="7.092" y="33.448">Forests, Rivers, </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="42.356" y="51.895996">Cities</tspan>
+        </text>
+      </g>
+      <g id="Graphic_197">
+        <rect x="9" y="270" width="135" height="90" fill="#70a3d8"/>
+        <text transform="translate(14 296.552)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="7.82" y="15">Building, Trees, </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="45.764" y="33.448">Cars</tspan>
+        </text>
+      </g>
+      <g id="Graphic_199">
+        <ellipse cx="252" cy="319.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="252" cy="319.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_202">
+        <ellipse cx="234" cy="310.5" rx="9.00001438111709" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="234" cy="310.5" rx="9.00001438111709" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_203">
+        <ellipse cx="270" cy="310.5" rx="9.00001438111709" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="270" cy="310.5" rx="9.00001438111709" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_204">
+        <ellipse cx="270" cy="328.5" rx="9.00001438111709" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="270" cy="328.5" rx="9.00001438111709" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_205">
+        <ellipse cx="234" cy="328.5" rx="9.00001438111709" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="234" cy="328.5" rx="9.00001438111709" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_210">
+        <ellipse cx="315" cy="319.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="315" cy="319.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_209">
+        <ellipse cx="297" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="297" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_208">
+        <ellipse cx="333" cy="310.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="333" cy="310.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_207">
+        <ellipse cx="333" cy="328.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="333" cy="328.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_206">
+        <ellipse cx="297" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="297" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_215">
+        <ellipse cx="378" cy="319.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="378" cy="319.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_214">
+        <ellipse cx="360" cy="310.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="360" cy="310.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_213">
+        <ellipse cx="396" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="396" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_212">
+        <ellipse cx="396" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="396" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_211">
+        <ellipse cx="360" cy="328.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="360" cy="328.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_220">
+        <ellipse cx="441" cy="319.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="441" cy="319.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_219">
+        <ellipse cx="423" cy="310.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="423" cy="310.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_218">
+        <ellipse cx="459" cy="310.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="459" cy="310.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_217">
+        <ellipse cx="459" cy="328.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="459" cy="328.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_216">
+        <ellipse cx="423" cy="328.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="423" cy="328.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_225">
+        <ellipse cx="504" cy="319.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="504" cy="319.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_224">
+        <ellipse cx="486" cy="310.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="486" cy="310.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_223">
+        <ellipse cx="522" cy="310.5" rx="9.00001438111707" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="522" cy="310.5" rx="9.00001438111707" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_222">
+        <ellipse cx="522" cy="328.5" rx="9.00001438111707" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="522" cy="328.5" rx="9.00001438111707" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_221">
+        <ellipse cx="486" cy="328.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="486" cy="328.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_230">
+        <ellipse cx="567" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="567" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_229">
+        <ellipse cx="549" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="549" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_228">
+        <ellipse cx="585" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="585" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_227">
+        <ellipse cx="585" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="585" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_226">
+        <ellipse cx="549" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="549" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_235">
+        <ellipse cx="630" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="630" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_234">
+        <ellipse cx="612" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="612" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_233">
+        <ellipse cx="648" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="648" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_232">
+        <ellipse cx="648" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="648" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_231">
+        <ellipse cx="612" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="612" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_240">
+        <ellipse cx="693" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="693" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_239">
+        <ellipse cx="675" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="675" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_238">
+        <ellipse cx="711" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="711" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_237">
+        <ellipse cx="711" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="711" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_236">
+        <ellipse cx="675" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="675" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_245">
+        <ellipse cx="756" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="756" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_244">
+        <ellipse cx="738" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="738" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_243">
+        <ellipse cx="774" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="774" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_242">
+        <ellipse cx="774" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="774" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_241">
+        <ellipse cx="738" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="738" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_250">
+        <ellipse cx="819" cy="319.5" rx="9.00001438111702" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="819" cy="319.5" rx="9.00001438111702" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_249">
+        <ellipse cx="801" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="801" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_248">
+        <ellipse cx="837" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="837" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_247">
+        <ellipse cx="837" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="837" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_246">
+        <ellipse cx="801" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="801" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_255">
+        <ellipse cx="882" cy="319.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="882" cy="319.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_254">
+        <ellipse cx="864" cy="310.5" rx="9.00001438111702" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="864" cy="310.5" rx="9.00001438111702" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_253">
+        <ellipse cx="900" cy="310.5" rx="9.00001438111702" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="900" cy="310.5" rx="9.00001438111702" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_252">
+        <ellipse cx="900" cy="328.5" rx="9.00001438111702" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="900" cy="328.5" rx="9.00001438111702" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_251">
+        <ellipse cx="864" cy="328.5" rx="9.00001438111702" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="864" cy="328.5" rx="9.00001438111702" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_260">
+        <ellipse cx="945" cy="319.5" rx="9.00001438111702" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="945" cy="319.5" rx="9.00001438111702" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_259">
+        <ellipse cx="927" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="927" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_258">
+        <ellipse cx="963" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="963" cy="310.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_257">
+        <ellipse cx="963" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="963" cy="328.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_256">
+        <ellipse cx="927" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="927" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_269">
+        <ellipse cx="985.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="985.5" cy="243" rx="13.5000215716757" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_268">
+        <ellipse cx="1021.5" cy="243" rx="13.5000215716755" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="1021.5" cy="243" rx="13.5000215716755" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_267">
+        <ellipse cx="1057.5" cy="243" rx="13.5000215716755" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="1057.5" cy="243" rx="13.5000215716755" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_266">
+        <ellipse cx="1039.5" cy="225" rx="13.5000215716754" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="1039.5" cy="225" rx="13.5000215716754" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_265">
+        <ellipse cx="1003.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="1003.5" cy="225" rx="13.5000215716757" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_264">
+        <ellipse cx="967.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="967.5" cy="225" rx="13.5000215716756" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_263">
+        <ellipse cx="949.5" cy="243" rx="13.5000215716755" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="949.5" cy="243" rx="13.5000215716755" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_262">
+        <ellipse cx="1075.5" cy="225" rx="13.5000215716753" ry="9.00001438111707" fill="#589b9d"/>
+        <ellipse cx="1075.5" cy="225" rx="13.5000215716753" ry="9.00001438111707" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_261">
+        <ellipse cx="1093.5" cy="243" rx="13.5000215716753" ry="9.0000143811171" fill="#589b9d"/>
+        <ellipse cx="1093.5" cy="243" rx="13.5000215716753" ry="9.0000143811171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_279">
+        <ellipse cx="1008" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1008" cy="319.5" rx="9.00001438111705" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_278">
+        <ellipse cx="990" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="990" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_277">
+        <ellipse cx="1026" cy="310.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1026" cy="310.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_276">
+        <ellipse cx="1026" cy="328.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1026" cy="328.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_275">
+        <ellipse cx="990" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="990" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_274">
+        <ellipse cx="1071" cy="319.5" rx="9.00001438111711" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1071" cy="319.5" rx="9.00001438111711" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_273">
+        <ellipse cx="1053" cy="310.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1053" cy="310.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_272">
+        <ellipse cx="1089" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1089" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_271">
+        <ellipse cx="1089" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1089" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_270">
+        <ellipse cx="1053" cy="328.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1053" cy="328.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_294">
+        <ellipse cx="1134" cy="319.5" rx="9.00001438111714" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1134" cy="319.5" rx="9.00001438111714" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_293">
+        <ellipse cx="1116" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1116" cy="310.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_292">
+        <ellipse cx="1152" cy="310.5" rx="9.0000143811172" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1152" cy="310.5" rx="9.0000143811172" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_291">
+        <ellipse cx="1152" cy="328.5" rx="9.0000143811172" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1152" cy="328.5" rx="9.0000143811172" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_290">
+        <ellipse cx="1116" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="1116" cy="328.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_304">
+        <ellipse cx="189" cy="319.5" rx="9.00001438111708" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="189" cy="319.5" rx="9.00001438111708" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_303">
+        <ellipse cx="171" cy="310.5" rx="9.00001438111707" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="171" cy="310.5" rx="9.00001438111707" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_302">
+        <ellipse cx="207" cy="310.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="207" cy="310.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_301">
+        <ellipse cx="207" cy="328.5" rx="9.0000143811171" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="207" cy="328.5" rx="9.0000143811171" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_300">
+        <ellipse cx="171" cy="328.5" rx="9.00001438111707" ry="4.50000719055854" fill="#70a3d8"/>
+        <ellipse cx="171" cy="328.5" rx="9.00001438111707" ry="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_305">
+        <line x1="432.98435" y1="216.77348" x2="457.42405" y2="180.11392" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_306">
+        <line x1="465.47853" y1="216.0966" x2="472.74493" y2="183.3978" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_307">
+        <line x1="497.52147" y1="216.0966" x2="490.25507" y2="183.3978" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_308">
+        <line x1="530.01565" y1="216.77348" x2="505.57595" y2="180.11392" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_309">
+        <line x1="612.5948" y1="216.663" x2="634.4904" y2="180.83394" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_310">
+        <line x1="644.9909" y1="216.05471" x2="650.3947" y2="183.6318" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_311">
+        <line x1="677.0416" y1="216.14964" x2="667.8817" y2="183.17417" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_312">
+        <line x1="709.6419" y1="216.88878" x2="682.898" y2="179.85873" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_313">
+        <line x1="793.3581" y1="216.88878" x2="820.102" y2="179.85873" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_314">
+        <line x1="825.9584" y1="216.14964" x2="835.1183" y2="183.17417" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_315">
+        <line x1="858.0091" y1="216.05471" x2="852.6053" y2="183.6318" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_316">
+        <line x1="890.4052" y1="216.663" x2="868.5096" y2="180.83394" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_317">
+        <line x1="972.5948" y1="216.663" x2="994.4904" y2="180.83394" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_318">
+        <line x1="1004.9909" y1="216.05471" x2="1010.3947" y2="183.6318" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_319">
+        <line x1="1037.0416" y1="216.14964" x2="1027.8817" y2="183.17417" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_320">
+        <line x1="1069.6419" y1="216.88878" x2="1042.898" y2="179.85873" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_321">
+        <line x1="174.57942" y1="306.3699" x2="214.29598" y2="260.5431" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_322">
+        <line x1="208.4797" y1="306.0609" x2="222.49173" y2="264.0248" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_323">
+        <line x1="236.04534" y1="306.11712" x2="256.03357" y2="263.2852" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_324">
+        <line x1="269.70017" y1="306.00248" x2="266.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_325">
+        <line x1="297.29983" y1="306.00248" x2="300.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_326">
+        <line x1="333.29983" y1="306.00248" x2="336.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_327">
+        <line x1="360.89556" y1="306.0222" x2="369.1858" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_330">
+        <line x1="396.89556" y1="306.0222" x2="405.1858" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_331">
+        <line x1="422.10444" y1="306.0222" x2="413.8142" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_332">
+        <line x1="458.10444" y1="306.0222" x2="449.8142" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_333">
+        <line x1="485.70017" y1="306.00248" x2="482.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_334">
+        <line x1="521.70017" y1="306.00248" x2="518.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_335">
+        <line x1="549.29983" y1="306.00248" x2="552.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_336">
+        <line x1="585.2998" y1="306.00248" x2="588.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_337">
+        <line x1="612.89556" y1="306.0222" x2="621.1858" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_338">
+        <line x1="648.89556" y1="306.0222" x2="657.1858" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_339">
+        <line x1="676.4797" y1="306.0609" x2="690.4917" y2="264.0248" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_340">
+        <line x1="712.4797" y1="306.0609" x2="726.4917" y2="264.0248" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_341">
+        <line x1="737.7002" y1="306.00248" x2="734.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_342">
+        <line x1="773.7002" y1="306.00248" x2="770.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_343">
+        <line x1="801.2998" y1="306.00248" x2="804.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_344">
+        <line x1="837.2998" y1="306.00248" x2="840.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_345">
+        <line x1="864.8956" y1="306.0222" x2="873.1858" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_346">
+        <line x1="898.5203" y1="306.0609" x2="884.5083" y2="264.0248" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_347">
+        <line x1="926.1044" y1="306.0222" x2="917.8142" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_348">
+        <line x1="962.1044" y1="306.0222" x2="953.8142" y2="264.571" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_349">
+        <line x1="989.7002" y1="306.00248" x2="986.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_350">
+        <line x1="1025.7002" y1="306.00248" x2="1022.9575" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_351">
+        <line x1="1053.2998" y1="306.00248" x2="1056.0425" y2="264.8626" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_352">
+        <line x1="1086.9547" y1="306.11712" x2="1066.9664" y2="263.2852" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_353">
+        <line x1="1114.3899" y1="306.0722" x2="1102.4085" y2="273.12334" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_354">
+        <line x1="1143" y1="306" x2="1107.7357" y2="261.11812" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_370">
+        <ellipse cx="252" cy="337.5" rx="9.0000143811171" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="252" cy="337.5" rx="9.0000143811171" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_369">
+        <ellipse cx="315" cy="337.5" rx="9.00001438111711" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="315" cy="337.5" rx="9.00001438111711" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_368">
+        <ellipse cx="378" cy="337.5" rx="9.0000143811171" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="378" cy="337.5" rx="9.0000143811171" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_367">
+        <ellipse cx="441" cy="337.5" rx="9.00001438111711" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="441" cy="337.5" rx="9.00001438111711" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_366">
+        <ellipse cx="504" cy="337.5" rx="9.0000143811171" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="504" cy="337.5" rx="9.0000143811171" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_365">
+        <ellipse cx="567" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="567" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_364">
+        <ellipse cx="630" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="630" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_363">
+        <ellipse cx="693" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="693" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_362">
+        <ellipse cx="756" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="756" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_361">
+        <ellipse cx="819" cy="337.5" rx="9.00001438111702" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="819" cy="337.5" rx="9.00001438111702" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_360">
+        <ellipse cx="882" cy="337.5" rx="9.00001438111708" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="882" cy="337.5" rx="9.00001438111708" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_359">
+        <ellipse cx="945" cy="337.5" rx="9.00001438111702" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="945" cy="337.5" rx="9.00001438111702" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_358">
+        <ellipse cx="1008" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="1008" cy="337.5" rx="9.00001438111705" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_357">
+        <ellipse cx="1071" cy="337.5" rx="9.00001438111711" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="1071" cy="337.5" rx="9.00001438111711" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_356">
+        <ellipse cx="1134" cy="337.5" rx="9.00001438111714" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="1134" cy="337.5" rx="9.00001438111714" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_355">
+        <ellipse cx="189" cy="337.5" rx="9.00001438111708" ry="4.50000719055853" fill="#70a3d8"/>
+        <ellipse cx="189" cy="337.5" rx="9.00001438111708" ry="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_371">
+        <circle cx="166.5" cy="391.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="166.5" cy="391.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_372">
+        <circle cx="175.5" cy="400.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="175.5" cy="400.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_373">
+        <circle cx="184.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="184.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_374">
+        <circle cx="193.5" cy="400.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="193.5" cy="400.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_375">
+        <circle cx="184.5" cy="391.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="184.5" cy="391.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_376">
+        <circle cx="166.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="166.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_377">
+        <circle cx="175.5" cy="418.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="175.5" cy="418.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_378">
+        <circle cx="193.5" cy="418.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="193.5" cy="418.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_379">
+        <circle cx="202.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="202.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_380">
+        <circle cx="202.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="202.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_384">
+        <circle cx="184.5" cy="427.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="184.5" cy="427.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_383">
+        <circle cx="166.5" cy="427.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="166.5" cy="427.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_382">
+        <circle cx="202.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="202.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_397">
+        <circle cx="220.5" cy="391.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="220.5" cy="391.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_396">
+        <circle cx="229.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="229.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_395">
+        <circle cx="238.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="238.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_394">
+        <circle cx="247.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="247.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_393">
+        <circle cx="238.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="238.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_392">
+        <circle cx="220.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="220.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_391">
+        <circle cx="229.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="229.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_390">
+        <circle cx="247.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="247.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_389">
+        <circle cx="256.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="256.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_388">
+        <circle cx="256.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="256.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_387">
+        <circle cx="238.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="238.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_386">
+        <circle cx="220.5" cy="427.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="220.5" cy="427.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_385">
+        <circle cx="256.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="256.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_410">
+        <circle cx="274.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="274.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_409">
+        <circle cx="283.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="283.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_408">
+        <circle cx="292.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="292.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_407">
+        <circle cx="301.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="301.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_406">
+        <circle cx="292.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="292.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_405">
+        <circle cx="274.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="274.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_404">
+        <circle cx="283.5" cy="418.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="283.5" cy="418.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_403">
+        <circle cx="301.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="301.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_402">
+        <circle cx="310.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="310.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_401">
+        <circle cx="310.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="310.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_400">
+        <circle cx="292.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="292.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_399">
+        <circle cx="274.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="274.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_398">
+        <circle cx="310.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="310.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_423">
+        <circle cx="328.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="328.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_422">
+        <circle cx="337.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="337.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_421">
+        <circle cx="346.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="346.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_420">
+        <circle cx="355.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="355.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_419">
+        <circle cx="346.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="346.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_418">
+        <circle cx="328.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="328.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_417">
+        <circle cx="337.5" cy="418.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="337.5" cy="418.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_416">
+        <circle cx="355.5" cy="418.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="355.5" cy="418.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_415">
+        <circle cx="364.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="364.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_414">
+        <circle cx="364.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="364.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_413">
+        <circle cx="346.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="346.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_412">
+        <circle cx="328.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="328.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_411">
+        <circle cx="364.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="364.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_436">
+        <circle cx="382.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="382.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_435">
+        <circle cx="391.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="391.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_434">
+        <circle cx="400.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="400.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_433">
+        <circle cx="409.5" cy="400.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="409.5" cy="400.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_432">
+        <circle cx="400.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="400.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_431">
+        <circle cx="382.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="382.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_430">
+        <circle cx="391.5" cy="418.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="391.5" cy="418.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_429">
+        <circle cx="409.5" cy="418.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="409.5" cy="418.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_428">
+        <circle cx="418.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="418.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_427">
+        <circle cx="418.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="418.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_426">
+        <circle cx="400.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="400.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_425">
+        <circle cx="382.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="382.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_424">
+        <circle cx="418.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="418.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_449">
+        <circle cx="436.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="436.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_448">
+        <circle cx="445.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="445.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_447">
+        <circle cx="454.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="454.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_446">
+        <circle cx="463.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="463.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_445">
+        <circle cx="454.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="454.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_444">
+        <circle cx="436.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="436.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_443">
+        <circle cx="445.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="445.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_442">
+        <circle cx="463.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="463.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_441">
+        <circle cx="472.5" cy="409.5" r="4.50000719055851" fill="#589b9d"/>
+        <circle cx="472.5" cy="409.5" r="4.50000719055851" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_440">
+        <circle cx="472.5" cy="391.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="472.5" cy="391.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_439">
+        <circle cx="454.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="454.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_438">
+        <circle cx="436.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="436.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_437">
+        <circle cx="472.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="472.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_462">
+        <circle cx="490.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="490.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_461">
+        <circle cx="499.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="499.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_460">
+        <circle cx="508.5" cy="409.5" r="4.5000071905585" fill="#589b9d"/>
+        <circle cx="508.5" cy="409.5" r="4.5000071905585" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_459">
+        <circle cx="517.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="517.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_458">
+        <circle cx="508.5" cy="391.5" r="4.50000719055851" fill="#589b9d"/>
+        <circle cx="508.5" cy="391.5" r="4.50000719055851" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_457">
+        <circle cx="490.5" cy="409.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="490.5" cy="409.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_456">
+        <circle cx="499.5" cy="418.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="499.5" cy="418.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_455">
+        <circle cx="517.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="517.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_454">
+        <circle cx="526.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="526.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_453">
+        <circle cx="526.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="526.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_452">
+        <circle cx="508.5" cy="427.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="508.5" cy="427.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_451">
+        <circle cx="490.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="490.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_450">
+        <circle cx="526.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="526.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_475">
+        <circle cx="544.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="544.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_474">
+        <circle cx="553.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="553.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_473">
+        <circle cx="562.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="562.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_472">
+        <circle cx="571.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="571.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_471">
+        <circle cx="562.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="562.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_470">
+        <circle cx="544.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="544.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_469">
+        <circle cx="553.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="553.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_468">
+        <circle cx="571.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="571.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_467">
+        <circle cx="580.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="580.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_466">
+        <circle cx="580.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="580.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_465">
+        <circle cx="562.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="562.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_464">
+        <circle cx="544.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="544.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_463">
+        <circle cx="580.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="580.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_488">
+        <circle cx="598.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="598.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_487">
+        <circle cx="607.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="607.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_486">
+        <circle cx="616.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="616.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_485">
+        <circle cx="625.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="625.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_484">
+        <circle cx="616.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="616.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_483">
+        <circle cx="598.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="598.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_482">
+        <circle cx="607.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="607.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_481">
+        <circle cx="625.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="625.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_480">
+        <circle cx="634.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="634.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_479">
+        <circle cx="634.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="634.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_478">
+        <circle cx="616.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="616.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_477">
+        <circle cx="598.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="598.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_476">
+        <circle cx="634.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="634.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_501">
+        <circle cx="652.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="652.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_500">
+        <circle cx="661.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="661.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_499">
+        <circle cx="670.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="670.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_498">
+        <circle cx="679.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="679.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_497">
+        <circle cx="670.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="670.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_496">
+        <circle cx="652.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="652.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_495">
+        <circle cx="661.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="661.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_494">
+        <circle cx="679.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="679.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_493">
+        <circle cx="688.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="688.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_492">
+        <circle cx="688.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="688.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_491">
+        <circle cx="670.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="670.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_490">
+        <circle cx="652.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="652.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_489">
+        <circle cx="688.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="688.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_514">
+        <circle cx="706.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="706.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_513">
+        <circle cx="715.5" cy="400.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="715.5" cy="400.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_512">
+        <circle cx="724.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="724.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_511">
+        <circle cx="733.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="733.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_510">
+        <circle cx="724.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="724.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_509">
+        <circle cx="706.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="706.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_508">
+        <circle cx="715.5" cy="418.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="715.5" cy="418.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_507">
+        <circle cx="733.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="733.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_506">
+        <circle cx="742.5" cy="409.5" r="4.50000719055851" fill="#589b9d"/>
+        <circle cx="742.5" cy="409.5" r="4.50000719055851" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_505">
+        <circle cx="742.5" cy="391.5" r="4.50000719055852" fill="#589b9d"/>
+        <circle cx="742.5" cy="391.5" r="4.50000719055852" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_504">
+        <circle cx="724.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="724.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_503">
+        <circle cx="706.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="706.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_502">
+        <circle cx="742.5" cy="427.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="742.5" cy="427.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_527">
+        <circle cx="760.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="760.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_526">
+        <circle cx="769.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="769.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_525">
+        <circle cx="778.5" cy="409.5" r="4.5000071905585" fill="#589b9d"/>
+        <circle cx="778.5" cy="409.5" r="4.5000071905585" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_524">
+        <circle cx="787.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="787.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_523">
+        <circle cx="778.5" cy="391.5" r="4.5000071905585" fill="#589b9d"/>
+        <circle cx="778.5" cy="391.5" r="4.5000071905585" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_522">
+        <circle cx="760.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="760.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_521">
+        <circle cx="769.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="769.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_520">
+        <circle cx="787.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="787.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_519">
+        <circle cx="796.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="796.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_518">
+        <circle cx="796.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="796.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_517">
+        <circle cx="778.5" cy="427.5" r="4.50000719055851" fill="#589b9d"/>
+        <circle cx="778.5" cy="427.5" r="4.50000719055851" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_516">
+        <circle cx="760.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="760.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_515">
+        <circle cx="796.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="796.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_540">
+        <circle cx="814.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="814.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_539">
+        <circle cx="823.5" cy="400.5" r="4.5000071905585" fill="#589b9d"/>
+        <circle cx="823.5" cy="400.5" r="4.5000071905585" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_538">
+        <circle cx="832.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="832.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_537">
+        <circle cx="841.5" cy="400.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="841.5" cy="400.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_536">
+        <circle cx="832.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="832.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_535">
+        <circle cx="814.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="814.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_534">
+        <circle cx="823.5" cy="418.5" r="4.50000719055851" fill="#589b9d"/>
+        <circle cx="823.5" cy="418.5" r="4.50000719055851" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_533">
+        <circle cx="841.5" cy="418.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="841.5" cy="418.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_532">
+        <circle cx="850.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="850.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_531">
+        <circle cx="850.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="850.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_530">
+        <circle cx="832.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="832.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_529">
+        <circle cx="814.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="814.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_528">
+        <circle cx="850.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="850.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_553">
+        <circle cx="868.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="868.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_552">
+        <circle cx="877.5" cy="400.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="877.5" cy="400.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_551">
+        <circle cx="886.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="886.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_550">
+        <circle cx="895.5" cy="400.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="895.5" cy="400.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_549">
+        <circle cx="886.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="886.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_548">
+        <circle cx="868.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="868.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_547">
+        <circle cx="877.5" cy="418.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="877.5" cy="418.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_546">
+        <circle cx="895.5" cy="418.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="895.5" cy="418.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_545">
+        <circle cx="904.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="904.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_544">
+        <circle cx="904.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="904.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_543">
+        <circle cx="886.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="886.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_542">
+        <circle cx="868.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="868.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_541">
+        <circle cx="904.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="904.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_566">
+        <circle cx="922.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="922.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_565">
+        <circle cx="931.5" cy="400.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="931.5" cy="400.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_564">
+        <circle cx="940.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="940.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_563">
+        <circle cx="949.5" cy="400.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="949.5" cy="400.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_562">
+        <circle cx="940.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="940.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_561">
+        <circle cx="922.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="922.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_560">
+        <circle cx="931.5" cy="418.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="931.5" cy="418.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_559">
+        <circle cx="949.5" cy="418.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="949.5" cy="418.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_558">
+        <circle cx="958.5" cy="409.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="958.5" cy="409.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_557">
+        <circle cx="958.5" cy="391.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="958.5" cy="391.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_556">
+        <circle cx="940.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="940.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_555">
+        <circle cx="922.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="922.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_554">
+        <circle cx="958.5" cy="427.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="958.5" cy="427.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_579">
+        <circle cx="976.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="976.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_578">
+        <circle cx="985.5" cy="400.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="985.5" cy="400.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_577">
+        <circle cx="994.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="994.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_576">
+        <circle cx="1003.5" cy="400.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="1003.5" cy="400.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_575">
+        <circle cx="994.5" cy="391.5" r="4.50000719055855" fill="#589b9d"/>
+        <circle cx="994.5" cy="391.5" r="4.50000719055855" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_574">
+        <circle cx="976.5" cy="409.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="976.5" cy="409.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_573">
+        <circle cx="985.5" cy="418.5" r="4.50000719055857" fill="#589b9d"/>
+        <circle cx="985.5" cy="418.5" r="4.50000719055857" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_572">
+        <circle cx="1003.5" cy="418.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="1003.5" cy="418.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_571">
+        <circle cx="1012.5" cy="409.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="1012.5" cy="409.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_570">
+        <circle cx="1012.5" cy="391.5" r="4.50000719055853" fill="#589b9d"/>
+        <circle cx="1012.5" cy="391.5" r="4.50000719055853" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_569">
+        <circle cx="994.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="994.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_568">
+        <circle cx="976.5" cy="427.5" r="4.50000719055856" fill="#589b9d"/>
+        <circle cx="976.5" cy="427.5" r="4.50000719055856" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_567">
+        <circle cx="1012.5" cy="427.5" r="4.50000719055854" fill="#589b9d"/>
+        <circle cx="1012.5" cy="427.5" r="4.50000719055854" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_592">
+        <circle cx="1030.5" cy="391.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1030.5" cy="391.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_591">
+        <circle cx="1039.5" cy="400.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1039.5" cy="400.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_590">
+        <circle cx="1048.5" cy="409.5" r="4.5000071905585" fill="#589b9d"/>
+        <circle cx="1048.5" cy="409.5" r="4.5000071905585" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_589">
+        <circle cx="1057.5" cy="400.5" r="4.50000719055841" fill="#589b9d"/>
+        <circle cx="1057.5" cy="400.5" r="4.50000719055841" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_588">
+        <circle cx="1048.5" cy="391.5" r="4.5000071905585" fill="#589b9d"/>
+        <circle cx="1048.5" cy="391.5" r="4.5000071905585" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_587">
+        <circle cx="1030.5" cy="409.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1030.5" cy="409.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_586">
+        <circle cx="1039.5" cy="418.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1039.5" cy="418.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_585">
+        <circle cx="1057.5" cy="418.5" r="4.50000719055842" fill="#589b9d"/>
+        <circle cx="1057.5" cy="418.5" r="4.50000719055842" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_584">
+        <circle cx="1066.5" cy="409.5" r="4.50000719055843" fill="#589b9d"/>
+        <circle cx="1066.5" cy="409.5" r="4.50000719055843" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_583">
+        <circle cx="1066.5" cy="391.5" r="4.50000719055844" fill="#589b9d"/>
+        <circle cx="1066.5" cy="391.5" r="4.50000719055844" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_582">
+        <circle cx="1048.5" cy="427.5" r="4.50000719055851" fill="#589b9d"/>
+        <circle cx="1048.5" cy="427.5" r="4.50000719055851" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_581">
+        <circle cx="1030.5" cy="427.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1030.5" cy="427.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_580">
+        <circle cx="1066.5" cy="427.5" r="4.50000719055845" fill="#589b9d"/>
+        <circle cx="1066.5" cy="427.5" r="4.50000719055845" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_605">
+        <circle cx="1084.5" cy="391.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1084.5" cy="391.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_604">
+        <circle cx="1093.5" cy="400.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1093.5" cy="400.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_603">
+        <circle cx="1102.5" cy="409.5" r="4.5000071905584" fill="#589b9d"/>
+        <circle cx="1102.5" cy="409.5" r="4.5000071905584" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_602">
+        <circle cx="1111.5" cy="400.5" r="4.50000719055844" fill="#589b9d"/>
+        <circle cx="1111.5" cy="400.5" r="4.50000719055844" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_601">
+        <circle cx="1102.5" cy="391.5" r="4.50000719055841" fill="#589b9d"/>
+        <circle cx="1102.5" cy="391.5" r="4.50000719055841" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_600">
+        <circle cx="1084.5" cy="409.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1084.5" cy="409.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_599">
+        <circle cx="1093.5" cy="418.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1093.5" cy="418.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_598">
+        <circle cx="1111.5" cy="418.5" r="4.50000719055845" fill="#589b9d"/>
+        <circle cx="1111.5" cy="418.5" r="4.50000719055845" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_597">
+        <circle cx="1120.5" cy="409.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1120.5" cy="409.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_596">
+        <circle cx="1120.5" cy="391.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1120.5" cy="391.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_595">
+        <circle cx="1102.5" cy="427.5" r="4.50000719055842" fill="#589b9d"/>
+        <circle cx="1102.5" cy="427.5" r="4.50000719055842" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_594">
+        <circle cx="1084.5" cy="427.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1084.5" cy="427.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_593">
+        <circle cx="1120.5" cy="427.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1120.5" cy="427.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_618">
+        <circle cx="1138.5" cy="391.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1138.5" cy="391.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_617">
+        <circle cx="1147.5" cy="400.5" r="4.50000719055841" fill="#589b9d"/>
+        <circle cx="1147.5" cy="400.5" r="4.50000719055841" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_616">
+        <circle cx="1156.5" cy="409.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1156.5" cy="409.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_615">
+        <circle cx="1165.5" cy="400.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1165.5" cy="400.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_614">
+        <circle cx="1156.5" cy="391.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1156.5" cy="391.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_613">
+        <circle cx="1138.5" cy="409.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1138.5" cy="409.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_612">
+        <circle cx="1147.5" cy="418.5" r="4.50000719055842" fill="#589b9d"/>
+        <circle cx="1147.5" cy="418.5" r="4.50000719055842" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_611">
+        <circle cx="1165.5" cy="418.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1165.5" cy="418.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_610">
+        <circle cx="1174.5" cy="409.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1174.5" cy="409.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_609">
+        <circle cx="1174.5" cy="391.5" r="4.50000719055847" fill="#589b9d"/>
+        <circle cx="1174.5" cy="391.5" r="4.50000719055847" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_608">
+        <circle cx="1156.5" cy="427.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1156.5" cy="427.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_607">
+        <circle cx="1138.5" cy="427.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1138.5" cy="427.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_606">
+        <circle cx="1174.5" cy="427.5" r="4.50000719055848" fill="#589b9d"/>
+        <circle cx="1174.5" cy="427.5" r="4.50000719055848" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_632">
+        <rect x="9" y="360" width="135" height="90" fill="#589b9d"/>
+        <text transform="translate(14 377.328)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.292" y="15">Chair, Lamps, </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.268" y="33.448">Leaves, Wheels, </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="37.316" y="51.895996">Mirrors</tspan>
+        </text>
+      </g>
+      <g id="Line_633">
+        <line x1="168.23122" y1="387.34506" x2="182.20266" y2="353.8136" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>
