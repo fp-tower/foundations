@@ -5,77 +5,31 @@
 ## Target audience
 
 1. New Scala developers 
-2. Experienced Scala developers who mostly used the object-oriented side of Scala
-
-We had both successes with people utterly new to Scala and Scala developers with more 
-than eight years of experience. The course will be useful to you except if you are already 
-an expert in functional programming.
+2. Experienced Scala developers who are more familiar with the OOP side of Scala
 
 ## Requirements
 
-Some familiarity with Scala syntax. For example, a couple of month of professional experience 
-in Scala or attending a Scala [MOOC](https://www.coursera.org/learn/progfun1)
+Some basic understanding of Scala syntax.
 
 ## Course content
 
-### Module 1: [Function](https://fp-tower.github.io/foundation/1-Function.html#1)
+### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
 
-Scala is a language with first-class functions. This simple fact has a tremendous impact on how we program. 
-In this module, we analyse the various syntax and concepts around functions in Scala. 
-We also look at what is the functional programming subset of Scala and what are the benefits and 
-restrictions of using it.
+### Chapter 1: Functions
 
-**Objectives**:
-* Getting familiar with the various function encodings in Scala (val/def, curried/uncurried, lazy/strict parameters).
-* Understand rules of type inference.
-* Learn to detect if a function satisfies the functional programming subset.
+1. [Val vs Def functions](https://fp-tower.github.io/foundation/val-vs-def-functions.html#1)
+1. [Function as inputs](https://fp-tower.github.io/foundation/function-as-inputs.html#1)
+1. `ValueFunctionExercises.scala`
+1. [Parametric functions - part 1](https://fp-tower.github.io/foundation/parametric-functions-part-1.html#1)
+1. [Parametric functions - part 2](https://fp-tower.github.io/foundation/parametric-functions-part-2.html#1)
+1. `ParametricFunctionExercises.scala`
 
-### Module 2: [Side Effect](https://fp-tower.github.io/foundation/2-SideEffect.html#1)
+### Chapter 2: Actions
 
-Functional programming is considerably restrictive. For example, we cannot do any actions like sending 
-an email to our users or update a record in the database. Yet, that's something we need to do in our daily
-job. In this section, we will discuss the workarounds functional programmers found to interact with the
-outside world while respecting the limitation of functional programming. In particular, we examine Thunk,
-IO and some initiation to concurrency.
+### Bonus section
 
-**Objectives**:
-* Being able to write an entire program following functional programming principles.
-* Learn how to test IO and laziness.
-* Getting familiar with abstract API based on type parameters.
-
-## FAQ
-
-### Where should I start?
-
-Each module has:
-* A set of slides (linked above) located at `docs/$module.html`
-* One or more Scala objects containing exercises located at `exercises/src/main/scala/exercises/$module/...Exercises.scala`
-* One or more Scala objects containing all answers located at `exercises/src/main/scala/answers/$module/...Answers.scala`
-* Two test suites (one for exercises, one for answers) located at `exercises/src/test/scala/exercises/$module/...Test.scala`
-
-Start each module with the slides, at some point you will be prompted to work on some exercises. 
-Do the exercises and check your answers are correct by running the tests for this module.
-Finally, go back to the slides and repeat the process.
-
-### How to run the tests?
-
-```bash
-sbt testExercises$X
-```
-
-For example tests for Error Handling module (module 2) is run with:
-
-```bash
-sbt testExercises2
-```
-
-### Is this course free?
-
-Yes, the material is open source and it uses a permissive licence [CC-BY-SA-4.0][licence].
-However, the slides and exercises are currently made to be run by a trainer. Eventually, we aim to create an online 
-version of this course. It will most likely be available mid or end of 2020.
-
-We do encourage people who enjoy the course to make a donation using [patreon][patreon].
+1. [List](https://fp-tower.github.io/foundation/list.html#1)
+1. [Ad-hoc-polymorphism](https://fp-tower.github.io/foundation/ad-hoc-polymorphism.html#1)
 
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 [patreon]: https://www.patreon.com/bePatron?u=10482033
