@@ -15,20 +15,12 @@ class: center, middle, white
 .title[Val vs Def functions]
 
 ---
-layout: true
-
-<div class="footer">
-  <a href="https://github.com/fp-tower/foundation">
-    <img src="img/fp-tower/symbol-solid-gray-b3b3b3.svg" alt="logo" style="width:100px;"/>
-  </a>
-</div>
-
-
----
-# Functions
+class: medium-code
 
 .pull-left[
-## Val function (Lambda)
+# Val function (Lambda)
+
+<br>
 
 ```scala
 val replicate: (Int, String) => String =
@@ -48,7 +40,9 @@ replicate(3, "Hello ")
 ]
 
 .pull-right[
-## Def function (Method)
+# Def function (Method)
+
+<br>
 
 ```scala
 def replicate(n: Int, text: String): String =
@@ -152,6 +146,8 @@ functions(2)(10)
 ```
 
 ---
+class: medium-code
+
 # Val function desugared
 
 <br>
@@ -161,6 +157,8 @@ val replicate: (Int, String) => String = (n: Int, text: String) => List.fill(n)(
 ```
 
 ---
+class: medium-code
+
 # Val function desugared
 
 <br>
@@ -169,7 +167,6 @@ val replicate: (Int, String) => String = (n: Int, text: String) => List.fill(n)(
 val replicate: (Int, String) => String        = (n: Int, text: String) => List.fill(n)(text).mkString
 ```
 
-<br>
 <br>
 
 ```scala mdoc:reset:silent
@@ -177,6 +174,8 @@ val replicate: Function2[Int, String, String] = (n: Int, text: String) => List.f
 ```
 
 ---
+class: medium-code
+
 # Val function desugared
 
 <br>
@@ -185,7 +184,6 @@ val replicate: Function2[Int, String, String] = (n: Int, text: String) => List.f
 val replicate: (Int, String) => String        = (n: Int, text: String) => List.fill(n)(text).mkString
 ```
 
-<br>
 <br>
 
 ```scala mdoc:reset:silent
@@ -195,17 +193,107 @@ val replicate: Function2[Int, String, String] = new Function2[Int, String, Strin
 }
 ```
 
---
+---
+class: medium-code
 
-```scala mdoc
-replicate.apply(3, "Hello ")
+# SAM (Single Abstract Method)
+
+<br>
+
+```scala mdoc:silent
+trait Printer {
+  def print(message: String): Unit
+}
 ```
 
+.pull-left[
+## SAM syntax
+
+```scala mdoc:silent
+val console: Printer =
+  (message: String) => println(message)
+```
+]
+
+.pull-right[
+## Standard syntax
+```scala mdoc:reset:invisible
+trait Printer {
+  def print(message: String): Unit
+}
+```
+
+```scala mdoc:silent
+val console: Printer = new Printer {
+  def print(message: String): Unit =
+    println(message)
+}
+```
+]
+
+---
+class: medium-code
+
+# Val function desugared
+
+.pull-left[
+## SAM syntax
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String =
+  (n: Int, text: String) =>
+    List.fill(n)(text).mkString
+```
+]
+
+.pull-right[
+## Standard syntax
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String =
+  new Function2[Int, String, String] {
+    def apply(n: Int, text: String): String =
+       List.fill(n)(text).mkString
+  }
+```
+]
+
 --
 
+<br><br><br><br><br><br><br><br><br><br>
+
+.pull-left[
 ```scala mdoc
 replicate(3, "Hello ")
+
+replicate.apply(3, "Hello ")
 ```
+]
+
+---
+class: medium-code
+
+# Apply syntax
+
+<br>
+
+```scala mdoc:reset:silent
+trait Printer {
+  def apply(message: String): Unit
+}
+
+val console: Printer = new Printer {
+  def apply(message: String) = println(message)
+}
+```
+
+<br>
+
+```scala mdoc
+console("Hello World!")
+```
+
+
 
 ---
 # Def function (Method)
@@ -233,7 +321,7 @@ createDate(2020, 1, 5)
 ```
 
 ---
-# Function arguments
+# Arguments
 
 <br>
 
@@ -259,6 +347,7 @@ val createDateVal: (Int, Int, Int) => LocalDate =
 ```
 
 ---
+class: center
 
 <br>
 
