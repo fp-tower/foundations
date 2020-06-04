@@ -13,23 +13,23 @@ Some basic understanding of Scala syntax.
 
 ## Course content
 
-### [Introduction](https://fp-tower.github.io/foundation/index.html#1)
+### [Introduction](https://fp-tower.github.io/foundations/index.html#1)
 
 ### Chapter 1: Functions
 
-1. [Val vs Def functions](https://fp-tower.github.io/foundation/val-vs-def-functions.html#1)
-1. [Function as inputs](https://fp-tower.github.io/foundation/function-as-inputs.html#1)
+1. [Val vs Def functions](https://fp-tower.github.io/foundations/val-vs-def-functions.html#1)
+1. [Function as inputs](https://fp-tower.github.io/foundations/function-as-inputs.html#1)
 1. `ValueFunctionExercises.scala`
-1. [Parametric functions - part 1](https://fp-tower.github.io/foundation/parametric-functions-part-1.html#1)
-1. [Parametric functions - part 2](https://fp-tower.github.io/foundation/parametric-functions-part-2.html#1)
+1. [Parametric functions - part 1](https://fp-tower.github.io/foundations/parametric-functions-part-1.html#1)
+1. [Parametric functions - part 2](https://fp-tower.github.io/foundations/parametric-functions-part-2.html#1)
 1. `ParametricFunctionExercises.scala`
 
 ### Chapter 2: Actions
 
 ### Bonus section
 
-1. [List](https://fp-tower.github.io/foundation/list.html#1)
-1. [Ad-hoc-polymorphism](https://fp-tower.github.io/foundation/ad-hoc-polymorphism.html#1)
+1. [List](https://fp-tower.github.io/foundations/list.html#1)
+1. [Ad-hoc-polymorphism](https://fp-tower.github.io/foundations/ad-hoc-polymorphism.html#1)
 
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 [patreon]: https://www.patreon.com/bePatron?u=10482033
