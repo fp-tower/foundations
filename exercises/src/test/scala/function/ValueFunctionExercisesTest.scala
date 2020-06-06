@@ -12,8 +12,8 @@ class ValueFunctionExercisesTest extends AnyFunSuite with Matchers with ScalaChe
   /////////////////////////////////////////////////////
 
   test("selectDigits") {
-    selectDigits("123foo0-!Bar~+3") shouldEqual "12303"
-    selectDigits("hello") shouldEqual ""
+    assert(selectDigits("hello4world-80") == "480")
+    assert(selectDigits("welcome") == "")
   }
 
   test("selectDigits length is smaller") {
@@ -21,5 +21,9 @@ class ValueFunctionExercisesTest extends AnyFunSuite with Matchers with ScalaChe
       assert(selectDigits(text).length <= text.length)
     }
   }
+
+  ///////////////////////
+  // Exercise 2: Point3
+  ///////////////////////
 
 }

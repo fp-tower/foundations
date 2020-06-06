@@ -7,9 +7,9 @@ object ValueFunctionExercises {
   /////////////////////////////////////////////////////
 
   // 1a. Implement `selectDigits` which iterates over a String and only keep the characters that are digits.
-  // such as selectDigits("123foo0-!Bar~+3") == "12303"
-  // but     selectDigits("hello") == ""
-  // Note: You can use `filter` method from `String`, also check out the API of Char
+  // such as selectDigits("hello4world-80") == "480"
+  // but     selectDigits("welcome") == ""
+  // Note: You can use `filter` method from `String`, also check out the API of `Char`
   def selectDigits(text: String): String =
     ???
 

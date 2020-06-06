@@ -2,18 +2,17 @@ package answers.function
 
 import answers.function.ValueFunctionAnswers._
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class ValueFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
+class ValueFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   /////////////////////////////////////////////////////
   // Exercise 1: String API with higher-order functions
   /////////////////////////////////////////////////////
 
   test("selectDigits") {
-    selectDigits("123foo0-!Bar~+3") shouldEqual "12303"
-    selectDigits("hello") shouldEqual ""
+    assert(selectDigits("hello4world-80") == "480")
+    assert(selectDigits("welcome") == "")
   }
 
   test("selectDigits length is smaller") {
@@ -24,7 +23,9 @@ class ValueFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheck
 
   test("selectDigits only returns numbers") {
     forAll { (text: String) =>
-      assert(selectDigits(text).forall(_.isDigit))
+      selectDigits(text).foreach { char =>
+        assert(char.isDigit)
+      }
     }
   }
 
@@ -35,28 +36,28 @@ class ValueFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheck
   }
 
   test("secret") {
-    secret("abc123") shouldEqual "******"
+    assert(secret("abc123") == "******")
   }
 
-  test("secret same length") {
+  test("secret is idempotent") {
     forAll { (text: String) =>
-      secret(text).length shouldEqual text.length
+      assert(secret(secret(text)) == secret(text))
     }
   }
 
   test("isValidUsernameCharacter") {
-    isValidUsernameCharacter('a') shouldEqual true
-    isValidUsernameCharacter('A') shouldEqual true
-    isValidUsernameCharacter('1') shouldEqual true
-    isValidUsernameCharacter('-') shouldEqual true
-    isValidUsernameCharacter('_') shouldEqual true
-    isValidUsernameCharacter('~') shouldEqual false
-    isValidUsernameCharacter('!') shouldEqual false
+    assert(isValidUsernameCharacter('a'))
+    assert(isValidUsernameCharacter('A'))
+    assert(isValidUsernameCharacter('1'))
+    assert(isValidUsernameCharacter('-'))
+    assert(isValidUsernameCharacter('_'))
+    assert(!isValidUsernameCharacter('~'))
+    assert(!isValidUsernameCharacter('!'))
   }
 
   test("isValidUsername") {
-    isValidUsername("john-doe") shouldEqual true
-    isValidUsername("*john*") shouldEqual false
+    assert(isValidUsername("john-doe"))
+    assert(!isValidUsername("*john*"))
   }
 
   ///////////////////////
@@ -64,43 +65,43 @@ class ValueFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheck
   ///////////////////////
 
   test("isPositive") {
-    Point3(2, 3, 9).isPositive shouldEqual true
-    Point3(0, 0, 0).isPositive shouldEqual true
-    Point3(0, -2, -1).isPositive shouldEqual false
+    assert(Point3(2, 3, 9).isPositive)
+    assert(Point3(0, 0, 0).isPositive)
+    assert(!Point3(0, -2, -1).isPositive)
   }
 
   test("isPositive max 0") {
     forAll { (x: Int, y: Int, z: Int) =>
-      Point3(x.max(0), y.max(0), z.max(0)).isPositive shouldEqual true
+      assert(Point3(x.max(0), y.max(0), z.max(0)).isPositive)
     }
   }
 
   test("isEven") {
-    Point3(2, 4, 8).isEven shouldEqual true
-    Point3(0, -8, -2).isEven shouldEqual true
-    Point3(3, -2, 0).isEven shouldEqual false
+    assert(Point3(2, 4, 8).isEven)
+    assert(Point3(0, -8, -2).isEven)
+    assert(!Point3(3, -2, 0).isEven)
   }
 
   test("isEven * 2") {
     forAll { (x: Int, y: Int, z: Int) =>
-      Point3(x * 2, y * 2, z * 2).isEven shouldEqual true
+      assert(Point3(x * 2, y * 2, z * 2).isEven)
     }
   }
 
   test("forAll") {
-    Point3(1, 1, 1).forAll(_ == 1) shouldEqual true
-    Point3(1, 2, 5).forAll(_ == 1) shouldEqual false
+    assert(Point3(1, 1, 1).forAll(_ == 1))
+    assert(!Point3(1, 2, 5).forAll(_ == 1))
   }
 
   test("forAll constant") {
     forAll { (x: Int, y: Int, z: Int, constant: Boolean) =>
-      Point3(x, y, z).forAll(_ => constant) shouldEqual constant
+      assert(Point3(x, y, z).forAll(_ => constant) == constant)
     }
   }
 
   test("forAll consistent with List") {
     forAll { (x: Int, y: Int, z: Int, predicate: Int => Boolean) =>
-      Point3(x, y, z).forAll(predicate) shouldEqual List(x, y, z).forall(predicate)
+      assert(Point3(x, y, z).forAll(predicate) == List(x, y, z).forall(predicate))
     }
   }
 
