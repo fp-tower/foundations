@@ -60,6 +60,14 @@ class ValueFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProperty
     assert(!isValidUsername("*john*"))
   }
 
+  test("if a username is valid, then all its subsets must be too") {
+    forAll { (username: String) =>
+      if (isValidUsername(username))
+        assert(username.tails.forall(isValidUsername))
+      else succeed
+    }
+  }
+
   ///////////////////////
   // Exercise 2: Point3
   ///////////////////////

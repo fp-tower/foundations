@@ -15,7 +15,7 @@ object ValueFunctionExercises {
 
   // 1b. Implement `secret` which transforms all characters in a String to '*'
   // such as secret("Welcome123") == "**********"
-  // Note: You can use `map` method from `String`
+  // Note: Try to use a higher-order function from the String API
   def secret(text: String): String =
     ???
 
@@ -27,13 +27,14 @@ object ValueFunctionExercises {
   // For example, isValidUsernameCharacter('3') == true
   //              isValidUsernameCharacter('a') == true
   // but          isValidUsernameCharacter('^') == false
+  // Note: You might find some useful helper methods on `char`.
   def isValidUsernameCharacter(char: Char): Boolean =
     ???
 
   // 1d. Implement `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
-  // Note: You can use `forAll` method from `String`
+  // Note: Try to use `isValidUsernameCharacter` and a higher-order function from the String API.
   def isValidUsername(username: String): Boolean =
     ???
 
