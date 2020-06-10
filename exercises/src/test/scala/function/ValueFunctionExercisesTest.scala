@@ -23,7 +23,7 @@ class ValueFunctionExercisesTest extends AnyFunSuite with Matchers with ScalaChe
   }
 
   ///////////////////////
-  // Exercise 2: Point3
+  // Exercise 2: Point
   ///////////////////////
 
 }

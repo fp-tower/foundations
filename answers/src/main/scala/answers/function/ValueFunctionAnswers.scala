@@ -22,7 +22,7 @@ object ValueFunctionAnswers {
   // Exercise 2: Point3
   ///////////////////////
 
-  case class Point3(x: Int, y: Int, z: Int) {
+  case class Point(x: Int, y: Int, z: Int) {
     def isPositive: Boolean =
       x >= 0 && y >= 0 && z >= 0
 

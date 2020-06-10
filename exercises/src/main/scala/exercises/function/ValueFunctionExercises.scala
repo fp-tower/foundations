@@ -39,29 +39,31 @@ object ValueFunctionExercises {
     ???
 
   ///////////////////////
-  // Exercise 2: Point3
+  // Exercise 2: Point
   ///////////////////////
 
-  case class Point3(x: Int, y: Int, z: Int) {
+  case class Point(x: Int, y: Int, z: Int) {
     // 2a. Implement `isPositive` which returns true if both `x` and `y` are greater or equal to 0, false otherwise
-    // such as Point3(2, 3, 9).isPositive == true
-    //         Point3(0, 0, 0).isPositive == true
-    // but     Point3(0,-2,-1).isPositive == false
+    // such as Point(2, 4,9).isPositive == true
+    //         Point(0, 0,0).isPositive == true
+    // but     Point(0,-2,1).isPositive == false
     // Note: `isPositive` is a function defined within `Point` class, so `isPositive` has access to `x`, `y` and `z`.
     def isPositive: Boolean =
       ???
 
     // 2b. Implement `isEven` which returns true if both `x`, `y`, and `z` are even numbers, false otherwise
-    // such as Point3(2, 4, 8).isEven == true
-    //         Point3(0,-8,-2).isEven == true
-    // but     Point3(3,-2, 0).isEven == false
+    // such as Point(2, 4, 8).isEven == true
+    //         Point(0,-8,-2).isEven == true
+    // but     Point(3,-2, 0).isEven == false
+    // Note: You can use `% 2` to check if a number is odd or even,
+    // e.g. 8 % 2 == 0 but 7 % 2 == 1
     def isEven: Boolean =
       ???
 
     // 2c. Both `isPositive` and `isEven` check that a predicate holds for both `x` and `y`.
     // Let's try to capture this pattern with a higher order function like `forAll`
-    // such as Point3(1,1,1).forAll(_ == 1) == true
-    // but     Point3(1,2,5).forAll(_ == 1) == false
+    // such as Point(1,1,1).forAll(_ == 1) == true
+    // but     Point(1,2,5).forAll(_ == 1) == false
     // Then, re-implement `isPositive` and `isEven` using `forAll`
     def forAll(predicate: Int => Boolean): Boolean =
       ???
