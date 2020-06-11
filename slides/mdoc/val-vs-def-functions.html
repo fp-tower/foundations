@@ -234,6 +234,47 @@ val console: Printer = new Printer {
 ---
 class: medium-code
 
+# SAM (Single Abstract Method)
+
+.pull-left[
+<br><br><br>
+
+```scala mdoc:reset:silent
+trait Printer {
+  def print(message: String): Unit
+}
+```
+]
+
+.pull-right[
+## Standard syntax
+
+```scala mdoc:silent
+val console: Printer = new Printer {
+  def print(message: String): Unit =
+    println(message)
+}
+```
+
+## SAM syntax
+
+```scala mdoc:reset:invisible
+trait Printer {
+  def print(message: String): Unit
+}
+```
+
+```scala mdoc:silent
+val console: Printer =
+  (message: String) => println(message)
+```
+
+
+]
+
+---
+class: medium-code
+
 # Val function desugared
 
 .pull-left[
@@ -459,12 +500,18 @@ val createDateVal: (Int, Int, Int) => LocalDate = createDate
 ```
 
 ---
-# Summary
+class: white
+
+background-image: url(img/fp-tower/website-background.svg)
+
+<br><br><br>
+
+# .white[Summary]
 
 <br>
 
 .large[
-* Val functions are an ordinary objects
+* Val functions are ordinary <br>objects
 
 * Use def functions for API
 
