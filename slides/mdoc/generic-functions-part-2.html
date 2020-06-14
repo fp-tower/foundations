@@ -8,23 +8,11 @@
 <body>
 <textarea id="source">
 
-class: center
+background-image: url(img/fp-tower/website-background.svg)
 
-.large-left[
-<br>
-<small>
+class: center, middle, white
 
-  <a title="Attribution-ShareAlike License" class="cc-license" href="http://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="nofollow">
-  <img src="img/hieroglyphs.jpg" alt="Parametric list" style="width:600px;"/>
-  </a>
-  Photo by <a title="hieroglyph" class="feature-image-credit" href="https://www.flickr.com/photos/andre5/" target="_blank">andre5</a>
-</small>
-]
-
-.medium-right[
-<br><br><br><br><br><br><br><br><br>
-# Parametric functions part 2
-]
+.title[Generic functions <br> part 2]
 
 ---
 # 1. Parametric functions accept .hl[ALL] types
@@ -43,7 +31,7 @@ map[User, Address](List(...), ...)
 ```
 
 ---
-# 2. All types must be treated .hl[IN THE SAME WAY]
+# 2. All types must be treated .hl[EQUALLY]
 
 <br>
 <br>
@@ -59,7 +47,7 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 ```
 
 ---
-# All types must be treated .hl[IN THE SAME WAY]
+# All types must be treated .hl[EQUALLY]
 
 <br>
 
@@ -386,20 +374,7 @@ object Predef {
 ```
 
 ---
-# How can we test `map`?
-
-<br>
-<br>
-
-```scala
-def testMap(list: List[Int]) =
-  test("map"){
-    map(list, identity) shouldEqual list
-  }
-```
-
----
-# Property Based Testing (PBT
+# Property Based Testing (PBT)
 
 <br>
 <br>
