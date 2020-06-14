@@ -20,8 +20,8 @@ Some basic understanding of Scala syntax.
 1. [Val vs Def functions](https://fp-tower.github.io/foundations/val-vs-def-functions.html#1)
 1. [Function as inputs](https://fp-tower.github.io/foundations/function-as-inputs.html#1)
 1. `ValueFunctionExercises.scala`
-1. [Parametric functions - part 1](https://fp-tower.github.io/foundations/parametric-functions-part-1.html#1)
-1. [Parametric functions - part 2](https://fp-tower.github.io/foundations/parametric-functions-part-2.html#1)
+1. [Generic functions - part 1](https://fp-tower.github.io/foundations/generic-functions-part-1.html#1)
+1. [Generic functions - part 2](https://fp-tower.github.io/foundations/generic-functions-part-2.html#1)
 1. `ParametricFunctionExercises.scala`
 
 ### Chapter 2: Actions
