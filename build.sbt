@@ -1,7 +1,7 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.13.1",
+  scalaVersion := "2.13.2",
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
@@ -12,7 +12,8 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-language:existentials",
     "-language:postfixOps",
     "-unchecked",
-    "-Ywarn-value-discard"
+    "-Ywarn-value-discard",
+//    "-Wconf:cat=unchecked:e", // uncomment to transform type erasure warnings into errors
   ),
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
@@ -50,6 +51,3 @@ lazy val slides = project
 
 
 addCommandAlias("testAnswers", "answers/test")
-
-addCommandAlias("testExercises1", "exercises/testOnly function*")
-addCommandAlias("testExercises2", "exercises/testOnly sideeffect*")
