@@ -173,6 +173,22 @@ val replicate: (Int, String) => String        = (n: Int, text: String) => List.f
 val replicate: Function2[Int, String, String] = (n: Int, text: String) => List.fill(n)(text).mkString
 ```
 
+--
+
+.pull-left[
+```scala
+val bigFunction: (Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int
+                 ) => String = _ => ???
+
+// error: function values may not have more
+//        than 22 parameters, but 23 given
+```
+]
+
 ---
 class: medium-code
 
