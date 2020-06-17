@@ -1,4 +1,4 @@
-package function
+package exercises.function
 
 import java.time.{Instant, LocalDate, ZoneOffset}
 

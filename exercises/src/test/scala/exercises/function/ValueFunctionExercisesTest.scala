@@ -1,4 +1,4 @@
-package function
+package exercises.function
 
 import exercises.function.ValueFunctionExercises._
 import org.scalatest.funsuite.AnyFunSuite

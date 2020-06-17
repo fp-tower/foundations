@@ -17,10 +17,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   ),
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
-    cats,
-    circe,
-    scalacheck,
-    disciplineTest
+    scalatest
   )
 )
 
@@ -28,8 +25,8 @@ lazy val foundation = project
   .in(file("."))
   .settings(moduleName := "foundation")
   .settings(baseSettings: _*)
-  .aggregate(exercises, answers, slides)
-  .dependsOn(exercises, answers, slides)
+  .aggregate(exercises, answers)
+  .dependsOn(exercises, answers)
 
 lazy val exercises = project
   .settings(moduleName := "foundation-exercises")
