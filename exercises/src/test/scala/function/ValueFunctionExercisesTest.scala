@@ -11,7 +11,7 @@ class ValueFunctionExercisesTest extends AnyFunSuite with Matchers with ScalaChe
   // Exercise 1: String API with higher-order functions
   /////////////////////////////////////////////////////
 
-  test("selectDigits") {
+  test("selectDigits examples") {
     assert(selectDigits("hello4world-80") == "480")
     assert(selectDigits("welcome") == "")
   }
