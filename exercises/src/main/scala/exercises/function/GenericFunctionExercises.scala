@@ -2,7 +2,7 @@ package exercises.function
 
 import java.time.LocalDate
 
-object ParametricFunctionExercises {
+object GenericFunctionExercises {
 
   ////////////////////
   // Exercise 1: Pair

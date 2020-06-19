@@ -3,7 +3,7 @@ package answers.function
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-object ParametricFunctionAnswers {
+object GenericFunctionAnswers {
 
   ////////////////////
   // Exercise 1: Pair

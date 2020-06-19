@@ -4,7 +4,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class ParametricFunctionExercisesTest
+class GenericFunctionExercisesTest
     extends AnyFunSuite
     with Matchers
     with ScalaCheckDrivenPropertyChecks
