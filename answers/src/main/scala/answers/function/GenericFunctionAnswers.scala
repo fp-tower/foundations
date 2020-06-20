@@ -19,12 +19,12 @@ object GenericFunctionAnswers {
     def map[To](update: A => To): Pair[To] =
       Pair(update(first), update(second))
 
-    def zipWith[Other, To](other: Pair[Other], combine: (A, Other) => To): Pair[To] =
+    def zipWith[Other, To](other: Pair[Other])(combine: (A, Other) => To): Pair[To] =
       Pair(combine(first, other.first), combine(second, other.second))
 
-    def map3[A2, A3, To](otherB: Pair[A2], otherC: Pair[A3], combine: (A, A2, A3) => To): Pair[To] =
-      zipWith[A2, (A, A2)](otherB, (_, _))
-        .zipWith[A3, To](otherC, { case ((a, b), c) => combine(a, b, c) })
+    def map3[A2, A3, To](otherB: Pair[A2], otherC: Pair[A3])(combine: (A, A2, A3) => To): Pair[To] =
+      zipWith(otherB)((_, _))
+        .zipWith(otherC) { case ((a, b), c) => combine(a, b, c) }
   }
 
   val secret: Pair[String]       = Pair("gnimmargorP", "lanoitcnuF")
@@ -33,7 +33,7 @@ object GenericFunctionAnswers {
   case class Product(name: String, price: Double)
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
-  productNames.zipWith(productPrices, Product.apply)
+  productNames.zipWith(productPrices)(Product.apply)
 
   ////////////////////////////
   // Exercise 2: Predicate

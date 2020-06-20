@@ -24,7 +24,7 @@ class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaChe
   }
 
   test("Pair zipWith") {
-    Pair(0, 1).zipWith(Pair(2, 3), (x: Int, y: Int) => x + y) shouldEqual Pair(2, 4)
+    Pair(0, 1).zipWith(Pair(2, 3))(_ + _) shouldEqual Pair(2, 4)
   }
 
   test("Pair decoded") {

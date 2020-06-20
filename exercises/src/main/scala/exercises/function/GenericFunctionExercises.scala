@@ -23,9 +23,10 @@ object GenericFunctionExercises {
       ???
 
     // 1c. Implement `zipWith` which merges two `Pair` using a `combine` function
-    // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
-    //         Pair(2, 3).zipWith(Pair("Hello ", "World "), replicate) == Pair("Hello Hello ", "World World World ")
-    def zipWith[Other, To](other: Pair[Other], combine: (A, Other) => To): Pair[To] =
+    // such as Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y) == Pair(3, 5)
+    //         Pair(2, 3).zipWith(Pair("Hello ", "World "))(replicate) == Pair("Hello Hello ", "World World World ")
+    // Bonus: Why did we separate the arguments of `zipWith` into two set of parentheses?
+    def zipWith[Other, To](other: Pair[Other])(combine: (A, Other) => To): Pair[To] =
       ???
   }
 
