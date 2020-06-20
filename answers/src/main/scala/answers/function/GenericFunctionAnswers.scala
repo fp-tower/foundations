@@ -27,8 +27,17 @@ object GenericFunctionAnswers {
         .zipWith(otherC) { case ((a, b), c) => combine(a, b, c) }
   }
 
-  val secret: Pair[String]       = Pair("gnimmargorP", "lanoitcnuF")
-  lazy val decoded: Pair[String] = secret.swap.map(_.reverse)
+  val secret: Pair[List[Byte]] =
+    Pair(
+      first = List(103, 110, 105, 109, 109, 97, 114, 103, 111, 114, 80),
+      second = List(108, 97, 110, 111, 105, 116, 99, 110, 117, 70)
+    )
+  val decoded: Pair[String] =
+    secret
+      .map(_.toArray)
+      .map(new String(_))
+      .map(_.reverse)
+      .swap
 
   case class Product(name: String, price: Double)
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")

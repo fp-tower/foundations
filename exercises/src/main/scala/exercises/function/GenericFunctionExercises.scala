@@ -31,9 +31,14 @@ object GenericFunctionExercises {
   }
 
   // 1d. Use the Pair API to decode the content of `secret`.
-  // Hint: it is the subject of the course
+  // Note: you can transform a Byte into a Char using `byte.toChar`
+  //       or you can create a String from an Array[Byte] using `new String(byteArray)`
   // Note: you can remove the lazy keyword from `decoded` once you have implemented it.
-  val secret: Pair[String]       = Pair("gnimmargorP", "lanoitcnuF")
+  val secret: Pair[List[Byte]] =
+    Pair(
+      first = List(103, 110, 105, 109, 109, 97, 114, 103, 111, 114, 80),
+      second = List(108, 97, 110, 111, 105, 116, 99, 110, 117, 70)
+    )
   lazy val decoded: Pair[String] = ???
 
   // 1e. Use the Pair API to combine `productNames` and `productPrices` into `products`

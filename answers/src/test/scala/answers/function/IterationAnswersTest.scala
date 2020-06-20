@@ -103,7 +103,7 @@ class IterationAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDriv
       fail("Expected stack overflow")
     } catch {
       case _: StackOverflowError => succeed
-      case e                     => fail(e)
+      case e: Throwable          => fail(e)
     }
   }
 
