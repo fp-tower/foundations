@@ -22,34 +22,29 @@ object GenericFunctionExercises {
     def map[To](update: A => To): Pair[To] =
       ???
 
-    // 1c. Implement `forAll` which check if a predicate is true for both `first` and `second`
-    // such as Pair(2, 6).forAll(_ > 0) == true
-    // but     Pair(2, 6).forAll(_ > 2) == false
-    //         Pair(2, 6).forAll(_ > 9) == false
-    def forAll(predicate: A => Boolean): Boolean =
-      ???
-
-    // 1d. Implement `zipWith` which merges two `Pair` using a `combine` function
+    // 1c. Implement `zipWith` which merges two `Pair` using a `combine` function
     // such as Pair(0, 2).zipWith(Pair(3, 3), (x: Int, y: Int) => x + y) == Pair(3, 5)
     //         Pair(2, 3).zipWith(Pair("Hello ", "World "), replicate) == Pair("Hello Hello ", "World World World ")
-    def zipWith[B, To](other: Pair[B], combine: (A, B) => To): Pair[To] =
+    def zipWith[Other, To](other: Pair[Other], combine: (A, Other) => To): Pair[To] =
       ???
   }
 
-  case class User(name: String, age: Int)
+  // 1d. Use the Pair API to decode the content of `secret`.
+  // Hint: it is the subject of the course
+  // Note: you can remove the lazy keyword from `decoded` once you have implemented it.
+  val secret: Pair[String]       = Pair("gnimmargorP", "lanoitcnuF")
+  lazy val decoded: Pair[String] = ???
 
-  // 1f. Use Pair API to check the length of both String in `names` (defined at the beginning of the exercise)
-  // are strictly longer than 5.
-  lazy val longerThan5: Boolean =
+  // 1e. Use the Pair API to combine `productNames` and `productPrices` into `products`
+  // such as products == Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99))
+  case class Product(name: String, price: Double)
+  val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
+  val productPrices: Pair[Double] = Pair(2.5, 329.99)
+  lazy val products: Pair[Product] =
     ???
 
-  // 1g. Use Pair API to combine `names` and `ages` into `users`
-  // such as `users` is equal to Pair(User("John", 32), User("Elisabeth", 46))
-  lazy val users: Pair[User] =
-    ???
-
-  // 1h. Can you implement a method on `Pair` similar to `zipWith`, but it combines 3 `Pair`
-  // instead of 2? If yes, can you implement this method using `zipWith`?
+  // 1f. Can you implement a method on `Pair` similar to `zipWith`, but that combines
+  // 3 `Pair` instead of 2? If yes, can you implement this method using `zipWith`?
 
   ////////////////////////////
   // Exercise 2: Predicate
@@ -102,6 +97,7 @@ object GenericFunctionExercises {
   // * an adult and
   // * his name is longer than 3 characters
   // Note: Try to re-use `isAdult` and `longerThan`
+  case class User(name: String, age: Int)
   lazy val isValidUser: Predicate[User] =
     ???
 

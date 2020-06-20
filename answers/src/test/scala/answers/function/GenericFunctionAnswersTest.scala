@@ -23,20 +23,16 @@ class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaChe
     Pair(0, 1).map(identity) shouldEqual Pair(0, 1)
   }
 
-  test("Pair forAll") {
-    Pair(2, 6).forAll(_ > 0) shouldEqual true
-    Pair(2, 6).forAll(_ > 2) shouldEqual false
-    Pair(2, 6).forAll(_ > 9) shouldEqual false
-  }
-
-  test("Pair forAll consistent with List") {
-    forAll { (x: Int, y: Int, predicate: Int => Boolean) =>
-      Pair(x, y).forAll(predicate) shouldEqual List(x, y).forall(predicate)
-    }
-  }
-
   test("Pair zipWith") {
     Pair(0, 1).zipWith(Pair(2, 3), (x: Int, y: Int) => x + y) shouldEqual Pair(2, 4)
+  }
+
+  test("Pair decoded") {
+    decoded shouldEqual Pair("Functional", "Programming")
+  }
+
+  test("Pair productNames") {
+    productNames shouldEqual Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99))
   }
 
   ////////////////////////////

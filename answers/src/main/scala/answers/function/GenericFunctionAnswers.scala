@@ -19,24 +19,21 @@ object GenericFunctionAnswers {
     def map[To](update: A => To): Pair[To] =
       Pair(update(first), update(second))
 
-    def forAll(predicate: A => Boolean): Boolean =
-      predicate(first) && predicate(second)
-
-    def zipWith[B, To](other: Pair[B], combine: (A, B) => To): Pair[To] =
+    def zipWith[Other, To](other: Pair[Other], combine: (A, Other) => To): Pair[To] =
       Pair(combine(first, other.first), combine(second, other.second))
 
-    def map3[B, C, To](otherB: Pair[B], otherC: Pair[C], combine: (A, B, C) => To): Pair[To] =
-      zipWith[B, (A, B)](otherB, (_, _))
-        .zipWith[C, To](otherC, { case ((a, b), c) => combine(a, b, c) })
+    def map3[A2, A3, To](otherB: Pair[A2], otherC: Pair[A3], combine: (A, A2, A3) => To): Pair[To] =
+      zipWith[A2, (A, A2)](otherB, (_, _))
+        .zipWith[A3, To](otherC, { case ((a, b), c) => combine(a, b, c) })
   }
 
-  case class User(name: String, age: Int)
+  val secret: Pair[String]       = Pair("gnimmargorP", "lanoitcnuF")
+  lazy val decoded: Pair[String] = secret.swap.map(_.reverse)
 
-  val longerThan5: Boolean =
-    names.forAll(_.length >= 5)
-
-  val users: Pair[User] =
-    names.zipWith(ages, User.apply)
+  case class Product(name: String, price: Double)
+  val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
+  val productPrices: Pair[Double] = Pair(2.5, 329.99)
+  productNames.zipWith(productPrices, Product.apply)
 
   ////////////////////////////
   // Exercise 2: Predicate
@@ -74,6 +71,8 @@ object GenericFunctionAnswers {
 
   def contains(char: Char): Predicate[String] =
     Predicate((text: String) => text.contains(char))
+
+  case class User(name: String, age: Int)
 
   val isValidUser: Predicate[User] =
     isAdult.contramap[User](_.age) &&
