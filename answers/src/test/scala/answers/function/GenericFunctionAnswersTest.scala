@@ -32,7 +32,7 @@ class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaChe
   }
 
   test("Pair productNames") {
-    productNames shouldEqual Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99))
+    products shouldEqual Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99))
   }
 
   ////////////////////////////

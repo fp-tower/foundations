@@ -42,7 +42,7 @@ object GenericFunctionAnswers {
   case class Product(name: String, price: Double)
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
-  productNames.zipWith(productPrices)(Product.apply)
+  val products: Pair[Product]     = productNames.zipWith(productPrices)(Product)
 
   ////////////////////////////
   // Exercise 2: Predicate

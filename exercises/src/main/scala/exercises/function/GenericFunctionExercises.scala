@@ -22,7 +22,7 @@ object GenericFunctionExercises {
     def map[To](update: A => To): Pair[To] =
       ???
 
-    // 1c. Implement `zipWith` which merges two `Pair` using a `combine` function
+    // 1c. Implement `zipWith` which merges two Pairs using a `combine` function
     // such as Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y) == Pair(3, 5)
     //         Pair(2, 3).zipWith(Pair("Hello ", "World "))(replicate) == Pair("Hello Hello ", "World World World ")
     // Bonus: Why did we separate the arguments of `zipWith` into two set of parentheses?
@@ -47,18 +47,25 @@ object GenericFunctionExercises {
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
   lazy val products: Pair[Product] =
-    ???
+    productNames.zipWith(productPrices)(Product)
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the video)
+  //////////////////////////////////////////////
 
   // 1f. Can you implement a method on `Pair` similar to `zipWith`, but that combines
   // 3 `Pair` instead of 2? If yes, can you implement this method using `zipWith`?
+  // Note: libraries often call this method `map3` and `zipWith` is often called `map2`
 
   ////////////////////////////
   // Exercise 2: Predicate
   ////////////////////////////
 
+  val isPositive: Predicate[Int] = Predicate(_ >= 0)
+
   case class Predicate[A](eval: A => Boolean) {
     // DSL to call a predicate like a function
-    // isEven(10) instead of isEven.eval(10)
+    // isPositive(10) instead of isPositive.eval(10)
     def apply(value: A): Boolean = eval(value)
 
     // 2a. Implement `&&` that combines two predicates using logical and
