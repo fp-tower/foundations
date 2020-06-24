@@ -9,30 +9,30 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
+class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   ////////////////////
   // Exercise 1: Pair
   ////////////////////
 
   test("Pair swap") {
-    Pair(0, 1).swap shouldEqual Pair(1, 0)
+    assert(Pair(0, 1).swap == Pair(1, 0))
   }
 
   test("Pair map") {
-    Pair(0, 1).map(identity) shouldEqual Pair(0, 1)
+    assert(Pair(0, 1).map(identity) == Pair(0, 1))
   }
 
   test("Pair zipWith") {
-    Pair(0, 1).zipWith(Pair(2, 3))(_ + _) shouldEqual Pair(2, 4)
+    assert(Pair(0, 1).zipWith(Pair(2, 3))(_ + _) == Pair(2, 4))
   }
 
   test("Pair decoded") {
-    decoded shouldEqual Pair("Functional", "Programming")
+    assert(decoded == Pair("Functional", "Programming"))
   }
 
   test("Pair productNames") {
-    products shouldEqual Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99))
+    assert(products == Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99)))
   }
 
   ////////////////////////////
@@ -41,26 +41,26 @@ class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaChe
 
   test("Predicate &&") {
     forAll { (p: (Int => Boolean), x: Int) =>
-      (Predicate(p) && Predicate.True)(x) shouldEqual p(x)
-      (Predicate(p) && Predicate.False)(x) shouldEqual false
+      assert((Predicate(p) && Predicate.True)(x) == p(x))
+      assert(!(Predicate(p) && Predicate.False)(x))
     }
   }
 
   test("Predicate ||") {
     forAll { (p: (Int => Boolean), x: Int) =>
-      (Predicate(p) || Predicate.True)(x) shouldEqual true
-      (Predicate(p) || Predicate.False)(x) shouldEqual p(x)
+      assert((Predicate(p) || Predicate.True)(x))
+      assert((Predicate(p) || Predicate.False)(x) == p(x))
     }
   }
 
   test("Predicate flip") {
-    Predicate.True.flip(()) shouldEqual false
-    Predicate.False.flip(()) shouldEqual true
+    assert(!Predicate.True.flip(()))
+    assert(Predicate.False.flip(()))
   }
 
   test("Predicate isLongerThan") {
-    isLongerThan(5)("hello") shouldEqual true
-    isLongerThan(5)("hey") shouldEqual false
+    assert(isLongerThan(5)("hello"))
+    assert(!isLongerThan(5)("hey"))
   }
 
   test("Predicate isLongerThan take") {
@@ -72,20 +72,20 @@ class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaChe
   }
 
   test("Predicate contains") {
-    contains('l')("hello") shouldEqual true
-    contains('z')("hello") shouldEqual false
+    assert(contains('l')("hello"))
+    assert(!contains('z')("hello"))
   }
 
   test("Predicate contains filter") {
     forAll { (word: String, char: Char) =>
-      contains(char)(word.filterNot(_ == char)) shouldEqual false
+      assert(!contains(char)(word.filterNot(_ == char)))
     }
   }
 
   test("Predicate isValidUser") {
-    isValidUser(User("john", 18)) shouldEqual true
-    isValidUser(User("john", 17)) shouldEqual false
-    isValidUser(User("x", 23)) shouldEqual false
+    assert(isValidUser(User("john", 18)))
+    assert(!isValidUser(User("john", 17)))
+    assert(!isValidUser(User("x", 23)))
   }
 
   ////////////////////////////
@@ -93,29 +93,29 @@ class GenericFunctionAnswersTest extends AnyFunSuite with Matchers with ScalaChe
   ////////////////////////////
 
   test("JsonDecoder UserId") {
-    userIdDecoder.decode("1234") shouldEqual UserId(1234)
+    assert(userIdDecoder.decode("1234") == UserId(1234))
   }
 
   test("JsonDecoder UserId int.toString") {
     forAll { (id: Int) =>
-      userIdDecoder.decode(id.toString) shouldEqual UserId(id)
+      assert(userIdDecoder.decode(id.toString) == UserId(id))
     }
   }
 
   test("JsonDecoder LocalDate") {
-    localDateDecoder.decode("\"2020-03-26\"") shouldEqual LocalDate.of(2020, 3, 26)
+    assert(localDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020, 3, 26))
   }
 
   test("JsonDecoder LocalDate random") {
     forAll { (localDate: LocalDate) =>
       val json = "\"" + DateTimeFormatter.ISO_LOCAL_DATE.format(localDate) + "\""
-      localDateDecoder.decode(json) shouldEqual localDate
+      assert(localDateDecoder.decode(json) == localDate)
     }
   }
 
   test("JsonDecoder Option") {
-    optionDecoder(stringDecoder).decode("null") shouldEqual None
-    optionDecoder(stringDecoder).decode("\"hello\"") shouldEqual Some("hello")
+    assert(optionDecoder(stringDecoder).decode("null") == None)
+    assert(optionDecoder(stringDecoder).decode("\"hello\"") == Some("hello"))
   }
 
   implicit val localDateArbitrary: Arbitrary[LocalDate] =

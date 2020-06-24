@@ -6,6 +6,12 @@ object IterationAnswers {
   // Exercise 1: for loop
   ////////////////////////
 
+  def size[A](items: List[A]): Int = {
+    var counter = 0
+    for (item <- items) counter += 1
+    counter
+  }
+
   def sum(numbers: List[Int]): Int = {
     var state = 0
     for (x <- numbers) state += x
@@ -48,6 +54,12 @@ object IterationAnswers {
   ///////////////////////////
   // Exercise 2: recursion
   ///////////////////////////
+
+  def sizeRecursive[A](items: List[A]): Int =
+    items match {
+      case Nil          => 0
+      case head :: tail => 1 + sizeRecursive(tail)
+    }
 
   def sumRecursive(numbers: List[Int]): Int =
     numbers match {
