@@ -1,5 +1,7 @@
 package answers.function
 
+import scala.annotation.tailrec
+
 object IterationAnswers {
 
   ////////////////////////
@@ -36,7 +38,7 @@ object IterationAnswers {
       case Some(n) => Some(n + 1)
     }
 
-  def foldLeft[A, B](items: List[A], default: B)(combine: (B, A) => B): B = {
+  def foldLeft[From, To](items: List[From], default: To)(combine: (To, From) => To): To = {
     var state = default
     for (x <- items) state = combine(state, x)
     state
@@ -57,13 +59,52 @@ object IterationAnswers {
 
   def sizeRecursive[A](items: List[A]): Int =
     items match {
-      case Nil          => 0
-      case head :: tail => 1 + sizeRecursive(tail)
+      case Nil       => 0
+      case _ :: tail => 1 + sizeRecursive(tail)
     }
 
   def sumRecursive(numbers: List[Int]): Int =
     numbers match {
       case Nil          => 0
       case head :: tail => head + sumRecursive(tail)
+    }
+
+  def sumRecursiveSafe(numbers: List[Int]): Int =
+    _sumRecursiveSafe(numbers, 0)
+
+  @tailrec
+  def _sumRecursiveSafe(numbers: List[Int], state: Int): Int =
+    numbers match {
+      case Nil          => state
+      case head :: tail => _sumRecursiveSafe(tail, state + head)
+    }
+
+  def reverse[A](items: List[A]): List[A] =
+    _reverse(items, Nil)
+
+  @tailrec
+  def _reverse[A](items: List[A], state: List[A]): List[A] =
+    items match {
+      case Nil          => state
+      case head :: tail => _reverse(tail, head :: state)
+    }
+
+  def min(numbers: List[Int]): Option[Int] =
+    _min(numbers, None)
+
+  @tailrec
+  def _min(numbers: List[Int], state: Option[Int]): Option[Int] =
+    numbers match {
+      case Nil          => state
+      case head :: tail => _min(tail, state.map(_.min(head)).orElse(Some(head)))
+    }
+
+  @tailrec
+  def foldLeftRecursive[From, To](items: List[From], default: To)(combine: (To, From) => To): To =
+    items match {
+      case Nil => default
+      case head :: tail =>
+        val newDefault = combine(default, head)
+        foldLeftRecursive(tail, newDefault)(combine)
     }
 }

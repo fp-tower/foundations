@@ -2,7 +2,6 @@ package answers.function
 
 import answers.function.IterationAnswers._
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class IterationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
@@ -16,7 +15,7 @@ class IterationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     assert(sum(List()) == 0)
   }
 
-  test("sum consistent with std library") {
+  test("sum is consistent with std library") {
     forAll { (numbers: List[Int]) =>
       assert(sum(numbers) == numbers.sum)
     }
@@ -33,7 +32,7 @@ class IterationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     assert(mkString(List()) == "")
   }
 
-  test("mkString consistent with std library") {
+  test("mkString is consistent with std library") {
     forAll { (letters: List[Char]) =>
       assert(mkString(letters) == letters.mkString)
     }
@@ -56,15 +55,15 @@ class IterationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     }
   }
 
-  test("foldLeft size") {
-    forAll { (numbers: List[Int]) =>
-      assert(foldLeft(numbers, 0)((acc, _) => acc + 1) == numbers.size)
+  test("foldLeft is consistent with std library") {
+    forAll { (numbers: List[Int], default: Int, combine: (Int, Int) => Int) =>
+      assert(foldLeft(numbers, default)(combine) == numbers.foldLeft(default)(combine))
     }
   }
 
-  test("foldLeft reverse") {
+  test("foldLeft size") {
     forAll { (numbers: List[Int]) =>
-      assert(foldLeft(numbers, List.empty[Int])((acc, x) => x :: acc) == numbers.reverse)
+      assert(foldLeft(numbers, 0)((acc, _) => acc + 1) == numbers.size)
     }
   }
 
@@ -102,6 +101,30 @@ class IterationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     } catch {
       case _: StackOverflowError => succeed
       case e: Throwable          => fail(e)
+    }
+  }
+
+  test("sumRecursiveSafe") {
+    assert(sumRecursiveSafe(List(1, 2, 3, 4)) == 10)
+    assert(sumRecursiveSafe(Nil) == 0)
+    assert(sumRecursiveSafe(List.fill(100000)(0)) == 0)
+  }
+
+  test("reverse is consistent with std library") {
+    forAll { (numbers: List[Int]) =>
+      assert(reverse(numbers) == numbers.reverse)
+    }
+  }
+
+  test("min is consistent with std library") {
+    forAll { (numbers: List[Int]) =>
+      assert(min(numbers) == numbers.minOption)
+    }
+  }
+
+  test("foldLeftRecursive is consistent with std library") {
+    forAll { (numbers: List[Int], default: Int, combine: (Int, Int) => Int) =>
+      assert(foldLeftRecursive(numbers, default)(combine) == numbers.foldLeft(default)(combine))
     }
   }
 

@@ -33,7 +33,7 @@ object IterationExercises {
   // 1d. `sum`, `mkString` and `wordCount` are quite similar.
   // Could you write a higher order function that captures this pattern?
   // Hint: this method is called `foldLeft`.
-  def foldLeft[A, B](items: List[A], default: B)(combine: (B, A) => B): B =
+  def foldLeft[From, To](items: List[From], default: To)(combine: (To, From) => To): To =
     ???
 
   // 1e. Re-implement `sum`, `mkString` and `wordCount`  using `foldLeft`
@@ -56,8 +56,28 @@ object IterationExercises {
       case head :: tail => 1 + sizeRecursive(tail)
     }
 
-  // 2a. Implement `sumRecursive`, a version of `sum` using recursion.
+  // 2a. Implement `sumRecursive`, a version of `sum` using recursion similar to `sizeRecursive`.
   def sumRecursive(numbers: List[Int]): Int =
     ???
 
+  // 2b. You may have noticed that `sizeRecursive` and `sumRecursive` are not safe for large lists
+  // e.g. List.fill(100000)(0)
+  // Can you implement `sumRecursiveSafe`, another recursive version of `sum` which is safe for large lists.
+  def sumRecursiveSafe(numbers: List[Int]): Int =
+    ???
+
+  // 2c (Optional). If you want to practice writing safe recursive functions, try to implement
+  // `reverse` and `min` recursively such that:
+  // reverse(List(1,2,3)) == List(3,2,1)
+  // and
+  // min(List(0,2,-5,4)) == Some(-5)
+  // min(Nil) == None
+  def reverse[A](items: List[A]): List[A] = ???
+
+  def min(numbers: List[Int]): Option[Int] = ???
+
+  // 2d. Implement `foldLeftRecursive` , a version of `foldLeft` using recursion.
+  // Note: Try to make it stack-safe
+  def foldLeftRecursive[From, To](items: List[From], default: To)(combine: (To, From) => To): To =
+    ???
 }
