@@ -2,10 +2,9 @@ package exercises.function
 
 import exercises.function.ValueFunctionExercises._
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class ValueFunctionExercisesTest extends AnyFunSuite with Matchers with ScalaCheckDrivenPropertyChecks {
+class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   /////////////////////////////////////////////////////
   // Exercise 1: String API with higher-order functions

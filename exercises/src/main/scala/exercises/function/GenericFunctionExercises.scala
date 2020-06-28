@@ -23,7 +23,7 @@ object GenericFunctionExercises {
       ???
 
     // 1c. Implement `zipWith` which merges two Pairs using a `combine` function
-    // such as Pair(0, 2).zipWith(Pair(3, 3))((x, y) => x + y) == Pair(3, 5)
+    // such as Pair(0, 2).zipWith(Pair(3, 4))((x, y) => x + y) == Pair(3, 6)
     //         Pair(2, 3).zipWith(Pair("Hello ", "World "))(replicate) == Pair("Hello Hello ", "World World World ")
     // Bonus: Why did we separate the arguments of `zipWith` into two set of parentheses?
     def zipWith[Other, To](other: Pair[Other])(combine: (A, Other) => To): Pair[To] =
@@ -61,7 +61,11 @@ object GenericFunctionExercises {
   // Exercise 2: Predicate
   ////////////////////////////
 
-  val isPositive: Predicate[Int] = Predicate(_ >= 0)
+  val isPositive: Predicate[Int] =
+    Predicate((number: Int) => number >= 0)
+
+  def sign(number: Int): Char =
+    if (isPositive(number)) '+' else '-'
 
   case class Predicate[A](eval: A => Boolean) {
     // DSL to call a predicate like a function

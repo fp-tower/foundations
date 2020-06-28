@@ -1,14 +1,9 @@
 package exercises.function
 
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class GenericFunctionExercisesTest
-    extends AnyFunSuite
-    with Matchers
-    with ScalaCheckDrivenPropertyChecks
-    with ArbitraryInstances {
+class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ArbitraryInstances {
 
   ////////////////////
   // Exercise 1: Pair

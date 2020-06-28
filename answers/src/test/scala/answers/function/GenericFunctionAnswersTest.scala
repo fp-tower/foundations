@@ -6,7 +6,6 @@ import java.time.{Instant, LocalDate, ZoneOffset}
 import answers.function.GenericFunctionAnswers._
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
