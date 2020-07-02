@@ -31,9 +31,9 @@ object GenericFunctionExercises {
   }
 
   // 1d. Use the Pair API to decode the content of `secret`.
-  // Note: you can transform a Byte into a Char using `byte.toChar`
+  // Note: You can transform a Byte into a Char using `byte.toChar`
   //       or you can create a String from an Array[Byte] using `new String(byteArray)`
-  // Note: you can remove the lazy keyword from `decoded` once you have implemented it.
+  // Note: You can remove the lazy keyword from `decoded` once you have implemented it.
   val secret: Pair[List[Byte]] =
     Pair(
       first = List(103, 110, 105, 109, 109, 97, 114, 103, 111, 114, 80),
@@ -55,7 +55,7 @@ object GenericFunctionExercises {
 
   // 1f. Can you implement a method on `Pair` similar to `zipWith`, but that combines
   // 3 `Pair` instead of 2? If yes, can you implement this method using `zipWith`?
-  // Note: libraries often call this method `map3` and `zipWith` is often called `map2`
+  // Note: Libraries often call this method `map3` and `zipWith` is often called `map2`
 
   ////////////////////////////
   // Exercise 2: Predicate
@@ -64,8 +64,11 @@ object GenericFunctionExercises {
   val isPositive: Predicate[Int] =
     Predicate((number: Int) => number >= 0)
 
-  def sign(number: Int): Char =
-    if (isPositive(number)) '+' else '-'
+  val isEven: Predicate[Int] =
+    Predicate((number: Int) => number % 2 == 0)
+
+  val isOddPositive: Predicate[Int] =
+    isEven.flip && isPositive
 
   case class Predicate[A](eval: A => Boolean) {
     // DSL to call a predicate like a function
@@ -73,16 +76,18 @@ object GenericFunctionExercises {
     def apply(value: A): Boolean = eval(value)
 
     // 2a. Implement `&&` that combines two predicates using logical and
-    // such as (isEven && isBiggerThan(10))(12) == true
-    // but     (isEven && isBiggerThan(10))(11) == false
-    //         (isEven && isBiggerThan(10))(8)  == false
+    // such as (isEven && isPositive)(12) == true
+    // but     (isEven && isPositive)(11) == false
+    //         (isEven && isPositive)(-4) == false
+    //         (isEven && isPositive)(-7) == false
     def &&(other: Predicate[A]): Predicate[A] =
       ???
 
     // 2b. Implement `||` that combines two predicates using logical or
-    // such as (isEven || isBiggerThan(10))(11) == true
-    //         (isEven || isBiggerThan(10))(8)  == true
-    // but     (isEven || isBiggerThan(10))(7)  == false
+    // such as (isEven || isPositive)(12) == true
+    //         (isEven || isPositive)(11) == true
+    //         (isEven || isPositive)(-4) == true
+    // but     (isEven || isPositive)(-7) == false
     def ||(other: Predicate[A]): Predicate[A] =
       ???
 
@@ -92,30 +97,40 @@ object GenericFunctionExercises {
       ???
   }
 
-  // 2d. Implement `isAdult`, a predicate that checks if an number is bigger than 18
-  // such as isAdult(20) == true
-  // but     isAdult(6)  == false
-  val isAdult: Predicate[Int] =
-    Predicate((age: Int) => ???)
+  // 2d. Implement `isValidUser`, a predicate which checks if a `User` is:
+  // * an adult (18 years old or more) and
+  // * their name is longer than 3 characters and
+  // * their name is capitalized, meaning that it starts with an uppercase letter
+  // such as isValidUser(User("John", 20)) == true
+  // but     isValidUser(User("John", 17)) == false // user is not an adult
+  //         isValidUser(User("john", 20)) == false // name is not capitalized
+  //         isValidUser(User("x"   , 23)) == false // name is too small
 
-  // 2e. Implement `isLongerThan`, a predicate that checks if a text is longer than a constant
+  // Note: Can you use methods from the Predicate API such as `&&`, `||` or `flip`?
+  case class User(name: String, age: Int)
+
+  lazy val isValidUser: Predicate[User] =
+    ???
+
+  // 2e.
+
+  // 2d. Implement `isBiggerThan`, a predicate which checks if a number is bigger than a constant
+  // such as isBiggerThan(10)(15) == true
+  //         isBiggerThan(10)(10) == true
+  // but     isBiggerThan(10)(-6) == false
+  def isBiggerThan(min: Int): Predicate[Int] =
+    ???
+
+  // 2e. Implement `isLongerThan`, a predicate which checks if a text is longer than a constant
   // such as isLongerThan(5)("hello") == true
   // but     isLongerThan(5)("hey")   == false
   def isLongerThan(min: Int): Predicate[String] =
-    Predicate((text: String) => ???)
+    ???
 
-  // 2f. Implement `contains`, a predicate that checks if a character is present in a text
+  // 2g. Implement `contains`, a predicate that checks if a character is present in a text
   // such as contains('l')("hello") == true
   // but     contains('z')("hello") == false
   def contains(char: Char): Predicate[String] =
-    Predicate((text: String) => ???)
-
-  // 2g. Implement `isValidUser` which checks if a `User` is:
-  // * an adult and
-  // * his name is longer than 3 characters
-  // Note: Try to re-use `isAdult` and `longerThan`
-  case class User(name: String, age: Int)
-  lazy val isValidUser: Predicate[User] =
     ???
 
   // 2h. Could you generalise `isAdult` and `longerThan`?

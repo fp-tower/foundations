@@ -11,9 +11,23 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
 
   test("Pair swap") {}
 
+  test("Pair map") {}
+
+  test("Pair zipWith") {}
+
+  test("Pair decoded") {}
+
+  test("Pair productNames") {}
+
   ////////////////////////////
   // Exercise 2: Predicate
   ////////////////////////////
+
+  test("Predicate &&") {}
+
+  test("Predicate ||") {}
+
+  test("Predicate flip") {}
 
   ////////////////////////////
   // Exercise 3: JsonDecoder

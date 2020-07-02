@@ -38,23 +38,32 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
   // Exercise 2: Predicate
   ////////////////////////////
 
+  test("Predicate && examples") {
+    assert((isEven && isPositive)(12))
+    assert(!(isEven && isPositive)(11))
+    assert(!(isEven && isPositive)(-4))
+    assert(!(isEven && isPositive)(-7))
+  }
+
   test("Predicate &&") {
-    forAll { (p: (Int => Boolean), x: Int) =>
-      assert((Predicate(p) && Predicate.True)(x) == p(x))
-      assert(!(Predicate(p) && Predicate.False)(x))
+    forAll { (p: (Int => Boolean), number: Int) =>
+      val predicate = Predicate(p)
+      assert(!(predicate && False)(number))
+      assert((predicate && True)(number) == predicate(number))
     }
   }
 
   test("Predicate ||") {
-    forAll { (p: (Int => Boolean), x: Int) =>
-      assert((Predicate(p) || Predicate.True)(x))
-      assert((Predicate(p) || Predicate.False)(x) == p(x))
+    forAll { (p: (Int => Boolean), number: Int) =>
+      val predicate = Predicate(p)
+      assert((predicate || True)(number))
+      assert((predicate || False)(number) == predicate(number))
     }
   }
 
   test("Predicate flip") {
-    assert(!Predicate.True.flip(()))
-    assert(Predicate.False.flip(()))
+    assert(!True.flip(()))
+    assert(False.flip(()))
   }
 
   test("Predicate isLongerThan") {
@@ -70,20 +79,10 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
     }
   }
 
-  test("Predicate contains") {
-    assert(contains('l')("hello"))
-    assert(!contains('z')("hello"))
-  }
-
-  test("Predicate contains filter") {
-    forAll { (word: String, char: Char) =>
-      assert(!contains(char)(word.filterNot(_ == char)))
-    }
-  }
-
   test("Predicate isValidUser") {
-    assert(isValidUser(User("john", 18)))
-    assert(!isValidUser(User("john", 17)))
+    assert(isValidUser(User("John", 20)))
+    assert(!isValidUser(User("John", 17)))
+    assert(!isValidUser(User("john", 20)))
     assert(!isValidUser(User("x", 23)))
   }
 

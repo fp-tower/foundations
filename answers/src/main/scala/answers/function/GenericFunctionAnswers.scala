@@ -48,53 +48,83 @@ object GenericFunctionAnswers {
   // Exercise 2: Predicate
   ////////////////////////////
 
+  val isPositive: Predicate[Int] =
+    Predicate((number: Int) => number >= 0)
+
+  val isEven: Predicate[Int] =
+    Predicate((number: Int) => number % 2 == 0)
+
+  val isOddPositive: Predicate[Int] =
+    isEven.flip && isPositive
+
   case class Predicate[A](eval: A => Boolean) {
     def apply(value: A): Boolean = eval(value)
 
     def &&(other: Predicate[A]): Predicate[A] =
-      Predicate(value => eval(value) && other(value))
+      Predicate(value => eval(value) && other.eval(value))
 
     def ||(other: Predicate[A]): Predicate[A] =
-      Predicate(value => eval(value) || other(value))
+      Predicate(value => eval(value) || other.eval(value))
 
     def flip: Predicate[A] =
       Predicate(value => !eval(value))
 
     def contramap[To](update: To => A): Predicate[To] =
-      Predicate[To] { value =>
+      Predicate { (value: To) =>
         val a = update(value)
         eval(a)
       }
+
+    def foo[To](predicate: Predicate[A])(zoom: To => A): Predicate[To] =
+      Predicate { (to: To) =>
+        val from: A = zoom(to)
+        predicate.eval(from)
+      }
   }
 
-  object Predicate {
-    def True[A]: Predicate[A]  = Predicate(_ => true)
-    def False[A]: Predicate[A] = Predicate(_ => false)
-  }
+  def False[A]: Predicate[A] = Predicate(_ => false)
+  def True[A]: Predicate[A]  = False.flip
 
-  val isAdult: Predicate[Int] =
-    Predicate((age: Int) => age >= 18)
+  val isValidUser: Predicate[User] =
+    Predicate(
+      user =>
+        user.age >= 18 &&
+          user.name.length >= 3 &&
+          user.name.capitalize == user.name
+    )
+
+  val isAdult: Predicate[User] =
+    Predicate(_.age >= 18)
+
+  val isUsernameLongerThan3: Predicate[User] =
+    Predicate(_.name.length >= 3)
+
+  val isUsernameCapitalised: Predicate[User] =
+    Predicate(user => user.name.capitalize == user.name)
+
+  val isValidUserV2: Predicate[User] =
+    isAdult && isUsernameLongerThan3 && isUsernameCapitalised
+
+  def isBiggerThan(min: Int): Predicate[Int] =
+    Predicate(_ >= min)
+
+  val isAdultV2: Predicate[User] =
+    isBiggerThan(18).contramap(_.age)
+
+  val isUsernameLongerThan3V2: Predicate[User] =
+    isBiggerThan(3).contramap(_.name.length)
 
   def isLongerThan(min: Int): Predicate[String] =
-    Predicate((text: String) => text.length >= min)
-
-  def contains(char: Char): Predicate[String] =
-    Predicate((text: String) => text.contains(char))
+    isBiggerThan(min).contramap(_.length)
 
   case class User(name: String, age: Int)
 
-  val isValidUser: Predicate[User] =
-    isAdult.contramap[User](_.age) &&
-      isLongerThan(3).contramap(_.name)
+  val isCapitalised: Predicate[String] =
+    Predicate(word => word.capitalize == word)
 
-  def biggerThan(min: Int): Predicate[Int] =
-    Predicate((x: Int) => x >= min)
-
-  val isAdultV2: Predicate[Int] =
-    biggerThan(18)
-
-  def longerThanV2(min: Int): Predicate[String] =
-    biggerThan(min).contramap(_.length)
+  val isValidUserV3: Predicate[User] =
+    isAdult &&
+      (isLongerThan(3) && isCapitalised).contramap(_.name)
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
