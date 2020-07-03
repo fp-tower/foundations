@@ -19,6 +19,9 @@ object GenericFunctionAnswers {
     def map[To](update: A => To): Pair[To] =
       Pair(update(first), update(second))
 
+    def zipWithUncurried[Other, To](other: Pair[Other], combine: (A, Other) => To): Pair[To] =
+      Pair(combine(first, other.first), combine(second, other.second))
+
     def zipWith[Other, To](other: Pair[Other])(combine: (A, Other) => To): Pair[To] =
       Pair(combine(first, other.first), combine(second, other.second))
 
@@ -43,6 +46,11 @@ object GenericFunctionAnswers {
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
   val products: Pair[Product]     = productNames.zipWith(productPrices)(Product)
+
+  val productsUncurried: Pair[Product] =
+    productNames.zipWithUncurried(productPrices, Product.apply)
+
+  productPrices.zipWithUncurried[Double, Double](productPrices, _ + _)
 
   ////////////////////////////
   // Exercise 2: Predicate
@@ -73,12 +81,6 @@ object GenericFunctionAnswers {
       Predicate { (value: To) =>
         val a = update(value)
         eval(a)
-      }
-
-    def foo[To](predicate: Predicate[A])(zoom: To => A): Predicate[To] =
-      Predicate { (to: To) =>
-        val from: A = zoom(to)
-        predicate.eval(from)
       }
   }
 
@@ -123,8 +125,19 @@ object GenericFunctionAnswers {
     Predicate(word => word.capitalize == word)
 
   val isValidUserV3: Predicate[User] =
-    isAdult &&
+    isBiggerThan(18).contramap[User](_.age) &&
       (isLongerThan(3) && isCapitalised).contramap(_.name)
+
+  val isValidUserV4: Predicate[User] =
+    by[User](_.age)(isBiggerThan(18)) &&
+      by[User](_.name)(isLongerThan(3) && isCapitalised)
+
+  def by[From]: Foo[From] = new Foo[From] {}
+
+  class Foo[A] {
+    def apply[B](f: A => B)(predicate: Predicate[B]): Predicate[A] =
+      predicate.contramap(f)
+  }
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
