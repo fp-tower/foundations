@@ -87,6 +87,8 @@ object GenericFunctionAnswers {
   def False[A]: Predicate[A] = Predicate(_ => false)
   def True[A]: Predicate[A]  = False.flip
 
+  case class User(name: String, age: Int)
+
   val isValidUser: Predicate[User] =
     Predicate(
       user =>
@@ -119,8 +121,6 @@ object GenericFunctionAnswers {
   def isLongerThan(min: Int): Predicate[String] =
     isBiggerThan(min).contramap(_.length)
 
-  case class User(name: String, age: Int)
-
   val isCapitalised: Predicate[String] =
     Predicate(word => word.capitalize == word)
 
@@ -132,9 +132,9 @@ object GenericFunctionAnswers {
     by[User](_.age)(isBiggerThan(18)) &&
       by[User](_.name)(isLongerThan(3) && isCapitalised)
 
-  def by[From]: Foo[From] = new Foo[From] {}
+  def by[From]: ByOps[From] = new ByOps[From] {}
 
-  class Foo[A] {
+  class ByOps[A] { // trick to partially apply type parameters
     def apply[B](f: A => B)(predicate: Predicate[B]): Predicate[A] =
       predicate.contramap(f)
   }
