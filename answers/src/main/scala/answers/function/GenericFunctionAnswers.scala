@@ -3,6 +3,8 @@ package answers.function
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import scala.util.Try
+
 object GenericFunctionAnswers {
 
   ////////////////////
@@ -146,8 +148,18 @@ object GenericFunctionAnswers {
   // very basic representation of JSON
   type Json = String
 
-  trait JsonDecoder[A] {
+  trait JsonDecoder[A] { self =>
     def decode(json: Json): A
+
+    def map[To](update: A => To): JsonDecoder[To] =
+      new JsonDecoder[To] {
+        def decode(json: Json): To =
+          update(self.decode(json))
+      }
+  }
+
+  val intDecoder: JsonDecoder[Int] = new JsonDecoder[Int] {
+    def decode(json: Json): Int = json.toInt
   }
 
   val stringDecoder: JsonDecoder[String] = new JsonDecoder[String] {
@@ -157,54 +169,47 @@ object GenericFunctionAnswers {
       else
         throw new IllegalArgumentException(s"$json is not a JSON string")
   }
-  val intDecoder: JsonDecoder[Int] = new JsonDecoder[Int] {
-    def decode(json: Json): Int = json.toInt
-  }
 
-  // 3a. Implement `userIdDecoder`, a `JsonDecoder` for `UserId`
-  // such as userIdDecoder.decoder(UserId("1234")) == 1234
-  // Note: Try to re-use `intDecoder` defined below.
   case class UserId(id: Int)
-  val userIdDecoder: JsonDecoder[UserId] = new JsonDecoder[UserId] {
-    def decode(json: Json): UserId =
-      UserId(intDecoder.decode(json))
-  }
+  val userIdDecoder: JsonDecoder[UserId] =
+    (json: Json) => UserId(intDecoder.decode(json))
 
-  // 3b. Implement `localDateDecoder`, a `JsonDecoder` for `LocalDate`
-  // such as userIdDecoder.decoder("2020-26-03") == LocalDate.of(2020,26,03)
-  // Note: You can parse a `LocalDate` using `LocalDate.parse` with a java.time.format.DateTimeFormatter
-  //       Try to re-use `stringDecoder` defined below.
-  val localDateDecoder: JsonDecoder[LocalDate] = new JsonDecoder[LocalDate] {
-    def decode(json: Json): LocalDate =
-      LocalDate.parse(stringDecoder.decode(json), DateTimeFormatter.ISO_LOCAL_DATE)
-  }
+  val localDateDecoder: JsonDecoder[LocalDate] =
+    (json: Json) => LocalDate.parse(stringDecoder.decode(json), DateTimeFormatter.ISO_LOCAL_DATE)
 
-  // 3c. Implement `map` a generic method that converts a `JsonDecoder`
-  // of one type into a `JsonDecoder` of another type.
-  def map[From, To](decoder: JsonDecoder[From], update: From => To): JsonDecoder[To] =
-    new JsonDecoder[To] {
-      def decode(json: Json): To =
-        update(decoder.decode(json))
-    }
+  def map[From, To](decoder: JsonDecoder[From])(update: From => To): JsonDecoder[To] =
+    (json: Json) => update(decoder.decode(json))
 
-  // 3d. Re-implement a `JsonDecoder` for `UserId and `LocalDate` using `map`
-  lazy val userIdDecoderV2: JsonDecoder[UserId] =
-    map(intDecoder, (x: Int) => UserId(x))
+  val userIdDecoderV2: JsonDecoder[UserId] =
+    intDecoder.map(UserId)
 
   lazy val localDateDecoderV2: JsonDecoder[LocalDate] =
-    map(stringDecoder, (text: String) => LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE))
+    stringDecoder.map(LocalDate.parse(_, DateTimeFormatter.ISO_LOCAL_DATE))
 
-  // 3e. (difficult) How would you define and implement a `JsonDecoder` for a generic `Option`?
-  // such as we can decode:
-  // * "1" into a Some(1)
-  // * "2020-26-03" into a Some(LocalDate.of(2020,26,03))
-  // * "null" into "None"
-  def optionDecoder[A](decoder: JsonDecoder[A]): JsonDecoder[Option[A]] =
-    new JsonDecoder[Option[A]] {
-      def decode(json: Json): Option[A] =
-        json match {
-          case "null" => None
-          case other  => Some(decoder.decode(json))
-        }
-    }
+  def optionDecoder[A](decoder: JsonDecoder[A]): JsonDecoder[Option[A]] = {
+    case "null" => None
+    case other  => Some(decoder.decode(other))
+  }
+
+  trait SafeJsonDecoder[A] { self =>
+    def decode(json: Json): Either[String, A]
+
+    def map[To](update: A => To): SafeJsonDecoder[To] =
+      new SafeJsonDecoder[To] {
+        def decode(json: Json): Either[String, To] =
+          self.decode(json).map(update)
+      }
+  }
+
+  object SafeJsonDecoder {
+    val intDecoder: SafeJsonDecoder[Int] =
+      (json: Json) => Try(json.toInt).toOption.toRight(s"Invalid JSON Int: $json")
+
+    val stringDecoder: SafeJsonDecoder[String] =
+      (json: Json) =>
+        if (json.startsWith("\"") && json.endsWith("\""))
+          Right(json.substring(1, json.length - 1))
+        else
+          Left(s"$json is not a JSON string")
+  }
 }

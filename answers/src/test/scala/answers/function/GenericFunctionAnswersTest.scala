@@ -1,10 +1,10 @@
 package answers.function
 
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.{Instant, LocalDate, ZoneOffset}
 
 import answers.function.GenericFunctionAnswers._
-import org.scalacheck.{Arbitrary, Gen}
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -105,7 +105,7 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
   }
 
   test("JsonDecoder LocalDate random") {
-    forAll { (localDate: LocalDate) =>
+    forAll(localDateGen) { (localDate: LocalDate) =>
       val json = "\"" + DateTimeFormatter.ISO_LOCAL_DATE.format(localDate) + "\""
       assert(localDateDecoder.decode(json) == localDate)
     }
@@ -116,12 +116,9 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
     assert(optionDecoder(stringDecoder).decode("\"hello\"") == Some("hello"))
   }
 
-  implicit val localDateArbitrary: Arbitrary[LocalDate] =
-    Arbitrary(
-      Gen
-        .choose(Instant.MIN.getEpochSecond, Instant.MAX.getEpochSecond)
-        .map(Instant.ofEpochSecond)
-        .map(_.atZone(ZoneOffset.UTC).toLocalDate)
-    )
+  implicit val localDateGen: Gen[LocalDate] =
+    Gen
+      .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
+      .map(LocalDate.ofEpochDay)
 
 }

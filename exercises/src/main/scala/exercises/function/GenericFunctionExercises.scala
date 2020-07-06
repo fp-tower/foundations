@@ -1,6 +1,7 @@
 package exercises.function
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 object GenericFunctionExercises {
 
@@ -105,36 +106,12 @@ object GenericFunctionExercises {
   // but     isValidUser(User("John", 17)) == false // user is not an adult
   //         isValidUser(User("john", 20)) == false // name is not capitalized
   //         isValidUser(User("x"   , 23)) == false // name is too small
-
   // Note: Can you use methods from the Predicate API such as `&&`, `||` or `flip`?
+  // You may want to create new Predicate methods to improve the implementation of `isValidUser`.
   case class User(name: String, age: Int)
 
   lazy val isValidUser: Predicate[User] =
     ???
-
-  // 2e.
-
-  // 2d. Implement `isBiggerThan`, a predicate which checks if a number is bigger than a constant
-  // such as isBiggerThan(10)(15) == true
-  //         isBiggerThan(10)(10) == true
-  // but     isBiggerThan(10)(-6) == false
-  def isBiggerThan(min: Int): Predicate[Int] =
-    ???
-
-  // 2e. Implement `isLongerThan`, a predicate which checks if a text is longer than a constant
-  // such as isLongerThan(5)("hello") == true
-  // but     isLongerThan(5)("hey")   == false
-  def isLongerThan(min: Int): Predicate[String] =
-    ???
-
-  // 2g. Implement `contains`, a predicate that checks if a character is present in a text
-  // such as contains('l')("hello") == true
-  // but     contains('z')("hello") == false
-  def contains(char: Char): Predicate[String] =
-    ???
-
-  // 2h. Could you generalise `isAdult` and `longerThan`?
-  // Try to define a function that will help you re-implement both.
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
@@ -147,51 +124,58 @@ object GenericFunctionExercises {
     def decode(json: Json): A
   }
 
-  val stringDecoder: JsonDecoder[String] = new JsonDecoder[String] {
-    def decode(json: Json): String =
-      if (json.startsWith("\"") && json.endsWith("\""))
-        json.substring(1, json.length - 1)
-      else
-        throw new IllegalArgumentException(s"$json is not a JSON string")
-  }
   val intDecoder: JsonDecoder[Int] = new JsonDecoder[Int] {
     def decode(json: Json): Int = json.toInt
   }
 
-  // 3a. Implement `userIdDecoder`, a `JsonDecoder` for `UserId`
-  // such as userIdDecoder.decode("1234") == UserId(1234)
-  // Note: Try to re-use `intDecoder` defined below.
-  case class UserId(id: Int)
-  val userIdDecoder: JsonDecoder[UserId] = new JsonDecoder[UserId] {
-    def decode(json: Json): UserId =
-      ???
+  val stringDecoder: JsonDecoder[String] = new JsonDecoder[String] {
+    def decode(json: Json): String =
+      if (json.startsWith("\"") && json.endsWith("\"")) // check it starts and ends with `"`
+        json.substring(1, json.length - 1)
+      else
+        throw new IllegalArgumentException(s"$json is not a valid JSON string")
   }
 
+  // SAM syntax for JsonDecoder
+  val intDecoderSAM: JsonDecoder[Int] =
+    (json: Json) => json.toInt
+
+  // 3a. Implement `userIdDecoder`, a `JsonDecoder` for `UserId`
+  // such as userIdDecoder.decode("1234") == UserId(1234)
+  // Bonus: Try to define `userIdDecoder` using the SAM syntax
+  case class UserId(id: Int)
+  lazy val userIdDecoder: JsonDecoder[UserId] =
+    ???
+
   // 3b. Implement `localDateDecoder`, a `JsonDecoder` for `LocalDate`
-  // such as localDateDecoder.decode("2020-03-26") == LocalDate.of(2020,3,26)
+  // such as localDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020,3,26)
   // Note: You can parse a `LocalDate` using `LocalDate.parse` with a java.time.format.DateTimeFormatter
-  //       Try to re-use `stringDecoder` defined below.
+  // e.g. DateTimeFormatter.ISO_LOCAL_DATE
   lazy val localDateDecoder: JsonDecoder[LocalDate] =
     ???
 
-  // 3c. Implement `map` a generic method that converts a `JsonDecoder`
-  // of one type into a `JsonDecoder` of another type.
-  def map[From, To](decoder: JsonDecoder[From], update: From => To): JsonDecoder[To] =
+  // 3c. Implement `map` a generic function that converts a `JsonDecoder` of `From`
+  // into a `JsonDecoder` of `To`.
+  // Bonus: Can you move `map` inside `JsonDecoder` trait so that we can use
+  def map[From, To](decoder: JsonDecoder[From])(update: From => To): JsonDecoder[To] =
     ???
 
-  // 3d. Re-implement a `JsonDecoder` for `UserId and `LocalDate` using `map`
-  lazy val userIdDecoderV2: JsonDecoder[UserId] =
-    ???
-
-  lazy val localDateDecoderV2: JsonDecoder[LocalDate] =
-    ???
+  // 3d. Re-implement `userIdDecoder` and `localDateDecoder` using `map`
 
   // 3e. How would you define and implement a `JsonDecoder` for a generic `Option`?
   // such as we can decode:
   // * "1" into a Some(1)
-  // * "2020-26-03" into a Some(LocalDate.of(2020,26,03))
+  // * "\"2020-26-03\"" into a Some(LocalDate.of(2020,26,03))
+  // * "\"null\"" into a Some("null")
   // * "null" into "None"
   def optionDecoder[A]: JsonDecoder[Option[A]] =
     ???
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the video)
+  //////////////////////////////////////////////
+
+  // 3f. `JsonDecoder` currently throws an exception if the input is not a valid JSON.
+  // How could you change the API so that it doesn't happen anymore?
 
 }

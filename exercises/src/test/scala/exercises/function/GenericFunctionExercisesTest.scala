@@ -3,7 +3,7 @@ package exercises.function
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ArbitraryInstances {
+class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   ////////////////////
   // Exercise 1: Pair
