@@ -1,6 +1,6 @@
-package exercises.function
+package exercises.valfunction
 
-import exercises.function.ValueFunctionExercises._
+import exercises.valfunction.ValueFunctionExercises._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 

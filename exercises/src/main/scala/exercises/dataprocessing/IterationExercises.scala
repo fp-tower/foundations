@@ -1,4 +1,4 @@
-package exercises.function
+package exercises.dataprocessing
 
 object IterationExercises {
   ////////////////////////

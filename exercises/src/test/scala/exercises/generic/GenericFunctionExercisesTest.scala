@@ -1,4 +1,4 @@
-package exercises.function
+package exercises.generic
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks

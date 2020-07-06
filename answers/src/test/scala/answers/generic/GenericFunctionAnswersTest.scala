@@ -1,9 +1,9 @@
-package answers.function
+package answers.generic
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import answers.function.GenericFunctionAnswers._
+import answers.generic.GenericFunctionAnswers._
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks

@@ -1,6 +1,6 @@
-package answers.function
+package answers.dataprocessing
 
-import answers.function.IterationAnswers._
+import answers.dataprocessing.IterationAnswers._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 

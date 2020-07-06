@@ -1,6 +1,6 @@
-package answers.function
+package answers.valfunction
 
-import answers.function.ValueFunctionAnswers._
+import answers.valfunction.ValueFunctionAnswers._
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks

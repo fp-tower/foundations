@@ -1,4 +1,4 @@
-package exercises.function
+package exercises.generic
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
