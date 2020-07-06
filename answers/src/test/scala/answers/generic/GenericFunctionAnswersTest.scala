@@ -116,6 +116,17 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
     assert(optionDecoder(stringDecoder).decode("\"hello\"") == Some("hello"))
   }
 
+  test("SafeJsonDecoder Int") {
+    assert(SafeJsonDecoder.int.decode("1234") == Right(1234))
+    assert(SafeJsonDecoder.int.decode("hello") == Left("Invalid JSON Int: hello"))
+  }
+
+  test("SafeJsonDecoder orElse") {
+    val date = LocalDate.of(2020, 8, 3)
+    assert(SafeJsonDecoder.localDate.decode("\"2020-08-03\"") == Right(date))
+    assert(SafeJsonDecoder.localDate.decode("18477") == Right(date))
+  }
+
   implicit val localDateGen: Gen[LocalDate] =
     Gen
       .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)

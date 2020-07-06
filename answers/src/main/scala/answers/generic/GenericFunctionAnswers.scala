@@ -199,17 +199,35 @@ object GenericFunctionAnswers {
         def decode(json: Json): Either[String, To] =
           self.decode(json).map(update)
       }
+
+    def orElse(other: SafeJsonDecoder[A]): SafeJsonDecoder[A] =
+      new SafeJsonDecoder[A] {
+        def decode(json: Json): Either[String, A] =
+          self.decode(json).orElse(other.decode(json))
+      }
   }
 
   object SafeJsonDecoder {
-    val intDecoder: SafeJsonDecoder[Int] =
+    val int: SafeJsonDecoder[Int] =
       (json: Json) => Try(json.toInt).toOption.toRight(s"Invalid JSON Int: $json")
 
-    val stringDecoder: SafeJsonDecoder[String] =
+    val long: SafeJsonDecoder[Long] =
+      (json: Json) => Try(json.toLong).toOption.toRight(s"Invalid JSON Long: $json")
+
+    val string: SafeJsonDecoder[String] =
       (json: Json) =>
         if (json.startsWith("\"") && json.endsWith("\""))
           Right(json.substring(1, json.length - 1))
         else
           Left(s"$json is not a JSON string")
+
+    val localDateInt: SafeJsonDecoder[LocalDate] =
+      long.map(LocalDate.ofEpochDay)
+
+    val localDateString: SafeJsonDecoder[LocalDate] =
+      string.map(LocalDate.parse(_, DateTimeFormatter.ISO_LOCAL_DATE))
+
+    val localDate: SafeJsonDecoder[LocalDate] =
+      localDateString.orElse(localDateInt)
   }
 }

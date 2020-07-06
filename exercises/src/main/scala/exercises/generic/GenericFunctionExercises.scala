@@ -142,7 +142,7 @@ object GenericFunctionExercises {
 
   // 3a. Implement `userIdDecoder`, a `JsonDecoder` for the `UserId` case class
   // such as userIdDecoder.decode("1234") == UserId(1234)
-  // but     userIdDecoder.decoder("hello") would throw an Exception
+  // but     userIdDecoder.decode("hello") would throw an Exception
   case class UserId(value: Int)
   lazy val userIdDecoder: JsonDecoder[UserId] =
     ???
@@ -185,7 +185,7 @@ object GenericFunctionExercises {
   // val intLocalDateDecoder   : JsonDecoder[LocalDate] = ... // based on a number representing the # of days since epoch
   // val stringLocalDateDecoder: JsonDecoder[LocalDate] = ... // based on a DateTimeFormatter as we did above
   // val localDateDecoderWithFallBack = stringLocalDateDecoder.orElse(intLocalDateDecoder)
-  // such that localDateDecoderWithFallBack.decoder("\"2020-08-03\"") == Some(LocalDate.of(2020,8,3))
-  // and       localDateDecoderWithFallBack.decoder(18477)            == Some(LocalDate.of(2020,8,3))
+  // such that localDateDecoderWithFallBack.decode("\"2020-08-03\"") == Some(LocalDate.of(2020,8,3))
+  // and       localDateDecoderWithFallBack.decode("18477")          == Some(LocalDate.of(2020,8,3))
 
 }
