@@ -140,15 +140,16 @@ object GenericFunctionExercises {
   val intDecoderSAM: JsonDecoder[Int] =
     (json: Json) => json.toInt
 
-  // 3a. Implement `userIdDecoder`, a `JsonDecoder` for `UserId`
+  // 3a. Implement `userIdDecoder`, a `JsonDecoder` for the `UserId` case class
   // such as userIdDecoder.decode("1234") == UserId(1234)
-  // Bonus: Try to define `userIdDecoder` using the SAM syntax
-  case class UserId(id: Int)
+  // but     userIdDecoder.decoder("hello") would throw an Exception
+  case class UserId(value: Int)
   lazy val userIdDecoder: JsonDecoder[UserId] =
     ???
 
   // 3b. Implement `localDateDecoder`, a `JsonDecoder` for `LocalDate`
   // such as localDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020,3,26)
+  // but     localDateDecoder.decode("1234") would throw an Exception
   // Note: You can parse a `LocalDate` using `LocalDate.parse` with a java.time.format.DateTimeFormatter
   // e.g. DateTimeFormatter.ISO_LOCAL_DATE
   lazy val localDateDecoder: JsonDecoder[LocalDate] =
@@ -165,7 +166,7 @@ object GenericFunctionExercises {
   // 3e. How would you define and implement a `JsonDecoder` for a generic `Option`?
   // such as we can decode:
   // * "1" into a Some(1)
-  // * "\"2020-26-03\"" into a Some(LocalDate.of(2020,26,03))
+  // * "\"2020-08-03\"" into a Some(LocalDate.of(2020,08,3))
   // * "\"null\"" into a Some("null")
   // * "null" into "None"
   def optionDecoder[A]: JsonDecoder[Option[A]] =
@@ -177,5 +178,14 @@ object GenericFunctionExercises {
 
   // 3f. `JsonDecoder` currently throws an exception if the input is not a valid JSON.
   // How could you change the API so that it doesn't happen anymore?
+
+  // 3g. Implement `orElse` a method on JsonDecoder that allows to fallback to another
+  // JsonDecoder in case the first one failed.
+  // For example, one might define define two decoders for LocalDate
+  // val intLocalDateDecoder   : JsonDecoder[LocalDate] = ... // based on a number representing the # of days since epoch
+  // val stringLocalDateDecoder: JsonDecoder[LocalDate] = ... // based on a DateTimeFormatter as we did above
+  // val localDateDecoderWithFallBack = stringLocalDateDecoder.orElse(intLocalDateDecoder)
+  // such that localDateDecoderWithFallBack.decoder("\"2020-08-03\"") == Some(LocalDate.of(2020,8,3))
+  // and       localDateDecoderWithFallBack.decoder(18477)            == Some(LocalDate.of(2020,8,3))
 
 }

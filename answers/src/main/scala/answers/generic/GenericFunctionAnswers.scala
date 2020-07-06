@@ -170,7 +170,7 @@ object GenericFunctionAnswers {
         throw new IllegalArgumentException(s"$json is not a JSON string")
   }
 
-  case class UserId(id: Int)
+  case class UserId(value: Int)
   val userIdDecoder: JsonDecoder[UserId] =
     (json: Json) => UserId(intDecoder.decode(json))
 
