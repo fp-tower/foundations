@@ -43,7 +43,7 @@ object ValueFunctionExercises {
   ///////////////////////
 
   case class Point(x: Int, y: Int, z: Int) {
-    // 2a. Implement `isPositive` which returns true if both `x` and `y` are greater or equal to 0, false otherwise
+    // 2a. Implement `isPositive` which returns true if `x`, `y` and `z` are all greater or equal to 0, false otherwise
     // such as Point(2, 4,9).isPositive == true
     //         Point(0, 0,0).isPositive == true
     // but     Point(0,-2,1).isPositive == false
@@ -51,7 +51,7 @@ object ValueFunctionExercises {
     def isPositive: Boolean =
       ???
 
-    // 2b. Implement `isEven` which returns true if both `x`, `y`, and `z` are even numbers, false otherwise
+    // 2b. Implement `isEven` which returns true if `x`, `y` and `z` are all even numbers, false otherwise
     // such as Point(2, 4, 8).isEven == true
     //         Point(0,-8,-2).isEven == true
     // but     Point(3,-2, 0).isEven == false
