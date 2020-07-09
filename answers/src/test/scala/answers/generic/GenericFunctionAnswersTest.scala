@@ -4,9 +4,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import answers.generic.GenericFunctionAnswers._
-import org.scalacheck.Gen
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+
+import scala.util.Try
 
 class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
@@ -92,9 +94,13 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
 
   test("JsonDecoder UserId") {
     assert(userIdDecoder.decode("1234") == UserId(1234))
+    assert(userIdDecoder.decode("-1") == UserId(-1))
+
+    assert(Try(userIdDecoder.decode("hello")).isFailure)
+    assert(Try(userIdDecoder.decode("1111111111111111")).isFailure)
   }
 
-  test("JsonDecoder UserId int.toString") {
+  test("JsonDecoder UserId round-trip") {
     forAll { (id: Int) =>
       assert(userIdDecoder.decode(id.toString) == UserId(id))
     }
@@ -102,10 +108,19 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
 
   test("JsonDecoder LocalDate") {
     assert(localDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020, 3, 26))
+    assert(Try(localDateDecoder.decode("2020-03-26")).isFailure)
+    assert(Try(localDateDecoder.decode("hello")).isFailure)
   }
 
-  test("JsonDecoder LocalDate random") {
+  test("JsonDecoder LocalDate round-trip (with Gen)") {
     forAll(localDateGen) { (localDate: LocalDate) =>
+      val json = "\"" + DateTimeFormatter.ISO_LOCAL_DATE.format(localDate) + "\""
+      assert(localDateDecoder.decode(json) == localDate)
+    }
+  }
+
+  test("JsonDecoder LocalDate round-trip (with Arbitrary)") {
+    forAll { (localDate: LocalDate) =>
       val json = "\"" + DateTimeFormatter.ISO_LOCAL_DATE.format(localDate) + "\""
       assert(localDateDecoder.decode(json) == localDate)
     }
@@ -127,9 +142,12 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
     assert(SafeJsonDecoder.localDate.decode("18477") == Right(date))
   }
 
-  implicit val localDateGen: Gen[LocalDate] =
+  val localDateGen: Gen[LocalDate] =
     Gen
       .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
       .map(LocalDate.ofEpochDay)
+
+  implicit val localDateArbitrary: Arbitrary[LocalDate] =
+    Arbitrary(localDateGen)
 
 }

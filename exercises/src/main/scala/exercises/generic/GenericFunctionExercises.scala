@@ -149,7 +149,8 @@ object GenericFunctionExercises {
 
   // 3b. Implement `localDateDecoder`, a `JsonDecoder` for `LocalDate`
   // such as localDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020,3,26)
-  // but     localDateDecoder.decode("1234") would throw an Exception
+  // but     localDateDecoder.decode("2020-03-26") would throw an Exception
+  // and     localDateDecoder.decode("hello") would throw an Exception
   // Note: You can parse a `LocalDate` using `LocalDate.parse` with a java.time.format.DateTimeFormatter
   // e.g. DateTimeFormatter.ISO_LOCAL_DATE
   lazy val localDateDecoder: JsonDecoder[LocalDate] =
@@ -157,11 +158,16 @@ object GenericFunctionExercises {
 
   // 3c. Implement `map` a generic function that converts a `JsonDecoder` of `From`
   // into a `JsonDecoder` of `To`.
-  // Bonus: Can you move `map` inside `JsonDecoder` trait so that we can use
+  // Bonus: Can you re-implement `userIdDecoder` and `localDateDecoder` using `map`
   def map[From, To](decoder: JsonDecoder[From])(update: From => To): JsonDecoder[To] =
     ???
 
-  // 3d. Re-implement `userIdDecoder` and `localDateDecoder` using `map`
+  // 3d. Move `map` inside of `JsonDecoder` trait so that we can use the syntax
+  // `intDecoder.map(_ + 1)` instead of `map(intDecoder)(_ + 1)`
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the video)
+  //////////////////////////////////////////////
 
   // 3e. How would you define and implement a `JsonDecoder` for a generic `Option`?
   // such as we can decode:
@@ -171,10 +177,6 @@ object GenericFunctionExercises {
   // * "null" into "None"
   def optionDecoder[A]: JsonDecoder[Option[A]] =
     ???
-
-  //////////////////////////////////////////////
-  // Bonus question (not covered by the video)
-  //////////////////////////////////////////////
 
   // 3f. `JsonDecoder` currently throws an exception if the input is not a valid JSON.
   // How could you change the API so that it doesn't happen anymore?
