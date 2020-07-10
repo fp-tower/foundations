@@ -48,7 +48,7 @@ object GenericFunctionExercises {
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
   lazy val products: Pair[Product] =
-    productNames.zipWith(productPrices)(Product)
+    ???
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
