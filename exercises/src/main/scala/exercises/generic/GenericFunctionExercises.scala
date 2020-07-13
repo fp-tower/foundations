@@ -45,8 +45,10 @@ object GenericFunctionExercises {
   // 1e. Use the Pair API to combine `productNames` and `productPrices` into `products`
   // such as products == Pair(Product("Coffee", 2.5), Product("Plane ticket", 329.99))
   case class Product(name: String, price: Double)
+
   val productNames: Pair[String]  = Pair("Coffee", "Plane ticket")
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
+
   lazy val products: Pair[Product] =
     ???
 
@@ -54,8 +56,8 @@ object GenericFunctionExercises {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // 1f. Can you implement a method on `Pair` similar to `zipWith`, but that combines
-  // 3 `Pair` instead of 2? If yes, can you implement this method using `zipWith`?
+  // 1f. Can you implement a method on `Pair` similar to `zipWith`, but that combines 3
+  // Pairs instead of 2? If yes, can you implement this method using `zipWith`?
   // Note: Libraries often call this method `map3` and `zipWith` is often called `map2`
 
   ////////////////////////////

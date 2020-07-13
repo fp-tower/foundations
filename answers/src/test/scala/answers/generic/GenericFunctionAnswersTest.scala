@@ -50,22 +50,22 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
   test("Predicate &&") {
     forAll { (p: (Int => Boolean), number: Int) =>
       val predicate = Predicate(p)
-      assert(!(predicate && False)(number))
-      assert((predicate && True)(number) == predicate(number))
+      assert(!(predicate && Predicate.False)(number))
+      assert((predicate && Predicate.True)(number) == predicate(number))
     }
   }
 
   test("Predicate ||") {
     forAll { (p: (Int => Boolean), number: Int) =>
       val predicate = Predicate(p)
-      assert((predicate || True)(number))
-      assert((predicate || False)(number) == predicate(number))
+      assert((predicate || Predicate.True)(number))
+      assert((predicate || Predicate.False)(number) == predicate(number))
     }
   }
 
   test("Predicate flip") {
-    assert(!True.flip(()))
-    assert(False.flip(()))
+    assert(!Predicate.True.flip(()))
+    assert(Predicate.False.flip(()))
   }
 
   test("Predicate isLongerThan") {

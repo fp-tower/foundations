@@ -54,6 +54,9 @@ object GenericFunctionAnswers {
 
   productPrices.zipWithUncurried[Double, Double](productPrices, _ + _)
 
+  productPrices.zipWith(productPrices)(List(_, _))
+  productPrices.zipWithUncurried[Double, List[Double]](productPrices, List(_, _))
+
   ////////////////////////////
   // Exercise 2: Predicate
   ////////////////////////////
@@ -86,8 +89,13 @@ object GenericFunctionAnswers {
       }
   }
 
-  def False[A]: Predicate[A] = Predicate(_ => false)
-  def True[A]: Predicate[A]  = False.flip
+  object Predicate {
+    def False[A]: Predicate[A] = Predicate(_ => false)
+    def True[A]: Predicate[A]  = False.flip
+
+    val FalseVal = False
+    val TrueVal  = True
+  }
 
   case class User(name: String, age: Int)
 
