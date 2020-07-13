@@ -60,7 +60,7 @@ object ValueFunctionExercises {
     def isEven: Boolean =
       ???
 
-    // 2c. Both `isPositive` and `isEven` check that a predicate holds for both `x` and `y`.
+    // 2c. Both `isPositive` and `isEven` check that a predicate holds for `x`, `y` and `z`.
     // Let's try to capture this pattern with a higher order function like `forAll`
     // such as Point(1,1,1).forAll(_ == 1) == true
     // but     Point(1,2,5).forAll(_ == 1) == false
