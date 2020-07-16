@@ -126,6 +126,16 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
     }
   }
 
+  test("JsonDecoder orElse") {
+    forAll { (json: String, number: Int, exception: Exception) =>
+      val decoder1 = JsonDecoder.constant(number) orElse JsonDecoder.fail(exception)
+      val decoder2 = JsonDecoder.fail(exception) orElse JsonDecoder.constant(number)
+
+      assert(decoder1.decode(json) == number)
+      assert(decoder2.decode(json) == number)
+    }
+  }
+
   test("JsonDecoder Option") {
     assert(optionDecoder(stringDecoder).decode("null") == None)
     assert(optionDecoder(stringDecoder).decode("\"hello\"") == Some("hello"))

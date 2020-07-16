@@ -3,7 +3,7 @@ package answers.generic
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 object GenericFunctionAnswers {
 
@@ -156,14 +156,34 @@ object GenericFunctionAnswers {
   // very basic representation of JSON
   type Json = String
 
-  trait JsonDecoder[A] { self =>
+  trait JsonDecoder[A] { outer =>
     def decode(json: Json): A
 
     def map[To](update: A => To): JsonDecoder[To] =
       new JsonDecoder[To] {
         def decode(json: Json): To =
-          update(self.decode(json))
+          update(outer.decode(json))
       }
+
+    def orElse(fallback: JsonDecoder[A]): JsonDecoder[A] =
+      new JsonDecoder[A] {
+        def decode(json: Json): A =
+          Try(outer.decode(json)) match {
+            case Failure(_)     => fallback.decode(json)
+            case Success(value) => value
+          }
+      }
+  }
+
+  object JsonDecoder {
+    def constant[A](value: A): JsonDecoder[A] = new JsonDecoder[A] {
+      def decode(json: Json): A = value
+    }
+
+    def fail[A](exception: Exception): JsonDecoder[A] = new JsonDecoder[A] {
+      def decode(json: Json): A =
+        throw exception
+    }
   }
 
   val intDecoder: JsonDecoder[Int] = new JsonDecoder[Int] {
