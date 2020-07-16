@@ -166,12 +166,10 @@ object GenericFunctionAnswers {
       }
 
     def orElse(fallback: JsonDecoder[A]): JsonDecoder[A] =
-      new JsonDecoder[A] {
-        def decode(json: Json): A =
-          Try(outer.decode(json)) match {
-            case Failure(_)     => fallback.decode(json)
-            case Success(value) => value
-          }
+      (json: Json) =>
+        Try(outer.decode(json)) match {
+          case Failure(_)     => fallback.decode(json)
+          case Success(value) => value
       }
   }
 
