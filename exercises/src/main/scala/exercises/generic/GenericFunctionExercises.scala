@@ -167,11 +167,24 @@ object GenericFunctionExercises {
   // 3d. Move `map` inside of `JsonDecoder` trait so that we can use the syntax
   // `intDecoder.map(_ + 1)` instead of `map(intDecoder)(_ + 1)`
 
+  // 3e. Implement `orElse` a method for JsonDecoder that allows to fallback to another
+  // JsonDecoder in case the first one failed.
+  // For example, we may receive data from a client who either encodes date with the number
+  // of day since epoch (see `longLocalDateDecoder`) or with a string (see `localDateDecoder`).
+  // So we want to use `orElse` to try one parser and fallback to the other if it doesn't work
+  // such as:
+  // val combinedLocalDateDecoder = localDateDecoder.orElse(longLocalDateDecoder)
+  // combinedLocalDateDecoder.decode("\"2020-08-03\"") == LocalDate.of(2020,3,26)
+  // combinedLocalDateDecoder.decode("18477")          == LocalDate.of(2020,3,26)
+  // but combinedLocalDateDecoder.decode("hello") would throw an Exception
+  val longLocalDateDecoder: JsonDecoder[LocalDate] =
+    (json: Json) => LocalDate.ofEpochDay(json.toLong)
+
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // 3e. How would you define and implement a `JsonDecoder` for a generic `Option`?
+  // 3f. How would you define and implement a `JsonDecoder` for a generic `Option`?
   // such as we can decode:
   // * "1" into a Some(1)
   // * "\"2020-08-03\"" into a Some(LocalDate.of(2020,08,3))
@@ -180,16 +193,7 @@ object GenericFunctionExercises {
   def optionDecoder[A]: JsonDecoder[Option[A]] =
     ???
 
-  // 3f. `JsonDecoder` currently throws an exception if the input is not a valid JSON.
+  // 3g. `JsonDecoder` currently throws an exception if the input is not a valid JSON.
   // How could you change the API so that it doesn't happen anymore?
-
-  // 3g. Implement `orElse` a method on JsonDecoder that allows to fallback to another
-  // JsonDecoder in case the first one failed.
-  // For example, one might define define two decoders for LocalDate
-  // val intLocalDateDecoder   : JsonDecoder[LocalDate] = ... // based on a number representing the # of days since epoch
-  // val stringLocalDateDecoder: JsonDecoder[LocalDate] = ... // based on a DateTimeFormatter as we did above
-  // val localDateDecoderWithFallBack = stringLocalDateDecoder.orElse(intLocalDateDecoder)
-  // such that localDateDecoderWithFallBack.decode("\"2020-08-03\"") == Some(LocalDate.of(2020,8,3))
-  // and       localDateDecoderWithFallBack.decode("18477")          == Some(LocalDate.of(2020,8,3))
 
 }
