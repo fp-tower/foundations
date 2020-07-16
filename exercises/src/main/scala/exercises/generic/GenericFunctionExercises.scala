@@ -171,7 +171,7 @@ object GenericFunctionExercises {
   // using a String with the format "yyyy-mm-dd" and sometimes they are encoded using
   // JSON numbers representing the number of days since the epoch. For example,
   // weirdLocalDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020,3,26)
-  // weirdLocalDateDecoder.decode("18477")          == LocalDate.of(2020,3,26)
+  // weirdLocalDateDecoder.decode("18347")          == LocalDate.of(2020,3,26)
   // but weirdLocalDateDecoder.decode("hello") would throw an Exception
   // Try to think how we could extend JsonDecoder so that we can easily implement
   // other decoders that follow the same pattern.

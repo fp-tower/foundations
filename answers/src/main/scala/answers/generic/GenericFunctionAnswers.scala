@@ -209,8 +209,17 @@ object GenericFunctionAnswers {
   val userIdDecoderV2: JsonDecoder[UserId] =
     intDecoder.map(UserId)
 
-  lazy val localDateDecoderV2: JsonDecoder[LocalDate] =
+  val localDateDecoderV2: JsonDecoder[LocalDate] =
     stringDecoder.map(LocalDate.parse(_, DateTimeFormatter.ISO_LOCAL_DATE))
+
+  val longDecoder: JsonDecoder[Long] =
+    (json: Json) => json.toLong
+
+  val longLocalDateDecoder: JsonDecoder[LocalDate] =
+    longDecoder.map(LocalDate.ofEpochDay)
+
+  val weirdLocalDateDecoder: JsonDecoder[LocalDate] =
+    localDateDecoderV2 orElse longLocalDateDecoder
 
   def optionDecoder[A](decoder: JsonDecoder[A]): JsonDecoder[Option[A]] = {
     case "null" => None

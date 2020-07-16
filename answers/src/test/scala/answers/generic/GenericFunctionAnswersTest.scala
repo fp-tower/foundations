@@ -136,6 +136,13 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
     }
   }
 
+  test("JsonDecoder weirdLocalDateDecoder") {
+    val date = LocalDate.of(2020, 3, 26)
+    assert(weirdLocalDateDecoder.decode("\"2020-03-26\"") == date)
+    assert(weirdLocalDateDecoder.decode("18347") == date)
+    assert(Try(weirdLocalDateDecoder.decode("hello")).isFailure)
+  }
+
   test("JsonDecoder Option") {
     assert(optionDecoder(stringDecoder).decode("null") == None)
     assert(optionDecoder(stringDecoder).decode("\"hello\"") == Some("hello"))
@@ -147,9 +154,9 @@ class GenericFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProper
   }
 
   test("SafeJsonDecoder orElse") {
-    val date = LocalDate.of(2020, 8, 3)
-    assert(SafeJsonDecoder.localDate.decode("\"2020-08-03\"") == Right(date))
-    assert(SafeJsonDecoder.localDate.decode("18477") == Right(date))
+    val date = LocalDate.of(2020, 3, 26)
+    assert(SafeJsonDecoder.localDate.decode("\"2020-03-26\"") == Right(date))
+    assert(SafeJsonDecoder.localDate.decode("18347") == Right(date))
   }
 
   val localDateGen: Gen[LocalDate] =
