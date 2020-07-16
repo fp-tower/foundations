@@ -167,18 +167,16 @@ object GenericFunctionExercises {
   // 3d. Move `map` inside of `JsonDecoder` trait so that we can use the syntax
   // `intDecoder.map(_ + 1)` instead of `map(intDecoder)(_ + 1)`
 
-  // 3e. Implement `orElse` a method for JsonDecoder that allows to fallback to another
-  // JsonDecoder in case the first one failed.
-  // For example, we may receive data from a client who either encodes date with the number
-  // of day since epoch (see `longLocalDateDecoder`) or with a string (see `localDateDecoder`).
-  // So we want to use `orElse` to try one parser and fallback to the other if it doesn't work
-  // such as:
-  // val combinedLocalDateDecoder = localDateDecoder.orElse(longLocalDateDecoder)
-  // combinedLocalDateDecoder.decode("\"2020-08-03\"") == LocalDate.of(2020,3,26)
-  // combinedLocalDateDecoder.decode("18477")          == LocalDate.of(2020,3,26)
-  // but combinedLocalDateDecoder.decode("hello") would throw an Exception
-  val longLocalDateDecoder: JsonDecoder[LocalDate] =
-    (json: Json) => LocalDate.ofEpochDay(json.toLong)
+  // 3e. Imagine we have to integrate with a weird JSON API where dates are sometimes encoded
+  // using a String with the format "yyyy-mm-dd" and sometimes they are encoded using
+  // JSON numbers representing the number of days since the epoch. For example,
+  // weirdLocalDateDecoder.decode("\"2020-03-26\"") == LocalDate.of(2020,3,26)
+  // weirdLocalDateDecoder.decode("18477")          == LocalDate.of(2020,3,26)
+  // but weirdLocalDateDecoder.decode("hello") would throw an Exception
+  // Try to think how we could extend JsonDecoder so that we can easily implement
+  // other decoders that follow the same pattern.
+  lazy val weirdLocalDateDecoder: JsonDecoder[LocalDate] =
+    ???
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
