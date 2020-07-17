@@ -1,5 +1,6 @@
 package exercises.generic
 
+import exercises.generic.GenericFunctionExercises._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
