@@ -33,4 +33,10 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
   // Exercise 3: JsonDecoder
   ////////////////////////////
 
+  test("JsonDecoder UserId") {}
+
+  test("JsonDecoder LocalDate") {}
+
+  test("JsonDecoder weirdLocalDateDecoder") {}
+
 }
