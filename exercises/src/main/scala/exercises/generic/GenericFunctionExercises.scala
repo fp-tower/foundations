@@ -70,7 +70,7 @@ object GenericFunctionExercises {
   val isEven: Predicate[Int] =
     Predicate((number: Int) => number % 2 == 0)
 
-  val isOddPositive: Predicate[Int] =
+  lazy val isOddPositive: Predicate[Int] =
     isEven.flip && isPositive
 
   case class Predicate[A](eval: A => Boolean) {
