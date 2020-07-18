@@ -14,9 +14,9 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
 
   test("Pair map") {}
 
-  test("Pair zipWith") {}
-
   test("Pair decoded") {}
+
+  test("Pair zipWith") {}
 
   test("Pair productNames") {}
 
