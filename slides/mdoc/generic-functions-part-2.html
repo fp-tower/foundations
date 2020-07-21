@@ -15,7 +15,7 @@ class: center, middle, white
 .title[Generic functions <br> part 2]
 
 ---
-# 1. Parametric functions accept .hl[ALL] types
+# 1. Generic functions accept .hl[ALL] types
 
 <br>
 
@@ -31,9 +31,8 @@ map[User, Address](List(...), ...)
 ```
 
 ---
-# 2. All types must be treated .hl[EQUALLY]
+# 2. All types must be treated .hl[IN THE SAME WAY]
 
-<br>
 <br>
 
 ```scala
@@ -47,7 +46,7 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 ```
 
 ---
-# All types must be treated .hl[EQUALLY]
+# All types must be treated .hl[IN THE SAME WAY]
 
 <br>
 
@@ -117,8 +116,14 @@ format(List("Hello", "World"))
 
 <br><br><br><br><br><br><br><br><br>
 
-```scala mdoc:crash
+```scala mdoc:crash:invisible
 format(List(123.123456, 0.1234))
+```
+
+```scala
+format(List(123.123456, 0.1234))
+// java.lang.ClassCastException: class java.lang.Double
+// cannot be cast to class java.lang.String
 ```
 
 ---
@@ -169,8 +174,22 @@ def format[A](value: A): String =
     case _               => ...
   }
 ```
+]
 
-<br>
+.fifty-two-right[
+```scala
+def format[A](value: A): String =
+
+       if(value.isInstanceOf[String]) ...
+  else if(value.isInstanceOf[Double]) ...
+  else if(value.isInstanceOf[List[String]]) ...
+  else if(value.isInstanceOf[List[Double]]) ...
+  else ...
+```
+]
+<br><br><br><br><br><br><br><br><br><br><br>
+
+.large-left[
 
 ```scala mdoc
 List(1.5,2.0).isInstanceOf[List[String]]
@@ -180,22 +199,6 @@ List(1.5,2.0).isInstanceOf[List[String]]
 // warning: fruitless type test: a value of type
 // List[Double] cannot also be a List[String]
 ```
-]
-
-.fifty-two-right[
-```scala
-def format[A](value: A): String =
-
-       if(value.isInstanceOf[String]) ...
-  else if(value.isInstanceOf[Double]) ...
-  else if(value.isInstanceOf[List[String]]) ...
-  else if(value.isInstanceOf[List[Double]]) ...
-  else ...
-```
-
-<br>
-
-<img src="img/foundation/list-runtime.svg" alt="List runtime" style="width:500px;"/>
 ]
 
 ---
@@ -229,7 +232,7 @@ def map[From, To](list: List[From], update: From => To): List[To]
 
 --
 
-.large-right[
+.large-left[
 <img src="img/foundation/linked-list-enum-2.svg" alt="List enum" style="width:500px;"/>
 ]
 
@@ -272,6 +275,8 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 ```scala
 def map[A](list: List[A], update: A => A): List[A] =
   list
+
+// success
 ```
 
 ---
@@ -282,6 +287,8 @@ def map[A](list: List[A], update: A => A): List[A] =
 ```scala
 def map(list: List[Int], update: Int => Int): List[Int] =
   List(1, 2, 3)
+
+// success
 ```
 
 ---
@@ -303,11 +310,9 @@ test("map"){
 
 --
 
-<br>
-
-.center[
+.extra-large-left[.center[
 ## All types must be treated in the same way
-]
+]]
 
 ---
 # How can we test `map`?
@@ -329,11 +334,9 @@ test("map"){
 
 --
 
-<br>
-
-.center[
+.extra-large-left[.center[
 ## All output elements must be produced by `update`
-]
+]]
 
 ---
 # How can we test `map`?
@@ -388,14 +391,20 @@ test("map"){
 ```
 
 ---
-# Summary
+class: white
+
+background-image: url(img/fp-tower/website-background.svg)
+
+<br><br>
+
+# .white[Summary]
 
 <br>
 
-.large[
+.medium[
 * More reusable
 
-* Caller decides which underlying type to use
+* Caller decides which type to use
 
 * Implementation must be generic
    * better documentation
