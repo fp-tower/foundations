@@ -3,6 +3,8 @@ package exercises.generic
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import scala.util.{Failure, Success, Try}
+
 object GenericFunctionExercises {
 
   ////////////////////
