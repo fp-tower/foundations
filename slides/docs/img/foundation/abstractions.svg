@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 703 226" width="703" height="226">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 703 226" width="703" height="226">
   <defs>
     <linearGradient x1="0" x2="1" id="Gradient" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#ff7f7f"/>
@@ -14,12 +14,10 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.15.2 
-    <dc:date>2020-05-26 13:33:55 +0000</dc:date>
-  </metadata>
-  <g id="abstractions" fill-opacity="1" fill="none" stroke-opacity="1" stroke="none" stroke-dasharray="none">
+  <metadata> Produced by OmniGraffle 7.17.1\n2020-07-27 20:34:25 +0000</metadata>
+  <g id="abstractions" stroke-dasharray="none" fill-opacity="1" stroke-opacity="1" fill="none" stroke="none">
     <title>abstractions</title>
-    <g id="abstractions: Layer 1">
+    <g id="abstractions_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_9">
         <path d="M 702 117.64286 L 675.58065 153 L 675.58065 140.14286 L 35.419355 140.14286 L 35.419355 153 L 9 117.64286 L 35.419355 82.28571 L 35.419355 95.14286 L 675.58065 95.14286 L 675.58065 82.28571 Z" fill="url(#Obj_Gradient)"/>

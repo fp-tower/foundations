@@ -20,14 +20,14 @@ class: center, middle, white
 <br>
 
 ```scala
-def map[From, To](list: List[From], update: From => To): List[To]
+def map[From, To](list: List[From])(update: From => To): List[To]
 ```
 <br>
 
 ```scala
-map[String, Int](List(...), ...)
+map[String, Int](List(...))(...)
 
-map[User, Address](List(...), ...)
+map[User, Address](List(...))(...)
 ```
 
 ---
@@ -36,7 +36,7 @@ map[User, Address](List(...), ...)
 <br>
 
 ```scala
-def map[From, To](list: List[From], update: From => To): List[To] =
+def map[From, To](list: List[From])(update: From => To): List[To] =
   list match {
     case ints   : List[Int]    => ...
     case strings: List[String] => ...
@@ -227,7 +227,7 @@ class: center, middle
 <br>
 
 ```scala
-def map[From, To](list: List[From], update: From => To): List[To]
+def map[From, To](list: List[From])(update: From => To): List[To]
 ```
 
 --
@@ -253,7 +253,7 @@ def map[From, To](list: List[From], update: From => To): List[To]
 <br>
 
 ```scala
-def map[From, To](list: List[From], update: From => To): List[To] =
+def map[From, To](list: List[From])(update: From => To): List[To] =
   list
 ```
 
@@ -263,7 +263,7 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 <br>
 
 ```scala mdoc:reset:fail
-def map[From, To](list: List[From], update: From => To): List[To] =
+def map[From, To](list: List[From])(update: From => To): List[To] =
   list
 ```
 
@@ -273,7 +273,7 @@ def map[From, To](list: List[From], update: From => To): List[To] =
 <br>
 
 ```scala
-def map[A](list: List[A], update: A => A): List[A] =
+def map[A](list: List[A])(update: A => A): List[A] =
   list
 
 // success
@@ -285,7 +285,7 @@ def map[A](list: List[A], update: A => A): List[A] =
 <br>
 
 ```scala
-def map(list: List[Int], update: Int => Int): List[Int] =
+def map(list: List[Int])(update: Int => Int): List[Int] =
   List(1, 2, 3)
 
 // success
@@ -298,13 +298,13 @@ def map(list: List[Int], update: Int => Int): List[Int] =
 
 ```scala
 test("map"){
-  map(Nil, _ => ???) shouldEqual Nil
+  map(Nil)(_ => ???) shouldEqual Nil
 
-  map(List(1,2,3)    , (x: Int) => ???) shouldEqual ???
-  map(List(1,2,3,4,5), (x: Int) => ???) shouldEqual ???
+  map(List(1,2,3)    )(x => ???) shouldEqual ???
+  map(List(1,2,3,4,5))(x => ???) shouldEqual ???
 
-  map(List("Hello", "World")  , (x: String) => ???) shouldEqual ???
-  map(List("a", "b", "c", "d"), (x: String) => ???) shouldEqual ???
+  map(List("Hello", "World")  )(x => ???) shouldEqual ???
+  map(List("a", "b", "c", "d"))(x => ???) shouldEqual ???
 }
 ```
 
@@ -323,11 +323,11 @@ test("map"){
 test("map"){
   map(Nil, _ => ???) shouldEqual Nil
 
-  map(List(1,2,3)    , (x: Int) => x + 1) shouldEqual List(2,3,4)
-  map(List(1,2,3,4,5), (x: Int) => x + 1) shouldEqual List(2,3,4,5,6)
+  map(List(1,2,3)    )(_ + 1) shouldEqual List(2,3,4)
+  map(List(1,2,3,4,5))(_ + 1) shouldEqual List(2,3,4,5,6)
 
-  map(List(1,2,3)    , (x: Int) => x > 2) shouldEqual List(false,false,true)
-  map(List(1,2,3,4,5), (x: Int) => x > 2) shouldEqual List(false,false,true,true,true)
+  map(List(1,2,3)    )(_ > 2) shouldEqual List(false,false,true)
+  map(List(1,2,3,4,5))(_ > 2) shouldEqual List(false,false,true,true,true)
 }
 ```
 
@@ -348,8 +348,8 @@ test("map"){
 test("map"){
   map(Nil, _ => ???) shouldEqual Nil
 
-  map(List(1,2,3)    , (x: Int) => x) shouldEqual List(1,2,3)
-  map(List(1,2,3,4,5), (x: Int) => x) shouldEqual List(1,2,3,4,5)
+  map(List(1,2,3)    )(x => x) shouldEqual List(1,2,3)
+  map(List(1,2,3,4,5))(x => x) shouldEqual List(1,2,3,4,5)
 }
 ```
 
@@ -363,8 +363,8 @@ test("map"){
 test("map"){
   map(Nil, _ => ???) shouldEqual Nil
 
-  map(List(1,2,3)    , identity) shouldEqual List(1,2,3)
-  map(List(1,2,3,4,5), identity) shouldEqual List(1,2,3,4,5)
+  map(List(1,2,3)    )(identity) shouldEqual List(1,2,3)
+  map(List(1,2,3,4,5))(identity) shouldEqual List(1,2,3,4,5)
 }
 ```
 
@@ -385,7 +385,7 @@ object Predef {
 ```scala
 test("map"){
   forAll((list: List[Int]) =>
-    map(list, identity) shouldEqual list
+    map(list)(identity) shouldEqual list
   )
 }
 ```

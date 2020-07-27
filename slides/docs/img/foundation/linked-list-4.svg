@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 729 325" width="729" height="325">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 729 325" width="729" height="325">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -18,12 +18,10 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.15.2 
-    <dc:date>2020-05-26 13:33:55 +0000</dc:date>
-  </metadata>
-  <g id="linked-list-4" fill-opacity="1" fill="none" stroke-opacity="1" stroke="none" stroke-dasharray="none">
+  <metadata> Produced by OmniGraffle 7.17.1\n2020-07-27 20:34:25 +0000</metadata>
+  <g id="linked-list-4" stroke-dasharray="none" fill-opacity="1" stroke-opacity="1" fill="none" stroke="none">
     <title>linked-list-4</title>
-    <g id="linked-list-4: Layer 1">
+    <g id="linked-list-4_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_123">
         <path d="M 318 90 L 699 90 C 715.5685 90 729 103.43146 729 120 L 729 240 C 729 256.56854 715.5685 270 699 270 L 318 270 C 301.43146 270 288 256.56854 288 240 L 288 120 C 288 103.43146 301.43146 90 318 90 Z" fill="#589b9d" fill-opacity=".30095954"/>

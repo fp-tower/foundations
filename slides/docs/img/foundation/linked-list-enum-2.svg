@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 641 308" width="641" height="308">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 641 308" width="641" height="308">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -23,12 +23,10 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.15.2 
-    <dc:date>2020-05-26 13:33:55 +0000</dc:date>
-  </metadata>
-  <g id="linked-list-enum-2" fill-opacity="1" fill="none" stroke-opacity="1" stroke="none" stroke-dasharray="none">
+  <metadata> Produced by OmniGraffle 7.17.1\n2020-07-27 20:34:25 +0000</metadata>
+  <g id="linked-list-enum-2" stroke-dasharray="none" fill-opacity="1" stroke-opacity="1" fill="none" stroke="none">
     <title>linked-list-enum-2</title>
-    <g id="linked-list-enum-2: Layer 1">
+    <g id="linked-list-enum-2_Layer_1">
       <title>Layer 1</title>
       <g id="Group_129">
         <g id="Group_131">
@@ -63,6 +61,9 @@
       <g id="Graphic_137">
         <rect x="540" y="237" width="54" height="69" fill="#929497"/>
         <rect x="540" y="237" width="54" height="69" stroke="#929497" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(545 258.192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.174" y="21">Nil</tspan>
+        </text>
       </g>
       <g id="Graphic_141">
         <path d="M 225 237 L 360 237 L 360 306 L 225 306 Z" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
