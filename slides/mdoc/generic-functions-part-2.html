@@ -248,6 +248,28 @@ def map[From, To](list: List[From])(update: From => To): List[To]
 ]
 
 ---
+# How can we implement `map`?
+
+<br>
+
+```scala
+def map[From, To](list: List[From])(update: From => To): List[To]
+```
+
+.large-left[
+<img src="img/foundation/parametric-list.svg" alt="List enum" style="width:500px;"/>
+]
+
+<br>
+<br>
+
+.medium[
+1. Return `Nil` or
+
+1. Must use `update` on input `list`
+]
+
+---
 # Does it compile?
 
 <br>
