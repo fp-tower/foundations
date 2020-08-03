@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 641 308" width="641" height="308">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 639 308" width="639" height="308">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -23,8 +23,8 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.1\n2020-07-27 20:34:25 +0000</metadata>
-  <g id="linked-list-enum-2" stroke-dasharray="none" fill-opacity="1" stroke-opacity="1" fill="none" stroke="none">
+  <metadata> Produced by OmniGraffle 7.17.1\n2020-07-28 21:09:08 +0000</metadata>
+  <g id="linked-list-enum-2" stroke-dasharray="none" stroke="none" stroke-opacity="1" fill="none" fill-opacity="1">
     <title>linked-list-enum-2</title>
     <g id="linked-list-enum-2_Layer_1">
       <title>Layer 1</title>
@@ -49,13 +49,13 @@
         <path d="M 148.20672 261.91676 C 154.34063 251.21207 168.84377 233.70463 198 234 C 202.05127 234.04104 206.20146 234.42394 210.39367 235.0823" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_134">
-        <text transform="translate(85.415 176)" fill="#589b9d">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="700" fill="#589b9d" x="5115908e-19" y="29">NonEmptyList</tspan>
+        <text transform="translate(85.43 176)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="700" fill="#589b9d" x="0" y="29">non empty list</tspan>
         </text>
       </g>
       <g id="Graphic_136">
-        <text transform="translate(492.59 176)" fill="#929497">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="700" fill="#929497" x="0" y="29">EmptyList</tspan>
+        <text transform="translate(494.555 176)" fill="#929497">
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="700" fill="#929497" x="0" y="29">empty list</tspan>
         </text>
       </g>
       <g id="Graphic_137">
