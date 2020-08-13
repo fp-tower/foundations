@@ -37,7 +37,7 @@
 * Introduction to Scala Future
 
 ### Lessons
-1. Iterations with forLoop
+1. Iterations with for loop
 1. Recursions
 1. Fold
 1. Parallelisation
