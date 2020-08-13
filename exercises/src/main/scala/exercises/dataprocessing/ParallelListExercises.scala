@@ -5,18 +5,18 @@ object ParallelListExercises {
   // Exercise 1: ParList
   ////////////////////////
 
-  object ParList {
+  object ParList2 {
     // Creates a ParList by partitioning a List into partitions of fixed size
     // such partition(3, List(1,2,3,4,5,6,7,8)) == ParList(
     //   List(1,2,3),
     //   List(4,5,6),
     //   List(7, 8)
     // )
-    def partition[A](partitionSize: Int, items: List[A]): ParList[A] =
-      ParList(items.grouped(partitionSize).toList)
+    def partition[A](partitionSize: Int, items: List[A]): ParList2[A] =
+      ParList2(items.grouped(partitionSize).toList)
   }
 
-  case class ParList[A](partitions: List[List[A]]) {
+  case class ParList2[A](partitions: List[List[A]]) {
     def flat: List[A] =
       partitions.flatten
 
@@ -53,14 +53,14 @@ object ParallelListExercises {
     def reduceLeft(combine: (A, A) => A): Option[A] =
       ???
 
-    def map[To](update: A => To): ParList[To] =
-      ParList(partitions.map(_.map(update)))
+    def map[To](update: A => To): ParList2[To] =
+      ParList2(partitions.map(_.map(update)))
   }
 
   // 1b. Implement `sumInt` which sums up all the numbers in a ParList
   // such as sumInt(ParList(List(1,2,3), List(4,5))) == 15
   // Note: try to use `monoFoldLeft`
-  def sumInt(parList: ParList[Int]): Int =
+  def sumInt(parList: ParList2[Int]): Int =
     ???
 
   // 1c. Implement `maxTemperature` which compute the highest recorded temperature
@@ -71,7 +71,7 @@ object ParallelListExercises {
   // Note: try to you use `monoFoldLeft`
   case class TemperatureRecording(city: String, temperature: Int)
 
-  def maxTemperature(parList: ParList[TemperatureRecording]): Map[String, Int] =
+  def maxTemperature(parList: ParList2[TemperatureRecording]): Map[String, Int] =
     ???
 
 }

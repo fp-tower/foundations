@@ -17,7 +17,8 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   ),
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
-    scalatest
+    kantanGeneric,
+    scalatest,
   )
 )
 
