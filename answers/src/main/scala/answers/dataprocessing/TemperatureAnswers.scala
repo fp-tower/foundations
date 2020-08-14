@@ -44,31 +44,32 @@ object TemperatureAnswers extends App {
 
   val temperatures = samples.map(_.temperature)
 
-  time(100) { temperatures.sequential.foldMap(identity)(Monoid.sum) }
-  time(100) { temperatures.parallel(computeEC).foldMapNonCommutative(identity)(Monoid.sum) }
-  time(100) { temperatures.parallel(computeEC).foldMapCommutative(identity)(Monoid.sum) }
+  time(100) { temperatures.sequential.foldMap(identity)(Monoid.sumDouble) }
+  time(100) { temperatures.parallel(computeEC).foldMap(identity)(Monoid.sumDouble) }
 
   time(100) { temperatures.sequential.foldMap(Option(_))(Monoid.maxOption) }
-  time(100) { temperatures.parallel(computeEC).foldMapNonCommutative(Option(_))(Monoid.maxOption) }
-  time(100) { temperatures.parallel(computeEC).foldMapCommutative(Option(_))(Monoid.maxOption) }
+  time(100) { temperatures.parallel(computeEC).foldMap(Option(_))(Monoid.maxOption) }
 
   time(100) { temperatures.sequential.reducedMap(identity)(Semigroup.max) }
-  time(100) { temperatures.parallel(computeEC).reduceMapNonCommutative(identity)(Semigroup.max) }
-  time(100) { temperatures.parallel(computeEC).reduceMapCommutative(identity)(Semigroup.max) }
+  time(100) { temperatures.parallel(computeEC).reducedMap(identity)(Semigroup.max) }
 
-//  time(100) {
-//    val maxTemperature = ParList.max(temperatures)
-//    println(s"Max temperature is $maxTemperature")
-//
-//    val minTemperature = ParList.min(temperatures)
-//    println(s"Min temperature is $minTemperature")
-//
-//    val sumTemperature = ParList.sum(temperatures)
-//    val size           = temperatures.size
-//
-//    val avgTemperature = sumTemperature / size
-//
-//    println(s"Average temperature is $avgTemperature")
-//  }
+  time(100) {
+    val maxTemperature = ParList.max(temperatures)
+    println(s"Max temperature is $maxTemperature")
+
+    val minTemperature = ParList.min(temperatures)
+    println(s"Min temperature is $minTemperature")
+
+    val sumTemperature = ParList.sum(temperatures)
+    val size           = temperatures.size
+
+    val avgTemperature = sumTemperature / size
+
+    println(s"Average temperature is $avgTemperature")
+  }
+
+  time(100) {
+    temperatures.foldMap(Summary.one)(Summary.monoid)
+  }
 
 }

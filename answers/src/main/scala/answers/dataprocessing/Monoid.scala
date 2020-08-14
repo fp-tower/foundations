@@ -7,16 +7,18 @@ trait Monoid[A] extends Semigroup[A] {
 object Monoid {
   val maxOption: Monoid[Option[Double]] = option(Semigroup.max)
   val minOption: Monoid[Option[Double]] = option(Semigroup.min)
-  val sum: Monoid[Double] = new Monoid[Double] {
-    val isCommutative: Boolean                         = true
+  val sumDouble: Monoid[Double] = new Monoid[Double] {
     val default: Double                                = 0.0
     def combine(first: Double, second: Double): Double = first + second
+  }
+  val sumInt: Monoid[Int] = new Monoid[Int] {
+    val default: Int                          = 0
+    def combine(first: Int, second: Int): Int = first + second
   }
 
   def option[A](semigroup: Semigroup[A]): Monoid[Option[A]] =
     new Monoid[Option[A]] {
-      val isCommutative: Boolean = semigroup.isCommutative
-      val default: Option[A]     = None
+      val default: Option[A] = None
 
       def combine(optFirst: Option[A], optSecond: Option[A]): Option[A] =
         (optFirst, optSecond) match {
