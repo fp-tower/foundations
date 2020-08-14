@@ -5,11 +5,14 @@ import kantan.csv.ops._
 import kantan.csv.generic._
 import TimeUtil._
 
+import scala.concurrent.ExecutionContext
+
 object TemperatureAnswers extends App {
 
 //  val sampleSize = Int.MaxValue
   val sampleSize    = 1000000
   val partitionSize = 100
+  val ec            = ExecutionContext.global
 
   val rawData: java.net.URL = getClass.getResource("/city_temperature.csv")
 
@@ -30,7 +33,9 @@ object TemperatureAnswers extends App {
 
   println(s"${failures.size} failed and ${successes.size} succeeded")
 
-  val samples = ParList.partition(partitionSize, successes)
+  val samples = ParList
+    .partition(partitionSize, successes)
+    .withExecutionContext(ec)
 
   val temperatures = samples.map(_.temperature)
 
