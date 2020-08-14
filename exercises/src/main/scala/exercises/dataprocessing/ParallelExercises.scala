@@ -22,5 +22,6 @@ object ParallelExercises {
   // but max(ParList.empty) == None
   def max(parList: ParList[Int]): Option[Int] =
     ???
+  // c.
 
 }
