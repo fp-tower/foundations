@@ -27,7 +27,7 @@ object TemperatureAnswers extends App {
 
   val reader: CsvReader[Either[ReadError, Sample]] = rawData.asCsvReader[Sample](rfc.withHeader)
 
-  val (failures, successes) = time(reader.take(sampleSize).toList.partitionMap(identity))
+  val (failures, successes) = timeOne(reader.take(sampleSize).toList.partitionMap(identity))
 
   println(s"${failures.size} failed and ${successes.size} succeeded")
 
@@ -44,27 +44,31 @@ object TemperatureAnswers extends App {
 
   val temperatures = samples.map(_.temperature)
 
-//  time { temperatures.sequential.foldMap(identity)(Monoid.sum) }
-//  time { temperatures.parallel(computeEC).foldMapNonCommutative(identity)(Monoid.sum) }
-//  time { temperatures.parallel(computeEC).foldMapCommutative(identity)(Monoid.sum) }
+  time(100) { temperatures.sequential.foldMap(identity)(Monoid.sum) }
+  time(100) { temperatures.parallel(computeEC).foldMapNonCommutative(identity)(Monoid.sum) }
+  time(100) { temperatures.parallel(computeEC).foldMapCommutative(identity)(Monoid.sum) }
+
+  time(100) { temperatures.sequential.foldMap(Option(_))(Monoid.maxOption) }
+  time(100) { temperatures.parallel(computeEC).foldMapNonCommutative(Option(_))(Monoid.maxOption) }
+  time(100) { temperatures.parallel(computeEC).foldMapCommutative(Option(_))(Monoid.maxOption) }
+
+  time(100) { temperatures.sequential.reducedMap(identity)(Semigroup.max) }
+  time(100) { temperatures.parallel(computeEC).reduceMapNonCommutative(identity)(Semigroup.max) }
+  time(100) { temperatures.parallel(computeEC).reduceMapCommutative(identity)(Semigroup.max) }
+
+//  time(100) {
+//    val maxTemperature = ParList.max(temperatures)
+//    println(s"Max temperature is $maxTemperature")
 //
-//  time { temperatures.sequential.foldMap(Option(_))(Monoid.maxOption) }
-//  time { temperatures.parallel(computeEC).reduceMapNonCommutative(identity)(Semigroup.max) }
-//  time { temperatures.parallel(computeEC).reduceMapCommutative(identity)(Semigroup.max) }
-
-  time {
-    val maxTemperature = ParList.max(temperatures)
-    println(s"Max temperature is $maxTemperature")
-
-    val minTemperature = ParList.min(temperatures)
-    println(s"Min temperature is $minTemperature")
-
-    val sumTemperature = ParList.sum(temperatures)
-    val size           = temperatures.size
-
-    val avgTemperature = sumTemperature / size
-
-    println(s"Average temperature is $avgTemperature")
-  }
+//    val minTemperature = ParList.min(temperatures)
+//    println(s"Min temperature is $minTemperature")
+//
+//    val sumTemperature = ParList.sum(temperatures)
+//    val size           = temperatures.size
+//
+//    val avgTemperature = sumTemperature / size
+//
+//    println(s"Average temperature is $avgTemperature")
+//  }
 
 }

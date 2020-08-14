@@ -5,14 +5,32 @@ import scala.concurrent.duration._
 
 object TimeUtil {
 
-  def time[R](block: => R): R = {
+  def timeOne[R](block: => R): R = {
     println(s"|-")
+    val (result, d) = _time(block)
+    val duration    = Duration.fromNanos(d)
+    println(s"-| Elapsed time: ${duration.pretty}")
+    result
+  }
+
+  def time[R](numberOfIterations: Int)(block: => R): R = {
+    println(s"|-")
+    val results   = 1.to(numberOfIterations).map(_ => _time(block))
+    val durations = results.map(_._2)
+    val min       = Duration.fromNanos(durations.min)
+    val max       = Duration.fromNanos(durations.max)
+    val avg       = Duration.fromNanos(durations.sum / numberOfIterations)
+    val median    = Duration.fromNanos(durations.sorted.apply(numberOfIterations / 2))
+    println(s"-| Elapsed median: ${median.pretty} avg: ${avg.pretty}, min: ${min.pretty}, max: ${max.pretty}")
+    results.head._1
+  }
+
+  def _time[R](block: => R): (R, Long) = {
     val t0       = System.nanoTime()
     val result   = block // call-by-name
     val t1       = System.nanoTime()
-    val duration = Duration.fromNanos(t1 - t0)
-    println(s"-| Elapsed time: ${duration.pretty}")
-    result
+    val duration = t1 - t0
+    (result, duration)
   }
 
   // copied from https://alvinalexander.com/java/jwarehouse/
