@@ -77,9 +77,19 @@ object TemperatureAnswers extends App {
       sample.city -> Summary.one(sample.temperature)
     )
 
+  def allLocations(sample: Sample): Map[String, Summary] = {
+    val summary = Summary.one(sample.temperature)
+    Map(
+      sample.region              -> summary,
+      sample.country             -> summary,
+      sample.state.getOrElse("") -> summary,
+      sample.city                -> summary,
+    )
+  }
+
   time(100) {
     samples.foldMap(perCity)(Monoid.map(Summary.monoid))
   }
 
-  println(samples.foldMap(perCity)(Monoid.map(Summary.monoid)))
+  samples.foldMap(allLocations)(Monoid.map(Summary.monoid)).foreach(println)
 }
