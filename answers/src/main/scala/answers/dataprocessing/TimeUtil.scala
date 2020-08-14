@@ -6,11 +6,12 @@ import scala.concurrent.duration._
 object TimeUtil {
 
   def time[R](block: => R): R = {
+    println(s"|-")
     val t0       = System.nanoTime()
     val result   = block // call-by-name
     val t1       = System.nanoTime()
     val duration = Duration.fromNanos(t1 - t0)
-    println(s"Elapsed time: ${duration.pretty}")
+    println(s"-| Elapsed time: ${duration.pretty}")
     result
   }
 

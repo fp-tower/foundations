@@ -1,5 +1,9 @@
 package answers.dataprocessing
 
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.atomic.AtomicReference
+
+import scala.annotation.tailrec
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 
@@ -23,8 +27,8 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
     partitions
       .foldLeft(default)((acc, partition) => combine(acc, partition.foldLeft(default)(combine)))
 
-  def foldMap[To](update: A => To)(default: To, combine: (To, To) => To): To =
-    ops.foldMap(update)(default, combine)
+  def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
+    ops.foldMap(update)(monoid)
 
   def reduceMap[To](update: A => To)(combine: (To, To) => To): Option[To] =
     partitions.filter(_.nonEmpty) match {
@@ -35,8 +39,8 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
         Some(reduceAll)
     }
 
-  def withExecutionContext(ec: ExecutionContext): ParList[A] =
-    copy(maybeExecutionContext = Some(ec))
+  def setExecutionContext(maybeEc: Option[ExecutionContext]): ParList[A] =
+    copy(maybeExecutionContext = maybeEc)
 
   def ops: Ops =
     maybeExecutionContext.fold[Ops](sequential)(parallel)
@@ -45,22 +49,28 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def parallel(ec: ExecutionContext): ParallelOps = new ParallelOps()(ec)
 
   trait Ops {
-    def foldMap[To](update: A => To)(default: To, combine: (To, To) => To): To
+    def foldMap[To](update: A => To)(monoid: Monoid[To]): To
   }
 
   class SequentialOps extends Ops {
-    def foldMap[To](update: A => To)(default: To, combine: (To, To) => To): To =
+    def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
       partitions
-        .foldLeft(default) { (acc, partition) =>
-          val foldPartition = partition.foldLeft(default) { (partitionAcc, value) =>
-            combine(partitionAcc, update(value))
+        .foldLeft(monoid.default) { (acc, partition) =>
+          val foldPartition = partition.foldLeft(monoid.default) { (partitionAcc, value) =>
+            monoid.combine(partitionAcc, update(value))
           }
-          combine(acc, foldPartition)
+          monoid.combine(acc, foldPartition)
         }
   }
 
   class ParallelOps(implicit ec: ExecutionContext) extends Ops {
-    def foldMap[To](update: A => To)(default: To, combine: (To, To) => To): To = {
+    def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
+      if (monoid.isCommutative)
+        foldMapCommutative(update)(monoid.default, monoid.combine)
+      else
+        foldMapNonCommutative(update)(monoid.default, monoid.combine)
+
+    def foldMapNonCommutative[To](update: A => To)(default: To, combine: (To, To) => To): To = {
       def foldPartition(partition: List[A]): Future[To] =
         Future {
           partition.foldLeft(default) { (partitionAcc, value) =>
@@ -74,6 +84,26 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
 
       allTasksCompleted.foldLeft(default)(combine)
     }
+
+    def foldMapCommutative[To](update: A => To)(default: To, combine: (To, To) => To): To = {
+      val latch = new CountDownLatch(partitions.size)
+      val ref   = Ref(default)
+
+      def foldPartition(partition: List[A]): Future[Unit] =
+        Future {
+          println(s"Start computation in ${Thread.currentThread().getName}")
+          val folded = partition.foldLeft(default) { (partitionAcc, value) =>
+            combine(partitionAcc, update(value))
+          }
+          println(s"End computation in ${Thread.currentThread().getName}")
+          ref.modify(combine(folded, _))
+          latch.countDown()
+        }
+
+      partitions.foreach(foldPartition)
+      latch.await()
+      ref.get
+    }
   }
 
 }
@@ -86,25 +116,12 @@ object ParList {
     ParList(items.grouped(partitionSize).toList, None)
 
   def max(numbers: ParList[Double]): Option[Double] =
-    numbers.foldMap(Option(_))(None, maxOption)
+    numbers.foldMap(Option(_))(Monoid.maxOption)
 
   def min(numbers: ParList[Double]): Option[Double] =
-    numbers.foldMap(Option(_))(None, minOption)
+    numbers.foldMap(Option(_))(Monoid.minOption)
 
   def sum(numbers: ParList[Double]): Double =
-    numbers.foldMap(identity)(0, _ + _)
+    numbers.foldMap(identity)(Monoid.sum)
 
-  def maxOption(optFirst: Option[Double], optSecond: Option[Double]): Option[Double] =
-    combineOption(optFirst, optSecond)(_ max _)
-
-  def minOption(optFirst: Option[Double], optSecond: Option[Double]): Option[Double] =
-    combineOption(optFirst, optSecond)(_ min _)
-
-  def combineOption[A](optFirst: Option[A], optSecond: Option[A])(combine: (A, A) => A): Option[A] =
-    (optFirst, optSecond) match {
-      case (Some(first), Some(second)) => Some(combine(first, second))
-      case (Some(first), None)         => Some(first)
-      case (None, Some(second))        => Some(second)
-      case (None, None)                => None
-    }
 }

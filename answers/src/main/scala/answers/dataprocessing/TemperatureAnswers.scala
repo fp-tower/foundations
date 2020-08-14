@@ -9,10 +9,8 @@ import scala.concurrent.ExecutionContext
 
 object TemperatureAnswers extends App {
 
-//  val sampleSize = Int.MaxValue
-  val sampleSize    = 1000000
-  val partitionSize = 100
-  val ec            = ExecutionContext.global
+  val sampleSize = Int.MaxValue
+//  val sampleSize    = 1000000
 
   val rawData: java.net.URL = getClass.getResource("/city_temperature.csv")
 
@@ -33,9 +31,15 @@ object TemperatureAnswers extends App {
 
   println(s"${failures.size} failed and ${successes.size} succeeded")
 
+  val partitions    = 10
+  val partitionSize = successes.length / partitions + 1
+//  val ec            = Some(ThreadPoolUtil.fixedSize(threads, "compute"))
+//  val ec = Some(ExecutionContext.global)
+  val ec = None
+
   val samples = ParList
     .partition(partitionSize, successes)
-    .withExecutionContext(ec)
+    .setExecutionContext(ec)
 
   val temperatures = samples.map(_.temperature)
 
