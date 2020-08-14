@@ -19,4 +19,7 @@ case class Ref[A](underlying: AtomicReference[A]) {
 object Ref {
   def apply[A](value: A): Ref[A] =
     new Ref(new AtomicReference(value))
+
+  def empty[A]: Ref[A] =
+    new Ref(new AtomicReference())
 }

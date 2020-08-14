@@ -30,14 +30,8 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
     ops.foldMap(update)(monoid)
 
-  def reduceMap[To](update: A => To)(combine: (To, To) => To): Option[To] =
-    partitions.filter(_.nonEmpty) match {
-      case Nil => None
-      case nonEmptyPartitions =>
-        val reducedPartitions = nonEmptyPartitions.map(_.map(update).reduceLeft(combine))
-        val reduceAll         = reducedPartitions.reduceLeft(combine)
-        Some(reduceAll)
-    }
+  def reduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+    ops.reducedMap(update)(semigroup)
 
   def setExecutionContext(maybeEc: Option[ExecutionContext]): ParList[A] =
     copy(maybeExecutionContext = maybeEc)
@@ -50,6 +44,7 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
 
   trait Ops {
     def foldMap[To](update: A => To)(monoid: Monoid[To]): To
+    def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To]
   }
 
   class SequentialOps extends Ops {
@@ -61,20 +56,35 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
           }
           monoid.combine(acc, foldPartition)
         }
+
+    def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+      partitions.filter(_.nonEmpty) match {
+        case Nil => None
+        case nonEmptyPartitions =>
+          val reducedPartitions = nonEmptyPartitions.map(_.map(update).reduceLeft(semigroup.combine))
+          val reduceAll         = reducedPartitions.reduceLeft(semigroup.combine)
+          Some(reduceAll)
+      }
   }
 
   class ParallelOps(implicit ec: ExecutionContext) extends Ops {
     def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
       if (monoid.isCommutative)
-        foldMapCommutative(update)(monoid.default, monoid.combine)
+        foldMapCommutative(update)(monoid)
       else
-        foldMapNonCommutative(update)(monoid.default, monoid.combine)
+        foldMapNonCommutative(update)(monoid)
 
-    def foldMapNonCommutative[To](update: A => To)(default: To, combine: (To, To) => To): To = {
+    def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+      if (semigroup.isCommutative)
+        reduceMapCommutative(update)(semigroup)
+      else
+        reduceMapNonCommutative(update)(semigroup)
+
+    def foldMapNonCommutative[To](update: A => To)(monoid: Monoid[To]): To = {
       def foldPartition(partition: List[A]): Future[To] =
         Future {
-          partition.foldLeft(default) { (partitionAcc, value) =>
-            combine(partitionAcc, update(value))
+          partition.foldLeft(monoid.default) { (partitionAcc, value) =>
+            monoid.combine(partitionAcc, update(value))
           }
         }
 
@@ -82,21 +92,19 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
       val allTasks: Future[List[To]]  = Future.sequence(tasks)
       val allTasksCompleted: List[To] = Await.result(allTasks, Duration.Inf)
 
-      allTasksCompleted.foldLeft(default)(combine)
+      allTasksCompleted.foldLeft(monoid.default)(monoid.combine)
     }
 
-    def foldMapCommutative[To](update: A => To)(default: To, combine: (To, To) => To): To = {
+    def foldMapCommutative[To](update: A => To)(monoid: Monoid[To]): To = {
       val latch = new CountDownLatch(partitions.size)
-      val ref   = Ref(default)
+      val ref   = Ref(monoid.default)
 
       def foldPartition(partition: List[A]): Future[Unit] =
         Future {
-          println(s"Start computation in ${Thread.currentThread().getName}")
-          val folded = partition.foldLeft(default) { (partitionAcc, value) =>
-            combine(partitionAcc, update(value))
+          val folded = partition.foldLeft(monoid.default) { (partitionAcc, value) =>
+            monoid.combine(partitionAcc, update(value))
           }
-          println(s"End computation in ${Thread.currentThread().getName}")
-          ref.modify(combine(folded, _))
+          ref.modify(monoid.combine(folded, _))
           latch.countDown()
         }
 
@@ -104,6 +112,49 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
       latch.await()
       ref.get
     }
+
+    def reduceMapNonCommutative[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+      partitions.filter(_.nonEmpty) match {
+        case Nil => None
+        case nonEmptyPartitions =>
+          def foldPartition(partition: List[A]): Future[To] =
+            Future { _reduceMap(partition)(update, semigroup) }
+
+          val tasks: List[Future[To]]     = nonEmptyPartitions.map(foldPartition)
+          val allTasks: Future[List[To]]  = Future.sequence(tasks)
+          val allTasksCompleted: List[To] = Await.result(allTasks, Duration.Inf)
+
+          Some(allTasksCompleted.reduceLeft(semigroup.combine))
+      }
+
+    def reduceMapCommutative[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+      partitions.filter(_.nonEmpty) match {
+        case Nil => None
+        case nonEmptyPartitions =>
+          val latch = new CountDownLatch(partitions.size)
+          val ref   = Ref.empty[To]
+
+          def foldPartition(partition: List[A]): Future[Unit] =
+            Future {
+              val folded = _reduceMap(partition)(update, semigroup)
+              ref.modify { state =>
+                if (state == null) folded
+                else semigroup.combine(folded, state)
+              }
+              latch.countDown()
+            }
+
+          nonEmptyPartitions.foreach(foldPartition)
+          latch.await()
+          Some(ref.get)
+      }
+
+    private def _reduceMap[To](partition: List[A])(update: A => To, semigroup: Semigroup[To]): To = {
+      var state = update(partition.head)
+      for (a <- partition.tail) state = semigroup.combine(state, update(a))
+      state
+    }
+
   }
 
 }
@@ -116,10 +167,10 @@ object ParList {
     ParList(items.grouped(partitionSize).toList, None)
 
   def max(numbers: ParList[Double]): Option[Double] =
-    numbers.foldMap(Option(_))(Monoid.maxOption)
+    numbers.reduceMap(identity)(Semigroup.max)
 
   def min(numbers: ParList[Double]): Option[Double] =
-    numbers.foldMap(Option(_))(Monoid.minOption)
+    numbers.reduceMap(identity)(Semigroup.min)
 
   def sum(numbers: ParList[Double]): Double =
     numbers.foldMap(identity)(Monoid.sum)

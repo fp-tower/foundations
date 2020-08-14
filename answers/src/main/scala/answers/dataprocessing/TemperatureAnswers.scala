@@ -33,7 +33,8 @@ object TemperatureAnswers extends App {
 
   val partitions    = 10
   val partitionSize = successes.length / partitions + 1
-//  val ec            = Some(ThreadPoolUtil.fixedSize(threads, "compute"))
+  val computeEC     = ThreadPoolUtil.fixedSize(partitions, "compute")
+//  val ec            = Some(computeEC)
 //  val ec = Some(ExecutionContext.global)
   val ec = None
 
@@ -42,6 +43,14 @@ object TemperatureAnswers extends App {
     .setExecutionContext(ec)
 
   val temperatures = samples.map(_.temperature)
+
+//  time { temperatures.sequential.foldMap(identity)(Monoid.sum) }
+//  time { temperatures.parallel(computeEC).foldMapNonCommutative(identity)(Monoid.sum) }
+//  time { temperatures.parallel(computeEC).foldMapCommutative(identity)(Monoid.sum) }
+//
+//  time { temperatures.sequential.foldMap(Option(_))(Monoid.maxOption) }
+//  time { temperatures.parallel(computeEC).reduceMapNonCommutative(identity)(Semigroup.max) }
+//  time { temperatures.parallel(computeEC).reduceMapCommutative(identity)(Semigroup.max) }
 
   time {
     val maxTemperature = ParList.max(temperatures)
