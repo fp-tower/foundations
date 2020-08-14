@@ -1,6 +1,17 @@
 package answers.dataprocessing
 
-case class Summary(min: Option[Double], max: Option[Double], sum: Double, size: Int)
+case class Summary(min: Option[Double], max: Option[Double], sum: Double, size: Int) {
+  def average: Double = sum / size
+
+  override def toString: String =
+    s"Summary(avg = ${format(average)}, min = ${min.map(format)}, max = ${max.map(format)}, points = $size)"
+
+  private def format(number: Double): String =
+    BigDecimal(number)
+      .setScale(2, BigDecimal.RoundingMode.FLOOR)
+      .toDouble
+      .toString
+}
 
 object Summary {
   def one(temperature: Double): Summary =

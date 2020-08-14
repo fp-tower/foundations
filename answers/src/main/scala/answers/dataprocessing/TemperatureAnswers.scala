@@ -53,7 +53,7 @@ object TemperatureAnswers extends App {
   time(100) { temperatures.sequential.reducedMap(identity)(Semigroup.max) }
   time(100) { temperatures.parallel(computeEC).reducedMap(identity)(Semigroup.max) }
 
-  time(100) {
+  time(1) {
     val maxTemperature = ParList.max(temperatures)
     println(s"Max temperature is $maxTemperature")
 
@@ -72,4 +72,14 @@ object TemperatureAnswers extends App {
     temperatures.foldMap(Summary.one)(Summary.monoid)
   }
 
+  def perCity(sample: Sample): Map[String, Summary] =
+    Map(
+      sample.city -> Summary.one(sample.temperature)
+    )
+
+  time(100) {
+    samples.foldMap(perCity)(Monoid.map(Summary.monoid))
+  }
+
+  println(samples.foldMap(perCity)(Monoid.map(Summary.monoid)))
 }

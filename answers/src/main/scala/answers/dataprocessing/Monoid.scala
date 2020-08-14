@@ -28,4 +28,18 @@ object Monoid {
           case (None, None)                => None
         }
     }
+
+  def map[Key, Value](semigroup: Semigroup[Value]): Monoid[Map[Key, Value]] =
+    new Monoid[Map[Key, Value]] {
+      def default: Map[Key, Value] = Map.empty
+
+      def combine(first: Map[Key, Value], second: Map[Key, Value]): Map[Key, Value] =
+        second.foldLeft(first) {
+          case (acc, (key, value)) =>
+            acc.updatedWith(key) {
+              case None                => Some(value)
+              case Some(existingValue) => Some(semigroup.combine(existingValue, value))
+            }
+        }
+    }
 }
