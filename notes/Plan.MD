@@ -1,4 +1,4 @@
-# Synopsis
+# Plan
 
 ## 1. Value functions
 
