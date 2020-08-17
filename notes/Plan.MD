@@ -31,6 +31,4 @@
 
 ## 5. Actions
 
-## 6a. Error Handling
-
-## 6b. End of course project
+## 6. Error Handling
