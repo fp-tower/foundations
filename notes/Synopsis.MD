@@ -67,4 +67,6 @@
 ### Lessons
 1. ???
 
-## 6. End of course project
+## 6a. Error Handling
+
+## 6b. End of course project
