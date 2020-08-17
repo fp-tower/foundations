@@ -34,9 +34,9 @@ object TemperatureAnswers extends App {
   val partitions    = 10
   val partitionSize = successes.length / partitions + 1
   val computeEC     = ThreadPoolUtil.fixedSize(partitions, "compute")
-//  val ec            = Some(computeEC)
+  val ec            = Some(computeEC)
 //  val ec = Some(ExecutionContext.global)
-  val ec = None
+//  val ec = None
 
   val samples = ParList
     .partition(partitionSize, successes)
