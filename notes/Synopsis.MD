@@ -27,20 +27,27 @@
 1. Exercise 2: Predicate
 1. Exercise 3: JsonDecoder
 
-## 3. Case study: Data processing
+## 3. Case study: Parallel data processing
+
+Modern applications need to process more and more data quickly, which lead to the creation of 
+modern technologies such as MapReduce, Spark or Kafka. In this section, we will cover the fundamentals 
+of parallel data processing and why functional programming is such a good fit for it. And at 
+the end of this section, we will apply everything we have seen on a real-world dataset of worldwide temperature.
+
 
 ### Objectives
 * Why FP is a good fit for data processing?
-* How to use generic types and PBT to explore a problem
-* Mutations are not against FP
+* How to use generic types and property-based testing to explore a problem
+* Both mutations and recursions are not safe
+* Learn about foldLeft, foldMap and Monoid
 * Learn the difference between parallel and concurrent
-* Introduction to Scala Future
+* Introduction to Scala Future from the standard library
 
 ### Lessons
-1. Iterations with for loop
+1. Introduction to parallel data processing
+1. For loop
 1. Recursions
-1. Fold
-1. Parallelisation
+1. World temperature project
 
 ## 4. What is functional programming?
 
