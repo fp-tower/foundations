@@ -35,7 +35,7 @@ class: medium-code
 
 # Solution 1: Overloaded functions
 
-.pull-left[
+.forty-seven-left[
 ```scala mdoc:reset:invisible
 def truncate(scale: Int, number: Double): String =
   BigDecimal(number)
@@ -56,7 +56,7 @@ def defaultShow[A](value: A): String =
 ```
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala mdoc
 show("Hello")
 show(123.123456)
@@ -182,7 +182,7 @@ class: small-code
 
 # Solution 4: Interface
 
-.pull-left[
+.forty-seven-left[
 ```scala mdoc:silent
 trait Show[A] {
   def show(value: A): String
@@ -209,7 +209,7 @@ def defaultShow[A]: Show[A] = new Show[A]{
 ```
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala mdoc
 showString.show("Hello")
 

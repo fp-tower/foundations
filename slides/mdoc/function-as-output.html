@@ -51,7 +51,7 @@ def format(scale: Int, number: Double): String =
 def format(scale: Int, number: Double): String
 ```
 
-.pull-left[
+.forty-seven-left[
 <br>
 
 ```scala mdoc
@@ -61,7 +61,7 @@ format(5, 1234.12345678)
 ```
 ]
 
-.pull-left[
+.forty-seven-left[
 <img src="img/foundation/number-scale.svg" alt="scale" style="width:600px;"/>
 ]
 
@@ -138,14 +138,14 @@ def publishEvent(
 
 <br>
 
-.extra-large-left[
+.sixty-seven-left[
 ```scala
 def publishLocalEvent = publishEvent("localhost", 9000)
 def publishUatEvent   = publishEvent("uat-acme.com", 12450)
 ```
 ]
 
-.small-right[
+.twenty-seven-right[
 ## Pseudocode
 ]
 
@@ -157,7 +157,7 @@ class: small-code
 
 <br>
 
-.pull-left[
+.forty-seven-left[
 ```scala
 def format(scale: Int, number: Double): String
 ```
@@ -176,7 +176,7 @@ format(2, 1234.12345678)
 <br>
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala mdoc:reset:invisible
 def format(scale: Int): Double => String =
   BigDecimal(_).setScale(scale, BigDecimal.RoundingMode.FLOOR).toDouble.toString
@@ -212,7 +212,7 @@ class: small-code
 
 <br>
 
-.pull-left[
+.forty-seven-left[
 ```scala
 def format(scale: Int, number: Double): String
 ```
@@ -231,7 +231,7 @@ format(2, 1234.12345678)
 <br>
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala mdoc:reset:invisible
 def format(scale: Int): Double => String =
   BigDecimal(_).setScale(scale, BigDecimal.RoundingMode.FLOOR).toDouble.toString

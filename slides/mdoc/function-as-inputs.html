@@ -36,7 +36,7 @@ def filter(
 
 <br>
 
-.medium-left[
+.thirty-seven-left[
 <br>
 <br>
 ```scala mdoc
@@ -47,7 +47,7 @@ filter(
 ```
 ]
 
-.large-right[
+.fifty-seven-right[
 <img src="img/foundation/filter-isUpper.svg" alt="isUpper" style="width:600px;"/>
 ]
 
@@ -56,7 +56,7 @@ filter(
 
 <br>
 
-.medium-left[
+.thirty-seven-left[
 <br>
 <br>
 ```scala mdoc
@@ -67,7 +67,7 @@ filter(
 ```
 ]
 
-.large-right[
+.fifty-seven-right[
 <img src="img/foundation/filter-isLetter.svg" alt="isUpper" style="width:600px;"/>
 ]
 
@@ -76,7 +76,7 @@ filter(
 
 <br>
 
-.pull-left[
+.forty-seven-left[
 ```scala mdoc:silent
 def upperCase(text: String): String = {
   val characters = text.toArray
@@ -92,7 +92,7 @@ upperCase("Hello")
 ```
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala mdoc:silent
 def lowerCase(text: String): String = {
   val characters = text.toArray
@@ -112,7 +112,7 @@ lowerCase("Hello")
 # Capture pattern
 
 
-.large-left[
+.fifty-seven-left[
 <br>
 
 ```scala mdoc:reset:silent
@@ -135,7 +135,7 @@ def lowerCase(text: String): String =
 ```
 ]
 
-.medium-right[
+.thirty-seven-right[
 <img src="img/foundation/map-string.svg" alt="isUpper" style="width:400px;"/>
 ]
 
@@ -144,7 +144,7 @@ def lowerCase(text: String): String =
 
 <br>
 
-.large-left[
+.fifty-seven-left[
 ```scala mdoc:reset:silent
 def map(text: String, update: Char => Char): String = {
   val characters = text.toArray
@@ -164,7 +164,7 @@ def lowerCase(text: String): String =
 ```
 ]
 
-.medium-right[
+.thirty-seven-right[
 <img src="img/foundation/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
 ]
 
@@ -172,7 +172,7 @@ def lowerCase(text: String): String =
 # Property based testing
 
 <br>
-.large-left[
+.fifty-seven-left[
 
 ```scala
 test("map does not modify the size of a text") {
@@ -187,7 +187,7 @@ test("map does not modify the size of a text") {
 ```
 ]
 
-.medium-right[
+.thirty-seven-right[
 <img src="img/foundation/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
 ]
 
@@ -236,14 +236,14 @@ def usingFile(fileName: String, processing: Iterator[String] => Int): Int = {
 
 --
 
-.pull-left[
+.forty-seven-left[
 ```scala mdoc:silent
 val countLines: Iterator[String] => Int =
   lines => lines.size
 ```
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala
 val countWords: Iterator[String] => Int =
   lines => ...
@@ -276,13 +276,13 @@ val countWords: Iterator[String] => Int =
   _.map(_.split(" ").size).reduce(_ + _)
 ```
 
-.pull-left[
+.forty-seven-left[
 ```scala mdoc
 usingFile("50-word-count.txt", countLines)
 ```
 ]
 
-.pull-right[
+.forty-seven-right[
 ```scala mdoc
 usingFile("50-word-count.txt", countWords)
 ```
