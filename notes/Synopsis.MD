@@ -6,21 +6,21 @@ In this section, we'll do a deep dive on the different types of functions availa
 What is the difference between them and when should use which one.
 
 ### Objectives
-* Learn when to difference between methods and lambdas
+* Learn the difference between methods and lambdas
 * How to capture a pattern using a higher-order function
 * Introduction to property-based testing and common testing techniques
 * Learn the various Scala syntax for functions including usage of `_`
 
 ## 2. Generic functions
 
-In Scala, we can add type parameters to functions and data types to make them generics. 
+In Scala, we can add type parameters to functions and data types to make them generic. 
 This simple technique has a tremendous impact in the design of functional API that we'll use
 extensively throughout the course. In this section, we learn how to read and implement interfaces 
 using generic types as well as the common pitfalls related to the usage of type parameters.
 
 ### Objectives
 * How to use type parameters to write fewer and more efficient tests
-* Why we shouldn't pattern on a generic value
+* Why we shouldn't pattern match on a generic value
 * How to work with Scala type inference
 * How to use ??? and type parameters to guide the implementation of functions
 * Introduction to functional API design
