@@ -35,6 +35,7 @@ this module with the analysis of a real-world dataset of worldwide temperature.
 
 ### Objectives
 * Why FP is a good fit for data processing
+* Introduction to for syntax
 * How to use generic types and property-based testing to explore a problem
 * Why mutations and recursions are too low level
 * Learn about foldLeft, foldMap and Monoid
