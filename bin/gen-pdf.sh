@@ -1,6 +1,14 @@
 #!/bin/bash
 
-sbt slides/mdoc
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -b|--build) sbt slides/mdoc; shift ;;
+        -c|--clean) rm -r docs; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
 cp -r slides/docs docs/
 
 cd docs
