@@ -3,19 +3,19 @@
 ## 1. Value functions
 
 In this section, we'll do a deep dive into the different types of functions available in Scala. 
-We’ll discuss what the difference is between them and when we should use which one.
+We’ll discuss what the difference is between them and when we should use each one.
 
 ### Objectives
 * Learn the difference between methods and lambdas
-* Capture a pattern using a higher-order function
+* Learn to generalise a common pattern with a higher-order function
 * Discover property-based testing and common testing techniques
-* Learn the various syntaxes for functions including usage of underscore
+* Learn the various syntaxes for functions including the use of `_` (the underscore character)
 
 ## 2. Generic functions
 
-In Scala, we make functions and data types by adding type parameters. This simple technique 
-has a tremendous impact on the design of functional API and we'll use it extensively throughout 
-the course. In this section, we learn how to read and implement interfaces using generic types 
+In Scala, we make functions and data types generic by adding type parameters. This simple technique 
+has a tremendous impact on the design of functional APIs and we'll use it extensively throughout 
+the course. In this section, we will learn how to read and implement interfaces using generic types 
 as well as how to avoid the common pitfalls related to type parameters.
 
 ### Objectives
@@ -49,16 +49,16 @@ are its limitations? And why isn't it more popular? You will get the answers to 
  and much more in this module.
 
 ### Objectives
-* Learn how functional programming help us write better programs
-* Familiarise yourself with FP limitations and how to work around some of them e.g. 
+* Learn how functional programming helps us write better programs
+* Familiarise yourself with the limitations of FP and how to work around some of them e.g. 
 shared mutable state and exceptions
 
 ## 5. Actions
 
 In the previous section, we will have learned that functional programming is quite restrictive. 
 For example, we cannot perform actions like sending an email or updating a record in a database. 
-Yet, we need to do these actions almost every day in a real-world application. In this section, 
-we will discuss the workarounds functional programmers found to interact with the outside world 
+Yet, we need to perform these actions almost daily in our real-world applications. In this section, 
+we will discuss the workarounds functional programmers use to interact with the outside world 
 while respecting functional programming principles. In particular, we will implement a simple IO
 data type that supports powerful retry strategies and concurrency primitives.
 
@@ -72,8 +72,8 @@ data type that supports powerful retry strategies and concurrency primitives.
 ## 6. Error Handling
 
 There are many ways to deal with runtime errors. The easiest and most common method consists of
-throwing exceptions. Unfortunately, this is not compatible with the functional programming 
-paradigm. In this module, we look at the problems caused by exceptions, and the various ways
+throwing exceptions. Unfortunately, this is incompatible with the functional programming 
+paradigm. In this module, we will look at the problems caused by exceptions, and the ways in which
 we can safely deal with errors in Scala.
 
 ### Objectives
