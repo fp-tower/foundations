@@ -30,23 +30,12 @@ object ForLoopExercises {
   def wordCount(words: List[String]): Map[String, Int] =
     ???
 
-  // d. `sum`, `min` and `wordCount` are quite similar.
-  // Could you write a higher order function that captures this pattern?
-  // Hint: this method is called `foldLeft`.
-  def foldLeft[From, To](items: List[From], default: To)(combine: (To, From) => To): To =
-    ???
+  // d. `sum`, `size`, `min` and `wordCount` are quite similar.
+  // Could you write a higher-order function that captures this pattern?
+  // How should you call it?
+  def pattern = ???
 
-  // e. Re-implement `sum`, `min` and `wordCount`  using `foldLeft`
-  def sumFoldLeft(numbers: List[Int]): Int =
-    ???
-
-  def sizeFoldLeft[A](items: List[A]): Int =
-    ???
-
-  def minFoldLeft(numbers: List[Int]): Option[Int] =
-    ???
-
-  def wordCountFoldLeft(words: List[String]): Map[String, Int] =
-    ???
+  // e. Refactor `sum`, `size`, `min` and `wordCount` using the higher-order
+  // function you defined above.
 
 }
