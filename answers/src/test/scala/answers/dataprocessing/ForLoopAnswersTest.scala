@@ -76,7 +76,7 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
 
   test("foldLeft size") {
     forAll { (numbers: List[Int]) =>
-      assert(foldLeft(numbers, 0)((acc, _) => acc + 1) == numbers.size)
+      assert(foldLeft(numbers, List.empty[Int])(_.::(_)) == numbers.reverse)
     }
   }
 
