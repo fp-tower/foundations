@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recursion</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Recursion]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-1.svg" alt="Sum with recursion" style="width:450px;"/>
+]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-2.svg" alt="Sum with recursion" style="width:600px;"/>
+]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-3.svg" alt="Sum with recursion" style="width:600px;"/>
+]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-4.svg" alt="Sum with recursion" style="width:600px;"/>
+]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-5.svg" alt="Sum with recursion" style="width:600px;"/>
+]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+
+```scala mdoc
+sum(List())
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-6.svg" alt="Sum with recursion" style="width:600px;"/>
+]
+
+---
+# Recursion
+
+.thirty-seven-left[
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil =>
+      0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+.fifty-seven-right[
+<img src="img/foundation/recursion-sum-7.svg" alt="Sum with recursion" style="width:600px;"/>
+]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>
