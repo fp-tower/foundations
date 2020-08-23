@@ -40,6 +40,27 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
     }
   }
 
+  test("min") {
+    assert(min(List(2, 5, 1, 8)) == Some(1))
+    assert(min(Nil) == None)
+  }
+
+  test("min is lower than all values in the list") {
+    forAll { (numbers: List[Int]) =>
+      for {
+        minValue <- min(numbers)
+        number   <- numbers
+      } assert(minValue <= number)
+    }
+  }
+
+  test("min belongs to the list") {
+    forAll { (numbers: List[Int]) =>
+      for (minValue <- min(numbers))
+        assert(numbers.contains(minValue))
+    }
+  }
+
   test("wordCount") {
     assert(wordCount(List("Hi", "Hello", "Hi")) == Map("Hi" -> 2, "Hello" -> 1))
     assert(wordCount(List()) == Map())

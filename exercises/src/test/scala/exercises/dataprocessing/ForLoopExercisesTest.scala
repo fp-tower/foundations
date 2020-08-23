@@ -11,16 +11,19 @@ class ForLoopExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     assert(sum(Nil) == 0)
   }
 
-  test("sum is consistent with std library") {
-    forAll { (numbers: List[Int]) =>
-      assert(sum(numbers) == numbers.sum)
-    }
+  test("size") {
+    assert(size(List(2, 5, 1, 8)) == 4)
+    assert(size(Nil) == 0)
   }
 
-  test("size") {}
+  test("min") {
+    assert(min(List(2, 5, 1, 8)) == Some(1))
+    assert(min(Nil) == None)
+  }
 
-  test("min") {}
-
-  test("wordCount") {}
+  test("wordCount") {
+    assert(wordCount(List("Hi", "Hello", "Hi")) == Map("Hi" -> 2, "Hello" -> 1))
+    assert(wordCount(Nil) == Map.empty)
+  }
 
 }
