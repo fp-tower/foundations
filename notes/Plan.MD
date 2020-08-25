@@ -15,10 +15,10 @@
 1. Exercise 2: Predicate
 1. Exercise 3: JsonDecoder
 
-## 3. Case study: Parallel data processing
+## 3. Data processing
 
 1. Introduction to parallel data processing
-1. For loop
+1. Iteration with for loop
 1. Recursions
 1. World temperature project
 

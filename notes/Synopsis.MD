@@ -50,7 +50,7 @@ are its limitations? And why isn't it more popular? You will get the answers to 
 
 ### Objectives
 * Learn how functional programming helps us write better programs
-* Familiarise yourself with the limitations of FP and how to work around some of them e.g. 
+* Familiarise yourself with the limitations of FP and how to work around some of them such as
 shared mutable state and exceptions
 
 ## 5. Actions
