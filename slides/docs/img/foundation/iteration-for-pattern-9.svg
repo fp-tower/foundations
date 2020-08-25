@@ -9,9 +9,9 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.17.3\n2020-08-24 11:43:22 +0000</metadata>
-  <g id="iteration-for-pattern-3" fill="none" stroke="none" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1">
-    <title>iteration-for-pattern-3</title>
-    <g id="iteration-for-pattern-3_Layer_1">
+  <g id="iteration-for-pattern-9" fill="none" stroke="none" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1">
+    <title>iteration-for-pattern-9</title>
+    <g id="iteration-for-pattern-9_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_2">
         <rect x="9" y="36" width="270" height="99" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
@@ -31,7 +31,7 @@
         </text>
       </g>
       <g id="Graphic_8">
-        <rect x="193.93548" y="50.14286" width="71.12903" height="70.714286" fill="#589b9d"/>
+        <rect x="193.93548" y="50.14286" width="71.12903" height="70.714286" fill="#ff8080"/>
         <rect x="193.93548" y="50.14286" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(198.93548 72.192)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="20.169516" y="21">-3</tspan>
@@ -55,7 +55,7 @@
         </text>
       </g>
       <g id="Graphic_27">
-        <rect x="193.93548" y="347.14286" width="71.12903" height="70.714286" fill="#589b9d"/>
+        <rect x="193.93548" y="347.14286" width="71.12903" height="70.714286" fill="#ff8080"/>
         <rect x="193.93548" y="347.14286" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(198.93548 369.192)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="20.169516" y="21">-3</tspan>
@@ -89,7 +89,7 @@
         </text>
       </g>
       <g id="Graphic_41">
-        <rect x="625.9355" y="50.14286" width="71.12903" height="70.714286" fill="#589b9d"/>
+        <rect x="625.9355" y="50.14286" width="71.12903" height="70.714286" fill="#ff8080"/>
         <rect x="625.9355" y="50.14286" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(630.9355 72.192)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="12.634516" y="21">“hi”</tspan>
@@ -118,7 +118,7 @@
         </text>
       </g>
       <g id="Graphic_47">
-        <rect x="625.9355" y="347.14286" width="71.12903" height="70.714286" fill="#589b9d"/>
+        <rect x="625.9355" y="347.14286" width="71.12903" height="70.714286" fill="#ff8080"/>
         <rect x="625.9355" y="347.14286" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(630.9355 369.192)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="18.541516" y="21">a3</tspan>
@@ -133,7 +133,7 @@
         <rect x="105.373" y="180" width="71.12903" height="70.714286" fill="#70a3d8"/>
         <rect x="105.373" y="180" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(110.373 202.04914)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.448516" y="21">0</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.448516" y="21">6</tspan>
         </text>
       </g>
       <g id="Graphic_53">
@@ -145,7 +145,7 @@
         <rect x="432" y="180" width="279" height="72" fill="#70a3d8"/>
         <rect x="432" y="180" width="279" height="72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(437 202.692)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="78.653" y="21">Map.empty</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.93" y="21">Map(“hi” -&gt; 2, “hello” -&gt; 1)</tspan>
         </text>
       </g>
       <g id="Graphic_51">
@@ -157,7 +157,7 @@
         <rect x="90" y="478" width="108" height="70.714286" fill="#70a3d8"/>
         <rect x="90" y="478" width="108" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(95 500.04914)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="22.721" y="21">None</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="4.175" y="21">Some(-3)</tspan>
         </text>
       </g>
       <g id="Graphic_57">
@@ -169,7 +169,7 @@
         <rect x="470" y="477" width="208" height="72" fill="#70a3d8"/>
         <rect x="470" y="477" width="208" height="72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(475 499.692)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="80.652" y="21">???</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="8.327" y="21">combine(state, a3)</tspan>
         </text>
       </g>
       <g id="Graphic_59">

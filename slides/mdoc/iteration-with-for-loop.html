@@ -47,21 +47,31 @@ for (number <- list) {
 ---
 # Other String interpolators
 
-<br>
-
-```scala mdoc:reset:silent
-val list = List(1, 8, -3, 12)
-```
-
-```scala mdoc
-for (number <- list) {
-  println(s"number is $number")
-}
-```
+.forty-two-left[
+## In standard library
 
 ```scala mdoc
 println(f"PI is ${Math.PI}%1.2f")
 ```
+]
+
+.fifty-two-right[
+## In other libraries
+
+```scala
+val subject = "functional programming"
+
+println(sql"subject = $subject")
+// res: Fragment = Fragment("subject = ?")
+```
+
+```scala
+val names = List("Eda", "Bob")
+
+json"{ names : $names }"
+// res: Json = "{ "names" : ["Eda", "Bob"] }"
+```
+]
 
 ---
 # Code block: curly braces
@@ -230,7 +240,7 @@ shapes.foreach{ shape =>
 ]
 
 ---
-# Nested for loop with different data producers
+# Nested for loop with different data types
 
 ```scala mdoc:reset:invisible
 case class Point(first: Int, second: Int) {
@@ -428,37 +438,29 @@ class: middle, white
 ---
 background-image: url(img/foundation/iteration-for-pattern-1.svg)
 
-# Capture a pattern
-
 ---
-background-image: url(img/foundation/iteration-for-pattern-2a.svg)
-
-# Capture a pattern
-
----
-background-image: url(img/foundation/iteration-for-pattern-2b.svg)
-
-# Capture a pattern
+background-image: url(img/foundation/iteration-for-pattern-2.svg)
 
 ---
 background-image: url(img/foundation/iteration-for-pattern-3.svg)
 
-# Capture a pattern
-
 ---
 background-image: url(img/foundation/iteration-for-pattern-4.svg)
-
-# Capture a pattern
 
 ---
 background-image: url(img/foundation/iteration-for-pattern-5.svg)
 
-# Capture a pattern
-
 ---
 background-image: url(img/foundation/iteration-for-pattern-6.svg)
 
-# Capture a pattern
+---
+background-image: url(img/foundation/iteration-for-pattern-7.svg)
+
+---
+background-image: url(img/foundation/iteration-for-pattern-8.svg)
+
+---
+background-image: url(img/foundation/iteration-for-pattern-9.svg)
 
 ---
 background-image: url(img/fp-tower/website-background-white.svg)

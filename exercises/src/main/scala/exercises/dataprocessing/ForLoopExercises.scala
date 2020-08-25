@@ -43,4 +43,29 @@ object ForLoopExercises {
   // e. Refactor `sum`, `size`, `min` and `wordCount` using the higher-order
   // function you defined above.
 
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the video)
+  //////////////////////////////////////////////
+
+  // f. `foldLeft` can be used to implement most of the List API.
+  // Do you want to give it a try? For example, can you implement
+  // `map`, `reverse` and `lastOption` in terms of `foldLeft`
+  def map[From, To](elements: List[From])(update: From => To): List[To] =
+    ???
+
+  // reverse(List(3,8,1)) == List(1,8,3)
+  // reverse(Nil) == Nil
+  def reverse[A](elements: List[A]): List[A] =
+    ???
+
+  // lastOption(List(3,8,1)) == Some(1)
+  // lastOption(Nil) == None
+  def lastOption[A](elements: List[A]): Option[A] =
+    ???
+
+  // g. Can you generalise `min` so that it applies to more types like `Long`, `String`, ...?
+  // Note: You may want to use the class Ordering from the standard library
+  def generalMin[A](elements: List[A]): Option[A] =
+    ???
+
 }

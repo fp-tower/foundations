@@ -16,11 +16,11 @@ object ForLoopAnswers {
 
   def min(numbers: List[Int]): Option[Int] = {
     var state = Option.empty[Int]
-    for (number <- numbers) state = minState(state, number)
+    for (number <- numbers) state = combineMin(state, number)
     state
   }
 
-  private def minState(state: Option[Int], number: Int): Option[Int] =
+  private def combineMin(state: Option[Int], number: Int): Option[Int] =
     state match {
       case None               => Some(number)
       case Some(currentState) => Some(currentState min number)
@@ -51,12 +51,27 @@ object ForLoopAnswers {
     foldLeft(numbers, 0)((acc, _) => acc + 1)
 
   def minFoldLeft(numbers: List[Int]): Option[Int] =
-    foldLeft(numbers, Option.empty[Int]) {
-      case (None, number)      => Some(number)
-      case (Some(acc), number) => Some(acc min number)
-    }
+    foldLeft(numbers, Option.empty[Int])(combineMin)
 
   def wordCountFoldLeft(words: List[String]): Map[String, Int] =
     foldLeft(words, Map.empty[String, Int])(addKey)
 
+  def map[From, To](elements: List[From])(update: From => To): List[To] =
+    reverse(foldLeft(elements, List.empty[To])((state, element) => update(element) :: state))
+
+  def reverse[A](elements: List[A]): List[A] =
+    foldLeft(elements, List.empty[A])((state, element) => element :: state)
+
+  def lastOption[A](elements: List[A]): Option[A] =
+    foldLeft(elements, Option.empty[A])((_, element) => Some(element))
+
+  def generalMin[A](elements: List[A])(ord: Ordering[A]): Option[A] =
+    foldLeft(elements, Option.empty[A]) {
+      case (None, element)        => Some(element)
+      case (Some(state), element) => Some(ord.min(state, element))
+    }
+
+  // Instance of Ordering are generally passed implicitly using the typeclass pattern (not covered).
+  def generalMin2[A](elements: List[A])(implicit ord: Ordering[A]): Option[A] =
+    generalMin(elements)(ord)
 }

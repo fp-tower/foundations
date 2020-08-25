@@ -95,9 +95,9 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
     }
   }
 
-  test("foldLeft size") {
+  test("foldLeft noop") {
     forAll { (numbers: List[Int]) =>
-      assert(foldLeft(numbers, List.empty[Int])(_.::(_)) == numbers.reverse)
+      assert(foldLeft(numbers, List.empty[Int])(_ :+ _) == numbers)
     }
   }
 
