@@ -15,7 +15,7 @@
 1. Exercise 2: Predicate
 1. Exercise 3: JsonDecoder
 
-## 3. Data processing
+## 3. Parallel data processing
 
 1. Introduction to parallel data processing
 1. Iteration with for loop
