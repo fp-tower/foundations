@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 280 144" width="280" height="144">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="14" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-08-26 15:03:21 +0000</metadata>
+  <g id="scala-seed-project-3" stroke="none" fill="none" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none">
+    <title>scala-seed-project-3</title>
+    <g id="scala-seed-project-3_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_75">
+        <rect x="9" y="9" width="270" height="133.71429" fill="#589b9d"/>
+        <rect x="9" y="9" width="270" height="133.71429" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14 14)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="95.977" y="21">project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_76">
+        <title>File</title>
+        <path d="M 90.9 77.9679 C 90.9 70.29477 89.97417 69.34545 83.21124 61.7517 L 83.139795 61.67313 C 76.34114 54 76.27043 54 69.29317 54 C 60.00279 54 18 54 18 54 L 18 135 L 90.9 135 L 90.9 77.9679 Z" fill="#acbdd0"/>
+        <path d="M 90.9 77.9679 C 90.9 70.29477 89.97417 69.34545 83.21124 61.7517 L 83.139795 61.67313 C 76.34114 54 76.27043 54 69.29317 54 C 60.00279 54 18 54 18 54 L 18 135 L 90.9 135 L 90.9 77.9679 Z M 90.9 77.57262 C 90.9 70.29477 90.82856 70.29477 76.27043 70.29477 L 76.27043 70.29477 C 76.27043 54.07938 76.27043 54 69.72036 54" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
+        <text transform="translate(18 74.058)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="3.3890008" y="13">Depencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="18.173" y="29.392">.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_77">
+        <title>File</title>
+        <path d="M 180 78.2638 C 180 70.49594 179.06274 69.5349 172.21631 61.8474 L 172.144 61.76786 C 165.2614 54 165.18982 54 158.12642 54 C 148.72135 54 106.2 54 106.2 54 L 106.2 136 L 180 136 L 180 78.2638 Z" fill="#acbdd0"/>
+        <path d="M 180 78.2638 C 180 70.49594 179.06274 69.5349 172.21631 61.8474 L 172.144 61.76786 C 165.2614 54 165.18982 54 158.12642 54 C 148.72135 54 106.2 54 106.2 54 L 106.2 136 L 180 136 L 180 78.2638 Z M 180 77.86364 C 180 70.49594 179.92768 70.49594 165.18982 70.49594 L 165.18982 70.49594 C 165.18982 54.08036 165.18982 54 158.55889 54" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
+        <text transform="translate(106.2 74.508)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="19.652002" y="13">build.</tspan>
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="5.2670015" y="29.392">properties</tspan>
+        </text>
+      </g>
+      <g id="Graphic_79">
+        <title>File</title>
+        <path d="M 270 78.2638 C 270 70.49594 269.06274 69.5349 262.2163 61.8474 L 262.144 61.76786 C 255.2614 54 255.18982 54 248.12642 54 C 238.72135 54 196.2 54 196.2 54 L 196.2 136 L 270 136 L 270 78.2638 Z" fill="#acbdd0"/>
+        <path d="M 270 78.2638 C 270 70.49594 269.06274 69.5349 262.2163 61.8474 L 262.144 61.76786 C 255.2614 54 255.18982 54 248.12642 54 C 238.72135 54 196.2 54 196.2 54 L 196.2 136 L 270 136 L 270 78.2638 Z M 270 77.86364 C 270 70.49594 269.92768 70.49594 255.18982 70.49594 L 255.18982 70.49594 C 255.18982 54.08036 255.18982 54 248.5589 54" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
+        <text transform="translate(196.2 74.508)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="17.839002" y="13">plugin</tspan>
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="25.098002" y="29.392">.sbt</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
