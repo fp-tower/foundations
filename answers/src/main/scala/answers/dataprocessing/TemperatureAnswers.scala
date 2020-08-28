@@ -27,49 +27,63 @@ object TemperatureAnswers extends App {
 
   val reader: CsvReader[Either[ReadError, Sample]] = rawData.asCsvReader[Sample](rfc.withHeader)
 
-  val (failures, successes) = timeOne(reader.take(sampleSize).toList.partitionMap(identity))
+  val (failures, successes) = timeOne("load data", reader.take(sampleSize).toList.partitionMap(identity))
 
   println(s"${failures.size} failed and ${successes.size} succeeded")
 
   val partitions    = 10
   val partitionSize = successes.length / partitions + 1
   val computeEC     = ThreadPoolUtil.fixedSize(partitions, "compute")
-  val ec            = Some(computeEC)
-//  val ec = Some(ExecutionContext.global)
-//  val ec = None
+  val ec            = computeEC
+//  val ec = ExecutionContext.global
 
-  val samples = ParList
-    .partition(partitionSize, successes)
-    .setExecutionContext(ec)
+  val sequentialSamples      = ParList.partition(partitionSize, successes)
+  val sequentialTemperatures = sequentialSamples.map(_.temperature)
 
-  val temperatures = samples.map(_.temperature)
+  val parallelSamples      = sequentialSamples.setExecutionContext(Some(ec))
+  val parallelTemperatures = parallelSamples.map(_.temperature)
 
-  time(100) { temperatures.sequential.foldMap(identity)(Monoid.sumDouble) }
-  time(100) { temperatures.parallel(computeEC).foldMap(identity)(Monoid.sumDouble) }
+  val maxTemperature = ParList.max(parallelTemperatures)
+  println(s"Max temperature is $maxTemperature")
 
-  time(100) { temperatures.sequential.foldMap(Option(_))(Monoid.maxOption) }
-  time(100) { temperatures.parallel(computeEC).foldMap(Option(_))(Monoid.maxOption) }
+  val minTemperature = ParList.min(parallelTemperatures)
+  println(s"Min temperature is $minTemperature")
 
-  time(100) { temperatures.sequential.reducedMap(identity)(Semigroup.max) }
-  time(100) { temperatures.parallel(computeEC).reducedMap(identity)(Semigroup.max) }
+  val sumTemperature = ParList.sum(parallelTemperatures)
+  val size           = parallelTemperatures.size
 
-  time(1) {
-    val maxTemperature = ParList.max(temperatures)
-    println(s"Max temperature is $maxTemperature")
+  val avgTemperature = sumTemperature / size
 
-    val minTemperature = ParList.min(temperatures)
-    println(s"Min temperature is $minTemperature")
+  println(s"Average temperature is $avgTemperature")
 
-    val sumTemperature = ParList.sum(temperatures)
-    val size           = temperatures.size
+  val summary = parallelTemperatures.foldMap(Summary.one)(Summary.monoid)
 
-    val avgTemperature = sumTemperature / size
+  println(s"Temperature summary is $summary")
 
-    println(s"Average temperature is $avgTemperature")
+  time(100, "sum sequential") { ParList.sum(sequentialTemperatures) }
+  time(100, "max sequential") { ParList.max(sequentialTemperatures) }
+  time(100, "min sequential") { ParList.min(sequentialTemperatures) }
+  time(100, "summary global sequential") {
+    sequentialTemperatures.foldMap(Summary.one)(Summary.monoid)
+  }
+  time(100, "summary perCity sequential") {
+    sequentialSamples.foldMap(perCity)(Monoid.map(Summary.monoid))
+  }
+  time(100, "summary allLocations sequential") {
+    sequentialSamples.foldMap(allLocations)(Monoid.map(Summary.monoid))
   }
 
-  time(100) {
-    temperatures.foldMap(Summary.one)(Summary.monoid)
+  time(100, "sum parallel") { ParList.sum(parallelTemperatures) }
+  time(100, "max parallel") { ParList.max(parallelTemperatures) }
+  time(100, "min parallel") { ParList.min(parallelTemperatures) }
+  time(100, "summary global parallel") {
+    parallelTemperatures.foldMap(Summary.one)(Summary.monoid)
+  }
+  time(100, "summary perCity summary parallel") {
+    parallelSamples.foldMap(perCity)(Monoid.map(Summary.monoid))
+  }
+  time(100, "summary allLocations summary sequential") {
+    parallelSamples.foldMap(allLocations)(Monoid.map(Summary.monoid))
   }
 
   def perCity(sample: Sample): Map[String, Summary] =
@@ -86,10 +100,4 @@ object TemperatureAnswers extends App {
       sample.city                -> summary,
     )
   }
-
-  time(100) {
-    samples.foldMap(perCity)(Monoid.map(Summary.monoid))
-  }
-
-  samples.foldMap(allLocations)(Monoid.map(Summary.monoid)).foreach(println)
 }
