@@ -1,9 +1,5 @@
 package answers.dataprocessing
 
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.atomic.AtomicReference
-
-import scala.annotation.tailrec
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 
@@ -14,9 +10,6 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def map[To](update: A => To): ParList[To] =
     ParList(partitions.map(_.map(update)), maybeExecutionContext)
 
-  def size: Int =
-    partitions.map(_.size).sum
-
   def flatFoldLeft[B](default: B)(combine: (B, A) => B): B =
     toList.foldLeft(default)(combine)
 
@@ -25,7 +18,29 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
 
   def monoFoldLeft(default: A)(combine: (A, A) => A): A =
     partitions
-      .foldLeft(default)((acc, partition) => combine(acc, partition.foldLeft(default)(combine)))
+      .map(_.foldLeft(default)(combine))
+      .foldLeft(default)(combine)
+
+  def size: Int =
+    foldMap(_ => 1)(Monoid.sumInt)
+
+  def min(implicit ord: Ordering[A]): Option[A] =
+    minBy(identity)
+
+  def max(implicit ord: Ordering[A]): Option[A] =
+    maxBy(identity)
+
+  def minBy[To: Ordering](zoom: A => To): Option[A] =
+    reduceMap(identity)(Semigroup.minBy(zoom))
+
+  def maxBy[To: Ordering](zoom: A => To): Option[A] =
+    reduceMap(identity)(Semigroup.maxBy(zoom))
+
+  def fold(monoid: Monoid[A]): A =
+    foldMap(identity)(monoid)
+
+  def reduce(semigroup: Semigroup[A]): Option[A] =
+    reduceMap(identity)(semigroup)
 
   def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
     ops.foldMap(update)(monoid)
@@ -103,13 +118,7 @@ object ParList {
   def partition[A](partitionSize: Int, items: List[A]): ParList[A] =
     ParList(items.grouped(partitionSize).toList, None)
 
-  def max(numbers: ParList[Double]): Option[Double] =
-    numbers.reduceMap(identity)(Semigroup.max)
-
-  def min(numbers: ParList[Double]): Option[Double] =
-    numbers.reduceMap(identity)(Semigroup.min)
-
   def sum(numbers: ParList[Double]): Double =
-    numbers.foldMap(identity)(Monoid.sumDouble)
+    numbers.fold(Monoid.sumDouble)
 
 }
