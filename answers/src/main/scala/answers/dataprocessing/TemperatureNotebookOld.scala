@@ -68,7 +68,7 @@ object TemperatureNotebookOld extends App {
   time(100, "summary perCity summary parallel") {
     parallelSamples.foldMap(perCity)(Monoid.map(Summary.monoid))
   }
-  time(100, "summary allLocations summary sequential") {
+  time(100, "summary allLocations summary parallel") {
     parallelSamples.foldMap(allLocations)(Monoid.map(Summary.monoid))
   }
 
