@@ -1,12 +1,23 @@
 package answers.dataprocessing
 
-import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
 
-  test("minSampleByTemperature") {
+  test("minSampleByTemperature example") {
+    val sample       = Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, 0)
+    val temperatures = List(1, 10, -1, 24, 18, 32, 99, 20, -34, 102, -20, 0)
+    val samples      = temperatures.map(temperature => sample.copy(temperatureFahrenheit = temperature))
+    val parSamples   = ParList.byNumberOfPartition(3, samples)
+
+    assert(
+      TemperatureAnswers.minSampleByTemperature(parSamples) ==
+        Some(Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, -34))
+    )
+  }
+
+  test("minSampleByTemperature consistent with List minByOption") {
     forAll { (samples: ParList[Sample]) =>
       assert(
         TemperatureAnswers.minSampleByTemperature(samples) ==
@@ -15,48 +26,10 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     }
   }
 
-  test("min") {
+  test("min with List minOption") {
     forAll { (numbers: ParList[Int]) =>
       assert(numbers.min == numbers.toList.minOption)
     }
   }
-
-  implicit val sampleArb: Arbitrary[Sample] =
-    Arbitrary(
-      for {
-        (region, country, state, city) <- Gen.oneOf(
-          ("Africa", "Algeria", None, "Algiers"),
-          ("Africa", "Burundi", None, "Bujumbura"),
-          ("Asia", "Uzbekistan", None, "Tashkent"),
-          ("Asia", "Turkmenistan", None, "Ashabad"),
-          ("Europe", "France", None, "Bordeaux"),
-          ("Europe", "Germany", None, "Munich"),
-          ("North America", "US", Some("Florida"), "Jacksonville"),
-          ("North America", "US", Some("California"), "Fresno"),
-        )
-        year        <- Gen.choose(1980, 2020)
-        month       <- Gen.choose(1, 12)
-        day         <- Gen.choose(1, 28)
-        temperature <- Gen.choose[Double](-50, 150)
-      } yield
-        Sample(
-          region = region,
-          country = country,
-          state = state,
-          city = city,
-          month = month,
-          day = day,
-          year = year,
-          temperatureFahrenheit = temperature
-        )
-    )
-
-  implicit def parListArb[A](implicit arbA: Arbitrary[A]): Arbitrary[ParList[A]] =
-    Arbitrary(
-      for {
-        list              <- Gen.listOf(arbA.arbitrary)
-        numberOfPartition <- Gen.choose[Int](1, 10)
-      } yield ParList.byNumberOfPartition(numberOfPartition, list)
-    )
 
 }
