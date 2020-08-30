@@ -3,10 +3,13 @@ package exercises.dataprocessing
 import kantan.csv._
 import kantan.csv.ops._
 
+// Run the notebook using green arrow (if available in your IDE)
+// or run `sbt` in your terminal to open sbt in shell mode then type:
+// exercises/runMain exercises.dataprocessing.TemperatureNotebook
 object TemperatureNotebook extends App {
 
   // !!!!  IMPORTANT !!!!
-  // Download the dataset from https://www.kaggle.com/sudalairajkumar/daily-temperature-of-major-cities
+  // Download the dataset from https://www.dropbox.com/s/4pf6h2oxw4u7xsq/city_temperature.csv?dl=0
   // and place the csv file in the resource directory (exercises/src/main/resources)
 
   // We use kantan.csv library to parse the each csv raw into a case class `Sample`
@@ -23,7 +26,7 @@ object TemperatureNotebook extends App {
 
   val (failures, successes) = reader.take(maxRows).toList.partitionMap(identity)
 
-  println(s"${failures.size} rows failed and ${successes.size} rows succeeded")
+  println(s"Parsed ${successes.size} rows successfully and ${failures.size} rows failed ")
 
   // a. Implement `samples`, a `ParList` containing all the parsed rows.
   // Partition `samples` so that it contains 10 partitions of roughly equal size.

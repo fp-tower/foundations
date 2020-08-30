@@ -6,7 +6,7 @@ object TemperatureAnswers {
     minSampleList(samples.partitions.flatMap(minSampleList))
 
   def minSampleList(samples: List[Sample]): Option[Sample] =
-    samples.minByOption(_.temperature)
+    samples.minByOption(_.temperatureFahrenheit)
 
   def averageTemperature(samples: ParList[Sample]): Option[Double] = {
     val length = size(samples)
@@ -18,7 +18,7 @@ object TemperatureAnswers {
     samples.partitions.map(_.size).sum
 
   def sumTemperature(samples: ParList[Sample]): Double =
-    samples.partitions.map(_.foldLeft(0.0)((state, sample) => state + sample.temperature)).sum
+    samples.partitions.map(_.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)).sum
 
   def foldLeft[From, To](elements: ParList[From], default: To)(combine: (To, From) => To): To =
     sys.error("Impossible to implement")

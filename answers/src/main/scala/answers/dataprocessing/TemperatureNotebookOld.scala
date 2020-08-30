@@ -24,10 +24,10 @@ object TemperatureNotebookOld extends App {
 //  val ec = ExecutionContext.global
 
   val sequentialSamples      = ParList.partition(partitionSize, successes)
-  val sequentialTemperatures = sequentialSamples.map(_.temperature)
+  val sequentialTemperatures = sequentialSamples.map(_.temperatureFahrenheit)
 
   val parallelSamples      = sequentialSamples.setExecutionContext(Some(ec))
-  val parallelTemperatures = parallelSamples.map(_.temperature)
+  val parallelTemperatures = parallelSamples.map(_.temperatureFahrenheit)
 
   println(s"Min date is ${parallelSamples.minBy(_.localDate)}")
   println(s"Max date is ${parallelSamples.maxBy(_.localDate)}")
@@ -74,11 +74,11 @@ object TemperatureNotebookOld extends App {
 
   def perCity(sample: Sample): Map[String, Summary] =
     Map(
-      sample.city -> Summary.one(sample.temperature)
+      sample.city -> Summary.one(sample.temperatureFahrenheit)
     )
 
   def allLocations(sample: Sample): Map[String, Summary] = {
-    val summary = Summary.one(sample.temperature)
+    val summary = Summary.one(sample.temperatureFahrenheit)
     Map(
       sample.region              -> summary,
       sample.country             -> summary,
