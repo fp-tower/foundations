@@ -24,23 +24,29 @@ object TemperatureNotebook extends App {
   // Use Int.MaxValue to load the entire csv file.
   val maxRows = 10000 // Int.MaxValue
 
-  val (failures, successes) = reader.take(maxRows).toList.partitionMap(identity)
+  val rows: List[Either[ReadError, Sample]] = reader.take(maxRows).toList
+
+  val failures: List[ReadError] = rows.collect { case Left(error)   => error }
+  val successes: List[Sample]   = rows.collect { case Right(sample) => sample }
+
+  // we can also extract failures and successes in one go using `partitionMap`
+//  val (failures, successes) = rows.partitionMap(identity)
 
   println(s"Parsed ${successes.size} rows successfully and ${failures.size} rows failed ")
 
-  // a. Implement `samples`, a `ParList` containing all the parsed rows.
-  // Partition `samples` so that it contains 10 partitions of roughly equal size.
+  // a. Implement `samples`, a `ParList` containing all the `Samples` in `successes`.
+  // Partition `parSamples` so that it contains 10 partitions of roughly equal size.
   // Note: Check `ParList` companion object
-  lazy val samples: ParList[Sample] =
+  lazy val parSamples: ParList[Sample] =
     ???
 
-  // b. Implement `minTemperature` in TemperatureExercises
-  lazy val minSample: Option[Sample] =
-    TemperatureExercises.minSample(samples)
+  // b. Implement `minSampleByTemperature` in TemperatureExercises
+  lazy val minSampleByTemperature: Option[Sample] =
+    TemperatureExercises.minSampleByTemperature(parSamples)
 
   // c. Implement `averageTemperature` in TemperatureExercises
   lazy val averageTemperature: Option[Double] =
-    TemperatureExercises.averageTemperature(samples)
+    TemperatureExercises.averageTemperature(parSamples)
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)

@@ -9,22 +9,24 @@ object TemperatureNotebookAnswers extends App {
     .getResource("/city_temperature.csv")
     .asCsvReader[Sample](rfc.withHeader)
 
-  val maxRows = 10000 // Int.MaxValue
+  val maxRows    = Int.MaxValue
+  val partitions = 10
 
   val (failures, successes) = reader.take(maxRows).toList.partitionMap(identity)
 
   println(s"${failures.size} rows failed and ${successes.size} rows succeeded")
 
-  val partitions    = 10
-  val partitionSize = successes.length / partitions + 1
-
   val samples: ParList[Sample] =
-    ParList.partition(partitionSize, successes)
+    ParList.byNumberOfPartition(partitions, successes)
 
-  val minSample: Option[Sample] =
-    TemperatureAnswers.minSample(samples)
+  samples.partitions.zipWithIndex.foreach {
+    case (p, i) => println(s"Partition $i has size: ${p.size}")
+  }
 
-  println(s"Min sample is $minSample")
+  val minSampleByTemperature: Option[Sample] =
+    TemperatureAnswers.minSampleByTemperature(samples)
+
+  println(s"Min sample is $minSampleByTemperature")
 
   val averageTemperature: Option[Double] =
     TemperatureAnswers.averageTemperature(samples)

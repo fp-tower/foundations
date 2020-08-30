@@ -23,7 +23,7 @@ object TemperatureNotebookOld extends App {
   val ec            = computeEC
 //  val ec = ExecutionContext.global
 
-  val sequentialSamples      = ParList.partition(partitionSize, successes)
+  val sequentialSamples      = ParList.byPartitionSize(partitionSize, successes)
   val sequentialTemperatures = sequentialSamples.map(_.temperatureFahrenheit)
 
   val parallelSamples      = sequentialSamples.setExecutionContext(Some(ec))

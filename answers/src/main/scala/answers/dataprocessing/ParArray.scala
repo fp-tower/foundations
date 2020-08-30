@@ -6,7 +6,7 @@ import scala.reflect.ClassTag
 
 case class ParArray[A](underlying: Array[A], partitionSize: Int) {
   def toParList: ParList[A] =
-    ParList.partition(partitionSize, underlying.toList)
+    ParList.byPartitionSize(partitionSize, underlying.toList)
 
   def map[To: ClassTag](update: A => To): ParArray[To] =
     ParArray(underlying.map(update), partitionSize)

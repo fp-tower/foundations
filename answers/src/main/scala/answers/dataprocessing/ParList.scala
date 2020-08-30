@@ -115,8 +115,14 @@ object ParList {
   def apply[A](partitions: List[A]*): ParList[A] =
     ParList(partitions.toList, None)
 
-  def partition[A](partitionSize: Int, items: List[A]): ParList[A] =
-    ParList(items.grouped(partitionSize).toList, None)
+  def byPartitionSize[A](partitionSize: Int, items: List[A]): ParList[A] =
+    if (items.isEmpty) ParList()
+    else ParList(items.grouped(partitionSize).toList, None)
+
+  def byNumberOfPartition[A](numberOfPartition: Int, items: List[A]): ParList[A] = {
+    val partitionSize = math.ceil(items.length / numberOfPartition.toDouble).toInt
+    byPartitionSize(partitionSize, items)
+  }
 
   def sum(numbers: ParList[Double]): Double =
     numbers.fold(Monoid.sumDouble)

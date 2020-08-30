@@ -14,6 +14,9 @@ case class Sample(
 ) {
   val temperatureCelsius: Double =
     (temperatureFahrenheit - 32) * 5 / 9
+
+  override def toString: String =
+    s"Sample(region = $region, country = $country, state = ${state.getOrElse("N/A")}, city = $city, date = ${year}-${month}-${day}, temperature F° = ${temperatureFahrenheit}, temperature C° = ${temperatureCelsius})"
 }
 
 object Sample {

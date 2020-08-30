@@ -2,10 +2,10 @@ package answers.dataprocessing
 
 object TemperatureAnswers {
 
-  def minSample(samples: ParList[Sample]): Option[Sample] =
-    minSampleList(samples.partitions.flatMap(minSampleList))
+  def minSampleByTemperature(samples: ParList[Sample]): Option[Sample] =
+    minSampleByTemperatureList(samples.partitions.flatMap(minSampleByTemperatureList))
 
-  def minSampleList(samples: List[Sample]): Option[Sample] =
+  def minSampleByTemperatureList(samples: List[Sample]): Option[Sample] =
     samples.minByOption(_.temperatureFahrenheit)
 
   def averageTemperature(samples: ParList[Sample]): Option[Double] = {
@@ -19,13 +19,5 @@ object TemperatureAnswers {
 
   def sumTemperature(samples: ParList[Sample]): Double =
     samples.partitions.map(_.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)).sum
-
-  def foldLeft[From, To](elements: ParList[From], default: To)(combine: (To, From) => To): To =
-    sys.error("Impossible to implement")
-
-  def monoFoldLeft[A](elements: ParList[A], default: A)(combine: (A, A) => A): A =
-    elements.partitions
-      .map(_.foldLeft(default)(combine))
-      .foldLeft(default)(combine)
 
 }
