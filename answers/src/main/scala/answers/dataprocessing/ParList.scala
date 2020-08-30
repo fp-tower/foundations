@@ -30,6 +30,12 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def max(implicit ord: Ordering[A]): Option[A] =
     maxBy(identity)
 
+  def minByV1[To](zoom: A => To)(implicit ord: Ordering[To]): Option[A] =
+    partitions.flatMap(_.minByOption(zoom)).minByOption(zoom)
+
+  def maxByV1[To: Ordering](zoom: A => To)(implicit ord: Ordering[To]): Option[A] =
+    minBy(zoom)(ord.reverse)
+
   def minBy[To: Ordering](zoom: A => To): Option[A] =
     reduceMap(identity)(Semigroup.minBy(zoom))
 

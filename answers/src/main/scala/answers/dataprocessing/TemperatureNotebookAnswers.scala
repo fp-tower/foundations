@@ -26,7 +26,10 @@ object TemperatureNotebookAnswers extends App {
   val minSampleByTemperature: Option[Sample] =
     TemperatureAnswers.minSampleByTemperature(samples)
 
-  println(s"Min sample is $minSampleByTemperature")
+  println(s"Min sample by temperature is $minSampleByTemperature")
+  println(s"Max sample by temperature is ${samples.maxBy(_.temperatureFahrenheit)}")
+  println(s"Min sample by date is ${samples.minBy(_.localDate)}")
+  println(s"Max sample by date is ${samples.maxBy(_.localDate)}")
 
   val averageTemperature: Option[Double] =
     TemperatureAnswers.averageTemperature(samples)
