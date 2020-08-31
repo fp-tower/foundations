@@ -14,20 +14,32 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.17.4\n2020-08-31 10:26:17 +0000</metadata>
-  <g id="parlist-foldLeft-3b" stroke="none" fill="none" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none">
-    <title>parlist-foldLeft-3b</title>
-    <g id="parlist-foldLeft-3b_Layer_1">
+  <g id="parlist-foldLeft-2i" stroke="none" fill="none" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none">
+    <title>parlist-foldLeft-2i</title>
+    <g id="parlist-foldLeft-2i_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_2">
         <rect x="153" y="81" width="648" height="441" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_182">
+        <rect x="297" y="90" width="63" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_19">
         <text transform="translate(140 49.384)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="11.0125" y="21">dataset</tspan>
         </text>
       </g>
+      <g id="Graphic_87">
+        <rect x="306" y="99" width="45" height="45" fill="#589b9d"/>
+        <rect x="306" y="99" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_181">
+        <text transform="translate(41 112.384)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 1</tspan>
+        </text>
+      </g>
       <g id="Graphic_195">
-        <rect x="297" y="162" width="441" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <rect x="297" y="162" width="495" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_191">
         <rect x="306" y="171" width="45" height="45" fill="#589b9d"/>
@@ -60,6 +72,10 @@
       <g id="Graphic_184">
         <rect x="684" y="171" width="45" height="45" fill="#589b9d"/>
         <rect x="684" y="171" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_183">
+        <rect x="738" y="171" width="45" height="45" fill="#589b9d"/>
+        <rect x="738" y="171" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_208">
         <rect x="297" y="234" width="495" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -242,26 +258,17 @@
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 6</tspan>
         </text>
       </g>
-      <g id="Graphic_270">
-        <rect x="162" y="99" width="45" height="45" fill="#70a3d8"/>
-        <rect x="162" y="99" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      </g>
-      <g id="Graphic_269">
-        <text transform="translate(221 107.692)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 1</tspan>
-        </text>
-      </g>
-      <g id="Graphic_272">
-        <rect x="162" y="171" width="72" height="45" fill="#70a3d8"/>
-        <rect x="162" y="171" width="72" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(167 184.276)" fill="white">
+      <g id="Graphic_267">
+        <rect x="162" y="99" width="72" height="45" fill="#70a3d8"/>
+        <rect x="162" y="99" width="72" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(167 112.276)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.368" y="15">state</tspan>
         </text>
       </g>
-      <g id="Graphic_271">
-        <ellipse cx="270.5" cy="193.5" rx="45.5000727045363" ry="22.5000359527927" fill="#ff8080"/>
-        <ellipse cx="270.5" cy="193.5" rx="45.5000727045363" ry="22.5000359527927" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(239.1 184.276)" fill="white">
+      <g id="Graphic_268">
+        <ellipse cx="270.5" cy="121.5" rx="45.5000727045363" ry="22.5000359527927" fill="#ff8080"/>
+        <ellipse cx="270.5" cy="121.5" rx="45.5000727045363" ry="22.5000359527927" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(239.1 112.276)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x=".4239996" y="15">combine</tspan>
         </text>
       </g>
