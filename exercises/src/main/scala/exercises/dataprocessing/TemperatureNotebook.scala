@@ -19,12 +19,7 @@ object TemperatureNotebook extends App {
     .getResource("/city_temperature.csv")
     .asCsvReader[Sample](rfc.withHeader)
 
-  // Maximum number of rows to load.
-  // Use a small value to speed-up experiment.
-  // Use Int.MaxValue to load the entire csv file.
-  val maxRows = 10000 // Int.MaxValue
-
-  val rows: List[Either[ReadError, Sample]] = reader.take(maxRows).toList
+  val rows: List[Either[ReadError, Sample]] = reader.toList
 
   val failures: List[ReadError] = rows.collect { case Left(error)   => error }
   val successes: List[Sample]   = rows.collect { case Right(sample) => sample }
