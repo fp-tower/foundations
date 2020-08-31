@@ -24,16 +24,16 @@ object Summary {
 
   val monoid: Monoid[Summary] = new Monoid[Summary] {
     def default: Summary = Summary(
-      min = Monoid.minOption.default,
-      max = Monoid.maxOption.default,
+      min = Monoid.minOption[Double].default,
+      max = Monoid.maxOption[Double].default,
       sum = Monoid.sumDouble.default,
       size = Monoid.sumInt.default,
     )
 
     def combine(first: Summary, second: Summary): Summary =
       Summary(
-        min = Monoid.minOption.combine(first.min, second.min),
-        max = Monoid.maxOption.combine(first.max, second.max),
+        min = Monoid.minOption[Double].combine(first.min, second.min),
+        max = Monoid.maxOption[Double].combine(first.max, second.max),
         sum = Monoid.sumDouble.combine(first.sum, second.sum),
         size = Monoid.sumInt.combine(first.size, second.size),
       )

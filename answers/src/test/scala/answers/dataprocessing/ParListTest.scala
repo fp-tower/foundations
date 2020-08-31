@@ -1,5 +1,6 @@
 package answers.dataprocessing
 
+import org.scalacheck.Arbitrary
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -77,6 +78,28 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   ignore("monoFoldLeft consistent with List foldLeft (not true)") {
     forAll { (numbers: ParList[Int], default: Int, combine: (Int, Int) => Int) =>
       assert(numbers.monoFoldLeft(default)(combine) == numbers.toList.foldLeft(default)(combine))
+    }
+  }
+
+  checkMonoid("Sum Double", Monoid.sumDouble)
+  checkMonoid("Sum Int", Monoid.sumInt)
+  checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
+  checkMonoid("Min Option[Int]", Monoid.minOption[Int])
+
+  def checkMonoid[A: Arbitrary](name: String, monoid: Monoid[A]) = {
+    test(s"$name Monoid default is a noop") {
+      forAll { (value: A) =>
+        assert(monoid.combine(value, monoid.default) == value)
+        assert(monoid.combine(monoid.default, value) == value)
+      }
+    }
+    test(s"$name Monoid combine is associative") {
+      forAll { (first: A, second: A, third: A) =>
+        assert(
+          monoid.combine(first, monoid.combine(second, third)) ==
+            monoid.combine(monoid.combine(first, second), third)
+        )
+      }
     }
   }
 

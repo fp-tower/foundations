@@ -1,12 +1,14 @@
 package answers.dataprocessing
 
 trait Monoid[A] extends Semigroup[A] {
+  // forAll a: A, combine(a, default) == combiner(defaut, a) == a
   def default: A
 }
 
 object Monoid {
-  val maxOption: Monoid[Option[Double]] = option(Semigroup.max)
-  val minOption: Monoid[Option[Double]] = option(Semigroup.min)
+  def maxOption[A: Ordering]: Monoid[Option[Double]] = option(Semigroup.max)
+  def minOption[A: Ordering]: Monoid[Option[Double]] = option(Semigroup.min)
+
   val sumDouble: Monoid[Double] = new Monoid[Double] {
     val default: Double                                = 0.0
     def combine(first: Double, second: Double): Double = first + second
