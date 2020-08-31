@@ -35,7 +35,7 @@ object TemperatureNotebookOld extends App {
   println(s"Min temperature is ${parallelTemperatures.min}")
   println(s"Max temperature is ${parallelTemperatures.max}")
 
-  val sumTemperature = parallelTemperatures.fold(Monoid.sumDouble)
+  val sumTemperature = parallelTemperatures.sum
   val size           = parallelTemperatures.size
 
   val avgTemperature = sumTemperature / size
@@ -46,7 +46,7 @@ object TemperatureNotebookOld extends App {
 
   println(s"Temperature summary is $summary")
 
-  time(100, "sum sequential") { ParList.sum(sequentialTemperatures) }
+  time(100, "sum sequential") { sequentialTemperatures.sum }
   time(100, "max sequential") { sequentialTemperatures.max }
   time(100, "min sequential") { sequentialTemperatures.min }
   time(100, "summary global sequential") {
@@ -59,7 +59,7 @@ object TemperatureNotebookOld extends App {
     sequentialSamples.foldMap(allLocations)(Monoid.map(Summary.monoid))
   }
 
-  time(100, "sum parallel") { ParList.sum(parallelTemperatures) }
+  time(100, "sum parallel") { parallelTemperatures.sum }
   time(100, "max parallel") { parallelTemperatures.max }
   time(100, "min parallel") { parallelTemperatures.min }
   time(100, "summary global parallel") {

@@ -9,14 +9,11 @@ object Monoid {
   def maxOption[A: Ordering]: Monoid[Option[Double]] = option(Semigroup.max)
   def minOption[A: Ordering]: Monoid[Option[Double]] = option(Semigroup.min)
 
-  val sumDouble: Monoid[Double] = new Monoid[Double] {
-    val default: Double                                = 0.0
-    def combine(first: Double, second: Double): Double = first + second
-  }
-  val sumInt: Monoid[Int] = new Monoid[Int] {
-    val default: Int                          = 0
-    def combine(first: Int, second: Int): Int = first + second
-  }
+  def sumNumeric[A](implicit num: Numeric[A]): Monoid[A] =
+    new Monoid[A] {
+      def default: A                      = num.zero
+      def combine(first: A, second: A): A = num.plus(first, second)
+    }
 
   def option[A](semigroup: Semigroup[A]): Monoid[Option[A]] =
     new Monoid[Option[A]] {

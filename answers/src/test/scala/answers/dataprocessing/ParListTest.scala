@@ -71,20 +71,27 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
 
   test("monoFoldLeft consistent with List sum") {
     forAll { (numbers: ParList[Int]) =>
-      assert(numbers.monoFoldLeft(0)(_ + _) == numbers.toList.sum)
+      assert(numbers.monoFoldLeftV1(0)(_ + _) == numbers.toList.sum)
     }
   }
 
   ignore("monoFoldLeft consistent with List foldLeft (not true)") {
     forAll { (numbers: ParList[Int], default: Int, combine: (Int, Int) => Int) =>
-      assert(numbers.monoFoldLeft(default)(combine) == numbers.toList.foldLeft(default)(combine))
+      assert(numbers.monoFoldLeftV1(default)(combine) == numbers.toList.foldLeft(default)(combine))
     }
   }
 
-  checkMonoid("Sum Double", Monoid.sumDouble)
-  checkMonoid("Sum Int", Monoid.sumInt)
+  checkMonoid("Sum Double", Monoid.sumNumeric[Double])
+  checkMonoid("Sum Int", Monoid.sumNumeric[Int])
   checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
   checkMonoid("Min Option[Int]", Monoid.minOption[Int])
+
+  test("foldMap consistent with map + monoFoldMap") {
+    forAll { (numbers: ParList[Int]) =>
+      val monoid = Monoid.sumNumeric[Int]
+      assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))
+    }
+  }
 
   def checkMonoid[A: Arbitrary](name: String, monoid: Monoid[A]) = {
     test(s"$name Monoid default is a noop") {

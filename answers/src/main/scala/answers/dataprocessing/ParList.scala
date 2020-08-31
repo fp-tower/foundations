@@ -10,19 +10,21 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def map[To](update: A => To): ParList[To] =
     ParList(partitions.map(_.map(update)), maybeExecutionContext)
 
-  def flatFoldLeft[B](default: B)(combine: (B, A) => B): B =
-    toList.foldLeft(default)(combine)
-
   def foldLeft[B](default: B)(combine: (B, A) => A): B =
     sys.error("Impossible")
 
-  def monoFoldLeft(default: A)(combine: (A, A) => A): A =
+  def monoFoldLeftV1(default: A)(combine: (A, A) => A): A =
     partitions
       .map(_.foldLeft(default)(combine))
       .foldLeft(default)(combine)
 
+  def monoFoldLeft(monoid: Monoid[A]): A =
+    partitions
+      .map(_.foldLeft(monoid.default)(monoid.combine))
+      .foldLeft(monoid.default)(monoid.combine)
+
   def size: Int =
-    foldMap(_ => 1)(Monoid.sumInt)
+    foldMap(_ => 1)(Monoid.sumNumeric)
 
   def min(implicit ord: Ordering[A]): Option[A] =
     minBy(identity)
@@ -41,6 +43,9 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
 
   def maxBy[To: Ordering](zoom: A => To): Option[A] =
     reduceMap(identity)(Semigroup.maxBy(zoom))
+
+  def sum(implicit num: Numeric[A]): A =
+    fold(Monoid.sumNumeric)
 
   def fold(monoid: Monoid[A]): A =
     foldMap(identity)(monoid)
@@ -71,12 +76,10 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   class SequentialOps extends Ops {
     def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
       partitions
-        .foldLeft(monoid.default) { (acc, partition) =>
-          val foldPartition = partition.foldLeft(monoid.default) { (partitionAcc, value) =>
-            monoid.combine(partitionAcc, update(value))
-          }
-          monoid.combine(acc, foldPartition)
+        .map { partition =>
+          partition.foldLeft(monoid.default)((state, element) => monoid.combine(state, update(element)))
         }
+        .foldLeft(monoid.default)(monoid.combine)
 
     def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
       partitions.filter(_.nonEmpty) match {
@@ -129,8 +132,5 @@ object ParList {
     val partitionSize = math.ceil(items.length / numberOfPartition.toDouble).toInt
     byPartitionSize(partitionSize, items)
   }
-
-  def sum(numbers: ParList[Double]): Double =
-    numbers.fold(Monoid.sumDouble)
 
 }

@@ -42,4 +42,15 @@ object TemperatureExercises {
   // Partition 3:                          Nil -> default (partition 3 is empty)  /
   def monoFoldLeft[A](parList: ParList[A], default: A)(combine: (A, A) => A): A =
     ???
+
+  // f. Implement `map`, you should know what it does by now ;)
+  // Then move `map` inside  the class `ParList`.
+  // Finally, refactor `minSampleByTemperature` to use a combination of `monoFoldLeft` and `map`.
+  def map[From, To](parList: ParList[From])(update: From => To): ParList[To] =
+    ???
+
+  // g. Refactor `minBy`, `maxBy` and `averageTemperature` to use `map` and `monoFoldLeft`
+
+  // h. Can we both `map` and `fold` a `ParList` in one iteration? If yes, can you implement such
+  // a function on `ParList`.
 }

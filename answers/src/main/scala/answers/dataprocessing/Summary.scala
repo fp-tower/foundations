@@ -26,16 +26,16 @@ object Summary {
     def default: Summary = Summary(
       min = Monoid.minOption[Double].default,
       max = Monoid.maxOption[Double].default,
-      sum = Monoid.sumDouble.default,
-      size = Monoid.sumInt.default,
+      sum = Monoid.sumNumeric[Double].default,
+      size = Monoid.sumNumeric[Int].default,
     )
 
     def combine(first: Summary, second: Summary): Summary =
       Summary(
         min = Monoid.minOption[Double].combine(first.min, second.min),
         max = Monoid.maxOption[Double].combine(first.max, second.max),
-        sum = Monoid.sumDouble.combine(first.sum, second.sum),
-        size = Monoid.sumInt.combine(first.size, second.size),
+        sum = Monoid.sumNumeric[Double].combine(first.sum, second.sum),
+        size = Monoid.sumNumeric[Int].combine(first.size, second.size),
       )
   }
 }
