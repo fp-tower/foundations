@@ -217,7 +217,7 @@ class: middle, white
 ---
 # monoFoldLeft requires combine to be associative
 
-.forty-seven-left[
+.fifty-two-left[
 <img src="img/foundation/parlist-monofoldleft-associative-1.svg" alt="foldLeft per partition" style="width:420px;"/>
 ]
 
@@ -233,7 +233,7 @@ class: middle, white
 ---
 # monoFoldLeft requires combine to be associative
 
-.forty-seven-left[
+.fifty-two-left[
 <img src="img/foundation/parlist-monofoldleft-associative-2.svg" alt="foldLeft per partition" style="width:420px;"/>
 ]
 
@@ -248,25 +248,25 @@ class: middle, white
 ---
 # monoFoldLeft requires combine to be associative
 
-.forty-seven-left[
+.fifty-two-left[
 <img src="img/foundation/parlist-monofoldleft-associative-3.svg" alt="foldLeft per partition" style="width:420px;"/>
 ]
 
-.fifty-two-right[
+.forty-seven-right[
 <br><br>
 ```scala
-(a1 combine a2 combine a3) combine
-(b1 combine b2 combine b3)
+(a combine b combine c) combine
+(d combine e combine f)
 ```
 <br><br>
 ```scala
-                   ==
+                 ==
 ```
 <br>
 
 ```scala
-(a1 combine a2 combine a3 combine a4) combine
-(b1 combine b2 combine b3)
+(a combine b combine c combine d) combine
+(e combine f)
 ```
 ]
 
