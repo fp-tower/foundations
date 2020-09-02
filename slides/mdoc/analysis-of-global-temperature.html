@@ -366,39 +366,169 @@ background-image: url(img/foundation/parlist-foldMapPar-2j.svg)
 # foldMap in parallel
 
 ---
-background-image: url(img/foundation/parlist-foldleft-5a.svg)
+background-image: url(img/foundation/parlist-foldMapPar-3a.svg)
 
-# foldLeft intermediate results
-
----
-background-image: url(img/foundation/parlist-foldleft-5b.svg)
-
-# foldLeft intermediate results
+# foldMap intermediate results
 
 ---
-background-image: url(img/foundation/parlist-foldleft-5c.svg)
+background-image: url(img/foundation/parlist-foldMapPar-3b.svg)
 
-# foldLeft intermediate results
-
----
-background-image: url(img/foundation/parlist-foldleft-5d.svg)
-
-# foldLeft intermediate results
+# foldMap intermediate results
 
 ---
-background-image: url(img/foundation/parlist-foldleft-5e.svg)
+background-image: url(img/foundation/parlist-foldMapPar-3c.svg)
 
-# foldLeft intermediate results
+# foldMap intermediate results
 
 ---
-background-image: url(img/foundation/parlist-foldleft-5f.svg)
+background-image: url(img/foundation/parlist-foldMapPar-3d.svg)
 
-# foldLeft intermediate results
+# foldMap intermediate results
+
+---
+background-image: url(img/foundation/parlist-foldMapPar-3e.svg)
+
+# foldMap intermediate results
+
+---
+background-image: url(img/foundation/parlist-foldMapPar-3f.svg)
+
+# foldMap intermediate results
 
 ---
 background-image: url(img/foundation/parlist-foldleft-6.svg)
 
 # foldMap
+
+---
+# Thread
+
+```scala mdoc:silent
+def createThread(n: Int): Thread = new Thread {
+  override def run(): Unit =
+    println(s"Thread ${n}")
+}
+
+val threads = 1.to(4).map(createThread)
+```
+
+```scala
+threads.foreach(_.start())
+// Thread 1
+// Thread 3
+// Thread 2
+// Thread 4
+```
+
+---
+# Executor and Runnable
+
+```scala mdoc:silent
+import java.util.concurrent.Executors
+
+val fixedPool = Executors.newFixedThreadPool(2)
+
+def createRunnable(n: Int): Runnable = new Runnable {
+  def run(): Unit =
+    println(s"Runnable ${n}")
+}
+
+val runnables = 1.to(4).map(createRunnable)
+```
+
+```scala
+runnables.foreach(fixedPool.submit)
+// Runnable 1
+// Runnable 2
+// Runnable 3
+// Runnable 4
+```
+
+---
+# Executor and Runnable
+
+```scala mdoc:reset:silent
+import java.util.concurrent.Executors
+
+val fixedPool = Executors.newFixedThreadPool(2)
+
+def createRunnable(n: Int): Runnable =
+  () => println(s"Runnable ${n}")
+
+val runnables = 1.to(4).map(createRunnable)
+```
+
+```scala
+runnables.foreach(fixedPool.submit)
+// Runnable 1
+// Runnable 2
+// Runnable 3
+// Runnable 4
+```
+
+---
+# Executor and Runnable
+
+```scala mdoc:reset:silent
+import java.util.concurrent.Executors
+
+val fixedPool = Executors.newFixedThreadPool(2)
+
+def createRunnable(n: Int): Runnable =
+  () =>
+    println(s"[${Thread.currentThread.getName}] Runnable ${n}")
+
+val runnables = 1.to(4).map(createRunnable)
+```
+
+```scala
+runnables.foreach(fixedPool.submit)
+// [pool-19-thread-1] Runnable 1
+// [pool-19-thread-2] Runnable 2
+// [pool-19-thread-1] Runnable 3
+// [pool-19-thread-2] Runnable 4
+```
+
+---
+# ExecutionContext and Future
+
+```scala mdoc:reset:silent
+import java.util.concurrent.Executors
+import scala.concurrent.{ ExecutionContext, Future }
+
+val fixedPool = Executors.newFixedThreadPool(2)
+val ec        = ExecutionContext.fromExecutor(fixedPool)
+
+def createFuture(n: Int): Future[Unit] = Future {
+  println(s"[${Thread.currentThread.getName}] Runnable ${n}")
+}(ec)
+```
+
+```scala
+1.to(4).foreach(createFuture)
+// [pool-19-thread-1] Runnable 1
+// [pool-19-thread-2] Runnable 2
+// [pool-19-thread-1] Runnable 3
+// [pool-19-thread-2] Runnable 4
+```
+
+---
+# ExecutionContext
+
+.fifty-two-left[
+```scala mdoc:reset:silent
+import java.util.concurrent.Executors
+import scala.concurrent.ExecutionContext
+
+val pool = Executors.newFixedThreadPool(2)
+val ec   = ExecutionContext.fromExecutor(pool)
+```
+]
+
+.forty-two-right[
+<img src="img/foundation/execution-context.svg" alt="ExecutionContext" style="width:420px;"/>
+]
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

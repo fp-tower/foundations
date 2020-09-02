@@ -19,7 +19,7 @@ object TemperatureNotebookOld extends App {
 
   val partitions    = 10
   val partitionSize = successes.length / partitions + 1
-  val computeEC     = ThreadPoolUtil.fixedSize(partitions, "compute")
+  val computeEC     = ThreadPoolUtil.fixedSize(8, "compute")
   val ec            = computeEC
 //  val ec = ExecutionContext.global
 
@@ -42,7 +42,7 @@ object TemperatureNotebookOld extends App {
 
   println(s"Average temperature is $avgTemperature")
 
-  val summary = parallelTemperatures.foldMap(Summary.one)(Summary.monoid)
+  val summary = parallelTemperatures.foldMap(SummaryV1.one)(SummaryV1.monoid)
 
   println(s"Temperature summary is $summary")
 
@@ -50,29 +50,29 @@ object TemperatureNotebookOld extends App {
   time(100, "max sequential") { sequentialTemperatures.max }
   time(100, "min sequential") { sequentialTemperatures.min }
   time(100, "summary global sequential") {
-    sequentialTemperatures.foldMap(Summary.one)(Summary.monoid)
+    sequentialTemperatures.reduceMap(Summary.one)(Summary.semigroup)
   }
   time(100, "summary perCity sequential") {
-    sequentialSamples.foldMap(perCity)(Monoid.map(Summary.monoid))
+    sequentialSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))
   }
   time(100, "summary allLocations sequential") {
-    sequentialSamples.foldMap(allLocations)(Monoid.map(Summary.monoid))
+    sequentialSamples.reduceMap(allLocations)(Monoid.map(Summary.semigroup))
   }
 
   time(100, "sum parallel") { parallelTemperatures.sum }
   time(100, "max parallel") { parallelTemperatures.max }
   time(100, "min parallel") { parallelTemperatures.min }
-  time(100, "summary global parallel") {
-    parallelTemperatures.foldMap(Summary.one)(Summary.monoid)
+  time(100, "summaryV1 global parallel") {
+    parallelTemperatures.foldMap(SummaryV1.one)(SummaryV1.monoid)
   }
-  time(100, "summaryV2 global parallel") {
-    parallelTemperatures.reduceMap(SummaryV2.one)(SummaryV2.semigroup)
+  time(100, "summary global parallel") {
+    parallelTemperatures.reduceMap(Summary.one)(Summary.semigroup)
   }
   time(100, "summary perCity summary parallel") {
-    parallelSamples.foldMap(perCity)(Monoid.map(Summary.monoid))
+    parallelSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))
   }
   time(100, "summary allLocations summary parallel") {
-    parallelSamples.foldMap(allLocations)(Monoid.map(Summary.monoid))
+    parallelSamples.reduceMap(allLocations)(Monoid.map(Summary.semigroup))
   }
 
   def perCity(sample: Sample): Map[String, Summary] =

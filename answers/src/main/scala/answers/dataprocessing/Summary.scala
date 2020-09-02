@@ -1,10 +1,12 @@
 package answers.dataprocessing
 
-case class Summary(min: Option[Double], max: Option[Double], sum: Double, size: Int) {
+case class Summary(min: Double, max: Double, sum: Double, size: Int) {
+  require(size > 0)
+
   def average: Double = sum / size
 
   override def toString: String =
-    s"Summary(avg = ${format(average)}, min = ${min.map(format)}, max = ${max.map(format)}, points = $size)"
+    s"Summary(avg = ${format(average)}, min = ${format(min)}, max = ${format(max)}, points = $size)"
 
   private def format(number: Double): String =
     BigDecimal(number)
@@ -16,24 +18,17 @@ case class Summary(min: Option[Double], max: Option[Double], sum: Double, size: 
 object Summary {
   def one(temperature: Double): Summary =
     Summary(
-      min = Some(temperature),
-      max = Some(temperature),
+      min = temperature,
+      max = temperature,
       sum = temperature,
       size = 1,
     )
 
-  val monoid: Monoid[Summary] = new Monoid[Summary] {
-    def default: Summary = Summary(
-      min = Monoid.minOption[Double].default,
-      max = Monoid.maxOption[Double].default,
-      sum = Monoid.sumNumeric[Double].default,
-      size = Monoid.sumNumeric[Int].default,
-    )
-
+  val semigroup: Semigroup[Summary] = new Semigroup[Summary] {
     def combine(first: Summary, second: Summary): Summary =
       Summary(
-        min = Monoid.minOption[Double].combine(first.min, second.min),
-        max = Monoid.maxOption[Double].combine(first.max, second.max),
+        min = Semigroup.min[Double].combine(first.min, second.min),
+        max = Semigroup.min[Double].combine(first.max, second.max),
         sum = Monoid.sumNumeric[Double].combine(first.sum, second.sum),
         size = Monoid.sumNumeric[Int].combine(first.size, second.size),
       )

@@ -12,9 +12,11 @@ object TemperatureNotebookAnswers extends App {
   val maxRows    = Int.MaxValue
   val partitions = 10
 
-  val (failures, successes) = reader.take(maxRows).toList.partitionMap(identity)
+  val rows: List[Either[ReadError, Sample]] = reader.toList
 
-  println(s"${failures.size} rows failed and ${successes.size} rows succeeded")
+  val (failures, successes) = rows.partitionMap(identity)
+
+  println(s"Parsed ${successes.size} rows successfully and ${failures.size} rows failed ")
 
   val samples: ParList[Sample] =
     ParList.byNumberOfPartition(partitions, successes)
