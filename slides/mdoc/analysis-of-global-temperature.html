@@ -492,7 +492,7 @@ runnables.foreach(fixedPool.submit)
 ---
 # ExecutionContext and Future
 
-```scala mdoc:reset:silent
+```scala
 import java.util.concurrent.Executors
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -500,14 +500,14 @@ val fixedPool        = Executors.newFixedThreadPool(2)
 val executionContext = ExecutionContext.fromExecutor(fixedPool)
 ```
 
-```scala mdoc
+```scala
 val future = Future { 1 }(executionContext)
 ```
 
 ---
 # ExecutionContext and Future
 
-```scala mdoc:reset:silent
+```scala
 import java.util.concurrent.Executors
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, ExecutionContext, Future }
@@ -534,7 +534,7 @@ Await.result(future, Duration.Inf)
 ---
 # ExecutionContext and Future
 
-```scala mdoc:reset:silent
+```scala
 import java.util.concurrent.Executors
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -559,7 +559,7 @@ def createFuture(n: Int, executionContext: ExecutionContext): Future[Unit] =
 # ExecutionContext
 
 .fifty-two-left[
-```scala mdoc:reset:silent
+```scala
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
