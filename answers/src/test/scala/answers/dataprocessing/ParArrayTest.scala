@@ -10,9 +10,9 @@ class ParArrayTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   val ec: ExecutionContextExecutor = ExecutionContext.global
 
   test("par sum") {
-    val parArray = ParArray(1.to(20).toArray, 10)
+    val parArray = ParArray(ec, 1.to(20).toArray, 10)
     assert(
-      parArray.foldMap(identity)(Monoid.sumNumeric)(ec) == parArray.toParList(ec).foldMap(identity)(Monoid.sumNumeric)
+      parArray.foldMap(identity)(Monoid.sumNumeric) == parArray.foldMap(identity)(Monoid.sumNumeric)
     )
   }
 
