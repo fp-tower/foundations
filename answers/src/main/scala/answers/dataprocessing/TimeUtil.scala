@@ -19,14 +19,14 @@ object TimeUtil {
     println(result.toString)
   }
 
-  def bench[A](name: String, numberOfIterations: Int)(sequential: => A, parallel: => A): Unit = {
+  def bench[A](name: String, numberOfIterations: Int)(reference: => A, newImpl: => A): Unit = {
     println(s"[ $name ]")
-    val seq   = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(sequential)._2))
-    val par   = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(parallel)._2))
-    val ratio = seq.median.toNanos / par.median.toNanos.toDouble
-    println(s"  sequential: $seq")
-    println(s"  parallel  : $par")
-    println(f"  parallel is ${ratio}%2.2f faster than sequential (median)")
+    val refTime = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(reference)._2))
+    val newTime = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(newImpl)._2))
+    val ratio   = refTime.median.toNanos / newTime.median.toNanos.toDouble
+    println(s"  reference: $refTime")
+    println(s"  newImpl  : $newTime")
+    println(f"  newImpl is ${ratio}%2.2f faster than reference (median)")
   }
 
   case class Elapsed(median: FiniteDuration, average: FiniteDuration, min: FiniteDuration, max: FiniteDuration) {
