@@ -5,8 +5,8 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 case class ParArray[A](underlying: Array[A], partitionSize: Int) {
-  def toParList: ParList[A] =
-    ParList.byPartitionSize(partitionSize, underlying.toList)
+  def toParList(ec: ExecutionContext): ParList[A] =
+    ParList.byPartitionSize(ec, partitionSize, underlying.toList)
 
   def map[To: ClassTag](update: A => To): ParArray[To] =
     ParArray(underlying.map(update), partitionSize)

@@ -4,6 +4,8 @@ import java.time.LocalDate
 
 import org.scalacheck.{Arbitrary, Gen}
 
+import scala.concurrent.ExecutionContext.global
+
 trait ParListTestInstances {
   implicit val sampleArb: Arbitrary[Sample] =
     Arbitrary(
@@ -40,6 +42,6 @@ trait ParListTestInstances {
       for {
         list              <- Gen.listOf(arbA.arbitrary)
         numberOfPartition <- Gen.choose[Int](1, 10)
-      } yield ParList.byNumberOfPartition(numberOfPartition, list)
+      } yield ParList.byNumberOfPartition(global, numberOfPartition, list)
     )
 }

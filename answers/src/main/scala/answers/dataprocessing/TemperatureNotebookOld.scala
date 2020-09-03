@@ -6,74 +6,67 @@ import kantan.csv.ops._
 
 object TemperatureNotebookOld extends App {
 
-  val sampleSize = Int.MaxValue
-//  val sampleSize    = 1000000
-
   val rawData: java.net.URL = getClass.getResource("/city_temperature.csv")
 
   val reader: CsvReader[Either[ReadError, Sample]] = rawData.asCsvReader[Sample](rfc.withHeader)
 
-  val (failures, successes) = timeOne("load data", reader.take(sampleSize).toList.partitionMap(identity))
+  val (failures, samples) = timeOne("load data", reader.toList.partitionMap(identity))
 
-  println(s"${failures.size} failed and ${successes.size} succeeded")
+  println(s"${failures.size} failed and ${samples.size} succeeded")
 
   val partitions    = 10
-  val partitionSize = successes.length / partitions + 1
+  val partitionSize = samples.length / partitions + 1
   val computeEC     = ThreadPoolUtil.fixedSize(8, "compute")
-  val ec            = computeEC
-//  val ec = ExecutionContext.global
 
-  val sequentialSamples      = ParList.byPartitionSize(partitionSize, successes)
-  val sequentialTemperatures = sequentialSamples.map(_.temperatureFahrenheit)
+  val parSamples   = ParList.byPartitionSize(computeEC, partitionSize, samples)
+  val temperatures = samples.map(_.temperatureFahrenheit)
 
-  val parallelSamples      = sequentialSamples.setExecutionContext(Some(ec))
-  val parallelTemperatures = parallelSamples.map(_.temperatureFahrenheit)
+  println(s"Min date is ${samples.minBy(_.localDate)}")
+  println(s"Max date is ${samples.maxBy(_.localDate)}")
 
-  println(s"Min date is ${parallelSamples.minBy(_.localDate)}")
-  println(s"Max date is ${parallelSamples.maxBy(_.localDate)}")
+  println(s"Min temperature is ${temperatures.min}")
+  println(s"Max temperature is ${temperatures.max}")
 
-  println(s"Min temperature is ${parallelTemperatures.min}")
-  println(s"Max temperature is ${parallelTemperatures.max}")
-
-  val sumTemperature = parallelTemperatures.sum
-  val size           = parallelTemperatures.size
+  val sumTemperature = temperatures.sum
+  val size           = samples.size
 
   val avgTemperature = sumTemperature / size
 
   println(s"Average temperature is $avgTemperature")
 
-  val summary = parallelTemperatures.foldMap(SummaryV1.one)(SummaryV1.monoid)
+  val summary = parSamples.foldMap(s => SummaryV1.one(s.temperatureFahrenheit))(SummaryV1.monoid)
 
   println(s"Temperature summary is $summary")
 
-  time(100, "sum sequential") { sequentialTemperatures.sum }
-  time(100, "max sequential") { sequentialTemperatures.max }
-  time(100, "min sequential") { sequentialTemperatures.min }
-  time(100, "summary global sequential") {
-    sequentialTemperatures.reduceMap(Summary.one)(Summary.semigroup)
-  }
-  time(100, "summary perCity sequential") {
-    sequentialSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))
-  }
-  time(100, "summary allLocations sequential") {
-    sequentialSamples.reduceMap(allLocations)(Monoid.map(Summary.semigroup))
-  }
+  bench("sum", 100)(
+    sequential = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
+    parallel = parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
+  )
 
-  time(100, "sum parallel") { parallelTemperatures.sum }
-  time(100, "max parallel") { parallelTemperatures.max }
-  time(100, "min parallel") { parallelTemperatures.min }
-  time(100, "summaryV1 global parallel") {
-    parallelTemperatures.foldMap(SummaryV1.one)(SummaryV1.monoid)
-  }
-  time(100, "summary global parallel") {
-    parallelTemperatures.reduceMap(Summary.one)(Summary.semigroup)
-  }
-  time(100, "summary perCity summary parallel") {
-    parallelSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))
-  }
-  time(100, "summary allLocations summary parallel") {
-    parallelSamples.reduceMap(allLocations)(Monoid.map(Summary.semigroup))
-  }
+  bench("min", 100)(
+    sequential = samples.minByOption(_.temperatureFahrenheit),
+    parallel = parSamples.minBy(_.temperatureFahrenheit),
+  )
+
+  bench("max", 100)(
+    sequential = samples.maxBy(_.temperatureFahrenheit),
+    parallel = parSamples.maxBy(_.temperatureFahrenheit),
+  )
+
+  bench("summary V1 global", 100)(
+    sequential = parSamples.foldMapSequential(s => SummaryV1.one(s.temperatureFahrenheit))(SummaryV1.monoid),
+    parallel = parSamples.foldMap(s => SummaryV1.one(s.temperatureFahrenheit))(SummaryV1.monoid),
+  )
+
+  bench("summary global", 100)(
+    sequential = parSamples.reducedMapSequential(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),
+    parallel = parSamples.reduceMap(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),
+  )
+
+  bench("summary global", 100)(
+    sequential = parSamples.reducedMapSequential(perCity)(Monoid.map(Summary.semigroup)),
+    parallel = parSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup)),
+  )
 
   def perCity(sample: Sample): Map[String, Summary] =
     Map(

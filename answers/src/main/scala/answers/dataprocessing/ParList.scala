@@ -3,16 +3,17 @@ package answers.dataprocessing
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[ExecutionContext]) {
+case class ParList[A](executionContext: ExecutionContext, partitions: List[List[A]]) {
   def toList: List[A] =
     partitions.flatten
 
   def map[To](update: A => To): ParList[To] =
-    ParList(partitions.map(_.map(update)), maybeExecutionContext)
+    ParList(executionContext, partitions.map(_.map(update)))
 
   def foldLeft[B](default: B)(combine: (B, A) => A): B =
     sys.error("Impossible")
 
+  // 1st `monoFoldLeft` implementation before introducing `Monoid`
   def monoFoldLeftV1(default: A)(combine: (A, A) => A): A =
     partitions
       .map(_.foldLeft(default)(combine))
@@ -32,9 +33,11 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def max(implicit ord: Ordering[A]): Option[A] =
     maxBy(identity)
 
+  // 1st `minBy` implementation before foldMap and `reduceMap`
   def minByV1[To](zoom: A => To)(implicit ord: Ordering[To]): Option[A] =
     partitions.flatMap(_.minByOption(zoom)).minByOption(zoom)
 
+  // 1st `maxBy` implementation before foldMap and `reduceMap`
   def maxByV1[To: Ordering](zoom: A => To)(implicit ord: Ordering[To]): Option[A] =
     minBy(zoom)(ord.reverse)
 
@@ -50,87 +53,59 @@ case class ParList[A](partitions: List[List[A]], maybeExecutionContext: Option[E
   def fold(monoid: Monoid[A]): A =
     foldMap(identity)(monoid)
 
+  def foldMapSequential[To](update: A => To)(monoid: Monoid[To]): To =
+    partitions
+      .map { partition =>
+        partition.foldLeft(monoid.default)((state, element) => monoid.combine(state, update(element)))
+      }
+      .foldLeft(monoid.default)(monoid.combine)
+
+  def reducedMapSequential[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+    partitions.filter(_.nonEmpty) match {
+      case Nil => None
+      case nonEmptyPartitions =>
+        val reducedPartitions = nonEmptyPartitions.map(_.map(update).reduceLeft(semigroup.combine))
+        val reduceAll         = reducedPartitions.reduceLeft(semigroup.combine)
+        Some(reduceAll)
+    }
+
   def reduce(semigroup: Semigroup[A]): Option[A] =
     reduceMap(identity)(semigroup)
 
   def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
-    ops.foldMap(update)(monoid)
+    reduceMap(update)(monoid).getOrElse(monoid.default)
 
-  def reduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
-    ops.reducedMap(update)(semigroup)
+  def reduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] = {
+    def foldPartition(partition: List[A]): Future[To] =
+      Future {
+        var state = update(partition.head)
+        for (a <- partition.tail) state = semigroup.combine(state, update(a))
+        state
+      }(executionContext)
 
-  def setExecutionContext(maybeEc: Option[ExecutionContext]): ParList[A] =
-    copy(maybeExecutionContext = maybeEc)
-
-  def ops: Ops =
-    maybeExecutionContext.fold[Ops](sequential)(parallel)
-
-  def sequential: SequentialOps                   = new SequentialOps()
-  def parallel(ec: ExecutionContext): ParallelOps = new ParallelOps()(ec)
-
-  trait Ops {
-    def foldMap[To](update: A => To)(monoid: Monoid[To]): To
-    def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To]
+    partitions
+      .filter(_.nonEmpty)
+      .map(foldPartition)
+      .map(Await.result(_, Duration.Inf))
+      .reduceLeftOption(semigroup.combine)
   }
 
-  class SequentialOps extends Ops {
-    def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
-      partitions
-        .map { partition =>
-          partition.foldLeft(monoid.default)((state, element) => monoid.combine(state, update(element)))
-        }
-        .foldLeft(monoid.default)(monoid.combine)
-
-    def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
-      partitions.filter(_.nonEmpty) match {
-        case Nil => None
-        case nonEmptyPartitions =>
-          val reducedPartitions = nonEmptyPartitions.map(_.map(update).reduceLeft(semigroup.combine))
-          val reduceAll         = reducedPartitions.reduceLeft(semigroup.combine)
-          Some(reduceAll)
-      }
-  }
-
-  class ParallelOps(implicit ec: ExecutionContext) extends Ops {
-
-    def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
-      reducedMap(update)(monoid).getOrElse(monoid.default)
-
-    def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
-      partitions.filter(_.nonEmpty) match {
-        case Nil => None
-        case nonEmptyPartitions =>
-          def foldPartition(partition: List[A]): Future[To] =
-            Future { _reduceMap(partition)(update, semigroup) }
-
-          val tasks: List[Future[To]]     = nonEmptyPartitions.map(foldPartition)
-          val allTasks: Future[List[To]]  = Future.sequence(tasks)
-          val allTasksCompleted: List[To] = Await.result(allTasks, Duration.Inf)
-
-          Some(allTasksCompleted.reduceLeft(semigroup.combine))
-      }
-
-    private def _reduceMap[To](partition: List[A])(update: A => To, semigroup: Semigroup[To]): To = {
-      var state = update(partition.head)
-      for (a <- partition.tail) state = semigroup.combine(state, update(a))
-      state
-    }
-
-  }
+  def withExecutionContext(ec: ExecutionContext): ParList[A] =
+    copy(executionContext = ec)
 
 }
 
 object ParList {
-  def apply[A](partitions: List[A]*): ParList[A] =
-    ParList(partitions.toList, None)
+  def apply[A](executionContext: ExecutionContext, partitions: List[A]*): ParList[A] =
+    new ParList(executionContext, partitions.toList)
 
-  def byPartitionSize[A](partitionSize: Int, items: List[A]): ParList[A] =
-    if (items.isEmpty) ParList()
-    else ParList(items.grouped(partitionSize).toList, None)
+  def byPartitionSize[A](executionContext: ExecutionContext, partitionSize: Int, items: List[A]): ParList[A] =
+    if (items.isEmpty) ParList(executionContext)
+    else ParList(executionContext, items.grouped(partitionSize).toList)
 
-  def byNumberOfPartition[A](numberOfPartition: Int, items: List[A]): ParList[A] = {
+  def byNumberOfPartition[A](executionContext: ExecutionContext, numberOfPartition: Int, items: List[A]): ParList[A] = {
     val partitionSize = math.ceil(items.length / numberOfPartition.toDouble).toInt
-    byPartitionSize(partitionSize, items)
+    byPartitionSize(executionContext, partitionSize, items)
   }
 
 }

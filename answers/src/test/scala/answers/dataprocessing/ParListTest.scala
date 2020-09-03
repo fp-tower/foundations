@@ -3,6 +3,7 @@ package answers.dataprocessing
 import org.scalacheck.Arbitrary
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import scala.concurrent.ExecutionContext.global
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
 
@@ -10,7 +11,7 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     val sample       = Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, 0)
     val temperatures = List(1, 10, -1, 24, 18, 32, 99, 20, -34, 102, -20, 0)
     val samples      = temperatures.map(temperature => sample.copy(temperatureFahrenheit = temperature))
-    val parSamples   = ParList.byNumberOfPartition(3, samples)
+    val parSamples   = ParList.byNumberOfPartition(global, 3, samples)
 
     assert(
       TemperatureAnswers.minSampleByTemperature(parSamples) ==

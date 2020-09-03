@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 
 object TimeUtil {
 
-  def timeOne[R](name: String, block: => R): R = {
+  def timeOne[A](name: String, block: => A): A = {
     print(s"[ $name ]")
     val (result, d) = _time(block)
     val duration    = Duration.fromNanos(d)
@@ -13,19 +13,38 @@ object TimeUtil {
     result
   }
 
-  def time[R](numberOfIterations: Int, name: String)(block: => R): R = {
-    print(s"[ $name ]")
-    val results   = 1.to(numberOfIterations).map(_ => _time(block))
-    val durations = results.map(_._2)
-    val min       = Duration.fromNanos(durations.min)
-    val max       = Duration.fromNanos(durations.max)
-    val avg       = Duration.fromNanos(durations.sum / numberOfIterations)
-    val median    = Duration.fromNanos(durations.sorted.apply(numberOfIterations / 2))
-    println(s" Elapsed median: ${median.pretty} avg: ${avg.pretty}, min: ${min.pretty}, max: ${max.pretty}")
-    results.head._1
+  def time[A](numberOfIterations: Int, name: String)(block: => A): Unit = {
+    print(s"[ $name ] ")
+    val result = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(block)._2))
+    println(result.toString)
   }
 
-  def _time[R](block: => R): (R, Long) = {
+  def bench[A](name: String, numberOfIterations: Int)(sequential: => A, parallel: => A): Unit = {
+    println(s"[ $name ]")
+    val seq   = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(sequential)._2))
+    val par   = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(parallel)._2))
+    val ratio = seq.median.toNanos / par.median.toNanos.toDouble
+    println(s"  sequential: $seq")
+    println(s"  parallel  : $par")
+    println(f"  parallel is ${ratio}%2.2f faster than sequential (median)")
+  }
+
+  case class Elapsed(median: FiniteDuration, average: FiniteDuration, min: FiniteDuration, max: FiniteDuration) {
+    override def toString: String =
+      s"Elapsed median: ${median.pretty} avg: ${average.pretty}, min: ${min.pretty}, max: ${max.pretty}"
+  }
+
+  object Elapsed {
+    def fromTime(nanos: Seq[Long]): Elapsed = {
+      val min    = Duration.fromNanos(nanos.min)
+      val max    = Duration.fromNanos(nanos.max)
+      val avg    = Duration.fromNanos(nanos.sum / nanos.size)
+      val median = Duration.fromNanos(nanos.sorted.apply(nanos.size / 2))
+      Elapsed(median, avg, min, max)
+    }
+  }
+
+  def _time[A](block: => A): (A, Long) = {
     val t0       = System.nanoTime()
     val result   = block // call-by-name
     val t1       = System.nanoTime()
