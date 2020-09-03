@@ -18,7 +18,9 @@ object TemperatureNotebookOld extends App {
   val partitionSize = samples.length / partitions + 1
   val computeEC     = ThreadPoolUtil.fixedSize(8, "compute")
 
-  val parSamples = ParList.byNumberOfPartition(computeEC, 10, samples)
+  val parSamples      = ParList.byNumberOfPartition(computeEC, 10, samples)
+  val samplesArray    = samples.toArray
+  val parSamplesArray = ParArray(computeEC, samplesArray, partitionSize)
 
   println(s"Min date is ${parSamples.minBy(_.localDate)}")
   println(s"Max date is ${parSamples.maxBy(_.localDate)}")
@@ -37,9 +39,14 @@ object TemperatureNotebookOld extends App {
 
   println(s"Temperature summary is $summary")
 
-  bench("sum", 100)(
+  bench("sum List", 100)(
     reference = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
     newImpl = parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
+  )
+
+  bench("sum Array", 100)(
+    reference = samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
+    newImpl = parSamplesArray.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
   )
 
   bench("min", 100)(
@@ -66,8 +73,6 @@ object TemperatureNotebookOld extends App {
     reference = parSamples.reducedMapSequential(perCity)(Monoid.map(Summary.semigroup)),
     newImpl = parSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup)),
   )
-
-  val parSamplesArray = ParArray(computeEC, samples.toArray, partitionSize)
 
   bench("summary global ParList vs ParArray", 100)(
     reference = parSamples.reduceMap(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),

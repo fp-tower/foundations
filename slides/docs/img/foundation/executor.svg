@@ -24,15 +24,15 @@
     </marker>
   </defs>
   <metadata> Produced by OmniGraffle 7.17.4\n2020-09-03 20:09:48 +0000</metadata>
-  <g id="execution-context" stroke="none" fill="none" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none">
-    <title>execution-context</title>
-    <g id="execution-context_Layer_1">
+  <g id="executor" stroke="none" fill="none" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none">
+    <title>executor</title>
+    <g id="executor_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_174">
         <rect x="9" y="9" width="531" height="360" fill="#acbdd0" fill-opacity=".394451"/>
         <rect x="9" y="9" width="531" height="360" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
         <text transform="translate(14 14)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="26" font-weight="400" fill="black" x="156.981" y="25">ExecutionContext</tspan>
+          <tspan font-family="Helvetica Neue" font-size="26" font-weight="400" fill="black" x="208.747" y="25">Executor</tspan>
         </text>
       </g>
       <g id="Graphic_114">
@@ -61,28 +61,28 @@
         <rect x="34.33846" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="34.33846" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(39.33846 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="8.594615" y="19">Task</tspan>
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 4</tspan>
         </text>
       </g>
       <g id="Graphic_171">
         <rect x="110.35385" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="110.35385" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(115.35385 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="8.594615" y="19">Task</tspan>
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 2</tspan>
         </text>
       </g>
       <g id="Graphic_172">
         <rect x="186.36923" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="186.36923" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(191.36923 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="8.594615" y="19">Task</tspan>
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 3</tspan>
         </text>
       </g>
       <g id="Graphic_173">
         <rect x="262.3846" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="262.3846" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(267.3846 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="8.594615" y="19">Task</tspan>
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 1</tspan>
         </text>
       </g>
       <g id="Line_175">
@@ -94,17 +94,6 @@
         <text transform="translate(409.16923 173.4123)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="6.216922" y="19">Thread 1</tspan>
         </text>
-      </g>
-      <g id="Graphic_181">
-        <rect x="243" y="270" width="90" height="84.80769" fill="#589b9d"/>
-        <rect x="243" y="270" width="90" height="84.80769" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(248 288.84385)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="8.88" y="19">Thread</tspan>
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="6.3" y="42.56">Factory</tspan>
-        </text>
-      </g>
-      <g id="Line_184">
-        <line x1="333" y1="275.4182" x2="377.03415" y2="239.22636" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>

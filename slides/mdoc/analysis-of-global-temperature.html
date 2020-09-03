@@ -368,32 +368,52 @@ background-image: url(img/foundation/parlist-foldMapPar-2j.svg)
 ---
 background-image: url(img/foundation/parlist-foldMapPar-3a.svg)
 
-# foldMap intermediate results
+# foldMap intermediate results in parallel
 
 ---
 background-image: url(img/foundation/parlist-foldMapPar-3b.svg)
 
-# foldMap intermediate results
+# foldMap intermediate results in parallel
 
 ---
 background-image: url(img/foundation/parlist-foldMapPar-3c.svg)
 
-# foldMap intermediate results
+# foldMap intermediate results in parallel
 
 ---
 background-image: url(img/foundation/parlist-foldMapPar-3d.svg)
 
-# foldMap intermediate results
+# foldMap intermediate results in parallel
 
 ---
-background-image: url(img/foundation/parlist-foldMapPar-3e.svg)
+background-image: url(img/foundation/parlist-foldMapPar-4a.svg)
 
-# foldMap intermediate results
+# foldMap intermediate results sequentially
 
 ---
-background-image: url(img/foundation/parlist-foldMapPar-3f.svg)
+background-image: url(img/foundation/parlist-foldMapPar-4b.svg)
 
-# foldMap intermediate results
+# foldMap intermediate results sequentially
+
+---
+background-image: url(img/foundation/parlist-foldMapPar-4c.svg)
+
+# foldMap intermediate results sequentially
+
+---
+background-image: url(img/foundation/parlist-foldMapPar-4d.svg)
+
+# foldMap intermediate results sequentially
+
+---
+background-image: url(img/foundation/parlist-foldMapPar-4e.svg)
+
+# foldMap intermediate results sequentially
+
+---
+background-image: url(img/foundation/parlist-foldMapPar-4f.svg)
+
+# foldMap intermediate results sequentially
 
 ---
 background-image: url(img/foundation/parlist-foldLeft-6.svg)
@@ -423,93 +443,75 @@ threads.foreach(_.start())
 ---
 # Executor and Runnable
 
+.fifty-seven-left[
 ```scala mdoc:silent
 import java.util.concurrent.Executors
 
 val fixedPool = Executors.newFixedThreadPool(2)
 
-def createRunnable(n: Int): Runnable = new Runnable {
-  def run(): Unit =
-    println(s"Runnable ${n}")
-}
+def createRunnable(n: Int): Runnable =
+  new Runnable {
+    def run(): Unit =
+      println(s"Runnable ${n}")
+  }
 
 val runnables = 1.to(4).map(createRunnable)
 ```
 
+
 ```scala
 runnables.foreach(fixedPool.submit)
 // Runnable 1
-// Runnable 2
 // Runnable 3
+// Runnable 2
 // Runnable 4
 ```
+]
+
+.thirty-seven-right[
+<img src="img/foundation/executor.svg" alt="Executor" style="width:400px;"/>
+]
 
 ---
 # Executor and Runnable
 
+.fifty-seven-left[
 ```scala mdoc:reset:silent
 import java.util.concurrent.Executors
 
 val fixedPool = Executors.newFixedThreadPool(2)
 
 def createRunnable(n: Int): Runnable =
-  () => println(s"Runnable ${n}")
+  new Runnable {
+    def run(): Unit = {
+      val thread = Thread.currentThread
+      println(s"[${thread.getName}] Runnable ${n}")
+    }
+  }
 
 val runnables = 1.to(4).map(createRunnable)
 ```
 
-```scala
-runnables.foreach(fixedPool.submit)
-// Runnable 1
-// Runnable 2
-// Runnable 3
-// Runnable 4
-```
-
----
-# Executor and Runnable
-
-```scala mdoc:reset:silent
-import java.util.concurrent.Executors
-
-val fixedPool = Executors.newFixedThreadPool(2)
-
-def createRunnable(n: Int): Runnable =
-  () =>
-    println(s"[${Thread.currentThread.getName}] Runnable ${n}")
-
-val runnables = 1.to(4).map(createRunnable)
-```
 
 ```scala
 runnables.foreach(fixedPool.submit)
 // [pool-19-thread-1] Runnable 1
-// [pool-19-thread-2] Runnable 2
-// [pool-19-thread-1] Runnable 3
+// [pool-19-thread-2] Runnable 3
+// [pool-19-thread-1] Runnable 2
 // [pool-19-thread-2] Runnable 4
 ```
+]
+
+.thirty-seven-right[
+<img src="img/foundation/executor.svg" alt="Executor" style="width:400px;"/>
+]
 
 ---
 # ExecutionContext and Future
 
 ```scala
 import java.util.concurrent.Executors
-import scala.concurrent.{ ExecutionContext, Future }
-
-val fixedPool        = Executors.newFixedThreadPool(2)
-val executionContext = ExecutionContext.fromExecutor(fixedPool)
-```
-
-```scala
-val future = Future { 1 }(executionContext)
-```
-
----
-# ExecutionContext and Future
-
-```scala
-import java.util.concurrent.Executors
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 import scala.concurrent.{ Await, ExecutionContext, Future }
 
 val fixedPool        = Executors.newFixedThreadPool(2)
@@ -524,11 +526,31 @@ val future = Future {
 // future: Future[Int] = Future(<not completed>)
 ```
 
+---
+# ExecutionContext and Future
+
+```scala
+import java.util.concurrent.Executors
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
+
+val fixedPool                 = Executors.newFixedThreadPool(2)
+implicit val executionContext = ExecutionContext.fromExecutor(fixedPool)
+```
+
+```scala
+val task = Future {
+  Thread.sleep(1000)  // sleep 1 second
+  3
+}
+// task: Future[Int] = Future(<not completed>)
+```
+
 --
 
 ```scala
-Await.result(future, Duration.Inf)
-// res: Int = 1
+Await.result(task, 2.minutes)
+// res: Int = 3
 ```
 
 ---
@@ -536,41 +558,91 @@ Await.result(future, Duration.Inf)
 
 ```scala
 import java.util.concurrent.Executors
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
 
-val fixedPool = Executors.newFixedThreadPool(2)
-val ec        = ExecutionContext.fromExecutor(fixedPool)
-
-def createFuture(n: Int, executionContext: ExecutionContext): Future[Unit] =
-  Future {
-    println(s"[${Thread.currentThread.getName}] Runnable ${n}")
-  }(executionContext)
+val fixedPool                 = Executors.newFixedThreadPool(2)
+implicit val executionContext = ExecutionContext.fromExecutor(fixedPool)
 ```
 
 ```scala
-1.to(4).foreach(createFuture(_, ec))
-// [pool-19-thread-1] Runnable 1
-// [pool-19-thread-2] Runnable 2
-// [pool-19-thread-1] Runnable 3
-// [pool-19-thread-2] Runnable 4
+val task = Future {
+  Thread.sleep(1000 * 60 * 5)  // sleep 5 minutes
+  3
+}
+// task: Future[Int] = Future(<not completed>)
+```
+
+
+```scala
+Await.result(task, 2.minutes)
+// java.util.concurrent.TimeoutException: Future timed out after [2 minutes]
+```
+
+
+
+---
+# ExecutionContext and Future
+
+```scala
+import java.util.concurrent.Executors
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
+
+val fixedPool                 = Executors.newFixedThreadPool(2)
+implicit val executionContext = ExecutionContext.fromExecutor(fixedPool)
+```
+
+```scala
+val task = Future {
+  Thread.sleep(1000 * 60 * 5)  // sleep 5 minutes
+  3
+}
+// task: Future[Int] = Future(<not completed>)
+```
+
+```scala
+Await.result(task, Duration.Inf)
+// res: Int = 3
 ```
 
 ---
-# ExecutionContext
+# ExecutionContext and Future
 
-.fifty-two-left[
+.fifty-seven-left[
+<br><br><br>
 ```scala
-import java.util.concurrent.Executors
-import scala.concurrent.ExecutionContext
+val future1   = Future { task(1) }
+val future2   = Future { task(2) }
 
-val pool = Executors.newFixedThreadPool(2)
-val ec   = ExecutionContext.fromExecutor(pool)
+val response1 = Await.result(future1, Duration.Inf)
+val response2 = Await.result(future2, Duration.Inf)
 ```
 ]
 
-.forty-two-right[
-<img src="img/foundation/execution-context.svg" alt="ExecutionContext" style="width:420px;"/>
+.thirty-seven-right[.center[
+<img src="img/foundation/future-parallel.svg" alt="Future sequential" style="width:300px;"/>
+]]
+
+---
+# ExecutionContext and Future
+
+.fifty-seven-left[
+<br><br><br>
+```scala
+val future1   = Future { task(1) }
+val response1 = Await.result(future1, Duration.Inf)
+
+val future2   = Future { task(2) }
+val response2 = Await.result(future2, Duration.Inf)
+```
 ]
+
+.thirty-seven-right[.center[
+<img src="img/foundation/future-sequential.svg" alt="Future sequential" style="width:300px;"/>
+]]
+
+
 
 
 </textarea>
