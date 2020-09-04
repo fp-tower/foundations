@@ -27,7 +27,7 @@ object TimeUtil {
       name + List.fill(minLength - name.length)(" ").mkString
   }
 
-  def benchV2[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10)(
+  def bench[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10)(
     function1: Labelled[() => A],
     otherFunctions: Labelled[() => A]*,
   ): Unit = {

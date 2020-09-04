@@ -37,7 +37,7 @@ object TemperatureNotebookOld extends App {
 
   println(s"Temperature summary is ${parSamples.foldMap(summaryV1)(SummaryV1.monoid)}")
 
-  benchV2("sum")(
+  bench("sum")(
     Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
     Labelled("ParList foldMapSequential",
              () => parSamples.foldMapSequential(_.temperatureFahrenheit)(Monoid.sumNumeric)),
@@ -47,12 +47,12 @@ object TemperatureNotebookOld extends App {
              () => samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
   )
 
-  benchV2("min")(
+  bench("min")(
     Labelled("ParList minBy", () => parSamples.minBy(_.temperatureFahrenheit)),
     Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit)),
   )
 
-  benchV2("summary global")(
+  bench("summary global")(
     Labelled("ParList foldMap", () => parSamples.foldMap(summaryV1)(SummaryV1.monoid)),
     Labelled("ParList foldMapSequential", () => parSamples.foldMapSequential(summaryV1)(SummaryV1.monoid)),
     Labelled(
@@ -70,7 +70,7 @@ object TemperatureNotebookOld extends App {
     ),
   )
 
-  benchV2("summary perCity")(
+  bench("summary perCity")(
     Labelled("ParList reduceMap", () => parSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))),
     Labelled("ParList reducedMapSequential",
              () => parSamples.reducedMapSequential(perCity)(Monoid.map(Summary.semigroup))),
