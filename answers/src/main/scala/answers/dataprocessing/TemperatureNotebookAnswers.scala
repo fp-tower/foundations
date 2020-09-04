@@ -18,7 +18,7 @@ object TemperatureNotebookAnswers extends App {
 
   println(s"Parsed ${successes.size} rows successfully and ${failures.size} rows failed ")
 
-  val computeEC = ThreadPoolUtil.fixedSize(8, "compute")
+  val computeEC = ThreadPoolUtil.fixedSizeExecutionContext(8, "compute")
 
   val samples: ParList[Sample] =
     ParList.byNumberOfPartition(computeEC, partitions, successes)

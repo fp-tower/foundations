@@ -1,4 +1,4 @@
-package answers.dataprocessing
+package exercises.dataprocessing
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{Executors, ThreadFactory}

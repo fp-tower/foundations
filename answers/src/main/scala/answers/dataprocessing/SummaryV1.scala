@@ -4,13 +4,7 @@ case class SummaryV1(min: Option[Double], max: Option[Double], sum: Double, size
   def average: Double = sum / size
 
   override def toString: String =
-    s"Summary(avg = ${format(average)}, min = ${min.map(format)}, max = ${max.map(format)}, points = $size)"
-
-  private def format(number: Double): String =
-    BigDecimal(number)
-      .setScale(2, BigDecimal.RoundingMode.FLOOR)
-      .toDouble
-      .toString
+    f"Summary(avg = $average%.2f, min = ${min.getOrElse(0.0)}%.2f, max = ${max.getOrElse(0.0)}%.2f, points = $size)"
 }
 
 object SummaryV1 {

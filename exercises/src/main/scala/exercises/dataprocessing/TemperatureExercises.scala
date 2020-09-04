@@ -51,6 +51,11 @@ object TemperatureExercises {
 
   // g. Refactor `minBy`, `maxBy` and `averageTemperature` to use `map` and `monoFoldLeft`
 
-  // h. Can we both `map` and `fold` a `ParList` in one iteration? If yes, can you implement such
-  // a function on `ParList`.
+  // h. Implement a new folding method on `ParList` that combines both `map` and `monoFoldLeft`
+  // together such that we only iterate over the dataset once.
+  // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
+
+  // i. Implement a version of the function implemented in h) such that each partition is
+  // processed in parallel.
+  // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
 }

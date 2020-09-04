@@ -10,13 +10,13 @@ object TemperatureNotebookOld extends App {
 
   val reader: CsvReader[Either[ReadError, Sample]] = rawData.asCsvReader[Sample](rfc.withHeader)
 
-  val (failures, samples) = timeOne("load data", reader.toList.partitionMap(identity))
+  val (failures, samples) = timeOne("load data")(reader.toList.partitionMap(identity))
 
-  println(s"${failures.size} failed and ${samples.size} succeeded")
+  println(s"Parsed ${samples.size} rows successfully and ${failures.size} rows failed ")
 
   val partitions    = 10
   val partitionSize = samples.length / partitions + 1
-  val computeEC     = ThreadPoolUtil.fixedSize(8, "compute")
+  val computeEC     = ThreadPoolUtil.fixedSizeExecutionContext(8, "compute")
 
   val parSamples      = ParList.byNumberOfPartition(computeEC, 10, samples)
   val samplesArray    = samples.toArray
@@ -28,21 +28,20 @@ object TemperatureNotebookOld extends App {
   println(s"Min temperature is ${parSamples.minBy(_.temperatureFahrenheit)}")
   println(s"Max temperature is ${parSamples.maxBy(_.temperatureFahrenheit)}")
 
-  val sumTemperature = parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)
+  val sumTemperature = parSamples.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)
   val size           = samples.size
 
   val avgTemperature = sumTemperature / size
 
   println(s"Average temperature is $avgTemperature")
 
-  println(s"Temperature summary is ${parSamples.foldMap(summaryV1)(SummaryV1.monoid)}")
+  println(s"Temperature summary is ${parSamples.parFoldMap(summaryV1)(SummaryV1.monoid)}")
 
   bench("sum")(
-    Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
-    Labelled("ParList foldMapSequential",
-             () => parSamples.foldMapSequential(_.temperatureFahrenheit)(Monoid.sumNumeric)),
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
-    Labelled("ParArray foldMap", () => parSamplesArray.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("ParList parFoldMap", () => parSamples.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("ParArray parFoldMap", () => parSamplesArray.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
     Labelled("Array foldLeft",
              () => samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
   )
@@ -54,26 +53,16 @@ object TemperatureNotebookOld extends App {
 
   bench("summary global")(
     Labelled("ParList foldMap", () => parSamples.foldMap(summaryV1)(SummaryV1.monoid)),
-    Labelled("ParList foldMapSequential", () => parSamples.foldMapSequential(summaryV1)(SummaryV1.monoid)),
-    Labelled(
-      "ParList reduceMap",
-      () => SummaryV1.fromSummary(parSamples.reduceMap(summary)(Summary.semigroup))
-    ),
-    Labelled("ParList reducedMapSequential",
-             () =>
-               SummaryV1.fromSummary(
-                 parSamples.reducedMapSequential(summary)(Summary.semigroup)
-             )),
-    Labelled(
-      "ParArray reduceMap",
-      () => SummaryV1.fromSummary(parSamplesArray.reduceMap(summary)(Summary.semigroup))
-    ),
+    Labelled("ParList parFoldMap", () => parSamples.parFoldMap(summaryV1)(SummaryV1.monoid)),
+    Labelled("ParList reducedMap", () => SummaryV1.fromSummary(parSamples.reducedMap(summary)(Summary.semigroup))),
+    Labelled("ParList parReduceMap", () => SummaryV1.fromSummary(parSamples.parReduceMap(summary)(Summary.semigroup))),
+    Labelled("ParArray parReduceMap",
+             () => SummaryV1.fromSummary(parSamplesArray.parReduceMap(summary)(Summary.semigroup))),
   )
 
   bench("summary perCity")(
-    Labelled("ParList reduceMap", () => parSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))),
-    Labelled("ParList reducedMapSequential",
-             () => parSamples.reducedMapSequential(perCity)(Monoid.map(Summary.semigroup))),
+    Labelled("ParList reducedMap", () => parSamples.reducedMap(perCity)(Monoid.map(Summary.semigroup))),
+    Labelled("ParList parReduceMap", () => parSamples.parReduceMap(perCity)(Monoid.map(Summary.semigroup))),
   )
 
   def summaryV1(sample: Sample): SummaryV1 =

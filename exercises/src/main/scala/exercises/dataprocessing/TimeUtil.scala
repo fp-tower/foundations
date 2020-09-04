@@ -1,4 +1,4 @@
-package answers.dataprocessing
+package exercises.dataprocessing
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration._
@@ -7,7 +7,7 @@ object TimeUtil {
 
   def bench[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10)(
     function1: Labelled[() => A],
-    otherFunctions: Labelled[() => A]*,
+    otherFunctions: Labelled[() => A]*, // hack to require 1 or more functions
   ): Unit = {
     println(s"[ $operation ]")
     println(s"  $iterations iterations, $warmUpIterations warm-up iterations")

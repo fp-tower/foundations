@@ -1,5 +1,7 @@
 package exercises.dataprocessing
 
+import exercises.dataprocessing.ThreadPoolUtil.fixedSizeExecutionContext
+import exercises.dataprocessing.TimeUtil.{bench, Labelled}
 import kantan.csv._
 import kantan.csv.ops._
 
@@ -22,12 +24,12 @@ object TemperatureNotebook extends App {
   val rows: List[Either[ReadError, Sample]] = reader.toList
 
   val failures: List[ReadError] = rows.collect { case Left(error)   => error }
-  val successes: List[Sample]   = rows.collect { case Right(sample) => sample }
+  val samples: List[Sample]     = rows.collect { case Right(sample) => sample }
 
   // we can also extract failures and successes in one go using `partitionMap`
-//  val (failures, successes) = rows.partitionMap(identity)
+  // val (failures, successes) = rows.partitionMap(identity)
 
-  println(s"Parsed ${successes.size} rows successfully and ${failures.size} rows failed ")
+  println(s"Parsed ${samples.size} rows successfully and ${failures.size} rows failed ")
 
   // a. Implement `samples`, a `ParList` containing all the `Samples` in `successes`.
   // Partition `parSamples` so that it contains 10 partitions of roughly equal size.
@@ -42,6 +44,27 @@ object TemperatureNotebook extends App {
   // c. Implement `averageTemperature` in TemperatureExercises
   lazy val averageTemperature: Option[Double] =
     TemperatureExercises.averageTemperature(parSamples)
+
+  //////////////////////
+  // Benchmark ParList
+  //////////////////////
+
+  sys.exit(1) // !!! TO REMOVE WHEN YOU START THIS SECTION !!!
+
+  // j. Compare the runtime performance of various implementations of `sum`:
+  // * List foldLeft
+  // * List map + sum
+  // * ParList foldMap
+  // * ParList parFoldMap
+  bench("sum")(
+    Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
+    Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
+  )
+
+  // k. Compare the runtime performance of various implementations of `min`
+  bench("min")(
+    Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit))
+  )
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)

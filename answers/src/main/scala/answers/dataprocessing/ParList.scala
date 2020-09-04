@@ -25,7 +25,7 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
       .foldLeft(monoid.default)(monoid.combine)
 
   def size: Int =
-    foldMap(_ => 1)(Monoid.sumNumeric)
+    parFoldMap(_ => 1)(Monoid.sumNumeric)
 
   def min(implicit ord: Ordering[A]): Option[A] =
     minBy(identity)
@@ -42,25 +42,25 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
     minBy(zoom)(ord.reverse)
 
   def minBy[To: Ordering](zoom: A => To): Option[A] =
-    reduceMap(identity)(Semigroup.minBy(zoom))
+    parReduceMap(identity)(Semigroup.minBy(zoom))
 
   def maxBy[To: Ordering](zoom: A => To): Option[A] =
-    reduceMap(identity)(Semigroup.maxBy(zoom))
+    parReduceMap(identity)(Semigroup.maxBy(zoom))
 
   def sum(implicit num: Numeric[A]): A =
     fold(Monoid.sumNumeric)
 
   def fold(monoid: Monoid[A]): A =
-    foldMap(identity)(monoid)
+    parFoldMap(identity)(monoid)
 
-  def foldMapSequential[To](update: A => To)(monoid: Monoid[To]): To =
+  def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
     partitions
       .map { partition =>
         partition.foldLeft(monoid.default)((state, element) => monoid.combine(state, update(element)))
       }
       .foldLeft(monoid.default)(monoid.combine)
 
-  def reducedMapSequential[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+  def reducedMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
     partitions.filter(_.nonEmpty) match {
       case Nil => None
       case nonEmptyPartitions =>
@@ -70,13 +70,13 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
     }
 
   def reduce(semigroup: Semigroup[A]): Option[A] =
-    reduceMap(identity)(semigroup)
+    parReduceMap(identity)(semigroup)
 
-  def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
-    reduceMap(update)(monoid).getOrElse(monoid.default)
+  def parFoldMap[To](update: A => To)(monoid: Monoid[To]): To =
+    parReduceMap(update)(monoid).getOrElse(monoid.default)
 
-  def reduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] = {
-    def foldPartition(partition: List[A]): Future[To] =
+  def parReduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] = {
+    def reducePartition(partition: List[A]): Future[To] =
       Future {
         var state = update(partition.head)
         for (a <- partition.tail) state = semigroup.combine(state, update(a))
@@ -85,7 +85,7 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
 
     partitions
       .filter(_.nonEmpty)
-      .map(foldPartition)
+      .map(reducePartition)
       .map(Await.result(_, Duration.Inf))
       .reduceLeftOption(semigroup.combine)
   }

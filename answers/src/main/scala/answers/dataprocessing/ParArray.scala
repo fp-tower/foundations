@@ -11,10 +11,10 @@ case class ParArray[A](executionContext: ExecutionContext, underlying: Array[A],
   def map[To: ClassTag](update: A => To): ParArray[To] =
     ParArray(executionContext, underlying.map(update), partitionSize)
 
-  def foldMap[To](update: A => To)(monoid: Monoid[To]): To =
-    reduceMap(update)(monoid).getOrElse(monoid.default)
+  def parFoldMap[To](update: A => To)(monoid: Monoid[To]): To =
+    parReduceMap(update)(monoid).getOrElse(monoid.default)
 
-  def reduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
+  def parReduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] =
     if (underlying.isEmpty) None
     else {
       var state: List[Future[To]] = Nil
