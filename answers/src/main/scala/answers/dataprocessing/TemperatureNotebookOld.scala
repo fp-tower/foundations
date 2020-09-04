@@ -35,49 +35,52 @@ object TemperatureNotebookOld extends App {
 
   println(s"Average temperature is $avgTemperature")
 
-  val summary = parSamples.foldMap(s => SummaryV1.one(s.temperatureFahrenheit))(SummaryV1.monoid)
+  println(s"Temperature summary is ${parSamples.foldMap(summaryV1)(SummaryV1.monoid)}")
 
-  println(s"Temperature summary is $summary")
-
-  bench("sum List", 100)(
-    reference = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
-    newImpl = parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
+  benchV2("sum")(
+    Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("ParList foldMapSequential",
+             () => parSamples.foldMapSequential(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
+    Labelled("ParArray foldMap", () => parSamplesArray.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("Array foldLeft",
+             () => samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
   )
 
-  bench("sum Array", 100)(
-    reference = samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
-    newImpl = parSamplesArray.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
+  benchV2("min")(
+    Labelled("ParList minBy", () => parSamples.minBy(_.temperatureFahrenheit)),
+    Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit)),
   )
 
-  bench("min", 100)(
-    reference = samples.minByOption(_.temperatureFahrenheit),
-    newImpl = parSamples.minBy(_.temperatureFahrenheit),
+  benchV2("summary global")(
+    Labelled("ParList foldMap", () => parSamples.foldMap(summaryV1)(SummaryV1.monoid)),
+    Labelled("ParList foldMapSequential", () => parSamples.foldMapSequential(summaryV1)(SummaryV1.monoid)),
+    Labelled(
+      "ParList reduceMap",
+      () => SummaryV1.fromSummary(parSamples.reduceMap(summary)(Summary.semigroup))
+    ),
+    Labelled("ParList reducedMapSequential",
+             () =>
+               SummaryV1.fromSummary(
+                 parSamples.reducedMapSequential(summary)(Summary.semigroup)
+             )),
+    Labelled(
+      "ParArray reduceMap",
+      () => SummaryV1.fromSummary(parSamplesArray.reduceMap(summary)(Summary.semigroup))
+    ),
   )
 
-  bench("max", 100)(
-    reference = samples.maxBy(_.temperatureFahrenheit),
-    newImpl = parSamples.maxBy(_.temperatureFahrenheit),
+  benchV2("summary perCity")(
+    Labelled("ParList reduceMap", () => parSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup))),
+    Labelled("ParList reducedMapSequential",
+             () => parSamples.reducedMapSequential(perCity)(Monoid.map(Summary.semigroup))),
   )
 
-  bench("summary V1 global", 100)(
-    reference = parSamples.foldMapSequential(s => SummaryV1.one(s.temperatureFahrenheit))(SummaryV1.monoid),
-    newImpl = parSamples.foldMap(s => SummaryV1.one(s.temperatureFahrenheit))(SummaryV1.monoid),
-  )
+  def summaryV1(sample: Sample): SummaryV1 =
+    SummaryV1.one(sample.temperatureFahrenheit)
 
-  bench("summary global", 100)(
-    reference = parSamples.reducedMapSequential(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),
-    newImpl = parSamples.reduceMap(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),
-  )
-
-  bench("summary perCity", 100)(
-    reference = parSamples.reducedMapSequential(perCity)(Monoid.map(Summary.semigroup)),
-    newImpl = parSamples.reduceMap(perCity)(Monoid.map(Summary.semigroup)),
-  )
-
-  bench("summary global ParList vs ParArray", 100)(
-    reference = parSamples.reduceMap(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),
-    newImpl = parSamplesArray.reduceMap(s => Summary.one(s.temperatureFahrenheit))(Summary.semigroup),
-  )
+  def summary(sample: Sample): Summary =
+    Summary.one(sample.temperatureFahrenheit)
 
   def perCity(sample: Sample): Map[String, Summary] =
     Map(

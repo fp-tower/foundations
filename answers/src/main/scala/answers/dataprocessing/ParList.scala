@@ -33,11 +33,11 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
   def max(implicit ord: Ordering[A]): Option[A] =
     maxBy(identity)
 
-  // 1st `minBy` implementation before foldMap and `reduceMap`
+  // 1st `minBy` implementation before `foldMap` and `reduceMap`
   def minByV1[To](zoom: A => To)(implicit ord: Ordering[To]): Option[A] =
     partitions.flatMap(_.minByOption(zoom)).minByOption(zoom)
 
-  // 1st `maxBy` implementation before foldMap and `reduceMap`
+  // 1st `maxBy` implementation before `foldMap` and `reduceMap`
   def maxByV1[To: Ordering](zoom: A => To)(implicit ord: Ordering[To]): Option[A] =
     minBy(zoom)(ord.reverse)
 

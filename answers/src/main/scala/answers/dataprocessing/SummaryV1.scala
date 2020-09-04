@@ -22,6 +22,9 @@ object SummaryV1 {
       size = 1,
     )
 
+  def fromSummary(opt: Option[Summary]): SummaryV1 =
+    opt.fold(monoid.default)(s => SummaryV1(Some(s.min), Some(s.max), s.sum, s.size))
+
   val monoid: Monoid[SummaryV1] = new Monoid[SummaryV1] {
     def default: SummaryV1 = SummaryV1(
       min = Monoid.minOption[Double].default,

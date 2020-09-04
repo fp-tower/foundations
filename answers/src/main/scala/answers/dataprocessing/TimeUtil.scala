@@ -19,19 +19,38 @@ object TimeUtil {
     println(result.toString)
   }
 
-  def bench[A](name: String, numberOfIterations: Int)(reference: => A, newImpl: => A): Unit = {
-    println(s"[ $name ]")
-    val refTime = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(reference)._2))
-    val newTime = Elapsed.fromTime(1.to(numberOfIterations).map(_ => _time(newImpl)._2))
-    val ratio   = refTime.median.toNanos / newTime.median.toNanos.toDouble
-    println(s"  reference: $refTime")
-    println(s"  newImpl  : $newTime")
-    println(f"  newImpl is ${ratio}%2.2f faster than reference (median)")
+  case class Labelled[A](name: String, value: A) {
+    def map[To](update: A => To): Labelled[To] =
+      copy(value = update(value))
+
+    def padName(minLength: Int): String =
+      name + List.fill(minLength - name.length)(" ").mkString
+  }
+
+  def benchV2[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10)(
+    function1: Labelled[() => A],
+    otherFunctions: Labelled[() => A]*,
+  ): Unit = {
+    println(s"[ $operation ]")
+    println(s"  $iterations iterations, $warmUpIterations warm-up iterations")
+    val totalIterations = iterations + warmUpIterations
+    val functions       = function1 :: otherFunctions.toList
+    val maxLabelLength  = functions.map(_.name).max.length
+    val times = functions
+      .map(
+        _.map(
+          function => 1.to(totalIterations).map(_ => _time(function())._2).drop(warmUpIterations)
+        ).map(Elapsed.fromTime)
+      )
+      .sortBy(_.value.median)
+
+    times.foreach(label => println(s"  ${label.padName(maxLabelLength)}: ${label.value}"))
+
   }
 
   case class Elapsed(median: FiniteDuration, average: FiniteDuration, min: FiniteDuration, max: FiniteDuration) {
     override def toString: String =
-      s"Elapsed median: ${median.pretty} avg: ${average.pretty}, min: ${min.pretty}, max: ${max.pretty}"
+      s" median: ${median.pretty}, avg: ${average.pretty}, min: ${min.pretty}, max: ${max.pretty}"
   }
 
   object Elapsed {
