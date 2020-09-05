@@ -70,4 +70,7 @@ object TemperatureAnswers {
       size = samples.size
     )
 
+  def summaryParListOnePass(samples: ParList[Sample]): SummaryV1 =
+    samples.parFoldMap(SummaryV1.one)(SummaryV1.monoidDerived)
+
 }

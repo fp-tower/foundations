@@ -64,23 +64,19 @@ object TemperatureNotebookOld extends App {
              () => SummaryV1.fromSummary(parSamples.parReduceMap(Summary.one)(Summary.semigroupDerived))),
   )
 
-  bench("summary perCity")(
-    Labelled("ParList reducedMap", () => parSamples.reducedMap(perCity)(Monoid.map(Summary.semigroup))),
-    Labelled("ParList parReduceMap", () => parSamples.parReduceMap(perCity)(Monoid.map(Summary.semigroup))),
+  bench("summary perKeys")(
+    Labelled("ParList city", () => summaryPer(parSamples)(s => List(s.city))),
+    Labelled("ParList country", () => summaryPer(parSamples)(s => List(s.country))),
+    Labelled("ParList Bordeaux", () => summaryPer(parSamples)(s => if (s.city == "Bordeaux") List(s.city) else Nil)),
+    Labelled("ParList city, country, region", () => summaryPer(parSamples)(s => List(s.city, s.country, s.region))),
   )
 
-  def perCity(sample: Sample): Map[String, Summary] =
-    Map(
-      sample.city -> Summary.one(sample)
-    )
-
-  def allLocations(sample: Sample): Map[String, Summary] = {
-    val summary = Summary.one(sample)
-    Map(
-      sample.region              -> summary,
-      sample.country             -> summary,
-      sample.state.getOrElse("") -> summary,
-      sample.city                -> summary,
-    )
+  def summaryPer(parList: ParList[Sample])(keys: Sample => List[String]): Option[Map[String, Summary]] = {
+    def perKeys(sample: Sample): Map[String, Summary] = {
+      val summary = Summary.one(sample)
+      keys(sample).map(_ -> summary).toMap
+    }
+    parList.parReduceMap(perKeys)(Monoid.map(Summary.semigroup))
   }
+
 }
