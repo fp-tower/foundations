@@ -49,32 +49,34 @@ object TemperatureNotebook extends App {
   // Benchmark ParList
   //////////////////////
 
-  sys.exit(1) // !!! TO REMOVE WHEN YOU START THIS SECTION !!!
-
   // j. Compare the runtime performance of various implementations of `sum`:
   // * List foldLeft
   // * List map + sum
   // * ParList foldMap
   // * ParList parFoldMap
-  bench("sum")(
+  bench("sum", ignore = true)(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
   )
 
-  // k. Compare the runtime performance of various implementations of `min`
-  bench("min")(
-    Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit))
+  // k. Implement `summaryListOnePass` and `summaryParList`
+  // Compare the runtime performance of various implementations of `summary`
+  bench("summary", ignore = true)(
+    Labelled("List", () => TemperatureExercises.summaryList(samples)),
+    Labelled("List one-pass", () => TemperatureExercises.summaryListOnePass(samples))
   )
+
+  // l. Add `summaryParListOnePass` to the benchmark above.
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
   // Ideas to improve the performance:
-  // * generalise min/max to any type with Ordering
   // * n smallest/largest value (e.g. min/max when n = 1)
+  // * generalise sum to take all types of number (Hint: check `Numeric`)
   // * for min/max, use reduceMap instead of foldMap
-  // * for Monoid with a commutative combine functions, we don't have to process intermediate results in order
   // * use Array instead of List to get data locality
+  // * for Monoid with a commutative combine functions, we don't have to process intermediate results in order
 
 }

@@ -78,8 +78,10 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
   def parReduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] = {
     def reducePartition(partition: List[A]): Future[To] =
       Future {
+//        println(s"[${Thread.currentThread.getName}] Start on")
         var state = update(partition.head)
         for (a <- partition.tail) state = semigroup.combine(state, update(a))
+//        println(s"[${Thread.currentThread.getName}] Computed $state")
         state
       }(executionContext)
 

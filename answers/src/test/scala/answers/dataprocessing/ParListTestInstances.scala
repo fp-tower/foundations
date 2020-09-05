@@ -44,4 +44,16 @@ trait ParListTestInstances {
         numberOfPartition <- Gen.choose[Int](1, 10)
       } yield ParList.byNumberOfPartition(global, numberOfPartition, list)
     )
+
+  implicit val summaryV1Arb: Arbitrary[SummaryV1] =
+    Arbitrary(
+      for {
+        sample1 <- Arbitrary.arbitrary[Sample]
+        sample2 <- Arbitrary.arbitrary[Sample]
+        sum     <- Arbitrary.arbLong.arbitrary.map(_.toDouble) // avoid decimal
+        size    <- Gen.choose(0, 1000000)
+        samples = List(sample1, sample2)
+      } yield
+        SummaryV1(samples.minByOption(_.temperatureFahrenheit), samples.maxByOption(_.temperatureFahrenheit), sum, size)
+    )
 }

@@ -5,24 +5,27 @@ import scala.concurrent.duration._
 
 object TimeUtil {
 
-  def bench[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10)(
+  def bench[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10, ignore: Boolean = false)(
     function1: Labelled[() => A],
     otherFunctions: Labelled[() => A]*, // hack to require 1 or more functions
   ): Unit = {
-    println(s"[ $operation ]")
-    println(s"  $iterations iterations, $warmUpIterations warm-up iterations")
-    val totalIterations = iterations + warmUpIterations
-    val allFunctions    = function1 :: otherFunctions.toList
-    val maxLabelLength  = allFunctions.map(_.name.length).max
-    val times = allFunctions
-      .map(
-        _.map(
-          function => 1.to(totalIterations).map(_ => time(function())._2).drop(warmUpIterations)
-        ).map(Elapsed.fromTime)
-      )
-      .sortBy(_.value.median)
+    if(ignore) () // do nothing
+    else {
+      println(s"[ $operation ]")
+      println(s"  $iterations iterations, $warmUpIterations warm-up iterations")
+      val totalIterations = iterations + warmUpIterations
+      val allFunctions    = function1 :: otherFunctions.toList
+      val maxLabelLength  = allFunctions.map(_.name.length).max
+      val times = allFunctions
+        .map(
+          _.map(
+            function => 1.to(totalIterations).map(_ => time(function())._2).drop(warmUpIterations)
+          ).map(Elapsed.fromTime)
+        )
+        .sortBy(_.value.median)
 
-    times.foreach(label => println(s"  ${label.padName(maxLabelLength)}: ${label.value}"))
+      times.foreach(label => println(s"  ${label.padName(maxLabelLength)}: ${label.value}"))
+    }
   }
 
   case class Labelled[A](name: String, value: A) {

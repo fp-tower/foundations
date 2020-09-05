@@ -36,4 +36,38 @@ object TemperatureAnswers {
     Option.unless(length == 0)(sum / length)
   }
 
+  def summaryListOnePass(samples: List[Sample]): SummaryV1 =
+    samples.foldLeft(
+      SummaryV1(
+        min = None,
+        max = None,
+        sum = 0.0,
+        size = 0
+      )
+    )(
+      (state, sample) =>
+        SummaryV1(
+          min = state.min.fold(Some(sample))(
+            current =>
+              if (current.temperatureFahrenheit <= sample.temperatureFahrenheit) Some(current)
+              else Some(sample)
+          ),
+          max = state.max.fold(Some(sample))(
+            current =>
+              if (current.temperatureFahrenheit >= sample.temperatureFahrenheit) Some(current)
+              else Some(sample)
+          ),
+          sum = state.sum + sample.temperatureFahrenheit,
+          size = state.size + 1
+      )
+    )
+
+  def summaryList(samples: List[Sample]): SummaryV1 =
+    SummaryV1(
+      min = samples.minByOption(_.temperatureFahrenheit),
+      max = samples.maxByOption(_.temperatureFahrenheit),
+      sum = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
+      size = samples.size
+    )
+
 }

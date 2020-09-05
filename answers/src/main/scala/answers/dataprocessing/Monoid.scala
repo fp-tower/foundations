@@ -6,13 +6,25 @@ trait Monoid[A] extends Semigroup[A] {
 }
 
 object Monoid {
-  def maxOption[A: Ordering]: Monoid[Option[Double]] = option(Semigroup.max)
-  def minOption[A: Ordering]: Monoid[Option[Double]] = option(Semigroup.min)
+  def minOption[A: Ordering]: Monoid[Option[A]] = maxByOption(identity)
+  def maxOption[A: Ordering]: Monoid[Option[A]] = minByOption(identity)
+
+  def minByOption[From, To: Ordering](zoom: From => To): Monoid[Option[From]] =
+    option(Semigroup.minBy(zoom))
+  def maxByOption[From, To: Ordering](zoom: From => To): Monoid[Option[From]] =
+    option(Semigroup.maxBy(zoom))
 
   def sumNumeric[A](implicit num: Numeric[A]): Monoid[A] =
     new Monoid[A] {
       def default: A                      = num.zero
       def combine(first: A, second: A): A = num.plus(first, second)
+    }
+
+  def tuple2[A, B](a: Monoid[A], b: Monoid[B]): Monoid[(A, B)] =
+    new Monoid[(A, B)] {
+      def default: (A, B) = (a.default, b.default)
+      def combine(first: (A, B), second: (A, B)): (A, B) =
+        (a.combine(first._1, second._1), b.combine(first._2, second._2))
     }
 
   def option[A](semigroup: Semigroup[A]): Monoid[Option[A]] =

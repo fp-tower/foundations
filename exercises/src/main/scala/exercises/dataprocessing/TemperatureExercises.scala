@@ -58,4 +58,24 @@ object TemperatureExercises {
   // i. Implement a version of the function implemented in h) such that each partition is
   // processed in parallel.
   // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
+  // Next question is in  benchmark section of `TemperatureNotebook`.
+
+  // Implement `summaryList` using List `foldLeft`.
+  // Calculate `min`, `max`, `average`, `sum` by iterating over `samples` only ONCE.
+  def summaryListOnePass(samples: List[Sample]): Summary =
+    ???
+
+  // `summaryList` iterate 4 times over `samples`, one for each field.
+  def summaryList(samples: List[Sample]): Summary =
+    Summary(
+      min = samples.minByOption(_.temperatureFahrenheit),
+      max = samples.maxByOption(_.temperatureFahrenheit),
+      sum = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
+      size = samples.size
+    )
+
+  // Implement `summaryParListOnePass` using `parFoldMap`.
+  // Calculate `min`, `max`, `average`, `sum` by iterating over `samples` only ONCE.
+  def summaryParListOnePass(samples: ParList[Sample]): Summary =
+    ???
 }

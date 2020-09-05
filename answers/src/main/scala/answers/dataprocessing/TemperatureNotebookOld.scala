@@ -12,7 +12,7 @@ object TemperatureNotebookOld extends App {
 
   val (failures, samples) = timeOne("load data")(reader.toList.partitionMap(identity))
 
-  println(s"Parsed ${samples.size} rows successfully and ${failures.size} rows failed ")
+  println(s"Parsed ${samples.size} rows successfully and ${failures.size} rows failed")
 
   val partitions    = 10
   val partitionSize = samples.length / partitions + 1
@@ -35,9 +35,9 @@ object TemperatureNotebookOld extends App {
 
   println(s"Average temperature is $avgTemperature")
 
-  println(s"Temperature summary is ${parSamples.parFoldMap(summaryV1)(SummaryV1.monoid)}")
+  println(s"Temperature summary is ${parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)}")
 
-  bench("sum")(
+  bench("sum Samples")(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
     Labelled("ParList parFoldMap", () => parSamples.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
@@ -51,13 +51,17 @@ object TemperatureNotebookOld extends App {
     Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit)),
   )
 
-  bench("summary global")(
-    Labelled("ParList foldMap", () => parSamples.foldMap(summaryV1)(SummaryV1.monoid)),
-    Labelled("ParList parFoldMap", () => parSamples.parFoldMap(summaryV1)(SummaryV1.monoid)),
-    Labelled("ParList reducedMap", () => SummaryV1.fromSummary(parSamples.reducedMap(summary)(Summary.semigroup))),
-    Labelled("ParList parReduceMap", () => SummaryV1.fromSummary(parSamples.parReduceMap(summary)(Summary.semigroup))),
-    Labelled("ParArray parReduceMap",
-             () => SummaryV1.fromSummary(parSamplesArray.parReduceMap(summary)(Summary.semigroup))),
+  bench("summary")(
+    Labelled("List", () => TemperatureAnswers.summaryList(samples)),
+    Labelled("List one-pass", () => TemperatureAnswers.summaryListOnePass(samples)),
+    Labelled("ParList one-pass foldMap hard-coded Monoid",
+             () => parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)),
+    Labelled("ParList one-pass foldMap derived Monoid",
+             () => parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoidDerived)),
+    Labelled("ParList one-pass reduceMap hard-coded Semigroup",
+             () => SummaryV1.fromSummary(parSamples.parReduceMap(Summary.one)(Summary.semigroup))),
+    Labelled("ParList one-pass reduceMap derived Semigroup",
+             () => SummaryV1.fromSummary(parSamples.parReduceMap(Summary.one)(Summary.semigroupDerived))),
   )
 
   bench("summary perCity")(
@@ -65,19 +69,13 @@ object TemperatureNotebookOld extends App {
     Labelled("ParList parReduceMap", () => parSamples.parReduceMap(perCity)(Monoid.map(Summary.semigroup))),
   )
 
-  def summaryV1(sample: Sample): SummaryV1 =
-    SummaryV1.one(sample.temperatureFahrenheit)
-
-  def summary(sample: Sample): Summary =
-    Summary.one(sample.temperatureFahrenheit)
-
   def perCity(sample: Sample): Map[String, Summary] =
     Map(
-      sample.city -> Summary.one(sample.temperatureFahrenheit)
+      sample.city -> Summary.one(sample)
     )
 
   def allLocations(sample: Sample): Map[String, Summary] = {
-    val summary = Summary.one(sample.temperatureFahrenheit)
+    val summary = Summary.one(sample)
     Map(
       sample.region              -> summary,
       sample.country             -> summary,
