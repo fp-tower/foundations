@@ -12,7 +12,7 @@ case class Summary(
 
   override def toString: String =
     f"Summary(avg = ${average.getOrElse(0.0)}%.2f, " +
-      f"size = $size, " +
-      f"min = $min, " +
-      f"max = $max)"
+      f"size = $size,\n  " +
+      f"min = $min,\n  " +
+      f"max = $max\n)"
 }

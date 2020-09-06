@@ -204,18 +204,98 @@ class: middle, white
 # TemperatureExercises.scala
 
 ---
-# monoFoldLeft use n + 1 default value
+background-image: url(img/foundation/parlist-monofoldLeft-default-1.svg)
 
-.sixty-two-left[
-<img src="img/foundation/parlist-monofoldLeft-default.svg" alt="foldLeft per partition" style="width:600px;"/>
+# monoFoldLeft vs List foldLeft
+
+---
+background-image: url(img/foundation/parlist-monofoldLeft-default-2.svg)
+
+# monoFoldLeft vs List foldLeft
+
+---
+class: center, middle
+
+# combine(default, x) == x
+
+---
+class: center, middle
+
+# combine(default, x) == x == combine(x, default)
+
+---
+class: middle
+
+```scala
+                               average(10, 12) = ???
+```
+
+---
+class: middle
+
+```scala
+                             average(10, 12) = (10 + 12) / 2
+                                             = 11
+```
+
+---
+class: middle
+
+```scala
+                         average(10, 12, 14) = (10 + 12 + 14) / 3
+                                             = 12
+```
+
+
+
+---
+class:  middle
+
+```scala
+                average(average(10, 12), 14) = average(11, 14)
+                                             = (11 + 14) / 2
+                                             = 12.5
+```
+
+```scala
+                average(10, average(12, 14)) = average(10, 13)
+                                             = (10 + 13) / 2
+                                             = 11.5
+```
+
+```scala
+                         average(10, 12, 14) = 12
+```
+
+---
+# Associative functions
+
+
+<br><br><br><br>
+
+```scala mdoc
+(1 + (2 + 3)) == ((1 + 2) + 3)
+
+(1 min (2 min 3)) == ((1 min 2) min 3)
+```
+
+---
+# monoFoldLeft
+
+.fifty-two-left[
+<img src="img/foundation/parlist-monofoldLeft-associative-0.svg" alt="foldLeft per partition" style="width:450px;"/>
 ]
 
-.thirty-two-right[
-<img src="img/foundation/parlist-foldLeft-5a.svg" alt="foldLeft per partition" style="width:105px;"/>
+.forty-seven-right[
+<br><br><br>
+```scala
+(default combine a1 combine a2 combine a3)
+(default combine b1 combine b2 combine b3)
+```
 ]
 
 ---
-# monoFoldLeft requires combine to be associative
+# monoFoldLeft
 
 .fifty-two-left[
 <img src="img/foundation/parlist-monofoldLeft-associative-1.svg" alt="foldLeft per partition" style="width:420px;"/>
@@ -231,7 +311,7 @@ class: middle, white
 
 
 ---
-# monoFoldLeft requires combine to be associative
+# monoFoldLeft
 
 .fifty-two-left[
 <img src="img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:420px;"/>
@@ -258,11 +338,7 @@ class: middle, white
 (a combine b combine c) combine
 (d combine e combine f)
 ```
-<br><br>
-```scala
-                 ==
-```
-<br>
+<br><br><br><br><br><br>
 
 ```scala
 (a combine b combine c combine d) combine

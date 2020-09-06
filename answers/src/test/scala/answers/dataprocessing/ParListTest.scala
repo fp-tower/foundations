@@ -87,6 +87,7 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
   checkMonoid("Min Option[Int]", Monoid.minOption[Int])
 //  checkMonoid("SummaryV1", SummaryV1.monoid) TODO check
+  checkMonoid("Map[String, Int]", Monoid.map[String, Int](Monoid.sumNumeric))
 
   test("foldMap consistent with map + monoFoldMap") {
     forAll { (numbers: ParList[Int]) =>
@@ -108,6 +109,17 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
       assert(list.min == parListOnePass.min)
       assert(list.max == parListOnePass.max)
     }
+  }
+
+  test("map Monoid example") {
+    assert(
+      Monoid
+        .map[String, Int](Monoid.sumNumeric)
+        .combine(
+          Map("Bob"   -> 2, "Eda" -> 5),
+          Map("Roger" -> 1, "Eda" -> 2)
+        ) == Map("Bob" -> 2, "Roger" -> 1, "Eda" -> 7)
+    )
   }
 
   def checkMonoid[A: Arbitrary](name: String, monoid: Monoid[A]) = {

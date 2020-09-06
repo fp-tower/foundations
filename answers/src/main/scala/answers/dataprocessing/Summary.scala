@@ -7,9 +7,9 @@ case class Summary(min: Sample, max: Sample, sum: Double, size: Int) {
 
   override def toString: String =
     f"Summary(avg = $average%.2f, " +
-      f"size = $size, " +
-      f"min = $min, " +
-      f"max = $max)"
+      f"size = $size,\n  " +
+      f"min = $min,\n  " +
+      f"max = $max\n)"
 }
 
 object Summary {
