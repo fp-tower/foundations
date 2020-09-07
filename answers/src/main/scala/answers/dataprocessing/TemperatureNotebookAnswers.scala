@@ -42,8 +42,9 @@ object TemperatureNotebookAnswers extends App {
   summariesPerCity.get("Bordeaux").foreach(println)
   summariesPerCity.get("London").foreach(println)
 
-  bench("sum Samples")(
+  bench("sum")(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
+    Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
     Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
     Labelled("ParList parFoldMap", () => parSamples.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
     Labelled("ParArray parFoldMap", () => parSamplesArray.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
@@ -57,7 +58,7 @@ object TemperatureNotebookAnswers extends App {
   )
 
   bench("summary")(
-    Labelled("List", () => TemperatureAnswers.summaryList(samples)),
+    Labelled("List 4 passes", () => TemperatureAnswers.summaryList(samples)),
     Labelled("List one-pass", () => TemperatureAnswers.summaryListOnePass(samples)),
     Labelled("ParList one-pass foldMap hard-coded Monoid",
              () => parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)),
@@ -77,8 +78,8 @@ object TemperatureNotebookAnswers extends App {
              () => aggregatePerLabel(parSamples)(s => List(s.city, s.country, s.region))),
   )
 
-  def aggregatePerLabel(parList: ParList[Sample])(labels: Sample => List[String]): Map[String, Summary] = {
-    def sampleToLabelledSummary(sample: Sample): Map[String, Summary] = {
+  def aggregatePerLabel[Label](parList: ParList[Sample])(labels: Sample => List[Label]): Map[Label, Summary] = {
+    def sampleToLabelledSummary(sample: Sample): Map[Label, Summary] = {
       val summary = Summary.one(sample)
       labels(sample).map(_ -> summary).toMap
     }

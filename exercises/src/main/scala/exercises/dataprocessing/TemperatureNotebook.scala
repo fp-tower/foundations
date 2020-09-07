@@ -72,11 +72,33 @@ object TemperatureNotebook extends App {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // Ideas to improve the performance:
-  // * n smallest/largest value (e.g. min/max when n = 1)
-  // * generalise sum to take all types of number (Hint: check `Numeric`)
-  // * for min/max, use reduceMap instead of foldMap
-  // * use Array instead of List to get data locality
-  // * for Monoid with a commutative combine functions, we don't have to process intermediate results in order
+  // Calculate the n smallest/largest value, what are the 5 smallest values in the dataset
+
+  // Generalise sum to take all types of number (Hint: check `Numeric`)
+
+  //////////////////////////////////////////////
+  // Ideas to improve `ParList` performance
+  //////////////////////////////////////////////
+
+  // 1. When we defined `Summary`, we made `min` and `max` an `Option` because the `ParList`
+  //   can be empty. However, it is quite expensive because we wrap and unwrap an Option for
+  //   every value in the dataset. Instead we could check if the `ParList` is empty at the beginning,
+  //   if it is we return None, otherwise we can `reduce` the `ParList` without `Option`.
+  //   See `reduceFoldLeftOption` on `List`.
+  //
+  //   Could you implement `reduceMap` on `ParList`?
+  //   def reduceMap[To](zoom: A => To)(combine: (To, To) => To): Option[To]
+  //   or
+  //   def reduceMap[To](zoom: A => To)(semigroup: Semigroup[To]): Option[To]
+  //   where `Semigroup` is like a `Monoid` but without `default` value.
+
+  // 2. use Array instead of List as underlying data structure for better caching.
+  //   Furthermore, we only need to store a partition as a pair of index:
+  //   partition 1 from 0      to 10 000
+  //   partition 2 from 10 001 to 25 000
+
+  // 3. `parFoldMap` need to wait for ALL intermediate results to be ready before starting
+  //    to fold them together. Instead, could we fold the intermediate results as soon as they
+  //    are available? Will we always get the same results this way?
 
 }
