@@ -76,6 +76,9 @@ object TemperatureNotebook extends App {
 
   // Generalise sum to take all types of number (Hint: check `Numeric`)
 
+  // Implement a shuffle method or constructor so that it is unlikely all the expensive
+  // tasks are in the same partition. Will it change the results of `parFoldMap`?
+
   //////////////////////////////////////////////
   // Ideas to improve `ParList` performance
   //////////////////////////////////////////////
@@ -98,7 +101,7 @@ object TemperatureNotebook extends App {
   //   partition 2 from 10 001 to 25 000
 
   // 3. `parFoldMap` need to wait for ALL intermediate results to be ready before starting
-  //    to fold them together. Instead, could we fold the intermediate results as soon as they
+  //    to fold them. Instead, could we fold the intermediate results as soon as they
   //    are available? Will we always get the same results this way?
 
 }
