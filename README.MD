@@ -62,7 +62,7 @@ average temperature.
 ### Slides
 1. [Introduction](https://blog.fp-tower.com/foundations/parallel-data-processing.html#1)
 1. [Iteration with for loop](https://fp-tower.github.io/foundations/iteration-with-for-loop.html#1)
-1. [Iteration with recursion](https://fp-tower.github.io/foundations/iteration-with-recursion.html#1)
+1. [Recursions](https://fp-tower.github.io/foundations/recursions.html#1)
 1. [Analysis of global temperature](https://fp-tower.github.io/foundations/analysis-of-global-temperature.html#1)
 
 
