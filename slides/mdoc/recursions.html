@@ -53,13 +53,13 @@ class: medium-code
 .forty-two-left[
 <br>
 ```bash
-sbt new scala/scala-seed.g8
-cd scala/scala-seed.g8
+$ sbt new scala/scala-seed.g8
 ```
 
 <br>
 
 ```bash
+$ cd scala-seed-project
 $ du -b .
 249  ./project
 344  ./src/test/scala/example
@@ -80,20 +80,112 @@ $ du -b .
 ---
 # File system: disk usage
 
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(file: File): Long = {
+  if(!file.isDirectory) file.length()
+  else {
+    var total = 0L
+
+    for (child <- file.listFiles()) {
+
+      total += child.length()
+    }
+
+    total
+  }
+}
+```
+]
+
+.forty-seven-right[.center[
 <br>
+<img src="img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+     else
+       total += file.length()
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<br>
+<img src="img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.listFiles    // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<br>
+<img src="img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+]]
+
+
+---
+# File system: disk usage
+
 .forty-two-left[
-<br>
+<br><br><br>
 ```scala
-diskUsage(".") =
-  diskUsage("./.gitignore") +
-  diskUsage("./build.sbt")  +
-  diskUsage("./project")    +
-  diskUsage("./src")
+diskUsage("scala-seed-project")
 ```
 ]
 
 .fifty-seven-right[.center[
-<img src="img/foundation/scala-seed-project-2.svg" alt="Scala seed project disk usage" style="width:500px;"/>
+<img src="img/foundation/file-system-object-1.svg" alt="FileSystemObject is a file or directory" style="width:500px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-two-left[
+<br><br><br>
+```scala
+diskUsage("scala-seed-project")
+```
+]
+
+.fifty-seven-right[.center[
+<img src="img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
 ]]
 
 ---
@@ -103,7 +195,26 @@ diskUsage(".") =
 .forty-two-left[
 <br>
 ```scala
-diskUsage(".") =
+diskUsage("scala-seed-project") =
+  diskUsage("./.gitignore") +
+  diskUsage("./build.sbt")  +
+  diskUsage("./project")    +
+  diskUsage("./src")
+```
+]
+
+.fifty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-2a.svg" alt="Scala seed project disk usage" style="width:500px;"/>
+]]
+
+---
+# File system: disk usage
+
+<br>
+.forty-two-left[
+<br>
+```scala
+diskUsage("scala-seed-project) =
     8 + // diskUsage("./.gitignore")
   447 + // diskUsage("./build.sbt")
   diskUsage("./project") +
@@ -112,7 +223,7 @@ diskUsage(".") =
 ]
 
 .fifty-seven-right[.center[
-<img src="img/foundation/scala-seed-project-2.svg" alt="Scala seed project disk usage" style="width:500px;"/>
+<img src="img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:500px;"/>
 ]]
 
 ---
@@ -123,14 +234,14 @@ diskUsage(".") =
 .sixty-two-left[
 <br>
 ```scala
-diskUsage("./project") =
-  diskUsage("./project/Dependencies.scala") +
-  diskUsage("./project/build.properties")
+diskUsage(".project") =
+  diskUsage("./Dependencies.scala") +
+  diskUsage("./build.properties")
 ```
 ]
 
 .thirty-seven-right[.center[
-<img src="img/foundation/scala-seed-project-3.svg" alt="Scala seed project disk usage" style="width:300px;"/>
+<img src="img/foundation/scala-seed-project-3a.svg" alt="Scala seed project disk usage" style="width:300px;"/>
 ]]
 
 ---
@@ -142,13 +253,13 @@ diskUsage("./project") =
 <br>
 ```scala
 diskUsage("project") =
-   19 + // diskUsage("./project/Dependencies.scala")
-  102 + // diskUsage("./project/build.properties")
+   19 + // diskUsage("./Dependencies.scala")
+  102 + // diskUsage("./build.properties")
 ```
 ]
 
 .thirty-seven-right[.center[
-<img src="img/foundation/scala-seed-project-3.svg" alt="Scala seed project disk usage" style="width:300px;"/>
+<img src="img/foundation/scala-seed-project-3b.svg" alt="Scala seed project disk usage" style="width:300px;"/>
 ]]
 
 ---
@@ -172,37 +283,114 @@ diskUsage(".") =
 ---
 # File system: disk usage
 
-.forty-two-left[
+.forty-seven-left[
 <br><br>
-```scala
-diskUsage(".") =
-   4 Kb + // diskUsage("./.gitignore")
-   4 Kb + // diskUsage("./build.sbt")
-  12 Kb + // diskUsage("./project")
-   8 Kb   // diskUsage("./src")
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  ???
 ```
 ]
 
-.fifty-seven-right[.center[
-<img src="img/foundation/scala-seed-project.svg" alt="Scala seed project disk usage" style="width:500px;"/>
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br><br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  ???
+```
+]
+
+.fifty-two-right[.center[
+<img src="img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
 ]]
 
 ---
 # File system: disk usage
 
-<br>
-
-```scala mdoc
+.forty-seven-left[
+<br><br>
+```scala mdoc:reset
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if (!file.exists)                   // file doesn't exist
+  if(file.isDirectory)
+    ??? // file is a directory
+  else if (!file.exists)
+    ??? // file doesn't exist
+  else
+    ??? // file is a normal file
+```
+]
+
+.fifty-two-right[.center[
+<img src="img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br><br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    ??? // file is a directory
+  else if (!file.exists)
     0
-  else if (file.isDirectory)          // file is a directory
-    file.length +
+  else
+    file.length()
+```
+]
+
+.fifty-two-right[.center[
+<img src="img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
+]]
+
+---
+# File system: disk usage
+
+<br><br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
     file.listFiles.map(diskUsage).sum
-  else                                // file is a "normal" file
-    file.length
+  else if (!file.exists)
+    0
+  else
+    file.length()
+```
+
+```scala
+diskUsage(new File(.))
+// res: Long = 962L
+```
+
+
+---
+# File system: disk usage
+
+<br><br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles.map(diskUsage).sum
+  else if (!file.exists)
+    0
+  else
+    file.length()
 ```
 
 ```scala

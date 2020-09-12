@@ -2,12 +2,28 @@ package answers.dataprocessing
 
 import java.io.File
 
-object FileAnswers {
+import scala.collection.mutable
+
+object FileAnswers extends App {
+
+  def diskUsageImperative(input: File): Long = {
+    var total = 0L
+    val queue = mutable.Queue(input)
+
+    while (queue.nonEmpty) {
+      val file = queue.dequeue()
+      total += file.length()
+      if (file.isDirectory)
+        queue.addAll(file.listFiles())
+    }
+
+    total
+  }
 
   def diskUsage(file: File): Long =
-    if (!file.exists) 0
-    else if (file.isDirectory) file.listFiles.map(diskUsage).sum
-    else file.length()
+    if (file.isDirectory) {
+      file.length() + file.listFiles.map(diskUsage).sum
+    } else file.length()
 
   /**
     * @see https://stackoverflow.com/questions/3263892/format-file-size-as-mb-gb-etc
