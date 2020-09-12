@@ -14,7 +14,7 @@ object ForLoopExercises {
   // a. Implement `size` using a mutable state and a for loop
   // such as size(List(2,5,1,8)) == 4
   // and     size(Nil) == 0
-  def size[A](items: List[Int]): Int =
+  def size[A](items: List[A]): Int =
     ???
 
   // b. Implement `min` using a mutable state and a for loop
