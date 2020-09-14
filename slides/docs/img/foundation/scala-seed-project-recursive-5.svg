@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 504 568" width="504" height="568">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="scala-seed-project-recursive-5" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>scala-seed-project-recursive-5</title>
+    <g id="scala-seed-project-recursive-5_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_74">
+        <text transform="translate(14 32)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="174.256" y="21">scala--project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_108">
+        <rect x="135" y="261" width="252" height="306" fill="#589b9d"/>
+        <rect x="135" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(140 266)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="92.884" y="21">Stack</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <title>File</title>
+        <path d="M 315 104.549 C 315 94.1287 313.7427 92.8395 304.55847 82.527 L 304.46145 82.4203 C 295.2287 72 295.13268 72 285.6574 72 C 273.04083 72 216 72 216 72 L 216 182 L 315 182 L 315 104.549 Z" fill="#acbdd0"/>
+        <path d="M 315 104.549 C 315 94.1287 313.7427 92.8395 304.55847 82.527 L 304.46145 82.4203 C 295.2287 72 295.13268 72 285.6574 72 C 273.04083 72 216 72 216 72 L 216 182 L 315 182 L 315 104.549 Z M 315 104.0122 C 315 94.1287 314.90298 94.1287 295.13268 94.1287 L 295.13268 94.1287 C 295.13268 72.1078 295.13268 72 286.23753 72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1135802"/>
+        <text transform="translate(216 99.996)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="6.993" y="17">Depencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="26.001" y="38.504">.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_126">
+        <rect x="153" y="406.2857" width="216.35526" height="61.714286" fill="#70a3d8"/>
+        <rect x="153" y="406.2857" width="216.35526" height="61.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 410.52686)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="51.433635" y="21">diskUsage</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="69.154635" y="47.616">project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_125">
+        <rect x="155.19079" y="334.2857" width="216.35526" height="61.714286" fill="#70a3d8"/>
+        <rect x="155.19079" y="334.2857" width="216.35526" height="61.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(160.19079 338.52686)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="51.433635" y="21">diskUsage</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.957635" y="47.616">Dependencies.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_127">
+        <rect x="153" y="478.2857" width="216.35526" height="61.714286" fill="#70a3d8"/>
+        <rect x="153" y="478.2857" width="216.35526" height="61.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 482.52686)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="51.433635" y="21">diskUsage</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.096635" y="47.616">scala-seed-project</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

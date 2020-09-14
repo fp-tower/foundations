@@ -13,6 +13,7 @@ object FileAnswers extends App {
     while (queue.nonEmpty) {
       val file = queue.dequeue()
       total += file.length()
+
       if (file.isDirectory)
         queue.addAll(file.listFiles())
     }
@@ -21,9 +22,9 @@ object FileAnswers extends App {
   }
 
   def diskUsage(file: File): Long =
-    if (file.isDirectory) {
+    if (file.isDirectory)
       file.length() + file.listFiles.map(diskUsage).sum
-    } else file.length()
+    else file.length()
 
   /**
     * @see https://stackoverflow.com/questions/3263892/format-file-size-as-mb-gb-etc

@@ -15,35 +15,281 @@ class: center, middle, white
 .title[Recursions]
 
 ---
-background-image: url(img/foundation/recursive-problem-1.svg)
+class: medium-code
 
-# Recursion
+# Recursive functions
+
+.forty-seven-left[
+```scala mdoc
+def printMany(n: Int, message: String): Unit =
+  if(n <= 0) () // do nothing
+  else {
+    println(message)
+    printMany(n - 1, message)
+  }
+
+
+printMany(3, "FP is awesome")
+```
+]
+
+--
+
+.forty-seven-right[
+```scala mdoc:reset
+def printMany(n: Int, message: String): Unit = {
+  var counter = n
+  while (counter > 0) {
+    counter -= 1
+    println("FP is awesome")
+  }
+}
+
+printMany(3, "FP is awesome")
+```
+]
+
+---
+class: medium-code
+
+# Recursive functions
+
+.forty-seven-left[
+```scala mdoc:reset
+def printMany(n: Int, message: String): Unit =
+  if(n > 0) {
+    println(message)
+    printMany(n - 1, message)
+  }
+  else () // do nothing
+
+
+printMany(3, "FP is awesome")
+```
+]
+
+.forty-seven-right[
+```scala mdoc:reset
+def printMany(n: Int, message: String): Unit = {
+  var counter = n
+  while (counter > 0) {
+    counter -= 1
+    println("FP is awesome")
+  }
+}
+
+printMany(3, "FP is awesome")
+```
+]
+
+---
+class: medium-code
+
+# Recursive functions
+
+.forty-seven-left[
+```scala mdoc:reset
+def printMany(n: Int, message: String): Unit =
+  (1 to n).foreach(_ => println(message))
+
+
+printMany(3, "FP is awesome")
+```
+]
+
+---
+class: medium-code
+# Recursive data structures
+
+.fifty-seven-left[
+<br>
+```scala mdoc:reset:silent
+case class Person(name: String, children: List[Person])
+
+val bob = Person("Bob", Nil)
+val lea = Person("Lea", Nil)
+val luc = Person("Luc", Nil)
+
+val eve = Person("Eve", List(bob, lea, luc))
+val joe = Person("Joe", Nil)
+
+val eda = Person("Eda", List(joe, eve))
+```
+]
+
+.forty-two-right[
+<img src="img/foundation/recursive-person.svg" alt="Recursive Person" style="width:450px;"/>
+]
+
+---
+# Recursive data structures
+
+.forty-seven-left[
+## JSON
+
+```json
+{
+  "name": "John Doe",
+  "age": 25,
+  "address": {
+    "street": {
+      "number" : 12,
+      "name" : "Cody road"
+    },
+    "country": "UK",
+  }
+}
+```
+]
+
+.forty-seven-right[
+## YAML
+
+```yaml
+name: John Doe
+age: 25
+address:
+  street: 12
+    number: 12
+    name: Cody road
+  country: UK
+```
+]
+
+---
+# Recursive data structures
+
+.forty-seven-left[
+## JSON
+
+```json
+{
+  "name": "John Doe",
+  "age": 25,
+  "address": {
+    "street": {
+      "number" : 12,
+      "name" : "Cody road"
+    },
+    "country": "UK",
+  }
+}
+```
+]
+
+.forty-seven-right[
+<img src="img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+class: medium-code
+
+# Enumeration
+
+.forty-seven-left[
+```scala
+enum Json {
+
+  // Leaves
+  case JsonNumber(value: Double)
+  case JsonString(value: String)
+
+  // Branch
+  case JsonObject(value: Map[String, Json])
+
+}
+```
+]
+
+.forty-seven-right[
+<img src="img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+class: medium-code
+# Enumeration
+
+.forty-seven-left[
+## In Scala 3
+
+```scala
+enum Json {
+
+  // Leaves
+  case JsonNumber(value: Double)
+  case JsonString(value: String)
+
+  // Branch
+  case JsonObject(value: Map[String, Json])
+
+}
+```
+]
+
+.fifty-two-right[
+## In Scala 2
+
+```scala mdoc
+sealed trait Json
+
+// Leaves
+case class JsonNumber(value: Double) extends Json
+case class JsonString(value: String) extends Json
+
+// Branch
+case class JsonObject(value: Map[String, Json])
+  extends Json
+```
+]
+
+---
+class: medium-code
+
+# Enumeration
+
+.forty-seven-left[
+```scala
+enum Json {
+  // Leaves
+  case JsonNumber(value: Double)
+  case JsonString(value: String)
+
+  // Branch
+  case JsonObject(value: Map[String, Json])
+}
+
+import Json._
+
+val simpleJohn = JsonObject(Map(
+  "name"    -> JsonString("John Doe"),
+  "age"     -> JsonNumber(25),
+  "address" -> JsonObject(Map()),
+))
+```
+]
+
+.forty-seven-right[
+<img src="img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+
 
 
 ---
-background-image: url(img/foundation/recursive-problem-2a.svg)
+class: medium-code
 
-# Recursion
+# Recursive data structures
 
----
-background-image: url(img/foundation/recursive-problem-2b.svg)
+.forty-two-left[
+<br>
+```bash
+$ sbt new scala/scala-seed.g8
+```
+]
 
-# Recursion
-
----
-background-image: url(img/foundation/recursive-problem-6.svg)
-
-# Recursion
-
----
-background-image: url(img/foundation/recursive-problem-7.svg)
-
-# Recursion
-
----
-background-image: url(img/foundation/recursive-problem-8.svg)
-
-# Recursion
+.fifty-seven-right[.center[
+<img src="img/foundation/scala-seed-project.svg" alt="Scala seed project disk usage" style="width:500px;"/>
+]]
 
 ---
 class: medium-code
@@ -86,17 +332,14 @@ import java.io.File
 import scala.collection.mutable
 
 def diskUsage(file: File): Long = {
-  if(!file.isDirectory) file.length()
-  else {
-    var total = 0L
+  var total = file.length()
 
-    for (child <- file.listFiles()) {
-
+  if(file.isDirectory) {
+    for (child <- file.listFiles())
       total += child.length()
-    }
-
-    total
   }
+
+  total
 }
 ```
 ]
@@ -121,10 +364,10 @@ def diskUsage(input: File): Long = {
   while (queue.nonEmpty) {
     val file = queue.dequeue()
 
+    total += file.length()
+
      if(file.isDirectory)
        queue.addAll(file.listFiles())
-     else
-       total += file.length()
   }
 
   total
@@ -143,6 +386,379 @@ def diskUsage(input: File): Long = {
 .forty-seven-left[
 ```scala mdoc:reset
 import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-1.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-2.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-3.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-4.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-5.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-6.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-queue-7.svg" alt="diskUsage with Queue" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<br>
+<img src="img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-recursive-1.svg" alt="diskUsage with recursions" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-recursive-2.svg" alt="diskUsage with recursions" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-recursive-1.svg" alt="diskUsage with recursions" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-recursive-3.svg" alt="diskUsage with recursions" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-recursive-1.svg" alt="diskUsage with recursions" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<img src="img/foundation/scala-seed-project-recursive-4.svg" alt="diskUsage with recursions" style="width:400px;"/>
+]]
+
+---
+# File system: disk usage
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
 
 def diskUsage(file: File): Long =
   if(file.isDirectory)
@@ -155,10 +771,51 @@ def diskUsage(file: File): Long =
 ]
 
 .forty-seven-right[.center[
-<br>
-<img src="img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+<img src="img/foundation/scala-seed-project-recursive-5.svg" alt="diskUsage with recursions" style="width:400px;"/>
 ]]
 
+---
+
+.forty-seven-left[
+# Explicit data structure
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+# Implicit data structure
+
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    file.length() +
+      file.listFiles    // Array[File]
+        .map(diskUsage) // Array[Long]
+        .sum            // Long
+  else
+   file.length()
+```
+]
 
 ---
 # File system: disk usage
@@ -851,6 +1508,37 @@ def retry[A](remainingRetries: Int, action: => A): A =
       else retry(remainingRetries - 1, action)
   }
 ```
+
+---
+background-image: url(img/foundation/recursive-problem-1.svg)
+
+# Recursion
+
+
+---
+background-image: url(img/foundation/recursive-problem-2a.svg)
+
+# Recursion
+
+---
+background-image: url(img/foundation/recursive-problem-2b.svg)
+
+# Recursion
+
+---
+background-image: url(img/foundation/recursive-problem-6.svg)
+
+# Recursion
+
+---
+background-image: url(img/foundation/recursive-problem-7.svg)
+
+# Recursion
+
+---
+background-image: url(img/foundation/recursive-problem-8.svg)
+
+# Recursion
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
