@@ -245,31 +245,118 @@ case class JsonObject(value: Map[String, Json])
 ---
 class: medium-code
 
-# Enumeration
+# Constructor
 
 .forty-seven-left[
 ```scala
-enum Json {
-  // Leaves
-  case JsonNumber(value: Double)
-  case JsonString(value: String)
-
-  // Branch
-  case JsonObject(value: Map[String, Json])
-}
-
 import Json._
 
-val simpleJohn = JsonObject(Map(
+val john: Json = JsonObject(Map(
   "name"    -> JsonString("John Doe"),
   "age"     -> JsonNumber(25),
-  "address" -> JsonObject(Map()),
+  "address" -> JsonObject(Map(
+    "street" -> JsonObject(Map(
+      "number" -> JsonNumber(25),
+      "name"   -> JsonString("Cody Road")
+    ))
+  ))
 ))
 ```
 ]
 
 .forty-seven-right[
 <img src="img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+class: medium-code
+
+# Pattern match
+
+.forty-two-left[
+```scala
+def upperCase(json: Json): Json =
+  json match {
+    case JsonNumber(num) =>
+      ???
+    case JsonString(str) =>
+      ???
+    case JsonObject(obj) =>
+      ???
+  }
+```
+]
+
+---
+class: medium-code
+
+# Pattern match
+
+.forty-two-left[
+```scala
+def upperCase(json: Json): Json =
+  json match {
+    case JsonNumber(num) =>
+      JsonNumber(num)
+    case JsonString(str) =>
+      JsonString(str.toUpperCase)
+    case JsonObject(obj) =>
+      ???
+  }
+```
+]
+
+---
+class: medium-code
+
+# Pattern match
+
+.forty-two-left[
+```scala mdoc
+def upperCase(json: Json): Json =
+  json match {
+    case JsonNumber(num) =>
+      JsonNumber(num)
+    case JsonString(str) =>
+      JsonString(str.toUpperCase)
+    case JsonObject(obj) =>
+      JsonObject(obj.map {
+        case (key, value) =>
+          key -> upperCase(value)
+      })
+  }
+```
+]
+
+.fifty-two-right[
+```scala mdoc:invisible
+val john: Json = JsonObject(Map(
+  "name"    -> JsonString("John Doe"),
+  "age"     -> JsonNumber(25),
+  "address" -> JsonObject(Map(
+    "street" -> JsonObject(Map(
+      "number" -> JsonNumber(25),
+      "name"   -> JsonString("Cody Road")
+    ))
+  ))
+))
+
+upperCase(john)
+```
+
+```scala
+upperCase(john)
+// res: Json = JsonObject(Map(
+//   "name" -> JsonString("JOHN DOE"),
+//   "age"  -> JsonNumber(25.0),
+//   "address" -> JsonObject(Map(
+//     "street" -> JsonObject(Map(
+//       "number" -> JsonNumber(25.0),
+//       "name" -> JsonString("CODY ROAD"))
+//     ))
+//   )
+// ))
+```
 ]
 
 
