@@ -26,6 +26,23 @@ object FileAnswers extends App {
       file.length() + file.listFiles.map(diskUsage).sum
     else file.length()
 
+  def largestFileSize(file: File): Long =
+    if (file.isDirectory)
+      file.listFiles
+        .map(largestFileSize)
+        .maxOption
+        .getOrElse(file.length())
+    else file.length()
+
+  def filterFiles(file: File, predicate: File => Boolean): List[File] =
+    if (file.isDirectory)
+      file
+        .listFiles()
+        .toList
+        .flatMap(filterFiles(_, predicate))
+    else
+      List(file).filter(predicate)
+
   /**
     * @see https://stackoverflow.com/questions/3263892/format-file-size-as-mb-gb-etc
     * @see https://en.wikipedia.org/wiki/Zettabyte
