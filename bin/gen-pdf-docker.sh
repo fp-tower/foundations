@@ -4,7 +4,7 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         -b|--build) echo "Rebuilding slides"; sbt slides/mdoc ;;
         -f|--file) FILE_INPUT_REGEX="$2"; shift;;
-        -c|--clean) echo "Remove docs foler"; rm -r docs ;;
+        -c|--clean) echo "Remove docs folder"; rm -r docs ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
