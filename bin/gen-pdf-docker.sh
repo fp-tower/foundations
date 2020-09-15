@@ -14,7 +14,10 @@ cp -r slides/docs docs/
 
 cd docs
 
-mkdir -p pdf screenshots
+for section in value-functions generic-functions data-processing bonus
+do
+ mkdir -p "pdf/$section" "screenshots/$section"
+done
 
 for file in ${FILE_INPUT_REGEX:-*.html}
 do
