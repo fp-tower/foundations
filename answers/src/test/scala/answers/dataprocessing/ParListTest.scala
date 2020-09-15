@@ -1,5 +1,6 @@
 package answers.dataprocessing
 
+import Ordering.Double.TotalOrdering
 import org.scalacheck.Arbitrary
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks

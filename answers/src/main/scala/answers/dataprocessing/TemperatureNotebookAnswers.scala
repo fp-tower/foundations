@@ -3,6 +3,7 @@ package answers.dataprocessing
 import answers.dataprocessing.TimeUtil._
 import kantan.csv._
 import kantan.csv.ops._
+import Ordering.Double.TotalOrdering
 
 object TemperatureNotebookAnswers extends App {
 
