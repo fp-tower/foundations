@@ -4,7 +4,7 @@ import java.io.File
 
 import scala.collection.mutable
 
-object FileAnswers extends App {
+object FileAnswers {
 
   def diskUsageImperative(input: File): Long = {
     var total = 0L
