@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Function as inputs</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Function as inputs]
+
+---
+# Function as inputs
+
+<br>
+
+```scala mdoc:invisible
+def filter(s: String, predicate: Char => Boolean): String =
+  s.filter(predicate)
+```
+
+```scala
+def filter(
+  text     : String,
+  predicate: Char => Boolean
+): String = ...
+```
+
+---
+# Function as inputs
+
+<br>
+
+.thirty-seven-left[
+<br>
+<br>
+```scala mdoc
+filter(
+  "Hello World!",
+  (c: Char) => c.isUpper
+)
+```
+]
+
+.fifty-seven-right[
+<img src="../img/foundation/filter-isUpper.svg" alt="isUpper" style="width:600px;"/>
+]
+
+---
+# Function as inputs
+
+<br>
+
+.thirty-seven-left[
+<br>
+<br>
+```scala mdoc
+filter(
+  "Hello World!",
+  (c: Char) => c.isLetter
+)
+```
+]
+
+.fifty-seven-right[
+<img src="../img/foundation/filter-isLetter.svg" alt="isUpper" style="width:600px;"/>
+]
+
+---
+.h1[# Reduce code duplication]
+
+<br>
+
+.forty-seven-left[
+```scala mdoc:silent
+def upperCase(text: String): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
+    characters(i) = characters(i).toUpper
+  }
+  new String(characters)
+}
+```
+
+```scala mdoc
+upperCase("Hello")
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+def lowerCase(text: String): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
+    characters(i) = characters(i).toLower
+  }
+  new String(characters)
+}
+```
+
+```scala mdoc
+lowerCase("Hello")
+```
+]
+
+---
+# Capture pattern
+
+
+.fifty-seven-left[
+<br>
+
+```scala mdoc:reset:silent
+def map(text: String, update: Char => Char): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
+    characters(i) = update(characters(i))
+  }
+  new String(characters)
+}
+```
+
+
+```scala mdoc:silent
+def upperCase(text: String): String =
+  map(text, c => c.toUpper)
+
+def lowerCase(text: String): String =
+  map(text, c => c.toLower)
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/map-string.svg" alt="isUpper" style="width:400px;"/>
+]
+
+---
+# Capture pattern
+
+<br>
+
+.fifty-seven-left[
+```scala mdoc:reset:silent
+def map(text: String, update: Char => Char): String = {
+  val characters = text.toArray
+  for (i <- 0 until text.length) {
+    characters(i) = update(characters(i))
+  }
+  new String(characters)
+}
+```
+
+```scala mdoc:silent
+def upperCase(text: String): String =
+  map(text, c => c.toUpper)
+
+def lowerCase(text: String): String =
+  map(text, c => c.toLower)
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
+]
+
+---
+# Property based testing
+
+<br>
+.fifty-seven-left[
+
+```scala
+test("map does not modify the size of a text") {
+  forAll((
+    text  : String,
+    update: Char => Char
+  ) =>
+    val outputText = map(text, update)
+    outputText.length == text.length
+  )
+}
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/higher-order-function-1.svg" alt="higher order function hierarchy" style="width:400px;"/>
+]
+
+---
+background-image: url(../img/foundation/higher-order-function-2.svg)
+
+# Hierarchy of functions
+
+---
+background-image: url(../img/foundation/file-processing-1.svg)
+
+# File processing
+
+---
+background-image: url(../img/foundation/file-processing-2.svg)
+
+# File processing
+
+---
+background-image: url(../img/foundation/file-processing-fail.svg)
+
+# File processing
+
+---
+background-image: url(../img/foundation/file-processing-fail-safe.svg)
+
+# File processing
+
+---
+# Write tricky code once
+
+<br>
+
+```scala mdoc:silent
+import scala.io.Source
+
+def usingFile(fileName: String, processing: Iterator[String] => Int): Int = {
+  val source = Source.fromResource(fileName)
+  try {
+    processing(source.getLines())
+  } finally {
+    source.close()
+  }
+}
+```
+
+--
+
+.forty-seven-left[
+```scala mdoc:silent
+val countLines: Iterator[String] => Int =
+  lines => lines.size
+```
+]
+
+.forty-seven-right[
+```scala
+val countWords: Iterator[String] => Int =
+  lines => ...
+```
+]
+
+---
+# Write tricky code once
+
+<br>
+
+```scala mdoc:reset:silent
+import scala.io.Source
+
+def usingFile(fileName: String, processing: Iterator[String] => Int): Int = {
+  val source = Source.fromResource(fileName)
+  try {
+    processing(source.getLines())
+  } finally {
+    source.close()
+  }
+}
+```
+
+```scala mdoc:invisible
+val countLines: Iterator[String] => Int =
+  _.size
+
+val countWords: Iterator[String] => Int =
+  _.map(_.split(" ").size).reduce(_ + _)
+```
+
+.forty-seven-left[
+```scala mdoc
+usingFile("50-word-count.txt", countLines)
+```
+]
+
+.forty-seven-right[
+```scala mdoc
+usingFile("50-word-count.txt", countWords)
+```
+]
+
+---
+# Summary
+
+<br>
+
+.large[
+* Higher order function
+
+* Reduce code duplication
+
+* Improve code quality
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

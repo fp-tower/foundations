@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Val vs Def functions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Val vs Def functions]
+
+---
+class: medium-code
+
+.forty-seven-left[
+# Val function (Lambda)
+
+<br>
+
+```scala
+val replicate: (Int, String) => String =
+  (n: Int, text: String) => ...
+```
+
+```scala mdoc:reset:invisible
+val replicate: (Int, String) => String =
+  (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc
+replicate(3, "Hello ")
+```
+]
+
+.forty-seven-right[
+# Def function (Method)
+
+<br>
+
+```scala
+def replicate(n: Int, text: String): String =
+  ...
+```
+
+```scala mdoc:reset:invisible
+def replicate(n: Int, text: String): String =
+  List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc
+replicate(3, "Hello ")
+```
+]
+
+---
+# Val function (Lambda or anonymous function)
+
+<br>
+
+```scala mdoc:silent
+(n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala mdoc:reset:silent
+(n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+<br>
+
+```scala mdoc:silent
+3
+
+"Hello World!"
+
+User("John Doe", 27)
+```
+
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc:invisible
+case class User(name: String, age: Int)
+```
+
+```scala mdoc:silent
+val counter = 3
+
+val message = "Hello World!"
+
+val john    = User("John Doe", 27)
+```
+
+--
+
+<br>
+
+```scala mdoc:silent
+val repeat = replicate
+```
+
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala mdoc:reset
+val numbers   = List(1,2,3)
+
+val functions = List((x: Int) => x + 1, (x: Int) => x - 1, (x: Int) => x * 2)
+```
+
+--
+
+<br>
+
+```scala mdoc
+functions(0)(10)
+
+functions(2)(10)
+```
+
+---
+class: medium-code
+
+# Val function desugared
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+---
+class: medium-code
+
+# Val function desugared
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String        = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: Function2[Int, String, String] = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+--
+
+.forty-seven-left[
+```scala
+val bigFunction: (Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int
+                 ) => String = _ => ???
+
+// error: function values may not have more
+//        than 22 parameters, but 23 given
+```
+]
+
+---
+class: medium-code
+
+# Val function desugared
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String        = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala mdoc:reset:silent
+val replicate: Function2[Int, String, String] = new Function2[Int, String, String] {
+  def apply(n: Int, text: String): String =
+     List.fill(n)(text).mkString
+}
+```
+
+---
+class: medium-code
+
+# SAM (Single Abstract Method)
+
+<br>
+
+```scala mdoc:silent
+trait Printer {
+  def print(message: String): Unit
+}
+```
+
+.forty-seven-left[
+## SAM syntax
+
+```scala mdoc:silent
+val console: Printer =
+  (message: String) => println(message)
+```
+]
+
+.forty-seven-right[
+## Standard syntax
+```scala mdoc:reset:invisible
+trait Printer {
+  def print(message: String): Unit
+}
+```
+
+```scala mdoc:silent
+val console: Printer = new Printer {
+  def print(message: String): Unit =
+    println(message)
+}
+```
+]
+
+---
+class: medium-code
+
+# SAM (Single Abstract Method)
+
+.forty-seven-left[
+<br><br><br>
+
+```scala mdoc:reset:silent
+trait Printer {
+  def print(message: String): Unit
+}
+```
+]
+
+.forty-seven-right[
+## Standard syntax
+
+```scala mdoc:silent
+val console: Printer = new Printer {
+  def print(message: String): Unit =
+    println(message)
+}
+```
+
+## SAM syntax
+
+```scala mdoc:reset:invisible
+trait Printer {
+  def print(message: String): Unit
+}
+```
+
+```scala mdoc:silent
+val console: Printer =
+  (message: String) => println(message)
+```
+
+
+]
+
+---
+class: medium-code
+
+# Val function desugared
+
+.forty-seven-left[
+## SAM syntax
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String =
+  (n: Int, text: String) =>
+    List.fill(n)(text).mkString
+```
+]
+
+.forty-seven-right[
+## Standard syntax
+
+```scala mdoc:reset:silent
+val replicate: (Int, String) => String =
+  new Function2[Int, String, String] {
+    def apply(n: Int, text: String): String =
+       List.fill(n)(text).mkString
+  }
+```
+]
+
+--
+
+<br><br><br><br><br><br><br><br><br><br>
+
+.forty-seven-left[
+```scala mdoc
+replicate(3, "Hello ")
+
+replicate.apply(3, "Hello ")
+```
+]
+
+---
+class: medium-code
+
+# Apply syntax
+
+<br>
+
+```scala mdoc:reset:silent
+trait Printer {
+  def apply(message: String): Unit
+}
+
+val console: Printer = new Printer {
+  def apply(message: String) = println(message)
+}
+```
+
+<br>
+
+```scala mdoc
+console("Hello World!")
+```
+
+
+
+---
+# Def function (Method)
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+```scala mdoc:invisible
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+<br>
+
+```scala mdoc
+createDate(2020, 1, 5)
+```
+
+---
+# Arguments
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala
+val createDateVal: (Int, Int, Int) => LocalDate =
+  (year, month, dayOfMonth) => ...
+```
+
+```scala mdoc:invisible
+import java.time.LocalDate
+
+val createDateVal: (Int, Int, Int) => LocalDate =
+  (year, month, dayOfMonth) => LocalDate.of(year, month, dayOfMonth)
+```
+
+---
+class: center
+
+<br>
+
+## IDE
+
+<img src="../img/screenshot/ide-doc.png" alt="IDE documentation" style="width:800px;"/>
+
+## Scaladoc
+
+<img src="../img/screenshot/javadoc.png" alt="Scala documentation" style="width:800px;"/>
+
+---
+# Named arguments
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+```scala mdoc:reset:invisible
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+<br>
+
+```scala mdoc
+createDate(2020, 1, 5)
+```
+
+```scala mdoc
+createDate(dayOfMonth = 5, month = 1, year = 2020)
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala mdoc:fail
+List(createDate)
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala mdoc
+List(createDate _)
+```
+
+--
+
+<br>
+
+```scala mdoc
+val createDateVal = createDate _
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala mdoc:reset:invisible
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  LocalDate.of(year, month, dayOfMonth)
+```
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala mdoc:silent
+List(createDate): List[(Int, Int, Int) => LocalDate]
+```
+
+
+<br>
+
+```scala mdoc:silent
+val createDateVal: (Int, Int, Int) => LocalDate = createDate
+```
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br><br>
+
+# .white[Summary]
+
+<br>
+
+.large[
+* Val functions are ordinary <br>objects
+
+* Use def functions for API
+
+* Easy to convert def to val
+]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

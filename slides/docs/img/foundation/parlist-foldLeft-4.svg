@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 803 524" width="803" height="524">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="parlist-foldLeft-4" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>parlist-foldLeft-4</title>
+    <g id="parlist-foldLeft-4_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="126" y="81" width="675" height="441" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_19">
+        <text transform="translate(140 49.384)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="11.0125" y="21">dataset</tspan>
+        </text>
+      </g>
+      <g id="Graphic_26">
+        <rect x="144" y="99" width="45" height="45" fill="#70a3d8"/>
+        <rect x="144" y="99" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_267">
+        <text transform="translate(203 107.692)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_269">
+        <rect x="144" y="171" width="45" height="45" fill="#70a3d8"/>
+        <rect x="144" y="171" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_268">
+        <text transform="translate(203 179.692)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_271">
+        <rect x="144" y="243" width="45" height="45" fill="#70a3d8"/>
+        <rect x="144" y="243" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_270">
+        <text transform="translate(203 251.692)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_273">
+        <rect x="144" y="315" width="45" height="45" fill="#70a3d8"/>
+        <rect x="144" y="315" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_272">
+        <text transform="translate(203 323.692)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 4</tspan>
+        </text>
+      </g>
+      <g id="Graphic_275">
+        <rect x="144" y="387" width="45" height="45" fill="#70a3d8"/>
+        <rect x="144" y="387" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_274">
+        <text transform="translate(203 395.692)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 5</tspan>
+        </text>
+      </g>
+      <g id="Graphic_277">
+        <rect x="144" y="459" width="45" height="45" fill="#70a3d8"/>
+        <rect x="144" y="459" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_276">
+        <text transform="translate(203 467.692)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="2.746" y="21">intermediate result 6</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

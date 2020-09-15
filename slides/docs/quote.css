@@ -1,0 +1,53 @@
+.quote {
+    display: inline-block;
+    margin: 1em;
+    overflow: hidden;
+}
+.quote blockquote {
+    background-color: #fff;
+    border: solid 2px #757575;
+    display: inline-block;
+    margin: 0;
+    padding: 1em;
+    position: relative;
+}
+.quote blockquote:before {
+    background-color: #fff;
+    bottom: -10%;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -10%;
+    transform: rotate(-15deg) skew(5deg);
+}
+.quote blockquote cite {
+    display: block;
+    font-style: italic;
+    text-align: right;
+}
+.quote blockquote cite:before {
+    content: "- ";
+}
+.quote blockquote > * {
+    position: relative;
+    z-index: 1;
+}
+
+.column {
+    float: left;
+    width: 18%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+}
+
+/* Add some shadows to create a card effect */
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Some left and right padding inside the container */
+.container {
+    padding: 0 16px;
+    text-align: center;
+}

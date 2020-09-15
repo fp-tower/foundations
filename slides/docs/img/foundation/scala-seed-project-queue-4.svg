@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 504 568" width="504" height="568">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="scala-seed-project-queue-4" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>scala-seed-project-queue-4</title>
+    <g id="scala-seed-project-queue-4_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_119"/>
+      <g id="Graphic_100">
+        <title>File</title>
+        <path d="M 288 100.59 C 288 91.117 286.857 89.945 278.5077 80.57 L 278.4195 80.473 C 270.0261 71 269.9388 71 261.3249 71 C 249.8553 71 198 71 198 71 L 198 171 L 288 171 L 288 100.59 Z" fill="#acbdd0"/>
+        <path d="M 288 100.59 C 288 91.117 286.857 89.945 278.5077 80.57 L 278.4195 80.473 C 270.0261 71 269.9388 71 261.3249 71 C 249.8553 71 198 71 198 71 L 198 171 L 288 171 L 288 100.59 Z M 288 100.102 C 288 91.117 287.9118 91.117 269.9388 91.117 L 269.9388 91.117 C 269.9388 71.098 269.9388 71 261.8523 71" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(198 105.248)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="7.497" y="17">.gitignore</tspan>
+        </text>
+      </g>
+      <g id="Graphic_108">
+        <rect x="207" y="261" width="252" height="306" fill="#589b9d"/>
+        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(212 266)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.594" y="21">Queue</tspan>
+        </text>
+      </g>
+      <g id="Graphic_110">
+        <rect x="225" y="334.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
+        <rect x="225" y="334.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 342.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="60.585635" y="21">build.sbt</tspan>
+        </text>
+      </g>
+      <g id="Graphic_111">
+        <rect x="225" y="388.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
+        <rect x="225" y="388.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 396.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="69.154635" y="21">project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_112">
+        <rect x="225" y="442.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
+        <rect x="225" y="442.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 450.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.30564" y="21">src</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <rect x="54" y="361.2857" width="81" height="70.714286" fill="#70a3d8"/>
+        <rect x="54" y="361.2857" width="81" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(59 383.33486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="29.384" y="21">8</tspan>
+        </text>
+      </g>
+      <g id="Graphic_117">
+        <text transform="translate(65 329)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.4655005" y="21">Total</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

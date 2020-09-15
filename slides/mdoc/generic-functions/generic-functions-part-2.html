@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parametric functions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Generic functions <br> part 2]
+
+---
+# 1. Generic functions accept .hl[ALL] types
+
+<br>
+
+```scala
+def map[From, To](list: List[From])(update: From => To): List[To]
+```
+<br>
+
+```scala
+map[String, Int](List(...))(...)
+
+map[User, Address](List(...))(...)
+```
+
+---
+# 2. All types must be treated .hl[IN THE SAME WAY]
+
+<br>
+
+```scala
+def map[From, To](list: List[From])(update: From => To): List[To] =
+  list match {
+    case ints   : List[Int]    => ...
+    case strings: List[String] => ...
+    case users  : List[User]   => ...
+    case _                     => ...
+  }
+```
+
+---
+# All types must be treated .hl[IN THE SAME WAY]
+
+<br>
+
+```scala mdoc:invisible
+def truncate(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+.forty-seven-left[
+```scala mdoc:silent
+def format[A](value: A): String =
+  value match {
+    case x: String => x.toLowerCase
+    case x: Double => truncate(2, x)
+    case _         => "N/A"
+  }
+```
+]
+.forty-seven-right[
+```scala mdoc
+format("Blue")
+format(123.123456)
+format(true)
+```
+]
+
+---
+class: medium-code
+# Why? Type erasure
+
+<br>
+
+.sixty-two-left[
+```scala mdoc:reset:invisible
+def truncate(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc:silent
+def format[A](value: A): String =
+  value match {
+    case x: String       => x.toLowerCase
+    case x: Double       => truncate(2, x)
+    case x: List[String] => x.map(_.toLowerCase).mkString(",")
+    case x: List[Double] => x.map(truncate(2, _)).mkString(",")
+    case _               => "N/A"
+  }
+```
+]
+
+.thirty-two--right[
+```scala mdoc
+format("Blue")
+format(123.123456)
+format(true)
+format(List("Hello", "World"))
+```
+]
+
+--
+
+<br><br><br><br><br><br><br><br><br>
+
+```scala mdoc:crash:invisible
+format(List(123.123456, 0.1234))
+```
+
+```scala
+format(List(123.123456, 0.1234))
+// java.lang.ClassCastException: class java.lang.Double
+// cannot be cast to class java.lang.String
+```
+
+---
+class: medium-code
+# Why? Type erasure
+
+<br>
+
+.forty-two-left[
+```scala
+def format[A](value: A): String =
+  value match {
+    case x: String       => ...
+    case x: Double       => ...
+    case x: List[String] => ...
+    case x: List[Double] => ...
+    case _               => ...
+  }
+```
+]
+
+.fifty-two-right[
+```scala
+def format[A](value: A): String =
+
+       if(value.isInstanceOf[String]) ...
+  else if(value.isInstanceOf[Double]) ...
+  else if(value.isInstanceOf[List[String]]) ...
+  else if(value.isInstanceOf[List[Double]]) ...
+  else ...
+```
+]
+
+---
+class: medium-code
+# Why? Type erasure
+
+<br>
+
+.forty-two-left[
+```scala
+def format[A](value: A): String =
+  value match {
+    case x: String       => ...
+    case x: Double       => ...
+    case x: List[String] => ...
+    case x: List[Double] => ...
+    case _               => ...
+  }
+```
+]
+
+.fifty-two-right[
+```scala
+def format[A](value: A): String =
+
+       if(value.isInstanceOf[String]) ...
+  else if(value.isInstanceOf[Double]) ...
+  else if(value.isInstanceOf[List[String]]) ...
+  else if(value.isInstanceOf[List[Double]]) ...
+  else ...
+```
+]
+<br><br><br><br><br><br><br><br><br><br><br>
+
+.fifty-seven-left[
+
+```scala mdoc
+List(1.5,2.0).isInstanceOf[List[String]]
+```
+
+```scala
+// warning: fruitless type test: a value of type
+// List[Double] cannot also be a List[String]
+```
+]
+
+---
+class: medium-code
+
+# Why? Poor documentation
+
+<br>
+<br>
+
+```scala
+def format[A](value: A): String
+```
+
+---
+class: center, middle
+
+# Parametric polymorphism (`map`)
+# !=
+# Ad hoc polymorphism (`format`)
+
+
+---
+# How can we implement `map`?
+
+<br>
+
+```scala
+def map[From, To](list: List[From])(update: From => To): List[To]
+```
+
+--
+
+.fifty-seven-left[
+<img src="../img/foundation/linked-list-enum-2.svg" alt="List enum" style="width:500px;"/>
+]
+
+--
+
+<br>
+<br>
+
+.medium[
+1. Return an empty list
+
+1. Return an non empty list with values produced by update
+]
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[From, To](list: List[From])(update: From => To): List[To] =
+  list
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala mdoc:reset:fail
+def map[From, To](list: List[From])(update: From => To): List[To] =
+  list
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map[A](list: List[A])(update: A => A): List[A] =
+  list
+
+// success
+```
+
+---
+# Does it compile?
+
+<br>
+
+```scala
+def map(list: List[Int])(update: Int => Int): List[Int] =
+  List(1, 2, 3)
+
+// success
+```
+
+---
+# How can we test `map`?
+
+<br>
+
+```scala
+test("map"){
+  map(Nil)(_ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    )(x => ???) shouldEqual ???
+  map(List(1,2,3,4,5))(x => ???) shouldEqual ???
+
+  map(List("Hello", "World")  )(x => ???) shouldEqual ???
+  map(List("a", "b", "c", "d"))(x => ???) shouldEqual ???
+}
+```
+
+--
+
+.sixty-seven-left[.center[
+## All types must be treated in the same way
+]]
+
+---
+# How can we test `map`?
+
+<br>
+
+```scala
+test("map"){
+  map(Nil)(_ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    )(_ + 1) shouldEqual List(2,3,4)
+  map(List(1,2,3,4,5))(_ + 1) shouldEqual List(2,3,4,5,6)
+
+  map(List(1,2,3)    )(_ > 2) shouldEqual List(false,false,true)
+  map(List(1,2,3,4,5))(_ > 2) shouldEqual List(false,false,true,true,true)
+}
+```
+
+
+--
+
+.sixty-seven-left[.center[
+## All output elements must be produced by `update`
+]]
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+test("map"){
+  map(Nil)(_ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    )(x => x) shouldEqual List(1,2,3)
+  map(List(1,2,3,4,5))(x => x) shouldEqual List(1,2,3,4,5)
+}
+```
+
+---
+# How can we test `map`?
+
+<br>
+<br>
+
+```scala
+test("map"){
+  map(Nil)(_ => ???) shouldEqual Nil
+
+  map(List(1,2,3)    )(identity) shouldEqual List(1,2,3)
+  map(List(1,2,3,4,5))(identity) shouldEqual List(1,2,3,4,5)
+}
+```
+
+<br>
+
+```scala:silent
+object Predef {
+  def identity[A](value: A): A = value
+}
+```
+
+---
+# Property Based Testing (PBT)
+
+<br>
+<br>
+
+```scala
+test("map"){
+  forAll((list: List[Int]) =>
+    map(list)(identity) shouldEqual list
+  )
+}
+```
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+
+# .white[Summary]
+
+<br>
+
+.medium[
+* More reusable
+
+* Caller decides which type to use
+
+* Implementation must be generic
+   * better documentation
+   * less tests
+]
+
+---
+# Not everything in a language should be used
+
+<br>
+
+```scala mdoc:silent
+class Spaceship {
+  private def autoDestroy(): Unit =
+    println("Boom!")
+}
+
+val shuttle = new Spaceship()
+```
+
+```scala mdoc:fail
+shuttle.autoDestroy()
+```
+
+---
+# Not everything in a language should be used
+
+<br>
+
+```scala mdoc:reset:silent
+class Spaceship {
+  private def autoDestroy(): Unit =
+    println("Boom!")
+}
+
+val shuttle = new Spaceship()
+```
+
+```scala mdoc:silent
+val method = classOf[Spaceship].getDeclaredMethod("autoDestroy")
+method.setAccessible(true)
+```
+
+```scala
+method.invoke(shuttle)
+// Boom!
+```
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

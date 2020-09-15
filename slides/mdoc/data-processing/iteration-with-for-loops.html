@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Iteration with for loops</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Iteration with for loops]
+
+---
+# For loop
+
+<br>
+
+```scala mdoc:reset:silent
+val list = List(1, 8, -3, 12)
+```
+
+```scala mdoc
+for (number <- list) {
+  println(s"number is $number")
+}
+```
+
+---
+# Without `s` String interpolator
+
+<br>
+
+```scala mdoc:reset:silent
+val list = List(1, 8, -3, 12)
+```
+
+```scala mdoc
+for (number <- list) {
+  println("number is $number")
+}
+```
+
+---
+# Other String interpolators
+
+.forty-two-left[
+## In standard library
+
+```scala mdoc
+println(f"PI is ${Math.PI}%1.2f")
+```
+]
+
+.fifty-two-right[
+## In other libraries
+
+```scala
+val subject = "functional programming"
+
+println(sql"subject = $subject")
+// res: Fragment = Fragment("subject = ?")
+```
+
+```scala
+val names = List("Eda", "Bob")
+
+json"{ names : $names }"
+// res: Json = "{ "names" : ["Eda", "Bob"] }"
+```
+]
+
+---
+# Code block: curly braces
+
+.forty-seven-left[
+## Optional
+
+```scala mdoc
+for (number <- list)
+  println(s"number is $number")
+```
+]
+
+.forty-seven-right[
+## Mandatory
+
+```scala mdoc
+for (number <- list) {
+  val square = number * number
+  println(s"number square is $square")
+}
+```
+]
+
+---
+# Code block: curly braces
+
+.forty-seven-left[
+## Optional
+
+```scala mdoc
+for (number <- list)
+  println(s"number is $number")
+```
+]
+
+.forty-seven-right[
+## Optional in Scala 3
+
+```scala
+for (number <- list)
+  val square = number * number
+  println(s"number square is $square")
+// number square is 1
+// number square is 64
+// number square is 9
+// number square is 144
+```
+]
+
+---
+# For loop is a syntax for foreach
+
+<br>
+
+.forty-seven-left[
+```scala mdoc
+for (number <- list)
+  println(s"number is $number")
+```
+]
+
+.forty-seven-right[
+```scala mdoc
+list.foreach(number =>
+  println(s"number is $number")
+)
+```
+]
+
+--
+
+<br><br><br><br><br><br><br><br><br>
+
+```scala
+trait List[A] {
+  def foreach[To](action: A => To): Unit
+}
+```
+
+---
+# For loop is a syntax for foreach
+
+<br>
+
+.forty-seven-left[
+```scala mdoc
+for (number <- list)
+  println(s"number is $number")
+```
+]
+
+.forty-seven-right[
+```scala mdoc
+list.foreach(number =>
+  println(s"number is $number")
+)
+```
+]
+
+<br><br><br><br><br><br><br><br><br>
+
+```scala
+trait List[A] {
+  def foreach[To](action: A => To): Unit
+  def map    [To](update: A => To): List[To]
+}
+```
+
+---
+# For loop is a syntax for foreach
+
+<br>
+
+.forty-seven-left[
+```scala mdoc
+for (number <- Point(1, 5))
+  println(s"number is $number")
+```
+]
+
+.forty-seven-right[
+```scala mdoc
+Point(1, 5).foreach(number =>
+  println(s"number is $number")
+)
+```
+]
+
+<br><br><br><br><br><br><br><br>
+
+```scala mdoc:silent
+case class Point(first: Int, second: Int) {
+  def foreach[To](action: Int => To): Unit = {
+    action(first)
+    action(second)
+  }
+}
+```
+
+---
+# Nested for loop
+
+```scala mdoc:reset:silent
+val shapes  = List("triangle", "square")
+val colours = List("red", "green", "blue")
+```
+
+.forty-seven-left[
+```scala mdoc
+for {
+  shape  <- shapes
+  colour <- colours
+} println(s"The $shape is $colour")
+```
+]
+
+.forty-seven-right[
+```scala mdoc
+shapes.foreach{ shape =>
+  colours.foreach { colour =>
+    println(s"The $shape is $colour")
+  }
+}
+```
+]
+
+---
+# Nested for loop with different data types
+
+```scala mdoc:reset:invisible
+case class Point(first: Int, second: Int) {
+  def foreach[To](action: Int => To): Unit = {
+    action(first)
+    action(second)
+  }
+}
+```
+
+```scala mdoc:silent
+val shapes = List("triangle", "square")
+val point  = Point(2, 5)
+```
+
+.forty-seven-left[
+```scala mdoc
+for {
+  shape  <- shapes
+  number <- point
+} println(s"There is $number ${shape}(s)")
+```
+]
+
+.forty-seven-right[
+```scala mdoc
+shapes.foreach{ shape =>
+  point.foreach { number =>
+    println(s"There is $number ${shape}(s)")
+  }
+}
+```
+]
+
+---
+# Use case
+
+.forty-seven-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int
+```
+
+```scala
+sum(List(1, 8, -3, 12))
+// res: Int = 18
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-0.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+---
+# For loop with mutable state
+
+.forty-seven-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total = total + number
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-1.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+
+---
+# For loop with mutable state
+
+.forty-seven-left[
+<br>
+```scala mdoc
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-1.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+---
+# For loop with mutable state
+
+.forty-seven-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-2.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+---
+# For loop with mutable state
+
+
+.forty-seven-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-3.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+---
+# For loop with mutable state
+
+
+.forty-seven-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-4.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+---
+# For loop with mutable state
+
+
+.forty-seven-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+
+```scala mdoc
+sum(List(1, 8, -3, 12))
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/iteration-for-sum-5.svg" alt="Sum with for loop" style="width:400px;"/>
+]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# ForLoopExercises.scala
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-1.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-2.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-3.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-4.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-5.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-6.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-7.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-8.svg)
+
+---
+background-image: url(../img/foundation/iteration-for-pattern-9.svg)
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# ForLoopExercises.scala
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br>
+
+# .white[Summary]
+
+<br>
+
+.large[
+* For loop syntax
+
+* Iterate over a List
+
+* foldLeft
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

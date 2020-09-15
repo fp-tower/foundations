@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Function as output</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+<a href="https://github.com/fp-tower/foundation">
+  <img src="../img/fp-tower/solid-color-logo.svg" alt="logo" style="width:800px;"/>
+</a>
+
+---
+class: center, middle
+
+# Function as output
+
+---
+# Functions as output
+
+<br>
+
+```scala
+def format(scale: Int, number: Double): String
+```
+
+<br>
+
+.center[
+<img src="../img/foundation/number-scale.svg" alt="scale" style="width:600px;"/>
+]
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:invisible
+def format(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala
+def format(scale: Int, number: Double): String
+```
+
+.forty-seven-left[
+<br>
+
+```scala mdoc
+format(2, 1234.12345678)
+
+format(5, 1234.12345678)
+```
+]
+
+.forty-seven-left[
+<img src="../img/foundation/number-scale.svg" alt="scale" style="width:600px;"/>
+]
+
+---
+# Functions as output
+
+<br>
+
+```scala mdoc:invisible
+def format2D(number: Double): String = format(2, number)
+def format5D(number: Double): String = format(5, number)
+```
+
+```scala
+def format(scale: Int, number: Double): String =
+  ...
+
+def format2D(number: Double): String = format(2, number)
+def format5D(number: Double): String = format(5, number)
+```
+
+<br>
+
+```scala mdoc
+format2D(1234.12345678)
+
+format5D(1234.12345678)
+```
+
+---
+# Functions as output
+
+<br>
+
+```scala
+def publishEvent(
+  hostname: String,
+  port    : Int,
+  topic   : String,
+  key     : String,
+  event   : Event
+): Unit
+```
+
+--
+
+<br>
+
+```scala
+def publishLocalEvent(topic: String, key: String, event: Event): Unit =
+  publishEvent("localhost", 9000, topic, key, event)
+```
+
+
+```scala
+def publishUatEvent(topic: String, key: String, event: Event): Unit =
+  publishEvent("uat-acme.com", 12450, topic, key, event)
+```
+
+---
+# Functions as output
+
+<br>
+
+```scala
+def publishEvent(
+  hostname: String,
+  port    : Int,
+  topic   : String,
+  key     : String,
+  event   : Event
+): Unit
+```
+
+<br>
+
+.sixty-seven-left[
+```scala
+def publishLocalEvent = publishEvent("localhost", 9000)
+def publishUatEvent   = publishEvent("uat-acme.com", 12450)
+```
+]
+
+.twenty-seven-right[
+## Pseudocode
+]
+
+
+---
+class: small-code
+
+# Functions as output
+
+<br>
+
+.forty-seven-left[
+```scala
+def format(scale: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def format(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc
+format(2, 1234.12345678)
+```
+<br>
+]
+
+.forty-seven-right[
+```scala mdoc:reset:invisible
+def format(scale: Int): Double => String =
+  BigDecimal(_).setScale(scale, BigDecimal.RoundingMode.FLOOR).toDouble.toString
+
+val format2D: Double => String = format(2)
+val format5D: Double => String = format(5)
+```
+
+```scala
+def format(scale: Int): Double => String
+```
+
+```scala mdoc
+format(2)(1234.12345678)
+```
+<br>
+]
+
+--
+
+## Currying
+
+```scala
+val function3: (Int ,  Int  ,  Int) => Int
+
+val function3: Int => (Int => (Int  => Int))
+```
+
+---
+class: small-code
+
+# Functions as output
+
+<br>
+
+.forty-seven-left[
+```scala
+def format(scale: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def format(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+```scala mdoc
+format(2, 1234.12345678)
+```
+<br>
+]
+
+.forty-seven-right[
+```scala mdoc:reset:invisible
+def format(scale: Int): Double => String =
+  BigDecimal(_).setScale(scale, BigDecimal.RoundingMode.FLOOR).toDouble.toString
+
+val format2D: Double => String = format(2)
+val format5D: Double => String = format(5)
+```
+
+```scala
+def format(scale: Int): Double => String
+```
+
+```scala mdoc
+format(2)(1234.12345678)
+```
+<br>
+]
+
+## Currying
+
+```scala
+val function3: (Int ,  Int  ,  Int) => Int
+
+val function3: Int =>  Int =>  Int  => Int
+```
+
+---
+# Partial function application
+
+<br>
+
+```scala
+def format(scale: Int): Double => String
+```
+
+<br>
+
+```scala
+val format2D = format(2)
+val format5D = format(5)
+```
+
+--
+
+<br>
+
+```scala mdoc
+format2D(1234.12345678)
+
+format5D(1234.12345678)
+```
+
+---
+# Syntax
+
+## Uncurried
+
+```scala
+def format(scale: Int, number: Double): String
+```
+
+## Curried
+
+```scala
+def format(scale: Int)(number: Double): String
+
+def format(scale: Int): Double => String
+
+val format: Int => Double => String
+```
+
+---
+# Conversion (Currying)
+
+<br>
+
+```scala
+def format(scale: Int, number: Double): String
+```
+
+```scala mdoc:reset:invisible
+def format(scale: Int, number: Double): String =
+  BigDecimal(number)
+    .setScale(scale, BigDecimal.RoundingMode.FLOOR)
+    .toDouble
+    .toString
+```
+
+--
+
+<br>
+
+```scala mdoc
+format _
+```
+
+--
+
+<br>
+
+```scala mdoc
+(format _).curried
+```
+
+---
+# Summary
+
+<br>
+
+.large[
+* A curried function can be partially applied
+
+* Only works from left to right arguments
+
+* One more thing ...
+]
+
+---
+class: center, middle
+
+# Exercise 2: Functions as output
+
+`exercises.function.FunctionExercises.scala`
+
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

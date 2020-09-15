@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 388 190" width="388" height="190">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="scala-seed-project-3b" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>scala-seed-project-3b</title>
+    <g id="scala-seed-project-3b_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_78">
+        <rect x="9" y="9" width="378" height="180" fill="#70a3d8"/>
+        <rect x="9" y="9" width="378" height="180" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14 14)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="149.977" y="21">project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_76">
+        <title>File</title>
+        <path d="M 162 95.549 C 162 85.1287 160.7427 83.8395 151.55847 73.527 L 151.46145 73.4203 C 142.22871 63 142.13268 63 132.65739 63 C 120.04083 63 63 63 63 63 L 63 173 L 162 173 L 162 95.549 Z" fill="#acbdd0"/>
+        <path d="M 162 95.549 C 162 85.1287 160.7427 83.8395 151.55847 73.527 L 151.46145 73.4203 C 142.22871 63 142.13268 63 132.65739 63 C 120.04083 63 63 63 63 63 L 63 173 L 162 173 L 162 95.549 Z M 162 95.0122 C 162 85.1287 161.90298 85.1287 142.13268 85.1287 L 142.13268 85.1287 C 142.13268 63.1078 142.13268 63 133.23753 63" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1135802"/>
+        <text transform="translate(63 90.996)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="6.993" y="17">Depencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="26.001" y="38.504">.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_77">
+        <title>File</title>
+        <path d="M 342 95.549 C 342 85.1287 340.7427 83.8395 331.55847 73.527 L 331.46145 73.4203 C 322.2287 63 322.13268 63 312.6574 63 C 300.04083 63 243 63 243 63 L 243 173 L 342 173 L 342 95.549 Z" fill="#acbdd0"/>
+        <path d="M 342 95.549 C 342 85.1287 340.7427 83.8395 331.55847 73.527 L 331.46145 73.4203 C 322.2287 63 322.13268 63 312.6574 63 C 300.04083 63 243 63 243 63 L 243 173 L 342 173 L 342 95.549 Z M 342 95.0122 C 342 85.1287 341.903 85.1287 322.13268 85.1287 L 322.13268 85.1287 C 322.13268 63.1078 322.13268 63 313.23753 63" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"/>
+        <text transform="translate(243 90.996)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="29.826" y="17">build</tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="6.327" y="38.504">.properties</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

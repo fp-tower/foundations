@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 514 199" width="514" height="199">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="scala-seed-project-2a" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>scala-seed-project-2a</title>
+    <g id="scala-seed-project-2a_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_74">
+        <rect x="9" y="27" width="504" height="171" fill="#70a3d8"/>
+        <rect x="9" y="27" width="504" height="171" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14 32)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="154.919" y="21">scala-seed-project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_75">
+        <rect x="279" y="90" width="99" height="81" fill="white" fill-opacity=".5"/>
+        <path d="M 279 90 L 378 90 L 378 171 L 279 171 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
+        <text transform="translate(284 117.18092)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="7.419" y="21">project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_102">
+        <rect x="396" y="90" width="99" height="81" fill="white" fill-opacity=".5"/>
+        <path d="M 396 90 L 495 90 L 495 171 L 396 171 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
+        <text transform="translate(401 117.18092)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="28.198" y="21">src</tspan>
+        </text>
+      </g>
+      <g id="Graphic_104">
+        <rect x="27" y="90" width="117" height="81" fill="white" fill-opacity=".5"/>
+        <path d="M 27 90 L 144 90 L 144 171 L 27 171 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
+        <text transform="translate(32 117.18092)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="3.813" y="21">.gitignore</tspan>
+        </text>
+      </g>
+      <g id="Graphic_103">
+        <rect x="162" y="90" width="99" height="81" fill="white" fill-opacity=".5"/>
+        <path d="M 162 90 L 261 90 L 261 171 L 162 171 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
+        <text transform="translate(167 103.86185)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="18.859" y="21">build</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="24.942" y="47.638153">.sbt</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

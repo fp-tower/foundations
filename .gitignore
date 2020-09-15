@@ -1,5 +1,6 @@
 # Generated files
 slides/docs/*.html
+slides/docs/*/*.html
 /docs/
 
 ## IntelliJ files to ignore
@@ -25,3 +26,6 @@ project/metals.sbt
 
 ## Mac
 .DS_Store
+
+## Data
+*.csv

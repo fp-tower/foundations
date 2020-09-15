@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 388 190" width="388" height="190">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="scala-seed-project-3a" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>scala-seed-project-3a</title>
+    <g id="scala-seed-project-3a_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_75">
+        <rect x="9" y="9" width="378" height="180" fill="#70a3d8"/>
+        <rect x="9" y="9" width="378" height="180" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14 14)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="149.977" y="21">project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_80">
+        <rect x="27" y="72" width="162" height="81" fill="white" fill-opacity=".5"/>
+        <path d="M 27 72 L 189 72 L 189 153 L 27 153 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
+        <text transform="translate(32 85.86185)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="1.046" y="21">Dependencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="45.255" y="47.638153">.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_82">
+        <rect x="207" y="72" width="162" height="81" fill="white" fill-opacity=".5"/>
+        <path d="M 207 72 L 369 72 L 369 153 L 207 153 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16.0,16.0" stroke-width="4"/>
+        <text transform="translate(212 85.86185)" fill="#589b9d">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="50.359" y="21">build</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#589b9d" x="19.174" y="47.638153">.properties</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

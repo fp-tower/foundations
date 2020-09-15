@@ -144,9 +144,9 @@ object GenericFunctionAnswers {
 
   def by[From]: ByOps[From] = new ByOps[From] {}
 
-  class ByOps[A] { // trick to partially apply type parameters
-    def apply[B](f: A => B)(predicate: Predicate[B]): Predicate[A] =
-      predicate.contramap(f)
+  class ByOps[From] { // trick to partially apply type parameters
+    def apply[To](zoom: From => To)(predicate: Predicate[To]): Predicate[From] =
+      predicate.contramap(zoom)
   }
 
   ////////////////////////////

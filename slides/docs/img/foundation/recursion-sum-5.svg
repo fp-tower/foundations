@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 631 325" width="631" height="325">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -4 10 8" markerWidth="10" markerHeight="8" color="#424242">
+      <g>
+        <path d="M 8 0 L 0 -3 L 0 3 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
+  <g id="recursion-sum-5" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+    <title>recursion-sum-5</title>
+    <g id="recursion-sum-5_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_25">
+        <rect x="324" y="117" width="62" height="99" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_49">
+        <rect x="478" y="18" width="152" height="306" fill="#70a3d8"/>
+        <rect x="478" y="18" width="152" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(483 23)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="42.884" y="21">Stack</tspan>
+        </text>
+      </g>
+      <g id="Graphic_50">
+        <rect x="495" y="91.28571" width="126" height="43.714286" fill="#589b9d"/>
+        <rect x="495" y="91.28571" width="126" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(500 99.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="36.11" y="21">+ 12</tspan>
+        </text>
+      </g>
+      <g id="Graphic_52">
+        <rect x="495" y="145.28571" width="126" height="43.714286" fill="#589b9d"/>
+        <rect x="495" y="145.28571" width="126" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(500 153.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="32.249" y="21">+ (-3)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_53">
+        <rect x="495" y="199.28571" width="126" height="43.714286" fill="#589b9d"/>
+        <rect x="495" y="199.28571" width="126" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(500 207.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="42.226" y="21">+ 8</tspan>
+        </text>
+      </g>
+      <g id="Graphic_54">
+        <rect x="495" y="253.2857" width="126" height="43.714286" fill="#589b9d"/>
+        <rect x="495" y="253.2857" width="126" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(500 261.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="45.284" y="21">+1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_55">
+        <text transform="translate(230 157.384)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8.687501" y="21">sum</tspan>
+        </text>
+      </g>
+      <g id="Graphic_57">
+        <text transform="translate(340.813 293)" fill="#424242">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="700" fill="#424242" x="0" y="21">Nil</tspan>
+        </text>
+      </g>
+      <g id="Line_56">
+        <line x1="354.68717" y1="288" x2="354.8419" y2="227.89997" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

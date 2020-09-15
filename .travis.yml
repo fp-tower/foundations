@@ -30,7 +30,12 @@ before_cache:
 script:
    - sbt ++$TRAVIS_SCALA_VERSION testAnswers
    - npm install -g decktape
-   - bin/gen-pdf.sh
+   - sbt slides/mdoc
+   - travis_wait bin/gen-pdf.sh -f "*.html"
+   - travis_wait bin/gen-pdf.sh -f "value-functions/*.html"
+   - travis_wait bin/gen-pdf.sh -f "generic-functions/*.html"
+   - travis_wait bin/gen-pdf.sh -f "data-processing/*.html"
+   - travis_wait bin/gen-pdf.sh -f "bonus/*.html"
 
 deploy:
    provider: pages
@@ -38,5 +43,6 @@ deploy:
    skip_cleanup: true
    github_token: $GH_TOKEN
    on:
-      branch: master
-      condition: $TRAVIS_PULL_REQUEST="false"
+      branch: data-processing
+#      branch: master
+#      condition: $TRAVIS_PULL_REQUEST="false"
