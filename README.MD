@@ -21,8 +21,8 @@ We’ll discuss what the difference is between them and when we should use each 
 * Learn the various syntaxes for functions including the use of `_` (the underscore character)
 
 ### Slides
-1. [Val vs Def functions](https://fp-tower.github.io/foundations/val-vs-def-functions.html#1)
-1. [Function as inputs](https://fp-tower.github.io/foundations/function-as-inputs.html#1)
+1. [Val vs Def functions](https://fp-tower.github.io/foundations/value-functions/val-vs-def-functions.html#1)
+1. [Function as inputs](https://fp-tower.github.io/foundations/value-functions/function-as-inputs.html#1)
 
 
 ## 2. Generic functions
@@ -41,8 +41,8 @@ as well as how to avoid the common pitfalls related to type parameters.
 * Learn how to create and use custom random generators for property-based testing
 
 ### Slides
-1. [Generic functions - part 1](https://fp-tower.github.io/foundations/generic-functions-part-1.html#1)
-1. [Generic functions - part 2](https://fp-tower.github.io/foundations/generic-functions-part-2.html#1)
+1. [Generic functions - part 1](https://fp-tower.github.io/foundations/generic-functions/generic-functions-part-1.html#1)
+1. [Generic functions - part 2](https://fp-tower.github.io/foundations/generic-functions/generic-functions-part-2.html#1)
 
 ## 3. Parallel data processing
 
@@ -60,10 +60,10 @@ average temperature.
 * Work with Future from the Scala standard library
 
 ### Slides
-1. [Introduction](https://blog.fp-tower.com/foundations/parallel-data-processing.html#1)
-1. [Iteration with for loops](https://fp-tower.github.io/foundations/iteration-with-for-loops.html#1)
-1. [Recursions](https://fp-tower.github.io/foundations/recursions.html#1)
-1. [Analysis of global temperature](https://fp-tower.github.io/foundations/analysis-of-global-temperature.html#1)
+1. [Introduction](https://blog.fp-tower.com/foundations/data-processing/parallel-data-processing.html#1)
+1. [Iteration with for loops](https://fp-tower.github.io/foundations/data-processing/iteration-with-for-loops.html#1)
+1. [Recursions](https://fp-tower.github.io/foundations/data-processing/recursions.html#1)
+1. [Analysis of global temperature](https://fp-tower.github.io/foundations/data-processing/analysis-of-global-temperature.html#1)
 
 
 ## 4. What is functional programming?
@@ -105,10 +105,6 @@ we can safely deal with errors in Scala.
 * Discover variance and how it can help type inference
 * Practice how to combine actions (IO) and error handling (Option/Either)
 
-## Bonus
-
-1. [List](https://fp-tower.github.io/foundations/list.html#1)
-1. [Ad-hoc-polymorphism](https://fp-tower.github.io/foundations/ad-hoc-polymorphism.html#1)
 
 [licence]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 [patreon]: https://www.patreon.com/bePatron?u=10482033

@@ -30,7 +30,12 @@ before_cache:
 script:
    - sbt ++$TRAVIS_SCALA_VERSION testAnswers
    - npm install -g decktape
-   - travis_wait 30 bin/gen-pdf.sh -b
+   - sbt slides/mdoc
+   - travis_wait bin/gen-pdf.sh -f "*.html"
+   - travis_wait bin/gen-pdf.sh -f "value-functions/*.html"
+   - travis_wait bin/gen-pdf.sh -f "generic-functions/*.html"
+   - travis_wait bin/gen-pdf.sh -f "data-processing/*.html"
+   - travis_wait bin/gen-pdf.sh -f "bonus/*.html"
 
 deploy:
    provider: pages
