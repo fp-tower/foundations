@@ -9,16 +9,16 @@ import FileAnswers._
 class FileAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   val scalaSeedProject = new File(getClass.getResource("/scala-seed-project").toURI)
 
-  test("diskUsage") {
+  ignore("diskUsage") {
     assert(diskUsageImperative(scalaSeedProject) == 1946)
     assert(diskUsage(scalaSeedProject) == 1946)
   }
 
-  test("largestFileSize") {
+  ignore("largestFileSize") {
     assert(largestFileSize(scalaSeedProject) == 447)
   }
 
-  test("filterFiles") {
+  ignore("filterFiles") {
     assert(
       filterFiles(scalaSeedProject, _.getName.endsWith(".scala")).map(_.getName) ==
         List("Dependencies.scala", "HelloSpec.scala", "Hello.scala")
