@@ -13,7 +13,7 @@ class FileAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(scalaSeedProject.listFiles().map(_.getName).toList == Nil)
   }
 
-  test("sub dir") {
+  test("path") {
     assert(scalaSeedProject.getAbsolutePath == "")
   }
 
