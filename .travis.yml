@@ -1,7 +1,7 @@
 language: scala
 
 scala:
-   - 2.13.1
+   - 2.13.3
 
 jdk:
    - oraclejdk11
@@ -28,7 +28,7 @@ before_cache:
    - rm -rf $HOME/.ivy2/local
 
 script:
-   - sbt ++$TRAVIS_SCALA_VERSION testAnswers
+   - sbt ++$TRAVIS_SCALA_VERSION test
    - npm install -g decktape
    - sbt slides/mdoc
    - travis_wait bin/gen-pdf.sh -f "*.html"
@@ -43,6 +43,5 @@ deploy:
    skip_cleanup: true
    github_token: $GH_TOKEN
    on:
-      branch: data-processing
-#      branch: master
-#      condition: $TRAVIS_PULL_REQUEST="false"
+      branch: master
+      condition: $TRAVIS_PULL_REQUEST="false"

@@ -10,12 +10,14 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
   // Exercise 1: String API with higher-order functions
   /////////////////////////////////////////////////////
 
-  test("selectDigits examples") {
+  // replace `ignore` by `test` to enable the test
+  ignore("selectDigits examples") {
     assert(selectDigits("hello4world-80") == "480")
     assert(selectDigits("welcome") == "")
   }
 
-  test("selectDigits length is smaller") {
+  // replace `ignore` by `test` to enable the test
+  ignore("selectDigits length is smaller") {
     forAll { (text: String) =>
       assert(selectDigits(text).length <= text.length)
     }
