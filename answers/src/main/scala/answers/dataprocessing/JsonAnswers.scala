@@ -3,18 +3,17 @@ package answers.dataprocessing
 object JsonAnswers {
 
   sealed trait Json
-  case class JsonNumber(num: Double)            extends Json
-  case class JsonString(str: String)            extends Json
+  case class JsonNumber(number: Double)         extends Json
+  case class JsonString(text: String)           extends Json
   case class JsonObject(obj: Map[String, Json]) extends Json
 
-  def upperCase(json: Json): Json =
+  def trimAll(json: Json): Json =
     json match {
       case _: JsonNumber   => json
-      case JsonString(str) => JsonString(str.toUpperCase)
+      case JsonString(str) => JsonString(str.trim)
       case JsonObject(obj) =>
         JsonObject(obj.map {
-          case (key, value) =>
-            key -> upperCase(value)
+          case (key, value) => key -> trimAll(value)
         })
     }
 
@@ -27,6 +26,13 @@ object JsonAnswers {
           case (key, value) =>
             key -> anonymize(value)
         })
+    }
+
+  def search(json: Json, searchText: String): Boolean =
+    json match {
+      case _: JsonNumber    => false
+      case JsonString(text) => text.contains(searchText)
+      case JsonObject(obj)  => obj.values.exists(search(_, searchText))
     }
 
   def depth(json: Json): Int =

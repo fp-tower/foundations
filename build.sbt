@@ -13,7 +13,8 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-language:postfixOps",
     "-unchecked",
     "-Ywarn-value-discard",
-//    "-Wconf:cat=unchecked:e", // uncomment to transform type erasure warnings into errors
+//    "-Wconf:cat=other-match-analysis:error", // uncomment to transform non-exhaustive warnings into errors
+//    "-Wconf:cat=unchecked:error",            // uncomment to transform type erasure warnings into errors
   ),
   addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(

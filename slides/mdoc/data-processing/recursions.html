@@ -122,6 +122,452 @@ val eda = Person("Eda", List(joe, eve))
 ]
 
 ---
+# Recursive data structures
+
+.forty-seven-left[
+## JSON
+
+```json
+{
+  "name": "John Doe",
+  "age": 25,
+  "address": {
+    "street": {
+      "number" : 12,
+      "name" : "Cody road"
+    },
+    "country": "UK",
+  }
+}
+```
+]
+
+.forty-seven-right[
+## YAML
+
+```yaml
+name: John Doe
+age: 25
+address:
+  street: 12
+    number: 12
+    name: Cody road
+  country: UK
+```
+]
+
+---
+# Recursive data structures
+
+.forty-seven-left[
+## JSON
+
+```json
+{
+  "name": "John Doe",
+  "age": 25,
+  "address": {
+    "street": {
+      "number" : 12,
+      "name" : "Cody road"
+    },
+    "country": "UK",
+  }
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+# Is JSON a case class?
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+case class Json(
+  number: Double,
+  text  : String,
+  obj   : Map[String, Json],
+)
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+# Is JSON a case class?
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset:silent
+case class Json(
+  number: Option[Double],
+  text  : Option[String],
+  obj   : Option[Map[String, Json]],
+)
+
+val json = Json(
+  number = None,
+  text   = Some("John Doe"),
+  obj    = None
+)
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+# Is JSON a case class?
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset:silent
+case class Json(
+  number: Option[Double],
+  text  : Option[String],
+  obj   : Option[Map[String, Json]],
+)
+
+val json1 = Json(
+  Some(25),
+  Some("John Doe"),
+  None
+)
+
+val json2 = Json(None, None, None)
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+class: medium-code
+
+# JSON is an enumeration
+
+.forty-seven-left[
+```scala
+enum Json {
+
+  // Leaves
+  case JsonNumber(number: Double)
+  case JsonString(text  : String)
+
+  // Branch
+  case JsonObject(obj: Map[String, Json])
+
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+---
+class: medium-code
+
+# JSON is an enumeration
+
+.forty-seven-left[
+```scala
+enum Json {
+
+  // Leaves
+  case JsonNumber(number: Double)
+  case JsonString(text  : String)
+
+  // Branch
+  case JsonObject(obj: Map[String, Json])
+
+}
+
+val json1: Json = Json.JsonNumber(25)
+
+import Json._
+
+val json2: Json = JsonString("John Doe")
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+]
+
+
+---
+class: medium-code
+# JSON is an enumeration
+
+.forty-seven-left[
+## In Scala 3
+
+```scala
+enum Json {
+
+  // Leaves
+  case JsonNumber(number: Double)
+  case JsonString(text  : String)
+
+  // Branch
+  case JsonObject(obj: Map[String, Json])
+
+}
+```
+]
+
+.fifty-two-right[
+## In Scala 2
+
+```scala mdoc:reset
+sealed trait Json
+
+// Leaves
+case class JsonNumber(number: Double) extends Json
+case class JsonString(text  : String) extends Json
+
+// Branch
+case class JsonObject(obj: Map[String, Json])
+  extends Json
+```
+]
+
+---
+class: medium-code
+# JSON is an enumeration
+
+<br>
+
+.fifty-two-left[
+```scala
+sealed trait Json
+
+// Leaves
+case class JsonNumber(number: Double) extends Json
+case class JsonString(text  : String) extends Json
+
+// Branch
+case class JsonObject(obj: Map[String, Json])
+  extends Json
+```
+]
+
+.forty-two-right[
+<br>
+```scala mdoc
+val number = JsonNumber(12)
+
+val json: Json = JsonNumber(12)
+```
+]
+
+---
+# Working with enumeration
+
+<br>
+
+```scala mdoc:silent
+val john: Json = JsonObject(Map(
+  "name"    -> JsonString("John Doe"),
+  "age"     -> JsonNumber(25),
+  "email"   -> JsonString(" john@doe.com  "),
+  "address" -> JsonObject(Map(
+    "street-number" -> JsonNumber(12),
+    "post-code"     -> JsonString("E16 4SR  "),
+  ))
+))
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  ???
+```
+
+
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case JsonNumber(num)  => ???
+    case JsonString(text) => ???
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case JsonNumber(num) => ???
+    case JsonObject(obj) => ???
+  }
+// warning: match may not be exhaustive.
+// It would fail on the following input: JsonString(_)
+//   json match {
+//   ^^^^
+```
+
+## Transform this warning into an error
+
+```scala
+scalacOptions += "-Wconf:cat=other-match-analysis:error"
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case JsonNumber(num)  => JsonNumber(num) // do nothing
+    case JsonString(text) => ???
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => ???
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => JsonString(text.trim)
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => JsonString(text.trim)
+    case JsonObject(obj)  =>
+      val newObj = obj.map {
+        case (key, value) => (key, trimAll(value))
+      }
+      JsonObject(newObj)
+  }
+```
+
+---
+class: medium-code
+
+# Working with enumeration
+
+```scala mdoc
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => JsonString(text.trim)
+    case JsonObject(obj)  =>
+      val newObj = obj.map {
+        case (key, value) => (key, trimAll(value))
+      }
+      JsonObject(newObj)
+  }
+```
+
+.fifty-two-left[
+```scala mdoc:invisible
+trimAll(john)
+```
+
+```scala
+john
+// john: Json = JsonObject(Map(
+//   "name"    -> JsonString("John Doe"),
+//   "age"     -> JsonNumber(25),
+//   "email"   -> JsonString(" john@doe.com  "),
+//   "address" -> JsonObject(Map(
+//     "street-number" -> JsonNumber(12),
+//     "post-code"     -> JsonString("E16 4SR  "),
+// ))
+```
+]
+
+.forty-seven-right[
+```scala
+trimAll(john)
+// res: Json = JsonObject(Map(
+//   "name"    -> JsonString("John Doe"),
+//   "age"     -> JsonNumber(25),
+//   "email"   -> JsonString("john@doe.com"),
+//   "address" -> JsonObject(Map(
+//     "street-number" -> JsonNumber(12),
+//     "post-code"     -> JsonString("E16 4SR"),
+// ))
+```
+]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# JsonExercises.scala
+
+---
 class: medium-code
 
 # Recursive data structures
@@ -811,252 +1257,6 @@ background-image: url(../img/fp-tower/website-background-white.svg)
 class: middle, white
 
 # FileExercises.scala
-
----
-# Recursive data structures
-
-.forty-seven-left[
-## JSON
-
-```json
-{
-  "name": "John Doe",
-  "age": 25,
-  "address": {
-    "street": {
-      "number" : 12,
-      "name" : "Cody road"
-    },
-    "country": "UK",
-  }
-}
-```
-]
-
-.forty-seven-right[
-## YAML
-
-```yaml
-name: John Doe
-age: 25
-address:
-  street: 12
-    number: 12
-    name: Cody road
-  country: UK
-```
-]
-
----
-# Recursive data structures
-
-.forty-seven-left[
-## JSON
-
-```json
-{
-  "name": "John Doe",
-  "age": 25,
-  "address": {
-    "street": {
-      "number" : 12,
-      "name" : "Cody road"
-    },
-    "country": "UK",
-  }
-}
-```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
-]
-
----
-class: medium-code
-
-# Enumeration
-
-.forty-seven-left[
-```scala
-enum Json {
-
-  // Leaves
-  case JsonNumber(value: Double)
-  case JsonString(value: String)
-
-  // Branch
-  case JsonObject(value: Map[String, Json])
-
-}
-```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
-]
-
----
-class: medium-code
-# Enumeration
-
-.forty-seven-left[
-## In Scala 3
-
-```scala
-enum Json {
-
-  // Leaves
-  case JsonNumber(value: Double)
-  case JsonString(value: String)
-
-  // Branch
-  case JsonObject(value: Map[String, Json])
-
-}
-```
-]
-
-.fifty-two-right[
-## In Scala 2
-
-```scala mdoc
-sealed trait Json
-
-// Leaves
-case class JsonNumber(value: Double) extends Json
-case class JsonString(value: String) extends Json
-
-// Branch
-case class JsonObject(value: Map[String, Json])
-  extends Json
-```
-]
-
----
-class: medium-code
-
-# Constructor
-
-.forty-seven-left[
-```scala
-import Json._
-
-val john: Json = JsonObject(Map(
-  "name"    -> JsonString("John Doe"),
-  "age"     -> JsonNumber(25),
-  "address" -> JsonObject(Map(
-    "street" -> JsonObject(Map(
-      "number" -> JsonNumber(25),
-      "name"   -> JsonString("Cody Road")
-    ))
-  ))
-))
-```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
-]
-
----
-class: medium-code
-
-# Pattern match
-
-.forty-two-left[
-```scala
-def upperCase(json: Json): Json =
-  json match {
-    case JsonNumber(num) =>
-      ???
-    case JsonString(str) =>
-      ???
-    case JsonObject(obj) =>
-      ???
-  }
-```
-]
-
----
-class: medium-code
-
-# Pattern match
-
-.forty-two-left[
-```scala
-def upperCase(json: Json): Json =
-  json match {
-    case JsonNumber(num) =>
-      JsonNumber(num)
-    case JsonString(str) =>
-      JsonString(str.toUpperCase)
-    case JsonObject(obj) =>
-      ???
-  }
-```
-]
-
----
-class: medium-code
-
-# Pattern match
-
-.forty-two-left[
-```scala mdoc
-def upperCase(json: Json): Json =
-  json match {
-    case JsonNumber(num) =>
-      JsonNumber(num)
-    case JsonString(str) =>
-      JsonString(str.toUpperCase)
-    case JsonObject(obj) =>
-      JsonObject(obj.map {
-        case (key, value) =>
-          key -> upperCase(value)
-      })
-  }
-```
-]
-
-.fifty-two-right[
-```scala mdoc:invisible
-val john: Json = JsonObject(Map(
-  "name"    -> JsonString("John Doe"),
-  "age"     -> JsonNumber(25),
-  "address" -> JsonObject(Map(
-    "street" -> JsonObject(Map(
-      "number" -> JsonNumber(25),
-      "name"   -> JsonString("Cody Road")
-    ))
-  ))
-))
-
-upperCase(john)
-```
-
-```scala
-upperCase(john)
-// res: Json = JsonObject(Map(
-//   "name" -> JsonString("JOHN DOE"),
-//   "age"  -> JsonNumber(25.0),
-//   "address" -> JsonObject(Map(
-//     "street" -> JsonObject(Map(
-//       "number" -> JsonNumber(25.0),
-//       "name" -> JsonString("CODY ROAD"))
-//     ))
-//   )
-// ))
-```
-]
-
-
----
-background-image: url(../img/fp-tower/website-background-white.svg)
-
-class: middle, white
-
-# JsonExercises.scala
 
 ---
 # Recursion
