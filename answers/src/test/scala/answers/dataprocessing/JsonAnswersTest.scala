@@ -53,11 +53,15 @@ class JsonAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   }
 
   test("search") {
-    assert(search(JsonObject(Map.empty), "ll") == false)
-    assert(search(JsonNumber(5), "ll") == false)
-    assert(search(JsonString("Hello"), "ll") == true)
-    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ll") == true)
-    assert(search(JsonObject(Map("message" -> JsonString("hi"))), "ll") == false)
+    assert(search(JsonObject(Map.empty), "ll", 5) == false)
+    assert(search(JsonNumber(5), "ll", 5) == false)
+    assert(search(JsonString("Hello"), "ll", 5) == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ll", 5) == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ss", 5) == false)
+    assert(search(JsonObject(Map("message" -> JsonString("hi"))), "ll", 5) == false)
+
+    assert(search(JsonObject(Map("user" -> JsonObject(Map("name" -> JsonString("John"))))), "o", 2) == true)
+    assert(search(JsonObject(Map("user" -> JsonObject(Map("name" -> JsonString("John"))))), "o", 1) == false)
   }
 
   test("depth") {

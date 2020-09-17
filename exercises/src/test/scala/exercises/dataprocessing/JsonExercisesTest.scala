@@ -57,6 +57,7 @@ class JsonExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks 
     assert(search(JsonNumber(5), "ll") == false)
     assert(search(JsonString("Hello"), "ll") == true)
     assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ll") == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ss") == false)
     assert(search(JsonObject(Map("message" -> JsonString("hi"))), "ll") == false)
   }
 

@@ -23,18 +23,11 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-15 20:00:39 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-17 16:28:42 +0000</metadata>
   <g id="file-tree-stack-safety" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
     <title>file-tree-stack-safety</title>
     <g id="file-tree-stack-safety_Layer_1">
       <title>Layer 1</title>
-      <g id="Graphic_58">
-        <ellipse cx="256.5" cy="54.64286" rx="85.5001366206121" ry="35.3571993543885" fill="#589b9d"/>
-        <ellipse cx="256.5" cy="54.64286" rx="85.5001366206121" ry="35.3571993543885" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(193.1 43.89086)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="44.068" y="17">Root</tspan>
-        </text>
-      </g>
       <g id="Graphic_69">
         <ellipse cx="256.5" cy="180.64286" rx="49.5000790961439" ry="35.3571993543884" fill="#589b9d"/>
         <ellipse cx="256.5" cy="180.64286" rx="49.5000790961439" ry="35.3571993543884" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
@@ -134,6 +127,13 @@
       <g id="Graphic_117">
         <text transform="translate(431 419)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.176" y="15">Legend</tspan>
+        </text>
+      </g>
+      <g id="Graphic_120">
+        <ellipse cx="256.5" cy="54.64286" rx="49.5000790961439" ry="35.3571993543885" fill="#589b9d"/>
+        <ellipse cx="256.5" cy="54.64286" rx="49.5000790961439" ry="35.3571993543885" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(221.9 43.89086)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="15.267998" y="17">Root</tspan>
         </text>
       </g>
     </g>

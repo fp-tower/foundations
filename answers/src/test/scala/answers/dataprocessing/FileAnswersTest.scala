@@ -7,10 +7,11 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import FileAnswers._
 
 class FileAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
-  val scalaSeedProject = new File(getClass.getResource("/scala-seed-project").toURI)
+  val scalaSeedProject = new File("/Users/julien/project/foundations/answers/src/main/resources/scala-seed-project")
 
   test("diskUsage") {
-    assert(diskUsageImperative(scalaSeedProject) == diskUsage(scalaSeedProject))
+    assert(diskUsageImperative(scalaSeedProject) == 1986)
+    assert(diskUsage(scalaSeedProject) == 1986)
   }
 
   test("largestFileSize") {

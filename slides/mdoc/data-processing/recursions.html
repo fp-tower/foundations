@@ -616,25 +616,14 @@ $ du -b .
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
 import java.io.File
-import scala.collection.mutable
 
-def diskUsage(file: File): Long = {
-  if(!file.isDirectory)
-    file.length()
-  else {
-    var total = 0L
-
-    for (child <- file.listFiles())
-      total += child.length()
-
-    total
-  }
-}
+def diskUsage(file: File): Long =
+  ???
 ```
 ]
 
@@ -644,12 +633,56 @@ def diskUsage(file: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
 import java.io.File
-import scala.collection.mutable
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    ???
+  else // normal file
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<br>
+<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+]]
+
+---
+# Imperative approach
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory) {
+    var total = 0L
+
+    for (child <- file.listFiles())
+      total += child.length()
+
+    total
+  } else
+    file.length()
+```
+]
+
+.forty-seven-right[.center[
+<br>
+<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+]]
+
+---
+# Imperative approach
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
 
 def diskUsage(file: File): Long = {
   var total = file.length()
@@ -670,7 +703,7 @@ def diskUsage(file: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -701,7 +734,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -731,7 +764,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -761,7 +794,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -791,7 +824,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -821,7 +854,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -851,7 +884,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -881,7 +914,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -911,7 +944,7 @@ def diskUsage(input: File): Long = {
 ]]
 
 ---
-# File system: disk usage
+# Recursive approach
 
 .forty-seven-left[
 <br>
@@ -932,7 +965,7 @@ def diskUsage(file: File): Long =
 ]]
 
 ---
-# File system: disk usage
+# Recursive approach
 
 .forty-seven-left[
 <br>
@@ -955,7 +988,7 @@ def diskUsage(file: File): Long =
 ]]
 
 ---
-# File system: disk usage
+# Recursive approach
 
 .forty-seven-left[
 <br>
@@ -1016,9 +1049,9 @@ import java.io.File
 def diskUsage(file: File): Long =
   if(file.isDirectory) {
     val childrenDiskUsage = file
-      .listFiles      // Array[File]
-      .map(diskUsage) // Array[Long]
-      .sum            // Long
+      .listFiles
+      .map(diskUsage)
+      .sum
 
     file.length() + childrenDiskUsage
   } else
@@ -1251,12 +1284,173 @@ background-image: url(../img/foundation/file-tree.svg)
 ---
 background-image: url(../img/foundation/file-tree-stack-safety.svg)
 
+
 ---
-background-image: url(../img/fp-tower/website-background-white.svg)
+# JVM memory model
 
-class: middle, white
+.center[
+<img src="../img/foundation/jvm-memory-1.svg" alt="JVM memory model one stack" style="width:700px;"/>
+]
 
-# FileExercises.scala
+---
+# JVM memory model
+
+.center[
+<img src="../img/foundation/jvm-memory-2.svg" alt="JVM memory model several stacks" style="width:700px;"/>
+]
+
+---
+background-image: url(../img/foundation/tree-elements-1.svg)
+
+# How many elements?
+
+---
+background-image: url(../img/foundation/tree-unbalanced.svg)
+
+# Unbalanced tree
+
+---
+background-image: url(../img/foundation/tree-elements-2.svg)
+
+# How many elements?
+
+---
+background-image: url(../img/foundation/deep-linked-list.svg)
+
+# List
+
+---
+# List
+
+.forty-seven-left[
+```scala
+enum List[+A] {
+
+  case Nil
+  case ::(head: A, tail: List[A])
+
+}
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/deep-linked-list.svg" alt="Linked list" style="width:450px;"/>
+]
+
+---
+# Recursive sum
+
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  ???
+```
+
+---
+# Recursive sum
+
+<br>
+.forty-seven-left[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => ???
+    case head :: tail => ???
+  }
+```
+]
+
+.forty-seven-right[
+```scala
+enum List[+A] {
+  case Nil
+  case ::(head: A, tail: List[A])
+}
+```
+]
+
+---
+# Recursive sum
+
+<br>
+.forty-seven-left[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => ???
+    case head :: tail => ???
+  }
+```
+
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil            => ???
+    case ::(head, tail) => ???
+  }
+```
+]
+
+.forty-seven-right[
+```scala
+enum List[+A] {
+  case Nil
+  case ::(head: A, tail: List[A])
+}
+```
+]
+
+---
+# Recursive sum
+
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => 0
+    case head :: tail => sum(tail) + head
+  }
+```
+
+
+---
+# Recursive sum
+
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => 0
+    case head :: tail => sum(tail) + head
+  }
+```
+
+<br>
+
+.thirty-seven-left[
+```scala mdoc
+sum(List(1,2,3,4,5))
+```
+]
+
+.fifty-seven-right[
+```scala
+val largeList = List.range(1, 10000)
+// largeList: List[Int] = List(1,2,3,4,...,10000)
+
+sum(largeList)
+// java.lang.StackOverflowError
+```
+]
+
+```scala mdoc:invisible
+val largeList = List.range(1, 10000)
+```
+
+```scala mdoc:crash:invisible
+sum(largeList)
+```
+
 
 ---
 # Recursion

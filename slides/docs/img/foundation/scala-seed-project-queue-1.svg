@@ -8,7 +8,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-15 20:00:39 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-17 16:28:42 +0000</metadata>
   <g id="scala-seed-project-queue-1" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
     <title>scala-seed-project-queue-1</title>
     <g id="scala-seed-project-queue-1_Layer_1">
@@ -20,28 +20,28 @@
       </g>
       <g id="Graphic_108">
         <rect x="207" y="261" width="252" height="306" fill="#589b9d"/>
-        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(212 266)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.594" y="21">Queue</tspan>
         </text>
       </g>
       <g id="Graphic_107">
-        <rect x="227.1908" y="334.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
-        <rect x="227.1908" y="334.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 233.1908 334.2857 L 437.54605 334.2857 C 440.85976 334.2857 443.54605 336.972 443.54605 340.2857 L 443.54605 372 C 443.54605 375.3137 440.85976 378 437.54605 378 L 233.1908 378 C 229.87708 378 227.1908 375.3137 227.1908 372 L 227.1908 340.2857 C 227.1908 336.972 229.87708 334.2857 233.1908 334.2857 Z" fill="#70a3d8"/>
+        <path d="M 233.1908 334.2857 L 437.54605 334.2857 C 440.85976 334.2857 443.54605 336.972 443.54605 340.2857 L 443.54605 372 C 443.54605 375.3137 440.85976 378 437.54605 378 L 233.1908 378 C 229.87708 378 227.1908 375.3137 227.1908 372 L 227.1908 340.2857 C 227.1908 336.972 229.87708 334.2857 233.1908 334.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(232.1908 342.83486)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.096635" y="21">scala-seed-project</tspan>
         </text>
       </g>
       <g id="Graphic_109">
-        <rect x="54" y="361.2857" width="81" height="70.714286" fill="#70a3d8"/>
-        <rect x="54" y="361.2857" width="81" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(59 383.33486)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="29.384" y="21">0</tspan>
+        <rect x="72" y="433.2857" width="72" height="70.714286" fill="#70a3d8"/>
+        <rect x="72" y="433.2857" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(77 455.33486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.884" y="21">0</tspan>
         </text>
       </g>
       <g id="Graphic_110">
-        <text transform="translate(65 329)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.4655005" y="21">Total</tspan>
+        <text transform="translate(79 401)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8.093501" y="21">total</tspan>
         </text>
       </g>
     </g>

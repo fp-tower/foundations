@@ -27,7 +27,7 @@ object JsonExercises {
   //  "name": "John Doe",                         "name": "***",
   //  "age": 25,                                  "age": 0,
   //  "address": {                                "address": {
-  //    "street": {             anonymize             "street": {
+  //    "street": {             anonymize           "street": {
   //      "number" : 12,           ==>                "number" : 0,
   //      "name" : "Cody road"                        "name" : "***"
   //    },                                          },
@@ -38,12 +38,16 @@ object JsonExercises {
     ???
 
   // b. Implement `search`, a method that check if a JSON document contains a text.
+  // Note: `search` doesn't look inside of the keys of a `JsonObject`, only the values.
   // For example:
   // * search({ }, "ll") == false
   // * search(5, "ll") == false
   // * search("Hello", "ll") == true
-  // * search({ "message" -> "hello" }, "ll") == true
-  // * search({ "message" -> "hi" }, "ll") == false
+  // * search({ "message" : "hello" }, "ll") == true
+  // * search({ "message" : "hi" }, "ll") == false
+  // Bonus: add an extra parameter to search so that it limits the depth of the search.
+  // such as search({ "user" : { "name" : "John" } }, "o", 2) == true
+  // but     search({ "user" : { "name" : "John" } }, "o", 1) == false because "John" is at depth 2
   def search(json: Json, text: String): Boolean =
     ???
 
@@ -58,5 +62,7 @@ object JsonExercises {
   // * { "name" : "john", "address" : { "postcode" : "E16 4SR" } } has depth 2
   def depth(json: Json): Int =
     ???
+
+  // d. Add the missing cases to JSON enumeration: JsonBoolean, JsonArray and JsonNull.
 
 }

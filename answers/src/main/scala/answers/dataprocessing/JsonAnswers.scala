@@ -28,12 +28,14 @@ object JsonAnswers {
         })
     }
 
-  def search(json: Json, searchText: String): Boolean =
-    json match {
-      case _: JsonNumber    => false
-      case JsonString(text) => text.contains(searchText)
-      case JsonObject(obj)  => obj.values.exists(search(_, searchText))
-    }
+  def search(json: Json, searchText: String, maxDepth: Int): Boolean =
+    if (maxDepth < 0) false
+    else
+      json match {
+        case _: JsonNumber    => false
+        case JsonString(text) => text.contains(searchText)
+        case JsonObject(obj)  => obj.values.exists(search(_, searchText, maxDepth - 1))
+      }
 
   def depth(json: Json): Int =
     json match {

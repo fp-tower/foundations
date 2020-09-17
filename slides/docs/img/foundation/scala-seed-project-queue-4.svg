@@ -13,7 +13,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-15 20:00:39 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-17 16:28:42 +0000</metadata>
   <g id="scala-seed-project-queue-4" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
     <title>scala-seed-project-queue-4</title>
     <g id="scala-seed-project-queue-4_Layer_1">
@@ -29,42 +29,54 @@
       </g>
       <g id="Graphic_108">
         <rect x="207" y="261" width="252" height="306" fill="#589b9d"/>
-        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(212 266)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.594" y="21">Queue</tspan>
         </text>
       </g>
       <g id="Graphic_110">
-        <rect x="225" y="334.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
-        <rect x="225" y="334.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 231 334.2857 L 435.35526 334.2857 C 438.66897 334.2857 441.35526 336.972 441.35526 340.2857 L 441.35526 372 C 441.35526 375.3137 438.66897 378 435.35526 378 L 231 378 C 227.6863 378 225 375.3137 225 372 L 225 340.2857 C 225 336.972 227.6863 334.2857 231 334.2857 Z" fill="#70a3d8"/>
+        <path d="M 231 334.2857 L 435.35526 334.2857 C 438.66897 334.2857 441.35526 336.972 441.35526 340.2857 L 441.35526 372 C 441.35526 375.3137 438.66897 378 435.35526 378 L 231 378 C 227.6863 378 225 375.3137 225 372 L 225 340.2857 C 225 336.972 227.6863 334.2857 231 334.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(230 342.83486)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="60.585635" y="21">build.sbt</tspan>
         </text>
       </g>
       <g id="Graphic_111">
-        <rect x="225" y="388.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
-        <rect x="225" y="388.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 231 388.2857 L 435.35526 388.2857 C 438.66897 388.2857 441.35526 390.972 441.35526 394.2857 L 441.35526 426 C 441.35526 429.3137 438.66897 432 435.35526 432 L 231 432 C 227.6863 432 225 429.3137 225 426 L 225 394.2857 C 225 390.972 227.6863 388.2857 231 388.2857 Z" fill="#70a3d8"/>
+        <path d="M 231 388.2857 L 435.35526 388.2857 C 438.66897 388.2857 441.35526 390.972 441.35526 394.2857 L 441.35526 426 C 441.35526 429.3137 438.66897 432 435.35526 432 L 231 432 C 227.6863 432 225 429.3137 225 426 L 225 394.2857 C 225 390.972 227.6863 388.2857 231 388.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(230 396.83486)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="69.154635" y="21">project</tspan>
         </text>
       </g>
       <g id="Graphic_112">
-        <rect x="225" y="442.2857" width="216.35526" height="43.714286" fill="#70a3d8"/>
-        <rect x="225" y="442.2857" width="216.35526" height="43.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 231 442.2857 L 435.35526 442.2857 C 438.66897 442.2857 441.35526 444.972 441.35526 448.2857 L 441.35526 480 C 441.35526 483.3137 438.66897 486 435.35526 486 L 231 486 C 227.6863 486 225 483.3137 225 480 L 225 448.2857 C 225 444.972 227.6863 442.2857 231 442.2857 Z" fill="#70a3d8"/>
+        <path d="M 231 442.2857 L 435.35526 442.2857 C 438.66897 442.2857 441.35526 444.972 441.35526 448.2857 L 441.35526 480 C 441.35526 483.3137 438.66897 486 435.35526 486 L 231 486 C 227.6863 486 225 483.3137 225 480 L 225 448.2857 C 225 444.972 227.6863 442.2857 231 442.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(230 450.83486)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.30564" y="21">src</tspan>
         </text>
       </g>
-      <g id="Graphic_118">
-        <rect x="54" y="361.2857" width="81" height="70.714286" fill="#70a3d8"/>
-        <rect x="54" y="361.2857" width="81" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(59 383.33486)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="17.152" y="21">168</tspan>
+      <g id="Graphic_127">
+        <rect x="72" y="433.2857" width="72" height="70.714286" fill="#70a3d8"/>
+        <rect x="72" y="433.2857" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(77 455.33486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="12.652" y="21">200</tspan>
         </text>
       </g>
-      <g id="Graphic_117">
-        <text transform="translate(65 329)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.4655005" y="21">Total</tspan>
+      <g id="Graphic_126">
+        <text transform="translate(78 401)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8.093501" y="21">total</tspan>
+        </text>
+      </g>
+      <g id="Graphic_125">
+        <rect x="72" y="289.2857" width="72" height="70.714286" fill="#70a3d8"/>
+        <rect x="72" y="289.2857" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(77 311.33486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.884" y="21">8</tspan>
+        </text>
+      </g>
+      <g id="Graphic_124">
+        <text transform="translate(70 257)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.64" y="21">length</tspan>
         </text>
       </g>
     </g>
