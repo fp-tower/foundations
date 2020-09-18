@@ -5,6 +5,7 @@ object TemperatureExercises {
   // `minSampleByTemperature` should work as follow:
   // Step 1: Find the local minimums (for each partition the `Sample` with the coldest temperature).
   // Step 2: Find the minimum value among the local minimums.
+  // Note: We'll write test in the file `ParListTest.scala`
   def minSampleByTemperature(samples: ParList[Sample]): Option[Sample] =
     ???
 
