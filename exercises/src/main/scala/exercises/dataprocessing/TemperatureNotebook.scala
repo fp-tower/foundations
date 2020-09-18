@@ -41,7 +41,11 @@ object TemperatureNotebook extends App {
   lazy val minSampleByTemperature: Option[Sample] =
     TemperatureExercises.minSampleByTemperature(parSamples)
 
-  // c. Implement `averageTemperature` in TemperatureExercises
+  // c. Implement `minSampleByDate` in TemperatureExercises
+  lazy val minSampleByDate: Option[Sample] =
+    TemperatureExercises.minSampleByDate(parSamples)
+
+  // d. Implement `averageTemperature` in TemperatureExercises
   lazy val averageTemperature: Option[Double] =
     TemperatureExercises.averageTemperature(parSamples)
 
@@ -49,7 +53,7 @@ object TemperatureNotebook extends App {
   // Benchmark ParList
   //////////////////////
 
-  // j. Compare the runtime performance of various implementations of `sum`:
+  // k. Compare the runtime performance of various implementations of `sum`:
   // * List foldLeft
   // * List map + sum
   // * ParList foldMap
@@ -59,14 +63,14 @@ object TemperatureNotebook extends App {
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
   )
 
-  // k. Implement `summaryListOnePass` and `summaryParList`
+  // l. Implement `summaryListOnePass` and `summaryParList`
   // Compare the runtime performance of various implementations of `summary`
   bench("summary", ignore = true)(
     Labelled("List", () => TemperatureExercises.summaryList(samples)),
     Labelled("List one-pass", () => TemperatureExercises.summaryListOnePass(samples))
   )
 
-  // l. Add `summaryParListOnePass` to the benchmark above.
+  // m. Add `summaryParListOnePass` to the benchmark above.
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
