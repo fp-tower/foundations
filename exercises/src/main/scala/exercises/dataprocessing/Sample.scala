@@ -16,12 +16,11 @@ case class Sample(
     (temperatureFahrenheit - 32) * 5 / 9
 
   override def toString: String =
-    s"Sample(region = $region, " +
+    s"Sample(temperature = ${formatTemperature(temperatureFahrenheit)} F° / ${formatTemperature(temperatureCelsius)} C°, " +
+      s"region = $region, " +
       s"country = $country, " +
       s"state = ${state.getOrElse("N/A")}, " +
-      s"city = $city, date = ${year}-${month}-${day}, " +
-      s"temperature F° = ${formatTemperature(temperatureFahrenheit)}, " +
-      s"temperature C° = ${formatTemperature(temperatureCelsius)})"
+      s"city = $city, date = ${year}-${month}-${day})"
 
   def formatTemperature(temperature: Double): String =
     f"$temperature%.2f"
