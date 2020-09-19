@@ -6,7 +6,7 @@ import TemperatureExercises._
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  test("minSampleByTemperature") {
+  ignore("minSampleByTemperature") {
     val samples = List(
       Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 50),
       Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 56.3),
