@@ -9,12 +9,7 @@ object TemperatureExercises {
   def minSampleByTemperature(samples: ParList[Sample]): Option[Sample] =
     ???
 
-  // c. Implement `minSampleByDate` which finds the `Sample` with the oldest date.
-  // `minSampleByDate` in the same way as `minSampleByTemperature`
-  def minSampleByDate(samples: ParList[Sample]): Option[Sample] =
-    ???
-
-  // d. Implement `averageTemperature` which finds the average temperature across all `Samples`.
+  // c. Implement `averageTemperature` which finds the average temperature across all `Samples`.
   // `averageTemperature` should work as follow:
   // Step 1: Compute the size each partition.
   // Step 2: Sum-up the size of all partitions, this gives the size for the entire `ParList`.
@@ -26,7 +21,7 @@ object TemperatureExercises {
   def averageTemperature(samples: ParList[Sample]): Option[Double] =
     ???
 
-  // e. Implement `foldLeft` and then move it inside the class `ParList`.
+  // d. Implement `foldLeft` and then move it inside the class `ParList`.
   // `foldLeft` should work as follow:
   // Step 1: Fold each partition into a single value.
   // Step 2: Fold the intermediate results of all partitions together.
@@ -37,7 +32,7 @@ object TemperatureExercises {
   def foldLeft[From, To](parList: ParList[From], default: To)(combine: (To, From) => To): To =
     ???
 
-  // f. Implement `monoFoldLeft`, a version of `foldLeft` that does not change the element type.
+  // e. Implement `monoFoldLeft`, a version of `foldLeft` that does not change the element type.
   // Then move `monoFoldLeft` inside  the class `ParList`.
   // `monoFoldLeft` should work as follow:
   // Step 1: Fold each partition into a single value.
@@ -49,19 +44,19 @@ object TemperatureExercises {
   def monoFoldLeft[A](parList: ParList[A], default: A)(combine: (A, A) => A): A =
     ???
 
-  // g. Implement `map`, you should know what it does by now ;)
+  // f. Implement `map`, you should know what it does by now ;)
   // Then move `map` inside  the class `ParList`.
   // Finally, refactor `sum`, `size` and `average` to use a combination of `map` and `monoFoldLeft`.
   def map[From, To](parList: ParList[From])(update: From => To): ParList[To] =
     ???
 
-  // h. Refactor `minBy`, `maxBy` and `averageTemperature` to use `map` and `monoFoldLeft`
+  // g. Refactor `minBy`, `maxBy` and `averageTemperature` to use `map` and `monoFoldLeft`
 
-  // i. Implement a new folding method on `ParList` that combines both `map` and `monoFoldLeft`
+  // h. Implement a new folding method on `ParList` that combines both `map` and `monoFoldLeft`
   // together such that we only iterate over the dataset once.
   // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
 
-  // j. Implement a version of the function implemented in h) such that each partition is
+  // i. Implement a version of the function implemented in h) such that each partition is
   // processed in parallel.
   // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
   // Next question is in  benchmark section of `TemperatureNotebook`.
