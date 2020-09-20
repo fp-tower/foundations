@@ -1320,24 +1320,6 @@ background-image: url(../img/foundation/deep-linked-list.svg)
 # List
 
 ---
-# List
-
-.forty-seven-left[
-```scala
-enum List[+A] {
-
-  case Nil
-  case ::(head: A, tail: List[A])
-
-}
-```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/deep-linked-list.svg" alt="Linked list" style="width:450px;"/>
-]
-
----
 # Recursive sum
 
 <br>
@@ -1425,15 +1407,11 @@ def sum(numbers: List[Int]): Int =
   }
 ```
 
-<br>
 
-.thirty-seven-left[
 ```scala mdoc
 sum(List(1,2,3,4,5))
 ```
-]
 
-.fifty-seven-right[
 ```scala
 val largeList = List.range(1, 10000)
 // largeList: List[Int] = List(1,2,3,4,...,10000)
@@ -1441,7 +1419,6 @@ val largeList = List.range(1, 10000)
 sum(largeList)
 // java.lang.StackOverflowError
 ```
-]
 
 ```scala mdoc:invisible
 val largeList = List.range(1, 10000)
@@ -1451,198 +1428,320 @@ val largeList = List.range(1, 10000)
 sum(largeList)
 ```
 
-
 ---
-# Recursion
+# Recursive contains
 
-.thirty-seven-left[
-<br>
 ```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
     case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-1.svg" alt="Sum with recursion" style="width:450px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-2.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-3.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-4.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-5.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
+      if (head == number)
+        true
+      else
+        contains(tail, number)
   }
 ```
 
 ```scala mdoc
-sum(List())
-```
-]
+contains(List(1,2,3,4), 3)
 
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-6.svg" alt="Sum with recursion" style="width:600px;"/>
-]
+contains(List(1,2,3,4), 5)
+```
 
 ---
-# Recursion
+# Recursive contains
 
-.thirty-seven-left[
-<br>
+.forty-sevent-left[
 ```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
     case head :: tail =>
-      head + sum(tail)
+      if (head == number)
+        true
+      else
+        contains(tail, number)
   }
 ```
 ]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-7.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Retry
-
-<br>
 
 ```scala mdoc
-import scala.util.{Try, Success, Failure}
+contains(List(1,2,3,4), 3)
 
-def retry[A](remainingRetries: Int, action: => A): A =
-  Try(action) match {
-    case Success(value)     => value
-    case Failure(exception) =>
-      if(remainingRetries <= 0) throw exception
-      else retry(remainingRetries - 1, action)
-  }
+contains(List(1,2,3,4), 5)
 ```
 
 ---
-background-image: url(../img/foundation/recursive-problem-1.svg)
+# Recursive contains
 
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+
+```scala
+val largeList = List.range(1, 10000)
+// largeList: List[Int] = List(1,2,3,4,...,10000)
+
+contains(largeList, 5)
+// res: Boolean = true
+```
+
+---
+# Recursive contains
+
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+
+```scala
+val largeList = List.range(1, 10000)
+// largeList: List[Int] = List(1,2,3,4,...,10000)
+
+contains(largeList, 5)
+// res: Boolean = true
+
+contains(largeList, -1)
+// res: Boolean = false
+```
+
+---
+class: medium-code
 # Recursion
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      sum(tail) + head
+  }
+```
+]
+
+---
+class: medium-code
+# Recursion
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      val rest = sum(tail)
+      rest + head
+  }
+```
+]
 
 
 ---
-background-image: url(../img/foundation/recursive-problem-2a.svg)
+# Tail recursion
 
-# Recursion
+```scala
+import scala.annotation.tailrec
 
----
-background-image: url(../img/foundation/recursive-problem-2b.svg)
+@tailrec
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      sum(tail) + head
+  }
 
-# Recursion
-
----
-background-image: url(../img/foundation/recursive-problem-6.svg)
-
-# Recursion
-
----
-background-image: url(../img/foundation/recursive-problem-7.svg)
-
-# Recursion
+// [error] could not optimize @tailrec annotated method sum:
+// it contains a recursive call not in tail position
+```
 
 ---
-background-image: url(../img/foundation/recursive-problem-8.svg)
+# Tail recursive sum
 
-# Recursion
+<br>
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+```
+
+```scala
+sum(List(1,2,3,4,5), 0)
+// res: Int = 15
+
+sum(List.range(1, 10000), 0)
+// res: Int = 49995000
+```
+
+---
+class: medium-code
+
+# Tail rec vs imperative
+
+.fifty-two-left[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int = {
+  var state = 0
+
+  for (number <- numbers)
+    state += number
+
+  state
+}
+```
+]
+
+---
+class: medium-code
+
+# Tail rec vs imperative
+
+.fifty-two-left[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+
+def sum(numbers: List[Int]): Int =
+  sum(numbers, state = 0)
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int = {
+  var state = 0
+
+  for (number <- numbers)
+    state += number
+
+  state
+}
+```
+]
+
+---
+class: small-code
+
+# Hide tail rec implementation
+
+.forty-seven-left[
+## Private method
+
+```scala
+@tailrec
+private def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+
+def sum(numbers: List[Int]): Int =
+  sum(numbers, state = 0)
+```
+]
+
+.forty-seven-right[
+## Nested method
+
+```scala
+def sum(numbers: List[Int]): Int = {
+  @tailrec
+  def go(numbers: List[Int], state: Int): Int =
+    numbers match {
+      case Nil          => state
+      case head :: tail => sum(tail, state + head)
+    }
+
+  go(numbers, state = 0)
+}
+```
+]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# StackSafeRecursionExercises.scala
+
+---
+# Favor iterator functions
+
+<br>
+
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers.foldLeft(0)(_ + _)
+```
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

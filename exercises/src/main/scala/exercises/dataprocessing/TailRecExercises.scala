@@ -2,7 +2,7 @@ package exercises.dataprocessing
 
 import scala.annotation.tailrec
 
-object RecursionExercises {
+object TailRecExercises {
 
   def unsafeSum(numbers: List[Int]): Int =
     numbers match {
