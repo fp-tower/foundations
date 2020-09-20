@@ -195,10 +195,6 @@ case class Json(
 ```
 ]
 
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
-]
-
 ---
 # Is JSON a case class?
 
@@ -217,10 +213,6 @@ val json = Json(
   obj    = None
 )
 ```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
 ]
 
 ---
@@ -245,10 +237,6 @@ val json2 = Json(None, None, None)
 ```
 ]
 
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
-]
-
 ---
 class: medium-code
 
@@ -267,10 +255,6 @@ enum Json {
 
 }
 ```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
 ]
 
 ---
@@ -297,10 +281,6 @@ import Json._
 
 val json2: Json = JsonString("John Doe")
 ```
-]
-
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
 ]
 
 
@@ -371,7 +351,7 @@ val json: Json = JsonNumber(12)
 ]
 
 ---
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -390,7 +370,7 @@ val john: Json = JsonObject(Map(
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -404,7 +384,7 @@ def trimAll(json: Json): Json =
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -420,7 +400,7 @@ def trimAll(json: Json): Json =
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -445,7 +425,7 @@ scalacOptions += "-Wconf:cat=other-match-analysis:error"
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -461,7 +441,7 @@ def trimAll(json: Json): Json =
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -477,7 +457,7 @@ def trimAll(json: Json): Json =
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -493,7 +473,7 @@ def trimAll(json: Json): Json =
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 <br>
 
@@ -513,7 +493,7 @@ def trimAll(json: Json): Json =
 ---
 class: medium-code
 
-# Working with enumeration
+# Working with recursive enumeration
 
 ```scala mdoc
 def trimAll(json: Json): Json =
