@@ -362,7 +362,7 @@ val john: Json = JsonObject(Map(
   "email"   -> JsonString(" john@doe.com  "),
   "address" -> JsonObject(Map(
     "street-number" -> JsonNumber(12),
-    "post-code"     -> JsonString("E16 4SR  "),
+    "post-code"     -> JsonString("E16 4SR  ")
   ))
 ))
 ```
@@ -521,7 +521,7 @@ john
 //   "email"   -> JsonString(" john@doe.com  "),
 //   "address" -> JsonObject(Map(
 //     "street-number" -> JsonNumber(12),
-//     "post-code"     -> JsonString("E16 4SR  "),
+//     "post-code"     -> JsonString("E16 4SR  ")
 // ))
 ```
 ]
@@ -535,7 +535,7 @@ trimAll(john)
 //   "email"   -> JsonString("john@doe.com"),
 //   "address" -> JsonObject(Map(
 //     "street-number" -> JsonNumber(12),
-//     "post-code"     -> JsonString("E16 4SR"),
+//     "post-code"     -> JsonString("E16 4SR")
 // ))
 ```
 ]
