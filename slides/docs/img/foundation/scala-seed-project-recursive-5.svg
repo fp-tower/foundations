@@ -7,11 +7,6 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
-    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
-      <font-face-src>
-        <font-face-name name="HelveticaNeue"/>
-      </font-face-src>
-    </font-face>
     <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
         <font-face-name name="HelveticaNeue"/>
@@ -22,8 +17,13 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-20 15:10:39 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-21 21:47:40 +0000</metadata>
   <g id="scala-seed-project-recursive-5" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>scala-seed-project-recursive-5</title>
     <g id="scala-seed-project-recursive-5_Layer_1">
@@ -38,15 +38,6 @@
         <rect x="135" y="261" width="261" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(140 266)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="97.384" y="21">Stack</tspan>
-        </text>
-      </g>
-      <g id="Graphic_118">
-        <title>File</title>
-        <path d="M 315 104.549 C 315 94.1287 313.7427 92.8395 304.55847 82.527 L 304.46145 82.4203 C 295.2287 72 295.13268 72 285.6574 72 C 273.04083 72 216 72 216 72 L 216 182 L 315 182 L 315 104.549 Z" fill="#acbdd0"/>
-        <path d="M 315 104.549 C 315 94.1287 313.7427 92.8395 304.55847 82.527 L 304.46145 82.4203 C 295.2287 72 295.13268 72 285.6574 72 C 273.04083 72 216 72 216 72 L 216 182 L 315 182 L 315 104.549 Z M 315 104.0122 C 315 94.1287 314.90298 94.1287 295.13268 94.1287 L 295.13268 94.1287 C 295.13268 72.1078 295.13268 72 286.23753 72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1135802"/>
-        <text transform="translate(216 99.996)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="6.993" y="17">Depencies</tspan>
-          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="26.001" y="38.504">.scala</tspan>
         </text>
       </g>
       <g id="Graphic_131">
@@ -83,6 +74,14 @@
       <g id="Graphic_132">
         <text transform="translate(167 364.276)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 Dependencies.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_134">
+        <path d="M 324.35526 103.9572 C 324.35526 93.72636 322.75055 92.4606 311.02857 82.3356 L 310.90475 82.23084 C 299.12085 72 298.9983 72 286.90483 72 C 270.8021 72 198 72 198 72 L 198 174 C 198 177.3137 200.6863 180 204 180 L 318.35526 180 C 321.66897 180 324.35526 177.3137 324.35526 174 L 324.35526 103.9572 Z" fill="#acbdd0"/>
+        <path d="M 324.35526 103.9572 C 324.35526 93.72636 322.75055 92.4606 311.02857 82.3356 L 310.90475 82.23084 C 299.12085 72 298.9983 72 286.90483 72 C 270.8021 72 198 72 198 72 L 198 174 C 198 177.3137 200.6863 180 204 180 L 318.35526 180 C 321.66897 180 324.35526 177.3137 324.35526 174 L 324.35526 103.9572 Z M 324.35526 103.43016 C 324.35526 93.72636 324.23143 93.72636 298.9983 93.72636 L 298.9983 93.72636 C 298.9983 72.10584 298.9983 72 287.64527 72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"/>
+        <text transform="translate(203 104.496)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x=".4966314" y="17">Dependencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="34.67863" y="38.504">.scala</tspan>
         </text>
       </g>
     </g>
