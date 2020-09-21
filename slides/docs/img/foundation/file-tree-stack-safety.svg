@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 523 658" width="523" height="658">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 567 658" width="567" height="658">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -23,7 +23,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-21 21:47:40 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-21 22:06:36 +0000</metadata>
   <g id="file-tree-stack-safety" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>file-tree-stack-safety</title>
     <g id="file-tree-stack-safety_Layer_1">
@@ -109,31 +109,34 @@
           <tspan font-family="Helvetica Neue" font-size="30" font-weight="700" fill="#424242" x="7958079e-19" y="29">10 001</tspan>
         </text>
       </g>
-      <g id="Graphic_119">
-        <ellipse cx="472.5" cy="463.53156" rx="49.5000790961438" ry="21.245882405564" fill="#589b9d"/>
-        <ellipse cx="472.5" cy="463.53156" rx="49.5000790961438" ry="21.245882405564" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(437.9 454.30756)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.1919985" y="15">directory</tspan>
-        </text>
-      </g>
-      <g id="Graphic_118">
-        <ellipse cx="472.5" cy="513.3403" rx="49.5000790961438" ry="21.245882405564" fill="#70a3d8"/>
-        <ellipse cx="472.5" cy="513.3403" rx="49.5000790961438" ry="21.245882405564" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(437.9 494.8923)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.999998" y="15">normal</tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="24.383998" y="33.448">file</tspan>
-        </text>
-      </g>
-      <g id="Graphic_117">
-        <text transform="translate(431 419)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.176" y="15">Legend</tspan>
-        </text>
-      </g>
       <g id="Graphic_120">
         <ellipse cx="256.5" cy="54.64286" rx="49.5000790961439" ry="35.3571993543885" fill="#589b9d"/>
         <ellipse cx="256.5" cy="54.64286" rx="49.5000790961439" ry="35.3571993543885" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(221.9 43.89086)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="15.267998" y="17">Root</tspan>
+        </text>
+      </g>
+      <g id="Graphic_127">
+        <ellipse cx="469.5" cy="554.14286" rx="13.5000215716756" ry="12.8571634015959" fill="#589b9d"/>
+        <ellipse cx="469.5" cy="554.14286" rx="13.5000215716756" ry="12.8571634015959" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_126">
+        <text transform="translate(437 509)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.176" y="15">Legend</tspan>
+        </text>
+      </g>
+      <g id="Graphic_125">
+        <ellipse cx="469.5" cy="588.85714" rx="13.5000215716756" ry="12.8571634015959" fill="#70a3d8"/>
+        <ellipse cx="469.5" cy="588.85714" rx="13.5000215716756" ry="12.8571634015959" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_123">
+        <text transform="translate(497 544.552)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">directory</tspan>
+        </text>
+      </g>
+      <g id="Graphic_122">
+        <text transform="translate(497 580)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">file</tspan>
         </text>
       </g>
     </g>
