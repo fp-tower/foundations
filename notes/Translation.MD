@@ -2,5 +2,5 @@
 
 |                   | English | French | Italian | Japanese | Russian | Spanish |
 |-------------------|:-------:|:------:|:-------:|:--------:|:-------:|:-------:|
-| Value functions   | ✅       | 🚧     | ✅      | ✅        | ✅      | 🚧       |
-| Generic functions | ✅       | ❌     | ❌      | 🚧        | ❌      | ❌       |
+| Value functions   | ✅       | ✅     | ✅      | ✅        | ✅      | 🚧       |
+| Generic functions | ✅       | 🚧     | ❌      | 🚧        | 🚧      | ❌       |
