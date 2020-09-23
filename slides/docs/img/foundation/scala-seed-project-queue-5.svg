@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 504 568" width="504" height="568">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 621 568" width="621" height="568">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -13,7 +13,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-21 22:06:36 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-23 07:28:21 +0000</metadata>
   <g id="scala-seed-project-queue-5" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>scala-seed-project-queue-5</title>
     <g id="scala-seed-project-queue-5_Layer_1">
@@ -61,18 +61,19 @@
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8.093501" y="21">total</tspan>
         </text>
       </g>
-      <g id="Graphic_129">
-        <rect x="72" y="289.2857" width="72" height="70.714286" fill="#70a3d8"/>
-        <rect x="72" y="289.2857" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(77 311.33486)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="12.652" y="21">447</tspan>
+      <g id="Graphic_133">
+        <ellipse cx="288" cy="171.64286" rx="27.0000431433512" ry="26.3571849732714" fill="white"/>
+        <ellipse cx="288" cy="171.64286" rx="27.0000431433512" ry="26.3571849732714" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(271.4 160.89086)" fill="#424242">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="#424242" x="1.5880004" y="17">447</tspan>
         </text>
       </g>
-      <g id="Graphic_128">
-        <text transform="translate(68 257)" fill="black">
+      <g id="Graphic_132">
+        <text transform="translate(320 158)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.64" y="21">length</tspan>
         </text>
       </g>
+      <g id="Graphic_135"/>
     </g>
   </g>
 </svg>

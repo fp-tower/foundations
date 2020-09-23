@@ -688,9 +688,34 @@ def diskUsage(input: File): Long = {
 ```
 ]
 
+---
+# Imperative approach
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+     if(file.isDirectory)
+       queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
 .forty-seven-right[.center[
-<br>
-<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
+<img src="../img/foundation/scala-seed-project-queue-1.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
@@ -720,7 +745,7 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-1.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-2.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
@@ -750,7 +775,7 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-2.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-3.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
@@ -780,7 +805,7 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-3.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-4.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
@@ -810,7 +835,7 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-4.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-5.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
@@ -840,7 +865,7 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-5.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-6.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
@@ -870,37 +895,7 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-6.svg" alt="diskUsage with Queue" style="width:400px;"/>
-]]
-
----
-# Imperative approach
-
-.forty-seven-left[
-```scala mdoc:reset
-import java.io.File
-import scala.collection.mutable
-
-def diskUsage(input: File): Long = {
-  var total = 0L
-  val queue = mutable.Queue(input)
-
-  while (queue.nonEmpty) {
-    val file = queue.dequeue()
-
-    total += file.length()
-
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
-  }
-
-  total
-}
-```
-]
-
-.forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-7.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-7.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---

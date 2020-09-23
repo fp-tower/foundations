@@ -7,7 +7,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import FileAnswers._
 
 class FileAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
-  val scalaSeedProject = new File("/Users/julien/project/foundations/answers/src/main/resources/scala-seed-project")
+  val scalaSeedProject = new File("PATH_TO_PROJECT/scala-seed-project")
 
   ignore("diskUsage") {
     assert(diskUsageImperative(scalaSeedProject) == 1986)
