@@ -45,9 +45,6 @@ object JsonExercises {
   // * search("Hello", "ll") == true
   // * search({ "message" : "hello" }, "ll") == true
   // * search({ "message" : "hi" }, "ll") == false
-  // Bonus: add an extra parameter to search so that it limits the depth of the search.
-  // such as search({ "user" : { "name" : "John" } }, "o", 2) == true
-  // but     search({ "user" : { "name" : "John" } }, "o", 1) == false because "John" is at depth 2
   def search(json: Json, text: String): Boolean =
     ???
 
@@ -64,5 +61,9 @@ object JsonExercises {
   //////////////////////////////////////////////
 
   // d. Add the missing cases to JSON enumeration: JsonBoolean, JsonArray and JsonNull.
+
+  // e. add an extra parameter to search so that it limits the depth of the search.
+  // such as search({ "user" : { "name" : "John" } }, "o", 2) == true
+  // but     search({ "user" : { "name" : "John" } }, "o", 1) == false because "John" is at depth 2
 
 }
