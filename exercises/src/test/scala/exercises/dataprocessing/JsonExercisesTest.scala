@@ -18,7 +18,7 @@ class JsonExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks 
     )
   )
 
-  ignore("trimAll") {
+  test("trimAll") {
     assert(
       trimAll(john) == JsonObject(
         Map(
