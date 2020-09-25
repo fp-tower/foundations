@@ -6,6 +6,8 @@ object JsonAnswers {
   case class JsonNumber(number: Double)         extends Json
   case class JsonString(text: String)           extends Json
   case class JsonObject(obj: Map[String, Json]) extends Json
+  case class JsonArray(array: List[Json])       extends Json
+  case object JsonNull                          extends Json
 
   def trimAll(json: Json): Json =
     json match {
@@ -15,6 +17,8 @@ object JsonAnswers {
         JsonObject(obj.map {
           case (key, value) => key -> trimAll(value)
         })
+      case JsonArray(array) => JsonArray(array.map(trimAll))
+      case JsonNull         => JsonNull
     }
 
   def anonymize(json: Json): Json =
@@ -26,23 +30,28 @@ object JsonAnswers {
           case (key, value) =>
             key -> anonymize(value)
         })
+      case JsonArray(array) => JsonArray(array.map(anonymize))
+      case JsonNull         => JsonNull
     }
 
   def search(json: Json, searchText: String, maxDepth: Int): Boolean =
     if (maxDepth < 0) false
     else
       json match {
-        case _: JsonNumber    => false
-        case JsonString(text) => text.contains(searchText)
-        case JsonObject(obj)  => obj.values.exists(search(_, searchText, maxDepth - 1))
+        case _: JsonNumber | JsonNull => false
+        case JsonString(text)         => text.contains(searchText)
+        case JsonObject(obj)          => obj.values.exists(search(_, searchText, maxDepth - 1))
+        case JsonArray(array)         => array.exists(search(_, searchText, maxDepth - 1))
       }
 
   def depth(json: Json): Int =
     json match {
-      case _: JsonNumber | _: JsonString =>
+      case _: JsonNumber | _: JsonString | JsonNull =>
         0
       case JsonObject(obj) =>
         obj.values.map(depth).maxOption.fold(0)(_ + 1)
+      case JsonArray(array) =>
+        array.map(depth).maxOption.fold(0)(_ + 1)
     }
 
 }

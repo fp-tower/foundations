@@ -37,7 +37,7 @@ object JsonExercises {
   def anonymize(json: Json): Json =
     ???
 
-  // b. Implement `search`, a method that check if a JSON document contains a text.
+  // b. Implement `search`, a method that checks if a JSON document contains a text.
   // Note: `search` doesn't look inside of the keys of a `JsonObject`, only the values.
   // For example:
   // * search({ }, "ll") == false
@@ -51,17 +51,17 @@ object JsonExercises {
   def search(json: Json, text: String): Boolean =
     ???
 
-  //////////////////////////////////////////////
-  // Bonus question (not covered by the video)
-  //////////////////////////////////////////////
-
-  // c. Implement `depth`, a method that calculate the maximum level of nesting of a JSON document.
+  // c. Implement `depth`, a method that calculates the maximum level of nesting of a JSON document.
   // For example:
-  // * { } has depth 0
+  // * { }, 5 or "hello" have depth 0
   // * { "name" : "john" } has depth 1
   // * { "name" : "john", "address" : { "postcode" : "E16 4SR" } } has depth 2
   def depth(json: Json): Int =
     ???
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the video)
+  //////////////////////////////////////////////
 
   // d. Add the missing cases to JSON enumeration: JsonBoolean, JsonArray and JsonNull.
 
