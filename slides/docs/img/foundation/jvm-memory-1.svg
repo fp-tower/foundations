@@ -23,7 +23,7 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 08:36:01 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 08:51:22 +0000</metadata>
   <g id="jvm-memory-1" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>jvm-memory-1</title>
     <g id="jvm-memory-1_Layer_1">
@@ -36,8 +36,8 @@
         </text>
       </g>
       <g id="Graphic_108">
-        <path d="M 76 72 L 266 72 C 288.0914 72 306 89.90861 306 112 L 306 338 C 306 360.0914 288.0914 378 266 378 L 76 378 C 53.90861 378 36 360.0914 36 338 L 36 112 C 36 89.90861 53.90861 72 76 72 Z" fill="#589b9d"/>
-        <path d="M 76 72 L 266 72 C 288.0914 72 306 89.90861 306 112 L 306 338 C 306 360.0914 288.0914 378 266 378 L 76 378 C 53.90861 378 36 360.0914 36 338 L 36 112 C 36 89.90861 53.90861 72 76 72 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 76 72 L 266 72 C 288.0914 72 306 89.90861 306 112 L 306 365 C 306 387.0914 288.0914 405 266 405 L 76 405 C 53.90861 405 36 387.0914 36 365 L 36 112 C 36 89.90861 53.90861 72 76 72 Z" fill="#589b9d"/>
+        <path d="M 76 72 L 266 72 C 288.0914 72 306 89.90861 306 112 L 306 365 C 306 387.0914 288.0914 405 266 405 L 76 405 C 53.90861 405 36 387.0914 36 365 L 36 112 C 36 89.90861 53.90861 72 76 72 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(41 77)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="103.721" y="21">Heap</tspan>
         </text>
@@ -56,54 +56,90 @@
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.872606" y="15">“Hello”</tspan>
         </text>
       </g>
-      <g id="Graphic_127">
-        <path d="M 69 289.2857 L 273.35526 289.2857 C 276.66897 289.2857 279.35526 291.972 279.35526 295.2857 L 279.35526 327 C 279.35526 330.3137 276.66897 333 273.35526 333 L 69 333 C 65.68629 333 63 330.3137 63 327 L 63 295.2857 C 63 291.972 65.68629 289.2857 69 289.2857 Z" fill="#70a3d8"/>
-        <path d="M 69 289.2857 L 273.35526 289.2857 C 276.66897 289.2857 279.35526 291.972 279.35526 295.2857 L 279.35526 327 C 279.35526 330.3137 276.66897 333 273.35526 333 L 69 333 C 65.68629 333 63 330.3137 63 327 L 63 295.2857 C 63 291.972 65.68629 289.2857 69 289.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(68 301.91886)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.809635" y="15">File(“scala-sede-project”)</tspan>
-        </text>
-      </g>
       <g id="Graphic_128">
-        <path d="M 427 72 L 617 72 C 639.0914 72 657 89.90861 657 112 L 657 338 C 657 360.0914 639.0914 378 617 378 L 427 378 C 404.9086 378 387 360.0914 387 338 L 387 112 C 387 89.90861 404.9086 72 427 72 Z" fill="#589b9d"/>
-        <path d="M 427 72 L 617 72 C 639.0914 72 657 89.90861 657 112 L 657 338 C 657 360.0914 639.0914 378 617 378 L 427 378 C 404.9086 378 387 360.0914 387 338 L 387 112 C 387 89.90861 404.9086 72 427 72 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 427 72 L 617 72 C 639.0914 72 657 89.90861 657 112 L 657 365 C 657 387.0914 639.0914 405 617 405 L 427 405 C 404.9086 405 387 387.0914 387 365 L 387 112 C 387 89.90861 404.9086 72 427 72 Z" fill="#589b9d"/>
+        <path d="M 427 72 L 617 72 C 639.0914 72 657 89.90861 657 112 L 657 365 C 657 387.0914 639.0914 405 617 405 L 427 405 C 404.9086 405 387 387.0914 387 365 L 387 112 C 387 89.90861 404.9086 72 427 72 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(392 77)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="101.884" y="21">Stack</tspan>
         </text>
       </g>
       <g id="Graphic_131">
-        <path d="M 426 144 L 618 144 C 624.6274 144 630 149.37258 630 156 L 630 258 C 630 264.62742 624.6274 270 618 270 L 426 270 C 419.3726 270 414 264.62742 414 258 L 414 156 C 414 149.37258 419.3726 144 426 144 Z" fill="#70a3d8"/>
-        <path d="M 426 144 L 618 144 C 624.6274 144 630 149.37258 630 156 L 630 258 C 630 264.62742 624.6274 270 618 270 L 426 270 C 419.3726 270 414 264.62742 414 258 L 414 156 C 414 149.37258 419.3726 144 426 144 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(419 149)" fill="white">
+        <path d="M 426 117 L 618 117 C 624.6274 117 630 122.37258 630 129 L 630 231 C 630 237.62742 624.6274 243 618 243 L 426 243 C 419.3726 243 414 237.62742 414 231 L 414 129 C 414 122.37258 419.3726 117 426 117 Z" fill="#70a3d8"/>
+        <path d="M 426 117 L 618 117 C 624.6274 117 630 122.37258 630 129 L 630 231 C 630 237.62742 624.6274 243 618 243 L 426 243 C 419.3726 243 414 237.62742 414 231 L 414 129 C 414 122.37258 419.3726 117 426 117 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(419 122)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="70.198" y="21">search</tspan>
         </text>
       </g>
       <g id="Graphic_132">
-        <path d="M 132 144 L 255 144 C 258.3137 144 261 146.6863 261 150 L 261 183 C 261 186.3137 258.3137 189 255 189 L 132 189 C 128.68629 189 126 186.3137 126 183 L 126 150 C 126 146.6863 128.68629 144 132 144 Z" fill="#70a3d8"/>
-        <path d="M 132 144 L 255 144 C 258.3137 144 261 146.6863 261 150 L 261 183 C 261 186.3137 258.3137 189 255 189 L 132 189 C 128.68629 189 126 186.3137 126 183 L 126 150 C 126 146.6863 128.68629 144 132 144 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(131 157.276)" fill="white">
+        <path d="M 114 144 L 237 144 C 240.3137 144 243 146.6863 243 150 L 243 183 C 243 186.3137 240.3137 189 237 189 L 114 189 C 110.68629 189 108 186.3137 108 183 L 108 150 C 108 146.6863 110.68629 144 114 144 Z" fill="#70a3d8"/>
+        <path d="M 114 144 L 237 144 C 240.3137 144 243 146.6863 243 150 L 243 183 C 243 186.3137 240.3137 189 237 189 L 114 189 C 110.68629 189 108 186.3137 108 183 L 108 150 C 108 146.6863 110.68629 144 114 144 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(113 157.276)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="7.964" y="15">JsonNumber(4)</tspan>
         </text>
       </g>
       <g id="Graphic_134">
-        <text transform="translate(428 184.276)" fill="white">
+        <text transform="translate(428 157.276)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 json</tspan>
         </text>
       </g>
       <g id="Line_135">
-        <line x1="423" y1="186.75" x2="273.85008" y2="173.58971" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="423" y1="166.5" x2="255.9" y2="166.5" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_136">
-        <text transform="translate(428 209.3119)" fill="white">
+        <text transform="translate(428 182.3119)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_2 searchText</tspan>
         </text>
       </g>
       <g id="Line_137">
-        <line x1="423" y1="224.87725" x2="307.6651" y2="234.43777" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="423" y1="206.18593" x2="307.47898" y2="228.30865" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Graphic_138">
-        <text transform="translate(428 236.3119)" fill="white">
+        <text transform="translate(428 209.3119)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_3 maxDepth</tspan>
         </text>
+      </g>
+      <g id="Graphic_145">
+        <path d="M 426 261 L 618 261 C 624.6274 261 630 266.37258 630 273 L 630 375 C 630 381.6274 624.6274 387 618 387 L 426 387 C 419.3726 387 414 381.6274 414 375 L 414 273 C 414 266.37258 419.3726 261 426 261 Z" fill="#70a3d8"/>
+        <path d="M 426 261 L 618 261 C 624.6274 261 630 266.37258 630 273 L 630 375 C 630 381.6274 624.6274 387 618 387 L 426 387 C 419.3726 387 414 381.6274 414 375 L 414 273 C 414 266.37258 419.3726 261 426 261 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(419 266)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="70.198" y="21">search</tspan>
+        </text>
+      </g>
+      <g id="Graphic_144">
+        <text transform="translate(428 292.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 json</tspan>
+        </text>
+      </g>
+      <g id="Graphic_143">
+        <text transform="translate(428 317.3119)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_2 searchText</tspan>
+        </text>
+      </g>
+      <g id="Graphic_142">
+        <text transform="translate(428 344.3119)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_3 maxDepth</tspan>
+        </text>
+      </g>
+      <g id="Graphic_146">
+        <path d="M 69 343.2857 L 273.35526 343.2857 C 276.66897 343.2857 279.35526 345.972 279.35526 349.2857 L 279.35526 381 C 279.35526 384.3137 276.66897 387 273.35526 387 L 69 387 C 65.68629 387 63 384.3137 63 381 L 63 349.2857 C 63 345.972 65.68629 343.2857 69 343.2857 Z" fill="#70a3d8"/>
+        <path d="M 69 343.2857 L 273.35526 343.2857 C 276.66897 343.2857 279.35526 345.972 279.35526 349.2857 L 279.35526 381 C 279.35526 384.3137 276.66897 387 273.35526 387 L 69 387 C 65.68629 387 63 384.3137 63 381 L 63 349.2857 C 63 345.972 65.68629 343.2857 69 343.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(68 355.91886)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="46.441635" y="15">File(“.gitignore”)</tspan>
+        </text>
+      </g>
+      <g id="Line_148">
+        <line x1="423" y1="325.92567" x2="303.7047" y2="265.76843" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_149"/>
+      <g id="Graphic_150">
+        <path d="M 96 279 L 228 279 C 231.3137 279 234 281.6863 234 285 L 234 318 C 234 321.3137 231.3137 324 228 324 L 96 324 C 92.68629 324 90 321.3137 90 318 L 90 285 C 90 281.6863 92.68629 279 96 279 Z" fill="#70a3d8"/>
+        <path d="M 96 279 L 228 279 C 231.3137 279 234 281.6863 234 285 L 234 318 C 234 321.3137 231.3137 324 228 324 L 96 324 C 92.68629 324 90 321.3137 90 318 L 90 285 C 90 281.6863 92.68629 279 96 279 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(95 292.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.176" y="15">JsonObject({ … })</tspan>
+        </text>
+      </g>
+      <g id="Line_151">
+        <line x1="423" y1="301.5" x2="246.9" y2="301.5" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>

@@ -18,7 +18,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 08:36:01 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 08:51:22 +0000</metadata>
   <g id="file-tree" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>file-tree</title>
     <g id="file-tree_Layer_1">
@@ -176,24 +176,27 @@
       <g id="Line_90">
         <line x1="427.5" y1="547.7143" x2="427.5" y2="564.3857" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
-      <g id="Graphic_119">
-        <ellipse cx="634.5" cy="463.53156" rx="49.5000790961437" ry="21.245882405564" fill="#589b9d"/>
-        <ellipse cx="634.5" cy="463.53156" rx="49.5000790961437" ry="21.245882405564" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(599.9 454.30756)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.1919985" y="15">directory</tspan>
-        </text>
+      <g id="Graphic_124">
+        <ellipse cx="37.5" cy="527.14286" rx="13.5000215716756" ry="12.8571634015959" fill="#589b9d"/>
+        <ellipse cx="37.5" cy="527.14286" rx="13.5000215716756" ry="12.8571634015959" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
-      <g id="Graphic_118">
-        <ellipse cx="634.5" cy="513.3403" rx="49.5000790961437" ry="21.245882405564" fill="#70a3d8"/>
-        <ellipse cx="634.5" cy="513.3403" rx="49.5000790961437" ry="21.245882405564" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(599.9 494.8923)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="9.999998" y="15">normal</tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="24.383998" y="33.448">file</tspan>
-        </text>
-      </g>
-      <g id="Graphic_117">
-        <text transform="translate(593 419)" fill="black">
+      <g id="Graphic_123">
+        <text transform="translate(5 482)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.176" y="15">Legend</tspan>
+        </text>
+      </g>
+      <g id="Graphic_122">
+        <ellipse cx="37.5" cy="561.85714" rx="13.5000215716756" ry="12.8571634015959" fill="#70a3d8"/>
+        <ellipse cx="37.5" cy="561.85714" rx="13.5000215716756" ry="12.8571634015959" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_121">
+        <text transform="translate(65 517.552)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">directory</tspan>
+        </text>
+      </g>
+      <g id="Graphic_120">
+        <text transform="translate(65 553)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">file</tspan>
         </text>
       </g>
     </g>

@@ -12,11 +12,6 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
-    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
-      <font-face-src>
-        <font-face-name name="HelveticaNeue"/>
-      </font-face-src>
-    </font-face>
     <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
         <font-face-name name="HelveticaNeue"/>
@@ -27,8 +22,13 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 08:36:01 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 08:51:22 +0000</metadata>
   <g id="jvm-memory-2" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>jvm-memory-2</title>
     <g id="jvm-memory-2_Layer_1">
@@ -45,27 +45,6 @@
         <path d="M 76 63 L 509 63 C 531.0914 63 549 80.90861 549 103 L 549 500 C 549 522.0914 531.0914 540 509 540 L 76 540 C 53.90861 540 36 522.0914 36 500 L 36 103 C 36 80.90861 53.90861 63 76 63 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(41 68)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="225.221" y="21">Heap</tspan>
-        </text>
-      </g>
-      <g id="Graphic_126">
-        <path d="M 78 208.28571 L 210 208.28571 C 213.3137 208.28571 216 210.972 216 214.28571 L 216 246 C 216 249.3137 213.3137 252 210 252 L 78 252 C 74.68629 252 72 249.3137 72 246 L 72 214.28571 C 72 210.972 74.68629 208.28571 78 208.28571 Z" fill="#70a3d8"/>
-        <path d="M 78 208.28571 L 210 208.28571 C 213.3137 208.28571 216 210.972 216 214.28571 L 216 246 C 216 249.3137 213.3137 252 210 252 L 78 252 C 74.68629 252 72 249.3137 72 246 L 72 214.28571 C 72 210.972 74.68629 208.28571 78 208.28571 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(77 220.91886)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.584" y="15">Person(“Eda”, 25)</tspan>
-        </text>
-      </g>
-      <g id="Graphic_125">
-        <path d="M 231 208.28571 L 306.8092 208.28571 C 310.12292 208.28571 312.8092 210.972 312.8092 214.28571 L 312.8092 246 C 312.8092 249.3137 310.12292 252 306.8092 252 L 231 252 C 227.6863 252 225 249.3137 225 246 L 225 214.28571 C 225 210.972 227.6863 208.28571 231 208.28571 Z" fill="#70a3d8"/>
-        <path d="M 231 208.28571 L 306.8092 208.28571 C 310.12292 208.28571 312.8092 210.972 312.8092 214.28571 L 312.8092 246 C 312.8092 249.3137 310.12292 252 306.8092 252 L 231 252 C 227.6863 252 225 249.3137 225 246 L 225 214.28571 C 225 210.972 227.6863 208.28571 231 208.28571 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(230 220.91886)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.872606" y="15">“Hello”</tspan>
-        </text>
-      </g>
-      <g id="Graphic_127">
-        <path d="M 87 280.2857 L 291.35526 280.2857 C 294.66897 280.2857 297.35526 282.972 297.35526 286.2857 L 297.35526 318 C 297.35526 321.3137 294.66897 324 291.35526 324 L 87 324 C 83.68629 324 81 321.3137 81 318 L 81 286.2857 C 81 282.972 83.68629 280.2857 87 280.2857 Z" fill="#70a3d8"/>
-        <path d="M 87 280.2857 L 291.35526 280.2857 C 294.66897 280.2857 297.35526 282.972 297.35526 286.2857 L 297.35526 318 C 297.35526 321.3137 294.66897 324 291.35526 324 L 87 324 C 83.68629 324 81 321.3137 81 318 L 81 286.2857 C 81 282.972 83.68629 280.2857 87 280.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(86 292.91886)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="12.809635" y="15">File(“scala-sede-project”)</tspan>
         </text>
       </g>
       <g id="Graphic_140">
@@ -85,13 +64,6 @@
       <g id="Graphic_131">
         <path d="M 597 147 L 642 147 C 646.9706 147 651 151.02944 651 156 L 651 156 C 651 160.97056 646.9706 165 642 165 L 597 165 C 592.02944 165 588 160.97056 588 156 L 588 156 C 588 151.02944 592.02944 147 597 147 Z" fill="#70a3d8"/>
         <path d="M 597 147 L 642 147 C 646.9706 147 651 151.02944 651 156 L 651 156 C 651 160.97056 646.9706 165 642 165 L 597 165 C 592.02944 165 588 160.97056 588 156 L 588 156 C 588 151.02944 592.02944 147 597 147 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-      </g>
-      <g id="Graphic_132">
-        <path d="M 150 135 L 273 135 C 276.3137 135 279 137.68629 279 141 L 279 174 C 279 177.3137 276.3137 180 273 180 L 150 180 C 146.6863 180 144 177.3137 144 174 L 144 141 C 144 137.68629 146.6863 135 150 135 Z" fill="#70a3d8"/>
-        <path d="M 150 135 L 273 135 C 276.3137 135 279 137.68629 279 141 L 279 174 C 279 177.3137 276.3137 180 273 180 L 150 180 C 146.6863 180 144 177.3137 144 174 L 144 141 C 144 137.68629 146.6863 135 150 135 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(149 148.276)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="7.964" y="15">JsonNumber(4)</tspan>
-        </text>
       </g>
       <g id="Graphic_142">
         <path d="M 597 171 L 642 171 C 646.9706 171 651 175.02944 651 180 L 651 180 C 651 184.97056 646.9706 189 642 189 L 597 189 C 592.02944 189 588 184.97056 588 180 L 588 180 C 588 175.02944 592.02944 171 597 171 Z" fill="#70a3d8"/>
@@ -206,6 +178,41 @@
       <g id="Graphic_155">
         <path d="M 714 477 L 759 477 C 763.9706 477 768 481.02944 768 486 L 768 486 C 768 490.97056 763.9706 495 759 495 L 714 495 C 709.0294 495 705 490.97056 705 486 L 705 486 C 705 481.02944 709.0294 477 714 477 Z" fill="#70a3d8"/>
         <path d="M 714 477 L 759 477 C 763.9706 477 768 481.02944 768 486 L 768 486 C 768 490.97056 763.9706 495 759 495 L 714 495 C 709.0294 495 705 490.97056 705 486 L 705 486 C 705 481.02944 709.0294 477 714 477 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_167">
+        <path d="M 177 244.2857 L 309 244.2857 C 312.3137 244.2857 315 246.972 315 250.2857 L 315 282 C 315 285.3137 312.3137 288 309 288 L 177 288 C 173.6863 288 171 285.3137 171 282 L 171 250.2857 C 171 246.972 173.6863 244.2857 177 244.2857 Z" fill="#70a3d8"/>
+        <path d="M 177 244.2857 L 309 244.2857 C 312.3137 244.2857 315 246.972 315 250.2857 L 315 282 C 315 285.3137 312.3137 288 309 288 L 177 288 C 173.6863 288 171 285.3137 171 282 L 171 250.2857 C 171 246.972 173.6863 244.2857 177 244.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(176 256.91886)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="3.584" y="15">Person(“Eda”, 25)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_166">
+        <path d="M 330 244.2857 L 405.8092 244.2857 C 409.1229 244.2857 411.8092 246.972 411.8092 250.2857 L 411.8092 282 C 411.8092 285.3137 409.1229 288 405.8092 288 L 330 288 C 326.6863 288 324 285.3137 324 282 L 324 250.2857 C 324 246.972 326.6863 244.2857 330 244.2857 Z" fill="#70a3d8"/>
+        <path d="M 330 244.2857 L 405.8092 244.2857 C 409.1229 244.2857 411.8092 246.972 411.8092 250.2857 L 411.8092 282 C 411.8092 285.3137 409.1229 288 405.8092 288 L 330 288 C 326.6863 288 324 285.3137 324 282 L 324 250.2857 C 324 246.972 326.6863 244.2857 330 244.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(329 256.91886)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.872606" y="15">“Hello”</tspan>
+        </text>
+      </g>
+      <g id="Graphic_165">
+        <path d="M 231 171 L 354 171 C 357.3137 171 360 173.6863 360 177 L 360 210 C 360 213.3137 357.3137 216 354 216 L 231 216 C 227.6863 216 225 213.3137 225 210 L 225 177 C 225 173.6863 227.6863 171 231 171 Z" fill="#70a3d8"/>
+        <path d="M 231 171 L 354 171 C 357.3137 171 360 173.6863 360 177 L 360 210 C 360 213.3137 357.3137 216 354 216 L 231 216 C 227.6863 216 225 213.3137 225 210 L 225 177 C 225 173.6863 227.6863 171 231 171 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(230 184.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="7.964" y="15">JsonNumber(4)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_164">
+        <path d="M 186 370.2857 L 390.35526 370.2857 C 393.66897 370.2857 396.35526 372.972 396.35526 376.2857 L 396.35526 408 C 396.35526 411.3137 393.66897 414 390.35526 414 L 186 414 C 182.6863 414 180 411.3137 180 408 L 180 376.2857 C 180 372.972 182.6863 370.2857 186 370.2857 Z" fill="#70a3d8"/>
+        <path d="M 186 370.2857 L 390.35526 370.2857 C 393.66897 370.2857 396.35526 372.972 396.35526 376.2857 L 396.35526 408 C 396.35526 411.3137 393.66897 414 390.35526 414 L 186 414 C 182.6863 414 180 411.3137 180 408 L 180 376.2857 C 180 372.972 182.6863 370.2857 186 370.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(185 382.91886)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="46.441635" y="15">File(“.gitignore”)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_163">
+        <path d="M 213 306 L 345 306 C 348.3137 306 351 308.6863 351 312 L 351 345 C 351 348.3137 348.3137 351 345 351 L 213 351 C 209.6863 351 207 348.3137 207 345 L 207 312 C 207 308.6863 209.6863 306 213 306 Z" fill="#70a3d8"/>
+        <path d="M 213 306 L 345 306 C 348.3137 306 351 308.6863 351 312 L 351 345 C 351 348.3137 348.3137 351 345 351 L 213 351 C 209.6863 351 207 348.3137 207 345 L 207 312 C 207 308.6863 209.6863 306 213 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(212 319.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.176" y="15">JsonObject({ … })</tspan>
+        </text>
       </g>
     </g>
   </g>
