@@ -1522,8 +1522,28 @@ def sum(list: List[Int]): Int =
 
 
 ---
+class: medium-code
+
 # Tail recursion
 
+.fifty-two-left[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
 ```scala
 import scala.annotation.tailrec
 
@@ -1535,9 +1555,13 @@ def sum(list: List[Int]): Int =
       sum(tail) + head
   }
 
-// [error] could not optimize @tailrec annotated method sum:
-// it contains a recursive call not in tail position
+// [error] could not optimize @tailrec
+// annotated method sum:
+// it contains a recursive call not in
+// tail position
 ```
+]
+
 
 ---
 # Tail recursive sum
