@@ -1697,14 +1697,29 @@ class: middle, white
 # StackSafeRecursionExercises.scala
 
 ---
-# Favor iterator functions
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
 
 <br>
 
+# .white[Summary]
+
+<br>
+
+.medium[
+* Recursive functions are convenient <br> to traverse recursive data structures
+
+* Stack-safety concerns
+
+* Favor iterator such as foldLeft
+.forty-two-left[
 ```scala mdoc:reset
 def sum(numbers: List[Int]): Int =
   numbers.foldLeft(0)(_ + _)
 ```
+]
+]
 
 
 </textarea>
