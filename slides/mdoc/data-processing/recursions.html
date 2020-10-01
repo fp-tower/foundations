@@ -1712,13 +1712,9 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 * Stack-safety concerns
 
-* Favor iterator such as foldLeft
-.forty-two-left[
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers.foldLeft(0)(_ + _)
-```
-]
+* Solutions:
+   * limit the depth
+   * tailrec annotation
 ]
 
 
