@@ -275,11 +275,13 @@ enum Json {
 
 }
 
-val json1: Json = Json.JsonNumber(25)
+val json: Json = Json.JsonNumber(25)
 
 import Json._
 
-val json2: Json = JsonString("John Doe")
+val number: Json = JsonNumber(25)
+val text  : Json = JsonString("John Doe")
+val obj   : Json = JsonObject(Map())
 ```
 ]
 
