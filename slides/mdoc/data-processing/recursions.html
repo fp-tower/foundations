@@ -15,6 +15,17 @@ class: center, middle, white
 .title[Recursions]
 
 ---
+# Recursions
+
+<br>
+<br>
+
+## Recursive data structures
+
+
+## Recursive functions
+
+---
 class: medium-code
 
 # Recursive functions
@@ -1177,6 +1188,27 @@ def diskUsage(file: File): Long =
 ]]
 
 ---
+background-image: url(../img/foundation/file-tree.svg)
+
+---
+background-image: url(../img/foundation/file-tree-stack-safety.svg)
+
+
+---
+# JVM memory model
+
+
+<img src="../img/foundation/jvm-memory-1.svg" alt="JVM memory model one stack" style="width:700px;"/>
+
+
+---
+# JVM memory model
+
+
+<img src="../img/foundation/jvm-memory-2.svg" alt="JVM memory model several stacks" style="width:700px;"/>
+
+
+---
 .forty-seven-left[
 # Explicit data structure
 ```scala mdoc:reset
@@ -1219,27 +1251,6 @@ def diskUsage(file: File): Long =
     file.length()
 ```
 ]
-
----
-background-image: url(../img/foundation/file-tree.svg)
-
----
-background-image: url(../img/foundation/file-tree-stack-safety.svg)
-
-
----
-# JVM memory model
-
-
-<img src="../img/foundation/jvm-memory-1.svg" alt="JVM memory model one stack" style="width:700px;"/>
-
-
----
-# JVM memory model
-
-
-<img src="../img/foundation/jvm-memory-2.svg" alt="JVM memory model several stacks" style="width:700px;"/>
-
 
 ---
 background-image: url(../img/foundation/tree-elements-1.svg)
@@ -1516,12 +1527,40 @@ def sum(list: List[Int]): Int =
   list match {
     case Nil          => 0
     case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+---
+class: medium-code
+# Recursive functions
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
       val rest = sum(tail)
       head + rest
   }
 ```
 ]
-
 
 ---
 class: medium-code
@@ -1717,46 +1756,6 @@ background-image: url(../img/fp-tower/website-background.svg)
 * Solutions:
    * limit the depth
    * tailrec annotation
-]
-
----
-# Recursions
-
-<br>
-<br>
-
-## Recursive data structures
-
-
-## Recursive functions
-
----
-class: medium-code
-# Recursive functions
-
-.fifty-two-left[
-```scala mdoc:reset
-def contains(list: List[Int], number: Int): Boolean =
-  list match {
-    case Nil          => false
-    case head :: tail =>
-      if (head == number)
-        true
-      else
-        contains(tail, number)
-  }
-```
-]
-
-.forty-two-right[
-```scala mdoc:reset
-def sum(list: List[Int]): Int =
-  list match {
-    case Nil          => 0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
 ]
 
 ---
