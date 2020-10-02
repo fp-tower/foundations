@@ -1730,6 +1730,35 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 ## Recursive functions
 
+---
+class: medium-code
+# Recursion
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
