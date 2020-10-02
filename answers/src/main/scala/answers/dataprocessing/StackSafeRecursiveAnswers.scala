@@ -2,7 +2,7 @@ package answers.dataprocessing
 
 import scala.annotation.tailrec
 
-object TailRecAnswers {
+object StackSafeRecursiveAnswers {
 
   @tailrec
   def contains[A](list: List[A], value: A): Boolean =

@@ -1,10 +1,10 @@
 package answers.dataprocessing
 
-import answers.dataprocessing.TailRecAnswers._
+import answers.dataprocessing.StackSafeRecursiveAnswers._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class TailRecAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class StackSafeRecursiveAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   val largeSize = 100000
 
