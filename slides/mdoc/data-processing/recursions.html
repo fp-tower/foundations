@@ -1759,6 +1759,54 @@ def sum(list: List[Int]): Int =
 ```
 ]
 
+---
+class: medium-code
+
+# Tail recursive sum
+
+.fifty-two-left[
+<br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  @tailrec
+  def go(numbers: List[Int], state: Int): Int =
+    numbers match {
+      case Nil          => state
+      case head :: tail => sum(tail, state + head)
+    }
+
+  go(numbers, state = 0)
+}
+```
+]
+
+---
+class: medium-code
+
+# Imperative diskUsage
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
