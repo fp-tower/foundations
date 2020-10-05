@@ -1,10 +1,10 @@
 package exercises.dataprocessing
 
-import exercises.dataprocessing.RecursionExercises._
+import exercises.dataprocessing.StackSafeRecursiveExercises._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class RecursionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class StackSafeRecursiveExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   val largeSize = 100000
 

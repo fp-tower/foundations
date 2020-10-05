@@ -18,7 +18,7 @@ object TemperatureAnswers {
     samples.partitions.map(_.size).sum
 
   def sumTemperature(samples: ParList[Sample]): Double =
-    samples.partitions.flatMap(_.map(_.temperatureFahrenheit)).sum
+    samples.partitions.map(_.map(_.temperatureFahrenheit).sum).sum
 
   def averageTemperatureV2(samples: ParList[Sample]): Option[Double] = {
     val (length, sum) = samples.partitions

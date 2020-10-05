@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 504 568" width="504" height="568">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 504 568" width="504" height="568">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -12,9 +12,19 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
+    <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
-  <g id="scala-seed-project-recursive-2" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 09:05:15 +0000</metadata>
+  <g id="scala-seed-project-recursive-2" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>scala-seed-project-recursive-2</title>
     <g id="scala-seed-project-recursive-2_Layer_1">
       <title>Layer 1</title>
@@ -24,10 +34,10 @@
         </text>
       </g>
       <g id="Graphic_108">
-        <rect x="135" y="261" width="252" height="306" fill="#589b9d"/>
-        <rect x="135" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <rect x="135" y="261" width="261" height="306" fill="#589b9d"/>
+        <rect x="135" y="261" width="261" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(140 266)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="92.884" y="21">Stack</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="97.384" y="21">Stack</tspan>
         </text>
       </g>
       <g id="Graphic_112">
@@ -38,20 +48,28 @@
           <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="7.497" y="17">.gitignore</tspan>
         </text>
       </g>
-      <g id="Graphic_118">
-        <rect x="153" y="406.2857" width="216.35526" height="61.714286" fill="#70a3d8"/>
-        <rect x="153" y="406.2857" width="216.35526" height="61.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(158 410.52686)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="51.433635" y="21">diskUsage</tspan>
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.096635" y="47.616">scala-seed-project</tspan>
+      <g id="Graphic_126">
+        <path d="M 165 405 L 366 405 C 372.6274 405 378 410.3726 378 417 L 378 465 C 378 471.6274 372.6274 477 366 477 L 165 477 C 158.37258 477 153 471.6274 153 465 L 153 417 C 153 410.3726 158.37258 405 165 405 Z" fill="#70a3d8"/>
+        <path d="M 165 405 L 366 405 C 372.6274 405 378 410.3726 378 417 L 378 465 C 378 471.6274 372.6274 477 366 477 L 165 477 C 158.37258 477 153 471.6274 153 465 L 153 417 C 153 410.3726 158.37258 405 165 405 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 410)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="60.46" y="19">diskUsage</tspan>
         </text>
       </g>
-      <g id="Graphic_117">
-        <rect x="155.19079" y="334.2857" width="216.35526" height="61.714286" fill="#70a3d8"/>
-        <rect x="155.19079" y="334.2857" width="216.35526" height="61.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(160.19079 338.52686)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="51.433635" y="21">diskUsage</tspan>
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="57.340635" y="47.616">.gitignore</tspan>
+      <g id="Graphic_125">
+        <text transform="translate(167 445.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 scala-seed-project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_124">
+        <path d="M 165 324 L 366 324 C 372.6274 324 378 329.3726 378 336 L 378 384 C 378 390.6274 372.6274 396 366 396 L 165 396 C 158.37258 396 153 390.6274 153 384 L 153 336 C 153 329.3726 158.37258 324 165 324 Z" fill="#70a3d8"/>
+        <path d="M 165 324 L 366 324 C 372.6274 324 378 329.3726 378 336 L 378 384 C 378 390.6274 372.6274 396 366 396 L 165 396 C 158.37258 396 153 390.6274 153 384 L 153 336 C 153 329.3726 158.37258 324 165 324 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 329)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="60.46" y="19">diskUsage</tspan>
+        </text>
+      </g>
+      <g id="Graphic_123">
+        <text transform="translate(167 364.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 .gitignore</tspan>
         </text>
       </g>
     </g>

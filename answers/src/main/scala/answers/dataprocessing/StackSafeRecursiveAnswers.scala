@@ -2,7 +2,14 @@ package answers.dataprocessing
 
 import scala.annotation.tailrec
 
-object RecursionAnswers {
+object StackSafeRecursiveAnswers {
+
+  @tailrec
+  def contains[A](list: List[A], value: A): Boolean =
+    list match {
+      case Nil          => false
+      case head :: tail => if (head == value) true else contains(tail, value)
+    }
 
   def unsafeSum(numbers: List[Int]): Int =
     numbers match {

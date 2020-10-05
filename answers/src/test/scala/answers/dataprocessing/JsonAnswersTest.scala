@@ -7,27 +7,27 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 class JsonAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   val john: Json = JsonObject(
     Map(
-      "name" -> JsonString("John Doe"),
+      "name" -> JsonString(" John Doe "),
       "age"  -> JsonNumber(25),
       "address" -> JsonObject(
         Map(
           "street-number" -> JsonNumber(25),
-          "street-name"   -> JsonString("Cody Road"),
+          "street-name"   -> JsonString("  Cody Road"),
         )
       ),
     )
   )
 
-  test("upperCase") {
+  test("trimAll") {
     assert(
-      upperCase(john) == JsonObject(
+      trimAll(john) == JsonObject(
         Map(
-          "name" -> JsonString("JOHN DOE"),
+          "name" -> JsonString("John Doe"),
           "age"  -> JsonNumber(25),
           "address" -> JsonObject(
             Map(
               "street-number" -> JsonNumber(25),
-              "street-name"   -> JsonString("CODY ROAD"),
+              "street-name"   -> JsonString("Cody Road"),
             )
           ),
         )
@@ -50,6 +50,18 @@ class JsonAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
         )
       )
     )
+  }
+
+  test("search") {
+    assert(search(JsonObject(Map.empty), "ll", 5) == false)
+    assert(search(JsonNumber(5), "ll", 5) == false)
+    assert(search(JsonString("Hello"), "ll", 5) == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ll", 5) == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ss", 5) == false)
+    assert(search(JsonObject(Map("message" -> JsonString("hi"))), "ll", 5) == false)
+
+    assert(search(JsonObject(Map("user" -> JsonObject(Map("name" -> JsonString("John"))))), "o", 2) == true)
+    assert(search(JsonObject(Map("user" -> JsonObject(Map("name" -> JsonString("John"))))), "o", 1) == false)
   }
 
   test("depth") {

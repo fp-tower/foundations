@@ -15,6 +15,17 @@ class: center, middle, white
 .title[Recursions]
 
 ---
+# Recursions
+
+<br>
+<br>
+
+## Recursive data structures
+
+
+## Recursive functions
+
+---
 class: medium-code
 
 # Recursive functions
@@ -61,7 +72,7 @@ def printMany(n: Int, message: String): Unit =
     println(message)
     printMany(n - 1, message)
   }
-  else () // do nothing
+  else ()
 
 
 printMany(3, "FP is awesome")
@@ -136,7 +147,7 @@ val eda = Person("Eda", List(joe, eve))
       "number" : 12,
       "name" : "Cody road"
     },
-    "country": "UK",
+    "country": "UK"
   }
 }
 ```
@@ -171,7 +182,7 @@ address:
       "number" : 12,
       "name" : "Cody road"
     },
-    "country": "UK",
+    "country": "UK"
   }
 }
 ```
@@ -182,32 +193,113 @@ address:
 ]
 
 ---
+# Is JSON a case class?
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+case class Json(
+  number: Double,
+  text  : String,
+  obj   : Map[String, Json],
+)
+```
+]
+
+---
+# Is JSON a case class?
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset:silent
+case class Json(
+  number: Option[Double],
+  text  : Option[String],
+  obj   : Option[Map[String, Json]],
+)
+
+val json = Json(
+  number = None,
+  text   = Some("John Doe"),
+  obj    = None
+)
+```
+]
+
+---
+# Is JSON a case class?
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset:silent
+case class Json(
+  number: Option[Double],
+  text  : Option[String],
+  obj   : Option[Map[String, Json]],
+)
+
+val json1 = Json(
+  Some(25),
+  Some("John Doe"),
+  None
+)
+
+val json2 = Json(None, None, None)
+```
+]
+
+---
 class: medium-code
 
-# Enumeration
+# JSON is a recursive enumeration
 
 .forty-seven-left[
 ```scala
 enum Json {
 
   // Leaves
-  case JsonNumber(value: Double)
-  case JsonString(value: String)
+  case JsonNumber(number: Double)
+  case JsonString(text  : String)
 
   // Branch
-  case JsonObject(value: Map[String, Json])
+  case JsonObject(obj: Map[String, Json])
 
 }
 ```
 ]
 
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
+---
+class: medium-code
+
+# JSON is a recursive enumeration
+
+.forty-seven-left[
+```scala
+enum Json {
+
+  // Leaves
+  case JsonNumber(number: Double)
+  case JsonString(text  : String)
+
+  // Branch
+  case JsonObject(obj: Map[String, Json])
+
+}
+
+val json: Json = Json.JsonNumber(25)
+
+import Json._
+
+val number: Json = JsonNumber(25)
+val text  : Json = JsonString("John Doe")
+val obj   : Json = JsonObject(Map())
+```
 ]
+
 
 ---
 class: medium-code
-# Enumeration
+# JSON is a recursive enumeration
 
 .forty-seven-left[
 ## In Scala 3
@@ -216,11 +308,11 @@ class: medium-code
 enum Json {
 
   // Leaves
-  case JsonNumber(value: Double)
-  case JsonString(value: String)
+  case JsonNumber(number: Double)
+  case JsonString(text  : String)
 
   // Branch
-  case JsonObject(value: Map[String, Json])
+  case JsonObject(obj: Map[String, Json])
 
 }
 ```
@@ -229,136 +321,237 @@ enum Json {
 .fifty-two-right[
 ## In Scala 2
 
-```scala mdoc
+```scala mdoc:reset
 sealed trait Json
 
 // Leaves
-case class JsonNumber(value: Double) extends Json
-case class JsonString(value: String) extends Json
+case class JsonNumber(number: Double) extends Json
+case class JsonString(text  : String) extends Json
 
 // Branch
-case class JsonObject(value: Map[String, Json])
+case class JsonObject(obj: Map[String, Json])
   extends Json
 ```
 ]
 
 ---
 class: medium-code
+# JSON is a recursive enumeration
 
-# Constructor
+<br>
 
-.forty-seven-left[
+.fifty-two-left[
 ```scala
-import Json._
+sealed trait Json
 
-val john: Json = JsonObject(Map(
-  "name"    -> JsonString("John Doe"),
-  "age"     -> JsonNumber(25),
-  "address" -> JsonObject(Map(
-    "street" -> JsonObject(Map(
-      "number" -> JsonNumber(25),
-      "name"   -> JsonString("Cody Road")
-    ))
-  ))
-))
+// Leaves
+case class JsonNumber(number: Double) extends Json
+case class JsonString(text  : String) extends Json
+
+// Branch
+case class JsonObject(obj: Map[String, Json])
+  extends Json
 ```
 ]
 
-.forty-seven-right[
-<img src="../img/foundation/recursive-json-1.svg" alt="Json tree" style="width:500px;"/>
-]
-
----
-class: medium-code
-
-# Pattern match
-
-.forty-two-left[
-```scala
-def upperCase(json: Json): Json =
-  json match {
-    case JsonNumber(num) =>
-      ???
-    case JsonString(str) =>
-      ???
-    case JsonObject(obj) =>
-      ???
-  }
-```
-]
-
----
-class: medium-code
-
-# Pattern match
-
-.forty-two-left[
-```scala
-def upperCase(json: Json): Json =
-  json match {
-    case JsonNumber(num) =>
-      JsonNumber(num)
-    case JsonString(str) =>
-      JsonString(str.toUpperCase)
-    case JsonObject(obj) =>
-      ???
-  }
-```
-]
-
----
-class: medium-code
-
-# Pattern match
-
-.forty-two-left[
+.forty-two-right[
+<br>
 ```scala mdoc
-def upperCase(json: Json): Json =
-  json match {
-    case JsonNumber(num) =>
-      JsonNumber(num)
-    case JsonString(str) =>
-      JsonString(str.toUpperCase)
-    case JsonObject(obj) =>
-      JsonObject(obj.map {
-        case (key, value) =>
-          key -> upperCase(value)
-      })
-  }
+val number = JsonNumber(12)
+
+val json: Json = JsonNumber(12)
 ```
 ]
 
-.fifty-two-right[
-```scala mdoc:invisible
+---
+# Working with recursive enumerations
+
+<br>
+
+```scala mdoc:silent
 val john: Json = JsonObject(Map(
   "name"    -> JsonString("John Doe"),
   "age"     -> JsonNumber(25),
+  "email"   -> JsonString(" john@doe.com  "),
   "address" -> JsonObject(Map(
-    "street" -> JsonObject(Map(
-      "number" -> JsonNumber(25),
-      "name"   -> JsonString("Cody Road")
-    ))
+    "street-number" -> JsonNumber(12),
+    "post-code"     -> JsonString("E16 4SR  ")
   ))
 ))
+```
 
-upperCase(john)
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  ???
+```
+
+
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case JsonNumber(num)  => ???
+    case JsonString(text) => ???
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case JsonNumber(num) => ???
+    case JsonObject(obj) => ???
+  }
+// warning: match may not be exhaustive.
+// It would fail on the following input: JsonString(_)
+//   json match {
+//   ^^^^
+```
+
+## Transform this warning into an error
+
+```scala
+scalacOptions += "-Wconf:cat=other-match-analysis:error"
+```
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case JsonNumber(num)  => JsonNumber(num) // do nothing
+    case JsonString(text) => ???
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => ???
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => JsonString(text.trim)
+    case JsonObject(obj)  => ???
+  }
+```
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+<br>
+
+```scala
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => JsonString(text.trim)
+    case JsonObject(obj)  =>
+      val newObj = obj.map {
+        case (key, value) => (key, trimAll(value))
+      }
+      JsonObject(newObj)
+  }
+```
+
+---
+class: medium-code
+
+# Working with recursive enumerations
+
+```scala mdoc
+def trimAll(json: Json): Json =
+  json match {
+    case _: JsonNumber    => json
+    case JsonString(text) => JsonString(text.trim)
+    case JsonObject(obj)  =>
+      val newObj = obj.map {
+        case (key, value) => (key, trimAll(value))
+      }
+      JsonObject(newObj)
+  }
+```
+
+.fifty-two-left[
+```scala mdoc:invisible
+trimAll(john)
 ```
 
 ```scala
-upperCase(john)
-// res: Json = JsonObject(Map(
-//   "name" -> JsonString("JOHN DOE"),
-//   "age"  -> JsonNumber(25.0),
+john
+// john: Json = JsonObject(Map(
+//   "name"    -> JsonString("John Doe"),
+//   "age"     -> JsonNumber(25),
+//   "email"   -> JsonString(" john@doe.com  "),
 //   "address" -> JsonObject(Map(
-//     "street" -> JsonObject(Map(
-//       "number" -> JsonNumber(25.0),
-//       "name" -> JsonString("CODY ROAD"))
-//     ))
-//   )
+//     "street-number" -> JsonNumber(12),
+//     "post-code"     -> JsonString("E16 4SR  ")
 // ))
 ```
 ]
 
+.forty-seven-right[
+```scala
+trimAll(john)
+// res: Json = JsonObject(Map(
+//   "name"    -> JsonString("John Doe"),
+//   "age"     -> JsonNumber(25),
+//   "email"   -> JsonString("john@doe.com"),
+//   "address" -> JsonObject(Map(
+//     "street-number" -> JsonNumber(12),
+//     "post-code"     -> JsonString("E16 4SR")
+// ))
+```
+]
 
 ---
 background-image: url(../img/fp-tower/website-background-white.svg)
@@ -416,12 +609,58 @@ $ du -b .
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
 import java.io.File
-import scala.collection.mutable
+
+def diskUsage(file: File): Long =
+  ???
+```
+]
+
+---
+# Imperative approach
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory)
+    ???
+  else // normal file
+    file.length()
+```
+]
+
+---
+# Imperative approach
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory) {
+    var total = 0L
+
+    for (child <- file.listFiles())
+      total += child.length()
+
+    total
+  } else
+    file.length()
+```
+]
+
+---
+# Imperative approach
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.io.File
 
 def diskUsage(file: File): Long = {
   var total = file.length()
@@ -436,13 +675,8 @@ def diskUsage(file: File): Long = {
 ```
 ]
 
-.forty-seven-right[.center[
-<br>
-<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
-]]
-
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -458,8 +692,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -467,13 +701,8 @@ def diskUsage(input: File): Long = {
 ```
 ]
 
-.forty-seven-right[.center[
-<br>
-<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
-]]
-
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -489,8 +718,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -499,11 +728,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-1.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-1.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -519,8 +748,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -529,11 +758,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-2.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-2.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -549,8 +778,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -559,11 +788,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-3.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-3.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -579,8 +808,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -589,11 +818,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-4.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-4.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -609,8 +838,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -619,11 +848,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-5.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-5.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -639,8 +868,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -649,11 +878,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-6.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-6.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Imperative approach
 
 .forty-seven-left[
 ```scala mdoc:reset
@@ -669,8 +898,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -679,11 +908,11 @@ def diskUsage(input: File): Long = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-queue-7.svg" alt="diskUsage with Queue" style="width:400px;"/>
+<img src="../img/foundation/scala-seed-project-queue-7.svg" alt="diskUsage with Queue" style="width:500px;"/>
 ]]
 
 ---
-# File system: disk usage
+# Recursive approach
 
 .forty-seven-left[
 <br>
@@ -692,19 +921,96 @@ import java.io.File
 
 def diskUsage(file: File): Long =
   if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
+    ???
   else
+    ???
+```
+]
+
+---
+# Recursive approach
+
+.forty-seven-left[
+<br>
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory) {
+    val childrenDiskUsage: Long = ???
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
 
-.forty-seven-right[.center[
+---
+# Recursive approach
+
+.forty-seven-left[
 <br>
-<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:450px;"/>
-]]
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
+    file.length()
+```
+]
+
+---
+
+.forty-seven-left[
+# Imperative
+
+```scala mdoc:reset
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
+  }
+
+  total
+}
+```
+]
+
+.forty-seven-right[
+# Recursive
+
+```scala mdoc:reset
+import java.io.File
+
+def diskUsage(file: File): Long =
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles
+      .map(diskUsage)
+      .sum
+
+    file.length() + childrenDiskUsage
+  } else
+    file.length()
+```
+]
 
 ---
 # File system: disk usage
@@ -715,12 +1021,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -738,12 +1046,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -761,12 +1071,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -784,12 +1096,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -807,12 +1121,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -830,12 +1146,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -853,11 +1171,14 @@ def diskUsage(file: File): Long =
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.listFiles    // Array[File]
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
       .map(diskUsage) // Array[Long]
       .sum            // Long
-  else
+
+    file.length() + childrenDiskUsage
+  } else
     file.length()
 ```
 ]
@@ -867,7 +1188,27 @@ def diskUsage(file: File): Long =
 ]]
 
 ---
+background-image: url(../img/foundation/file-tree.svg)
 
+---
+background-image: url(../img/foundation/file-tree-stack-safety.svg)
+
+
+---
+# JVM memory model
+
+
+<img src="../img/foundation/jvm-memory-1.svg" alt="JVM memory model one stack" style="width:700px;"/>
+
+
+---
+# JVM memory model
+
+
+<img src="../img/foundation/jvm-memory-2.svg" alt="JVM memory model several stacks" style="width:700px;"/>
+
+
+---
 .forty-seven-left[
 # Explicit data structure
 ```scala mdoc:reset
@@ -883,8 +1224,8 @@ def diskUsage(input: File): Long = {
 
     total += file.length()
 
-     if(file.isDirectory)
-       queue.addAll(file.listFiles())
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
   }
 
   total
@@ -899,13 +1240,493 @@ def diskUsage(input: File): Long = {
 import java.io.File
 
 def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles    // Array[File]
-        .map(diskUsage) // Array[Long]
-        .sum            // Long
-  else
-   file.length()
+  if(file.isDirectory) {
+    val childrenDiskUsage = file
+      .listFiles      // Array[File]
+      .map(diskUsage) // Array[Long]
+      .sum            // Long
+
+    file.length() + childrenDiskUsage
+  } else
+    file.length()
+```
+]
+
+---
+background-image: url(../img/foundation/tree-elements-1.svg)
+
+# How many elements?
+
+---
+background-image: url(../img/foundation/tree-unbalanced.svg)
+
+# Unbalanced tree
+
+---
+background-image: url(../img/foundation/tree-elements-2.svg)
+
+# How many elements?
+
+---
+background-image: url(../img/foundation/deep-linked-list.svg)
+
+# List
+
+---
+# Recursive sum
+
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  ???
+```
+
+---
+# Recursive sum
+
+<br>
+.forty-seven-left[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => ???
+    case head :: tail => ???
+  }
+```
+]
+
+.forty-seven-right[
+```scala
+enum List[+A] {
+  case Nil
+  case ::(head: A, tail: List[A])
+}
+```
+]
+
+---
+# Recursive sum
+
+<br>
+.forty-seven-left[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => ???
+    case head :: tail => ???
+  }
+```
+
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil            => ???
+    case ::(head, tail) => ???
+  }
+```
+]
+
+.forty-seven-right[
+```scala
+enum List[+A] {
+  case Nil
+  case ::(head: A, tail: List[A])
+}
+```
+]
+
+---
+# Recursive sum
+
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => 0
+    case head :: tail => sum(tail) + head
+  }
+```
+
+
+---
+# Recursive sum
+
+<br>
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int =
+  numbers match {
+    case Nil          => 0
+    case head :: tail => sum(tail) + head
+  }
+```
+
+
+```scala mdoc
+sum(List(1,2,3,4,5))
+```
+
+```scala
+val largeList = List.range(1, 10000)
+// largeList: List[Int] = List(1,2,3,4,...,10000)
+
+sum(largeList)
+// java.lang.StackOverflowError
+```
+
+```scala mdoc:invisible
+val largeList = List.range(1, 10000)
+```
+
+```scala mdoc:crash:invisible
+sum(largeList)
+```
+
+---
+# Recursive contains
+
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+
+```scala mdoc
+contains(List(1,2,3,4), 3)
+
+contains(List(1,2,3,4), 5)
+```
+
+---
+# Recursive contains
+
+.forty-sevent-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+```scala mdoc
+contains(List(1,2,3,4), 3)
+
+contains(List(1,2,3,4), 5)
+```
+
+---
+# Recursive contains
+
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+
+```scala
+val largeList = List.range(1, 10000)
+// largeList: List[Int] = List(1,2,3,4,...,10000)
+
+contains(largeList, 5)
+// res: Boolean = true
+```
+
+---
+# Recursive contains
+
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+
+```scala
+val largeList = List.range(1, 10000)
+// largeList: List[Int] = List(1,2,3,4,...,10000)
+
+contains(largeList, 5)
+// res: Boolean = true
+
+contains(largeList, -1)
+// res: Boolean = false
+```
+
+---
+class: medium-code
+# Recursive functions
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      sum(tail) + head
+  }
+```
+]
+
+---
+class: medium-code
+# Recursive functions
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      head + sum(tail)
+  }
+```
+]
+
+---
+class: medium-code
+# Recursive functions
+
+.fifty-two-left[
+```scala mdoc:reset
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      val rest = sum(tail)
+      head + rest
+  }
+```
+]
+
+---
+class: medium-code
+
+# Tail recursion
+
+.fifty-two-left[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def contains(list: List[Int], number: Int): Boolean =
+  list match {
+    case Nil          => false
+    case head :: tail =>
+      if (head == number)
+        true
+      else
+        contains(tail, number)
+  }
+```
+]
+
+.forty-two-right[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(list: List[Int]): Int =
+  list match {
+    case Nil          => 0
+    case head :: tail =>
+      sum(tail) + head
+  }
+
+// [error] could not optimize @tailrec
+// annotated method sum:
+// it contains a recursive call not in
+// tail position
+```
+]
+
+
+---
+# Tail recursive sum
+
+<br>
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+```
+
+```scala
+sum(List(1,2,3,4,5), 0)
+// res: Int = 15
+
+sum(List.range(1, 10000), 0)
+// res: Int = 49995000
+```
+
+---
+class: medium-code
+
+# Tailrec vs imperative
+
+.fifty-two-left[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int = {
+  var state = 0
+
+  for (number <- numbers)
+    state += number
+
+  state
+}
+```
+]
+
+---
+class: medium-code
+
+# Tailrec vs imperative
+
+.fifty-two-left[
+```scala
+import scala.annotation.tailrec
+
+@tailrec
+def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+
+def sum(numbers: List[Int]): Int =
+  sum(numbers, state = 0)
+```
+]
+
+.forty-two-right[
+```scala mdoc:reset
+def sum(numbers: List[Int]): Int = {
+  var state = 0
+
+  for (number <- numbers)
+    state += number
+
+  state
+}
+```
+]
+
+---
+class: small-code
+
+# Hide tailrec implementation
+
+.forty-seven-left[
+## Private method
+
+```scala
+@tailrec
+private def sum(numbers: List[Int], state: Int): Int =
+  numbers match {
+    case Nil          => state
+    case head :: tail => sum(tail, state + head)
+  }
+
+def sum(numbers: List[Int]): Int =
+  sum(numbers, state = 0)
+```
+]
+
+.forty-seven-right[
+## Nested method
+
+```scala
+def sum(numbers: List[Int]): Int = {
+  @tailrec
+  def go(numbers: List[Int], state: Int): Int =
+    numbers match {
+      case Nil          => state
+      case head :: tail => sum(tail, state + head)
+    }
+
+  go(numbers, state = 0)
+}
 ```
 ]
 
@@ -914,730 +1735,77 @@ background-image: url(../img/fp-tower/website-background-white.svg)
 
 class: middle, white
 
-# JsonExercises.scala
+# StackSafeRecursiveExercises.scala
 
 ---
-# File system: disk usage
+class: white
 
-.forty-two-left[
-<br><br><br>
-```scala
-diskUsage("scala-seed-project")
-```
-]
-
-.fifty-seven-right[.center[
-<img src="../img/foundation/file-system-object-1.svg" alt="FileSystemObject is a file or directory" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-.forty-two-left[
-<br><br><br>
-```scala
-diskUsage("scala-seed-project")
-```
-]
-
-.fifty-seven-right[.center[
-<img src="../img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-<br>
-.forty-two-left[
-<br>
-```scala
-diskUsage("scala-seed-project") =
-  diskUsage("./.gitignore") +
-  diskUsage("./build.sbt")  +
-  diskUsage("./project")    +
-  diskUsage("./src")
-```
-]
-
-.fifty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-2a.svg" alt="Scala seed project disk usage" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-<br>
-.forty-two-left[
-<br>
-```scala
-diskUsage("scala-seed-project) =
-    8 + // diskUsage("./.gitignore")
-  447 + // diskUsage("./build.sbt")
-  diskUsage("./project") +
-  diskUsage("./src")
-```
-]
-
-.fifty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-2b.svg" alt="Scala seed project disk usage" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
+background-image: url(../img/fp-tower/website-background.svg)
 
 <br>
 
-.sixty-two-left[
-<br>
-```scala
-diskUsage(".project") =
-  diskUsage("./Dependencies.scala") +
-  diskUsage("./build.properties")
-```
-]
-
-.thirty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-3a.svg" alt="Scala seed project disk usage" style="width:300px;"/>
-]]
-
----
-# File system: disk usage
+# .white[Summary]
 
 <br>
 
-.sixty-two-left[
-<br>
-```scala
-diskUsage("project") =
-   19 + // diskUsage("./Dependencies.scala")
-  102 + // diskUsage("./build.properties")
-```
-]
+.medium[
+* Recursive functions are convenient <br> to traverse recursive data structures
 
-.thirty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project-3b.svg" alt="Scala seed project disk usage" style="width:300px;"/>
-]]
+* Stack-safety concerns
 
----
-# File system: disk usage
-
-.forty-two-left[
-<br><br>
-```scala
-diskUsage(".") =
-    8 + // diskUsage("./.gitignore")
-  447 + // diskUsage("./build.sbt")
-  249 + // diskUsage("./project")
-  diskUsage("./src")
-```
-]
-
-.fifty-seven-right[.center[
-<img src="../img/foundation/scala-seed-project.svg" alt="Scala seed project disk usage" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-.forty-seven-left[
-<br><br>
-```scala mdoc:reset
-import java.io.File
-
-def diskUsage(file: File): Long =
-  ???
-```
-]
-
----
-# File system: disk usage
-
-.forty-seven-left[
-<br><br>
-```scala mdoc:reset
-import java.io.File
-
-def diskUsage(file: File): Long =
-  ???
-```
-]
-
-.fifty-two-right[.center[
-<img src="../img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-.forty-seven-left[
-<br><br>
-```scala mdoc:reset
-import java.io.File
-
-def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    ??? // file is a directory
-  else if (!file.exists)
-    ??? // file doesn't exist
-  else
-    ??? // file is a normal file
-```
-]
-
-.fifty-two-right[.center[
-<img src="../img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-.forty-seven-left[
-<br><br>
-```scala mdoc:reset
-import java.io.File
-
-def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    ??? // file is a directory
-  else if (!file.exists)
-    0
-  else
-    file.length()
-```
-]
-
-.fifty-two-right[.center[
-<img src="../img/foundation/file-system-object-2.svg" alt="FileSystemObject is a file, directory or not exist" style="width:500px;"/>
-]]
-
----
-# File system: disk usage
-
-<br><br>
-```scala mdoc:reset
-import java.io.File
-
-def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.listFiles.map(diskUsage).sum
-  else if (!file.exists)
-    0
-  else
-    file.length()
-```
-
-```scala
-diskUsage(new File(.))
-// res: Long = 962L
-```
-
-
----
-# File system: disk usage
-
-<br><br>
-```scala mdoc:reset
-import java.io.File
-
-def diskUsage(file: File): Long =
-  if(file.isDirectory)
-    file.length() +
-      file.listFiles.map(diskUsage).sum
-  else if (!file.exists)
-    0
-  else
-    file.length()
-```
-
-```scala
-diskUsage(new File(.))
-// res: Long = 1986L
-```
-
----
-class: medium-code
-# Recursive data structure
-
-.fifty-seven-left[
-<br>
-```scala mdoc:silent
-case class Person(name: String, children: List[Person])
-
-val bob = Person("Bob", Nil)
-val lea = Person("Lea", Nil)
-val luc = Person("Luc", Nil)
-
-val eve = Person("Eve", List(bob, lea, luc))
-val joe = Person("Joe", Nil)
-
-val eda = Person("Eda", List(joe, eve))
-```
-]
-
-.forty-two-right[
-<img src="../img/foundation/recursive-person.svg" alt="Recursive Person" style="width:450px;"/>
+* Solutions:
+   * limit the depth
+   * tailrec annotation
 ]
 
 ---
 class: medium-code
-# Recursive data structure
 
-.fifty-seven-left[
-<br>
-```scala mdoc
-def countDescendant(person: Person): Int =
-  person.children.length +
-    person.children.map(countDescendant).sum
-
-countDescendant(joe)
-
-countDescendant(eve)
-
-countDescendant(eda)
-```
-]
-
-.forty-two-right[
-<img src="../img/foundation/recursive-person.svg" alt="Recursive Person" style="width:450px;"/>
-]
-
----
-# Recursive data structure: List
-
-```scala
-
-```
-
-
-
----
-# Generate 2 random numbers
-
-<br>
-
-```scala mdoc
-import scala.util.Random
-
-val number1 = Random.nextInt(100)
-
-val number2 = Random.nextInt(100)
-```
-
----
-# Generate n random numbers
-
-<br>
-
-```scala mdoc
-import scala.util.Random
-
-def randomNumbers(length: Int): List[Int] =
-  ???
-```
-
-
----
-# Generate n random numbers
-
-<br>
-
-```scala mdoc:reset
-import scala.util.Random
-
-def randomNumbers(length: Int): List[Int] =
-  List.range(0, length)  // List(0,1,2,3,...,n)
-    .map(_ => Random.nextInt(100))
-```
-
-```scala mdoc
-randomNumbers(2)
-randomNumbers(5)
-randomNumbers(-1)
-```
-
----
-# Generate n random numbers
-
-<br>
-
-```scala mdoc:reset
-import scala.util.Random
-
-def randomNumbers(length: Int): List[Int] =
-  if(length <= 0) Nil
-  else {
-    val number = Random.nextInt(100)
-    number :: randomNumbers(length - 1)
-  }
-```
-
-```scala mdoc
-randomNumbers(2)
-randomNumbers(5)
-randomNumbers(-1)
-```
-
----
-# Termination conditions
+# Tail recursive sum
 
 .fifty-two-left[
-```scala mdoc:reset
-import scala.util.Random
-
-def randomNumbers(length: Int): List[Int] =
-  if(length == 0) Nil
-  else {
-    val number = Random.nextInt(100)
-    number :: randomNumbers(length - 1)
-  }
-```
-
-```scala mdoc
-randomNumbers(2)
-```
-
-```scala
-randomNumbers(-1)
-// error: java.lang.StackOverflowError
-```
-]
-
----
-# Termination conditions
-
-.fifty-two-left[
-```scala mdoc:reset
-import scala.util.Random
-
-def randomNumbers(length: Int): List[Int] =
-  if(length == 0) Nil
-  else {
-    val number = Random.nextInt(100)
-    number :: randomNumbers(length - 1)
-  }
-```
-
-```scala mdoc
-randomNumbers(2)
-```
-
-```scala
-randomNumbers(-1)
-// error: java.lang.StackOverflowError
-```
-]
-
-.forty-two-right[
-## Infinite recursion
-
-```scala mdoc
-def doSomething: String =
-  doSomething
-```
-
 <br>
+```scala
+def sum(numbers: List[Int]): Int = {
+  @tailrec
+  def go(numbers: List[Int], state: Int): Int =
+    numbers match {
+      case Nil          => state
+      case head :: tail => sum(tail, state + head)
+    }
 
-```scala mdoc:reset
-def doSomething: String = {
-  while(true) { }
-  ???
+  go(numbers, state = 0)
 }
 ```
 ]
 
 ---
-# Generalise with Function0
+class: medium-code
 
-<br>
+# Imperative diskUsage
 
-```scala mdoc:invisible
-import scala.util.Random
-```
-
-```scala mdoc
-def repeat[A](length: Int, action: () => A): List[A] =
-  if(length <= 0) Nil
-  else {
-    val result = action()
-    result :: repeat(length - 1, action)
-  }
-```
-
---
-
-```scala mdoc
-repeat(5, () => Random.nextInt(100))
-
-repeat(2, () => println("Hello"))
-```
-
----
-# Generalise with call-by-name parameter
-
-<br>
-
-```scala mdoc:reset:invisible
-import scala.util.Random
-```
-
-```scala mdoc
-def repeat[A](length: Int, action: => A): List[A] =
-  if(length <= 0) Nil
-  else {
-    val result = action
-    result :: repeat(length - 1, action)
-  }
-```
-
-```scala mdoc
-repeat(5, Random.nextInt(100))
-
-repeat(2, println("Hello"))
-```
-
----
-# Generalise with call-by-name parameter
-
-<br>
-
-```scala mdoc:reset:invisible
-import scala.util.Random
-```
-
-```scala mdoc
-def repeat[A](length: Int, action: => A): List[A] =
-  if(length <= 0) Nil
-  else
-    action :: repeat(length - 1, action)
-```
-
-<br>
-
-```scala mdoc
-repeat(5, Random.nextInt(100))
-
-repeat(2, println("Hello"))
-```
-
-
-
----
-# Recursive data structure
-
-* List
-* Tree: JSON, file system
-* case class Person(name: String, children: List[Person])
-
----
-# Problems with recursions
-
-<br>
-
-to understand what is recursion, we need to first understand recursion
-
-```scala mdoc
-def doSomething: String = doSomething
-```
-
+.forty-seven-left[
 ```scala mdoc:reset
-def doSomething: String = {
-  while(true) { /* do nothing */ }
-  ???
+import java.io.File
+import scala.collection.mutable
+
+def diskUsage(input: File): Long = {
+  var total = 0L
+  val queue = mutable.Queue(input)
+
+  while (queue.nonEmpty) {
+    val file = queue.dequeue()
+
+    total += file.length()
+
+    if(file.isDirectory)
+      queue.addAll(file.listFiles())
+  }
+
+  total
 }
 ```
-
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
 ]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-1.svg" alt="Sum with recursion" style="width:450px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-2.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-3.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-4.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-5.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-
-```scala mdoc
-sum(List())
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-6.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Recursion
-
-.thirty-seven-left[
-<br>
-```scala mdoc:reset
-def sum(numbers: List[Int]): Int =
-  numbers match {
-    case Nil =>
-      0
-    case head :: tail =>
-      head + sum(tail)
-  }
-```
-]
-
-.fifty-seven-right[
-<img src="../img/foundation/recursion-sum-7.svg" alt="Sum with recursion" style="width:600px;"/>
-]
-
----
-# Retry
-
-<br>
-
-```scala mdoc
-import scala.util.{Try, Success, Failure}
-
-def retry[A](remainingRetries: Int, action: => A): A =
-  Try(action) match {
-    case Success(value)     => value
-    case Failure(exception) =>
-      if(remainingRetries <= 0) throw exception
-      else retry(remainingRetries - 1, action)
-  }
-```
-
----
-background-image: url(../img/foundation/recursive-problem-1.svg)
-
-# Recursion
-
-
----
-background-image: url(../img/foundation/recursive-problem-2a.svg)
-
-# Recursion
-
----
-background-image: url(../img/foundation/recursive-problem-2b.svg)
-
-# Recursion
-
----
-background-image: url(../img/foundation/recursive-problem-6.svg)
-
-# Recursion
-
----
-background-image: url(../img/foundation/recursive-problem-7.svg)
-
-# Recursion
-
----
-background-image: url(../img/foundation/recursive-problem-8.svg)
-
-# Recursion
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

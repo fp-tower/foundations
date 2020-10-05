@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 586 550" width="586" height="550">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 586 550" width="586" height="550">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -13,8 +13,8 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
-  <g id="scala-seed-project" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 09:05:15 +0000</metadata>
+  <g id="scala-seed-project" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>scala-seed-project</title>
     <g id="scala-seed-project_Layer_1">
       <title>Layer 1</title>
@@ -26,26 +26,17 @@
         </text>
       </g>
       <g id="Graphic_75">
-        <rect x="333" y="63" width="207" height="133.71429" fill="#589b9d"/>
-        <rect x="333" y="63" width="207" height="133.71429" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <rect x="333" y="63" width="234" height="133.71429" fill="#589b9d"/>
+        <rect x="333" y="63" width="234" height="133.71429" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(338 68)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="64.477" y="21">project</tspan>
-        </text>
-      </g>
-      <g id="Graphic_76">
-        <title>File</title>
-        <path d="M 423.9 131.9679 C 423.9 124.29477 422.97417 123.34545 416.21124 115.7517 L 416.1398 115.67313 C 409.34114 108 409.27043 108 402.29317 108 C 393.0028 108 351 108 351 108 L 351 189 L 423.9 189 L 423.9 131.9679 Z" fill="#acbdd0"/>
-        <path d="M 423.9 131.9679 C 423.9 124.29477 422.97417 123.34545 416.21124 115.7517 L 416.1398 115.67313 C 409.34114 108 409.27043 108 402.29317 108 C 393.0028 108 351 108 351 108 L 351 189 L 423.9 189 L 423.9 131.9679 Z M 423.9 131.57262 C 423.9 124.29477 423.82856 124.29477 409.27043 124.29477 L 409.27043 124.29477 C 409.27043 108.07938 409.27043 108 402.72036 108" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".81"/>
-        <text transform="translate(351 128.058)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="3.3890008" y="13">Depencies</tspan>
-          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="18.173" y="29.392">.scala</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="77.977" y="21">project</tspan>
         </text>
       </g>
       <g id="Graphic_77">
         <title>File</title>
-        <path d="M 522 132.2638 C 522 124.49594 521.06274 123.5349 514.2163 115.8474 L 514.144 115.76786 C 507.2614 108 507.1898 108 500.1264 108 C 490.72135 108 448.2 108 448.2 108 L 448.2 190 L 522 190 L 522 132.2638 Z" fill="#acbdd0"/>
-        <path d="M 522 132.2638 C 522 124.49594 521.06274 123.5349 514.2163 115.8474 L 514.144 115.76786 C 507.2614 108 507.1898 108 500.1264 108 C 490.72135 108 448.2 108 448.2 108 L 448.2 190 L 522 190 L 522 132.2638 Z M 522 131.86364 C 522 124.49594 521.9277 124.49594 507.1898 124.49594 L 507.1898 124.49594 C 507.1898 108.08036 507.1898 108 500.5589 108" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
-        <text transform="translate(448.2 128.508)" fill="black">
+        <path d="M 549 132.2638 C 549 124.49594 548.06274 123.5349 541.2163 115.8474 L 541.144 115.76786 C 534.2614 108 534.1898 108 527.1264 108 C 517.72135 108 475.2 108 475.2 108 L 475.2 190 L 549 190 L 549 132.2638 Z" fill="#acbdd0"/>
+        <path d="M 549 132.2638 C 549 124.49594 548.06274 123.5349 541.2163 115.8474 L 541.144 115.76786 C 534.2614 108 534.1898 108 527.1264 108 C 517.72135 108 475.2 108 475.2 108 L 475.2 190 L 549 190 L 549 132.2638 Z M 549 131.86364 C 549 124.49594 548.9277 124.49594 534.1898 124.49594 L 534.1898 124.49594 C 534.1898 108.08036 534.1898 108 527.5589 108" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
+        <text transform="translate(475.2 128.508)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="21.598002" y="13">build</tspan>
           <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="3.3210015" y="29.392">.properties</tspan>
         </text>
@@ -132,6 +123,14 @@
         <path d="M 154.8 131.2638 C 154.8 123.49594 153.86274 122.5349 147.01631 114.8474 L 146.94399 114.76786 C 140.0614 107 139.98982 107 132.92642 107 C 123.52135 107 81 107 81 107 L 81 189 L 154.8 189 L 154.8 131.2638 Z M 154.8 130.86364 C 154.8 123.49594 154.72768 123.49594 139.98982 123.49594 L 139.98982 123.49594 C 139.98982 107.08036 139.98982 107 133.35889 107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
         <text transform="translate(81 135.704)" fill="black">
           <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="7.7310015" y="13">.gitignore</tspan>
+        </text>
+      </g>
+      <g id="Graphic_102">
+        <path d="M 459 131.9679 C 459 124.29477 457.6284 123.34545 447.60924 115.7517 L 447.5034 115.67313 C 437.4313 108 437.32656 108 426.9899 108 C 413.22636 108 351 108 351 108 L 351 183 C 351 186.3137 353.6863 189 357 189 L 453 189 C 456.3137 189 459 186.3137 459 183 L 459 131.9679 Z" fill="#acbdd0"/>
+        <path d="M 459 131.9679 C 459 124.29477 457.6284 123.34545 447.60924 115.7517 L 447.5034 115.67313 C 437.4313 108 437.32656 108 426.9899 108 C 413.22636 108 351 108 351 108 L 351 183 C 351 186.3137 353.6863 189 357 189 L 453 189 C 456.3137 189 459 186.3137 459 183 L 459 131.9679 Z M 459 131.57262 C 459 124.29477 458.89416 124.29477 437.32656 124.29477 L 437.32656 124.29477 C 437.32656 108.07938 437.32656 108 427.62276 108" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".82"/>
+        <text transform="translate(356 132.108)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="4.137" y="13">Dependencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="30.723" y="29.392">.scala</tspan>
         </text>
       </g>
     </g>

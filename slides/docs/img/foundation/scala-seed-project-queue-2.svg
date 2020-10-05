@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 505 568" width="505" height="568">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 621 568" width="621" height="568">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -13,8 +13,8 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.17.4\n2020-09-14 15:26:22 +0000</metadata>
-  <g id="scala-seed-project-queue-2" fill-opacity="1" stroke-opacity="1" stroke="none" fill="none" stroke-dasharray="none">
+  <metadata> Produced by OmniGraffle 7.17.5\n2020-09-30 09:05:15 +0000</metadata>
+  <g id="scala-seed-project-queue-2" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" stroke="none" fill="none">
     <title>scala-seed-project-queue-2</title>
     <g id="scala-seed-project-queue-2_Layer_1">
       <title>Layer 1</title>
@@ -58,23 +58,36 @@
       </g>
       <g id="Graphic_108">
         <rect x="207" y="261" width="252" height="306" fill="#589b9d"/>
-        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(212 266)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.594" y="21">Queue</tspan>
         </text>
       </g>
       <g id="Graphic_110">
-        <rect x="54" y="361.2857" width="81" height="70.714286" fill="#70a3d8"/>
-        <rect x="54" y="361.2857" width="81" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(59 383.33486)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="29.384" y="21">0</tspan>
+        <rect x="72" y="433.2857" width="72" height="70.714286" fill="#70a3d8"/>
+        <rect x="72" y="433.2857" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(77 455.33486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="12.652" y="21">192</tspan>
         </text>
       </g>
       <g id="Graphic_109">
-        <text transform="translate(65 329)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.4655005" y="21">Total</tspan>
+        <text transform="translate(78 401)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8.093501" y="21">total</tspan>
         </text>
       </g>
+      <g id="Graphic_114">
+        <ellipse cx="504" cy="197.35714" rx="27.0000431433512" ry="26.3571849732714" fill="white"/>
+        <ellipse cx="504" cy="197.35714" rx="27.0000431433512" ry="26.3571849732714" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(487.4 186.60514)" fill="#424242">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="#424242" x="1.5880004" y="17">192</tspan>
+        </text>
+      </g>
+      <g id="Graphic_113">
+        <text transform="translate(536 183.71429)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="6.64" y="21">length</tspan>
+        </text>
+      </g>
+      <g id="Graphic_116"/>
     </g>
   </g>
 </svg>

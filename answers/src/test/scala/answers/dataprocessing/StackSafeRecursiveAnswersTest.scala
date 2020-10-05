@@ -1,12 +1,19 @@
 package answers.dataprocessing
 
-import answers.dataprocessing.RecursionAnswers._
+import answers.dataprocessing.StackSafeRecursiveAnswers._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class RecursionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class StackSafeRecursiveAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   val largeSize = 100000
+
+  test("contains") {
+    assert(contains(List(1, 5, 2), 5) == true)
+    assert(contains(List(1, 5, 2), 3) == false)
+    assert(contains(Nil, 3) == false)
+    assert(contains(List.fill(largeSize)(0), 1) == false)
+  }
 
   test("unsafeSum is not stack-safe") {
     try {
@@ -30,6 +37,12 @@ class RecursionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     }
   }
 
+  test("min is consistent with std library") {
+    forAll { (numbers: List[Int]) =>
+      assert(min(numbers) == numbers.minOption)
+    }
+  }
+
   test("reverse is consistent with std library") {
     forAll { (numbers: List[Int]) =>
       assert(reverse(numbers) == numbers.reverse)
@@ -39,12 +52,6 @@ class RecursionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
   test("reverse twice is a noop") {
     forAll { (numbers: List[Int]) =>
       assert(reverse(reverse(numbers)) == numbers)
-    }
-  }
-
-  test("min is consistent with std library") {
-    forAll { (numbers: List[Int]) =>
-      assert(min(numbers) == numbers.minOption)
     }
   }
 

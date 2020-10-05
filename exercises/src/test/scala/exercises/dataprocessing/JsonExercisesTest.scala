@@ -7,27 +7,27 @@ import exercises.dataprocessing.JsonExercises._
 class JsonExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   val john: Json = JsonObject(
     Map(
-      "name" -> JsonString("John Doe"),
+      "name" -> JsonString(" John Doe "),
       "age"  -> JsonNumber(25),
       "address" -> JsonObject(
         Map(
           "street-number" -> JsonNumber(25),
-          "street-name"   -> JsonString("Cody Road"),
+          "street-name"   -> JsonString("  Cody Road"),
         )
       ),
     )
   )
 
-  test("upperCase") {
+  test("trimAll") {
     assert(
-      upperCase(john) == JsonObject(
+      trimAll(john) == JsonObject(
         Map(
-          "name" -> JsonString("JOHN DOE"),
+          "name" -> JsonString("John Doe"),
           "age"  -> JsonNumber(25),
           "address" -> JsonObject(
             Map(
               "street-number" -> JsonNumber(25),
-              "street-name"   -> JsonString("CODY ROAD"),
+              "street-name"   -> JsonString("Cody Road"),
             )
           ),
         )
@@ -50,6 +50,15 @@ class JsonExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks 
         )
       )
     )
+  }
+
+  ignore("search") {
+    assert(search(JsonObject(Map.empty), "ll") == false)
+    assert(search(JsonNumber(5), "ll") == false)
+    assert(search(JsonString("Hello"), "ll") == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ll") == true)
+    assert(search(JsonObject(Map("message" -> JsonString("Hello"))), "ss") == false)
+    assert(search(JsonObject(Map("message" -> JsonString("hi"))), "ll") == false)
   }
 
   ignore("depth") {

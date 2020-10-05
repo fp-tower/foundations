@@ -5,6 +5,7 @@ object TemperatureExercises {
   // `minSampleByTemperature` should work as follow:
   // Step 1: Find the local minimums (for each partition the `Sample` with the coldest temperature).
   // Step 2: Find the minimum value among the local minimums.
+  // Note: We'll write test in the file `ParListTest.scala`
   def minSampleByTemperature(samples: ParList[Sample]): Option[Sample] =
     ???
 
@@ -16,7 +17,7 @@ object TemperatureExercises {
   // Step 4: Sum-up the resulting number for all partitions, this gives the total temperature for the entire `ParList`.
   // Step 5: Divide total temperature by the size of dataset.
   // In case the input `ParList` is empty we return `None`.
-  // Can you calculate the size and sum in one go?
+  // Bonus: Can you calculate the size and sum in one go?
   def averageTemperature(samples: ParList[Sample]): Option[Double] =
     ???
 
@@ -45,7 +46,7 @@ object TemperatureExercises {
 
   // f. Implement `map`, you should know what it does by now ;)
   // Then move `map` inside  the class `ParList`.
-  // Finally, refactor `minSampleByTemperature` to use a combination of `monoFoldLeft` and `map`.
+  // Finally, refactor `sum`, `size` and `average` to use a combination of `map` and `monoFoldLeft`.
   def map[From, To](parList: ParList[From])(update: From => To): ParList[To] =
     ???
 
