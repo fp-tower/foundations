@@ -43,5 +43,5 @@ deploy:
    skip_cleanup: true
    github_token: $GH_TOKEN
    on:
-      branch: data-processing-2
+      branch: master
       condition: $TRAVIS_PULL_REQUEST="false"
