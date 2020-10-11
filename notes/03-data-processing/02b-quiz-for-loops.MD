@@ -2,10 +2,10 @@
 
 ### With which types can we use a for-loop?
 
-1. List
-1. Map
+1. (c) List
+1. (c) Map
 1. Int
-1. String
+1. (c) String
 1. Tuple2, for example (5, "Hello")
 
 #### Explanation
@@ -28,18 +28,18 @@ for {
 1. "area is 12"
 1. Nothing, this code prints only 3 lines 
 1. "area is 5"
-1. "area is ${width * height}"
+1. (c) "area is ${width * height}"
 
 #### Explanation
 
 The `s` String interpolator is missing which means `${width * height}` is not interpreted.
 
-If we add the String interpolator, then "area is 5" would be printed because the variables are evaluated as follows: 
+If we add the String interpolator, then "area is 10" would be printed because the for-loop evaluates the variables in the following order: 
 1. width = 1, height = 4 
-1. width = 2, height = 4 
-1. width = 3, height = 4
 1. width = 1, height = 5 
+1. width = 2, height = 4
 1. width = 2, height = 5 
+1. width = 3, height = 4 
 1. width = 3, height = 5
 
 ### 
@@ -59,7 +59,7 @@ for {
 
 1. Print "john@foo.com" and stops
 1. Print "john@foo.com", "", and then "kim@bar.com"
-1. Print "john@foo.com" and then "kim@bar.com"
+1. (c) Print "john@foo.com" and then "kim@bar.com"
 1. Does not compile
 
 #### Explanation
@@ -87,7 +87,7 @@ List('a', 'b', 'c', 'd')
 
 1. "abcd"
 1. ""
-1. "dcba"
+1. (c) "dcba"
 1. Does not compile
 
 #### Explanation
@@ -107,7 +107,7 @@ List(1, 2, 3, 4).foldLeft(0)(_ * _)
 
 1. 24
 1. 10
-1. 0
+1. (c) 0
 1. Does not compile
 
 #### Explanation
