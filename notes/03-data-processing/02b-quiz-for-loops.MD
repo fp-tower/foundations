@@ -10,11 +10,11 @@
 
 #### Explanation
 
-A for-loop (without `yield`) is an alternative syntax for the method `foreach`.
-This method is available on all collections (`List`, `Array`, `Map`) and `String` 
+A for-loop (without `yield`) is an alternate syntax for the method `foreach`. 
+This method is available on all collections (`List`, `Array`, `Map`) and on `String`, 
 which is viewed as a collection of `Char` in Scala.
 
-Int and Tuple2 do not have a `foreach` method. 
+`Int` and `Tuple2` do not have a foreach method.
 
 ### What is the 4th printed line?
 
@@ -34,7 +34,7 @@ for {
 
 The `s` String interpolator is missing which means `${width * height}` is not interpreted.
 
-If we add the String interpolator, then "area is 10" would be printed because the for-loop evaluates the variables in the following order: 
+If we add the String interpolator, then "area is 10" would be printed because the for-loop will evaluate the variables in the following order:
 1. width = 1, height = 4 
 1. width = 1, height = 5 
 1. width = 2, height = 4
@@ -42,7 +42,8 @@ If we add the String interpolator, then "area is 10" would be printed because th
 1. width = 3, height = 4 
 1. width = 3, height = 5
 
-### 
+### What is printed?
+
 ```
 case class User(name: String, email: Option[String])
 val users = List(

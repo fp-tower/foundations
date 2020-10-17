@@ -1,22 +1,22 @@
 ## Quiz
 
-### Which type of function is more friendly to IDE (Integrated Development Environment)?
+### Which type of function is more friendly to the IDE (Integrated Development Environment)?
 
-1. Val function
-1. (c) Def function
-
-#### Explanation
-
-Def functions provide more information to the compiler and IDEs such as the name of the arguments.
-
-### Which type of function can you store in a data structure?
-
-1. (c) Val function
-1. Def function
+1. `val` function
+1. (c) `def` function
 
 #### Explanation
 
-Val functions are ordinary objects in Scala, so we can store them in variables or data structures.
+`def` functions provide more information to the compiler and IDEs, such as the name of the arguments.
+
+### Which type of function can be stored in a data structure?
+
+1. (c) `val` function
+1. `def` function
+
+#### Explanation
+
+`val` functions are ordinary objects in Scala; therefore, we can store them in variables or data structures.
 
 ### How do you transform a def function into a val function? e.g. 
 
@@ -30,5 +30,5 @@ def greaterThan(x: Int, y: Int): Boolean = x >= y
 
 #### Explanation
 
-We can either use an underscore after the method name (eta expansion) or annotate the expected type of the expression 
+We can both use an underscore after the method name (eta expansion) or annotate the expected type of the expression 
 to give a hint to the Scala compiler.
