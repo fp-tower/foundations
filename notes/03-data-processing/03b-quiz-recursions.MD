@@ -1,6 +1,6 @@
 ## Quiz recursions
 
-### Which of these datastructures is recursive?
+### Which of these data structures is recursive?
 
 ```scala
 case class Person(name: String, age: Int, email: Option[String])
@@ -17,6 +17,12 @@ case class Truck(foot: Int) extends MovingStorage
 1. MovingStorage
 1. Option
 1. (c) Json
+
+#### Explanation
+
+`Order` has a field `previousOrder` which refers to the class `Order`.
+
+Similarly for `Json` with `JsonObject` and `JsonArray`.
 
 
 ### What does this code do?
