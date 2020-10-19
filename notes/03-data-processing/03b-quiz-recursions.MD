@@ -118,7 +118,7 @@ def reverseV4[A](list: List[A], state: List[A]): List[A] =
 
 #### Explanation
 
-`reverseV1` and `reverseV3` do not compile because of the expression: `state +: head`.
+Both `reverseV1` and `reverseV3` do not compile because of the expression: `state +: head`.
 
 The operator `+:` is used to prepend to a `List` while `:+` is used  to append to a `List`. For example,
 
@@ -130,3 +130,9 @@ The operator `+:` is used to prepend to a `List` while `:+` is used  to append t
 A good mnemonic technique is to remember that `:` in `+:` and `:+` is always on the side of the `List`, e.g.
 1. `data +: list`
 1. `list :+ data`
+
+Both `reverseV2` and `reverse4` compile, but `reverseV2` will throw an `StackOverflowError` on large list. This is
+because `reverseV2` is not stack-safe. Every recursive step adds a frame on the stack which is a very limited resource.
+`reverseV4` does not have this issue because its recursive call is the last action in the method. This means the compiler
+can rewrite it using a loop which consumes a constant amount of memory. Good practice in this situation is to add a
+`scala.annotation.tailrec` before `reverseV4` so that the compiler verifies the method is stack-safe.
