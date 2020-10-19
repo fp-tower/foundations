@@ -48,13 +48,13 @@ for one type, we know it will do exactly the same for all other types.
 ### Which of the following methods provide the best type inference?
 
 ```scala
-def zip_v1[A, B, To](list1: List[A], list2: List[B], combine: (A, B) => To): List[To]
+def zipV1[A, B, To](list1: List[A], list2: List[B], combine: (A, B) => To): List[To]
 
-def zip_v2[A, B, To](list1: List[A], list2: List[B])(combine: (A, B) => To): List[To]
+def zipV2[A, B, To](list1: List[A], list2: List[B])(combine: (A, B) => To): List[To]
 ```
 
-1. `zip_v1`
-1. (c) `zip_v2`
+1. `zipV1`
+1. (c) `zipV2`
 
 #### Explanation
 
