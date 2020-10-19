@@ -24,7 +24,6 @@ case class Truck(foot: Int) extends MovingStorage
 
 Similarly for `Json` with `JsonObject` and `JsonArray`.
 
-
 ### What does this code do?
 
 ```scala
@@ -78,3 +77,37 @@ recursion terminates correctly.
 If a function is not tail-recursive, then it will throw a `StackOverflowError`
 if it calls itself too many times. We can ensure this doesn't happen by limiting the number of
 recursive calls (e.g. to a few hundreds) or by making the function tail-recursive (not always possible).
+
+### Which version of reverse is the best?
+
+1. ```scala
+def reverseV1[A](list: List[A]): List[A] =
+  list match {
+    case Nil          => Nil
+    case head :: tail => reverse(tail) +: head
+  }
+```
+1.  ```scala
+def reverseV2[A](list: List[A]): List[A] =
+  list match {
+    case Nil          => Nil
+    case head :: tail => reverse(tail) :+ head
+  }
+```
+1. ```scala
+def reverseV3[A](list: List[A], state: List[A]): List[A] =
+  list match {
+    case Nil          => state
+    case head :: tail => reverse(tail, state +: head)
+  }
+```
+1. ```scala
+def reverseV4[A](list: List[A], state: List[A]): List[A] =
+  list match {
+    case Nil          => state
+    case head :: tail => reverse(tail, state :+ head)
+  }
+```
+
+#### Explanation
+
