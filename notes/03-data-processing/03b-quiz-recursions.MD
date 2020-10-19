@@ -119,14 +119,14 @@ def reverseV4[A](list: List[A], state: List[A]): List[A] =
 #### Explanation
 
 `reverseV1` and `reverseV3` do not compile because of the expression: `state +: head`.
-The operator `+:` is used to prepend to a `List` while `:+` is used  to append to a `List`. \
-For example,
+
+The operator `+:` is used to prepend to a `List` while `:+` is used  to append to a `List`. For example,
 
 ```scala
 1 +: List(2, 3, 4) :+ 5
 // res: List(1, 2, 3, 4, 5)
 ```
 
-A mnemonic is to remember that `:` in the operators `+:` and `:+` is always on the side of the `List`:
+A good mnemonic technique is to remember that `:` in `+:` and `:+` is always on the side of the `List`, e.g.
 1. `data +: list`
 1. `list :+ data`
