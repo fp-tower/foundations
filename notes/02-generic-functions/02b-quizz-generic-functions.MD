@@ -1,6 +1,6 @@
 # Quiz: Generic functions
 
-### Which of the following method signature is valid in Scala 2?
+### Which method signature is valid in Scala 2?
 
 1. `def doSomething(value: A): Int`
 1. (c) `def doSomething[A](value: A): Int`
@@ -21,8 +21,8 @@ trait ExcelParser[A] {
 }
 ```
 
-In Scala 2, we can only define generic `def` functions. It is impossible to define a
-generic `val` function. Scala 3 removed this limitation by introducting of polymorphic function types:
+In Scala 2, we can only define generic `def` functions. It is impossible to define a generic `val` function. 
+Scala 3 removed this limitation by introducing polymorphic function types:
 
 ```scala
 val doSomething: [A] => A => Int
@@ -37,7 +37,7 @@ val doSomething: [A] => A => Int
 
 #### Explanation
 
-1. Reduce code duplication: Generic functions are applicable to many types. This means, we don't need to 
+1. Reduce code duplication: Generic functions are applicable to many types. This means we don't need to 
 copy/paste the same code to use it on different types. For example, `size(List(1, 2))` or `size(List("Hello", "World"))` 
 1. Better documentation: When a function accepts generic inputs, it documents that these values are treated as black boxes
 by the implementation. This is very helpful to understand what a function can or cannot do without looking at the code. 
@@ -58,14 +58,14 @@ def zipV2[A, B, To](list1: List[A], list2: List[B])(combine: (A, B) => To): List
 
 #### Explanation
 
-In Scala 2, type inference works one set of parentheses at a time. So for `zip_v1`, the compiler cannot use
+In Scala 2, type inference works one set of parentheses at a time. So for `zipV1`, the compiler cannot use
 type information from `list1` and `list2` arguments to infer the input type of the `combine` function. For example:
 
 ```scala
-zip_v1(List(1, 2), List(0, 0), _ + _) // fails to compile
+zipV1(List(1, 2), List(0, 0), _ + _) // fails to compile
 
-zip_v2(List(1, 2), List(0, 0))(_ + _) // works fine.
+zipV2(List(1, 2), List(0, 0))(_ + _) // works fine.
 ```
 
-It is recommended to use different set of parentheses (currying) when a generic method takes a `val` function using
+It is recommended to use a different set of parentheses (currying) when a generic method takes a `val` function using
 generic types.  
