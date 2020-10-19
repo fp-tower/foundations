@@ -78,14 +78,14 @@ If a function is not tail-recursive, then it will throw a `StackOverflowError`
 if it calls itself too many times. We can ensure this doesn't happen by limiting the number of
 recursive calls (e.g. to a few hundreds) or by making the function tail-recursive (not always possible).
 
-### Which version of reverse is the best?
+### Which one is the best implementation?
 
 1.
 ```scala
 def reverseV1[A](list: List[A]): List[A] =
   list match {
     case Nil          => Nil
-    case head :: tail => reverse(tail) +: head
+    case head :: tail => reverseV1(tail) +: head
   }
 ```
 
@@ -94,7 +94,7 @@ def reverseV1[A](list: List[A]): List[A] =
 def reverseV2[A](list: List[A]): List[A] =
   list match {
     case Nil          => Nil
-    case head :: tail => reverse(tail) :+ head
+    case head :: tail => reverseV2(tail) :+ head
   }
 ```
 
@@ -103,7 +103,7 @@ def reverseV2[A](list: List[A]): List[A] =
 def reverseV3[A](list: List[A], state: List[A]): List[A] =
   list match {
     case Nil          => state
-    case head :: tail => reverse(tail, state +: head)
+    case head :: tail => reverseV3(tail, state +: head)
   }
 ```
 
@@ -112,9 +112,21 @@ def reverseV3[A](list: List[A], state: List[A]): List[A] =
 def reverseV4[A](list: List[A], state: List[A]): List[A] =
   list match {
     case Nil          => state
-    case head :: tail => reverse(tail, state :+ head)
+    case head :: tail => reverseV4(tail, state :+ head)
   }
 ```
 
 #### Explanation
 
+`reverseV1` and `reverseV3` do not compile because of the expression: `state +: head`.
+The operator `+:` is used to prepend to a `List` while `:+` is used  to append to a `List`. \
+For example,
+
+```scala
+1 +: List(2, 3, 4) :+ 5
+// res: List(1, 2, 3, 4, 5)
+```
+
+A mnemonic is to remember that `:` in the operators `+:` and `:+` is always on the side of the `List`:
+1. `data +: list`
+1. `list :+ data`
