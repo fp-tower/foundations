@@ -16,7 +16,7 @@ case class Truck(foot: Int) extends MovingStorage
 1. (c) Order
 1. MovingStorage
 1. Option
-1. (c) java.io.File
+1. (c) Json
 
 
 ### What does this code do?
