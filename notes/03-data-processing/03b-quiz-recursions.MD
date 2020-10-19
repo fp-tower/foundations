@@ -10,14 +10,12 @@ case class Order(quantity: Int, price: Double, previousOrder: Option[Order])
 sealed trait MovingStorage
 case class Box(width: Int, height: Int) extends MovingStorage
 case class Truck(foot: Int) extends MovingStorage
-
-sealed trait
 ```
 
 1. Person
 1. (c) Order
 1. MovingStorage
-1. Int
+1. Option
 1. (c) java.io.File
 
 
