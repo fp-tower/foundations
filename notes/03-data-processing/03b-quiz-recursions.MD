@@ -80,28 +80,35 @@ recursive calls (e.g. to a few hundreds) or by making the function tail-recursiv
 
 ### Which version of reverse is the best?
 
-1. ```scala
+1.
+```scala
 def reverseV1[A](list: List[A]): List[A] =
   list match {
     case Nil          => Nil
     case head :: tail => reverse(tail) +: head
   }
 ```
-1.  ```scala
+
+2.
+```scala
 def reverseV2[A](list: List[A]): List[A] =
   list match {
     case Nil          => Nil
     case head :: tail => reverse(tail) :+ head
   }
 ```
-1. ```scala
+
+3.
+```scala
 def reverseV3[A](list: List[A], state: List[A]): List[A] =
   list match {
     case Nil          => state
     case head :: tail => reverse(tail, state +: head)
   }
 ```
-1. ```scala
+
+4.
+```scala
 def reverseV4[A](list: List[A], state: List[A]): List[A] =
   list match {
     case Nil          => state
