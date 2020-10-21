@@ -3,8 +3,9 @@ image:
 
 vscode:
   extensions:
-    - scala-lang.scala@0.3.9:kklqw+c/dNRmtTU8B5repw==
-    - scalameta.metals@1.9.0:PtE/gdeE1YPL6It4tEfqpg==
+    - scala-lang.scala@0.4.5:hiI5l6gvM8wAiy/xTQl38g==
+    - scalameta.metals@1.9.4:PxYRuGll1yFJGq/sSSA2Fg
+
 
 tasks:
   - init: "mkdir -p .vscode && echo '{\"metals.sbtScript\": \"/home/gitpod/.local/share/coursier/bin/sbt\"}' > .vscode/settings.json"
