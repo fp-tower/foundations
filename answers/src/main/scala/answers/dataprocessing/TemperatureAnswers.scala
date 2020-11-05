@@ -20,21 +20,23 @@ object TemperatureAnswers {
   def sumTemperature(samples: ParList[Sample]): Double =
     samples.partitions.map(_.map(_.temperatureFahrenheit).sum).sum
 
-  def averageTemperatureV2(samples: ParList[Sample]): Option[Double] = {
-    val (length, sum) = samples.partitions
-      .map(
-        partition =>
-          partition.foldLeft((0, 0.0)) {
-            case ((size, total), sample) =>
-              (size + 1, total + sample.temperatureFahrenheit)
-        }
-      )
-      .foldLeft((0, 0.0)) {
-        case ((size1, total1), (size2, total2)) =>
-          (size1 + size2, total1 + total2)
-      }
+  def averageTemperatureOneGo(samples: ParList[Sample]): Option[Double] = {
+    val (sum, length) = foldSumSizePerPartition(samples.partitions.map(sumSizeList))
+
     Option.unless(length == 0)(sum / length)
   }
+
+  def sumSizeList(samples: List[Sample]): (Double, Int) =
+    samples.foldLeft((0.0, 0)) {
+      case ((stateSum, stateSize), sample) =>
+        (stateSum + sample.temperatureFahrenheit, stateSize + 1)
+    }
+
+  def foldSumSizePerPartition(partitions: List[(Double, Int)]): (Double, Int) =
+    partitions.foldLeft((0.0, 0)) {
+      case ((stateSum, stateSize), (partitionSum, partitionSize)) =>
+        (stateSum + partitionSum, stateSize + partitionSize)
+    }
 
   def summaryListOnePass(samples: List[Sample]): SummaryV1 =
     samples.foldLeft(

@@ -1,7 +1,7 @@
 package answers.dataprocessing
 
 import answers.dataprocessing.TemperatureAnswers._
-import org.scalacheck.Arbitrary
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -9,6 +9,30 @@ import scala.Ordering.Double.TotalOrdering
 import scala.concurrent.ExecutionContext.global
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
+
+  test("byNumberOfPartition example") {
+    val list    = List.range(1, 11)
+    val parList = ParList.byNumberOfPartition(global, 3, list)
+
+    assert(parList.partitions.size == 3)
+    assert(list == parList.toList)
+  }
+
+  val numbersGen: Gen[List[Int]] = Gen.listOf(Gen.chooseNum(Int.MinValue, Int.MaxValue))
+  val oneOrMore: Gen[Int]        = Gen.chooseNum(1, Int.MaxValue)
+
+  test("byNumberOfPartition generate the right number of partitions") {
+    forAll(numbersGen, oneOrMore) { (numbers, numberOfPartitions) =>
+      val parList = ParList.byNumberOfPartition(global, numberOfPartitions, numbers)
+      assert(parList.partitions.size == (numberOfPartitions min numbers.size))
+    }
+  }
+
+  test("byNumberOfPartition round-trip") {
+    forAll(numbersGen, oneOrMore) { (numbers, numberOfPartitions) =>
+      assert(ParList.byNumberOfPartition(global, numberOfPartitions, numbers).toList == numbers)
+    }
+  }
 
   test("minSampleByTemperature example") {
     val sample       = Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, 0)
