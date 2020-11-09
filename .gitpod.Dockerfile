@@ -1,19 +1,12 @@
 FROM gitpod/workspace-full
-
-RUN echo 'unset JAVA_TOOL_OPTIONS' >> /home/gitpod/.bashrc.d/99-clear-java-tool-options && rm -rf /home/gitpod/.sdkman
-
-RUN curl -fLo cs https://git.io/coursier-cli-linux &&\
-    chmod +x cs &&\
-    ./cs java --jvm adopt:1.8.0-252 --env >> /home/gitpod/.bashrc.d/90-cs &&\
-    ./cs install --env >> /home/gitpod/.bashrc.d/90-cs &&\
-    ./cs install \
-      ammonite:2.1.4 \
-      bloop \
-      cs \
-      sbt-launcher \
-      scala:2.13.3 \
-      scalafmt:2.5.3 &&\
-    ./cs fetch org.scalameta::metals:0.9.4 >/dev/null &&\
-    ./cs fetch org.scala-sbt:sbt:1.4.0 >/dev/null &&\
-    ./cs fetch coursier:2.0.3 >/dev/null &&\
-    rm -f cs
+USER gitpod
+RUN brew install scala coursier/formulas/coursier sbt scalaenv ammonite-repl
+RUN sudo env "PATH=$PATH" coursier bootstrap org.scalameta:scalafmt-cli_2.12:2.4.2 \
+  -r sonatype:snapshots \
+  -o /usr/local/bin/scalafmt --standalone --main org.scalafmt.cli.Cli
+RUN bash -cl "set -eux \
+    version=0.9.0 \
+    coursier fetch \
+        org.scalameta:metals_2.12:$version \
+        org.scalameta:mtags_2.13.3:$version \
+        org.scalameta:mtags_2.12.12:$version"
