@@ -13,7 +13,7 @@ RUN curl -fLo cs https://git.io/coursier-cli-linux &&\
       sbt-launcher \
       scala:2.13.3 \
       scalafmt:2.5.3 &&\
-    ./cs fetch org.scalameta::metals:0.9.4 >/dev/null &&\
-    ./cs fetch org.scala-sbt:sbt:1.4.0 >/dev/null &&\
+#    ./cs fetch org.scalameta::metals:0.9.4 >/dev/null &&\
+    ./cs fetch org.scala-sbt:sbt:1.4.2 >/dev/null &&\
     ./cs fetch coursier:2.0.3 >/dev/null &&\
     rm -f cs
