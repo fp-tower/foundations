@@ -25,9 +25,7 @@ object JsonAnswers {
   def anonymize(json: Json): Json =
     json match {
       case _: JsonNumber => JsonNumber(0)
-      case JsonBoolean(bool) =>
-        if (bool)  JsonBoolean(false)
-        else JsonBoolean(true)
+      case _: JsonBoolean => json
       case _: JsonString => JsonString("***")
       case JsonObject(obj) =>
         JsonObject(obj.map {
