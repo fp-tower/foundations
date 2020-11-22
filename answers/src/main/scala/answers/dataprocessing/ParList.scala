@@ -10,8 +10,13 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
   def map[To](update: A => To): ParList[To] =
     ParList(executionContext, partitions.map(_.map(update)))
 
-  def foldLeft[B](default: B)(combine: (B, A) => A): B =
+  def foldLeft[To](default: To)(combine: (To, A) => To): To =
     sys.error("Impossible")
+
+  def foldLeftV2[To](default: To)(combineElement: (To, A) => To)(combinePartition: (To, To) => To): To =
+    partitions
+      .map(_.foldLeft(default)(combineElement))
+      .foldLeft(default)(combinePartition)
 
   // 1st `monoFoldLeft` implementation before introducing `Monoid`
   def monoFoldLeftV1(default: A)(combine: (A, A) => A): A =

@@ -255,135 +255,133 @@ background-image: url(../img/foundation/parlist-monofoldLeft-default-2.svg)
 ---
 class: center, middle
 
+.thirty-seven-left[
+# 0 + x == x
+
+# x + 0 == x
+]
+
+--
+
+.fifty-seven-right[
 # combine(default, x) == x
 
----
-class: center, middle
-
-# combine(default, x) == x == combine(x, default)
+# combine(x, default) == x
+]
 
 ---
-class: middle
+class: medium-code
 
-```scala
-                               average(10, 12) = ???
-```
+# monoFoldLeft
 
----
-class: middle
 
-```scala
-                             average(10, 12) = (10 + 12) / 2
-                                             = 11
-```
+<img src="../img/foundation/parlist-monofoldLeft-associative-1.svg" alt="foldLeft per partition" style="width:800px;"/>
 
 ---
-class: middle
+class: medium-code
 
+# monoFoldLeft
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
 ```scala
-                         average(10, 12, 14) = (10 + 12 + 14) / 3
-                                             = 12
+val partition1  = combine(combine(default, 4), 7)
+val partition2  = combine(default, 3)
+val finalResult = combine(combine(default, partition1), partition2)
 ```
-
-
+<br><br><br>
+```scala
+val partition1  = combine(default, 4)
+val partition2  = combine(combine(default, 7), 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+]
 
 ---
-class:  middle
+class: medium-code
 
-```scala
-                average(average(10, 12), 14) = average(11, 14)
-                                             = (11 + 14) / 2
-                                             = 12.5
-```
+# monoFoldLeft
 
-```scala
-                average(10, average(12, 14)) = average(10, 13)
-                                             = (10 + 13) / 2
-                                             = 11.5
-```
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
 
+.sixty-seven-right[
+<br><br>
 ```scala
-                         average(10, 12, 14) = 12
+val partition1  = combine(4, 7)
+val partition2  = 3
+val finalResult = combine(partition1, partition2)
 ```
+<br><br><br>
+```scala
+val partition1  = 4
+val partition2  = combine(7, 3)
+val finalResult = combine(partition1, partition2)
+```
+]
+
+---
+# monoFoldLeft
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-two-right[
+<br><br><br>
+```scala
+combine(combine(4, 7), 3)
+```
+<br><br><br><br><br>
+```scala
+combine(4, combine(7, 3))
+```
+]
 
 ---
 # Associative functions
 
 
-<br><br><br><br>
+<br><br><br>
 
+.forty-seven-left[
 ```scala mdoc
 (1 + (2 + 3)) == ((1 + 2) + 3)
 
 (1 min (2 min 3)) == ((1 min 2) min 3)
 ```
-
----
-# monoFoldLeft
-
-.fifty-two-left[
-<img src="../img/foundation/parlist-monofoldLeft-associative-0.svg" alt="foldLeft per partition" style="width:450px;"/>
-]
-
-.forty-seven-right[
-<br><br><br>
-```scala
-(default combine a1 combine a2 combine a3)
-(default combine b1 combine b2 combine b3)
-```
-]
-
----
-# monoFoldLeft
-
-.fifty-two-left[
-<img src="../img/foundation/parlist-monofoldLeft-associative-1.svg" alt="foldLeft per partition" style="width:420px;"/>
-]
-
-.forty-seven-right[
-<br><br><br>
-```scala
-(a1 combine a2 combine a3)
-(b1 combine b2 combine b3)
-```
 ]
 
 
 ---
-# monoFoldLeft
+background-image: url(../img/foundation/map-fold-1.svg)
 
-.fifty-two-left[
-<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:420px;"/>
-]
-
-.forty-seven-right[
-<br><br><br>
-```scala
-(a1 combine a2 combine a3) combine
-(b1 combine b2 combine b3)
-```
-]
+# Sum Temperature
 
 ---
-# monoFoldLeft requires combine to be associative
+background-image: url(../img/foundation/map-fold-2.svg)
 
-.fifty-two-left[
-<img src="../img/foundation/parlist-monofoldLeft-associative-3.svg" alt="foldLeft per partition" style="width:420px;"/>
-]
+# Sum Temperature
 
-.forty-seven-right[
-<br><br>
-```scala
-(a combine b combine c) combine
-(d combine e combine f)
-```
-<br><br><br><br><br><br>
+---
+background-image: url(../img/foundation/map-fold-3.svg)
 
-```scala
-(a combine b combine c combine d) combine
-(e combine f)
-```
-]
+# Sum Temperature
+
+---
+background-image: url(../img/foundation/map-fold-4.svg)
+
+# Sum Temperature
+
+---
+background-image: url(../img/foundation/map-fold-5.svg)
+
+# Sum Temperature
 
 ---
 background-image: url(../img/foundation/parlist-foldMapPar-1a.svg)

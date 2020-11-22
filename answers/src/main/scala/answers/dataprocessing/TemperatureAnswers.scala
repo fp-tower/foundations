@@ -20,6 +20,9 @@ object TemperatureAnswers {
   def sumTemperature(samples: ParList[Sample]): Double =
     samples.partitions.map(_.map(_.temperatureFahrenheit).sum).sum
 
+  def sumTemperatureV2(samples: ParList[Sample]): Double =
+    samples.foldLeftV2(0.0)((state, sample) => state + sample.temperatureFahrenheit)(_ + _)
+
   def averageTemperatureV2(samples: ParList[Sample]): Option[Double] = {
     val (length, sum) = samples.partitions
       .map(
