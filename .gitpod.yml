@@ -3,7 +3,7 @@ image:
 vscode:
   extensions:
     - scala-lang.scala@0.3.9:kklqw+c/dNRmtTU8B5repw==
-    - scalameta.metals@1.9.6:r4TvVGu3A2++o0cbEXt2Ig==
+    - scalameta.metals@1.9.7:xCkJSXQDPRX+pl2SW3fGnQ==
 ports:
   - port: 8212
     onOpen: ignore
