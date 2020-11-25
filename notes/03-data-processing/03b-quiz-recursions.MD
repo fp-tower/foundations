@@ -131,7 +131,7 @@ A good mnemonic technique is to remember that `:` in `+:` and `:+` is always on 
 1. `data +: list`
 1. `list :+ data`
 
-Both `reverseV2` and `reverse4` compile, but `reverseV2` will throw an `StackOverflowError` on large list. This is
+Both `reverseV2` and `reverseV4` compile, but `reverseV2` will throw an `StackOverflowError` on large list. This is
 because `reverseV2` is not stack-safe. Every recursive step adds a frame on the stack which is a very limited resource.
 `reverseV4` does not have this issue because its recursive call is the last action in the method. This means the compiler
 can rewrite it using a loop which consumes a constant amount of memory. Good practice in this situation is to add a
