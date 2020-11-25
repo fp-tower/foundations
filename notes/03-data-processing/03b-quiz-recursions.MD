@@ -112,7 +112,7 @@ def reverseV3[A](list: List[A], state: List[A]): List[A] =
 def reverseV4[A](list: List[A], state: List[A]): List[A] =
   list match {
     case Nil          => state
-    case head :: tail => reverseV4(tail, state :+ head)
+    case head :: tail => reverseV4(tail, head :+ state)
   }
 ```
 
