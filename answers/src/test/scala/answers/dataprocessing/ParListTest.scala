@@ -5,18 +5,25 @@ import org.scalacheck.Arbitrary
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.concurrent.ExecutionContext.global
+import TemperatureAnswers._
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
 
   test("minSampleByTemperature example") {
-    val sample       = Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, 0)
-    val temperatures = List(1, 10, -1, 24, 18, 32, 99, 20, -34, 102, -20, 0)
-    val samples      = temperatures.map(temperature => sample.copy(temperatureFahrenheit = temperature))
-    val parSamples   = ParList.byNumberOfPartition(global, 3, samples)
+    val samples = List(
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 50),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 56.3),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 23.4),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 89.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 22.1),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 34.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 99.0),
+    )
+    val parSamples = ParList.byPartitionSize(global, 3, samples)
 
     assert(
-      TemperatureAnswers.minSampleByTemperature(parSamples) ==
-        Some(Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, -34))
+      minSampleByTemperature(parSamples) ==
+        Some(Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 22.1))
     )
   }
 
@@ -39,6 +46,21 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     forAll { (numbers: ParList[Int]) =>
       assert(numbers.size == numbers.toList.size)
     }
+  }
+
+  test("averageTemperature example") {
+    val samples = List(
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 50),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 56.3),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 23.4),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 89.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 22.1),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 34.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 99.0),
+    )
+    val parSamples = ParList.byPartitionSize(global, 3, samples)
+
+    assert(averageTemperature(parSamples) == Some(53.6))
   }
 
   test("averageTemperature: min <= avg <= max ") {

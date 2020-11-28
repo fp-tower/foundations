@@ -39,10 +39,9 @@ trait ParListTestInstances {
 
   implicit def parListArb[A](implicit arbA: Arbitrary[A]): Arbitrary[ParList[A]] =
     Arbitrary(
-      for {
-        list              <- Gen.listOf(arbA.arbitrary)
-        numberOfPartition <- Gen.choose[Int](1, 10)
-      } yield ParList.byNumberOfPartition(global, numberOfPartition, list)
+      Gen
+        .listOf(Gen.listOf(arbA.arbitrary))
+        .map(partitions => new ParList(global, partitions))
     )
 
   implicit val summaryV1Arb: Arbitrary[SummaryV1] =

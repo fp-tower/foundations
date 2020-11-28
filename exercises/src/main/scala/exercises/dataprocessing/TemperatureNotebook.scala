@@ -38,7 +38,7 @@ object TemperatureNotebook extends App {
     ???
 
   // b. Implement `minSampleByTemperature` in TemperatureExercises
-  lazy val minSampleByTemperature: Option[Sample] =
+  lazy val coldestTemperature: Option[Sample] =
     TemperatureExercises.minSampleByTemperature(parSamples)
 
   // c. Implement `averageTemperature` in TemperatureExercises

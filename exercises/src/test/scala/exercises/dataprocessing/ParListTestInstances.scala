@@ -37,10 +37,9 @@ trait ParListTestInstances {
 
   implicit def parListArb[A](implicit arbA: Arbitrary[A]): Arbitrary[ParList[A]] =
     Arbitrary(
-      for {
-        list              <- Gen.listOf(arbA.arbitrary)
-        numberOfPartition <- Gen.choose[Int](1, 10)
-        partitionSize = math.ceil(list.length / numberOfPartition.toDouble).toInt
-      } yield ParList.byPartitionSize(partitionSize, list)
+      Gen
+        .listOf(Gen.listOf(arbA.arbitrary))
+        .map(partitions => new ParList(partitions))
     )
+
 }
