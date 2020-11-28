@@ -23,10 +23,10 @@ object TemperatureNotebookAnswers extends App {
   val samplesArray    = samples.toArray
   val parSamplesArray = ParArray(computeEC, samplesArray, partitionSize)
 
-  val coldestTemperature: Option[Sample] =
+  val coldestSample: Option[Sample] =
     TemperatureAnswers.minSampleByTemperature(parSamples)
 
-  println(s"Min sample by temperature is $coldestTemperature")
+  println(s"Min sample by temperature is $coldestSample")
   println(s"Max sample by temperature is ${parSamples.maxBy(_.temperatureFahrenheit)}")
   println(s"Min sample by date is ${parSamples.minBy(_.localDate)}")
   println(s"Max sample by date is ${parSamples.maxBy(_.localDate)}")
