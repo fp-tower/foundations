@@ -14,7 +14,7 @@ jobs:
       - uses: olafurpg/setup-scala@v10
       - uses: olafurpg/setup-gpg@v3
       - name: Run tests and doc
-        run: csbt test mdoc
+        run: csbt test slides/mdoc
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
