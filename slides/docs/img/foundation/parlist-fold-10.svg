@@ -13,7 +13,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18\n2020-11-30 17:35:25 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.18\n2020-11-30 18:56:18 +0000</metadata>
   <g id="parlist-fold-10" fill-opacity="1" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1">
     <title>parlist-fold-10</title>
     <g id="parlist-fold-10_Layer_1">
@@ -69,7 +69,7 @@
         <rect x="135" y="63" width="216" height="63" fill="#70a3d8"/>
         <rect x="135" y="63" width="216" height="63" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(140 81.192)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.339" y="21">Intermediate result 1</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.746" y="21">intermediate result 1</tspan>
         </text>
       </g>
       <g id="Graphic_299">
@@ -90,7 +90,7 @@
         <rect x="135" y="171" width="216" height="63" fill="#70a3d8"/>
         <rect x="135" y="171" width="216" height="63" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(140 189.192)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.339" y="21">Intermediate result 2</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.746" y="21">intermediate result 2</tspan>
         </text>
       </g>
     </g>
