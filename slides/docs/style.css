@@ -17,6 +17,7 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
 .hl { color : #6f9a9c; font-weight: bold; }
+.dark-green { color: #004750; }
 
 .twenty-seven-left  { float: left ; width: 27%; }
 .twenty-seven-right { float: right; width: 27%; }
