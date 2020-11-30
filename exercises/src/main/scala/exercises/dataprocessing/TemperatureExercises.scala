@@ -11,11 +11,13 @@ object TemperatureExercises {
 
   // c. Implement `averageTemperature` which finds the average temperature across all `Samples`.
   // `averageTemperature` should work as follow:
-  // Step 1: Compute the size each partition.
-  // Step 2: Sum-up the size of all partitions, this gives the size for the entire `ParList`.
-  // Step 3: Compute the sum of temperatures for each partition.
-  // Step 4: Sum-up the resulting number for all partitions, this gives the total temperature for the entire `ParList`.
-  // Step 5: Divide total temperature by the size of dataset.
+  // Step 1: Compute the sum of all samples temperatures
+  //   a) Compute the sum per partition
+  //   b) Sum-up the sum of each partition
+  // Step 2: Compute the size of the dataset
+  //   a) Compute the size of each partition
+  //   b) Sum-up the size of each partition
+  // Step 3: Divide the total temperature by the size of dataset.
   // In case the input `ParList` is empty we return `None`.
   // Bonus: Can you calculate the size and sum in one go?
   def averageTemperature(samples: ParList[Sample]): Option[Double] =
