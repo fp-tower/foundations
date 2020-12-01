@@ -23,16 +23,14 @@ object TemperatureNotebookAnswers extends App {
   val samplesArray    = samples.toArray
   val parSamplesArray = ParArray(computeEC, samplesArray, partitionSize)
 
-  val coldestSample: Option[Sample] =
-    TemperatureAnswers.minSampleByTemperature(parSamples)
+  val coldestSample = TemperatureAnswers.minSampleByTemperature(parSamples)
 
   println(s"Min sample by temperature is $coldestSample")
   println(s"Max sample by temperature is ${parSamples.maxBy(_.temperatureFahrenheit)}")
   println(s"Min sample by date is ${parSamples.minBy(_.localDate)}")
   println(s"Max sample by date is ${parSamples.maxBy(_.localDate)}")
 
-  val averageTemperature: Option[Double] =
-    TemperatureAnswers.averageTemperature(parSamples)
+  val averageTemperature = TemperatureAnswers.averageTemperature(parSamples)
 
   println(s"Average temperature is $averageTemperature")
 
@@ -43,7 +41,7 @@ object TemperatureNotebookAnswers extends App {
   summariesPerCity.get("Bordeaux").foreach(println)
   summariesPerCity.get("London").foreach(println)
 
-  bench("sum")(
+  bench("sum", ignore = true)(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
     Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
@@ -55,28 +53,23 @@ object TemperatureNotebookAnswers extends App {
 
   bench("min")(
     Labelled("ParList minBy", () => parSamples.minBy(_.temperatureFahrenheit)),
+    Labelled("ParList parFoldMap", () => parSamples.parFoldMap(Option(_))(Monoid.minByOption(_.temperatureFahrenheit))),
     Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit)),
   )
 
   bench("summary")(
-    Labelled("List 4 passes", () => TemperatureAnswers.summaryList(samples)),
-    Labelled("List one-pass", () => TemperatureAnswers.summaryListOnePass(samples)),
-    Labelled("ParList one-pass foldMap hard-coded Monoid",
-             () => parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)),
-    Labelled("ParList one-pass foldMap derived Monoid",
-             () => parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoidDerived)),
-    Labelled("ParList one-pass reduceMap hard-coded Semigroup",
-             () => SummaryV1.fromSummary(parSamples.parReduceMap(Summary.one)(Summary.semigroup))),
-    Labelled("ParList one-pass reduceMap derived Semigroup",
-             () => SummaryV1.fromSummary(parSamples.parReduceMap(Summary.one)(Summary.semigroupDerived))),
+    Labelled("List 4 iterations", () => TemperatureAnswers.summaryList(samples)),
+    Labelled("List 1 iteration", () => TemperatureAnswers.summaryListOnePass(samples)),
+    Labelled("ParList 4 iterations", () => TemperatureAnswers.summaryParList(parSamples)),
+    Labelled("ParList 1 iteration foldMap", () => TemperatureAnswers.summaryParListOnePassFoldMap(parSamples)),
+    Labelled("ParList 1 iteration reduceMap", () => TemperatureAnswers.summaryParListOnePassReduceMap(parSamples)),
   )
 
   bench("aggregatePerLabel")(
-    Labelled("ParList city", () => aggregatePerLabel(parSamples)(s => List(s.city))),
-    Labelled("ParList country", () => aggregatePerLabel(parSamples)(s => List(s.country))),
-    Labelled("ParList Bordeaux", () => aggregatePerLabel(parSamples)(s => List(s.city).filter(_ == "Bordeaux"))),
-    Labelled("ParList city, country, region",
-             () => aggregatePerLabel(parSamples)(s => List(s.city, s.country, s.region))),
+    Labelled("city", () => aggregatePerLabel(parSamples)(s => List(s.city))),
+    Labelled("country", () => aggregatePerLabel(parSamples)(s => List(s.country))),
+    Labelled("Bordeaux", () => aggregatePerLabel(parSamples)(s => List(s.city).filter(_ == "Bordeaux"))),
+    Labelled("city, country, region", () => aggregatePerLabel(parSamples)(s => List(s.city, s.country, s.region))),
   )
 
   def aggregatePerLabel[Label](parList: ParList[Sample])(labels: Sample => List[Label]): Map[Label, Summary] = {

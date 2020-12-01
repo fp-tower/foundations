@@ -49,7 +49,7 @@ trait ParListTestInstances {
       for {
         sample1 <- Arbitrary.arbitrary[Sample]
         sample2 <- Arbitrary.arbitrary[Sample]
-        sum     <- Arbitrary.arbLong.arbitrary.map(_.toDouble) // avoid decimal
+        sum     <- Gen.choose(-10000000.0, 10000000.0)
         size    <- Gen.choose(0, 1000000)
         samples = List(sample1, sample2)
       } yield

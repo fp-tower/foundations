@@ -46,28 +46,6 @@ object TemperatureExercises {
   def monoFoldLeft[A](parList: ParList[A], default: A)(combine: (A, A) => A): A =
     ???
 
-  // f. Implement `map`, you should know what it does by now ;)
-  // Then move `map` inside  the class `ParList`.
-  // Finally, refactor `sum`, `size` and `average` to use a combination of `map` and `monoFoldLeft`.
-  def map[From, To](parList: ParList[From])(update: From => To): ParList[To] =
-    ???
-
-  // g. Refactor `minBy`, `maxBy` and `averageTemperature` to use `map` and `monoFoldLeft`
-
-  // h. Implement a new folding method on `ParList` that combines both `map` and `monoFoldLeft`
-  // together such that we only iterate over the dataset once.
-  // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
-
-  // i. Implement a version of the function implemented in h) such that each partition is
-  // processed in parallel.
-  // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
-  // Next question is in  benchmark section of `TemperatureNotebook`.
-
-  // Implement `summaryList` using List `foldLeft`.
-  // Calculate `min`, `max`, `average`, `sum` by iterating over `samples` only ONCE.
-  def summaryListOnePass(samples: List[Sample]): Summary =
-    ???
-
   // `summaryList` iterate 4 times over `samples`, one for each field.
   def summaryList(samples: List[Sample]): Summary =
     Summary(
@@ -77,8 +55,41 @@ object TemperatureExercises {
       size = samples.size
     )
 
-  // Implement `summaryParListOnePass` using `parFoldMap`.
-  // Calculate `min`, `max`, `average`, `sum` by iterating over `samples` only ONCE.
+  def summaryListOnePass(samples: List[Sample]): Summary =
+    samples.foldLeft(
+      Summary(
+        min = None,
+        max = None,
+        sum = 0.0,
+        size = 0
+      )
+    )(
+      (state, sample) =>
+        Summary(
+          min = state.min.fold(Some(sample))(
+            current =>
+              if (current.temperatureFahrenheit <= sample.temperatureFahrenheit) Some(current)
+              else Some(sample)
+          ),
+          max = state.max.fold(Some(sample))(
+            current =>
+              if (current.temperatureFahrenheit >= sample.temperatureFahrenheit) Some(current)
+              else Some(sample)
+          ),
+          sum = state.sum + sample.temperatureFahrenheit,
+          size = state.size + 1
+      )
+    )
+
+  // Implement `summaryParList` by calling `parFoldMap` once for each field of Summary.
+  // Note: In `ParListTest.scala`, there is already a test checking that `summaryParList`
+  // should return the same result as `summaryList`
+  def summaryParList(samples: ParList[Sample]): Summary =
+    ???
+
+  // Implement `summaryParListOnePass` using `parFoldMap` only ONCE.
+  // Note: In `ParListTest.scala`, there is already a test checking that `summaryParListOnePass`
+  // should return the same result as `summaryList`
   def summaryParListOnePass(samples: ParList[Sample]): Summary =
     ???
 }

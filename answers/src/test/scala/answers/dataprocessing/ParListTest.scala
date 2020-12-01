@@ -109,7 +109,7 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   checkMonoid("Sum Int", Monoid.sumNumeric[Int])
   checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
   checkMonoid("Min Option[Int]", Monoid.minOption[Int])
-//  checkMonoid("SummaryV1", SummaryV1.monoid) TODO check
+  checkMonoid("SummaryV1", SummaryV1.monoid)
   checkMonoid("Map[String, Int]", Monoid.map[String, Int](Monoid.sumNumeric))
 
   test("foldMap consistent with map + monoFoldMap") {
@@ -121,16 +121,18 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
 
   test("summary consistent between implementations") {
     forAll { (samples: ParList[Sample]) =>
-      val list           = TemperatureAnswers.summaryList(samples.toList)
-      val listOnePass    = TemperatureAnswers.summaryListOnePass(samples.toList)
-      val parListOnePass = TemperatureAnswers.summaryParListOnePass(samples)
-
-      assert(list == listOnePass)
-
-      assert(list.size == parListOnePass.size)
-      assert((list.sum - parListOnePass.sum).abs <= 0.001)
-      assert(list.min == parListOnePass.min)
-      assert(list.max == parListOnePass.max)
+      val reference = TemperatureAnswers.summaryList(samples.toList)
+      List(
+        TemperatureAnswers.summaryListOnePass(samples.toList),
+        TemperatureAnswers.summaryParList(samples),
+        TemperatureAnswers.summaryParListOnePassFoldMap(samples),
+        TemperatureAnswers.summaryParListOnePassReduceMap(samples),
+      ).foreach { other =>
+        assert(reference.size == other.size)
+        assert((reference.sum - other.sum).abs < 0.00001)
+        assert(reference.min == other.min)
+        assert(reference.max == other.max)
+      }
     }
   }
 

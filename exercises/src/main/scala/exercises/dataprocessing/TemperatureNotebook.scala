@@ -49,24 +49,29 @@ object TemperatureNotebook extends App {
   // Benchmark ParList
   //////////////////////
 
-  // j. Compare the runtime performance of various implementations of `sum`:
+  // Compare the runtime performance of various implementations of `sum`:
   // * List foldLeft
   // * List map + sum
-  // * ParList foldMap
-  // * ParList parFoldMap
+  // * TODO ParList foldMap
+  // * TODO ParList parFoldMap
   bench("sum", ignore = true)(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
+    Labelled("ParList foldMap", () => ???),
+    Labelled("ParList parFoldMap", () => ???),
   )
 
-  // k. Implement `summaryListOnePass` and `summaryParList`
   // Compare the runtime performance of various implementations of `summary`
+  // * List with 4 iterations
+  // * List with 1 iterations
+  // * TODO ParList with 4 iterations
+  // * TODO ParList with 1 iteration
   bench("summary", ignore = true)(
-    Labelled("List", () => TemperatureExercises.summaryList(samples)),
-    Labelled("List one-pass", () => TemperatureExercises.summaryListOnePass(samples))
+    Labelled("List 4 iterations", () => TemperatureExercises.summaryList(samples)),
+    Labelled("List 1 iteration", () => TemperatureExercises.summaryListOnePass(samples)),
+    Labelled("ParList 4 iterations", () => TemperatureExercises.summaryParList(parSamples)),
+    Labelled("ParList 1 iteration", () => TemperatureExercises.summaryParListOnePass(parSamples)),
   )
-
-  // l. Add `summaryParListOnePass` to the benchmark above.
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)

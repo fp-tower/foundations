@@ -49,4 +49,21 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
 
     assert(averageTemperature(parSamples) == Some(53.6))
   }
+
+  ignore("summary is consistent between implementations") {
+    forAll { (samples: ParList[Sample]) =>
+      val samplesList = samples.partitions.flatten
+      val reference   = summaryList(samples.partitions.flatten)
+      List(
+        summaryListOnePass(samplesList),
+        summaryParList(samples),
+        summaryParListOnePass(samples),
+      ).foreach { other =>
+        assert(reference.size == other.size)
+        assert((reference.sum - other.sum).abs < 0.00001)
+        assert(reference.min == other.min)
+        assert(reference.max == other.max)
+      }
+    }
+  }
 }

@@ -39,6 +39,14 @@ object TemperatureAnswers {
     Option.unless(length == 0)(sum / length)
   }
 
+  def summaryList(samples: List[Sample]): SummaryV1 =
+    SummaryV1(
+      min = samples.minByOption(_.temperatureFahrenheit),
+      max = samples.maxByOption(_.temperatureFahrenheit),
+      sum = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
+      size = samples.size
+    )
+
   def summaryListOnePass(samples: List[Sample]): SummaryV1 =
     samples.foldLeft(
       SummaryV1(
@@ -65,15 +73,18 @@ object TemperatureAnswers {
       )
     )
 
-  def summaryList(samples: List[Sample]): SummaryV1 =
+  def summaryParList(samples: ParList[Sample]): SummaryV1 =
     SummaryV1(
-      min = samples.minByOption(_.temperatureFahrenheit),
-      max = samples.maxByOption(_.temperatureFahrenheit),
-      sum = samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit),
+      min = samples.minBy(_.temperatureFahrenheit),
+      max = samples.maxBy(_.temperatureFahrenheit),
+      sum = samples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
       size = samples.size
     )
 
-  def summaryParListOnePass(samples: ParList[Sample]): SummaryV1 =
-    samples.parFoldMap(SummaryV1.one)(SummaryV1.monoidDerived)
+  def summaryParListOnePassFoldMap(samples: ParList[Sample]): SummaryV1 =
+    samples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)
+
+  def summaryParListOnePassReduceMap(samples: ParList[Sample]): SummaryV1 =
+    SummaryV1.fromSummary(samples.parReduceMap(Summary.one)(Summary.semigroup))
 
 }

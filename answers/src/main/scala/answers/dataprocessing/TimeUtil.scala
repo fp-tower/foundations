@@ -27,7 +27,7 @@ object TimeUtil {
       times.foreach(label => println(s"  ${label.padName(maxLabelLength)}: ${label.value}"))
     }
 
-  case class Labelled[A](name: String, value: A) {
+  case class Labelled[+A](name: String, value: A) {
     def map[To](update: A => To): Labelled[To] =
       copy(value = update(value))
 
