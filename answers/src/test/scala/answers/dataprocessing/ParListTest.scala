@@ -4,8 +4,10 @@ import Ordering.Double.TotalOrdering
 import org.scalacheck.Arbitrary
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+
 import scala.concurrent.ExecutionContext.global
 import TemperatureAnswers._
+import org.scalactic.{Equality, TolerantNumerics}
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
 
@@ -105,11 +107,12 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     }
   }
 
-//  checkMonoid("Sum Double", Monoid.sumNumeric[Double]) not stable
-  checkMonoid("Sum Int", Monoid.sumNumeric[Int])
+  implicit val doubleEq: Equality[Double] = TolerantNumerics.tolerantDoubleEquality(0.0001)
+
+  checkMonoid("Sum Double", Monoid.sumNumeric[Double])
   checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
   checkMonoid("Min Option[Int]", Monoid.minOption[Int])
-//  checkMonoid("SummaryV1", SummaryV1.monoid)
+  checkMonoid("SummaryV1", SummaryV1.monoid)
   checkMonoid("Map[String, Int]", Monoid.map[String, Int](Monoid.sumNumeric))
 
   test("foldMap consistent with map + monoFoldMap") {
@@ -147,17 +150,17 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     )
   }
 
-  def checkMonoid[A: Arbitrary](name: String, monoid: Monoid[A]) = {
+  def checkMonoid[A: Arbitrary: Equality](name: String, monoid: Monoid[A]) = {
     test(s"$name Monoid default is a noop") {
       forAll { (value: A) =>
-        assert(monoid.combine(value, monoid.default) == value)
-        assert(monoid.combine(monoid.default, value) == value)
+        assert(monoid.combine(value, monoid.default) === value)
+        assert(monoid.combine(monoid.default, value) === value)
       }
     }
     test(s"$name Monoid combine is associative") {
       forAll { (first: A, second: A, third: A) =>
         assert(
-          monoid.combine(first, monoid.combine(second, third)) ==
+          monoid.combine(first, monoid.combine(second, third)) ===
             monoid.combine(monoid.combine(first, second), third)
         )
       }
