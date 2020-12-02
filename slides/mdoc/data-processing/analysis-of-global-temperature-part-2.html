@@ -154,6 +154,78 @@ class: medium-code
 .sixty-seven-right[
 <br><br>
 ```scala
+val partition1  = `combine`(`combine`(default, 4), 7)
+val partition2  = `combine`(default, 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = `combine`(default, 4)
+val partition2  = `combine`(`combine`(default, 7), 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = combine(combine(default, 4), 7)
+val partition2  = combine(default, 3)
+val finalResult = `combine`(`combine`(default, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = combine(default, 4)
+val partition2  = combine(combine(default, 7), 3)
+val finalResult = `combine`(`combine`(default, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = combine(`combine(default`, 4), 7)
+val partition2  = `combine(default`, 3)
+val finalResult = combine(`combine(default`, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = `combine(default`, 4)
+val partition2  = combine(`combine(default`, 7), 3)
+val finalResult = combine(`combine(default`, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
 val partition1  = combine(4, 7)
 val partition2  = 3
 val finalResult = combine(partition1, partition2)
@@ -604,7 +676,9 @@ val response2 = Await.result(future2, Duration.Inf)
 <script>
     var slideshow = remark.create({
         ratio: "16:9",
-        slideNumberFormat: ''
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
     });
 </script>
 </body>
