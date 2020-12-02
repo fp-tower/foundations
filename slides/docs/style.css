@@ -25,7 +25,8 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 }
 .remark-code-span-highlighted, .remark-code-line-highlighted {
     padding         : 0;
-    background-color: rgb(255, 255, 1);
+    /*background-color: rgb(255, 255, 1);*/
+    background-color: #EABC00;
 }
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
