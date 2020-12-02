@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analysis of global temperature - Part 1</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: center, middle
+
+.title[.dark-green[Analysis of global temperature<br>Part 1]]
+
+---
+# Data processing
+
+<br>
+
+<img src="../img/foundation/parlist-0a.svg" style="width:1000px;"/>
+
+---
+# Sequential iteration
+
+<br>
+
+<img src="../img/foundation/parlist-0b.svg" style="width:1000px;"/>
+
+---
+# Sequential iteration
+
+<br>
+
+<img src="../img/foundation/parlist-0c.svg" style="width:1000px;"/>
+
+---
+# Sequential iteration
+
+<br>
+
+<img src="../img/foundation/parlist-0d.svg" style="width:1000px;"/>
+
+---
+# Sequential iteration
+
+<br>
+
+<img src="../img/foundation/parlist-0e.svg" style="width:1000px;"/>
+
+---
+# Useful work
+
+<br>
+
+<img src="../img/foundation/parlist-0f.svg" style="width:1000px;"/>
+
+---
+# Partition the dataset
+
+.center[
+<img src="../img/foundation/parlist-1a.svg" style="width:1000px;"/>
+]
+
+---
+# Partition the dataset
+
+.center[
+<img src="../img/foundation/parlist-1b.svg" style="width:1000px;"/>
+]
+
+---
+# Partition the dataset
+
+.center[
+<img src="../img/foundation/parlist-1c.svg" style="width:1000px;"/>
+]
+
+
+---
+# Partition the dataset
+
+.center[
+<img src="../img/foundation/parlist-1d.svg" style="width:1000px;"/>
+]
+
+---
+# Partition the dataset
+
+.center[
+<img src="../img/foundation/parlist-1e.svg" style="width:1000px;"/>
+]
+
+---
+# Partition the dataset
+
+
+.center[
+<img src="../img/foundation/parlist-2a.svg" style="width:1050px;"/>
+]
+
+---
+# Size the partitions appropriately
+
+.forty-seven-left[
+<img src="../img/foundation/size-jobs.svg" alt="Find the right size for the job" style="width:400px;"/>
+]
+
+---
+# Tasks may require different computing power
+
+<img src="../img/foundation/parlist-2b.svg"  style="width:800px;"/>
+
+---
+# Tasks may require different computing power
+
+<img src="../img/foundation/parlist-2c.svg"  style="width:800px;"/>
+
+---
+# Scales to more than one computer
+
+<img src="../img/foundation/parlist-3.svg"  style="width:800px;"/>
+
+---
+# Important points
+
+<br>
+
+## 1. Size the partitions appropriately
+
+## 2. Benchmark and tweak configuration for the task at hand
+
+---
+# Important points
+
+<br>
+
+## 1. Size the partitions appropriately
+
+## 2. Benchmark and tweak configuration for the task at hand
+
+## 3. Parallel process .hl2[MUST] produce the .hl2[SAME] result as the sequential one
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# TemperatureNotebook.scala
+
+---
+# Average temperature
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-1.svg" style="width:450px;"/>
+]]
+
+---
+# Sum temperatures per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-2.svg" style="width:450px;"/>
+]]
+
+---
+# Sum temperatures per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-3.svg" style="width:450px;"/>
+]]
+
+
+---
+# Sum temperatures per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-4.svg" style="width:450px;"/>
+]]
+
+---
+# Sum-up all partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-5.svg" style="width:450px;"/>
+]]
+
+---
+# Size
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-1.svg" style="width:450px;"/>
+]]
+
+---
+# Calculate size per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-6.svg" style="width:450px;"/>
+]]
+
+---
+# Sum-up all partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-7.svg" style="width:450px;"/>
+]]
+
+---
+# Average temperature in one pass
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-1.svg" style="width:450px;"/>
+]]
+
+---
+# Calculate sum and size per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-8.svg" style="width:450px;"/>
+]]
+
+---
+# Calculate sum and size per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-9.svg" style="width:450px;"/>
+]]
+
+---
+# Calculate sum and size per partition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-10.svg" style="width:450px;"/>
+]]
+
+---
+# Sum-up all partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-average-11.svg" style="width:450px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-1.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-2.svg" style="width:700px;"/>
+]]
+
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-3.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-4.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-5.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-6.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-7.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-8.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-9.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-10.svg" style="width:700px;"/>
+]]
+
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-11.svg" style="width:700px;"/>
+]]
+
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-12.svg" style="width:700px;"/>
+]]
+
+---
+# Fold partitions
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-13.svg" style="width:700px;"/>
+]]
+
+---
+# Fold intermediate results
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-14.svg" style="width:250px;"/>
+]]
+
+---
+# Fold intermediate results
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-15.svg" style="width:250px;"/>
+]]
+
+---
+# Fold intermediate results
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-16.svg" style="width:250px;"/>
+]]
+
+---
+# Fold intermediate results
+
+.sixty-two-left[.center[
+<img src="../img/foundation/parlist-fold-17.svg" style="width:250px;"/>
+]]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# TemperatureExercises.scala
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>
