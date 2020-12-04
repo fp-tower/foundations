@@ -1,15 +1,16 @@
 package answers.dataprocessing
 
-import Ordering.Double.TotalOrdering
-import org.scalacheck.Arbitrary
+import answers.dataprocessing.TemperatureAnswers._
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
+import scala.Ordering.Double.TotalOrdering
 import scala.concurrent.ExecutionContext.global
-import TemperatureAnswers._
-import org.scalactic.{Equality, TolerantNumerics}
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
+  implicit override val generatorDrivenConfig: PropertyCheckConfiguration =
+    PropertyCheckConfiguration(minSuccessful = 100)
 
   test("minSampleByTemperature example") {
     val samples = List(
@@ -107,13 +108,17 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     }
   }
 
-  implicit val doubleEq: Equality[Double] = TolerantNumerics.tolerantDoubleEquality(0.0001)
+  val genInt: Gen[Int]              = Gen.choose(Int.MinValue, Int.MaxValue)
+  val genDouble: Gen[Double]        = Gen.choose(Float.MinValue, Float.MaxValue).map(x => x: Double)
+  val genString: Gen[String]        = Gen.alphaNumStr
+  val genMap: Gen[Map[String, Int]] = Gen.mapOf(Gen.zip(genString, genInt))
 
-  checkMonoid("Sum Double", Monoid.sumNumeric[Double])
-  checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
-  checkMonoid("Min Option[Int]", Monoid.minOption[Int])
-//  checkMonoid("SummaryV1", SummaryV1.monoid)
-  checkMonoid("Map[String, Int]", Monoid.map[String, Int](Monoid.sumNumeric))
+  checkMonoid("Sum Int", Monoid.sumNumeric[Int], genInt)
+  checkMonoid("Sum Double", Monoid.sumNumeric[Double], genDouble)
+  checkMonoid("Max Option[Int]", Monoid.maxOption[Int], Gen.option(genInt))
+  checkMonoid("Min Option[Int]", Monoid.minOption[Int], Gen.option(genInt))
+  checkMonoid("SummaryV1", SummaryV1.monoid, summaryV1Gen)
+  checkMonoid[Map[String, Int]]("Map[String, Int]", Monoid.map(Monoid.sumNumeric), genMap)
 
   test("foldMap consistent with map + monoFoldMap") {
     forAll { (numbers: ParList[Int]) =>
@@ -150,15 +155,15 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     )
   }
 
-  def checkMonoid[A: Arbitrary: Equality](name: String, monoid: Monoid[A]) = {
+  def checkMonoid[A](name: String, monoid: Monoid[A], gen: Gen[A]) = {
     test(s"$name Monoid default is a noop") {
-      forAll { (value: A) =>
+      forAll(gen) { (value: A) =>
         assert(monoid.combine(value, monoid.default) === value)
         assert(monoid.combine(monoid.default, value) === value)
       }
     }
     test(s"$name Monoid combine is associative") {
-      forAll { (first: A, second: A, third: A) =>
+      forAll(gen, gen, gen) { (first: A, second: A, third: A) =>
         assert(
           monoid.combine(first, monoid.combine(second, third)) ===
             monoid.combine(monoid.combine(first, second), third)

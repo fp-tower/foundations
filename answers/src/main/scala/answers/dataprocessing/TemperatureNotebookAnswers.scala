@@ -41,7 +41,7 @@ object TemperatureNotebookAnswers extends App {
   summariesPerCity.get("Bordeaux").foreach(println)
   summariesPerCity.get("London").foreach(println)
 
-  bench("sum", ignore = true)(
+  bench("sum")(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
     Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
