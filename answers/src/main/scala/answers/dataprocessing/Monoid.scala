@@ -6,6 +6,22 @@ trait Monoid[A] extends Semigroup[A] {
 }
 
 object Monoid {
+  val sumInt: Monoid[Int] = new Monoid[Int] {
+    def default: Int                          = 0
+    def combine(first: Int, second: Int): Int = first + second
+  }
+
+  val sumDouble: Monoid[Double] = new Monoid[Double] {
+    def default: Double                                = 0.0
+    def combine(first: Double, second: Double): Double = first + second
+  }
+
+  def sumNumeric[A](implicit num: Numeric[A]): Monoid[A] =
+    new Monoid[A] {
+      def default: A                      = num.zero
+      def combine(first: A, second: A): A = num.plus(first, second)
+    }
+
   def minOption[A: Ordering]: Monoid[Option[A]] = maxByOption(identity)
   def maxOption[A: Ordering]: Monoid[Option[A]] = minByOption(identity)
 
@@ -14,17 +30,11 @@ object Monoid {
   def maxByOption[From, To: Ordering](zoom: From => To): Monoid[Option[From]] =
     option(Semigroup.maxBy(zoom))
 
-  def sumNumeric[A](implicit num: Numeric[A]): Monoid[A] =
-    new Monoid[A] {
-      def default: A                      = num.zero
-      def combine(first: A, second: A): A = num.plus(first, second)
-    }
-
-  def tuple2[A, B](a: Monoid[A], b: Monoid[B]): Monoid[(A, B)] =
+  def zip[A, B](monoidA: Monoid[A], monoidB: Monoid[B]): Monoid[(A, B)] =
     new Monoid[(A, B)] {
-      def default: (A, B) = (a.default, b.default)
+      def default: (A, B) = (monoidA.default, monoidB.default)
       def combine(first: (A, B), second: (A, B)): (A, B) =
-        (a.combine(first._1, second._1), b.combine(first._2, second._2))
+        (monoidA.combine(first._1, second._1), monoidB.combine(first._2, second._2))
     }
 
   def option[A](semigroup: Semigroup[A]): Monoid[Option[A]] =

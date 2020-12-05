@@ -120,7 +120,14 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   checkMonoid("SummaryV1", SummaryV1.monoid, summaryV1Gen)
   checkMonoid[Map[String, Int]]("Map[String, Int]", Monoid.map(Monoid.sumNumeric), genMap)
 
-  test("foldMap consistent with map + monoFoldMap") {
+  test("foldMap consistent with monoFoldMap") {
+    forAll { (numbers: ParList[Int]) =>
+      val monoid = Monoid.sumNumeric[Int]
+      assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))
+    }
+  }
+
+  test("parFoldMap consistent with foldMap") {
     forAll { (numbers: ParList[Int]) =>
       val monoid = Monoid.sumNumeric[Int]
       assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))

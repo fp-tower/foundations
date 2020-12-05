@@ -23,7 +23,7 @@ trait ParListTestInstances {
         minDate = LocalDate.of(1975, 1, 1)
         maxDate = LocalDate.of(2020, 1, 1)
         date        <- Gen.choose[Long](minDate.toEpochDay, maxDate.toEpochDay).map(LocalDate.ofEpochDay)
-        temperature <- Gen.choose(-50.0, 150.0)
+        temperature <- Gen.choose(-50.0f, 150.0f)
       } yield
         Sample(
           region = region,
