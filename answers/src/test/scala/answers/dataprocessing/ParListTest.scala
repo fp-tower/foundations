@@ -121,15 +121,13 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   checkMonoid[Map[String, Int]]("Map[String, Int]", Monoid.map(Monoid.sumNumeric), genMap)
 
   test("foldMap consistent with monoFoldMap") {
-    forAll { (numbers: ParList[Int]) =>
-      val monoid = Monoid.sumNumeric[Int]
-      assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))
+    forAll { (numbers: ParList[Int], monoid: Monoid[Int]) =>
+      assert(numbers.foldMap(identity)(monoid) == numbers.monoFoldLeft(monoid))
     }
   }
 
   test("parFoldMap consistent with foldMap") {
-    forAll { (numbers: ParList[Int]) =>
-      val monoid = Monoid.sumNumeric[Int]
+    forAll { (numbers: ParList[Int], monoid: Monoid[Int]) =>
       assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))
     }
   }
@@ -144,7 +142,7 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
         TemperatureAnswers.summaryParListOnePassReduceMap(samples),
       ).foreach { other =>
         assert(reference.size == other.size)
-        assert((reference.sum - other.sum).abs < 0.00001)
+        assert(reference.sum == other.sum)
         assert(reference.min == other.min)
         assert(reference.max == other.max)
       }

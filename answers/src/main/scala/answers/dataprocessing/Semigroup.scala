@@ -19,4 +19,9 @@ object Semigroup {
     def combine(first: From, second: From): From =
       Ordering.by(zoom).max(first, second)
   }
+
+  def nSmallest[A: Ordering](n: Int): Semigroup[List[A]] = new Semigroup[List[A]] {
+    def combine(first: List[A], second: List[A]): List[A] =
+      (first ++ second).sorted.take(n) // can do much better
+  }
 }

@@ -85,7 +85,12 @@ object TemperatureExercises {
   // Note: In `ParListTest.scala`, there is already a test checking that `summaryParList`
   // should return the same result as `summaryList`
   def summaryParList(samples: ParList[Sample]): Summary =
-    ???
+    Summary(
+      min = ???,
+      max = ???,
+      sum = ???,
+      size = ???
+    )
 
   // Implement `summaryParListOnePass` using `parFoldMap` only ONCE.
   // Note: In `ParListTest.scala`, there is already a test checking that `summaryParListOnePass`

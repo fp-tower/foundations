@@ -37,12 +37,13 @@ trait ParListTestInstances {
         )
     )
 
+  def parListGen[A](gen: Gen[A]): Gen[ParList[A]] =
+    Gen
+      .listOf(Gen.listOf(gen))
+      .map(partitions => new ParList(global, partitions))
+
   implicit def parListArb[A](implicit arbA: Arbitrary[A]): Arbitrary[ParList[A]] =
-    Arbitrary(
-      Gen
-        .listOf(Gen.listOf(arbA.arbitrary))
-        .map(partitions => new ParList(global, partitions))
-    )
+    Arbitrary(parListGen(arbA.arbitrary))
 
   val summaryV1Gen: Gen[SummaryV1] =
     for {
@@ -55,4 +56,13 @@ trait ParListTestInstances {
       SummaryV1(samples.minByOption(_.temperatureFahrenheit), samples.maxByOption(_.temperatureFahrenheit), sum, size)
 
   implicit val summaryV1Arb: Arbitrary[SummaryV1] = Arbitrary(summaryV1Gen)
+
+  val monoidIntGen: Gen[Monoid[Int]] = Gen.oneOf(
+    Monoid.sumInt,
+    Monoid.multiplyInt,
+    Monoid.minInt,
+    Monoid.maxInt
+  )
+
+  implicit val monoidIntArb: Arbitrary[Monoid[Int]] = Arbitrary(monoidIntGen)
 }

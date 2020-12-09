@@ -77,19 +77,25 @@ object TemperatureNotebook extends App {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
+  // Generalise Monoid sum to accept all types of number (Hint: check `Numeric`, e.g. Numeric[Int], `Numeric[Double]`)
+
+  // Generalise Monoid minBy/maxBy from a hard-coded `Sample => Double` to a generic `From => To`
+  // Is it possible to write such a Monoid for any type `From` and `To` or do you need additional constraints?
+
   // Calculate the n smallest/largest value, what are the 5 smallest values in the dataset
 
-  // Generalise sum to take all types of number (Hint: check `Numeric`)
+  // Implement a shuffle method on `ParList` so that it is unlikely all the expensive
+  // tasks are in the same partition. Will this affect the result of `parFoldMap`?
 
-  // Implement a shuffle method or constructor so that it is unlikely all the expensive
-  // tasks are in the same partition. Will it change the results of `parFoldMap`?
+  // Define a random generator of `Monoid[Int]` (i.e. `Gen[Monoid[Int]]`) and use it in PBTs.
+  // (Hint: You can use `Gen.oneOf`)
 
   //////////////////////////////////////////////
   // Ideas to improve `ParList` performance
   //////////////////////////////////////////////
 
   // 1. When we defined `Summary`, we made `min` and `max` an `Option` because the `ParList`
-  //   can be empty. However, it is quite expensive because we wrap and unwrap an Option for
+  //   can be empty. However, it is quite expensive because we wrap and unwrap an `Option` for
   //   every value in the dataset. Instead we could check if the `ParList` is empty at the beginning,
   //   if it is we return None, otherwise we can `reduce` the `ParList` without `Option`.
   //   See `reduceFoldLeftOption` on `List`.
@@ -108,5 +114,6 @@ object TemperatureNotebook extends App {
   // 3. `parFoldMap` need to wait for ALL intermediate results to be ready before starting
   //    to fold them. Instead, could we fold the intermediate results as soon as they
   //    are available? Will we always get the same results this way?
+  //    (Hint: You would need to make the state thread-safe)
 
 }

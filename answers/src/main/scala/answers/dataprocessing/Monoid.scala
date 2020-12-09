@@ -1,7 +1,7 @@
 package answers.dataprocessing
 
 trait Monoid[A] extends Semigroup[A] {
-  // forAll a: A, combine(a, default) == combiner(defaut, a) == a
+  // forAll a: A, combine(a, default) == combiner(default, a) == a
   def default: A
 }
 
@@ -63,4 +63,19 @@ object Monoid {
             }
         }
     }
+
+  val multiplyInt: Monoid[Int] = new Monoid[Int] {
+    def default: Int                          = 1
+    def combine(first: Int, second: Int): Int = first * second
+  }
+
+  val minInt: Monoid[Int] = new Monoid[Int] {
+    def default: Int                          = Int.MaxValue
+    def combine(first: Int, second: Int): Int = first min second
+  }
+
+  val maxInt: Monoid[Int] = new Monoid[Int] {
+    def default: Int                          = Int.MinValue
+    def combine(first: Int, second: Int): Int = first max second
+  }
 }
