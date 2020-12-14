@@ -17,6 +17,11 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
     <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="black">
       <g>
         <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
@@ -53,36 +58,36 @@
       <g id="Graphic_166">
         <rect x="404.03077" y="216" width="101.35385" height="46.384615" fill="#589b9d"/>
         <rect x="404.03077" y="216" width="101.35385" height="46.384615" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(409.03077 227.4123)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="6.216922" y="19">Thread 2</tspan>
+        <text transform="translate(409.03077 228.4403)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="10.162922" y="17">Thread 2</tspan>
         </text>
       </g>
       <g id="Graphic_170">
         <rect x="34.33846" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="34.33846" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(39.33846 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 4</tspan>
+        <text transform="translate(39.33846 176.4307)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="3.1076146" y="17">Task 4</tspan>
         </text>
       </g>
       <g id="Graphic_171">
         <rect x="110.35385" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="110.35385" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(115.35385 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 2</tspan>
+        <text transform="translate(115.35385 176.4307)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="3.1076146" y="17">Task 2</tspan>
         </text>
       </g>
       <g id="Graphic_172">
         <rect x="186.36923" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="186.36923" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(191.36923 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 3</tspan>
+        <text transform="translate(191.36923 176.4307)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="3.1076146" y="17">Task 3</tspan>
         </text>
       </g>
       <g id="Graphic_173">
         <rect x="262.3846" y="165.98077" width="67.56923" height="42.403846" fill="#70a3d8"/>
         <rect x="262.3846" y="165.98077" width="67.56923" height="42.403846" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(267.3846 175.4027)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x=".25461456" y="19">Task 1</tspan>
+        <text transform="translate(267.3846 176.4307)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="3.1076146" y="17">Task 1</tspan>
         </text>
       </g>
       <g id="Line_175">
@@ -91,8 +96,8 @@
       <g id="Graphic_178">
         <rect x="404.16923" y="162" width="101.35385" height="46.384615" fill="#589b9d"/>
         <rect x="404.16923" y="162" width="101.35385" height="46.384615" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(409.16923 173.4123)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="6.216922" y="19">Thread 1</tspan>
+        <text transform="translate(409.16923 174.4403)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="white" x="10.162922" y="17">Thread 1</tspan>
         </text>
       </g>
     </g>
