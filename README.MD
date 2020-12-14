@@ -66,6 +66,7 @@ average temperature.
 1. [Analysis of global temperature - part 1](https://fp-tower.github.io/foundations/data-processing/analysis-of-global-temperature-part-1.html#1)
 1. [Analysis of global temperature - part 2](https://fp-tower.github.io/foundations/data-processing/analysis-of-global-temperature-part-2.html#1)
 1. [Analysis of global temperature - part 3](https://fp-tower.github.io/foundations/data-processing/analysis-of-global-temperature-part-3.html#1)
+1. [Analysis of global temperature - part 4](https://fp-tower.github.io/foundations/data-processing/analysis-of-global-temperature-part-4.html#1)
 
 
 ## 4. What is functional programming?
