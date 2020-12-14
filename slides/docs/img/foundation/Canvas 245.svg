@@ -19,9 +19,9 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.18.1\n2020-12-14 09:07:39 +0000</metadata>
-  <g id="map-fold-2" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
-    <title>map-fold-2</title>
-    <g id="map-fold-2_Layer_1">
+  <g id="Canvas_245" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>Canvas 245</title>
+    <g id="Canvas_245_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_98">
         <ellipse cx="135" cy="148.5" rx="126.000201335639" ry="130.500208526197" fill="#70a3d8"/>
@@ -35,11 +35,11 @@
         </text>
       </g>
       <g id="Graphic_117">
-        <path d="M 325.26986 169.716 L 325.26986 144.516 L 369 144.516 L 369 125.616 L 387 157.116 L 369 188.616 L 369 169.716 Z" fill="#acbdd0"/>
-        <path d="M 325.26986 169.716 L 325.26986 144.516 L 369 144.516 L 369 125.616 L 387 157.116 L 369 188.616 L 369 169.716 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 334.26986 169.716 L 334.26986 144.516 L 378 144.516 L 378 125.616 L 396 157.116 L 378 188.616 L 378 169.716 Z" fill="#acbdd0"/>
+        <path d="M 334.26986 169.716 L 334.26986 144.516 L 378 144.516 L 378 125.616 L 396 157.116 L 378 188.616 L 378 169.716 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_118">
-        <text transform="translate(284 86)" fill="#404040">
+        <text transform="translate(293 86)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.036" y="21">monoFoldLeft</tspan>
         </text>
       </g>
@@ -51,7 +51,7 @@
         </text>
       </g>
       <g id="Graphic_121">
-        <path d="M 335.17995 118.0957 L 356.3974 139.31315 L 375.4931 120.21745 L 396.6978 141.42216 L 377.6021 160.51787 L 398.81956 181.73531 L 379.7353 200.81956 L 358.51787 179.60211 L 339.42216 198.69781 L 318.21745 177.4931 L 337.31315 158.3974 L 316.0957 137.17995 Z" fill="#efc600" fill-opacity=".9"/>
+        <path d="M 344.17995 118.0957 L 365.3974 139.31315 L 384.4931 120.21745 L 405.6978 141.42216 L 386.6021 160.51787 L 407.81956 181.73531 L 388.7353 200.81956 L 367.51787 179.60211 L 348.42216 198.69781 L 327.21745 177.4931 L 346.31315 158.3974 L 325.0957 137.17995 Z" fill="#efc600" fill-opacity=".9"/>
       </g>
     </g>
   </g>
