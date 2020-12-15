@@ -5,22 +5,29 @@ trait Monoid[A] extends Semigroup[A] {
   def default: A
 }
 
-object Monoid {
-  val sumInt: Monoid[Int] = new Monoid[Int] {
+// A Monoid where combine is also commutative
+// forAll a1, a2: A, combine(a1, a2) == combine(a2, a1)
+trait CommutativeMonoid[A] extends Monoid[A]
+
+object CommutativeMonoid {
+  val sumInt: CommutativeMonoid[Int] = new CommutativeMonoid[Int] {
     def default: Int                          = 0
     def combine(first: Int, second: Int): Int = first + second
   }
 
-  val sumDouble: Monoid[Double] = new Monoid[Double] {
+  val sumDouble: CommutativeMonoid[Double] = new CommutativeMonoid[Double] {
     def default: Double                                = 0.0
     def combine(first: Double, second: Double): Double = first + second
   }
 
-  def sumNumeric[A](implicit num: Numeric[A]): Monoid[A] =
-    new Monoid[A] {
+  def sumNumeric[A](implicit num: Numeric[A]): CommutativeMonoid[A] =
+    new CommutativeMonoid[A] {
       def default: A                      = num.zero
       def combine(first: A, second: A): A = num.plus(first, second)
     }
+}
+
+object Monoid {
 
   def minOption[A: Ordering]: Monoid[Option[A]] = maxByOption(identity)
   def maxOption[A: Ordering]: Monoid[Option[A]] = minByOption(identity)

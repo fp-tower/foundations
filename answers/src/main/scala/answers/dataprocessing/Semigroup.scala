@@ -1,7 +1,8 @@
 package answers.dataprocessing
 
+// A Monoid without default value
 trait Semigroup[A] {
-  // combine is associative (this means you can move parentheses around)
+  // combine is associative
   // forAll a1, a2, a3: A, combine(a1, combine(a2, a3)) == combine(combine(a1, a2), a3)
   def combine(first: A, second: A): A
 }

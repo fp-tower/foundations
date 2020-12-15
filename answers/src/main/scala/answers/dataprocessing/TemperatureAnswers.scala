@@ -77,7 +77,7 @@ object TemperatureAnswers {
     SummaryV1(
       min = samples.minBy(_.temperatureFahrenheit),
       max = samples.maxBy(_.temperatureFahrenheit),
-      sum = samples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric),
+      sum = samples.foldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric),
       size = samples.size
     )
 

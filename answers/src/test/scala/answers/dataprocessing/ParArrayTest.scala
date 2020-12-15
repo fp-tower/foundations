@@ -11,8 +11,9 @@ class ParArrayTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("par sum") {
     val parArray = ParArray(ec, 1.to(20).toArray, 10)
+    val monoid   = CommutativeMonoid.sumNumeric[Int]
     assert(
-      parArray.parFoldMap(identity)(Monoid.sumNumeric) == parArray.parFoldMap(identity)(Monoid.sumNumeric)
+      parArray.parFoldMap(identity)(monoid) == parArray.parFoldMap(identity)(monoid)
     )
   }
 

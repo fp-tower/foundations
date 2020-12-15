@@ -53,8 +53,8 @@ object SummaryV1 {
   val monoidDerived: Monoid[SummaryV1] = new Monoid[SummaryV1] {
     val monoidMin       = Monoid.minByOption((_: Sample).temperatureFahrenheit)
     val monoidMax       = Monoid.maxByOption((_: Sample).temperatureFahrenheit)
-    val monoidSumDouble = Monoid.sumNumeric[Double]
-    val monoidSumInt    = Monoid.sumNumeric[Int]
+    val monoidSumDouble = CommutativeMonoid.sumNumeric[Double]
+    val monoidSumInt    = CommutativeMonoid.sumNumeric[Int]
 
     def default: SummaryV1 = SummaryV1(
       min = monoidMin.default,

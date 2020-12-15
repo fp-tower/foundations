@@ -36,17 +36,26 @@ object TemperatureNotebookAnswers extends App {
 
   println(s"Temperature summary is ${parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)}")
 
-  val summariesPerCity = aggregatePerLabel(parSamples)(s => List(s.city))
+  sealed trait Label
+  case class City(value: String)    extends Label
+  case class Country(value: String) extends Label
 
-  summariesPerCity.get("Bordeaux").foreach(println)
-  summariesPerCity.get("London").foreach(println)
+  val summariesPerCity = aggregatePerLabel(parSamples)(s => List(City(s.city), Country(s.country)))
+
+  summariesPerCity.get(City("Bordeaux")).foreach(println)
+  summariesPerCity.get(City("London")).foreach(println)
+  summariesPerCity.get(City("Mexico")).foreach(println)
+  summariesPerCity.get(Country("London")).foreach(println)
 
   bench("sum")(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
-    Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
-    Labelled("ParList parFoldMap", () => parSamples.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
-    Labelled("ParArray parFoldMap", () => parSamplesArray.parFoldMap(_.temperatureFahrenheit)(Monoid.sumNumeric)),
+    Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
+    Labelled("ParList parFoldMap", () => parSamples.parFoldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
+    Labelled("ParList parFoldMapUnordered",
+             () => parSamples.parFoldMapUnordered(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
+    Labelled("ParArray parFoldMap",
+             () => parSamplesArray.parFoldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
     Labelled("Array foldLeft",
              () => samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
   )

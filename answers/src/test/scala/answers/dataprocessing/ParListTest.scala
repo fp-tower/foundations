@@ -113,12 +113,12 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   val genString: Gen[String]        = Gen.alphaNumStr
   val genMap: Gen[Map[String, Int]] = Gen.mapOf(Gen.zip(genString, genInt))
 
-  checkMonoid("Sum Int", Monoid.sumNumeric[Int], genInt)
-  checkMonoid("Sum Double", Monoid.sumNumeric[Double], genDouble)
+  checkCommutativeMonoid("Sum Int", CommutativeMonoid.sumNumeric[Int], genInt)
+  checkCommutativeMonoid("Sum Double", CommutativeMonoid.sumNumeric[Double], genDouble)
   checkMonoid("Max Option[Int]", Monoid.maxOption[Int], Gen.option(genInt))
   checkMonoid("Min Option[Int]", Monoid.minOption[Int], Gen.option(genInt))
   checkMonoid("SummaryV1", SummaryV1.monoid, summaryV1Gen)
-  checkMonoid[Map[String, Int]]("Map[String, Int]", Monoid.map(Monoid.sumNumeric), genMap)
+  checkMonoid[Map[String, Int]]("Map[String, Int]", Monoid.map(CommutativeMonoid.sumNumeric), genMap)
 
   test("foldMap consistent with monoFoldMap") {
     forAll { (numbers: ParList[Int], monoid: Monoid[Int]) =>
@@ -128,7 +128,14 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
 
   test("parFoldMap consistent with foldMap") {
     forAll { (numbers: ParList[Int], monoid: Monoid[Int]) =>
-      assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))
+      assert(numbers.parFoldMap(identity)(monoid) == numbers.foldMap(identity)(monoid))
+    }
+  }
+
+  test("parFoldMapUnordered consistent with parFoldMap") {
+    forAll { (numbers: ParList[Int]) =>
+      val monoid = CommutativeMonoid.sumInt
+      assert(numbers.parFoldMapUnordered(identity)(monoid) == numbers.parFoldMap(identity)(monoid))
     }
   }
 
@@ -152,7 +159,7 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
   test("map Monoid example") {
     assert(
       Monoid
-        .map[String, Int](Monoid.sumNumeric)
+        .map[String, Int](CommutativeMonoid.sumNumeric)
         .combine(
           Map("Bob"   -> 2, "Eda" -> 5),
           Map("Roger" -> 1, "Eda" -> 2)
@@ -160,17 +167,28 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     )
   }
 
+  def checkCommutativeMonoid[A](name: String, monoid: CommutativeMonoid[A], gen: Gen[A]) = {
+    checkMonoid(name, monoid, gen)
+    test(s"$name Monoid combine is commutative") {
+      forAll(gen, gen) { (first: A, second: A) =>
+        assert(
+          monoid.combine(first, second) == monoid.combine(second, first)
+        )
+      }
+    }
+  }
+
   def checkMonoid[A](name: String, monoid: Monoid[A], gen: Gen[A]) = {
     test(s"$name Monoid default is a noop") {
       forAll(gen) { (value: A) =>
-        assert(monoid.combine(value, monoid.default) === value)
-        assert(monoid.combine(monoid.default, value) === value)
+        assert(monoid.combine(value, monoid.default) == value)
+        assert(monoid.combine(monoid.default, value) == value)
       }
     }
     test(s"$name Monoid combine is associative") {
       forAll(gen, gen, gen) { (first: A, second: A, third: A) =>
         assert(
-          monoid.combine(first, monoid.combine(second, third)) ===
+          monoid.combine(first, monoid.combine(second, third)) ==
             monoid.combine(monoid.combine(first, second), third)
         )
       }

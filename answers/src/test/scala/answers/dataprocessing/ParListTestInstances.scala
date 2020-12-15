@@ -58,7 +58,7 @@ trait ParListTestInstances {
   implicit val summaryV1Arb: Arbitrary[SummaryV1] = Arbitrary(summaryV1Gen)
 
   val monoidIntGen: Gen[Monoid[Int]] = Gen.oneOf(
-    Monoid.sumInt,
+    CommutativeMonoid.sumInt,
     Monoid.multiplyInt,
     Monoid.minInt,
     Monoid.maxInt

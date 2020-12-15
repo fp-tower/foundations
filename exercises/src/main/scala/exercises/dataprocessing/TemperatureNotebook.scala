@@ -82,7 +82,10 @@ object TemperatureNotebook extends App {
   // Generalise Monoid minBy/maxBy from a hard-coded `Sample => Double` to a generic `From => To`
   // Is it possible to write such a Monoid for any type `From` and `To` or do you need additional constraints?
 
-  // Calculate the n smallest/largest value, what are the 5 smallest values in the dataset
+  // What would happen if we aggregate the dataset by city and country and Mexico is part of the dataset?
+  // Update `aggregateByLabel` to avoid this problem.
+
+  // Calculate the n smallest/largest value, e.g. what are the 5 coldest samples in the dataset?
 
   // Implement a shuffle method on `ParList` so that it is unlikely all the expensive
   // tasks are in the same partition. Will this affect the result of `parFoldMap`?
