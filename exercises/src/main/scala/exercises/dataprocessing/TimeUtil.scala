@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 
 object TimeUtil {
 
-  def bench[A](operation: String, iterations: Int = 100, warmUpIterations: Int = 10, ignore: Boolean = false)(
+  def bench[A](operation: String, iterations: Int, warmUpIterations: Int, ignore: Boolean = false)(
     function1: Labelled[() => A],
     otherFunctions: Labelled[() => A]*, // hack to require 1 or more functions
   ): Unit = {
@@ -19,7 +19,10 @@ object TimeUtil {
       val times = allFunctions
         .map(
           _.map(
-            function => 1.to(totalIterations).map(_ => time(function())._2).drop(warmUpIterations)
+            function =>
+              1.to(totalIterations)
+                .map(_ => time(function())._2)
+                .drop(warmUpIterations)
           ).map(Elapsed.fromTime)
         )
         .sortBy(_.value.median)
@@ -28,7 +31,7 @@ object TimeUtil {
     }
   }
 
-  case class Labelled[A](name: String, value: A) {
+  case class Labelled[+A](name: String, value: A) {
     def map[To](update: A => To): Labelled[To] =
       copy(value = update(value))
 

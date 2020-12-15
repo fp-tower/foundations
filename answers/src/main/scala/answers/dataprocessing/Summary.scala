@@ -24,8 +24,8 @@ object Summary {
   val semigroup: Semigroup[Summary] = new Semigroup[Summary] {
     val semigroupMin    = Semigroup.minBy((_: Sample).temperatureFahrenheit)
     val semigroupMax    = Semigroup.maxBy((_: Sample).temperatureFahrenheit)
-    val monoidSumDouble = Monoid.sumNumeric[Double]
-    val monoidSumInt    = Monoid.sumNumeric[Int]
+    val monoidSumDouble = CommutativeMonoid.sumNumeric[Double]
+    val monoidSumInt    = CommutativeMonoid.sumNumeric[Int]
 
     def combine(first: Summary, second: Summary): Summary =
       Summary(
@@ -39,8 +39,8 @@ object Summary {
   val semigroupDerived: Semigroup[Summary] = new Semigroup[Summary] {
     val semigroupMin    = Semigroup.minBy((_: Sample).temperatureFahrenheit)
     val semigroupMax    = Semigroup.maxBy((_: Sample).temperatureFahrenheit)
-    val monoidSumDouble = Monoid.sumNumeric[Double]
-    val monoidSumInt    = Monoid.sumNumeric[Int]
+    val monoidSumDouble = CommutativeMonoid.sumNumeric[Double]
+    val monoidSumInt    = CommutativeMonoid.sumNumeric[Int]
 
     def combine(first: Summary, second: Summary): Summary =
       Summary(

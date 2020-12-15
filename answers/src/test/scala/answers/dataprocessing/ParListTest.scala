@@ -1,22 +1,32 @@
 package answers.dataprocessing
 
-import Ordering.Double.TotalOrdering
-import org.scalacheck.Arbitrary
+import answers.dataprocessing.TemperatureAnswers._
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+
+import scala.Ordering.Double.TotalOrdering
 import scala.concurrent.ExecutionContext.global
 
 class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with ParListTestInstances {
+  implicit override val generatorDrivenConfig: PropertyCheckConfiguration =
+    PropertyCheckConfiguration(minSuccessful = 100)
 
   test("minSampleByTemperature example") {
-    val sample       = Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, 0)
-    val temperatures = List(1, 10, -1, 24, 18, 32, 99, 20, -34, 102, -20, 0)
-    val samples      = temperatures.map(temperature => sample.copy(temperatureFahrenheit = temperature))
-    val parSamples   = ParList.byNumberOfPartition(global, 3, samples)
+    val samples = List(
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 50),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 56.3),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 23.4),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 89.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 22.1),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 34.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 99.0),
+    )
+    val parSamples = ParList.byPartitionSize(global, 3, samples)
 
     assert(
-      TemperatureAnswers.minSampleByTemperature(parSamples) ==
-        Some(Sample("Africa", "Algeria", None, "Algiers", 1, 1, 2000, -34))
+      minSampleByTemperature(parSamples) ==
+        Some(Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 22.1))
     )
   }
 
@@ -39,6 +49,21 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     forAll { (numbers: ParList[Int]) =>
       assert(numbers.size == numbers.toList.size)
     }
+  }
+
+  test("averageTemperature example") {
+    val samples = List(
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 50),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 56.3),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 23.4),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 89.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 22.1),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 34.7),
+      Sample("Africa", "Algeria", None, "Algiers", 8, 1, 2020, 99.0),
+    )
+    val parSamples = ParList.byPartitionSize(global, 3, samples)
+
+    assert(averageTemperature(parSamples) == Some(53.6))
   }
 
   test("averageTemperature: min <= avg <= max ") {
@@ -83,39 +108,58 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     }
   }
 
-//  checkMonoid("Sum Double", Monoid.sumNumeric[Double]) not stable
-  checkMonoid("Sum Int", Monoid.sumNumeric[Int])
-  checkMonoid("Max Option[Int]", Monoid.maxOption[Int])
-  checkMonoid("Min Option[Int]", Monoid.minOption[Int])
-//  checkMonoid("SummaryV1", SummaryV1.monoid) TODO check
-  checkMonoid("Map[String, Int]", Monoid.map[String, Int](Monoid.sumNumeric))
+  val genInt: Gen[Int]              = Gen.choose(Int.MinValue, Int.MaxValue)
+  val genDouble: Gen[Double]        = Gen.choose(Float.MinValue, Float.MaxValue).map(x => x: Double)
+  val genString: Gen[String]        = Gen.alphaNumStr
+  val genMap: Gen[Map[String, Int]] = Gen.mapOf(Gen.zip(genString, genInt))
 
-  test("foldMap consistent with map + monoFoldMap") {
+  checkCommutativeMonoid("Sum Int", CommutativeMonoid.sumNumeric[Int], genInt)
+  checkCommutativeMonoid("Sum Double", CommutativeMonoid.sumNumeric[Double], genDouble)
+  checkMonoid("Max Option[Int]", Monoid.maxOption[Int], Gen.option(genInt))
+  checkMonoid("Min Option[Int]", Monoid.minOption[Int], Gen.option(genInt))
+  checkMonoid("SummaryV1", SummaryV1.monoid, summaryV1Gen)
+  checkMonoid[Map[String, Int]]("Map[String, Int]", Monoid.map(CommutativeMonoid.sumNumeric), genMap)
+
+  test("foldMap consistent with monoFoldMap") {
+    forAll { (numbers: ParList[Int], monoid: Monoid[Int]) =>
+      assert(numbers.foldMap(identity)(monoid) == numbers.monoFoldLeft(monoid))
+    }
+  }
+
+  test("parFoldMap consistent with foldMap") {
+    forAll { (numbers: ParList[Int], monoid: Monoid[Int]) =>
+      assert(numbers.parFoldMap(identity)(monoid) == numbers.foldMap(identity)(monoid))
+    }
+  }
+
+  test("parFoldMapUnordered consistent with parFoldMap") {
     forAll { (numbers: ParList[Int]) =>
-      val monoid = Monoid.sumNumeric[Int]
-      assert(numbers.fold(monoid) == numbers.monoFoldLeft(monoid))
+      val monoid = CommutativeMonoid.sumInt
+      assert(numbers.parFoldMapUnordered(identity)(monoid) == numbers.parFoldMap(identity)(monoid))
     }
   }
 
   test("summary consistent between implementations") {
     forAll { (samples: ParList[Sample]) =>
-      val list           = TemperatureAnswers.summaryList(samples.toList)
-      val listOnePass    = TemperatureAnswers.summaryListOnePass(samples.toList)
-      val parListOnePass = TemperatureAnswers.summaryParListOnePass(samples)
-
-      assert(list == listOnePass)
-
-      assert(list.size == parListOnePass.size)
-      assert((list.sum - parListOnePass.sum).abs <= 0.001)
-      assert(list.min == parListOnePass.min)
-      assert(list.max == parListOnePass.max)
+      val reference = TemperatureAnswers.summaryList(samples.toList)
+      List(
+        TemperatureAnswers.summaryListOnePass(samples.toList),
+        TemperatureAnswers.summaryParList(samples),
+        TemperatureAnswers.summaryParListOnePassFoldMap(samples),
+        TemperatureAnswers.summaryParListOnePassReduceMap(samples),
+      ).foreach { other =>
+        assert(reference.size == other.size)
+        assert(reference.sum == other.sum)
+        assert(reference.min == other.min)
+        assert(reference.max == other.max)
+      }
     }
   }
 
   test("map Monoid example") {
     assert(
       Monoid
-        .map[String, Int](Monoid.sumNumeric)
+        .map[String, Int](CommutativeMonoid.sumNumeric)
         .combine(
           Map("Bob"   -> 2, "Eda" -> 5),
           Map("Roger" -> 1, "Eda" -> 2)
@@ -123,15 +167,26 @@ class ParListTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with P
     )
   }
 
-  def checkMonoid[A: Arbitrary](name: String, monoid: Monoid[A]) = {
+  def checkCommutativeMonoid[A](name: String, monoid: CommutativeMonoid[A], gen: Gen[A]) = {
+    checkMonoid(name, monoid, gen)
+    test(s"$name Monoid combine is commutative") {
+      forAll(gen, gen) { (first: A, second: A) =>
+        assert(
+          monoid.combine(first, second) == monoid.combine(second, first)
+        )
+      }
+    }
+  }
+
+  def checkMonoid[A](name: String, monoid: Monoid[A], gen: Gen[A]) = {
     test(s"$name Monoid default is a noop") {
-      forAll { (value: A) =>
+      forAll(gen) { (value: A) =>
         assert(monoid.combine(value, monoid.default) == value)
         assert(monoid.combine(monoid.default, value) == value)
       }
     }
     test(s"$name Monoid combine is associative") {
-      forAll { (first: A, second: A, third: A) =>
+      forAll(gen, gen, gen) { (first: A, second: A, third: A) =>
         assert(
           monoid.combine(first, monoid.combine(second, third)) ==
             monoid.combine(monoid.combine(first, second), third)

@@ -11,11 +11,13 @@ object TemperatureExercises {
 
   // c. Implement `averageTemperature` which finds the average temperature across all `Samples`.
   // `averageTemperature` should work as follow:
-  // Step 1: Compute the size each partition.
-  // Step 2: Sum-up the size of all partitions, this gives the size for the entire `ParList`.
-  // Step 3: Compute the sum of temperatures for each partition.
-  // Step 4: Sum-up the resulting number for all partitions, this gives the total temperature for the entire `ParList`.
-  // Step 5: Divide total temperature by the size of dataset.
+  // Step 1: Compute the sum of all samples temperatures
+  //   a) Compute the sum per partition
+  //   b) Sum-up the sum of each partition
+  // Step 2: Compute the size of the dataset
+  //   a) Compute the size of each partition
+  //   b) Sum-up the size of each partition
+  // Step 3: Divide the total temperature by the size of dataset.
   // In case the input `ParList` is empty we return `None`.
   // Bonus: Can you calculate the size and sum in one go?
   def averageTemperature(samples: ParList[Sample]): Option[Double] =
@@ -44,28 +46,6 @@ object TemperatureExercises {
   def monoFoldLeft[A](parList: ParList[A], default: A)(combine: (A, A) => A): A =
     ???
 
-  // f. Implement `map`, you should know what it does by now ;)
-  // Then move `map` inside  the class `ParList`.
-  // Finally, refactor `sum`, `size` and `average` to use a combination of `map` and `monoFoldLeft`.
-  def map[From, To](parList: ParList[From])(update: From => To): ParList[To] =
-    ???
-
-  // g. Refactor `minBy`, `maxBy` and `averageTemperature` to use `map` and `monoFoldLeft`
-
-  // h. Implement a new folding method on `ParList` that combines both `map` and `monoFoldLeft`
-  // together such that we only iterate over the dataset once.
-  // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
-
-  // i. Implement a version of the function implemented in h) such that each partition is
-  // processed in parallel.
-  // Then refactor `minBy`, `maxBy` and `averageTemperature` to use it.
-  // Next question is in  benchmark section of `TemperatureNotebook`.
-
-  // Implement `summaryList` using List `foldLeft`.
-  // Calculate `min`, `max`, `average`, `sum` by iterating over `samples` only ONCE.
-  def summaryListOnePass(samples: List[Sample]): Summary =
-    ???
-
   // `summaryList` iterate 4 times over `samples`, one for each field.
   def summaryList(samples: List[Sample]): Summary =
     Summary(
@@ -75,8 +55,46 @@ object TemperatureExercises {
       size = samples.size
     )
 
-  // Implement `summaryParListOnePass` using `parFoldMap`.
-  // Calculate `min`, `max`, `average`, `sum` by iterating over `samples` only ONCE.
+  def summaryListOnePass(samples: List[Sample]): Summary =
+    samples.foldLeft(
+      Summary(
+        min = None,
+        max = None,
+        sum = 0.0,
+        size = 0
+      )
+    )(
+      (state, sample) =>
+        Summary(
+          min = state.min.fold(Some(sample))(
+            current =>
+              if (current.temperatureFahrenheit <= sample.temperatureFahrenheit) Some(current)
+              else Some(sample)
+          ),
+          max = state.max.fold(Some(sample))(
+            current =>
+              if (current.temperatureFahrenheit >= sample.temperatureFahrenheit) Some(current)
+              else Some(sample)
+          ),
+          sum = state.sum + sample.temperatureFahrenheit,
+          size = state.size + 1
+      )
+    )
+
+  // Implement `summaryParList` by calling `parFoldMap` once for each field of Summary.
+  // Note: In `ParListTest.scala`, there is already a test checking that `summaryParList`
+  // should return the same result as `summaryList`
+  def summaryParList(samples: ParList[Sample]): Summary =
+    Summary(
+      min = ???,
+      max = ???,
+      sum = ???,
+      size = ???
+    )
+
+  // Implement `summaryParListOnePass` using `parFoldMap` only ONCE.
+  // Note: In `ParListTest.scala`, there is already a test checking that `summaryParListOnePass`
+  // should return the same result as `summaryList`
   def summaryParListOnePass(samples: ParList[Sample]): Summary =
     ???
 }

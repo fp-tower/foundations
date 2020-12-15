@@ -38,7 +38,7 @@ object TemperatureNotebook extends App {
     ???
 
   // b. Implement `minSampleByTemperature` in TemperatureExercises
-  lazy val minSampleByTemperature: Option[Sample] =
+  lazy val coldestSample: Option[Sample] =
     TemperatureExercises.minSampleByTemperature(parSamples)
 
   // c. Implement `averageTemperature` in TemperatureExercises
@@ -49,42 +49,56 @@ object TemperatureNotebook extends App {
   // Benchmark ParList
   //////////////////////
 
-  // j. Compare the runtime performance of various implementations of `sum`:
+  // Compare the runtime performance of various implementations of `sum`:
   // * List foldLeft
   // * List map + sum
-  // * ParList foldMap
-  // * ParList parFoldMap
-  bench("sum", ignore = true)(
+  // * TODO ParList foldMap
+  // * TODO ParList parFoldMap
+  bench("sum", iterations = 200, warmUpIterations = 40, ignore = true)(
     Labelled("List foldLeft", () => samples.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
+//    Labelled("ParList foldMap", () => ???),
+//    Labelled("ParList parFoldMap", () => ???),
   )
 
-  // k. Implement `summaryListOnePass` and `summaryParList`
   // Compare the runtime performance of various implementations of `summary`
-  bench("summary", ignore = true)(
-    Labelled("List", () => TemperatureExercises.summaryList(samples)),
-    Labelled("List one-pass", () => TemperatureExercises.summaryListOnePass(samples))
+  // * List with 4 iterations
+  // * List with 1 iterations
+  // * TODO ParList with 4 iterations
+  // * TODO ParList with 1 iteration
+  bench("summary", iterations = 200, warmUpIterations = 40, ignore = true)(
+    Labelled("List 4 iterations", () => TemperatureExercises.summaryList(samples)),
+    Labelled("List 1 iteration", () => TemperatureExercises.summaryListOnePass(samples)),
+    Labelled("ParList 4 iterations", () => TemperatureExercises.summaryParList(parSamples)),
+    Labelled("ParList 1 iteration", () => TemperatureExercises.summaryParListOnePass(parSamples)),
   )
-
-  // l. Add `summaryParListOnePass` to the benchmark above.
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // Calculate the n smallest/largest value, what are the 5 smallest values in the dataset
+  // Generalise Monoid sum to accept all types of number (Hint: check `Numeric`, e.g. Numeric[Int], `Numeric[Double]`)
 
-  // Generalise sum to take all types of number (Hint: check `Numeric`)
+  // Generalise Monoid minBy/maxBy from a hard-coded `Sample => Double` to a generic `From => To`
+  // Is it possible to write such a Monoid for any type `From` and `To` or do you need additional constraints?
 
-  // Implement a shuffle method or constructor so that it is unlikely all the expensive
-  // tasks are in the same partition. Will it change the results of `parFoldMap`?
+  // What would happen if we aggregate the dataset by city and country and Mexico is part of the dataset?
+  // Update `aggregateByLabel` to avoid this problem.
+
+  // Calculate the n smallest/largest value, e.g. what are the 5 coldest samples in the dataset?
+
+  // Implement a shuffle method on `ParList` so that it is unlikely all the expensive
+  // tasks are in the same partition. Will this affect the result of `parFoldMap`?
+
+  // Define a random generator of `Monoid[Int]` (i.e. `Gen[Monoid[Int]]`) and use it in PBTs.
+  // (Hint: You can use `Gen.oneOf`)
 
   //////////////////////////////////////////////
   // Ideas to improve `ParList` performance
   //////////////////////////////////////////////
 
   // 1. When we defined `Summary`, we made `min` and `max` an `Option` because the `ParList`
-  //   can be empty. However, it is quite expensive because we wrap and unwrap an Option for
+  //   can be empty. However, it is quite expensive because we wrap and unwrap an `Option` for
   //   every value in the dataset. Instead we could check if the `ParList` is empty at the beginning,
   //   if it is we return None, otherwise we can `reduce` the `ParList` without `Option`.
   //   See `reduceFoldLeftOption` on `List`.
@@ -103,5 +117,6 @@ object TemperatureNotebook extends App {
   // 3. `parFoldMap` need to wait for ALL intermediate results to be ready before starting
   //    to fold them. Instead, could we fold the intermediate results as soon as they
   //    are available? Will we always get the same results this way?
+  //    (Hint: You would need to make the state thread-safe)
 
 }

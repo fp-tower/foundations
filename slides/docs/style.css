@@ -14,9 +14,24 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .remark-code { font-size: 22px; }
 .medium-code .remark-code { font-size: 20px; }
 .small-code .remark-code { font-size: 18px; }
+.remark-code {
+    border-radius: 5px;
+    border       : 1px solid #dfdedc;
+    white-space  : pre-wrap;       /* CSS 3 */
+    white-space  : -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space  : -pre-wrap;      /* Opera 4-6 */
+    white-space  : -o-pre-wrap;    /* Opera 7 */
+    word-wrap    : break-word;     /* Internet Explorer 5.5+ */
+}
+.remark-code-span-highlighted, .remark-code-line-highlighted {
+    padding         : 0;
+    /*background-color: rgb(255, 255, 1);*/
+    background-color: #EABC00;
+}
 .medium { font-size: 28px; }
 .large { font-size: 36px; }
 .hl { color : #6f9a9c; font-weight: bold; }
+.dark-green { color: #004750; }
 
 .twenty-seven-left  { float: left ; width: 27%; }
 .twenty-seven-right { float: right; width: 27%; }

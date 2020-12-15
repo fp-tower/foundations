@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 703 289" width="703" height="289">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="24" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="12" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="map-fold-1" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>map-fold-1</title>
+    <g id="map-fold-1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_98">
+        <ellipse cx="135" cy="148.5" rx="126.000201335639" ry="130.500208526197" fill="#70a3d8"/>
+        <ellipse cx="135" cy="148.5" rx="126.000201335639" ry="130.500208526197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(39.2 134.15192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="white" x="1.168003" y="23">ParList[</tspan>
+          <tspan font-family="Helvetica Neue" font-size="12" font-weight="700" fill="white" y="23"> </tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="white" y="23">Sample</tspan>
+          <tspan font-family="Helvetica Neue" font-size="12" font-weight="700" fill="white" y="23"> </tspan>
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="white" y="23">]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_117">
+        <path d="M 325.26986 169.716 L 325.26986 144.516 L 369 144.516 L 369 125.616 L 387 157.116 L 369 188.616 L 369 169.716 Z" fill="#acbdd0"/>
+        <path d="M 325.26986 169.716 L 325.26986 144.516 L 369 144.516 L 369 125.616 L 387 157.116 L 369 188.616 L 369 169.716 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_118">
+        <text transform="translate(284 86)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.036" y="21">monoFoldLeft</tspan>
+        </text>
+      </g>
+      <g id="Graphic_120">
+        <path d="M 576 27 L 702 157.5 L 576 288 L 450 157.5 Z" fill="#589b9d"/>
+        <path d="M 576 27 L 702 157.5 L 576 288 L 450 157.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(489.02 140.54192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="white" x="48.844" y="23">Double</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

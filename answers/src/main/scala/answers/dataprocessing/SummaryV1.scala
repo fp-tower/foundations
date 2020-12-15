@@ -6,9 +6,9 @@ case class SummaryV1(min: Option[Sample], max: Option[Sample], sum: Double, size
 
   override def toString: String =
     f"Summary(avg = ${average.getOrElse(0.0)}%.2f, " +
-      f"size = $size,\n  " +
-      f"min = $min,\n  " +
-      f"max = $max\n)"
+      s"size = $size,\n  " +
+      s"min = $min,\n  " +
+      s"max = $max\n)"
 }
 
 object SummaryV1 {
@@ -53,8 +53,8 @@ object SummaryV1 {
   val monoidDerived: Monoid[SummaryV1] = new Monoid[SummaryV1] {
     val monoidMin       = Monoid.minByOption((_: Sample).temperatureFahrenheit)
     val monoidMax       = Monoid.maxByOption((_: Sample).temperatureFahrenheit)
-    val monoidSumDouble = Monoid.sumNumeric[Double]
-    val monoidSumInt    = Monoid.sumNumeric[Int]
+    val monoidSumDouble = CommutativeMonoid.sumNumeric[Double]
+    val monoidSumInt    = CommutativeMonoid.sumNumeric[Int]
 
     def default: SummaryV1 = SummaryV1(
       min = monoidMin.default,

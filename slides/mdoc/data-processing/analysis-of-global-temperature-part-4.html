@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analysis of global temperature - Part 4</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: center, middle
+
+.title[.dark-green[Analysis of global temperature<br>Part 4]]
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1a.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1b.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1c.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1d.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1e.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1f.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1g.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1h.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-1i.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2a.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2b.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2c.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2d.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2e.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2f.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2g.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2h.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2i.svg" style="width:900px;"/>
+
+---
+# foldMap in parallel
+
+<img src="../img/foundation/parlist-foldMapPar-2j.svg" style="width:900px;"/>
+
+---
+# fold intermediate results in parallel
+
+.center[<img src="../img/foundation/parlist-foldMapPar-3a.svg" style="width:450px;"/>]
+---
+# fold intermediate results in parallel
+
+.center[<img src="../img/foundation/parlist-foldMapPar-3b.svg" style="width:450px;"/>]
+
+---
+# fold intermediate results in parallel
+
+.center[<img src="../img/foundation/parlist-foldMapPar-3c.svg" style="width:450px;"/>]
+
+---
+# fold intermediate results in parallel
+
+.center[<img src="../img/foundation/parlist-foldMapPar-3d.svg" style="width:450px;"/>]
+
+---
+# fold intermediate results sequentially
+
+.center[<img src="../img/foundation/parlist-foldMapPar-4a.svg" style="width:300px;"/>]
+
+---
+# fold intermediate results sequentially
+
+.center[<img src="../img/foundation/parlist-foldMapPar-4b.svg" style="width:300px;"/>]
+
+---
+# fold intermediate results sequentially
+
+.center[<img src="../img/foundation/parlist-foldMapPar-4c.svg" style="width:300px;"/>]
+
+---
+# fold intermediate results sequentially
+
+.center[<img src="../img/foundation/parlist-foldMapPar-4d.svg" style="width:300px;"/>]
+
+---
+# fold intermediate results sequentially
+
+.center[<img src="../img/foundation/parlist-foldMapPar-4e.svg" style="width:300px;"/>]
+
+---
+# fold intermediate results sequentially
+
+.center[<img src="../img/foundation/parlist-foldMapPar-4f.svg" style="width:300px;"/>]
+
+---
+# foldMap
+
+.center[<img src="../img/foundation/parlist-foldLeft-6.svg" style="width:150px;"/>]
+
+---
+# Thread
+
+```scala mdoc:silent
+def createThread(n: Int): Thread = new Thread {
+  override def run(): Unit =
+    println(s"Thread ${n}")
+}
+
+val threads = 1.to(4).map(createThread)
+```
+
+```scala
+threads.foreach(_.start())
+// Thread 1
+// Thread 3
+// Thread 2
+// Thread 4
+```
+
+---
+# Executor and Runnable
+
+.fifty-seven-left[
+```scala mdoc:silent
+import java.util.concurrent.Executors
+
+val fixedPool = Executors.newFixedThreadPool(2)
+
+def createRunnable(n: Int): Runnable =
+  new Runnable {
+    def run(): Unit =
+      println(s"Runnable ${n}")
+  }
+
+val runnables = 1.to(4).map(createRunnable)
+```
+
+
+```scala
+runnables.foreach(fixedPool.submit)
+// Runnable 1
+// Runnable 3
+// Runnable 2
+// Runnable 4
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/executor.svg" alt="Executor" style="width:400px;"/>
+]
+
+---
+# Executor and Runnable
+
+.fifty-seven-left[
+```scala mdoc:reset:silent
+import java.util.concurrent.Executors
+
+val fixedPool = Executors.newFixedThreadPool(2)
+
+def createRunnable(n: Int): Runnable =
+  new Runnable {
+    def run(): Unit = {
+      val thread = Thread.currentThread
+      println(s"[${thread.getName}] Runnable ${n}")
+    }
+  }
+
+val runnables = 1.to(4).map(createRunnable)
+```
+
+
+```scala
+runnables.foreach(fixedPool.submit)
+// [pool-19-thread-1] Runnable 1
+// [pool-19-thread-2] Runnable 3
+// [pool-19-thread-1] Runnable 2
+// [pool-19-thread-2] Runnable 4
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/executor.svg" alt="Executor" style="width:400px;"/>
+]
+
+---
+# ExecutionContext and Future
+
+```scala
+import java.util.concurrent.Executors
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
+
+val fixedPool        = Executors.newFixedThreadPool(2)
+val executionContext = ExecutionContext.fromExecutor(fixedPool)
+```
+
+```scala
+val future = Future {
+  Thread.sleep(1000)  // sleep 1 second
+  1
+}(executionContext)
+// future: Future[Int] = Future(<not completed>)
+```
+
+---
+# ExecutionContext and Future
+
+```scala
+import java.util.concurrent.Executors
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
+
+val fixedPool                 = Executors.newFixedThreadPool(2)
+implicit val executionContext = ExecutionContext.fromExecutor(fixedPool)
+```
+
+```scala
+val task = Future {
+  Thread.sleep(1000)  // sleep 1 second
+  3
+}
+// task: Future[Int] = Future(<not completed>)
+```
+
+--
+
+```scala
+Await.result(task, 2.minutes)
+// res: Int = 3
+```
+
+---
+# ExecutionContext and Future
+
+```scala
+import java.util.concurrent.Executors
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
+
+val fixedPool                 = Executors.newFixedThreadPool(2)
+implicit val executionContext = ExecutionContext.fromExecutor(fixedPool)
+```
+
+```scala
+val task = Future {
+  Thread.sleep(1000 * 60 * 5)  // sleep 5 minutes
+  3
+}
+// task: Future[Int] = Future(<not completed>)
+```
+
+
+```scala
+Await.result(task, 2.minutes)
+// java.util.concurrent.TimeoutException:
+//   Future timed out after [2 minutes]
+```
+
+
+
+---
+# ExecutionContext and Future
+
+```scala
+import java.util.concurrent.Executors
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, ExecutionContext, Future }
+
+val fixedPool                 = Executors.newFixedThreadPool(2)
+implicit val executionContext = ExecutionContext.fromExecutor(fixedPool)
+```
+
+```scala
+val task = Future {
+  Thread.sleep(1000 * 60 * 5)  // sleep 5 minutes
+  3
+}
+// task: Future[Int] = Future(<not completed>)
+```
+
+```scala
+Await.result(task, Duration.Inf)
+// res: Int = 3
+```
+
+---
+# ExecutionContext and Future
+
+.fifty-seven-left[
+<br><br><br>
+```scala
+val future1   = Future { task(1) }
+val future2   = Future { task(2) }
+
+val response1 = Await.result(future1, Duration.Inf)
+val response2 = Await.result(future2, Duration.Inf)
+```
+]
+
+.thirty-seven-right[.center[
+<img src="../img/foundation/future-parallel.svg" alt="Future sequential" style="width:300px;"/>
+]]
+
+---
+# ExecutionContext and Future
+
+.fifty-seven-left[
+<br><br><br>
+```scala
+val future1   = Future { task(1) }
+val response1 = Await.result(future1, Duration.Inf)
+
+val future2   = Future { task(2) }
+val response2 = Await.result(future2, Duration.Inf)
+```
+]
+
+.thirty-seven-right[.center[
+<img src="../img/foundation/future-sequential.svg" alt="Future sequential" style="width:300px;"/>
+]]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

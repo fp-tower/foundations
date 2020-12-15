@@ -10,8 +10,13 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
   def map[To](update: A => To): ParList[To] =
     ParList(executionContext, partitions.map(_.map(update)))
 
-  def foldLeft[B](default: B)(combine: (B, A) => A): B =
+  def foldLeft[To](default: To)(combine: (To, A) => To): To =
     sys.error("Impossible")
+
+  def foldLeftV2[To](default: To)(combineElement: (To, A) => To)(combinePartition: (To, To) => To): To =
+    partitions
+      .map(_.foldLeft(default)(combineElement))
+      .foldLeft(default)(combinePartition)
 
   // 1st `monoFoldLeft` implementation before introducing `Monoid`
   def monoFoldLeftV1(default: A)(combine: (A, A) => A): A =
@@ -25,7 +30,7 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
       .foldLeft(monoid.default)(monoid.combine)
 
   def size: Int =
-    parFoldMap(_ => 1)(Monoid.sumNumeric)
+    parFoldMap(_ => 1)(CommutativeMonoid.sumNumeric)
 
   def min(implicit ord: Ordering[A]): Option[A] =
     minBy(identity)
@@ -48,7 +53,7 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
     parReduceMap(identity)(Semigroup.maxBy(zoom))
 
   def sum(implicit num: Numeric[A]): A =
-    fold(Monoid.sumNumeric)
+    fold(CommutativeMonoid.sumNumeric)
 
   def fold(monoid: Monoid[A]): A =
     parFoldMap(identity)(monoid)
@@ -74,6 +79,19 @@ case class ParList[A](executionContext: ExecutionContext, partitions: List[List[
 
   def parFoldMap[To](update: A => To)(monoid: Monoid[To]): To =
     parReduceMap(update)(monoid).getOrElse(monoid.default)
+
+  def parFoldMapUnordered[To](update: A => To)(monoid: CommutativeMonoid[To]): To = {
+    val ref = Ref(monoid.default)
+
+    def foldPartition(partition: List[A]): Future[Any] =
+      Future {
+        val res = partition.foldLeft(monoid.default)((state, value) => monoid.combine(state, update(value)))
+        ref.modify(monoid.combine(res, _))
+      }(executionContext)
+
+    partitions.map(foldPartition).foreach(Await.ready(_, Duration.Inf))
+    ref.get
+  }
 
   def parReduceMap[To](update: A => To)(semigroup: Semigroup[To]): Option[To] = {
     def reducePartition(partition: List[A]): Future[To] =
