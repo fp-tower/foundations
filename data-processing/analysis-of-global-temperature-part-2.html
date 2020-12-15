@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analysis of global temperature - Part 2</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: center, middle
+
+.title[.dark-green[Analysis of global temperature<br>Part 2]]
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1a.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1b.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1c.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1d.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1e.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1f.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-1g.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-2a.svg" style="width:900px;"/>
+
+---
+# monoFoldLeft vs List foldLeft
+
+<img src="../img/foundation/parlist-monofoldLeft-default-2b.svg" style="width:900px;"/>
+
+---
+class: center
+
+<br><br><br><br><br>
+
+.thirty-two-left[
+# 0 + x == x
+
+# x + 0 == x
+]
+
+--
+
+.sixty-seven-right[
+# combine(default, x) == x
+
+# combine(x, default) == x
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+
+<img src="../img/foundation/parlist-monofoldLeft-associative-1a.svg" style="width:800px;"/>
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+
+<img src="../img/foundation/parlist-monofoldLeft-associative-1b.svg" style="width:800px;"/>
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+
+<img src="../img/foundation/parlist-monofoldLeft-associative-1c.svg" style="width:800px;"/>
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+
+<img src="../img/foundation/parlist-monofoldLeft-associative-1d.svg" style="width:800px;"/>
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+
+<img src="../img/foundation/parlist-monofoldLeft-associative-1e.svg" style="width:800px;"/>
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = combine(combine(default, 4), 7)
+val partition2  = combine(default, 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = combine(default, 4)
+val partition2  = combine(combine(default, 7), 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = `combine`(`combine`(default, 4), 7)
+val partition2  = `combine`(default, 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = `combine`(default, 4)
+val partition2  = `combine`(`combine`(default, 7), 3)
+val finalResult = combine(combine(default, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = combine(combine(default, 4), 7)
+val partition2  = combine(default, 3)
+val finalResult = `combine`(`combine`(default, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = combine(default, 4)
+val partition2  = combine(combine(default, 7), 3)
+val finalResult = `combine`(`combine`(default, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = combine(`combine(default`, 4), 7)
+val partition2  = `combine(default`, 3)
+val finalResult = combine(`combine(default`, partition1), partition2)
+```
+<br><br><br>
+```scala
+val partition1  = `combine(default`, 4)
+val partition2  = combine(`combine(default`, 7), 3)
+val finalResult = combine(`combine(default`, partition1), partition2)
+```
+]
+
+---
+class: medium-code
+
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-seven-right[
+<br><br>
+```scala
+val partition1  = combine(4, 7)
+val partition2  = 3
+val finalResult = combine(partition1, partition2)
+```
+<br><br><br>
+```scala
+val partition1  = 4
+val partition2  = combine(7, 3)
+val finalResult = combine(partition1, partition2)
+```
+]
+
+---
+# monoFoldLeft is stable
+
+.thirty-two-left[
+<img src="../img/foundation/parlist-monofoldLeft-associative-2.svg" alt="foldLeft per partition" style="width:250px;"/>
+]
+
+.sixty-two-right[
+<br><br><br>
+```scala
+combine(combine(4, 7), 3)
+```
+<br><br><br><br><br>
+```scala
+combine(4, combine(7, 3))
+```
+]
+
+---
+# Associative functions
+
+
+<br><br><br>
+
+.forty-seven-left[
+```scala
+(1 + (2 + 3)) == ((1 + 2) + 3)
+// res0: Boolean = true
+
+(1 min (2 min 3)) == ((1 min 2) min 3)
+// res1: Boolean = true
+```
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

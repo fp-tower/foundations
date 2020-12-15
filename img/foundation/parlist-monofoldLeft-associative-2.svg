@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 281 434" width="281" height="434">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="parlist-monofoldLeft-associative-2" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>parlist-monofoldLeft-associative-2</title>
+    <g id="parlist-monofoldLeft-associative-2_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="126" y="36.615997" width="153" height="171" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_182">
+        <rect x="144" y="54.616" width="117" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_87">
+        <rect x="153" y="63.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="153" y="63.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 76.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">4</tspan>
+        </text>
+      </g>
+      <g id="Graphic_90">
+        <rect x="207" y="63.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="207" y="63.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(212 76.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">7</tspan>
+        </text>
+      </g>
+      <g id="Graphic_181">
+        <text transform="translate(14 77)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_195">
+        <rect x="144" y="126.616" width="63" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_191">
+        <rect x="153" y="135.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="153" y="135.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 148.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_262">
+        <text transform="translate(14 149.616)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_294">
+        <text transform="translate(131 5)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="5.779" y="21">ParList</tspan>
+        </text>
+      </g>
+      <g id="Graphic_314">
+        <rect x="126" y="261.616" width="153" height="170.384" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_313">
+        <rect x="144" y="279.616" width="63" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_312">
+        <rect x="153" y="288.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="153" y="288.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 301.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">4</tspan>
+        </text>
+      </g>
+      <g id="Graphic_309">
+        <text transform="translate(14 302)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_308">
+        <rect x="144" y="351.616" width="117" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_307">
+        <rect x="153" y="360.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="153" y="360.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 373.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">7</tspan>
+        </text>
+      </g>
+      <g id="Graphic_306">
+        <rect x="207" y="360.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="207" y="360.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(212 373.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_304">
+        <text transform="translate(14 374.616)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_303">
+        <text transform="translate(131 230)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="5.779" y="21">ParList</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

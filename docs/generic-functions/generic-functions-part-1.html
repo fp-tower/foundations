@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generic functions part 1</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Generic functions <br> part 1]
+
+---
+# List is a generic data structure
+
+.twenty-seven-left[
+<br>
+<br>
+<br>
+<br>
+```scala
+List[Int]
+
+List[String]
+
+List[User]
+```
+]
+
+.fifty-seven-right[
+<img src="../img/foundation/parametric-list.svg" alt="Generic list" style="width:600px;"/>
+]
+
+---
+# How to avoid duplication?
+
+
+.thirty-seven-left[
+<br>
+<br>
+<br>
+<br>
+```scala
+def size(list: List[Int]   ): Int
+
+def size(list: List[String]): Int
+
+def size(list: List[User]  ): Int
+```
+]
+
+.fifty-seven-right[
+<img src="../img/foundation/parametric-list.svg" alt="Parametric list" style="width:600px;"/>
+]
+
+---
+# Generic function
+
+
+.thirty-seven-left[
+<br>
+<br>
+
+```scala
+def size[A](list: List[A]): Int
+```
+
+<br>
+
+```scala
+size(List(1, 4, 8, -3))
+// res1: Int = 4
+
+size(List("Hello", "World", "!"))
+// res2: Int = 3
+```
+]
+
+.fifty-seven-right[
+<img src="../img/foundation/parametric-list.svg" alt="Generic list" style="width:600px;"/>
+]
+
+---
+# Generic function
+
+.forty-two-left[
+<br>
+<br>
+
+```scala
+def size[Elem](list: List[Elem]): Int
+```
+
+<br>
+
+```scala
+size(List(1, 4, 8, -3))
+// res3: Int = 4
+
+size(List("Hello", "World", "!"))
+// res4: Int = 3
+```
+]
+
+.fifty-seven-right[
+<img src="../img/foundation/parametric-list.svg" alt="Generic list" style="width:600px;"/>
+]
+
+---
+# Generic function
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+
+<br>
+
+```scala
+map(List(1,2,3,4), (x: Int) => x + 1)
+// res5: List[Int] = List(2, 3, 4, 5)
+
+map(List("Hello", "World"), (x: String) => x.reverse)
+// res6: List[String] = List("olleH", "dlroW")
+```
+
+---
+# Generic function
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users, (user: User) => user.name)
+// error: type mismatch;
+//  found   : App0.this.User => String
+//  required: java.io.Serializable => java.io.Serializable
+// map(users, (user: User) => user.name)
+//            ^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
+---
+# Generic function
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map[User](users, (user: User) => user.name)
+// error: type mismatch;
+//  found   : String
+//  required: App0.this.User
+// map[User](users, (user: User) => user.name)
+//                                  ^^^^^^^^^
+```
+
+---
+# Generic function
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To]
+```
+
+
+<br>
+
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users, (user: User) => user.name)
+// res10: List[String] = List("John", "Eda", "Bob")
+
+map(List(1,2,3,4), (x: Int) => x + 1)
+// res11: List[Int] = List(2, 3, 4, 5)
+```
+
+---
+# Generic function
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To]
+```
+
+
+<br>
+
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users, user => user.name)
+// error: missing parameter type
+// map(users, user => user.name)
+//            ^^^^
+
+map(users, _.name)
+// error: missing parameter type for expanded
+// function ((<x$1: error>) => x$1.name)
+// map(users, _.name)
+//            ^
+```
+
+---
+# Generic function
+
+<br>
+
+```scala
+def map[From, To](list: List[From])(update: From => To): List[To]
+```
+
+
+<br>
+
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users)(user => user.name)
+// res14: List[String] = List("John", "Eda", "Bob")
+
+map(users)(_.name)
+// res15: List[String] = List("John", "Eda", "Bob")
+```
+
+---
+# Generic function in Dotty/Scala 3
+
+<br>
+
+```scala
+def map[From, To](list: List[From], update: From => To): List[To]
+```
+
+
+<br>
+
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users, user => user.name)
+// res16: List[String] = List("John", "Eda", "Bob")
+
+map(users, _.name)
+// res17: List[String] = List("John", "Eda", "Bob")
+```
+
+---
+# All generic types are not data structure
+
+<br>
+<br>
+
+
+```scala
+trait JsonDecoder[A]{
+  def decode(value: Json): A
+}
+
+
+case class Predicate[A](value: A => Boolean)
+```
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+
+# .white[Summary]
+
+<br>
+
+.medium[
+* Generic functions reduce code duplication
+
+* We can have several type parameters
+
+* We split parameters into different set <br>of parentheses to help type inference
+]
+
+---
+# Least Upper Bound (LUB)
+
+
+<br>
+
+.fifty-seven-left[
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+
+```scala
+map(users, (user: User) => user.name)
+// error: type mismatch;
+//  found   : App5.this.User => String
+//  required: java.io.Serializable => java.io.Serializable
+// map(users, (user: User) => user.name)
+//            ^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/list-inference.svg" alt="Parametric list" style="width:400px;"/>
+]
+
+---
+# Generic functions in Dotty
+
+<br>
+
+```scala
+def map[A](list: List[A], update: A => A): List[A]
+```
+
+<br>
+
+```scala
+val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
+```
+
+```scala
+map(users, (user: User) => user.name)
+// Type Mismatch Error:
+// map(users, (user: User) => user.name)
+//                            ^^^^^^^^^
+//                            Found:    (user.name : String)
+//                            Required: User
+```
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

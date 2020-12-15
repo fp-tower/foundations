@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 378 334" width="378" height="334">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="size-jobs" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>size-jobs</title>
+    <g id="size-jobs_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_7">
+        <rect x="162" y="9" width="71.12903" height="70.714286" fill="#ff8080"/>
+        <rect x="162" y="9" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_75">
+        <rect x="162" y="79.18182" width="71.12903" height="52.714286" fill="#589b9d"/>
+        <rect x="162" y="79.18182" width="71.12903" height="52.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_95">
+        <rect x="306" y="9" width="71.12903" height="70.714286" fill="#ff8080"/>
+        <rect x="306" y="9" width="71.12903" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_94">
+        <rect x="306" y="79.18182" width="71.12903" height="252" fill="#589b9d"/>
+        <rect x="306" y="79.18182" width="71.12903" height="252" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_102">
+        <ellipse cx="31.5" cy="284.59086" rx="13.5000215716756" ry="12.8571634015958" fill="#ff8080"/>
+      </g>
+      <g id="Graphic_100">
+        <ellipse cx="31.5" cy="319.30514" rx="13.5000215716756" ry="12.8571634015959" fill="#589b9d"/>
+      </g>
+      <g id="Graphic_99">
+        <text transform="translate(59 275)" fill="#424242">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="#424242" x="0" y="15">Overhead</tspan>
+        </text>
+      </g>
+      <g id="Graphic_98">
+        <text transform="translate(59 310.448)" fill="#424242">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="#424242" x="0" y="15">Computing task</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

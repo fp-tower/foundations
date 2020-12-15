@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 802 434" width="802" height="434">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="parlist-monofoldLeft-associative-1e" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>parlist-monofoldLeft-associative-1e</title>
+    <g id="parlist-monofoldLeft-associative-1e_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="441" y="36.615997" width="153" height="171" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_182">
+        <rect x="459" y="54.616" width="117" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_87">
+        <rect x="468" y="63.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="468" y="63.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(473 76.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">4</tspan>
+        </text>
+      </g>
+      <g id="Graphic_90">
+        <rect x="522" y="63.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="522" y="63.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(527 76.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">7</tspan>
+        </text>
+      </g>
+      <g id="Graphic_181">
+        <text transform="translate(329 77)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_195">
+        <rect x="459" y="126.616" width="63" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_191">
+        <rect x="468" y="135.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="468" y="135.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(473 148.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_262">
+        <text transform="translate(329 149.616)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_294">
+        <text transform="translate(446 5)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="5.779" y="21">ParList</tspan>
+        </text>
+      </g>
+      <g id="Graphic_314">
+        <rect x="441" y="261.616" width="153" height="170.384" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_313">
+        <rect x="459" y="279.616" width="63" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_312">
+        <rect x="468" y="288.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="468" y="288.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(473 301.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">4</tspan>
+        </text>
+      </g>
+      <g id="Graphic_309">
+        <text transform="translate(329 302)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_308">
+        <rect x="459" y="351.616" width="117" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_307">
+        <rect x="468" y="360.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="468" y="360.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(473 373.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">7</tspan>
+        </text>
+      </g>
+      <g id="Graphic_306">
+        <rect x="522" y="360.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="522" y="360.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(527 373.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_304">
+        <text transform="translate(329 374.616)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="3.989" y="21">partition 2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_303">
+        <text transform="translate(446 230)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="5.779" y="21">ParList</tspan>
+        </text>
+      </g>
+      <g id="Graphic_323">
+        <rect x="9" y="198.616" width="171" height="63" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_322">
+        <rect x="18" y="207.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="18" y="207.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(23 220.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">4</tspan>
+        </text>
+      </g>
+      <g id="Graphic_321">
+        <rect x="72" y="207.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="72" y="207.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(77 220.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">7</tspan>
+        </text>
+      </g>
+      <g id="Graphic_324">
+        <rect x="126" y="207.616" width="45" height="45" fill="#70a3d8"/>
+        <rect x="126" y="207.616" width="45" height="45" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(131 220.892)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="13.052" y="15">3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_325">
+        <text transform="translate(14 167)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="8.977" y="21">List</tspan>
+        </text>
+      </g>
+      <g id="Line_326">
+        <line x1="181" y1="209.93507" x2="311.43737" y2="179.5033" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8.0,8.0" stroke-width="2"/>
+      </g>
+      <g id="Line_327">
+        <line x1="181" y1="255.70318" x2="311.62985" y2="294.3442" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8.0,8.0" stroke-width="2"/>
+      </g>
+      <g id="Line_328">
+        <line x1="596" y1="156.17517" x2="717.1659" y2="208.74598" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_329">
+        <line x1="596" y1="309.60122" x2="717.3431" y2="252.08803" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_330">
+        <rect x="729" y="198" width="72" height="63" fill="#efc600"/>
+        <rect x="729" y="198" width="72" height="63" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(734 211.052)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="14.112" y="15">Final </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="8.48" y="33.448">Result</tspan>
+        </text>
+      </g>
+      <g id="Graphic_331">
+        <text transform="translate(608 293)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="#404040" x="21.708" y="15">monoFoldLeft</tspan>
+        </text>
+      </g>
+      <g id="Graphic_332">
+        <text transform="translate(608 147.552)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="#404040" x="21.708" y="15">monoFoldLeft</tspan>
+        </text>
+      </g>
+      <g id="Graphic_333">
+        <text transform="translate(176 167)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="#404040" x="50.012" y="15">split 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_334">
+        <text transform="translate(176 284)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="#404040" x="50.012" y="15">split 2</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

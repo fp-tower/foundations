@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 668 95" width="668" height="95">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="linked-list-0" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>linked-list-0</title>
+    <g id="linked-list-0_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_3">
+        <rect x="612" y="21" width="54" height="69" fill="#589b9d"/>
+        <rect x="612" y="21" width="54" height="69" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(617 42.192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.174" y="21">Nil</tspan>
+        </text>
+      </g>
+      <g id="Group_33">
+        <g id="Group_27">
+          <g id="Graphic_29">
+            <path d="M 56.25 18 L 150.75 18 C 161.928 18 171 34.128 171 54 C 171 73.872 161.928 90 150.75 90 L 56.25 90 C 45.072 90 36 73.872 36 54 C 36 34.128 45.072 18 56.25 18 Z" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+          </g>
+          <g id="Graphic_28">
+            <rect x="9" y="18" width="116.01023" height="72" fill="#599a9e"/>
+            <rect x="9" y="18" width="116.01023" height="72" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+            <text transform="translate(14 40.692)" fill="white">
+              <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="18.586116" y="21">“Hello”</tspan>
+            </text>
+          </g>
+        </g>
+        <g id="Graphic_26">
+          <ellipse cx="144.43548" cy="54" rx="8.56452981428882" ry="9.00001438111706" fill="#599a9e"/>
+        </g>
+      </g>
+      <g id="Group_39">
+        <g id="Group_41">
+          <g id="Graphic_43">
+            <path d="M 281.25 20.007487 L 375.75 20.007487 C 386.928 20.007487 396 36.135487 396 56.007487 C 396 75.87949 386.928 92.00749 375.75 92.00749 L 281.25 92.00749 C 270.072 92.00749 261 75.87949 261 56.007487 C 261 36.135487 270.072 20.007487 281.25 20.007487 Z" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+          </g>
+          <g id="Graphic_42">
+            <rect x="234" y="20.007487" width="116.01023" height="72" fill="#599a9e"/>
+            <rect x="234" y="20.007487" width="116.01023" height="72" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+            <text transform="translate(239 42.69949)" fill="white">
+              <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="15.132116" y="21">“World”</tspan>
+            </text>
+          </g>
+        </g>
+        <g id="Graphic_40">
+          <ellipse cx="369.4355" cy="56.007487" rx="8.56452981428885" ry="9.00001438111706" fill="#599a9e"/>
+        </g>
+      </g>
+      <g id="Line_58">
+        <path d="M 147.48553 45.58768 C 152.56687 34.828285 165.2076 17.614953 193.99488 18.006566 C 202.18548 18.117988 210.92862 19.644307 219.69343 22.02685" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_59">
+        <path d="M 372.888 47.76853 C 378.3975 36.710737 390.9789 18.396472 414 18 C 424.43247 17.82033 435.4591 21.347004 445.6633 26.256192" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Group_113">
+        <g id="Group_115">
+          <g id="Graphic_117">
+            <path d="M 495.45 18 L 539.55 18 C 544.7664 18 549 34.128 549 54 C 549 73.872 544.7664 90 539.55 90 L 495.45 90 C 490.2336 90 486 73.872 486 54 C 486 34.128 490.2336 18 495.45 18 Z" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+          </g>
+          <g id="Graphic_116">
+            <rect x="459" y="18" width="54" height="72" fill="#589b9d"/>
+            <rect x="459" y="18" width="54" height="72" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+            <text transform="translate(464 40.692)" fill="white">
+              <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.779" y="21">“!”</tspan>
+            </text>
+          </g>
+        </g>
+        <g id="Graphic_114">
+          <ellipse cx="530.5645" cy="53.99615" rx="8.56452981428873" ry="9.00001438111706" fill="#589b9d"/>
+          <ellipse cx="530.5645" cy="53.99615" rx="8.56452981428873" ry="9.00001438111706" stroke="#589b9d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        </g>
+      </g>
+      <g id="Line_112">
+        <path d="M 534.6169 46.064683 C 540.89864 35.37542 554.54655 17.70247 576 18 C 583.6778 18.10648 591.45305 20.50211 598.7974 24.035997" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>

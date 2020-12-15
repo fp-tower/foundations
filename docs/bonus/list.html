@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+<a href="https://github.com/fp-tower/foundation">
+  <img src="../img/fp-tower/solid-color-logo.svg" alt="logo" style="width:800px;"/>
+</a>
+
+---
+class: center, middle
+
+# List
+
+---
+# Linked list
+
+<br>
+<br>
+
+.center[
+<img src="../img/foundation/linked-list-0.svg" alt="Linked list" style="width:600px;"/>
+]
+
+--
+
+<br>
+<br>
+
+```scala
+val words = List("Hello", "World", "!")
+```
+
+---
+# Linked list
+
+<br>
+<br>
+
+.center[
+<img src="../img/foundation/linked-list-0.svg" alt="Linked list" style="width:600px;"/>
+]
+
+<br>
+<br>
+
+```scala
+val words = "Hello" :: "World" :: "!" :: Nil
+```
+
+---
+# List is a parametric type
+
+<br>
+
+.center[
+<img src="../img/foundation/linked-list-1.svg" alt="Linked list" style="width:500px;"/>
+]
+
+<br>
+
+```scala
+val numbers: List[Int]    = List(1, 4, 8)
+
+val words  : List[String] = List("Hello", "World")
+```
+
+---
+# Nil is a list of all types
+
+<br>
+
+.center[
+<img src="../img/foundation/linked-list-2.svg" alt="Linked list" style="width:500px;"/>
+]
+
+<br>
+
+```scala
+val nil = Nil
+
+val numbers: List[Int]    = 1 :: 4 :: 8 :: nil
+
+val words  : List[String] = "Hello" :: "World" :: nil
+```
+
+---
+# List is immutable
+
+.center[
+<img src="../img/foundation/linked-list-4.svg" alt="Linked list" style="width:700px;"/>
+]
+
+.forty-seven-left[
+```scala
+val numbers = 1 :: 4 :: 8 :: Nil
+// numbers: List[Int] = List(1, 4, 8)
+```
+]
+
+.forty-seven-right[
+```scala
+val even = 0 :: numbers.tail
+// even: List[Int] = List(0, 4, 8)
+```
+]
+
+---
+# List is immutable
+
+<br>
+
+.center[
+<img src="../img/foundation/linked-list-append.svg" alt="Linked list" style="width:800px;"/>
+]
+
+<br>
+
+.forty-seven-left[
+```scala
+val numbers = 1 :: 4 :: 8 :: Nil
+// numbers: List[Int] = List(1, 4, 8)
+```
+]
+
+.forty-seven-right[
+```scala
+val append = numbers :+ 0
+// append: List[Int] = List(1, 4, 8, 0)
+```
+]
+
+---
+# Persistent data structure
+
+<br>
+
+```scala
+case class User(name: String, age: Int)
+
+val users  = List(User("John", 17), User("Alice", 54), User("Bob", 23))
+
+val adults = users.filter(_.age >= 18)
+```
+
+--
+
+.forty-seven-left[
+```scala
+users.length
+// res5: Int = 3
+
+adults.length
+// res6: Int = 2
+```
+]
+
+.forty-seven-right[
+```scala
+users.length != adults.length
+// res7: Boolean = true
+```
+.center[
+## Easier to test
+]
+]
+
+---
+# Concurrency
+
+<br>
+
+
+.twenty-seven-left[
+<img src="../img/screenshot/corecursive_400x400.jpg" alt="corecursive" style="width:200px;"/>
+]
+
+.sixty-seven-right[
+## Corecursive podcast
+## Rust and bitter C++ developers with Jim Blandy
+]
+
+---
+class: center, middle
+
+# Why List is so popular?
+
+---
+# List is an enumeration
+
+<br>
+
+.center[
+<img src="../img/foundation/linked-list-enum.svg" alt="Linked list enum" style="width:400px;"/>
+]
+
+---
+# List is an enumeration
+
+.forty-seven-left[
+<br>
+<br>
+```scala
+sealed trait List[+A]
+
+
+case class Cons[+A](head: A, tail: List[A])
+  extends List[A]
+
+
+case object Nil extends List[Nothing]
+```
+]
+
+.forty-seven-right[
+<img src="../img/foundation/linked-list-enum.svg" alt="Linked list enum" style="width:400px;"/>
+]
+
+---
+# List is an enumeration
+
+.forty-seven-left[
+<br>
+<br>
+```scala
+enum List[+A] {
+
+  case class Cons(head: A, tail: List[A])
+
+  case object Nil
+
+}
+```
+
+.center[
+<br>
+## In Dotty/Scala 3
+]
+]
+
+.forty-seven-right[
+<img src="../img/foundation/linked-list-enum.svg" alt="Linked list enum" style="width:400px;"/>
+]
+
+---
+# Pattern matching
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case Cons(head, tail) => println("list is not empty")
+  case Nil              => println("list is empty")
+}
+```
+
+---
+# Pattern matching
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case Cons(head, tail) =>
+    tail match {
+      case Cons(second, rest) => println("list is has at least 2 elements")
+      case Nil                => println("list is has 1 element")
+    }
+  case Nil              => println("list is empty")
+}
+```
+
+---
+# Pattern matching
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case Cons(head, Cons(second, tail)) => println("list is has at least 2 elements")
+  case Cons(head, Nil)                => println("list is has 1 element")
+  case Nil                            => println("list is empty")
+}
+```
+
+---
+# Pattern matching with infix Cons
+
+<br>
+<br>
+
+
+```scala
+list match {
+  case head :: second :: tail => println("list is has at least 2 elements")
+  case head :: tail           => println("list is has 1 element")
+  case Nil                    => println("list is empty")
+}
+```
+
+<br>
+
+
+```scala
+"Hello" :: "World" :: Nil
+```
+
+---
+# Summary
+
+<br>
+
+.large[
+* Extremely simple data structure
+
+* Easy to test and safe to share
+
+* Good for pattern matching, prepending elements, iterating
+
+* Bad for appending elements, random access, size
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

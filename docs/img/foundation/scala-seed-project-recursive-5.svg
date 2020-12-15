@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 504 568" width="504" height="568">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="18" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="scala-seed-project-recursive-5" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>scala-seed-project-recursive-5</title>
+    <g id="scala-seed-project-recursive-5_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_74">
+        <text transform="translate(14 32)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="174.256" y="21">scala--project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_108">
+        <rect x="135" y="261" width="261" height="306" fill="#589b9d"/>
+        <rect x="135" y="261" width="261" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(140 266)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="97.384" y="21">Stack</tspan>
+        </text>
+      </g>
+      <g id="Graphic_131">
+        <path d="M 165 486 L 366 486 C 372.6274 486 378 491.3726 378 498 L 378 546 C 378 552.6274 372.6274 558 366 558 L 165 558 C 158.37258 558 153 552.6274 153 546 L 153 498 C 153 491.3726 158.37258 486 165 486 Z" fill="#70a3d8"/>
+        <path d="M 165 486 L 366 486 C 372.6274 486 378 491.3726 378 498 L 378 546 C 378 552.6274 372.6274 558 366 558 L 165 558 C 158.37258 558 153 552.6274 153 546 L 153 498 C 153 491.3726 158.37258 486 165 486 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 491)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="60.46" y="19">diskUsage</tspan>
+        </text>
+      </g>
+      <g id="Graphic_130">
+        <text transform="translate(167 526.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 scala-seed-project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_129">
+        <path d="M 165 405 L 366 405 C 372.6274 405 378 410.3726 378 417 L 378 465 C 378 471.6274 372.6274 477 366 477 L 165 477 C 158.37258 477 153 471.6274 153 465 L 153 417 C 153 410.3726 158.37258 405 165 405 Z" fill="#70a3d8"/>
+        <path d="M 165 405 L 366 405 C 372.6274 405 378 410.3726 378 417 L 378 465 C 378 471.6274 372.6274 477 366 477 L 165 477 C 158.37258 477 153 471.6274 153 465 L 153 417 C 153 410.3726 158.37258 405 165 405 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 410)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="60.46" y="19">diskUsage</tspan>
+        </text>
+      </g>
+      <g id="Graphic_128">
+        <text transform="translate(167 445.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_133">
+        <path d="M 165 324 L 366 324 C 372.6274 324 378 329.3726 378 336 L 378 384 C 378 390.6274 372.6274 396 366 396 L 165 396 C 158.37258 396 153 390.6274 153 384 L 153 336 C 153 329.3726 158.37258 324 165 324 Z" fill="#70a3d8"/>
+        <path d="M 165 324 L 366 324 C 372.6274 324 378 329.3726 378 336 L 378 384 C 378 390.6274 372.6274 396 366 396 L 165 396 C 158.37258 396 153 390.6274 153 384 L 153 336 C 153 329.3726 158.37258 324 165 324 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(158 329)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="60.46" y="19">diskUsage</tspan>
+        </text>
+      </g>
+      <g id="Graphic_132">
+        <text transform="translate(167 364.276)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="0" y="15">input_1 Dependencies.scala</tspan>
+        </text>
+      </g>
+      <g id="Graphic_134">
+        <path d="M 324.35526 103.9572 C 324.35526 93.72636 322.75055 92.4606 311.02857 82.3356 L 310.90475 82.23084 C 299.12085 72 298.9983 72 286.90483 72 C 270.8021 72 198 72 198 72 L 198 174 C 198 177.3137 200.6863 180 204 180 L 318.35526 180 C 321.66897 180 324.35526 177.3137 324.35526 174 L 324.35526 103.9572 Z" fill="#acbdd0"/>
+        <path d="M 324.35526 103.9572 C 324.35526 93.72636 322.75055 92.4606 311.02857 82.3356 L 310.90475 82.23084 C 299.12085 72 298.9983 72 286.90483 72 C 270.8021 72 198 72 198 72 L 198 174 C 198 177.3137 200.6863 180 204 180 L 318.35526 180 C 321.66897 180 324.35526 177.3137 324.35526 174 L 324.35526 103.9572 Z M 324.35526 103.43016 C 324.35526 93.72636 324.23143 93.72636 298.9983 93.72636 L 298.9983 93.72636 C 298.9983 72.10584 298.9983 72 287.64527 72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"/>
+        <text transform="translate(203 104.496)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x=".4966314" y="17">Dependencies</tspan>
+          <tspan font-family="Helvetica Neue" font-size="18" font-weight="400" fill="black" x="34.67863" y="38.504">.scala</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

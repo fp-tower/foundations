@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 641 488" width="641" height="488">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="sequences" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>sequences</title>
+    <g id="sequences_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_27">
+        <rect x="72" y="81" width="504" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_25">
+        <rect x="90" y="99" width="126" height="70.714286" fill="#589b9d"/>
+        <text transform="translate(95 121.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.209" y="21">“Welcome”</tspan>
+        </text>
+      </g>
+      <g id="Graphic_159">
+        <rect x="234" y="99" width="72" height="70.714286" fill="#589b9d"/>
+        <text transform="translate(239 121.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.849" y="21">“to”</tspan>
+        </text>
+      </g>
+      <g id="Graphic_167">
+        <rect x="117" y="225" width="423" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_166">
+        <rect x="135" y="243" width="63" height="70.714286" fill="#70a3d8"/>
+        <text transform="translate(140 265.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="14.268" y="21">12</tspan>
+        </text>
+      </g>
+      <g id="Graphic_170">
+        <rect x="324" y="99" width="144" height="70.714286" fill="#589b9d"/>
+        <text transform="translate(329 121.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.001" y="21">“Foundation”</tspan>
+        </text>
+      </g>
+      <g id="Graphic_175">
+        <rect x="27" y="378" width="612" height="108" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_174">
+        <rect x="45" y="396" width="189" height="70.714286" fill="#b79074"/>
+        <text transform="translate(50 418.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="8.815" y="21">User(“John”, 23)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_172">
+        <rect x="252" y="396" width="180" height="70.714286" fill="#b79074"/>
+        <text transform="translate(257 418.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="4.744" y="21">User(“Alice”, 37)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_176">
+        <rect x="216" y="243" width="63" height="70.714286" fill="#70a3d8"/>
+        <text transform="translate(221 265.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="20.384" y="21">0</tspan>
+        </text>
+      </g>
+      <g id="Graphic_178">
+        <rect x="297" y="243" width="63" height="70.714286" fill="#70a3d8"/>
+        <text transform="translate(302 265.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="20.384" y="21">8</tspan>
+        </text>
+      </g>
+      <g id="Graphic_179">
+        <rect x="378" y="243" width="63" height="70.714286" fill="#70a3d8"/>
+        <text transform="translate(383 265.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="8.152" y="21">234</tspan>
+        </text>
+      </g>
+      <g id="Graphic_180">
+        <rect x="459" y="243" width="63" height="70.714286" fill="#70a3d8"/>
+        <text transform="translate(464 265.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.989" y="21">-10</tspan>
+        </text>
+      </g>
+      <g id="Graphic_182">
+        <rect x="486" y="99" width="72" height="70.714286" fill="#589b9d"/>
+        <text transform="translate(491 121.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="18.779" y="21">“!”</tspan>
+        </text>
+      </g>
+      <g id="Graphic_183">
+        <rect x="450" y="396" width="171" height="70.714286" fill="#b79074"/>
+        <text transform="translate(455 418.04914)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.698" y="21">User(“Bob”, 18)</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

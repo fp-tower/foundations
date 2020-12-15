@@ -1,0 +1,68 @@
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+@font-face{
+    font-family: 'Bebas-Regular';
+    src: url('fonts/Bebas-Regular.ttf');
+}
+
+body { font-family: 'Droid Serif'; color: #333333; }
+h1 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #004750; }
+h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; }
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+.remark-code { font-size: 22px; }
+.medium-code .remark-code { font-size: 20px; }
+.small-code .remark-code { font-size: 18px; }
+.remark-code {
+    border-radius: 5px;
+    border       : 1px solid #dfdedc;
+    white-space  : pre-wrap;       /* CSS 3 */
+    white-space  : -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space  : -pre-wrap;      /* Opera 4-6 */
+    white-space  : -o-pre-wrap;    /* Opera 7 */
+    word-wrap    : break-word;     /* Internet Explorer 5.5+ */
+}
+.remark-code-span-highlighted, .remark-code-line-highlighted {
+    padding         : 0;
+    /*background-color: rgb(255, 255, 1);*/
+    background-color: #EABC00;
+}
+.medium { font-size: 28px; }
+.large { font-size: 36px; }
+.hl { color : #6f9a9c; font-weight: bold; }
+.dark-green { color: #004750; }
+
+.twenty-seven-left  { float: left ; width: 27%; }
+.twenty-seven-right { float: right; width: 27%; }
+.thirty-two-left    { float: left ; width: 32%; }
+.thirty-two-right   { float: right; width: 32%; }
+.thirty-seven-left  { float: left ; width: 37%; }
+.thirty-seven-right { float: right; width: 37%; }
+.forty-two-left     { float: left ; width: 42%; }
+.forty-two-right    { float: right; width: 42%; }
+.forty-seven-left   { float: left ; width: 47%; }
+.forty-seven-right  { float: right; width: 47%; }
+.fifty-two-left     { float: left ; width: 52%; }
+.fifty-two-right    { float: right; width: 52%; }
+.fifty-seven-left   { float: left ; width: 57%; }
+.fifty-seven-right  { float: right; width: 57%; }
+.sixty-two-left     { float: left ; width: 62%; }
+.sixty-two-right    { float: right; width: 62%; }
+.sixty-seven-left   { float: left ; width: 67%; }
+.sixty-seven-right  { float: right; width: 67%; }
+
+.cols { display: flex; }
+.fifty { flex: 50%; }
+.fortyfive { flex: 45%; }
+.fortyfive-middle{ flex: 45%; display: flex; align-items: center; justify-content: center;}
+.ten { flex: 10%; }
+.footer { position: absolute; bottom: 12px; left: 45px }
+.reference {font-size: 16px; position: fixed; left: 50%; bottom: 12px; transform: translate(-50%, -50%); margin: 0 auto;}
+.reference-top-left {font-size: 16px; position: fixed; left: 12px; top: 12px;}
+.reference-top-right {font-size: 16px; position: fixed; right: 12px; top: 12px;}
+.white { color: white }
+.title { font-family: 'Bebas-Regular'; font-weight: normal; font-size: 64px; }
+table { border-collapse: collapse; display: inline-block; }
+th, td { padding: 10px; border: 1px solid black; }
+tr:nth-child(even) {background-color: #f2f2f2;}

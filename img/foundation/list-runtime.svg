@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 623 233" width="623" height="233">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#333">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="list-runtime" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>list-runtime</title>
+    <g id="list-runtime_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_15">
+        <ellipse cx="319.5" cy="196.5" rx="67.500107858378" ry="34.5000551276154" fill="#599a9e"/>
+        <ellipse cx="319.5" cy="196.5" rx="67.500107858378" ry="34.5000551276154" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(270.5 183.192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="7.035" y="21">List[Any]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_54">
+        <ellipse cx="93.51889" cy="43.5" rx="75.5190078191083" ry="34.5000551276154" fill="#599a9e"/>
+        <ellipse cx="93.51889" cy="43.5" rx="75.5190078191083" ry="34.5000551276154" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(38.103777 30.192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="19.764112" y="21">List[Int]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_55">
+        <ellipse cx="544.5" cy="43.5" rx="76.500122239495" ry="34.5000551276154" fill="#589b9d"/>
+        <ellipse cx="544.5" cy="43.5" rx="76.500122239495" ry="34.5000551276154" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(488.3 30.192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.967001" y="21">List[User]</tspan>
+        </text>
+      </g>
+      <g id="Line_56">
+        <line x1="137.87666" y1="73.53233" x2="266.1401" y2="160.3728" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8.0,8.0" stroke-width="2"/>
+      </g>
+      <g id="Line_57">
+        <line x1="500.09216" y1="73.69733" x2="372.72914" y2="160.30418" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8.0,8.0" stroke-width="2"/>
+      </g>
+      <g id="Graphic_63">
+        <ellipse cx="318.5189" cy="43.5" rx="75.5190078191084" ry="34.5000551276154" fill="#599a9e"/>
+        <ellipse cx="318.5189" cy="43.5" rx="75.5190078191084" ry="34.5000551276154" stroke="#599a9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <text transform="translate(263.10378 30.192)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="3.0661115" y="21">List[String]</tspan>
+        </text>
+      </g>
+      <g id="Line_64">
+        <line x1="318.75294" y1="79.999855" x2="319.18323" y2="147.10045" marker-end="url(#FilledArrow_Marker)" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8.0,8.0" stroke-width="2"/>
+      </g>
+      <g id="Graphic_66">
+        <text transform="translate(335 100)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="55422333e-20" y="21">runtime</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

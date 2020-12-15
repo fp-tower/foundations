@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 621 568" width="621" height="568">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-15 11:16:45 +0000</metadata>
+  <g id="scala-seed-project-queue-1" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
+    <title>scala-seed-project-queue-1</title>
+    <g id="scala-seed-project-queue-1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_74">
+        <text transform="translate(14 32)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="174.256" y="21">scala--project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_108">
+        <rect x="207" y="261" width="252" height="306" fill="#589b9d"/>
+        <rect x="207" y="261" width="252" height="306" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(212 266)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="88.594" y="21">Queue</tspan>
+        </text>
+      </g>
+      <g id="Graphic_107">
+        <path d="M 233.1908 334.2857 L 437.54605 334.2857 C 440.85976 334.2857 443.54605 336.972 443.54605 340.2857 L 443.54605 372 C 443.54605 375.3137 440.85976 378 437.54605 378 L 233.1908 378 C 229.87708 378 227.1908 375.3137 227.1908 372 L 227.1908 340.2857 C 227.1908 336.972 229.87708 334.2857 233.1908 334.2857 Z" fill="#70a3d8"/>
+        <path d="M 233.1908 334.2857 L 437.54605 334.2857 C 440.85976 334.2857 443.54605 336.972 443.54605 340.2857 L 443.54605 372 C 443.54605 375.3137 440.85976 378 437.54605 378 L 233.1908 378 C 229.87708 378 227.1908 375.3137 227.1908 372 L 227.1908 340.2857 C 227.1908 336.972 229.87708 334.2857 233.1908 334.2857 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(232.1908 342.83486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.096635" y="21">scala-seed-project</tspan>
+        </text>
+      </g>
+      <g id="Graphic_109">
+        <rect x="72" y="433.2857" width="72" height="70.714286" fill="#70a3d8"/>
+        <rect x="72" y="433.2857" width="72" height="70.714286" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(77 455.33486)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.884" y="21">0</tspan>
+        </text>
+      </g>
+      <g id="Graphic_110">
+        <text transform="translate(79 401)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8.093501" y="21">total</tspan>
+        </text>
+      </g>
+      <g id="Graphic_112"/>
+    </g>
+  </g>
+</svg>

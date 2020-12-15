@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parallel data processing</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+  <link rel="stylesheet" type="text/css" href="../quote.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Parallel data processing]
+
+---
+# Concurrency is hard
+
+.thirty-two-left[
+<img src="../img/screenshot/corecursive_400x400.jpg" alt="CoRecursive podcast" style="width:300px;"/>
+]
+
+.sixty-two-right[
+<br>
+<div class="quote">
+  <blockquote>
+    <p>We had an engineer at Mozilla who decided to use a thread sanitiser tool to look for data races
+    [in our C ++ codebase] ... and he found that in every case where Firefox used threads, there were
+    data races. Not most cases - every single case.</p>
+    <cite>Jim Blandy</cite>
+  </blockquote>
+</div>
+]
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+.center[
+## CoRecursive podcast: Rust and bitter C++ developers
+]
+
+---
+# Concurrency issues? Use immutable data structure
+
+<img src="../img/screenshot/owl-drawing-meme.jpg" alt="Owl drawing meme" style="width:700px;"/>
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+# .white[Plan]
+
+<br>
+
+.medium[
+* Implement a parallel collection
+
+* Analyse a large dataset of global<br>temperatures by cities
+
+* Learn Scala features:
+   * For loops
+   * Recursions
+   * Enumerations
+   * Future
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>

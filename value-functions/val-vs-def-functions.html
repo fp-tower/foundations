@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Val vs Def functions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Val vs Def functions]
+
+---
+class: medium-code
+
+.forty-seven-left[
+# Val function (Lambda)
+
+<br>
+
+```scala
+val replicate: (Int, String) => String =
+  (n: Int, text: String) => ...
+```
+
+
+<br>
+
+```scala
+replicate(3, "Hello ")
+// res1: String = "Hello Hello Hello "
+```
+]
+
+.forty-seven-right[
+# Def function (Method)
+
+<br>
+
+```scala
+def replicate(n: Int, text: String): String =
+  ...
+```
+
+
+<br>
+
+```scala
+replicate(3, "Hello ")
+// res3: String = "Hello Hello Hello "
+```
+]
+
+---
+# Val function (Lambda or anonymous function)
+
+<br>
+
+```scala
+(n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala
+(n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+
+<br>
+
+```scala
+3
+
+"Hello World!"
+
+User("John Doe", 27)
+```
+
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala
+val replicate = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+
+```scala
+val counter = 3
+
+val message = "Hello World!"
+
+val john    = User("John Doe", 27)
+```
+
+--
+
+<br>
+
+```scala
+val repeat = replicate
+```
+
+---
+# Val functions are ordinary objects
+
+<br>
+
+```scala
+val numbers   = List(1,2,3)
+// numbers: List[Int] = List(1, 2, 3)
+
+val functions = List((x: Int) => x + 1, (x: Int) => x - 1, (x: Int) => x * 2)
+// functions: List[Int => Int] = List(<function1>, <function1>, <function1>)
+```
+
+--
+
+<br>
+
+```scala
+functions(0)(10)
+// res12: Int = 11
+
+functions(2)(10)
+// res13: Int = 20
+```
+
+---
+class: medium-code
+
+# Val function desugared
+
+<br>
+
+```scala
+val replicate: (Int, String) => String = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+---
+class: medium-code
+
+# Val function desugared
+
+<br>
+
+```scala
+val replicate: (Int, String) => String        = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala
+val replicate: Function2[Int, String, String] = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+--
+
+.forty-seven-left[
+```scala
+val bigFunction: (Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int, Int, Int,
+                  Int, Int, Int
+                 ) => String = _ => ???
+
+// error: function values may not have more
+//        than 22 parameters, but 23 given
+```
+]
+
+---
+class: medium-code
+
+# Val function desugared
+
+<br>
+
+```scala
+val replicate: (Int, String) => String        = (n: Int, text: String) => List.fill(n)(text).mkString
+```
+
+<br>
+
+```scala
+val replicate: Function2[Int, String, String] = new Function2[Int, String, String] {
+  def apply(n: Int, text: String): String =
+     List.fill(n)(text).mkString
+}
+```
+
+---
+class: medium-code
+
+# SAM (Single Abstract Method)
+
+<br>
+
+```scala
+trait Printer {
+  def print(message: String): Unit
+}
+```
+
+.forty-seven-left[
+## SAM syntax
+
+```scala
+val console: Printer =
+  (message: String) => println(message)
+```
+]
+
+.forty-seven-right[
+## Standard syntax
+
+```scala
+val console: Printer = new Printer {
+  def print(message: String): Unit =
+    println(message)
+}
+```
+]
+
+---
+class: medium-code
+
+# SAM (Single Abstract Method)
+
+.forty-seven-left[
+<br><br><br>
+
+```scala
+trait Printer {
+  def print(message: String): Unit
+}
+```
+]
+
+.forty-seven-right[
+## Standard syntax
+
+```scala
+val console: Printer = new Printer {
+  def print(message: String): Unit =
+    println(message)
+}
+```
+
+## SAM syntax
+
+
+```scala
+val console: Printer =
+  (message: String) => println(message)
+```
+
+
+]
+
+---
+class: medium-code
+
+# Val function desugared
+
+.forty-seven-left[
+## SAM syntax
+
+```scala
+val replicate: (Int, String) => String =
+  (n: Int, text: String) =>
+    List.fill(n)(text).mkString
+```
+]
+
+.forty-seven-right[
+## Standard syntax
+
+```scala
+val replicate: (Int, String) => String =
+  new Function2[Int, String, String] {
+    def apply(n: Int, text: String): String =
+       List.fill(n)(text).mkString
+  }
+```
+]
+
+--
+
+<br><br><br><br><br><br><br><br><br><br>
+
+.forty-seven-left[
+```scala
+replicate(3, "Hello ")
+// res24: String = "Hello Hello Hello "
+
+replicate.apply(3, "Hello ")
+// res25: String = "Hello Hello Hello "
+```
+]
+
+---
+class: medium-code
+
+# Apply syntax
+
+<br>
+
+```scala
+trait Printer {
+  def apply(message: String): Unit
+}
+
+val console: Printer = new Printer {
+  def apply(message: String) = println(message)
+}
+```
+
+<br>
+
+```scala
+console("Hello World!")
+// Hello World!
+```
+
+
+
+---
+# Def function (Method)
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+
+<br>
+
+```scala
+createDate(2020, 1, 5)
+// res28: LocalDate = 2020-01-05
+```
+
+---
+# Arguments
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala
+val createDateVal: (Int, Int, Int) => LocalDate =
+  (year, month, dayOfMonth) => ...
+```
+
+
+---
+class: center
+
+<br>
+
+## IDE
+
+<img src="../img/screenshot/ide-doc.png" alt="IDE documentation" style="width:800px;"/>
+
+## Scaladoc
+
+<img src="../img/screenshot/javadoc.png" alt="Scala documentation" style="width:800px;"/>
+
+---
+# Named arguments
+
+<br>
+
+```scala
+import java.time.LocalDate
+
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+
+<br>
+
+```scala
+createDate(2020, 1, 5)
+// res30: LocalDate = 2020-01-05
+```
+
+```scala
+createDate(dayOfMonth = 5, month = 1, year = 2020)
+// res31: LocalDate = 2020-01-05
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala
+List(createDate)
+// error: missing argument list for method createDate in class App16
+// Unapplied methods are only converted to functions when a function type is expected.
+// You can make this conversion explicit by writing `createDate _` or `createDate(_,_,_)` instead of `createDate`.
+// List(createDate)
+//      ^^^^^^^^^^
+```
+
+---
+# Def functions are not data
+
+<br>
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala
+List(createDate _)
+// res33: List[(Int, Int, Int) => LocalDate] = List(<function3>)
+```
+
+--
+
+<br>
+
+```scala
+val createDateVal = createDate _
+// createDateVal: (Int, Int, Int) => LocalDate = <function3>
+```
+
+---
+# Def functions are not data
+
+<br>
+
+
+```scala
+def createDate(year: Int, month: Int, dayOfMonth: Int): LocalDate =
+  ...
+```
+
+<br>
+
+```scala
+List(createDate): List[(Int, Int, Int) => LocalDate]
+```
+
+
+<br>
+
+```scala
+val createDateVal: (Int, Int, Int) => LocalDate = createDate
+```
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br><br>
+
+# .white[Summary]
+
+<br>
+
+.large[
+* Val functions are ordinary <br>objects
+
+* Use def functions for API
+
+* Easy to convert def to val
+]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: ''
+    });
+</script>
+</body>
+</html>
