@@ -235,3 +235,91 @@ def increment(array: Array[Int]): Unit =
 `increment` updates a mutable array. 
 `increment` returns `Unit` which is a sign this function performs a side effect.
 
+### Is `Item.apply` a function according to functional programming?
+
+```scala
+case class Item(id: Long, name: String, quantity: Int, price: Double) {
+  require(quantity > 0, "quantity must be positive")
+  require(price > 0, "price must be positive")
+}
+```
+
+1. true
+1. (c) false
+
+#### Explanation
+
+The constructor of `Item` will throw an Exception if quantity or price is inferior or equal to 0.
+For example,
+```scala
+Item(1, "bottle", -2, 3.29)
+// java.lang.IllegalArgumentException: requirement failed: 
+//   quantity must be positive
+```
+
+### Is `isOverdue` a function according to functional programming?
+
+```scala
+import java.time.LocalDate
+
+case class Invoice(id: Long, amount: Double, dueDate: LocalDate) {
+  def isOverdue: Boolean =
+    LocalDate.now().isAfter(dueDate)
+}
+```
+
+1. true
+1. (c) false
+
+#### Explanation
+
+`isOverdue` is not deterministic. It is result will change over time, for example, it may return 
+`false` right now because `LocalDate.now()` is before `dueDate` but if we wait long enough,
+`isOverdue` will return `true` for the same invoice.
+
+One way to make this function deterministic is to pass the current date as an input:
+```scala
+import java.time.LocalDate
+
+case class Invoice(id: Long, amount: Double, dueDate: LocalDate) {
+  def isOverdue(today: LocalDate): Boolean =
+    today.isAfter(dueDate)
+}
+```
+
+Of course, we still need to use `LocalDate.now()` at some point, which is non-deterministic, but the 
+higher we do it in the call stack, the better.
+
+## Is `getAge` a function according to functional programming?
+
+```scala
+class User(initialAge: Int) {
+  private var age: Int = initialAge
+
+  def getAge: Int = 
+    age
+
+  def setAge(newAge: Int): Unit =
+    age = newAge
+}
+```
+
+1. true
+1. (c) false
+
+#### Explanation
+
+`getAge` is not deterministic. `setAge` changes the result of `getAge`, as you can see below:
+```scala
+val john = new User(24)
+
+john.getAge
+// res: Int = 24
+
+john.setAge(32)
+
+john.getAge
+// res: Int = 32
+```
+
+This is the case for all API based on publicly available mutating variable.
