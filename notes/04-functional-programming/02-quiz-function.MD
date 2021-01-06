@@ -227,6 +227,53 @@ john.getAge
 
 This is the case for all API based on publicly available mutating variable.
 
+### Is the function `slowDown` an FP function?
+
+```scala
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+
+case class Train(position: Int, direction: Direction, speed: Int) {
+  def slowDown: Train =
+    copy(speed = (speed - 1) max 0)
+}
+```
+
+1. (c) true
+1. false
+
+### Explanation
+
+Yes, it cannot throw an Exception. It is deterministic. Finally, it doesn't perform any actions since
+`slowDown` returns a new immutable object. 
+
+### Is the function `reverse` an FP function?
+
+```scala
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+
+case class Train(position: Int, direction: Direction, speed: Int) {
+  def reverse: Train =
+    if(speed != 0) 
+       throw new Exception("The train must be stopped before turning")
+    else 
+      direction match {
+        case Forward  => copy(direction = Backward)
+        case Backward => copy(direction = Forward)
+      }
+}
+```
+
+1. true
+1. (c) false
+
+### Explanation
+
+`reverse` is partial. It throws an Exception if the speed is not 0.
+
 ### Is the function `isWeekend` an FP function?
 
 ```scala
