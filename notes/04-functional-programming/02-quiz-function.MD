@@ -1,36 +1,6 @@
 ## Quiz: FP functions
 
-### Is `isWeekend` a function according to functional programming?
-
-```scala
-sealed trait Day
-case object Monday  extends Day
-// ...
-case object Saturday extends Day
-case object Sunday   extends Day
-
-def isWeekend(day: Day): Boolean = 
-  day match {
-    case Saturday | Sunday => true
-    case _                 => false
-  }
-```
-
-1. (c) true
-1. false
-
-#### Explanation
-
-`isWeekend` could be replaced by the following Map:
-
-```scala
-Map(
-  Monday -> false, Tuesday -> false, Wednesday -> false, Thursday -> false, Friday -> false,
-  Saturday -> true, Sunday -> true
-)
-``` 
-
-### Is `findEditor` a function according to functional programming?
+### Is the function `findEditor` an FP function?
 
 ```scala
 sealed trait Role
@@ -60,54 +30,7 @@ is an `Editor` but the `accountId` does not match. For example, the following co
 findEditor(0, List(Editor(accountId = 1, favoriteFont = "Comic Sans")))
 ``` 
 
-### Is `createBlogEntry` a function according to functional programming?
-
-```scala
-import java.time.LocalDate
-import java.util.UUID
-
-case class BlogEntry(id: UUID, title: String, publishedAt: LocalDate)
-
-def createBlogEntry(title: String): BlogEntry =
-  BlogEntry(
-    id          = UUID.randomUUID(),
-    title       = title,
-    publishedAt = LocalDate.now()
-  )
-```
-
-1. true
-1. (c) false
-
-#### Explanation
-
-`createBlogEntry` is not deterministic. If we call the function several times with the same title 
-we will get different results because of `UUID.randomUUID()` and `LocalDate.now()`.
-
-### Is `max` a function according to functional programming?
-
-```scala
-def max[A](list: List[Int]): Option[Int] = {
-  var state = Option.empty[Int]
-  for (element <- list)
-    state match {
-      case None             => state = Some(element)
-      case Some(currentMax) => if (currentMax < element) state = Some(element)
-    }
-  state
-}
-```
-
-1. (c) true
-1. false
-
-#### Explanation
-
-Even though `max` uses a mutating variable, it is an FP function because the mutation
-is not visible outside of the body of the function. In other words, it is an 
-implementation details.
-
-### Are `execFizzBuzz` and `fizzBuzz` functions according to functional programming?
+### Are the functions `execFizzBuzz` and `fizzBuzz` two FP functions?
 
 ```scala
 def execFizzBuzz: Unit =
@@ -147,7 +70,7 @@ Map(
 
 However, `execFizzBuzz` prints the result of `fizzBuzz` to the command line which is a side effect. 
 
-###  Are `getOrder` and `insertOrder` functions according to functional programming?
+###  Are the functions `getOrder` and `insertOrder` two FP functions?
 
 ```scala
 case class Order(clientId: Long, orderId: Long, product: String, price: Double)
@@ -183,27 +106,7 @@ getOrder(0, 0)
 
 `insertOrder` returns `Unit` which is a sign this function performs a side effect.
 
-### Is `addUser` a function according to functional programming?
-
-```scala
-import scala.concurrent.Future
-
-case class User(id: Long, name: String)
-
-class UserRepository(db: Db) { // assume some database library
-  def addUser(user: User): Future[Unit] = 
-    db.run("INSERT INTO users (id, name) VALUES (${user.id}, ${user.name})") 
-}
-```
-
-1. true
-1. (c) false
-
-#### Explanation
-
-`addUser` does a side effect when it contacts the database to insert a user. 
-
-### Is `circleArea` a function according to functional programming?
+### Is the function `circleArea` an FP function?
 
 ```scala
 val pi = 3.14
@@ -219,7 +122,7 @@ def circleArea(radius: Double): Double =
 `circleArea` references an external value, but it is a constant (immutable val). 
 Therefore, we could inline `pi` within the body of `circleArea` without changing the results.
 
-### Is `increment` a function according to functional programming?
+### Is the function `increment` an FP function?
 
 ```scala
 def increment(array: Array[Int]): Unit =
@@ -235,7 +138,7 @@ def increment(array: Array[Int]): Unit =
 `increment` updates a mutable array. 
 `increment` returns `Unit` which is a sign this function performs a side effect.
 
-### Is `Item.apply` a function according to functional programming?
+### Is the function `Item.apply` an FP function?
 
 ```scala
 case class Item(id: Long, name: String, quantity: Int, price: Double) {
@@ -257,7 +160,7 @@ Item(1, "bottle", -2, 3.29)
 //   quantity must be positive
 ```
 
-### Is `isOverdue` a function according to functional programming?
+### Is the function `isOverdue` an FP function?
 
 ```scala
 import java.time.LocalDate
@@ -290,7 +193,7 @@ case class Invoice(id: Long, amount: Double, dueDate: LocalDate) {
 Of course, we still need to use `LocalDate.now()` at some point, which is non-deterministic, but the 
 higher we do it in the call stack, the better.
 
-## Is `getAge` a function according to functional programming?
+## Is the function `getAge` an FP function?
 
 ```scala
 class User(initialAge: Int) {
@@ -323,3 +226,100 @@ john.getAge
 ```
 
 This is the case for all API based on publicly available mutating variable.
+
+### Is the function `isWeekend` an FP function?
+
+```scala
+sealed trait Day
+case object Monday  extends Day
+// ...
+case object Saturday extends Day
+case object Sunday   extends Day
+
+def isWeekend(day: Day): Boolean = 
+  day match {
+    case Saturday | Sunday => true
+    case _                 => false
+  }
+```
+
+1. (c) true
+1. false
+
+#### Explanation
+
+`isWeekend` could be replaced by the following Map:
+
+```scala
+Map(
+  Monday -> false, Tuesday -> false, Wednesday -> false, Thursday -> false, Friday -> false,
+  Saturday -> true, Sunday -> true
+)
+```
+
+### Is the function `createBlogEntry` an FP function?
+
+```scala
+import java.time.LocalDate
+import java.util.UUID
+
+case class BlogEntry(id: UUID, title: String, publishedAt: LocalDate)
+
+def createBlogEntry(title: String): BlogEntry =
+  BlogEntry(
+    id          = UUID.randomUUID(),
+    title       = title,
+    publishedAt = LocalDate.now()
+  )
+```
+
+1. true
+1. (c) false
+
+#### Explanation
+
+`createBlogEntry` is not deterministic. If we call the function several times with the same title 
+we will get different results because of `UUID.randomUUID()` and `LocalDate.now()`.
+
+### Is the function `max` an FP function?
+
+```scala
+def max(list: List[Int]): Option[Int] = {
+  var state = Option.empty[Int]
+  for (element <- list)
+    state match {
+      case None             => state = Some(element)
+      case Some(currentMax) => if (currentMax < element) state = Some(element)
+    }
+  state
+}
+```
+
+1. (c) true
+1. false
+
+#### Explanation
+
+Even though `max` uses a mutating variable, it is an FP function because the mutation
+is not visible outside of the body of the function. In other words, it is an 
+implementation details.
+
+### Is the function `addUser` an FP function?
+
+```scala
+import scala.concurrent.Future
+
+case class User(id: Long, name: String)
+
+class UserRepository(db: Db) { // assume some database library
+  def addUser(user: User): Future[Unit] = 
+    db.run("INSERT INTO users (id, name) VALUES (${user.id}, ${user.name})") 
+}
+```
+
+1. true
+1. (c) false
+
+#### Explanation
+
+`addUser` does a side effect when it contacts the database to insert a user. 

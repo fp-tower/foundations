@@ -80,6 +80,9 @@ are its limitations? And why isn't it more popular? You will get the answers to 
 * Familiarise yourself with the limitations of FP and how to work around some of them such as
 shared mutable state and exceptions
 
+### Slides
+1. [FP functions](https://blog.fp-tower.com/foundations/functional-programming/fp-functions.html#1)
+
 ## 5. Actions
 
 In the previous section, we will have learned that functional programming is quite restrictive. 
