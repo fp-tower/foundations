@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FP Motivation</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Motivation for learning functional programming]
+
+---
+<br><br><br><br><br><br>
+
+.seventy-two-right[
+# What's the most difficult?
+
+## 1. Create a program from scratch
+
+## 2. Update an existing program
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User, order: Order) = {
+  val res1 = funA(user)
+  val res2 = funB(order)
+  funC(order)
+  res2
+}
+```
+]
+
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User, order: Order) = {
+  `val res1 = funA(user)`
+  val res2 = funB(order)
+  `funC(order)`
+  res2
+}
+```
+
+### Is helloV2 equivalent to helloV1?
+
+
+```scala
+def helloV2(user: User, order: Order) =
+  funB(order)
+```
+]
+
+--
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions <br> No, otherwise
+]]
+
+.forty-seven-right[
+```scala
+def funA(user: User): Unit =
+  db.upsertUser(user)
+
+def funC(order: Order): Unit =
+  sendDispatchedEmail(order)
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User, order: Order) = {
+  val res1 = funA(user)
+  val res2 = funB(order)
+  funC(res1, res2)
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User, order: Order) = {
+  `val res1 = funA(user)`
+  val res2 = funB(order)
+  funC(res1, res2)
+}
+```
+
+### Is helloV2 equivalent to helloV1?
+
+```scala
+def helloV2(user: User, order: Order) = {
+  val res2 = funB(order)
+  `val res1 = funA(user)`
+  funC(res1, res2)
+}
+```
+]
+
+--
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions <br> No, otherwise
+]]
+
+.forty-seven-right[
+```scala
+def funA(user : User ): Unit = print("user ")
+def funB(order: Order): Unit = print("order ")
+
+helloV1(user, order) // print `"user order"`
+helloV2(user, order) // print `"order user"`
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: de-duplicate
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  val res2 = funA(user)
+  h(`res1`, `res2`)
+}
+```
+
+### Is helloV2 equivalent to helloV1?
+
+```scala
+def helloV2(user: User) = {
+  val res1 = funA(user)
+  h(`res1`, `res1`)
+}
+```
+]
+
+--
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions <br> No, otherwise
+]]
+
+.forty-seven-right[
+```scala
+def funA(user: User): Unit =
+  charge(user.debitCard, 100)
+
+helloV1(user) // charge $200
+helloV2(user) // charge $100
+```
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
