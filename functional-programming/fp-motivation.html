@@ -382,117 +382,14 @@ helloV2(user) // charge `$100`
 ]
 
 ---
+class: medium-code
+
 # 1. Refactoring: extract - inline
 
 .forty-seven-left[
 ```scala
 def helloV1(user: User) = {
-  val res1 = funA(user)
-  val res2 = funB(user)
-  funC(res1, res2)
-}
-```
-]
-
-
----
-# 1. Refactoring: extract - inline
-
-.forty-seven-left[
-```scala
-def helloV1(user: User) = {
-  val `res1` = `funA`(user)
-  val res2 = funB(user)
-  funC(res1, res2)
-}
-```
-]
-
----
-# 1. Refactoring: extract - inline
-
-.forty-seven-left[
-```scala
-def helloV1(user: User) = {
-  val res1 = funA(user)
-  val `res2` = `funB`(user)
-  funC(res1, res2)
-}
-```
-]
-
----
-# 1. Refactoring: extract - inline
-
-.forty-seven-left[
-```scala
-def helloV1(user: User) = {
-  val res1 = funA(user)
-  val res2 = funB(user)
-  funC(`res1`, `res2`)
-}
-```
-]
-
----
-# 1. Refactoring: extract - inline
-
-.forty-seven-left[
-```scala
-def helloV1(user: User) = {
-  val res1 = funA(user)
-  val res2 = funB(user)
-  funC(`res1`, `res2`)
-}
-```
-
-### Is helloV1 equivalent to helloV2?
-
-```scala
-def helloV2(user: User) = {
-  funC(`funA(user)`, `funB(user)`)
-}
-```
-]
-
----
-# 1. Refactoring: extract - inline
-
-.forty-seven-left[
-```scala
-def helloV1(user: User) = {
-  val res1 = `user.balance > 0`
-  val res2 = funB(user)
-  funC(res1, res2)
-}
-```
-
-### Is helloV1 equivalent to helloV2?
-
-```scala
-def helloV2(user: User) = {
-  funC(`user.balance > 0`, funB(user))
-}
-```
-]
-
----
-# 1. Refactoring: extract - inline
-
-.forty-seven-left[
-```scala
-def helloV1(user: User) = {
-  val res1 = user.balance > 0
-  val res2 = if(user.)
-  funC(res1, res2)
-}
-```
-
-### Is helloV1 equivalent to helloV2?
-
-```scala
-def helloV2(user: User) = {
-  funC(user.balance > 0, funB(user))
+  funA(funB(user), funC(user))
 }
 ```
 ]
@@ -505,11 +402,60 @@ class: medium-code
 
 .forty-seven-left[
 ```scala
+def helloV1(user: User) = {
+  funA(`funB(user)`, `funC(user)`)
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  funA(`funB(user)`, `funC(user)`)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res1 = `funB(user)`
+  val res2 = `funC(user)`
+  funA(res1, res2)
+}
+```
+]
+
+--
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions <br> No, otherwise
+]]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
 import scala.concurrent.Future
 
 def createUser(name: String): Future[User] =
-  Future { ??? }
+  httpClient.post("/user", name)
 
+for {
+  user1 <- createUser("Bob")
+  user2 <- createUser("Lea")
+} yield ...
+```
+<br>
+```scala
 val futureUser1 = createUser("Bob")
 val futureUser2 = createUser("Lea")
 
@@ -518,17 +464,12 @@ for {
   user2 <- futureUser2
 } yield ...
 ```
-<br>
-```scala
-for {
-  user1 <- createUser("Bob")
-  user2 <- createUser("Lea")
-} yield ...
-```
 ]
 
-.thirty-seven-right[
-<img src="../img/foundation/create-user.svg" style="width:300px;"/>
+--
+
+.forty-seven-right[
+<img src="../img/foundation/create-user.svg" style="width:400px;"/>
 ]
 
 </textarea>
