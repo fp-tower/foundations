@@ -12,7 +12,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[Motivation for learning functional programming]
+.title[Motivation for using functional programming]
 
 ---
 <br><br><br><br><br><br>
@@ -28,19 +28,108 @@ class: center, middle, white
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# 1. Refactoring: reorder variables
 
 .forty-seven-left[
 ```scala
-def helloV1(user: User, order: Order) = {
+def helloV1(user: User) = {
   val res1 = funA(user)
-  val res2 = funB(order)
-  funC(order)
-  res2
+  val res2 = funB(user)
+  funC(res1, res2)
 }
 ```
 ]
 
+---
+class: medium-code
+
+# 1. Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `val res1 = funA(user)`
+  val res2 = funB(user)
+  // ...
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res2 = funB(user)
+  `val res1 = funA(user)`
+  // ...
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `val res1 = 10`
+  val res2 = ""
+  // ...
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res2 = ""
+  `val res1 = 10`
+  // ...
+}
+```
+]
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions
+]]
+
+---
+class: medium-code
+
+# 1. Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `val res1 = db.delete(user.id)`
+  val res2 = db.insert(user)
+  // ...
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res2 = db.insert(user)
+  `val res1 = db.delete(user.id)`
+  // ...
+}
+```
+]
+
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions <br> No, otherwise
+]]
+
+.forty-seven-right[
+```scala
+helloV1(user) // user saved in db
+helloV2(user) // user deleted from db
+```
+]
 
 ---
 class: medium-code
@@ -49,92 +138,162 @@ class: medium-code
 
 .forty-seven-left[
 ```scala
-def helloV1(user: User, order: Order) = {
-  `val res1 = funA(user)`
-  val res2 = funB(order)
-  `funC(order)`
-  res2
+def helloV1(user: User) = {
+  funA(user)
+  val res1 = funB(user)
+  val res2 = funC(user)
+  res1
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `funA(user)`
+  val res1 = funB(user)
+  val res2 = funC(user)
+  res1
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  funA(user)
+  `val res1 = funB(user)`
+  `val res2 = funC(user)`
+  res1
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  funA(user)
+  val res1 = funB(user)
+  val res2 = funC(user)
+  `res1`
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  funA(user)
+  val res1 = funB(user)
+  val `res2` = funC(user)
+  res1
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `funA(user)`
+  val res1 = funB(user)
+  `val res2 = funC(user)`
+  res1
 }
 ```
 
-### Is helloV2 equivalent to helloV1?
+### Is helloV1 equivalent to helloV2?
 
 
 ```scala
-def helloV2(user: User, order: Order) =
-  funB(order)
+def helloV2(user: User) =
+  funB(user)
 ```
 ]
 
 --
 
 .forty-seven-right[.center[
-### Yes, if they are all FP functions <br> No, otherwise
+### Yes, if funA and funC are FP functions
+]]
+
+---
+class: medium-code
+
+# 1. Refactoring: remove unused code
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `funA(user)`
+  val res1 = funB(user)
+  `val res2 = funC(user)`
+  res1
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+
+```scala
+def helloV2(user: User) =
+  funB(user)
+```
+]
+
+.forty-seven-right[.center[
+### Yes, if funA and funC are FP functions <br> No, otherwise
 ]]
 
 .forty-seven-right[
 ```scala
 def funA(user: User): Unit =
-  db.upsertUser(user)
+  if(user.email.isDefined)
+    throw InvalidUser("No email")
 
-def funC(order: Order): Unit =
-  sendDispatchedEmail(order)
+def funC(user: User): Unit =
+  sendEmail(user)
 ```
 ]
+
 
 ---
 class: medium-code
 
-# 1. Refactoring: reorder variables
+# 1. Refactoring: de-duplicate
 
 .forty-seven-left[
 ```scala
-def helloV1(user: User, order: Order) = {
-  val res1 = funA(user)
-  val res2 = funB(order)
-  funC(res1, res2)
+def helloV1(user: User) = {
+  val res1 = `funA(user)`
+  // ..
+  val res2 = `funA(user)`
+  funB(res1, res2)
 }
-```
-]
-
----
-class: medium-code
-
-# 1. Refactoring: reorder variables
-
-.forty-seven-left[
-```scala
-def helloV1(user: User, order: Order) = {
-  `val res1 = funA(user)`
-  val res2 = funB(order)
-  funC(res1, res2)
-}
-```
-
-### Is helloV2 equivalent to helloV1?
-
-```scala
-def helloV2(user: User, order: Order) = {
-  val res2 = funB(order)
-  `val res1 = funA(user)`
-  funC(res1, res2)
-}
-```
-]
-
---
-
-.forty-seven-right[.center[
-### Yes, if they are all FP functions <br> No, otherwise
-]]
-
-.forty-seven-right[
-```scala
-def funA(user : User ): Unit = print("user ")
-def funB(order: Order): Unit = print("order ")
-
-helloV1(user, order) // print `"user order"`
-helloV2(user, order) // print `"order user"`
 ```
 ]
 
@@ -147,17 +306,19 @@ class: medium-code
 ```scala
 def helloV1(user: User) = {
   val res1 = funA(user)
+  // ..
   val res2 = funA(user)
-  h(`res1`, `res2`)
+  funB(res1, `res2`)
 }
 ```
 
-### Is helloV2 equivalent to helloV1?
+### Is helloV1 equivalent to helloV2?
 
 ```scala
 def helloV2(user: User) = {
   val res1 = funA(user)
-  h(`res1`, `res1`)
+  // ..
+  funB(res1, `res1`)
 }
 ```
 ]
@@ -170,12 +331,204 @@ def helloV2(user: User) = {
 
 .forty-seven-right[
 ```scala
+def funA(user: User): BlogPost =
+  BlogPost(
+    id        = `UUID.randomUUID()`,
+    author    = user.name,
+    content   = "",
+    createdAt = `Instant.now()`,
+  )
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: de-duplicate
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  // ..
+  val res2 = funA(user)
+  funB(res1, `res2`)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res1 = funA(user)
+  // ..
+  funB(res1, `res1`)
+}
+```
+]
+
+.forty-seven-right[.center[
+### Yes, if they are all FP functions <br> No, otherwise
+]]
+
+.forty-seven-right[
+```scala
 def funA(user: User): Unit =
   charge(user.debitCard, 100)
 
-helloV1(user) // charge $200
-helloV2(user) // charge $100
+helloV1(user) // charge `$200`
+helloV2(user) // charge `$100`
 ```
+]
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  val res2 = funB(user)
+  funC(res1, res2)
+}
+```
+]
+
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val `res1` = `funA`(user)
+  val res2 = funB(user)
+  funC(res1, res2)
+}
+```
+]
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  val `res2` = `funB`(user)
+  funC(res1, res2)
+}
+```
+]
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  val res2 = funB(user)
+  funC(`res1`, `res2`)
+}
+```
+]
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  val res2 = funB(user)
+  funC(`res1`, `res2`)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  funC(`funA(user)`, `funB(user)`)
+}
+```
+]
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = `user.balance > 0`
+  val res2 = funB(user)
+  funC(res1, res2)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  funC(`user.balance > 0`, funB(user))
+}
+```
+]
+
+---
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = user.balance > 0
+  val res2 = if(user.)
+  funC(res1, res2)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  funC(user.balance > 0, funB(user))
+}
+```
+]
+
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+import scala.concurrent.Future
+
+def createUser(name: String): Future[User] =
+  Future { ??? }
+
+val futureUser1 = createUser("Bob")
+val futureUser2 = createUser("Lea")
+
+for {
+  user1 <- futureUser1
+  user2 <- futureUser2
+} yield ...
+```
+<br>
+```scala
+for {
+  user1 <- createUser("Bob")
+  user2 <- createUser("Lea")
+} yield ...
+```
+]
+
+.thirty-seven-right[
+<img src="../img/foundation/create-user.svg" style="width:300px;"/>
 ]
 
 </textarea>
