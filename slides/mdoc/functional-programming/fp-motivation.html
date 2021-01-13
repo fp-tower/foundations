@@ -442,35 +442,141 @@ class: medium-code
 
 # 1. Refactoring: extract - inline
 
-.forty-seven-left[
+.fifty-two-left[
 ```scala
 import scala.concurrent.Future
 
-def createUser(name: String): Future[User] =
-  httpClient.post("/user", name)
+def createUser(email: String): Future[User] =
+  httpClient.post("/user", email)
 
-for {
-  user1 <- createUser("Bob")
-  user2 <- createUser("Lea")
-} yield ...
-```
-<br>
-```scala
-val futureUser1 = createUser("Bob")
-val futureUser2 = createUser("Lea")
-
-for {
-  user1 <- futureUser1
-  user2 <- futureUser2
-} yield ...
+def sendActivationLink(email: String):Future[Unit] =
+  emailClient.send(email, generateLink(email))
 ```
 ]
 
 --
 
-.forty-seven-right[
-<img src="../img/foundation/create-user.svg" style="width:400px;"/>
+.fifty-two-left[
+```scala
+def newUserWorkflow(email: String): Future[Unit] =
+  for {
+    user <- createUser(email)
+    _    <- sendActivationLink(email)
+  } println(s"User created: $user")
+```
 ]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.fifty-two-left[
+<br><br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] =
+  for {
+    user <- createUser(email)
+    _    <- sendActivationLink(email)
+  } println(s"User created: $user")
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-sequential.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val `futureUser`  = createUser(email)
+  val `futureEmail` = sendActivationLink(email)
+
+  for {
+    user <- `futureUser`
+    _    <- `futureEmail`
+  } println(s"User created: $user")
+}
+```
+]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-error-1.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# 1. Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-error-2.svg" style="width:500px;"/>
+]]
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
