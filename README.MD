@@ -82,6 +82,8 @@ shared mutable state and exceptions
 
 ### Slides
 1. [FP functions](https://blog.fp-tower.com/foundations/functional-programming/fp-functions.html#1)
+1. [FP motivation: Refactoring][https://blog.fp-tower.com/foundations/functional-programming/fp-motivation.html#1]
+1. [Functional subset: null][https://blog.fp-tower.com/foundations/functional-programming/functional-subset.html#1]
 
 ## 5. Actions
 
