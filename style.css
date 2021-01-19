@@ -33,6 +33,8 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .hl { color : #6f9a9c; font-weight: bold; }
 .dark-green { color: #004750; }
 
+.three-left         { float: left ; width: 3%; }
+.twelve-left        { float: left ; width: 12%; }
 .twenty-seven-left  { float: left ; width: 27%; }
 .twenty-seven-right { float: right; width: 27%; }
 .thirty-two-left    { float: left ; width: 32%; }
@@ -55,6 +57,10 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .seventy-two-right  { float: right; width: 72%; }
 .seventy-seven-left { float: left ; width: 77%; }
 .seventy-seven-right{ float: right; width: 77%; }
+.eighty-two-left    { float: left ; width: 82%; }
+.eighty-two-right   { float: right; width: 82%; }
+.eighty-seven-left  { float: left ; width: 87%; }
+.eighty-seven-right { float: right; width: 87%; }
 
 .cols { display: flex; }
 .fifty { flex: 50%; }
