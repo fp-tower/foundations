@@ -18,42 +18,20 @@ class: center, middle, white
 # Scala Functional Subset
 <br>
 
-.forty-seven-left[
-## 1. return a value for all inputs
+.fifty-seven-left[
+.center[
+# .light-green[FP functions everywhere]
 
-## 2. be a static mapping
+# .light-green[AND]
 
-## 3. cannot perform actions
+# .light-green[Two additional requirements]
 ]
-
-.forty-seven-left[
-## 4. ???
-
-## 5. ???
-]
-
----
-# Scala Functional Subset
-<br>
-
-.forty-seven-left[
-## 1. return a value for all inputs
-
-## 2. be a static mapping
-
-## 3. cannot perform actions
-]
-
-.forty-seven-left[
-## 4. ignore null
-
-## 5. ???
 ]
 
 ---
 class: medium-code
 
-# 1. Null is valid reference
+# Null is valid reference
 
 .seventy-two-left[
 ```scala
@@ -68,7 +46,7 @@ case object Standard extends VAT(1.20)
 ---
 class: medium-code
 
-# 1. Null is valid reference
+# Null is valid reference
 
 .seventy-two-left[
 ```scala
@@ -87,7 +65,7 @@ val unknown: Item = Item(null              , 4, 13.45, null   )
 ---
 class: medium-code
 
-# 1. Null is valid reference
+# Null is valid reference
 
 .seventy-two-left[
 ```scala
@@ -106,7 +84,7 @@ val unknown: Item = Item(`null`              , 4, 13.45, `null`   )
 ---
 class: medium-code
 
-# 1. Null is valid reference
+# Null is valid reference
 
 .seventy-two-left[
 ```scala
@@ -126,7 +104,7 @@ val other  : Item = `null`
 ---
 class: medium-code
 
-# 1. Null is valid reference but not a primitive
+# Null is valid reference but not a primitive
 
 .seventy-seven-left[
 ```scala
@@ -153,7 +131,7 @@ val toy    : Item = Item("Puzzle 40 Pcs", `null`, `null`, Standard)
 ---
 class: medium-code
 
-# 1. Null causes exceptions
+# Null causes exceptions
 
 .seventy-seven-left[
 ```scala
@@ -171,7 +149,6 @@ def totalPrice(item: Item): Double =
 ```
 ]
 
---
 
 .thirty-seven-left[
 ```scala
@@ -183,7 +160,7 @@ totalPrice(book)
 ---
 class: medium-code
 
-# 1. Null causes exceptions
+# Null causes exceptions
 
 .seventy-seven-left[
 ```scala
@@ -220,7 +197,7 @@ totalPrice(unknown)
 ---
 class: medium-code
 
-# 1. Null causes exceptions
+# Null causes exceptions
 
 .seventy-seven-left[
 ```scala
@@ -260,7 +237,7 @@ totalPrice(`null`)
 ---
 class: medium-code
 
-# 1. Null causes exceptions
+# Null handling
 
 .seventy-seven-left[
 ```scala
@@ -302,7 +279,7 @@ totalPrice(null)
 ---
 class: medium-code
 
-# 1. Null causes exceptions
+# Null handling
 
 .seventy-seven-left[
 ```scala
@@ -346,7 +323,7 @@ totalPrice(null)
 
 <br>
 
-## 1. Don't write function that return null
+## 1. Don't write functions that return null
 
 ## 2. Don't assign null to variables
 
@@ -396,12 +373,36 @@ val defaultVAT  = Standard
 case class User(
   name : String,
   age  : Int,
-  email: Option[String],
+  email: `Option`[String],
 )
 ```
 ]
 
 --
+
+.forty-two-right[
+```sql
+CREATE TABLE users (
+  name    TEXT `NOT NULL`,
+  age     INT  `NOT NULL`,
+  email   TEXT
+)
+```
+]
+
+
+---
+# Option is a better null
+
+.fifty-two-left[
+```scala
+case class User(
+  name : String,
+  age  : Int,
+  email: Option[String],
+)
+```
+]
 
 .fifty-two-left[
 ```scala
@@ -413,7 +414,18 @@ def vatRate(optVat: Option[VAT]): Double =
 ```
 ]
 
---
+---
+# Option is a better null
+
+.fifty-two-left[
+```scala
+case class User(
+  name : String,
+  age  : Int,
+  email: Option[String],
+)
+```
+]
 
 .forty-two-right[
 ```scala
@@ -423,6 +435,93 @@ List(1,2,3,4).find(_ > 2)
 List(1,2,3,4).find(_ > 10)
 // res9: Option[Int] = None
 ```
+]
+
+.fifty-two-left[
+```scala
+def vatRate(optVat: Option[VAT]): Double =
+  optVat match {
+    case None      => 1.0
+    case Some(vat) => vat.rate
+  }
+```
+]
+
+
+
+---
+# Exception 1: Interface with Java code
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+row.getCell(0)
+// res: Cell = Little Red Train
+
+row.getCell(1)
+// res: Cell = 2
+
+row.getCell(3)
+// res: Cell = null
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
+]
+
+---
+# Exception 1: Interface with Java code
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+row.getCell(`0`)
+// res: Cell = `Little Red Train`
+
+row.getCell(1)
+// res: Cell = 2
+
+row.getCell(3)
+// res: Cell = null
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
+]
+
+---
+# Exception 1: Interface with Java code
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+row.getCell(0)
+// res: Cell = Little Red Train
+
+row.getCell(`1`)
+// res: Cell = `2`
+
+row.getCell(3)
+// res: Cell = null
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
 ]
 
 ---
@@ -440,18 +539,18 @@ row.getCell(0)
 row.getCell(1)
 // res: Cell = 2
 
-row.getCell(10)
-// res: Cell = null
+row.getCell(`3`)
+// res: Cell = `null`
 ```
 ]
 
 .thirty-seven-right[
 <br>
-<img src="../img/screenshot/excel-poi-2.png" style="width:400px;"/>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
 ]
 
 ---
-# Exception 1: Interface with Java code
+# Option constructor
 
 .fifty-seven-left[
 ```scala
@@ -460,19 +559,20 @@ import org.apache.poi.ss.usermodel.{Cell, Row}
 val row: Row = ...
 
 Option(row.getCell(0))
-// res: Option[Cell] = Some(Little Red Train)
+// res: Option[Cell] = `Some(Little Red Train)`
 
 Option(row.getCell(1))
 // res: Option[Cell] = Some(2)
 
-Option(row.getCell(10))
-// res: Option[Cell] = None
+Option(row.getCell(3))
+// res: Option[Cell] = `None`
 ```
 
 ```scala
 object Option {
   def apply[A](value: A): Option[A] =
-    if (value == null) None else Some(value)
+    if (`value == null`) None
+    else Some(value)
 }
 ```
 ]
@@ -483,44 +583,123 @@ object Option {
 ]
 
 ---
-# Exception 1: Interface with Java code
+class: medium-code
 
-.fifty-seven-left[
+# Scala wrapper
+
+.sixty-two-left[
 ```scala
 import org.apache.poi.ss.usermodel.{Cell, Row}
 
-case class SafeCell(cell: Cell) {
+case class SafeRow(row: Row) {
   def getDouble(column: Int): Option[Double] =
-    if (cell == null || cell.getCellType() != Cell.NUMERIC)
-      None
-    else
-      Some(cell.getNumericCellValue())
+    if (row == null) None
+    else {
+      val cell = row.getCell(column)
+      if (cell == null || cell.getCellType() != Cell.NUMERIC)
+        None
+      else
+        Some(cell.getNumericCellValue())
+    }
 }
-
-val row: Row = ...
-
-SafeCell(row.getCell(0))
-// res: Option[Cell] = Some(Little Red Train)
-
-Option(row.getCell(1))
-// res: Option[Cell] = Some(2)
-
-Option(row.getCell(10))
-// res: Option[Cell] = None
 ```
+]
 
+.thirty-four-right[
 ```scala
-object Option {
-  def apply[A](value: A): Option[A] =
-    if (value == null) None else Some(value)
+val row: SafeRow = ...
+
+row.getDouble(0)
+// res: Option[Double] = None
+
+row.getDouble(1)
+// res: Option[Double] = Some(2)
+
+Option(row.getCell(3))
+// res: Option[Double] = None
+```
+]
+
+---
+class: medium-code
+
+# Scala wrapper
+
+.sixty-two-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+case class SafeRow(row: Row) {
+  def getDouble(column: Int): Option[Double] =
+    if (`row == null`) None
+    else {
+      val cell = row.getCell(column)
+      if (`cell == null` || `cell.getCellType() != Cell.NUMERIC`)
+        None
+      else
+        Some(cell.getNumericCellValue())
+    }
 }
 ```
 ]
 
-.thirty-seven-right[
-<br>
-<img src="../img/screenshot/excel-poi-2.png" style="width:400px;"/>
+.thirty-four-right[
+```scala
+val row: SafeRow = ...
+
+row.getDouble(0)
+// res: Option[Double] = None
+
+row.getDouble(1)
+// res: Option[Double] = Some(2)
+
+Option(row.getCell(3))
+// res: Option[Double] = None
+```
 ]
+
+---
+# Exception 2: Low level code
+
+.sixty-two-left[
+```scala
+if (hasUnboxed) {
+  popNextBind(bFirst, bRest) match {
+    case null =>
+      cb(Right(unboxed))
+      return
+    case bind =>
+      val fa =
+        try bind(unboxed)
+        catch { case NonFatal(ex) => RaiseError(ex) }
+      hasUnboxed = false
+      unboxed = null
+      bFirst = null
+      currentIO = fa
+  }
+}
+```
+.medium[.center[from cats-effect library]]
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br>
+
+# .white[Summary]
+
+<br>
+
+## .white[Ignore null: don't use it, don't handle it]
+
+## .white[Use Option instead]
+
+## .white[ Exception 1: interfacing with Java code]
+
+## .white[ Exception 2: high-performance]
 
 ---
 # Explicit Nulls in Scala 3
@@ -529,25 +708,24 @@ object Option {
 ```scala
 scalacOptions += "-Yexplicit-nulls"
 ```
-]
-<br>
 
-.fifty-seven-left[
+<br>
 ```scala
-val item1: Item = Item("Little Red Train", 2, 8.99)
-val item2: Item = null
+val item: Item = null
 // error
 //    Found:    Null
-//    Required: String
+//    Required: Item
 ```
 ]
 
 --
+<br><br><br><br><br><br><br><br><br><br><br>
 
-.fifty-seven-left[
+.seventy-seven-left[
 ```scala
-val item2: Item | Null = null
-// compile
+val item: `Item | Null` = null
+
+val book: `Item | Null` = Item("Little Red Train", 2,  8.99, Reduced)
 ```
 ]
 
