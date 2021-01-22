@@ -16,16 +16,14 @@ class: center, middle, white
 
 ---
 # Scala Functional Subset
-<br>
+<br><br>
 
-.fifty-seven-left[
 .center[
 # .light-green[FP functions everywhere]
 
 # .light-green[AND]
 
 # .light-green[Two additional requirements]
-]
 ]
 
 ---
@@ -151,8 +149,9 @@ def totalPrice(item: Item): Double =
 
 
 .thirty-seven-left[
-```scala mdoc
+```scala
 totalPrice(book)
+// res: Double = 18.879
 ```
 ]
 
@@ -178,8 +177,9 @@ def totalPrice(item: Item): Double =
 ]
 
 .thirty-seven-left[
-```scala mdoc
+```scala
 totalPrice(book)
+// res: Double = 18.879
 ```
 ]
 
@@ -214,8 +214,9 @@ def totalPrice(item: Item): Double =
 ]
 
 .thirty-seven-left[
-```scala mdoc
+```scala
 totalPrice(book)
+// res: Double = 18.879
 ```
 ]
 
@@ -255,8 +256,9 @@ def totalPrice(item: Item): Double =
 ]
 
 .thirty-seven-left[
-```scala mdoc
+```scala
 totalPrice(book)
+// res: Double = 18.879
 ```
 ]
 
@@ -296,8 +298,9 @@ def totalPrice(item: Item): Double =
 ]
 
 .thirty-seven-left[
-```scala mdoc
+```scala
 totalPrice(book)
+// res: Double = 18.879
 ```
 ]
 
@@ -403,7 +406,7 @@ case class User(
 ```scala mdoc
 def vatRate(optVat: Option[VAT]): Double =
   optVat match {
-    case None      => 0.0
+    case None      => 1.0
     case Some(vat) => vat.rate
   }
 ```
@@ -679,8 +682,6 @@ if (hasUnboxed) {
 class: white
 
 background-image: url(../img/fp-tower/website-background.svg)
-
-<br>
 
 # .white[Summary]
 
