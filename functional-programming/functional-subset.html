@@ -16,16 +16,14 @@ class: center, middle, white
 
 ---
 # Scala Functional Subset
-<br>
+<br><br>
 
-.fifty-seven-left[
 .center[
 # .light-green[FP functions everywhere]
 
 # .light-green[AND]
 
 # .light-green[Two additional requirements]
-]
 ]
 
 ---
@@ -153,7 +151,7 @@ def totalPrice(item: Item): Double =
 .thirty-seven-left[
 ```scala
 totalPrice(book)
-// res2: Double = 18.879
+// res: Double = 18.879
 ```
 ]
 
@@ -181,7 +179,7 @@ def totalPrice(item: Item): Double =
 .thirty-seven-left[
 ```scala
 totalPrice(book)
-// res3: Double = 18.879
+// res: Double = 18.879
 ```
 ]
 
@@ -218,7 +216,7 @@ def totalPrice(item: Item): Double =
 .thirty-seven-left[
 ```scala
 totalPrice(book)
-// res4: Double = 18.879
+// res: Double = 18.879
 ```
 ]
 
@@ -260,7 +258,7 @@ def totalPrice(item: Item): Double =
 .thirty-seven-left[
 ```scala
 totalPrice(book)
-// res5: Double = 18.879
+// res: Double = 18.879
 ```
 ]
 
@@ -302,7 +300,7 @@ def totalPrice(item: Item): Double =
 .thirty-seven-left[
 ```scala
 totalPrice(book)
-// res7: Double = 18.879
+// res: Double = 18.879
 ```
 ]
 
@@ -408,7 +406,7 @@ case class User(
 ```scala
 def vatRate(optVat: Option[VAT]): Double =
   optVat match {
-    case None      => 0.0
+    case None      => 1.0
     case Some(vat) => vat.rate
   }
 ```
@@ -430,10 +428,10 @@ case class User(
 .forty-two-right[
 ```scala
 List(1,2,3,4).find(_ > 2)
-// res8: Option[Int] = Some(3)
+// res3: Option[Int] = Some(3)
 
 List(1,2,3,4).find(_ > 10)
-// res9: Option[Int] = None
+// res4: Option[Int] = None
 ```
 ]
 
@@ -686,8 +684,6 @@ if (hasUnboxed) {
 class: white
 
 background-image: url(../img/fp-tower/website-background.svg)
-
-<br>
 
 # .white[Summary]
 
