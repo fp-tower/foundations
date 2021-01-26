@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FP Motivation: Part 2</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[FP Motivation <br> part 2]
+
+---
+<br><br><br><br><br><br><br><br><br>
+
+
+.center[
+# What makes a function difficult to test?
+]
+
+---
+# Global variables
+
+.forty-seven-left[
+```scala
+var eurToGBP = 0.70
+
+def gbpAmount(priceEUR: Double): Double =
+  priceEUR * eurToGBP
+```
+
+```scala
+gbpAmount(12.99)
+// res: Double = 9.093
+```
+]
+
+---
+# Global variables
+
+.forty-seven-left[
+```scala
+var eurToGBP = 0.70
+
+def gbpAmount(priceEUR: Double): Double =
+  priceEUR * eurToGBP
+```
+
+```scala
+gbpAmount(12.99)
+// res: Double = 9.093
+```
+
+```scala
+// After Brexit
+eurToGBP = 0.89
+
+gbpAmount(12.99)
+// res2: Double = 11.5611
+```
+]
+
+---
+# Dependency injection
+
+.sixty-seven-left[
+```scala
+def gbpAmount(`eurToGBP`: Double, priceEUR: Double): Double =
+  priceEUR * eurToGBP
+```
+
+```scala
+gbpAmount(`0.70`, 12.99)
+// res: Double = 9.093
+
+gbpAmount(`0.89`, 12.99)
+// res: Double = 11.5611
+```
+]
+
+---
+# Dependency injection with classes
+
+.fifty-seven-left[
+```scala
+case class CurrencyConverter(`eurToGBP`: Double) {
+
+  def gbpAmount(priceEUR: Double): Double =
+    priceEUR * eurToGBP
+
+}
+```
+
+```scala
+val nov2015 = CurrencyConverter(`0.70`)
+val jan2021 = CurrencyConverter(`0.89`)
+
+nov2015.gbpAmount(12.99)
+// res: Double = 9.093
+
+jan2021.gbpAmount(12.99)
+// res: Double = 11.5611
+```
+]
+
+---
+# Time & Random Data
+
+.forty-two-left[
+```scala
+case class BlogPost(
+  id       : Long,
+  title    : String,
+  content  : String,
+  createdAt: Instant
+)
+
+def createBlogPost(title: String) =
+  BlogPost(
+    id = Random.nextLong(99999),
+    title = title,
+    content = "",
+    createdAt = Instant.now(),
+  )
+
+```
+]
+
+.fifty-two-right[
+```scala
+val blogPost = createBlogPost("FP is awesome!")
+
+val expected = BlogPost(
+  id        = 12345,
+  title     = "FP is awesome!",
+  content   = "",
+  createdAt = Instant.now(),
+)
+
+assert(blogPost == expected)
+```
+]
+
+---
+# Time & Random Data
+
+.seventy-seven-left[
+```scala
+val blogPost = createBlogPost("FP is awesome!")
+
+val expected = BlogPost(
+  id        = 12345,
+  title     = "Welcome",
+  content   = "",
+  createdAt = Instant.now(),
+)
+
+assert(blogPost == expected)
+
+// test failed, values are not the same
+// Expected :BlogPost(`12345`,Welcome,,2021-01-22T15:57:47.8968`61`Z)
+// Actual   :BlogPost(`59996`,Welcome,,2021-01-22T15:57:47.8968`47`Z)
+```
+]
+
+---
+class: medium-code
+# Time & Random Data
+
+.forty-seven-left[
+## Partial test
+```scala
+val blogPost = createBlogPost("FP is awesome!")
+
+val expected = BlogPost(
+  id        = 12345,
+  title     = "Welcome",
+  content   = "",
+  createdAt = Instant.now(),
+)
+
+assert(blogPost.`title`   == "Welcome")
+assert(blogPost.`content` == "")
+```
+]
+
+.forty-seven-right[
+## Erase random data
+```scala
+val blogPost = createBlogPost("FP is awesome!")
+  `.copy(id = 0, createdAt = Instant.EPOCH)`
+
+val expected = BlogPost(
+  id        = 0,
+  title     = "Welcome",
+  content   = "",
+  createdAt = Instant.EPOCH,
+)
+
+assert(blogPost == expected)
+```
+]
+
+---
+# Time & Random Data
+
+.forty-two-left[
+```scala
+def createBlogPost(id: Long, title: String, createdAt: Instant) =
+  BlogPost(
+    id = id,
+    title = title,
+    content = "",
+    createdAt = createdAt,
+  )
+
+```
+]
+
+.fifty-two-right[
+```scala
+val blogPost = createBlogPost("FP is awesome!")
+
+val expected = BlogPost(
+  id        = 12345,
+  title     = "FP is awesome!",
+  content   = "",
+  createdAt = Instant.now(),
+)
+
+assert(blogPost == expected)
+```
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

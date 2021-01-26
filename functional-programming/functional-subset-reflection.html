@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scala Functional Subset: sealed vs open</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Scala Functional Subset<br>Reflection]
+
+---
+# Scala Functional Subset
+
+<br>
+.fifty-seven-left[
+## 1. Functions return a value for all inputs
+
+## 2. Functions are static
+
+## 3. Functions cannot perform actions
+]
+
+.thirty-seven-right[
+## 4. Ignore null
+
+## 5. ???
+]
+
+---
+# Scala Functional Subset
+
+<br>
+.fifty-seven-left[
+## 1. Functions return a value for all inputs
+
+## 2. Functions are static
+
+## 3. Functions cannot perform actions
+]
+
+.thirty-seven-right[
+## 4. Ignore null
+
+## 5. No runtime reflection
+]
+
+---
+class: center, middle
+
+# "Reflection is the ability of a program to inspect, and possibly even modify itself"
+
+---
+class: medium-code
+
+# Runtime Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "position",
+//   "copy",
+//   "direction",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Runtime Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+classOf[Robot]
+  .getDeclaredMethod("move")
+  .invoke(robot)
+// res: Object = Robot(`1`, Forward)
+```
+]
+
+---
+class: middle, center
+
+```scala
+case class ::[A](val head: A, private[scala] var next: List[A]) extends List[A]
+```
+
+---
+class: middle, center
+
+```scala
+case class ::[A](val head: A, `private[scala] var` next: List[A]) extends List[A]
+```
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, 2, 3)
+
+val field = classOf[::[Int]].`getDeclaredField("next")`
+field.setAccessible(true)
+field.set(list, List(4,5,6))
+
+list
+// list: List[Int] = List(1, 4, 5, 6)
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, 2, 3)
+
+val field = classOf[::[Int]].getDeclaredField("next")
+field.`setAccessible(true)`
+field.set(list, List(4,5,6))
+
+list
+// list: List[Int] = List(1, 4, 5, 6)
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, `2, 3`)
+
+val field = classOf[::[Int]].getDeclaredField("next")
+field.setAccessible(true)
+field.`set`(list, `List(4,5,6)`)
+
+list
+// list: List[Int] = List(1, `4, 5, 6`)
+```
+.center[
+## Mutate an immutable list 😱😱😱
+]
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+
+.forty-two-right[
+```scala
+def increment(value: Any) =
+  if(value.isInstanceOf[Int])
+    value.asInstanceOf[Int] + 1
+  else if(value.isInstanceOf[Double])
+    value.asInstanceOf[Double] + 1.0
+  else
+    value
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+
+.forty-two-right[
+```scala
+def increment(value: Any) =
+  if(value.`isInstanceOf`[Int])
+    value.`asInstanceOf`[Int] + 1
+  else if(value.`isInstanceOf`[Double])
+    value.`asInstanceOf`[Double] + 1.0
+  else
+    value
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int         => x + 1
+    case x: Double      => x + 1.0
+    `case x: Option[Int] => x.map(_ + 1)`
+    case other          => other
+  }
+```
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+increment(Some(1))
+// res: Any = `Some(2)`
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int         => x + 1
+    case x: Double      => x + 1.0
+    `case x: Option[Int] => x.map(_ + 1)`
+    case other          => other
+  }
+```
+```scala
+increment(Some("Hello"))
+// java.lang.`ClassCastException`: class String cannot be cast to class Integer
+```
+]
+
+.forty-two-right[
+<br><br>
+```scala
+Some("Hello")
+  .isInstanceOf[Option[Int]]
+// res: Boolean = `true`
+```
+]
+
+---
+# Runtime Reflection: Type inspection
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  if(value.isInstanceOf[Int])
+    value.asInstanceOf[Int] + 1
+  else if(value.isInstanceOf[Double])
+    value.asInstanceOf[Double] + 1.0
+  else if(value.isInstanceOf[List[Int]])
+    value.`asInstanceOf[List[Int]]`.map(_ + 1)
+  else
+    value
+```
+<br>
+```scala
+increment(List(1,2,3))
+// res: Any = List(2, 3, 4)
+
+increment(List("Hello"))
+// java.lang.`ClassCastException`: class String cannot be cast to class Integer
+```
+]
+
+.forty-two-right[
+<br><br>
+```scala
+List("Hello").isInstanceOf[List[Int]]
+// res: Boolean = `true`
+```
+]
+
+
+---
+# Functionality
+
+.sixty-seven-left[
+```scala
+trait Ordering[A] {
+  //The result sign has the following meaning:
+  //  - negative if first < second
+  //  - positive if first > second
+  //  - zero otherwise (if first == second)
+  def compare(first: A, second: A): Int
+}
+```
+]
+
+--
+
+.sixty-seven-left[
+```scala
+trait Logger {
+  def debug(message: String): Unit
+  def error(message: String, error: Throwable): Unit
+}
+```
+]
+
+---
+# Data structure
+
+.fifty-two-left[
+```scala
+import scala.collection.immutable._
+
+case class User(userId: Int, name: String)
+
+val users1: Map[Int, User] = SortedMap(
+  5555 -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+
+val users2: Map[Int, User] = ListMap(
+  5555 -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+```
+]
+
+--
+
+.forty-two-right[
+```scala
+users1.get(1234) == users2.get(1234)
+// res: Boolean = true
+
+users1.head == users2.head
+// res: Boolean = false
+
+users1.head._2
+// res: User = User(1234, "Bob")
+
+users2.head._2
+// res: User = User(5555, "Alice")
+```
+]
+
+---
+# Data structure
+
+.fifty-two-left[
+```scala
+val users1: Map[Int, User] = `SortedMap`(
+  5555 -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+
+val users2: Map[Int, User] = `ListMap`(
+  5555 -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+```
+]
+
+---
+# Data structure
+
+.fifty-two-left[
+```scala
+val users1: Map[Int, User] = SortedMap(
+  5555 -> User(5555, "Alice"),
+  `1234` -> User(1234, "Bob"  ),
+)
+
+val users2: Map[Int, User] = ListMap(
+  5555 -> User(5555, "Alice"),
+  `1234` -> User(1234, "Bob"  ),
+)
+```
+]
+
+.forty-two-right[
+```scala
+users1.`get(1234)` == users2.`get(1234)`
+// res: Boolean = `true`
+```
+]
+
+---
+# Data structure
+
+.fifty-two-left[
+```scala
+val users1: Map[Int, User] = SortedMap(
+  5555 -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+
+val users2: Map[Int, User] = ListMap(
+  5555 -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+```
+]
+
+.forty-two-right[
+```scala
+users1.get(1234) == users2.get(1234)
+// res: Boolean = true
+
+users1.head == users2.head
+// res: Boolean = `false`
+
+users1.head._2
+// res: User = User(1234, "Bob")
+
+users2.head._2
+// res: User = User(5555, "Alice")
+```
+]
+
+---
+# Data structure
+
+.fifty-two-left[
+```scala
+val users1: Map[Int, User] = SortedMap(
+  5555 -> User(5555, "Alice"),
+  `1234` -> User(1234, "Bob"  ),
+)
+
+val users2: Map[Int, User] = ListMap(
+  `5555` -> User(5555, "Alice"),
+  1234 -> User(1234, "Bob"  ),
+)
+```
+]
+
+.forty-two-right[
+```scala
+users1.get(1234) == users2.get(1234)
+// res: Boolean = true
+
+users1.head == users2.head
+// res: Boolean = false
+
+users1.head._2
+// res: User = User(`1234`, "Bob")
+
+users2.head._2
+// res: User = User(`5555`, "Alice")
+```
+]
+
+---
+class: medium-code
+
+# Business logic
+
+.forty-seven-left[
+## Contract
+```scala
+trait OrderApi {
+  def get   (orderId: OrderId): Future[Order]
+  def submit(order  : Order  ): Future[Unit]
+  def cancel(orderId: OrderId): Future[Unit]
+}
+```
+]
+
+.forty-seven-right[
+## Concrete Implementations
+```scala
+class DbOrderApi(db: DB) extends OrderApi { }
+
+class InMemoryOrderApi(
+  orders: Map[OrderId, Order]
+) extends OrderApi { }
+```
+]
+
+---
+class: medium-code
+
+# Business logic
+
+.forty-seven-left[
+## Contract
+```scala
+trait OrderApi {
+  def get   (orderId: OrderId): Future[Order]
+  def submit(order  : Order  ): Future[Unit]
+  def cancel(orderId: OrderId): Future[Unit]
+}
+```
+]
+
+.forty-seven-right[
+## Concrete Implementations
+```scala
+class BanOrderApi (
+  bannedUser: Set[UserId],
+  underlying: OrderApi,
+) extends OrderApi {
+
+  def submit(order: Order): Future[Unit] =
+    if(bannedUser.contains(order.userId))
+       Future.failed(InvalidUser(order.userId))
+    else
+      underlying.submit(order)
+
+  // ...
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Any, AnyRef, AnyVal
+
+.sixty-seven-left[
+```scala
+List(1, false, "hello", User(1234, "Bob"))
+// res: List[`Any`] = List(1, false, "hello", User(1234, "Bob"))
+
+List(1, false)
+// res: List[`AnyVal`] = List(1, false)
+
+List("hello", User(1234, "Bob"))
+// res: List[`AnyRef`] = List("hello", User(1234, "Bob"))
+```
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
