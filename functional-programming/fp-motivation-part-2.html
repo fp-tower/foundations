@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FP Motivation: Part 2</title>
+  <title>FP Motivation: Mutability & Testing</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="../style.css"/>
 </head>
@@ -12,7 +12,114 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[FP Motivation <br> part 2]
+.title[FP Motivation <br>Mutability, Determinism & Testing]
+
+---
+class: medium-code
+# Mutability
+
+.fifty-two-left[
+
+```scala
+class Order {
+  private val items: ListBuffer[Item] =
+    new ListBuffer()
+
+  def addItem(item: Item): Unit =
+    items += item
+
+  def removeLastItem: Unit =
+    if(items.nonEmpty)
+      items.remove(items.size - 1)
+
+  def totalPrice: Double = {
+    var total = 0.0
+    for { item <- items }
+      total += item.quantity * item.unitPrice
+
+    total
+  }
+}
+```
+]
+
+.forty-two-right[
+```scala
+val order = new Order()
+
+order.addItem(Item("Battery", 3,  4.99))
+order.addItem(Item("Book"   , 1, 12.99))
+
+order.totalPrice
+// res: Double = 27.96
+
+order.removeLastItem
+
+order.totalPrice
+// res: Double = 14.97
+```
+]
+
+---
+class: medium-code
+# Mutability
+
+.fifty-two-left[
+```scala
+class Order {
+  private val items: ListBuffer[Item] =
+    new ListBuffer()
+
+  def addItem(item: Item): Unit =
+    items += item
+
+  def removeLastItem: Unit =
+    if(items.nonEmpty)
+      items.remove(items.size - 1)
+
+  def totalPrice: Double = {
+    var total = 0.0
+    for { item <- items }
+      total += item.quantity * item.unitPrice
+
+    total
+  }
+}
+```
+]
+
+.forty-two-right[
+```scala
+val order = new Order()
+
+order.addItem(Item("Battery", 3,  4.99))
+order.addItem(Item("Book"   , 1, 12.99))
+
+order.totalPrice
+// res: Double = 27.96
+
+order.removeLastItem
+
+order.`cancel`
+
+order.totalPrice
+// `???`
+```
+]
+
+---
+class: medium-code
+# Mutability
+
+.forty-seven-left[
+```scala
+val server = new HttpServer(...)
+
+server.initialize()
+
+server.start()
+```
+]
 
 ---
 <br><br><br><br><br><br><br><br><br>
