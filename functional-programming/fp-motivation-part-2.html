@@ -16,6 +16,116 @@ class: center, middle, white
 
 ---
 class: medium-code
+# Order API
+
+.sixty-seven-left[
+```scala
+class Order {
+  def getStatus: OrderStatus // Draft, Submitted, Delivered, ...
+
+  def addItem(item: Item): Unit
+
+  def removeLastItem: Unit
+
+  def totalPrice: Double
+}
+
+
+case class Item(
+  name     : String,
+  quantity : Int,
+  unitPrice: Double,
+)
+```
+]
+
+---
+class: medium-code
+# Order API
+
+.sixty-seven-left[
+```scala
+class Order {
+  def getStatus: OrderStatus // Draft, Submitted, Delivered, ...
+
+  def addItem(item: Item): `Unit`
+
+  def removeLastItem: `Unit`
+
+  def totalPrice: Double
+}
+
+
+case class Item(
+  name     : String,
+  quantity : Int,
+  unitPrice: Double,
+)
+```
+]
+
+---
+class: medium-code
+# Order uses mutation
+
+.sixty-two-left[
+```scala
+class Order {
+  private var status: OrderStatus      = Draft
+  private val items : ListBuffer[Item] = new ListBuffer()
+
+  def getStatus: OrderStatus =
+    status
+
+  def addItem(item: Item): Unit =
+    items += item
+
+  def removeLastItem: Unit =
+    items.remove(items.size - 1)
+
+  def totalPrice: Double = {
+    var total = 0.0
+    for { item <- items }
+      total += item.quantity * item.unitPrice
+
+    total
+  }
+}
+```
+]
+
+---
+class: medium-code
+# Order uses mutation
+
+.sixty-two-left[
+```scala
+class Order {
+  private `var status: OrderStatus`      = Draft
+  private `val items : ListBuffer[Item]` = new ListBuffer()
+
+  def getStatus: OrderStatus =
+    status
+
+  def addItem(item: Item): Unit =
+    items += item
+
+  def removeLastItem: Unit =
+    items.remove(items.size - 1)
+
+  def totalPrice: Double = {
+    var total = 0.0
+    for { item <- items }
+      total += item.quantity * item.unitPrice
+
+    total
+  }
+}
+```
+]
+
+---
+class: medium-code
 # Mutability
 
 .fifty-two-left[

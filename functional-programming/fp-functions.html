@@ -199,7 +199,7 @@ jsonToInt(JsonNumber(12))
 
 ```scala
 jsonToInt(JsonString("Hello"))
-// scala.MatchError: JsonString(Hello)
+// scala.`MatchError`: JsonString(Hello)
 ```
 ]
 
@@ -261,9 +261,9 @@ class: medium-code
 
 # 3. Cannot perform actions
 
-.seventy-seven-left[
+.eighty-two-left[
 ```scala
-def createNewBlogPost(author: User, title: String, content: String): Unit =
+def createNewBlogPost(author: User, title: String, content: String): Future[Unit] =
   httpClient.post(
     path = "/user/${author.userId}/blog",
     payload = json"""{"title" : $title, "content" : $content }"""
@@ -350,22 +350,30 @@ val function: Input => Unit =
 ]
 
 ---
-class: white
+class: medium-code
 
-background-image: url(../img/fp-tower/website-background.svg)
+# 3. Cannot perform actions
 
-<br><br>
+.eighty-two-left[
+```scala
+def createNewBlogPost(author: User, title: String, content: String): `Future[Unit]` =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
 
-# .white[Summary]
+```scala
+def getAllUser: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
 
-<br>
-
-.large[
-1. return a value for all inputs
-
-1. be a static mapping
-
-1. cannot perform actions
+```scala
+def auditLog(service: String, message: String): `Unit` =
+  println(s"[$service] $message")
+```
 ]
 
 ---
@@ -375,7 +383,26 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 <br><br>
 
-# .white[Summary]
+# .white[Summary FP functions]
+
+<br>
+
+.large[
+1. Return a value for all inputs
+
+1. Be a static mapping
+
+1. Cannot perform actions
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+
+# .white[Summary FP functions]
 
 <br>
 
@@ -452,9 +479,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 case class BlogEntry(
-  id: UUID,
-  title: String,
-  publishedAt: LocalDate
+  id         : UUID,
+  title      : String,
+  publishedAt: LocalDate,
 )
 
 def createBlogEntry(title: String): BlogEntry =
