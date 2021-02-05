@@ -204,6 +204,41 @@ jsonToInt(JsonString("Hello"))
 ]
 
 ---
+class: medium-code
+
+# 1. All inputs must return an output
+
+.eighty-two-left[
+```scala mdoc:reset
+sealed trait Json
+
+case class JsonNumber(value: Int   ) extends Json
+case class JsonString(value: String) extends Json
+
+def jsonToInt(json: Json): Int =
+  json match {
+    case JsonNumber(number) => number
+    case JsonString(text)   =>
+      throw new `IllegalArgumentException`("cannot convert a JsonString to a number")
+  }
+```
+
+```scala
+jsonToInt(JsonNumber(12))
+// res: Int = 12
+```
+
+```scala mdoc:invisible:crash
+jsonToInt(JsonString("Hello"))
+```
+
+```scala
+jsonToInt(JsonString("Hello"))
+// IllegalArgumentException: cannot convert a JsonString to a number
+```
+]
+
+---
 # 2. Mapping is static/immutable
 
 .forty-seven-left[
