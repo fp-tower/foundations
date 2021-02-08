@@ -1,15 +1,16 @@
 ## Main objectives
 1. Learn how to define classes and functions with type parameters for better code reusability.
 1. Understand why we don’t check the value of a type parameter at runtime (pattern matching).
-1. Learn how to leverage generic rules to write fewers and more efficients tests.
+1. Learn how to leverage generic rules to write fewer and more efficients tests.
 1. Recognize when to split arguments of a function (currying) to improve type inference.
 
 ## New Scala features
-1. Scala Worksheets to experiment with an API.
-1. Methods used as infix operators
-1. Self-type in traits.
-1. `Try` to catch exceptions.
-1. `Gen` and `Arbitrary` to customise random generators in property-based tests.
+1. Transform warning into errors using a compiler option ([video](https://www.fp-tower.com/courses/take/foundations/lessons/14834159-generic-functions-part-2) at 03:00).
+1. Scala Worksheets to experiment with an API ([video](https://www.fp-tower.com/courses/take/foundations/lessons/14913605-exercise-1-pair) at 09:41). 
+1. Methods used as infix operators ([video](https://www.fp-tower.com/courses/take/foundations/lessons/15034868-exercise-2-predicate) at 01:42).
+1. `Try` to catch exceptions ([video](https://www.fp-tower.com/courses/take/foundations/lessons/15034874-exercise-3-jsondecoder) at 05:15).
+1. `Gen` and `Arbitrary` to customise random generators in property-based tests ([video](https://www.fp-tower.com/courses/take/foundations/lessons/15034874-exercise-3-jsondecoder) at 11:10).
+1. Self-type in traits ([video](https://www.fp-tower.com/courses/take/foundations/lessons/15034874-exercise-3-jsondecoder) at 23:10).
 
 ## Syntax
 
