@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FP</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Conclusion]
+
+---
+# GOTO
+
+---
+# For loops
+
+.fifty-two-left[
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+]
+
+---
+# For loops
+
+.fifty-two-left[
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+
+<br>
+
+```scala
+numbers.parFoldMap(`Monoid`.sum)
+```
+]
+
+---
+# For loops
+
+.fifty-two-left[
+```scala
+def sum(numbers: List[Int]): Int = {
+  var total = 0
+
+  for (number <- numbers)
+    total += number
+
+  total
+}
+```
+
+<br>
+
+```scala
+numbers.parFoldMap(Monoid.sum)
+```
+
+```scala
+numbers.parReduceMap(`Commutative`Monoid.sum)
+```
+]
+
+---
+# Rust ownership system
+
+<br>
+
+## A shared variable can only have:
+
+## - One writer
+
+## - One or more readers
+
+---
+
+<br><br>
+
+<img src="../img/screenshot/constraints-liberate.jpg" style="width:800px;"/>
+
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
