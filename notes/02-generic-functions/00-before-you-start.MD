@@ -9,7 +9,7 @@
 1. Methods used as infix operators
 1. Self-type in traits.
 1. `Try` to catch exceptions.
-1. `Gen` and `Arbitrary` to generate random generators for property-based-testing.
+1. `Gen` and `Arbitrary` to customise random generators in property-based tests.
 
 ## Syntax
 
