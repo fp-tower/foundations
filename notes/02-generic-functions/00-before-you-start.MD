@@ -1,8 +1,8 @@
 ## Main objectives
-1. Learn how to define classes and functions with type parameters for better code reusability.
-1. Understand why we don’t check the value of a type parameter at runtime (pattern matching).
-1. Learn how to leverage generic rules to write fewer and more efficients tests.
-1. Recognize when to split arguments of a function (currying) to improve type inference.
+1. Learn how to define classes and functions with type parameters.
+1. Understand why we don't pattern match on a generic value.
+1. Learn how to leverage type parameters to write fewer and more efficients tests.
+1. Recognize when to split arguments of a function (currying) in order to improve type inference.
 
 ## New Scala features
 1. Transform warning into errors using a compiler option ([video](https://www.fp-tower.com/courses/take/foundations/lessons/14834159-generic-functions-part-2) at 03:00).
@@ -29,5 +29,22 @@ Common type parameter names are single letter variables such as `A`, `B`, `T`, b
 ```scala
 def map[From, To](list: List[From], update: From => To): List[To] = ???
 ```
+
+### Multiple parameter lists (currying)
+
+In Scala, methods can have one more list of parameters
+
+```scala
+def add1(first: Int, second: Int): Int = 
+  first + second
+
+def add2(first: Int)(second: Int): Int = 
+  first + second
+
+add1(3, 4) == add2(3)(4)
+```
+`add1` and `add2` are essentially the same function. 
+`add1` is the default syntax, but they are a few situations where `add2` 
+is more convenient.
 
 
