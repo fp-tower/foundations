@@ -18,15 +18,18 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-10 15:18:27 +0000</metadata>
-  <g id="order-to-invoice-3" fill-opacity="1" fill="none" stroke-opacity="1" stroke-dasharray="none" stroke="none">
-    <title>order-to-invoice-3</title>
-    <g id="order-to-invoice-3_Layer_1">
+  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-11 16:17:04 +0000</metadata>
+  <g id="order-to-invoice-3a" stroke-dasharray="none" fill="none" stroke="none" fill-opacity="1" stroke-opacity="1">
+    <title>order-to-invoice-3a</title>
+    <g id="order-to-invoice-3a_Layer_1">
       <title>Layer 1</title>
+      <g id="Graphic_188"/>
+      <g id="Line_187">
+        <line x1="306" y1="414" x2="306" y2="539.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
       <g id="Line_173">
         <line x1="441" y1="306" x2="584.1" y2="306" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
-      <g id="Graphic_188"/>
       <g id="Graphic_178">
         <rect x="189" y="153" width="252" height="261" fill="#589b9d"/>
         <rect x="189" y="153" width="252" height="261" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
@@ -48,45 +51,35 @@
       </g>
       <g id="Graphic_174">
         <text transform="translate(14 311)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="54.184" y="30">user</tspan>
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="17.72" y="30">customer</tspan>
         </text>
       </g>
       <g id="Graphic_172">
         <text transform="translate(428 257)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="34.04" y="30">Invoice</tspan>
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="64.568" y="30">file</tspan>
         </text>
-      </g>
-      <g id="Line_180">
-        <line x1="225" y1="27" x2="225" y2="134.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-      </g>
-      <g id="Graphic_179">
-        <text transform="translate(77 62.052)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="7.5" y="30">invoiceId</tspan>
-        </text>
-      </g>
-      <g id="Line_182">
-        <line x1="306" y1="72" x2="306" y2="134.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-      </g>
-      <g id="Graphic_181">
-        <text transform="translate(257 12.552002)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="8.696" y="30">today</tspan>
-        </text>
-      </g>
-      <g id="Line_184">
-        <line x1="397.51515" y1="27" x2="397.51515" y2="134.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-      </g>
-      <g id="Graphic_183">
-        <text transform="translate(408.48485 59)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="3.104" y="30">payableTo</tspan>
-        </text>
-      </g>
-      <g id="Line_187">
-        <line x1="306" y1="414" x2="306" y2="539.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
       <g id="Graphic_186">
+        <rect x="311.9697" y="441" width="162" height="85.79199" fill="#efc600"/>
         <text transform="translate(316.9697 446)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="34.48" y="30">bump</tspan>
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="11.408" y="67.896">InvoiceId</tspan>
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="4.304" y="67.896">InvoiceNo</tspan>
+        </text>
+      </g>
+      <g id="Line_192">
+        <line x1="252" y1="27" x2="252" y2="134.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Line_191">
+        <line x1="370.51515" y1="27" x2="370.51515" y2="134.1" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_190">
+        <text transform="translate(350.33333 64.66667)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="35.696" y="30">today</tspan>
+        </text>
+      </g>
+      <g id="Graphic_189">
+        <text transform="translate(95 64.66667)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x=".396" y="30">invoiceNo</tspan>
         </text>
       </g>
     </g>
