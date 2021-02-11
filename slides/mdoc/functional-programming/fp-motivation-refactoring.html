@@ -20,7 +20,7 @@ class: center, middle, white
 .eighty-seven-right[
 # Which is more difficult?
 
-## 1. Updating an existing program
+## Updating an existing program
 
 
 ## 2. Creating one from scratch
@@ -29,7 +29,7 @@ class: center, middle, white
 ---
 class: medium-code
 
-# 1. Refactoring: reorder variables
+# Refactoring: reorder variables
 
 .forty-seven-left[
 ```scala
@@ -44,7 +44,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: reorder variables
+# Refactoring: reorder variables
 
 .forty-seven-left[
 ```scala
@@ -69,7 +69,7 @@ def helloV2(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: reorder variables
+# Refactoring: reorder variables
 
 .forty-seven-left[
 ```scala
@@ -98,7 +98,7 @@ def helloV2(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: reorder variables
+# Refactoring: reorder variables
 
 .forty-seven-left[
 ```scala
@@ -135,7 +135,7 @@ helloV2(user) // user deleted from db
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -151,7 +151,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -167,7 +167,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -183,7 +183,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -199,7 +199,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -215,7 +215,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -245,7 +245,7 @@ def helloV2(user: User) =
 ---
 class: medium-code
 
-# 1. Refactoring: remove unused code
+# Refactoring: remove unused code
 
 .forty-seven-left[
 ```scala
@@ -285,7 +285,7 @@ def funC(user: User): Unit =
 ---
 class: medium-code
 
-# 1. Refactoring: de-duplicate
+# Refactoring: de-duplicate
 
 .forty-seven-left[
 ```scala
@@ -301,7 +301,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: de-duplicate
+# Refactoring: de-duplicate
 
 .forty-seven-left[
 ```scala
@@ -345,7 +345,7 @@ def funA(user: User): BlogPost =
 ---
 class: medium-code
 
-# 1. Refactoring: de-duplicate
+# Refactoring: de-duplicate
 
 .forty-seven-left[
 ```scala
@@ -385,7 +385,7 @@ helloV2(user) // charge `$100`
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
 
 .forty-seven-left[
 ```scala
@@ -399,7 +399,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
 
 .forty-seven-left[
 ```scala
@@ -412,7 +412,7 @@ def helloV1(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
 
 .forty-seven-left[
 ```scala
@@ -441,7 +441,7 @@ def helloV2(user: User) = {
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
 
 .fifty-two-left[
 ```scala
@@ -470,7 +470,7 @@ def newUserWorkflow(email: String): Future[Unit] =
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
 
 .fifty-two-left[
 <br><br>
@@ -490,14 +490,98 @@ def newUserWorkflow(email: String): Future[Unit] =
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br><br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] =
+  for {
+    user <- `createUser`(email)
+    _    <- sendActivationLink(email)
+  } println(s"User created: $user")
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-sequential-error.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
 
 .fifty-two-left[
 <br>
 ```scala
 def newUserWorkflow(email: String): Future[Unit] = {
-  val `futureUser`  = createUser(email)
-  val `futureEmail` = sendActivationLink(email)
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = `createUser`(email)
+  val futureEmail = `sendActivationLink`(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = `createUser`(email)
+  val futureEmail = `sendActivationLink`(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-1.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
 
   for {
     user <- `futureUser`
@@ -507,10 +591,87 @@ def newUserWorkflow(email: String): Future[Unit] = {
 ```
 ]
 
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-2.svg" style="width:500px;"/>
+]]
+
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- `futureUser`
+    _    <- `futureEmail`
+  } println(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-3.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- futureUser
+    _    <- futureEmail
+  } `println`(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-4.svg" style="width:500px;"/>
+]]
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.fifty-two-left[
+<br>
+```scala
+def newUserWorkflow(email: String): Future[Unit] = {
+  val futureUser  = createUser(email)
+  val futureEmail = sendActivationLink(email)
+
+  for {
+    user <- `futureUser`
+    _    <- futureEmail
+  } println(s"User created: $user")
+}
+```
+]
+
+.forty-seven-right[.center[
+<img src="../img/foundation/create-user-parallel-error-1a.svg" style="width:500px;"/>
+]]
+
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
 
 .fifty-two-left[
 <br>
@@ -528,37 +689,13 @@ def newUserWorkflow(email: String): Future[Unit] = {
 ]
 
 .forty-seven-right[.center[
-<img src="../img/foundation/create-user-parallel.svg" style="width:500px;"/>
+<img src="../img/foundation/create-user-parallel-error-1b.svg" style="width:500px;"/>
 ]]
 
 ---
 class: medium-code
 
-# 1. Refactoring: extract - inline
-
-.fifty-two-left[
-<br>
-```scala
-def newUserWorkflow(email: String): Future[Unit] = {
-  val futureUser  = createUser(email)
-  val futureEmail = sendActivationLink(email)
-
-  for {
-    user <- futureUser
-    _    <- futureEmail
-  } println(s"User created: $user")
-}
-```
-]
-
-.forty-seven-right[.center[
-<img src="../img/foundation/create-user-parallel-error-1.svg" style="width:500px;"/>
-]]
-
----
-class: medium-code
-
-# 1. Refactoring: extract - inline
+# Refactoring: extract - inline
 
 .fifty-two-left[
 <br>
@@ -589,7 +726,6 @@ background-image: url(../img/fp-tower/website-background.svg)
 ## .white[Confident refactoring]
 ## .white[Faster development of new features]
 ## .white[Less random bugs when releasing]
-## .white[Easier onboarding of devs]
 <br><br>
 
 </textarea>

@@ -18,8 +18,8 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-10 15:18:27 +0000</metadata>
-  <g id="order-to-invoice-1" fill-opacity="1" fill="none" stroke-opacity="1" stroke-dasharray="none" stroke="none">
+  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-11 16:17:04 +0000</metadata>
+  <g id="order-to-invoice-1" stroke-dasharray="none" fill="none" stroke="none" fill-opacity="1" stroke-opacity="1">
     <title>order-to-invoice-1</title>
     <g id="order-to-invoice-1_Layer_1">
       <title>Layer 1</title>
@@ -48,12 +48,12 @@
       </g>
       <g id="Graphic_174">
         <text transform="translate(14 311)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="54.184" y="30">user</tspan>
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="17.72" y="30">customer</tspan>
         </text>
       </g>
       <g id="Graphic_172">
         <text transform="translate(428 257)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="34.04" y="30">Invoice</tspan>
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="64.568" y="30">file</tspan>
         </text>
       </g>
     </g>
