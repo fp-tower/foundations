@@ -1,6 +1,7 @@
 # Notes
 
 * Documentation for the [Infix operator syntax](https://docs.scala-lang.org/tour/operators.html)
+* If you couldn't implement `contramap` or `by` functions, don't worry. It is completely normal. These questions were meant to be difficult. Try again a week or two and don't hesitate to ask questions on Slack!
 
 ## How to improve type inference of by
 
