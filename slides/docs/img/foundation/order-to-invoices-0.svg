@@ -18,7 +18,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-12 16:01:56 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-15 17:28:03 +0000</metadata>
   <g id="order-to-invoices-0" stroke-dasharray="none" fill="none" stroke="none" fill-opacity="1" stroke-opacity="1">
     <title>order-to-invoices-0</title>
     <g id="order-to-invoices-0_Layer_1">
@@ -54,7 +54,6 @@
         <line x1="253.82422" y1="362.896" x2="387.4077" y2="362.896" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
       <g id="Graphic_204">
-        <rect x="252" y="309" width="144" height="47.895996" fill="#efc600"/>
         <text transform="translate(257 314)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="1.512" y="30">language</tspan>
         </text>

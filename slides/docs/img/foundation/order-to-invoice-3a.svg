@@ -18,7 +18,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-12 16:01:56 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-15 17:28:03 +0000</metadata>
   <g id="order-to-invoice-3a" stroke-dasharray="none" fill="none" stroke="none" fill-opacity="1" stroke-opacity="1">
     <title>order-to-invoice-3a</title>
     <g id="order-to-invoice-3a_Layer_1">
@@ -60,7 +60,6 @@
         </text>
       </g>
       <g id="Graphic_186">
-        <rect x="311.9697" y="441" width="162" height="85.79199" fill="#efc600"/>
         <text transform="translate(316.9697 446)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="34.48" y="30">bump</tspan>
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="4.304" y="67.896">InvoiceNo</tspan>
