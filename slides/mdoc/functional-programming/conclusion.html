@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FP</title>
+  <title>Conclusion</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="../style.css"/>
 </head>
@@ -15,89 +15,56 @@ class: center, middle, white
 .title[Conclusion]
 
 ---
-# GOTO
+# Scala Functional Subset
 
----
-# For loops
+.forty-seven-left[
+## FP Functions:
 
-.fifty-two-left[
-```scala mdoc
-def sum(numbers: List[Int]): Int = {
-  var total = 0
+## • Total
 
-  for (number <- numbers)
-    total += number
+## • Deterministic
 
-  total
-}
-```
+## • Pure or without actions
+]
+
+.forty-seven-left[
+## General JVM recommendations:
+
+## • Ignore null
+
+## • Ignore runtime reflection
 ]
 
 ---
-# For loops
+# Benefits of FP
 
-.fifty-two-left[
-```scala
-def sum(numbers: List[Int]): Int = {
-  var total = 0
+## 1. Refactoring
 
-  for (number <- numbers)
-    total += number
+## 2. Clear dependencies, easy to test
 
-  total
-}
-```
+## 3. Clear effects, easy to build (lego effect)
 
-<br>
+--
 
-```scala
-numbers.parFoldMap(`Monoid`.sum)
-```
+## 4. Honest functions:
+
+   * .light-green.medium[Verified documentation]
+   * .light-green.medium[Easier to onboard developers]
+
+---
+<br><br><br><br><br><br><br><br>
+
+.sixty-seven-left.center[
+# One small inconvenience, <br> ...
 ]
 
+
 ---
-# For loops
+<br><br><br><br><br><br><br><br>
 
-.fifty-two-left[
-```scala
-def sum(numbers: List[Int]): Int = {
-  var total = 0
-
-  for (number <- numbers)
-    total += number
-
-  total
-}
-```
-
-<br>
-
-```scala
-numbers.parFoldMap(Monoid.sum)
-```
-
-```scala
-numbers.parReduceMap(`Commutative`Monoid.sum)
-```
+.sixty-seven-left.center[
+# One small inconvenience, <br> we can't do anything
 ]
-
----
-# Rust ownership system
-
-<br>
-
-## A shared variable can only have:
-
-## - One writer
-
-## - One or more readers
-
----
-
-<br><br>
-
-<img src="../img/screenshot/constraints-liberate.jpg" style="width:800px;"/>
-
 
 
 </textarea>
