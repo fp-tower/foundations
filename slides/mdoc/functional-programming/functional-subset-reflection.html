@@ -17,27 +17,32 @@ class: center, middle, white
 ---
 # Scala Functional Subset
 
-<br>
-.fifty-seven-left[
-## 1. Functions return a value for all inputs
 
-## 2. Functions are static
+.forty-seven-left[
+## FP Functions
 
-## 3. Functions cannot perform actions
+## 1. Total
+
+## 2. Deterministic
+
+## 3. Pure or without side effect
 ]
 
-.thirty-seven-right[
+.thirty-seven-left[
+## &nbsp
+
 ## 4. Ignore null
 
 ## 5. ???
 ]
 
 ---
-class: center, middle
+# Definition
 
-.seventy-seven-left[
-# Reflection is the ability of a program to inspect, and possibly even modify itself
-]
+<br><br><br><br>
+.sixty-two-left[.center[
+## "Reflection is the ability of a program to .hl2[inspect], and possibly even .hl2[modify itself]"
+]]
 
 ---
 class: medium-code
@@ -174,7 +179,7 @@ class: medium-code
 
 .fifty-seven-left[
 ```scala
-case class Robot(position: Int, direction: Direction) {
+case class Robot(`position`: Int, `direction`: Direction) {
   def move: Robot =
     direction match {
       case Backward =>
@@ -217,7 +222,7 @@ class: medium-code
 .fifty-seven-left[
 ```scala
 case class Robot(position: Int, direction: Direction) {
-  def move: Robot =
+  def `move`: Robot =
     direction match {
       case Backward =>
         copy(position = position - 1)
@@ -354,18 +359,24 @@ classOf[Robot]
 ]
 
 ---
-class: middle, center
+# List in the standard library
 
+<br><br><br><br><br><br><br>
+.center[
 ```scala
 case class ::[A](val head: A, private var next: List[A]) extends List[A]
 ```
+]
 
 ---
-class: middle, center
+# List in the standard library
 
+<br><br><br><br><br><br><br>
+.center[
 ```scala
 case class ::[A](val head: A, `private var next`: List[A]) extends List[A]
 ```
+]
 
 ---
 # Runtime Reflection
@@ -795,7 +806,7 @@ def checkUser(request: Request, auth: Auth) =
 .forty-seven-left[
 ## production.conf
 
-```hocon
+```bash
 {
   auth : {
     type    : "`Okta`"
@@ -809,7 +820,7 @@ def checkUser(request: Request, auth: Auth) =
 .forty-seven-right[
 ## local.conf
 
-```hocon
+```bash
 {
   auth : {
     type : "`Mock`"
@@ -1125,7 +1136,7 @@ def checkAuth(auth: Auth) =
       for {
         _    <- auth.revoke(token)
         user <- auth.authenticate(token)
-      } yield assert(user == None)
+      } assert(user == None)
     }
   }
 ```
@@ -1150,9 +1161,36 @@ def checkAuth(auth: Auth) =
   test("revoke makes token invalid") {
     forAll { (token: Token) =>
       for {
-        _    <- auth.`revoke`(token)
-        user <- auth.`authenticate`(token)
-      } yield assert(user == `None`)
+        _    <- `auth.revoke(token)`
+        user <- `auth.authenticate(token)`
+      } assert(user == None)
+    }
+  }
+```
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is     valid, revoke makes it invalid
+  // if the token is NOT valid, do nothing
+  def revoke(token: Token): Future[Unit]
+}
+```
+
+```scala
+def checkAuth(auth: Auth) =
+  test("revoke makes token invalid") {
+    forAll { (token: Token) =>
+      for {
+        _    <- auth.revoke(token)
+        `user` <- auth.authenticate(token)
+      } assert(user == `None`)
     }
   }
 ```
@@ -1165,16 +1203,20 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 # .white[Summary]
 
+<br>
+
 ## .white[Ignore runtime reflection]
 
-## .white[Reflection used in pattern matching]
+## .white[Reflection is used in pattern matching]
 
-## .white[Two dangerous cases:]
+## .white[Two dangerous use cases:]
    * ### .white[Classes with type parameters]
    * ### .white[Classes meant for extension]
 
 ---
 # Scala 3: Matchable trait
+
+<br>
 
 .sixty-two-left[
 ```scala

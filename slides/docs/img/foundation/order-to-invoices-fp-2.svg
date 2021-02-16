@@ -23,9 +23,9 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-15 21:54:43 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.18.2\n2021-02-15 22:55:30 +0000</metadata>
   <g id="order-to-invoices-fp_1" stroke-dasharray="none" fill="none" stroke="none" fill-opacity="1" stroke-opacity="1">
-    <title>order-to-invoices-fp 1</title>
+    <title>order-to-invoices-fp-2</title>
     <g id="order-to-invoices-fp_1_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_263">
@@ -134,12 +134,12 @@
         <line x1="612" y1="216" x2="800.1" y2="216" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
       <g id="Graphic_240">
-        <text transform="translate(616.9091 293)" fill="#404040">
+        <text transform="translate(598.9091 293)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="31.456" y="30">template</tspan>
         </text>
       </g>
       <g id="Graphic_241">
-        <text transform="translate(621.45455 167)" fill="#404040">
+        <text transform="translate(603.45455 167)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="31.456" y="30">template</tspan>
         </text>
       </g>
@@ -157,12 +157,12 @@
         </text>
       </g>
       <g id="Graphic_246">
-        <text transform="translate(1076 176)" fill="#404040">
+        <text transform="translate(1085 176)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="33.068" y="30">file</tspan>
         </text>
       </g>
       <g id="Graphic_247">
-        <text transform="translate(1076 347)" fill="#404040">
+        <text transform="translate(1085 347)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="33.068" y="30">file</tspan>
         </text>
       </g>
@@ -172,7 +172,7 @@
         </text>
       </g>
       <g id="Line_251">
-        <path d="M 612 513 L 945 513 L 945 414.9" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+        <path d="M 612 513 L 940.5 513 L 940.5 443.9" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
       <g id="Graphic_252">
         <text transform="translate(626 22.640015)" fill="#589b9d">
@@ -186,6 +186,9 @@
       </g>
       <g id="Line_261">
         <line x1="612" y1="621" x2="1574.1" y2="621" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_264">
+        <rect x="783" y="135" width="315" height="288" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
       </g>
     </g>
   </g>
