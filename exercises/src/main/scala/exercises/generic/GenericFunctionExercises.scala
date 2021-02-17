@@ -190,6 +190,7 @@ object GenericFunctionExercises {
   // * "\"2020-08-03\"" into a Some(LocalDate.of(2020,08,3))
   // * "\"null\"" into a Some("null")
   // * "null" into "None"
+  // Note: you may need to change the function signature
   def optionDecoder[A]: JsonDecoder[Option[A]] =
     ???
 
