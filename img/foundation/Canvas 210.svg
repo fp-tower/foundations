@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 470 381" width="470" height="381">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.1\n2020-12-16 13:25:43 +0000</metadata>
+  <g id="Canvas_210" fill="none" stroke="none" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1">
+    <title>Canvas 210</title>
+    <g id="Canvas_210_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="135" y="81" width="333" height="297" stroke="#70a3d8" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_19">
+        <text transform="translate(131 50)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="11.0125" y="21">dataset</tspan>
+        </text>
+      </g>
+      <g id="Graphic_273">
+        <rect x="154.33333" y="198" width="133.66667" height="59.4" fill="#70a3d8"/>
+        <rect x="154.33333" y="198" width="133.66667" height="59.4" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(159.33333 214.392)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="43.48533" y="21">789</tspan>
+        </text>
+      </g>
+      <g id="Graphic_280">
+        <text transform="translate(293 212)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" x="5.95" y="21">Sum F</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="#404040" y="21">° total</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
