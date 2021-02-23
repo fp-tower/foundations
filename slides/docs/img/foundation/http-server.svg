@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 721 280" width="721" height="280">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="30" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.3\n2021-02-23 17:00:36 +0000</metadata>
+  <g id="http-server" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+    <title>http-server</title>
+    <g id="http-server_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_123">
+        <ellipse cx="135" cy="148.5" rx="126.000201335639" ry="130.500208526197" fill="#70a3d8"/>
+        <ellipse cx="135" cy="148.5" rx="126.000201335639" ry="130.500208526197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(39.2 130.58)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="white" x="39.955003" y="29">Request</tspan>
+        </text>
+      </g>
+      <g id="Graphic_133">
+        <ellipse cx="594" cy="148.5" rx="126.000201335639" ry="130.500208526197" fill="#589b9d"/>
+        <ellipse cx="594" cy="148.5" rx="126.000201335639" ry="130.500208526197" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(498.2 130.58)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="white" x="28.570003" y="29">Response</tspan>
+        </text>
+      </g>
+      <g id="Graphic_139">
+        <path d="M 297 169.71429 L 297 127.28571 L 405 127.28571 L 405 99 L 432 148.5 L 405 198 L 405 169.71429 Z" fill="#acbdd0"/>
+        <path d="M 297 169.71429 L 297 127.28571 L 405 127.28571 L 405 99 L 432 148.5 L 405 198 L 405 169.71429 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

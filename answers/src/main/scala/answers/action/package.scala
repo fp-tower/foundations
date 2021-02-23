@@ -1,7 +1,9 @@
 package answers
 
 package object action {
-  type LazyValue[A] = () => A
+  type LazyAction[A] = () => A
 
-  type Action = () => Unit
+  implicit class LazyActionSyntax[A](self: LazyAction[A]) {
+    def execute(): A = self()
+  }
 }

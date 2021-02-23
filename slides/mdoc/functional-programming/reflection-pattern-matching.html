@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Scala Functional Subset: Reflection</title>
+  <title>Reflection & Pattern Matching</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="../style.css"/>
 </head>
@@ -12,7 +12,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[Scala Functional Subset<br>Reflection]
+.title[Reflection<br>&<br>Pattern Matching]
 
 ---
 # Scala Functional Subset
@@ -47,7 +47,7 @@ class: center, middle, white
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala mdoc
@@ -91,7 +91,7 @@ robot.getClass.getMethods
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -133,7 +133,7 @@ robot.getClass.getMethods
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -175,7 +175,7 @@ robot.getClass.getMethods
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -217,7 +217,7 @@ robot.getClass.getMethods
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -259,7 +259,7 @@ robot.getClass.getMethods
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -293,7 +293,7 @@ classOf[Robot]
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -327,7 +327,7 @@ classOf[Robot]
 ---
 class: medium-code
 
-# Runtime Reflection
+# Reflection
 
 .fifty-seven-left[
 ```scala
@@ -359,10 +359,21 @@ classOf[Robot]
 ]
 
 ---
+# Reflection
+
+<br><br>
+
+.fifty-seven-left[
+## &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1. Runtime
+
+## &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 2. Compile time (Macros)
+]
+
+---
 # List in the standard library
 
-<br><br><br><br><br><br><br>
-.center[
+<br><br><br><br><br><br>
+.eighty-two-left[
 ```scala
 case class ::[A](val head: A, private var next: List[A]) extends List[A]
 ```
@@ -371,8 +382,8 @@ case class ::[A](val head: A, private var next: List[A]) extends List[A]
 ---
 # List in the standard library
 
-<br><br><br><br><br><br><br>
-.center[
+<br><br><br><br><br><br>
+.eighty-two-left[
 ```scala
 case class ::[A](val head: A, `private var next`: List[A]) extends List[A]
 ```
@@ -698,6 +709,15 @@ class MockAuth(users: Map[Token, User]) extends Auth { /* ... */ }
 ]
 
 ---
+# HTTP Server
+
+<br><br><br>
+
+.center[
+<img src="../img/foundation/http-server.svg" style="width:500px;"/>
+]
+
+---
 # HTTP Middleware
 
 <br><br><br>
@@ -976,7 +996,34 @@ enum Env {
 ]
 
 ---
-# Caching
+# Increase load
+
+<br>
+
+.seventy-seven-left.center[
+<img src="../img/foundation/http-auth-no-cache.svg" style="width:700px;"/>
+]
+
+---
+# Cache authenticate requests
+
+<br>
+
+.seventy-seven-left.center[
+<img src="../img/foundation/http-auth-cache-success.svg" style="width:700px;"/>
+]
+
+---
+# Cache authenticate requests
+
+<br>
+
+.seventy-seven-left.center[
+<img src="../img/foundation/http-auth-cache-fail.svg" style="width:700px;"/>
+]
+
+---
+# Cache authenticate requests
 
 .seventy-two-left[
 ```scala
@@ -987,41 +1034,6 @@ class CachedAuth(
 ```
 ]
 
----
-# Caching
-
-.seventy-two-left[
-```scala
-class CachedAuth(
-  cache     : `Cache`,
-  underlying: Auth,
-) extends Auth { /* ... */ }
-```
-## Main
-```scala
-val cache: Cache = new `RedisCache`(...)
-```
-]
-
-
-
----
-# Caching
-
-.seventy-two-left[
-```scala
-class CachedAuth(
-  cache     : Cache,
-  underlying: `Auth`,
-) extends Auth { /* ... */ }
-```
-
-## Main
-```scala
-val cache: Cache = new RedisCache(...)
-val auth : Auth  = new `CachedAuth`(cache, new `OktaAuth`(...))
-```
-]
 
 ---
 # Authentication Middleware

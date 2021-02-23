@@ -82,10 +82,10 @@ shared mutable state and exceptions
 
 ### Slides
 1. [FP functions](https://blog.fp-tower.com/foundations/functional-programming/fp-functions.html#1)
-1. [FP motivation: Refactoring](https://blog.fp-tower.com/foundations/functional-programming/fp-motivation-refactoring.html#1)
-1. [FP motivation: Complexity](https://blog.fp-tower.com/foundations/functional-programming/fp-motivation-complexity.html#1)
-1. [Functional subset: null](https://blog.fp-tower.com/foundations/functional-programming/functional-subset-null.html#1)
-1. [Functional subset: reflection](https://blog.fp-tower.com/foundations/functional-programming/functional-subset-reflection.html#1)
+1. [Refactoring](https://blog.fp-tower.com/foundations/functional-programming/refactoring.html#1)
+1. [Complexity](https://blog.fp-tower.com/foundations/functional-programming/complexity.html#1)
+1. [null](https://blog.fp-tower.com/foundations/functional-programming/null.html#1)
+1. [Reflection & pattern matching](https://blog.fp-tower.com/foundations/functional-programming/reflection-pattern-matching.html#1)
 1. [Conclusion](https://blog.fp-tower.com/foundations/functional-programming/conclusion.html#1)
 
 ## 5. Actions
