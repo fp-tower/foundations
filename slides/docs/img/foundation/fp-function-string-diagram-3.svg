@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 729 288" width="729" height="288">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="40" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 6 6" markerWidth="6" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 3.2 0 L 0 -1.2 L 0 1.2 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <font-face font-family="Helvetica Neue" font-size="32" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.3\n2021-02-23 17:00:36 +0000</metadata>
+  <g id="fp-function-string-diagram-3" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+    <title>fp-function-string-diagram-3</title>
+    <g id="fp-function-string-diagram-3_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_123">
+        <rect x="171" y="18" width="252" height="261" fill="#589b9d"/>
+        <rect x="171" y="18" width="252" height="261" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(176 124.44)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="white" x="48.76" y="38">function</tspan>
+        </text>
+      </g>
+      <g id="Line_140">
+        <line x1="9" y1="99" x2="152.1" y2="99" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_141">
+        <text transform="translate(-4 50)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="35.784" y="30">input 1</tspan>
+        </text>
+      </g>
+      <g id="Line_147">
+        <line x1="9" y1="171" x2="152.1" y2="171" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_146">
+        <text transform="translate(-4 122)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="35.784" y="30">input 2</tspan>
+        </text>
+      </g>
+      <g id="Line_149">
+        <line x1="9" y1="243" x2="152.1" y2="243" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_148">
+        <text transform="translate(-4 194)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="35.784" y="30">input 3</tspan>
+        </text>
+      </g>
+      <g id="Line_153">
+        <line x1="423" y1="216" x2="566.1" y2="216" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_152">
+        <text transform="translate(410 167)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="25.112" y="30">output 2</tspan>
+        </text>
+      </g>
+      <g id="Line_155">
+        <line x1="423" y1="135" x2="566.1" y2="135" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_154">
+        <text transform="translate(410 86)" fill="#404040">
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="25.112" y="30">output 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_156"/>
+    </g>
+  </g>
+</svg>

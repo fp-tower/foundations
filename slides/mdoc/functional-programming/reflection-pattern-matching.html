@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reflection & Pattern Matching</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Reflection<br>&<br>Pattern Matching]
+
+---
+# Scala Functional Subset
+
+
+.forty-seven-left[
+## FP Functions:
+
+## • Total
+
+## • Deterministic
+
+## • Pure or without actions
+]
+
+.forty-seven-left[
+## General JVM recommendations:
+
+## • Ignore null
+
+## ???
+]
+
+---
+# Definition
+
+<br><br><br><br>
+.sixty-two-left[.center[
+## "Reflection is the ability of a program to .hl2[inspect], and possibly even .hl2[modify itself]"
+]]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala mdoc
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+--
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "position",
+//   "copy",
+//   "direction",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "`equals`",
+//   "`toString`",
+//   "`hashCode`",
+//   "position",
+//   "copy",
+//   "direction",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "position",
+//   "`copy`",
+//   "direction",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(`position`: Int, `direction`: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "`position`",
+//   "copy",
+//   "`direction`",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def `move`: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "position",
+//   "copy",
+//   "direction",
+//   "`move`",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+classOf[Robot]
+  .`getDeclaredMethod("move")`
+  .invoke(robot)
+// res: Object = Robot(1, Forward)
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val `robot` = Robot(0, Forward)
+
+classOf[Robot]
+  .getDeclaredMethod("move")
+  .`invoke(robot)`
+// res: Object = Robot(1, Forward)
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(`0`, Forward)
+
+classOf[Robot]
+  .getDeclaredMethod("move")
+  .invoke(robot)
+// res: Object = Robot(`1`, Forward)
+```
+]
+
+---
+# Reflection
+
+<br><br>
+
+.fifty-seven-left[
+## &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1. Runtime
+
+## &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 2. Compile time (Macros)
+]
+
+---
+# List in the standard library
+
+<br><br><br><br><br><br>
+.eighty-two-left[
+```scala
+case class ::[A](val head: A, private var next: List[A]) extends List[A]
+```
+]
+
+---
+# List in the standard library
+
+<br><br><br><br><br><br>
+.eighty-two-left[
+```scala
+case class ::[A](val head: A, `private var next`: List[A]) extends List[A]
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, 2, 3)
+
+val field = classOf[::[Int]].getDeclaredField("next")
+field.setAccessible(true)
+field.set(list, List(4,5,6))
+
+list
+// list: List[Int] = List(1, 4, 5, 6)
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, 2, 3)
+
+val field = classOf[::[Int]].`getDeclaredField("next")`
+field.setAccessible(true)
+field.set(list, List(4,5,6))
+
+list
+// list: List[Int] = List(1, 4, 5, 6)
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, 2, 3)
+
+val field = classOf[::[Int]].getDeclaredField("next")
+field.`setAccessible(true)`
+field.set(list, List(4,5,6))
+
+list
+// list: List[Int] = List(1, 4, 5, 6)
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, 2, 3)
+
+val field = classOf[::[Int]].getDeclaredField("next")
+field.setAccessible(true)
+field.`set`(list, `List(4,5,6)`)
+
+list
+// list: List[Int] = List(1, 4, 5, 6)
+```
+]
+
+---
+# Runtime Reflection
+
+.sixty-seven-left[
+```scala
+val list = List(1,2,3)
+// list: List[Int] = List(1, `2, 3`)
+
+val field = classOf[::[Int]].getDeclaredField("next")
+field.setAccessible(true)
+field.set(list, List(4,5,6))
+
+list
+// list: List[Int] = List(1, `4, 5, 6`)
+```
+.center[
+## Mutate an immutable list 😱😱😱
+]
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+
+.forty-two-right[
+```scala
+def increment(value: Any) =
+  if(value.isInstanceOf[Int])
+    value.asInstanceOf[Int] + 1
+  else if(value.isInstanceOf[Double])
+    value.asInstanceOf[Double] + 1.0
+  else
+    value
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+
+.forty-two-right[
+```scala
+def increment(value: Any) =
+  if(value.`isInstanceOf`[Int])
+    value.asInstanceOf[Int] + 1
+  else if(value.`isInstanceOf`[Double])
+    value.asInstanceOf[Double] + 1.0
+  else
+    value
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+
+.forty-two-right[
+```scala
+def increment(value: Any) =
+  if(value.isInstanceOf[Int])
+    value.`asInstanceOf`[Int] + 1
+  else if(value.isInstanceOf[Double])
+    value.`asInstanceOf`[Double] + 1.0
+  else
+    value
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int         => x + 1
+    case x: Double      => x + 1.0
+    `case x: Option[Int] => x.map(_ + 1)`
+    case other          => other
+  }
+```
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+increment(Some(1))
+// res: Any = `Some(2)`
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int         => x + 1
+    case x: Double      => x + 1.0
+    case x: Option[Int] => x.map(_ + 1)
+    case other          => other
+  }
+```
+]
+
+.eighty-seven-left[
+```scala
+increment(Some("Hello"))
+// java.lang.`ClassCastException: class String cannot be cast to class Integer`
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int         => x + 1
+    case x: Double      => x + 1.0
+    case x: Option[Int] => x.map(_ + 1)
+    case other          => other
+  }
+```
+]
+
+.eighty-seven-left[
+```scala
+increment(Some("Hello"))
+// java.lang.ClassCastException: class String cannot be cast to class Integer
+```
+
+```scala
+Some("Hello").isInstanceOf[Option[Int]]
+// res: Boolean = `true`
+```
+]
+
+---
+# Open Trait
+
+.seventy-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[User]
+}
+```
+]
+
+---
+# Open Trait
+
+.seventy-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[User]
+}
+
+class OktaAuth(client: RestClient)      extends Auth { /* ... */ }
+
+class MockAuth(users: Map[Token, User]) extends Auth { /* ... */ }
+```
+]
+
+---
+# HTTP Server
+
+<br><br><br>
+
+.center[
+<img src="../img/foundation/http-server.svg" style="width:500px;"/>
+]
+
+---
+# HTTP Middleware
+
+<br><br><br>
+
+.center[
+<img src="../img/foundation/http-middleware-add-header.svg" style="width:800px;"/>
+]
+
+---
+# HTTP Middleware
+
+<br><br><br>
+
+.center[
+<img src="../img/foundation/http-middleware-authenticate-user.svg" style="width:800px;"/>
+]
+
+---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.headers.get("Authorization") match {
+    case None => reject(Forbidden())
+
+    case Some(token) =>
+      auth.authenticate(token).map(user =>
+        provide(user)
+      )
+  }
+```
+]
+
+---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.`headers.get("Authorization")` match {
+    case None => reject(Forbidden())
+
+    case Some(token) =>
+      auth.authenticate(token).map(user =>
+        provide(user)
+      )
+  }
+```
+]
+
+---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.headers.get("Authorization") match {
+    case `None => reject(Forbidden())` // 403 Status
+
+    case Some(token) =>
+      auth.authenticate(token).map(user =>
+        provide(user)
+      )
+  }
+```
+]
+
+---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.headers.get("Authorization") match {
+    case None => reject(Forbidden()) // 403 Status
+
+    case `Some(token)` =>
+      `auth.authenticate(token)`.map(user =>
+        provide(user)
+      )
+  }
+```
+]
+
+---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.headers.get("Authorization") match {
+    case None => reject(Forbidden()) // 403 Status
+
+    case Some(token) =>
+      auth.authenticate(token).map(`user` =>
+        `provide(user)` // pass it down the line
+      )
+  }
+```
+]
+
+---
+# Auth instance is defined in a config file
+
+.forty-seven-left[
+## production.conf
+
+```bash
+{
+  auth : {
+    type    : "`Okta`"
+    baseUrl : "https://okta.com/auth0"
+    api-key : "X28fd-OS0-8S"
+  }
+}
+```
+]
+
+.forty-seven-right[
+## local.conf
+
+```bash
+{
+  auth : {
+    type : "`Mock`"
+    users : {
+      "bob" : "abcd"
+      "eda" : "xxxx"
+    }
+  }
+}
+```
+]
+
+---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _ =>
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.authenticate(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, `env: Env`) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _ =>
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.authenticate(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+.twenty-seven-right[
+```scala
+enum Env {
+  case Local, UAT, Prod
+}
+```
+]
+
+---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  `(env, auth) match` {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _ =>
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.authenticate(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+.twenty-seven-right[
+```scala
+enum Env {
+  case Local, UAT, Prod
+}
+```
+]
+
+---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    `case (Prod, _: MockAuth) => InternalServerError()`
+    case _ =>
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.authenticate(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+.twenty-seven-right[
+```scala
+enum Env {
+  case Local, UAT, Prod
+}
+```
+]
+
+---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    `case _ => ` // same as before
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.authenticate(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+.twenty-seven-right[
+```scala
+enum Env {
+  case Local, UAT, Prod
+}
+```
+]
+
+---
+# Increase load
+
+<br>
+
+.seventy-seven-left.center[
+<img src="../img/foundation/http-auth-no-cache.svg" style="width:700px;"/>
+]
+
+---
+# Cache authenticate requests
+
+<br>
+
+.seventy-seven-left.center[
+<img src="../img/foundation/http-auth-cache-success.svg" style="width:700px;"/>
+]
+
+---
+# Cache authenticate requests
+
+<br>
+
+.seventy-seven-left.center[
+<img src="../img/foundation/http-auth-cache-fail.svg" style="width:700px;"/>
+]
+
+---
+# Cache authenticate requests
+
+.seventy-two-left[
+```scala
+class CachedAuth(
+  cache     : Cache,
+  underlying: Auth,
+) extends Auth { /* ... */ }
+```
+]
+
+
+---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _                   => // check header and dispatch to auth
+  }
+```
+]
+
+---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _                   => // check header and dispatch to auth
+  }
+```
+
+<br>
+
+```scala
+val env : Env  = Prod
+val auth: Auth = new CachedAuth(cache, new MockAuth(...))
+```
+]
+
+---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    `case _ `                  => // check header and dispatch to auth
+  }
+```
+
+<br>
+
+```scala
+val env : Env  = Prod
+val auth: Auth = new `CachedAuth`(cache, new `MockAuth`(...))
+```
+]
+
+---
+# Safe pattern matching keywords
+
+.forty-seven-left[
+## 1. Final class
+
+## 2. Sealed class/trait
+
+## 3. Primitives (Int, Boolean, ...)
+
+## 4. Case class/object
+]
+
+---
+# Unsafe pattern matching keywords
+
+.forty-seven-left[
+## 1. Abstract class
+
+## 2. Open class/trait (new in Scala 3)
+
+## 3. No keyword, open by default
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is     valid, revoke makes it invalid
+  // if the token is NOT valid, do nothing
+  def revoke(token: Token): Future[Unit]
+}
+```
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is     valid, revoke makes it invalid
+  // if the token is NOT valid, do nothing
+  def revoke(token: Token): Future[Unit]
+}
+```
+
+```scala
+def checkAuth(auth: Auth) =
+  test("revoke makes token invalid") {
+    forAll { (token: Token) =>
+      for {
+        _    <- auth.revoke(token)
+        user <- auth.authenticate(token)
+      } assert(user == None)
+    }
+  }
+```
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is     valid, revoke makes it invalid
+  // if the token is NOT valid, do nothing
+  def revoke(token: Token): Future[Unit]
+}
+```
+
+```scala
+def checkAuth(auth: Auth) =
+  test("revoke makes token invalid") {
+    forAll { (token: Token) =>
+      for {
+        _    <- `auth.revoke(token)`
+        user <- `auth.authenticate(token)`
+      } assert(user == None)
+    }
+  }
+```
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is     valid, revoke makes it invalid
+  // if the token is NOT valid, do nothing
+  def revoke(token: Token): Future[Unit]
+}
+```
+
+```scala
+def checkAuth(auth: Auth) =
+  test("revoke makes token invalid") {
+    forAll { (token: Token) =>
+      for {
+        _    <- auth.revoke(token)
+        `user` <- auth.authenticate(token)
+      } assert(user == `None`)
+    }
+  }
+```
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+# .white[Summary]
+
+<br>
+
+## .white[Ignore runtime reflection]
+
+## .white[Reflection is used in pattern matching]
+
+## .white[Two dangerous use cases:]
+   * ### .white[Classes with type parameters]
+   * ### .white[Classes meant for extension]
+
+---
+# Scala 3: Matchable trait
+
+<br>
+
+.sixty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+
+// warning pattern selector should be an instance of
+// `Matchable`, but it has unmatchable type `Any` instead
+```
+]
+
+--
+
+.thirty-seven-right[
+<img src="../img/foundation/matchable.svg" style="width:400px;"/>
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

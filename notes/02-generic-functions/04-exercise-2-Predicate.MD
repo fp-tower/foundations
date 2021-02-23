@@ -1,6 +1,7 @@
 # Notes
 
 * Documentation for the [Infix operator syntax](https://docs.scala-lang.org/tour/operators.html)
+* If you couldn't implement `contramap` or `by` functions, don't worry. It is completely normal. These questions were meant to be difficult. Try again a week or two and don't hesitate to ask questions on Slack!
 
 ## How to improve type inference of by
 
@@ -39,20 +40,27 @@ by((_: User).age)(isBiggerThan(18))
 
 This is not really satisfactory because it requires the caller of `by` to know this trick.
 
-Another option is to create a dummy class with an `apply` method:
+The problem is that type parameters cannot be curried like function parameters are:
+```scala
+def by[From][To] // doesn't work
+```
+
+There is a workaround, we can create a dummy class with a single `apply` method:
 
 ```scala
-class ByOps[From] {
+class ByPartiallyApplied[From] {
   def apply[To](zoom: From => To)(predicate: Predicate[To]): Predicate[From] = ???
 }
 ```
 
-And then change `by` so that it creates an instance of `ByOps`:
+And then change `by` so that it creates an instance of `ByPartiallyApplied`:
 
 ```scala
-def by[From]: ByOps[From] = new ByOps[From] {}
+def by[From]: ByPartiallyApplied[From] = new ByPartiallyApplied[From] {}
 
 by[User].apply(_.age)(isBiggerThan(18))
 // which can be shorten to
 by[User](_.age)(isBiggerThan(18))
 ```
+
+I would have never found this trick myself, and I am pretty sure Scala wasn't design with this in mind, but it works.

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complexity</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Complexity]
+
+---
+# Complexity
+
+<br>
+.sixty-two-left[.center[
+## "Software systems get replaced not when they .hl2[wear out] but when they crumble under their own weight because they have become .hl2[too complex]"
+
+### Plain Functional Programming by Martin Odersky
+]]
+
+---
+# FP Function
+
+<br>
+
+.sixty-two-left[.center[
+<img src="../img/foundation/fp-function-string-diagram-1.svg" style="width:600px;"/>
+]]
+
+---
+# Function composition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/fp-function-compose-1.svg" style="width:800px;"/>
+]]
+
+---
+# Function composition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/fp-function-compose-2.svg" style="width:800px;"/>
+]]
+
+---
+# Function composition
+
+.sixty-two-left[.center[
+<img src="../img/foundation/fp-function-compose-3.svg" style="width:800px;"/>
+]]
+
+
+---
+<br><br><br>
+
+.sixty-two-left[.center[
+<img src="../img/screenshot/shopping-basket.png" style="width:1000px;"/>
+]]
+
+---
+<br><br>
+
+<img src="../img/screenshot/invoice-en.png" style="width:700px;"/>
+
+---
+# Generate an invoice
+.fifty-two-left[
+<img src="../img/foundation/order-to-invoice-1.svg" style="width:500px;"/>
+]
+
+.forty-seven-right[.center[
+<br><br><br><br>
+<img src="../img/screenshot/invoice-en.png" style="width:500px;"/>
+]]
+
+---
+# Golden Tests
+
+.sixty-two-left[
+```scala
+def invoiceTest(
+  order   : Order,
+  customer: Customer,
+  fileName: String
+) =
+  test(s"check invoice $fileName"){
+    val expected = readFile(fileName)
+    val result   = generateInvoice(order, customer)
+
+    assert(result == expected)
+  }
+
+invoiceTest(order1, bob, "invoice-bob-1.pdf")
+invoiceTest(order2, bob, "invoice-bob-2.pdf")
+invoiceTest(order2, eda, "invoice-eda-2.pdf")
+```
+]
+
+---
+# Generate an invoice
+
+.fifty-two-left[
+<img src="../img/foundation/order-to-invoice-2a.svg" style="width:500px;"/>
+]
+
+.forty-seven-right[.center[
+<br><br><br><br>
+<img src="../img/screenshot/invoice-en.png" style="width:500px;"/>
+]]
+
+
+---
+# Dependency Injection
+
+.fifty-two-left[
+<img src="../img/foundation/order-to-invoice-2b.svg" style="width:500px;"/>
+]
+
+.forty-seven-right[.center[
+<br><br><br><br>
+<img src="../img/screenshot/invoice-en.png" style="width:500px;"/>
+]]
+
+---
+# Generate an invoice in different languages
+<br><br>
+
+.forty-seven-left[.center[
+
+<img src="../img/screenshot/invoice-en.png" style="width:500px;"/>
+]]
+
+.forty-seven-right[.center[
+<img src="../img/screenshot/invoice-fr.png" style="width:500px;"/>
+]]
+
+---
+# Generate an invoice in different languages
+.seventy-two-left[
+<img src="../img/foundation/order-to-invoices-0.svg" style="width:600px;"/>
+]
+
+---
+# Generate an invoice in different languages
+.seventy-two-left[
+<img src="../img/foundation/order-to-invoices-1.svg" style="width:600px;"/>
+]
+
+---
+# Generate an invoice in different languages
+.seventy-two-left[
+<img src="../img/foundation/order-to-invoices-2.svg" style="width:600px;"/>
+]
+
+---
+# Generate an invoice in different languages
+.seventy-two-left[
+<img src="../img/foundation/order-to-invoices-2b.svg" style="width:600px;"/>
+]
+
+---
+# Generate an invoice
+
+.fifty-two-left[
+<img src="../img/foundation/order-to-invoice-3a.svg" style="width:500px;"/>
+]
+
+--
+
+.forty-seven-right[.center[
+<img src="../img/screenshot/invoice-en-fr.png" style="width:500px;"/>
+]]
+
+---
+# Generate an invoice (FP version)
+
+<br><br><br>
+.fifty-two-left[
+<img src="../img/foundation/order-to-invoice-fp-1.svg" style="width:600px;"/>
+]
+
+---
+# Generate an invoice (FP version)
+
+<br><br><br>
+.fifty-two-left[
+<img src="../img/foundation/order-to-invoice-fp-2.svg" style="width:600px;"/>
+]
+
+.thirty-seven-right[
+```scala
+case class Invoice(
+  invoiceNumber  : String,
+  createdAt      : LocalDate,
+  customerName   : String,
+  customerAddress: Address,
+  items          : List[Item],
+  totalNet       : Double,
+  totalAfterTax  : Double,
+)
+```
+]
+
+---
+# Generate invoices (FP version)
+
+.seventy-two-left[
+<img src="../img/foundation/order-to-invoices-fp-2.svg" style="width:900px;"/>
+]
+
+
+---
+# FP vs non-FP functions
+
+<br>
+.center[
+<img src="../img/foundation/order-to-invoice-comparison-2.svg" style="width:1000px;"/>
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+<br>
+# .white[Summary]
+
+<br>
+
+## .white[1.] .white[Easier to test (Dependency injection)]
+
+## .white[2.] .white[Easier to build (Lego effect)]
+
+## .white[3.] .white[Faster to onboard developer]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
