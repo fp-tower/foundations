@@ -22,25 +22,23 @@ which is viewed as a collection of `Char` in Scala.
 for {
   width  <- List(1, 2, 3)
   height <- List(4, 5)
-} println("area is ${width * height}")
+} println(s"area is ${width * height}")
 ```
 
-1. "area is 12"
+1. (c) "area is 10"
 1. Nothing, this code prints only 3 lines 
-1. "area is 5"
-1. (c) "area is ${width * height}"
+1. "area is 12"
+1. "area is ${width * height}"
 
 #### Explanation
 
-The `s` String interpolator is missing which means `${width * height}` is not interpreted.
-
-If we add the String interpolator, then "area is 10" would be printed because the for-loop will evaluate the variables in the following order:
-1. width = 1, height = 4 
-1. width = 1, height = 5 
-1. width = 2, height = 4
-1. width = 2, height = 5 
-1. width = 3, height = 4 
-1. width = 3, height = 5
+The for-loop executes in the following order:
+1. width = 1, height = 4, println("area is 4") 
+1. width = 1, height = 5, println("area is 5") 
+1. width = 2, height = 4, println("area is 8") 
+1. width = 2, height = 5, println("area is 10") -- good answer
+1. width = 3, height = 4, println("area is 12")  
+1. width = 3, height = 5, println("area is 15") 
 
 ### What is printed?
 
