@@ -1,8 +1,9 @@
-package answers.action
+package answers.action.v2
 
 import scala.util.Random
 
 object LazyAction {
+
   def delay[A](block: => A): LazyAction[A] =
     () => block
 
