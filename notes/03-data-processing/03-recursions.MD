@@ -10,3 +10,11 @@
 1. [JDK 15](https://openjdk.java.net/projects/jdk/15/) with sealed class
 1. Iterate over a file structure using java [streams](https://www.baeldung.com/java-folder-size)
 1. [Vector](https://docs.scala-lang.org/overviews/collections-2.13/concrete-immutable-collection-classes.html#vectors) has a branching factor of 32 
+
+
+| Type         | GitHub link |
+|--------------|-------------|
+| Exercises    | [JsonExercises.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/dataprocessing/JsonExercises.scala) |
+| Tests        | [JsonExercisesTest.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/dataprocessing/JsonExercisesTest.scala) |
+| Answers      | [JsonAnswers.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/answers/dataprocessing/JsonAnswers.scala) |
+| Test Answers | [JsonAnswersTest.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/answers/dataprocessing/JsonAnswersTest.scala) |

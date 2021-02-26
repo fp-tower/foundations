@@ -5,11 +5,9 @@
 * Documentation for [Self-type](https://docs.scala-lang.org/tour/self-types.html)
 * How to capture this in [JavaScript](https://stackoverflow.com/questions/962033/what-underlies-this-javascript-idiom-var-self-this)
 
-## New concepts
-
-* `Try` to capture `Exception`
-   * we used `isFailure` to check if a function throws an `Exception`
-   * we pattern matched on a `Try` using two cases: `Success` and `Failure`
-* PBT round-trip strategy.
-* `Gen` and `Arbitrary` to generate random values for property-based testing.
-* Implicit parameters and values. 
+| Type         | GitHub link |
+|--------------|-------------|
+| Exercises    | [GenericFunctionExercises.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/generic/GenericFunctionExercises.scala) |
+| Tests        | [GenericFunctionExercisesTest.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/generic/GenericFunctionExercisesTest.scala) |
+| Answers      | [GenericFunctionAnswers.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/answers/generic/GenericFunctionAnswers.scala) |
+| Test Answers | [GenericFunctionAnswersTest.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/answers/generic/GenericFunctionAnswersTest.scala) | 

@@ -1,7 +1,5 @@
 The project is hosted on Github at https://github.com/fp-tower/foundations
 
-The exercise file for this video is [ValueFunctionExercises.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/valfunction/ValueFunctionExercises.scala)
-
 You can do the exercises and tests using Gitpod online editor (requires a free account):
 
 https://gitpod.io/#https://github.com/fp-tower/foundations
