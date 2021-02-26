@@ -72,6 +72,16 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
     }
   }
 
+  test("wordCount - size(filter)") {
+    forAll { (words: List[String]) =>
+      wordCount(words).foreach {
+        case (word, count) =>
+          val filtered = words.filter(_ == word)
+          assert(count == size(filtered))
+      }
+    }
+  }
+
   test("all words are part of the result") {
     forAll { (words: List[String]) =>
       val keys = wordCount(words).keySet
