@@ -19,9 +19,7 @@ trait LazyAction[A] {
     }
 
   def flatMap[Next](next: A => LazyAction[Next]): LazyAction[Next] =
-    delay {
-      next(this.execute()).execute()
-    }
+    andThen(next)
 
   def *>[Other](other: LazyAction[Other]): LazyAction[Other] =
     this.flatMap(_ => other)

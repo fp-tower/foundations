@@ -13,37 +13,7 @@ object ConsoleApp extends App {
 
 object ConsoleAnswers {
 
-  case class User(name: String, age: Int)
-
-  def userConsole: LazyAction[User] =
-    writeLine("What's your name?").andThen { _ =>
-      readLine.andThen { name =>
-        writeLine("What's your age?").andThen { _ =>
-          readInt.andThen { age =>
-            val user = User(name, age)
-            writeLine(s"User is $user")
-              .map(_ => user)
-          }
-        }
-      }
-    }
-
-  def userConsoleRetryFlatMap: LazyAction[User] = {
-    val promptAge = writeLine("What's your age?") *> readInt
-
-    for {
-      _    <- writeLine("What's your name?")
-      name <- readLine
-      age  <- promptAge.retry(3)
-      user = User(name, age)
-      _ <- writeLine(s"User is $user")
-    } yield user
-  }
-
-  def writeLine(message: String): LazyAction[Unit] =
-    delay {
-      println(message)
-    }
+  case class User(name: String, age: Int, today: LocalDate)
 
   val readLine: LazyAction[String] =
     delay {
@@ -53,14 +23,46 @@ object ConsoleAnswers {
   val readInt: LazyAction[Int] =
     readLine.andThen(parseToNumber)
 
-  def parseToNumber(line: String): LazyAction[Int] =
-    delay {
-      line.toInt
-    }
-
   val readToday: LazyAction[LocalDate] =
     delay {
       LocalDate.now()
+    }
+
+  val userConsole: LazyAction[User] =
+    writeLine("What's your name?").andThen { _ =>
+      readLine.andThen { name =>
+        writeLine("What's your age?").andThen { _ =>
+          readInt.andThen { age =>
+            readToday.andThen { today =>
+              val user = User(name, age, today)
+              writeLine(s"User is $user").map(_ => user)
+            }
+          }
+        }
+      }
+    }
+
+  val userConsoleRetryFlatMap: LazyAction[User] = {
+    val promptAge = writeLine("What's your age?") *> readInt
+
+    for {
+      _     <- writeLine("What's your name?")
+      name  <- readLine
+      age   <- promptAge.retry(3)
+      today <- readToday
+      user = User(name, age, today)
+      _ <- writeLine(s"User is $user")
+    } yield user
+  }
+
+  def writeLine(message: String): LazyAction[Unit] =
+    delay {
+      println(message)
+    }
+
+  def parseToNumber(line: String): LazyAction[Int] =
+    delay {
+      line.toInt
     }
 
 }
