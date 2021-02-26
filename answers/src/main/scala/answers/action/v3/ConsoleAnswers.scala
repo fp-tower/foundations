@@ -8,12 +8,19 @@ import scala.io.StdIn
 object ConsoleApp extends App {
   import ConsoleAnswers._
 
-  userConsoleRetryFlatMap.execute()
+  val readUser = testableUserConsole(Console.system, Clock.system)
+
+  readUser.execute()
 }
 
 object ConsoleAnswers {
 
   case class User(name: String, age: Int, today: LocalDate)
+
+  def writeLine(message: String): LazyAction[Unit] =
+    delay {
+      println(message)
+    }
 
   val readLine: LazyAction[String] =
     delay {
@@ -22,6 +29,11 @@ object ConsoleAnswers {
 
   val readInt: LazyAction[Int] =
     readLine.andThen(parseToNumber)
+
+  def parseToNumber(line: String): LazyAction[Int] =
+    delay {
+      line.toInt
+    }
 
   val readToday: LazyAction[LocalDate] =
     delay {
@@ -55,14 +67,17 @@ object ConsoleAnswers {
     } yield user
   }
 
-  def writeLine(message: String): LazyAction[Unit] =
-    delay {
-      println(message)
-    }
+  def testableUserConsole(console: Console, clock: Clock): LazyAction[User] = {
+    val promptAge = console.writeLine("What's your age?") *> console.readInt
 
-  def parseToNumber(line: String): LazyAction[Int] =
-    delay {
-      line.toInt
-    }
+    for {
+      _     <- console.writeLine("What's your name?")
+      name  <- console.readLine
+      age   <- promptAge.retry(3)
+      today <- clock.readToday
+      user = User(name, age, today)
+      _ <- console.writeLine(s"User is $user")
+    } yield user
+  }
 
 }

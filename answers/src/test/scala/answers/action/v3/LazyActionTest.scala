@@ -2,8 +2,6 @@ package answers.action.v3
 
 import org.scalatest.funsuite.AnyFunSuite
 
-import scala.util.Try
-
 class LazyActionTest extends AnyFunSuite {
 
   test("delay is lazy") {
@@ -45,6 +43,12 @@ class LazyActionTest extends AnyFunSuite {
     assert(state == 1)
   }
 
+  test("attempt") {
+    assert(LazyAction.delay(()).attempt.execute().isSuccess)
+
+    assert(LazyAction.fail(new Exception("Boom!")).attempt.execute().isFailure)
+  }
+
   test("retry") {
     var state = 0
     val action = LazyAction.delay {
@@ -52,9 +56,9 @@ class LazyActionTest extends AnyFunSuite {
       if (state <= 3) sys.error("Boom")
     }
 
-    assert(Try(action.execute()).isFailure)
-    assert(Try(action.retry(2).execute()).isFailure)
-    assert(Try(action.retry(3).execute()).isSuccess)
+    assert(action.attempt.execute().isFailure)
+    assert(action.retry(2).attempt.execute().isFailure)
+    assert(action.retry(3).attempt.execute().isSuccess)
   }
 
 }

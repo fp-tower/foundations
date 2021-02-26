@@ -1,6 +1,6 @@
 package answers.action.v3
 
-import answers.action.v3.LazyAction.{delay, fail}
+import answers.action.v3.LazyAction._
 
 import scala.util.{Failure, Success, Try}
 
@@ -24,17 +24,19 @@ trait LazyAction[A] {
   def *>[Other](other: LazyAction[Other]): LazyAction[Other] =
     this.flatMap(_ => other)
 
-  def retry(attempts: Int): LazyAction[A] =
-    if (attempts <= 0) fail(new IllegalArgumentException("Failed too many times"))
-    else if (attempts == 1) this
-    else
-      delay {
-        Try(this.execute()) match {
-          case Success(value) => value
-          case Failure(_)     => retry(attempts - 1).execute()
-        }
-      }
+  def attempt: LazyAction[Try[A]] =
+    delay {
+      Try(this.execute())
+    }
 
+  def retry(remainingAttempts: Int): LazyAction[A] =
+    if (remainingAttempts <= 0) fail(new IllegalArgumentException("Failed too many times"))
+    else if (remainingAttempts == 1) this
+    else
+      attempt.flatMap {
+        case Success(value) => cache(value)
+        case Failure(_)     => retry(remainingAttempts - 1)
+      }
 }
 
 object LazyAction {
@@ -43,8 +45,17 @@ object LazyAction {
       def execute(): A = block
     }
 
+  /** alias for delay */
+  def apply[A](block: => A): LazyAction[A] =
+    delay(block)
+
   def fail[A](error: Throwable): LazyAction[A] =
     new LazyAction[A] {
       def execute(): A = throw error
+    }
+
+  def cache[A](constant: A): LazyAction[A] =
+    new LazyAction[A] {
+      def execute(): A = constant
     }
 }
