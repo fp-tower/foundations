@@ -28,6 +28,7 @@ trait LazyAction[A] {
 
   def retry(attempts: Int): LazyAction[A] =
     if (attempts <= 0) fail(new IllegalArgumentException("Failed too many times"))
+    else if (attempts == 1) this
     else
       delay {
         Try(this.execute()) match {

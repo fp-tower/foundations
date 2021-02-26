@@ -52,6 +52,7 @@ object ConsoleAnswers {
 
     while (age.isEmpty && remaining > 0) {
       remaining -= 1
+      println("What's your age?")
       age = Try(StdIn.readLine().toInt).toOption
     }
 
