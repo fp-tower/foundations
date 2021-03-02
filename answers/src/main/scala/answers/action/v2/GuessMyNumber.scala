@@ -15,7 +15,7 @@ object GuessMyNumber {
     var found             = false
 
     while (remainingAttempts > 0 && !found) {
-      println("Guess a number between 1 and 100")
+      println(s"Guess a number between 1 and 100, remaining attempts: $remainingAttempts")
       val guess = StdIn.readLine().toInt
       if (guess > numberToGuess) println("Guess is too high")
       else if (guess < numberToGuess) println("Guess is too low")
