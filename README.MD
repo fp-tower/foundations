@@ -103,6 +103,8 @@ data type that supports powerful retry strategies and concurrency primitives.
 * Discover why Futures are not suitable for actions
 * Learn how to extend an API using algebra and interpreters
 
+### Slides
+1. [Evaluation](https://blog.fp-tower.com/foundations/actions/evaluation.html#1)
 
 ## 6. Error Handling
 

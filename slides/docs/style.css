@@ -69,8 +69,9 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 
 .cols { display: flex; }
 .fifty { flex: 50%; }
-.fortyfive { flex: 45%; }
+.forty-five { flex: 45%; }
 .fortyfive-middle{ flex: 45%; display: flex; align-items: center; justify-content: center;}
+.thirty { flex: 30%; }
 .ten { flex: 10%; }
 .footer { position: absolute; bottom: 12px; left: 45px }
 .reference {font-size: 16px; position: fixed; left: 50%; bottom: 12px; transform: translate(-50%, -50%); margin: 0 auto;}

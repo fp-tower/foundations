@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter
 import scala.io.StdIn
 
 // Run the App using the green arrow next to object (if using IntelliJ)
-// or run `sbt` in your terminal to open it in shell mode then type:
+// or run `sbt` in the terminal to open it in shell mode then type:
 // exercises/runMain exercises.actions.UserCreationApp
 object UserCreationApp extends App {
   import UserCreationExercises._
@@ -91,6 +91,7 @@ object UserCreationExercises {
     ???
 
   // 4. Refactor `readDateOfBirth` and `readSubscribeToMailingList` using `retry`.
+  // Does it produce the same result? If no, can you update `retry` so that it does?
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
