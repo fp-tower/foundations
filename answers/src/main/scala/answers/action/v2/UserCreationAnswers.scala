@@ -10,13 +10,13 @@ object UserCreationApp extends App {
   import UserCreationAnswers._
 
   UserCreationAnswers.readUser(
-    readDateOfBirthV2(dobFormatter, 3),
-    readSubscribeToMailingListV2(3)
+    readDateOfBirthV2(Console.system, dobFormatter, 3),
+    readSubscribeToMailingListV2(Console.system, 3)
   )
 }
 
 object UserCreationAnswers {
-  val dobFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+  val dobFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-uuuu")
 
   case class User(
     name: String,
@@ -39,35 +39,35 @@ object UserCreationAnswers {
     user
   }
 
-  def readDateOfBirth(formatter: DateTimeFormatter, maxAttempt: Int): LocalDate = {
+  def readDateOfBirth(console: Console, formatter: DateTimeFormatter, maxAttempt: Int): LocalDate = {
     var date: Option[LocalDate] = None
     var remaining: Int          = maxAttempt
 
     while (date.isEmpty && remaining > 0) {
       remaining -= 1
-      println("What's your date of birth (dd-mm-yyyy)?")
-      val line = StdIn.readLine()
+      console.writeLine("What's your date of birth (dd-mm-yyyy)?")
+      val line = console.readLine()
       date = Try(LocalDate.parse(line, formatter)).toOption
       if (date.isEmpty) {
         // Can't escape \" with String interpolation, see https://github.com/scala/bug/issues/6476
-        println(s""""$line" is is not a valid date""")
+        console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
       }
     }
 
     date.getOrElse(sys.error(s"Failed to read a date after $maxAttempt attempts"))
   }
 
-  def readSubscribeToMailingList(maxAttempt: Int): Boolean = {
+  def readSubscribeToMailingList(console: Console, maxAttempt: Int): Boolean = {
     var subscribed: Option[Boolean] = None
     var remaining: Int              = maxAttempt
 
     while (subscribed.isEmpty && remaining > 0) {
       remaining -= 1
-      println("Would you like to subscribe to our mailing list? [Y/N]")
-      StdIn.readLine() match {
-        case "Y"   => subscribed = Some(true)
-        case "N"   => subscribed = Some(false)
-        case other => println(s"""Incorrect answer, you must answer with "Y" for Yes or "N" for "No"""")
+      console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
+      console.readLine() match {
+        case "Y" => subscribed = Some(true)
+        case "N" => subscribed = Some(false)
+        case _   => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No""""")
       }
     }
 
@@ -90,24 +90,7 @@ object UserCreationAnswers {
     result.getOrElse(throw error)
   }
 
-  def readDateOfBirthV2(formatter: DateTimeFormatter, maxAttempt: Int): LocalDate =
-    retry(maxAttempt) { () =>
-      println("What's your date of birth (dd-mm-yyyy)?")
-      val line = StdIn.readLine()
-      LocalDate.parse(line, formatter)
-    }
-
-  def readSubscribeToMailingListV2(maxAttempt: Int): Boolean =
-    retry(maxAttempt) { () =>
-      println("Would you like to subscribe to our mailing list? [Y/N]")
-      StdIn.readLine() match {
-        case "Y"   => true
-        case "N"   => false
-        case other => throw new IllegalArgumentException(s"""Expected "Y" or "N", but received "$other"""")
-      }
-    }
-
-  def retryWithError[A](maxAttempt: Int)(block: => A)(onError: Throwable => Any): A = {
+  def retryWithError[A](maxAttempt: Int)(block: => A, onError: Throwable => Any): A = {
     var error: Throwable  = new IllegalArgumentException("Failed too many times")
     var result: Option[A] = None
     var remaining: Int    = maxAttempt
@@ -123,37 +106,27 @@ object UserCreationAnswers {
     result.getOrElse(throw error)
   }
 
-  def retryWithErrorV2[E, A](maxAttempt: Int)(block: => Either[E, A])(onError: E => Any): A = {
-    require(maxAttempt > 0, "maxAttempt must be bigger than 0")
-    var result: Option[A] = None
-    var remaining: Int    = maxAttempt
+  def readDateOfBirthV2(console: Console, formatter: DateTimeFormatter, maxAttempt: Int): LocalDate =
+    retryWithError(maxAttempt)(
+      block = {
+        console.writeLine("What's your date of birth (dd-mm-yyyy)?")
+        val line = console.readLine()
+        LocalDate.parse(line, formatter)
+      },
+      onError = _ => console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
+    )
 
-    while (result.isEmpty && remaining > 0) {
-      remaining -= 1
-      block match {
-        case Left(e)      => onError(e)
-        case Right(value) => result = Some(value)
-      }
-    }
-
-    result.getOrElse(sys.error("Failed too many times"))
-  }
-
-  def readDateOfBirthV3(formatter: DateTimeFormatter, maxAttempt: Int): LocalDate =
-    retryWithErrorV2(maxAttempt) {
-      println("What's your date of birth (dd-mm-yyyy)?")
-      val line = StdIn.readLine()
-      Try(LocalDate.parse(line, formatter)).toEither.left.map(_ => line)
-    }(line => println(s""""$line" is is not a valid date"""))
-
-  def readSubscribeToMailingListV3(maxAttempt: Int): Boolean =
-    retryWithErrorV2(maxAttempt) {
-      println("Would you like to subscribe to our mailing list? [Y/N]")
-      StdIn.readLine() match {
-        case "Y"   => Right(true)
-        case "N"   => Right(false)
-        case other => Left(other)
-      }
-    }(line => println(s""""$line" is is not a valid, expected "Y" or "N""""))
+  def readSubscribeToMailingListV2(console: Console, maxAttempt: Int): Boolean =
+    retryWithError(maxAttempt)(
+      block = {
+        console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
+        console.readLine() match {
+          case "Y" => true
+          case "N" => false
+          case _   => throw new IllegalArgumentException(s"""Incorrect format, enter "Y" for Yes or "N" for "No""""")
+        }
+      },
+      onError = e => console.writeLine(e.getMessage)
+    )
 
 }
