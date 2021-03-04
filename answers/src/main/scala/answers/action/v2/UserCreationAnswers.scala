@@ -3,15 +3,14 @@ package answers.action.v2
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
-import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
 
 object UserCreationApp extends App {
   import UserCreationAnswers._
 
-  UserCreationAnswers.readUser(
-    readDateOfBirthV2(Console.system, dobFormatter, 3),
-    readSubscribeToMailingListV2(Console.system, 3)
+  UserCreationAnswers.readUser(Console.system, Clock.system)(
+    readDateOfBirthV2(_, dobFormatter, 3),
+    readSubscribeToMailingListV2(_, 3)
   )
 }
 
@@ -25,17 +24,17 @@ object UserCreationAnswers {
     createdAt: Instant
   )
 
-  def readUser(
-    readDOB: => LocalDate,
-    readSubscribe: => Boolean
+  def readUser(console: Console, clock: Clock)(
+    readDOB: Console => LocalDate,
+    readSubscribe: Console => Boolean
   ): User = {
-    println("What's your name?")
-    val name                    = StdIn.readLine()
-    val dateOfBirth             = readDOB
-    val subscribedToMailingList = readSubscribe
-    val now                     = Instant.now()
+    console.writeLine("What's your name?")
+    val name                    = console.readLine()
+    val dateOfBirth             = readDOB(console)
+    val subscribedToMailingList = readSubscribe(console)
+    val now                     = clock.now()
     val user                    = User(name, dateOfBirth, subscribedToMailingList, now)
-    println(s"User is $user")
+    console.writeLine(s"User is $user")
     user
   }
 

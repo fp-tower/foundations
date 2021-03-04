@@ -1,6 +1,6 @@
 package answers.action.v2
 
-import java.time.LocalDate
+import java.time.{Instant, LocalDate}
 import java.time.format.DateTimeFormatter
 
 import answers.action.v2.UserCreationAnswers._
@@ -107,6 +107,27 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
         assert(result.isFailure)
       }
     }
+  }
+
+  test("readUser") {
+    val inputs  = ListBuffer("Bob", "12-03-1997", "Y")
+    val now     = Instant.now()
+    val console = Console.mock(inputs, ListBuffer.empty)
+    val clock   = Clock.constant(now)
+
+    val user = readUser(console, clock)(
+      readDateOfBirthV2(_, dobFormatter, 2),
+      readSubscribeToMailingListV2(_, 2)
+    )
+
+    val expectedUser = User(
+      name = "Bob",
+      dateOfBirth = LocalDate.of(1997, 3, 12),
+      subscribedToMailingList = true,
+      createdAt = now
+    )
+
+    assert(user == expectedUser)
   }
 
   test("retry when block always succeeds") {

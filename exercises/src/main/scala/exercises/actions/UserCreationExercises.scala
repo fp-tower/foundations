@@ -79,7 +79,7 @@ object UserCreationExercises {
   def readSubscribeToMailingList(console: Console, maxAttempt: Int): Boolean =
     ???
 
-  // 3. Implement `retry`, a function that evaluate a block of code until it succeeds or
+  // 4. Implement `retry`, a function that evaluate a block of code until it succeeds or
   // exhausts the number of retry.
   // If the code block succeeds, then `retry` returns the result.
   // If the code block throws an exception, then `retry` attempts to re-evaluate `block`.
@@ -100,14 +100,21 @@ object UserCreationExercises {
   def retry[A](maxAttempt: Int)(block: () => A): A =
     ???
 
-  // 4. Refactor `readDateOfBirth` and `readSubscribeToMailingList` using `retry`.
-  // Does it produce the same result? If no, can you update `retry` so that it does?
+  // 5. Refactor `readDateOfBirth` and `readSubscribeToMailingList` to use `retry`.
+  // Does it produce the same result?
+  // If not, try to implement `retryWithError` which provides an `onError` callback.
+  // `onError` should be called whenever `block` fails. For example,
+  // `onError = error => println("Oops: " + error.getMessage)`
+  def retryWithError[A](maxAttempt: Int)(block: => A, onError: Throwable => Any): A =
+    ???
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // 5.
-  def retryWithError[A](maxAttempt: Int)(block: => A, onError: Throwable => Any): A =
+  // 6. Implement a testable version of `readUser` which uses both
+  // the `Console` and `Clock` interface.
+  def readUser(console: Console, clock: Clock): User =
     ???
+
 }
