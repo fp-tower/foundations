@@ -14,7 +14,7 @@ cp -r slides/docs docs/
 
 cd docs
 
-for section in value-functions generic-functions data-processing bonus
+for section in value-functions generic-functions data-processing functional-programming actions error-handling bonus
 do
  mkdir -p "pdf/$section" "screenshots/$section"
 done
