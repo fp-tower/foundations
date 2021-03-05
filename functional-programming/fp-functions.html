@@ -117,7 +117,26 @@ val getUserAge: Map[User, Int] =
 # An FP Function is an immutable Map
 
 .sixty-two-left[
-<img src="../img/foundation/fp-function-map-2.svg" style="width:600px;"/>
+<img src="../img/foundation/fp-function-map-1a.svg" style="width:600px;"/>
+]
+
+
+.thirty-seven-right[
+<br><br><br><br><br>
+```scala
+val getUserAge: Map[User, Int] =
+  Map(
+    User("`Elise`", ...) -> `34`,
+    User("Bob"  , ...) -> 52,
+  )
+```
+]
+
+---
+# An FP Function is an immutable Map
+
+.sixty-two-left[
+<img src="../img/foundation/fp-function-map-2a.svg" style="width:600px;"/>
 ]
 
 .thirty-seven-right[
@@ -125,9 +144,9 @@ val getUserAge: Map[User, Int] =
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
-    User("Elise", ...) -> 34,
+    User("`Elise`", ...) -> `34`,
     User("Bob"  , ...) -> 52,
-    User("Zoe"  , ...) -> 34,
+    User("`Zoe`"  , ...) -> `34`,
   )
 ```
 ]
@@ -219,24 +238,13 @@ def jsonToInt(json: Json): Int =
   json match {
     case JsonNumber(number) => number
     case JsonString(text)   =>
-      throw new `IllegalArgumentException`("cannot convert a JsonString to a number")
+      `throw new IllegalArgumentException`("cannot convert a JsonString to a number")
   }
-```
-
-```scala
-jsonToInt(JsonNumber(12))
-// res: Int = 12
-```
-
-
-```scala
-jsonToInt(JsonString("Hello"))
-// IllegalArgumentException: cannot convert a JsonString to a number
 ```
 ]
 
 ---
-# 2. Mapping is static/immutable
+# 2. Mapping is static
 
 .forty-seven-left[
 ```scala
@@ -250,15 +258,30 @@ val function: Map[Input, Output] =
   )
 ```
 ]
---
+
+---
+# 2. Mapping is static
+
+.forty-seven-left[
+```scala
+val function: Map[Input, Output] =
+  scala.collection.immutable.Map(
+    input1 -> output1,
+    input2 -> output2,
+    input3 -> output3,
+    input4 -> output4,
+    // ...
+  )
+```
+]
 <br><br><br><br><br><br><br><br><br><br><br>
 .forty-seven-left[
 ```scala
 function(input1)
-// res = output1
+// res = `output1`
 
-function(input1) // next day
-// res = output1
+function(input1) // tomorrow
+// res = `output1`
 ```
 ]
 
@@ -276,14 +299,8 @@ val zoe = User("Zoe", ...)
 
 getUserAge(zoe)
 // res: Int = 34
-```
 
-.center[
-## 10 years later
-]
-
-```scala
-getUserAge(zoe)
+getUserAge(zoe) // 10 years later
 // res: Int = 34
 ```
 ]
@@ -316,6 +333,87 @@ def auditLog(service: String, message: String): Unit =
 ]
 
 ---
+class: medium-code
+
+# 3. Cannot perform actions
+
+.eighty-two-left[
+```scala
+def `createNewBlogPost`(author: User, title: String, content: String): Future[Unit] =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
+
+```scala
+def getAllUser: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
+
+```scala
+def auditLog(service: String, message: String): Unit =
+  println(s"[$service] $message")
+```
+]
+
+---
+class: medium-code
+
+# 3. Cannot perform actions
+
+.eighty-two-left[
+```scala
+def createNewBlogPost(author: User, title: String, content: String): Future[Unit] =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
+
+```scala
+def `getAllUser`: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
+
+```scala
+def auditLog(service: String, message: String): Unit =
+  println(s"[$service] $message")
+```
+]
+
+---
+class: medium-code
+
+# 3. Cannot perform actions
+
+.eighty-two-left[
+```scala
+def createNewBlogPost(author: User, title: String, content: String): Future[Unit] =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
+
+```scala
+def getAllUser: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
+
+```scala
+def `auditLog`(service: String, message: String): Unit =
+  println(s"[$service] $message")
+```
+]
+
+---
 # 3. Cannot perform actions
 
 .forty-seven-left[
@@ -329,10 +427,37 @@ val function: Map[Input, Output] =
     // ...
   )
 ```
+]
 
+---
+# 3. Cannot perform actions
+
+.forty-seven-left[
 ```scala
-function(input3)
-// res = output3
+val function: Map[Input, `Unit`] =
+  Map(
+    input1 -> (),
+    input2 -> (),
+    input3 -> (),
+    input4 -> (),
+    // ...
+  )
+```
+]
+
+---
+# 3. Cannot perform actions
+
+.forty-seven-left[
+```scala
+val function: Map[Input, Unit] =
+  Map(
+    input1 -> `()`,
+    input2 -> `()`,
+    input3 -> `()`,
+    input4 -> `()`,
+    // ...
+  )
 ```
 ]
 
@@ -353,10 +478,10 @@ val function: Map[Input, Unit] =
 
 ```scala
 function(input1)
-// res = ()
+// res = `()`
 
 function(input3)
-// res = ()
+// res = `()`
 ```
 ]
 
@@ -377,7 +502,7 @@ val function: Map[Input, Unit] =
 
 ```scala
 val function: Input => Unit =
-  _ => ()
+  `_ => ()`
 ```
 ]
 
@@ -415,7 +540,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 <br><br>
 
-# .white[Summary FP functions]
+# .white[FP functions]
 
 <br>
 
@@ -434,7 +559,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 <br><br>
 
-# .white[Summary FP functions]
+# .white[FP functions]
 
 <br>
 
@@ -536,9 +661,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 case class BlogEntry(
-  id: UUID,
-  title: String,
-  publishedAt: LocalDate
+  id         : UUID,
+  title      : String,
+  publishedAt: LocalDate,
 )
 
 def createBlogEntry(title: String): BlogEntry =
@@ -579,9 +704,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 case class BlogEntry(
-  id: UUID,
-  title: String,
-  publishedAt: LocalDate
+  id         : UUID,
+  title      : String,
+  publishedAt: LocalDate,
 )
 
 def createBlogEntry(title: String): BlogEntry =
