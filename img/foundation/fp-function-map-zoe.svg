@@ -24,9 +24,9 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.18.3\n2021-03-08 14:35:27 +0000</metadata>
-  <g id="fp-function-map-3" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1">
-    <title>fp-function-map-3</title>
-    <g id="fp-function-map-3_Layer_1">
+  <g id="fp-function-map-zoe" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1">
+    <title>fp-function-map-zoe</title>
+    <g id="fp-function-map-zoe_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_98">
         <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#70a3d8"/>
@@ -52,7 +52,7 @@
       </g>
       <g id="Graphic_102">
         <path d="M 459 90 L 495 126 L 459 162 L 423 126 Z" fill="#70a3d8"/>
-        <path d="M 459 90 L 495 126 L 459 162 L 423 126 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 459 90 L 495 126 L 459 162 L 423 126 Z" stroke="#eabc00" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
         <text transform="translate(437.72 113.5)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="10.88" y="19">34</tspan>
         </text>
@@ -65,7 +65,7 @@
         </text>
       </g>
       <g id="Line_107">
-        <line x1="134.12195" y1="134.12195" x2="410.9821" y2="127.20045" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line x1="134.12195" y1="134.12195" x2="408.9125" y2="127.25219" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
       <g id="Line_109">
         <line x1="193.81395" y1="220.18605" x2="459.3963" y2="255.1311" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -90,20 +90,13 @@
       </g>
       <g id="Graphic_114">
         <path d="M 117 279 L 153 315 L 117 351 L 81 315 Z" fill="#589b9d"/>
-        <path d="M 117 279 L 153 315 L 117 351 L 81 315 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <path d="M 117 279 L 153 315 L 117 351 L 81 315 Z" stroke="#eabc00" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
         <text transform="translate(95.72 302.5)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="4.78" y="19">Zoe</tspan>
         </text>
       </g>
       <g id="Line_115">
-        <line x1="140.18644" y1="302.18644" x2="424.52294" y2="145.05311" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-      </g>
-      <g id="Graphic_116">
-        <path d="M 549 135 L 585 171 L 549 207 L 513 171 Z" fill="#70a3d8"/>
-        <path d="M 549 135 L 585 171 L 549 207 L 513 171 Z" stroke="#eabc00" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-        <text transform="translate(527.72 158.5)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="5.32" y="19">427</tspan>
-        </text>
+        <line x1="141.55271" y1="301.4314" x2="423.15667" y2="145.80816" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </g>
     </g>
   </g>
