@@ -178,7 +178,7 @@ def helloV2(user: User) = {
 ]
 
 .forty-seven-right[.center[
-### Yes, if they are all FP functions
+### Yes, if they are FP functions
 ]]
 
 ---
@@ -189,7 +189,7 @@ class: medium-code
 .forty-seven-left[
 ```scala
 def helloV1(user: User) = {
-  `val res1 = db.delete(user.id)`
+  val res1 = db.delete(user.id)
   val res2 = db.insert(user)
   // ...
 }
@@ -200,7 +200,7 @@ def helloV1(user: User) = {
 ```scala
 def helloV2(user: User) = {
   val res2 = db.insert(user)
-  `val res1 = db.delete(user.id)`
+  val res1 = db.delete(user.id)
   // ...
 }
 ```
@@ -208,7 +208,7 @@ def helloV2(user: User) = {
 
 
 .forty-seven-right[.center[
-### Yes, if they are all FP functions <br> No, otherwise
+### Yes, if they are FP functions <br> No, otherwise
 ]]
 
 .forty-seven-right[
@@ -322,12 +322,6 @@ def helloV2(user: User) =
 ```
 ]
 
---
-
-.forty-seven-right[.center[
-### Yes, if funA and funC are FP functions
-]]
-
 ---
 class: medium-code
 
@@ -336,9 +330,9 @@ class: medium-code
 .forty-seven-left[
 ```scala
 def helloV1(user: User) = {
-  `funA(user)`
+  funA(user)
   val res1 = funB(user)
-  `val res2 = funC(user)`
+  val res2 = funC(user)
   res1
 }
 ```
@@ -353,20 +347,52 @@ def helloV2(user: User) =
 ]
 
 .forty-seven-right[.center[
-### Yes, if funA and funC are FP functions <br> No, otherwise
+### Yes, if they are FP functions
 ]]
 
-.forty-seven-right[
-```scala
-def funA(user: User): Unit =
-  if(user.email.isDefined)
-    throw InvalidUser("No email")
+---
+class: medium-code
 
-def funC(user: User): Unit =
+# Refactoring: remove unused code
+
+.fifty-seven-left[
+```scala
+def helloV1(user: User) = {
+  if(user.email.isDefined) throw InvalidUser("No email")
+  val res1 = funB(user)
   sendEmail(user)
+  res1
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+
+```scala
+def helloV2(user: User) =
+  funB(user)
 ```
 ]
 
+.thirty-seven-right[.center[
+### Yes, if they are FP functions <br> No, otherwise
+]]
+
+---
+class: medium-code
+
+# Refactoring: de-duplicate
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  // ..
+  val res2 = funA(user)
+  funB(res1, res2)
+}
+```
+]
 
 ---
 class: medium-code
@@ -413,7 +439,7 @@ def helloV2(user: User) = {
 --
 
 .forty-seven-right[.center[
-### Yes, if they are all FP functions <br> No, otherwise
+### Yes, if they are FP functions <br> No, otherwise
 ]]
 
 .forty-seven-right[
@@ -455,7 +481,7 @@ def helloV2(user: User) = {
 ]
 
 .forty-seven-right[.center[
-### Yes, if they are all FP functions <br> No, otherwise
+### Yes, if they are FP functions <br> No, otherwise
 ]]
 
 .forty-seven-right[
@@ -521,7 +547,7 @@ def helloV2(user: User) = {
 --
 
 .forty-seven-right[.center[
-### Yes, if they are all FP functions <br> No, otherwise
+### Yes, if they are FP functions <br> No, otherwise
 ]]
 
 ---
