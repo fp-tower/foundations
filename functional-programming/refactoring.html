@@ -74,6 +74,66 @@ class: medium-code
 
 .forty-seven-left[
 ```scala
+def helloV1(`user: User`) = {
+  val res1 = funA(user)
+  val res2 = funB(user)
+  // ...
+}
+```
+]
+
+---
+class: medium-code
+
+# Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = `funA(user)`
+  val res2 = `funB(user)`
+  // ...
+}
+```
+]
+
+---
+class: medium-code
+
+# Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val `res1` = funA(user)
+  val `res2` = funB(user)
+  // ...
+}
+```
+]
+
+---
+class: medium-code
+
+# Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  val res2 = funB(user)
+  // `...`
+}
+```
+]
+
+---
+class: medium-code
+
+# Refactoring: reorder variables
+
+.forty-seven-left[
+```scala
 def helloV1(user: User) = {
   `val res1 = funA(user)`
   val res2 = funB(user)
