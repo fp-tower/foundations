@@ -267,6 +267,30 @@ sealed trait Json
 case class JsonNumber(value: Int   ) extends Json
 case class JsonString(value: String) extends Json
 
+def `jsonToInt`(json: Json): Int =
+  json match {
+    case JsonNumber(number) => number
+  }
+```
+
+```scala
+jsonToInt(JsonNumber(12))
+// res: Int = 12
+```
+]
+
+---
+class: medium-code
+
+# 1. All inputs must return an output
+
+.fifty-seven-left[
+```scala
+sealed trait Json
+
+case class JsonNumber(value: Int   ) extends Json
+case class JsonString(value: String) extends Json
+
 def jsonToInt(json: Json): Int =
   json match {
     case JsonNumber(number) => number
@@ -275,11 +299,9 @@ def jsonToInt(json: Json): Int =
 
 ```scala
 jsonToInt(JsonNumber(12))
-// res2: Int = 12
+// res: Int = 12
 ```
 ]
-
---
 
 .fifty-seven-left[
 
