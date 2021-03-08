@@ -492,7 +492,61 @@ def helloV2(user: User) = {
 ```
 ]
 
---
+---
+class: medium-code
+
+# Refactoring: de-duplicate
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  // ..
+  val res2 = funA(user)
+  funB(res1, res2)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res1 = funA(user)
+  // ..
+  funB(res1, res1)
+}
+```
+]
+
+.forty-seven-right[.center[
+### Yes, if they are FP functions
+]]
+
+---
+class: medium-code
+
+# Refactoring: de-duplicate
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  val res1 = funA(user)
+  // ..
+  val res2 = funA(user)
+  funB(res1, res2)
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res1 = funA(user)
+  // ..
+  funB(res1, res1)
+}
+```
+]
 
 .forty-seven-right[.center[
 ### Yes, if they are FP functions <br> No, otherwise
@@ -521,7 +575,7 @@ def helloV1(user: User) = {
   val res1 = funA(user)
   // ..
   val res2 = funA(user)
-  funB(res1, `res2`)
+  funB(res1, res2)
 }
 ```
 
@@ -531,7 +585,7 @@ def helloV1(user: User) = {
 def helloV2(user: User) = {
   val res1 = funA(user)
   // ..
-  funB(res1, `res1`)
+  funB(res1, res1)
 }
 ```
 ]
