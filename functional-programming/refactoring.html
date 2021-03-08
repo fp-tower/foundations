@@ -381,6 +381,62 @@ def helloV2(user: User) =
 ---
 class: medium-code
 
+# Refactoring: remove unused code
+
+.fifty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `if(user.email.isDefined) throw InvalidUser("No email")`
+  val res1 = funB(user)
+  val res2 = sendEmail(user)
+  res1
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+
+```scala
+def helloV2(user: User) =
+  funB(user)
+```
+]
+
+.thirty-seven-right[.center[
+### Yes, if they are FP functions <br> No, otherwise
+]]
+
+---
+class: medium-code
+
+# Refactoring: remove unused code
+
+.fifty-seven-left[
+```scala
+def helloV1(user: User) = {
+  if(user.email.isDefined) throw InvalidUser("No email")
+  val res1 = funB(user)
+  val res2 = `sendEmail(user)`
+  res1
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+
+```scala
+def helloV2(user: User) =
+  funB(user)
+```
+]
+
+.thirty-seven-right[.center[
+### Yes, if they are FP functions <br> No, otherwise
+]]
+
+---
+class: medium-code
+
 # Refactoring: de-duplicate
 
 .forty-seven-left[
