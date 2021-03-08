@@ -66,6 +66,7 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .eighty-two-right   { float: right; width: 82%; }
 .eighty-seven-left  { float: left ; width: 87%; }
 .eighty-seven-right { float: right; width: 87%; }
+.ninety-seven-right { float: right; width: 97%; }
 
 .cols { display: flex; }
 .fifty { flex: 50%; }
