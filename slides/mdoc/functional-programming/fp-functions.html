@@ -58,6 +58,54 @@ def procedure(input1: Int, input2: String): String = {
 ]
 
 ---
+# Function in imperative programming
+
+<br>
+
+.sixty-two-left[
+```scala
+def procedure(input1: Int, input2: String): String = {
+  `var var1 = 0`
+  var var2 = otherProcedure1(input1, 3)
+  var1 = otherProcedure2(var2, input2)
+  return var1
+}
+```
+]
+
+---
+# Function in imperative programming
+
+<br>
+
+.sixty-two-left[
+```scala
+def procedure(input1: Int, input2: String): String = {
+  var var1 = 0
+  var var2 = `otherProcedure1(input1, 3)`
+  var1 = `otherProcedure2(var2, input2)`
+  return var1
+}
+```
+]
+
+---
+# Function in imperative programming
+
+<br>
+
+.sixty-two-left[
+```scala
+def procedure(input1: Int, input2: String): String = {
+  var var1 = 0
+  var var2 = otherProcedure1(input1, 3)
+  var1 = otherProcedure2(var2, input2)
+  `return var1`
+}
+```
+]
+
+---
 # Function in functional programming
 
 <br>
