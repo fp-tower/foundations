@@ -617,6 +617,18 @@ def helloV1(user: User) = {
 ```
 ]
 
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  `funA`(funB(user), funC(user))
+}
+```
+]
 
 ---
 class: medium-code
@@ -649,6 +661,30 @@ def helloV1(user: User) = {
 def helloV2(user: User) = {
   val res1 = `funB(user)`
   val res2 = `funC(user)`
+  funA(res1, res2)
+}
+```
+]
+
+
+---
+class: medium-code
+
+# Refactoring: extract - inline
+
+.forty-seven-left[
+```scala
+def helloV1(user: User) = {
+  funA(funB(user), funC(user))
+}
+```
+
+### Is helloV1 equivalent to helloV2?
+
+```scala
+def helloV2(user: User) = {
+  val res1 = funB(user)
+  val res2 = funC(user)
   funA(res1, res2)
 }
 ```
