@@ -71,6 +71,40 @@ class: medium-code
 # null is a valid reference
 
 .seventy-two-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object `Reduced`  extends VAT(`1.05`)
+  case object Standard extends VAT(1.20)
+}
+```
+]
+
+---
+class: medium-code
+
+# null is a valid reference
+
+.seventy-two-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object `Standard` extends VAT(`1.20`)
+}
+```
+]
+
+---
+class: medium-code
+
+# null is a valid reference
+
+.seventy-two-left[
 ```scala mdoc:reset:silent
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
