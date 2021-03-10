@@ -1017,7 +1017,39 @@ val item: Item = null
 ```
 ]
 
---
+---
+# Explicit Nulls in Scala 3
+
+.forty-seven-left[
+```scala
+scalacOptions += `"-Yexplicit-nulls"`
+```
+
+<br>
+```scala
+val item: Item = null
+// error
+//    Found:    Null
+//    Required: Item
+```
+]
+
+---
+# Explicit Nulls in Scala 3
+
+.forty-seven-left[
+```scala
+scalacOptions += "-Yexplicit-nulls"
+```
+
+<br>
+```scala
+val item: Item = null
+// error
+//    Found:    Null
+//    Required: Item
+```
+]
 <br><br><br><br><br><br><br><br><br><br><br>
 
 .seventy-seven-left[
