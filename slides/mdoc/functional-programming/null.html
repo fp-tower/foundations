@@ -504,7 +504,29 @@ val defaultVAT  = VAT.Standard
 ```
 ]
 
---
+---
+# Forward reference
+
+.forty-two-left[
+```scala
+val defaultRate = `defaultVAT`.rate
+// java.lang.NullPointerException
+
+val `defaultVAT`  = VAT.Standard
+```
+]
+
+---
+# Forward reference
+
+.forty-two-left[
+```scala
+val defaultRate = defaultVAT.rate
+// java.lang.NullPointerException
+
+val defaultVAT  = VAT.Standard
+```
+]
 
 <br><br><br><br><br><br><br>
 
@@ -526,6 +548,7 @@ val defaultVAT  = VAT.Standard
 <img src="../img/screenshot/forward-reference.png" style="width:800px;"/>
 ]
 
+
 ---
 # Option is a better null
 
@@ -534,12 +557,36 @@ val defaultVAT  = VAT.Standard
 case class User(
   name : String,
   age  : Int,
+  email: Option[String],
+)
+```
+]
+
+---
+# Option is a better null
+
+.fifty-two-left[
+```scala
+case class User(
+  name : String,
+  age  : Int,
   email: `Option`[String],
 )
 ```
 ]
 
---
+---
+# Option is a better null
+
+.fifty-two-left[
+```scala
+case class User(
+  name : String,
+  age  : Int,
+  email: Option[String],
+)
+```
+]
 
 .forty-two-right[
 ```sql
@@ -606,8 +653,6 @@ def vatRate(optVat: Option[VAT]): Double =
 ```
 ]
 
-
-
 ---
 # Exception 1: Interface with Java code
 
@@ -618,6 +663,31 @@ import org.apache.poi.ss.usermodel.{Cell, Row}
 val row: Row = ...
 
 row.getCell(0)
+// res: Cell = Little Red Train
+
+row.getCell(1)
+// res: Cell = 2
+
+row.getCell(3)
+// res: Cell = null
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
+]
+
+---
+# Exception 1: Interface with Java code
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+row.`getCell`(0)
 // res: Cell = Little Red Train
 
 row.getCell(1)
