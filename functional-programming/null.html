@@ -235,6 +235,68 @@ object VAT {
 }
 
 val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def `totalPrice`(item: Item): Double =
+  item.unitPrice * item.quantity * item.vat.rate
+```
+]
+
+
+.thirty-seven-left[
+```scala
+totalPrice(book)
+// res: Double = 18.879
+```
+]
+
+---
+class: medium-code
+
+# null causes exceptions
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def totalPrice(item: Item): Double =
+  item.unitPrice * item.quantity * item.vat.rate
+```
+]
+
+
+.thirty-seven-left[
+```scala
+totalPrice(`book`)
+// res: Double = `18.879`
+```
+]
+
+---
+class: medium-code
+
+# null causes exceptions
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, `null`   )
 
 def totalPrice(item: Item): Double =
