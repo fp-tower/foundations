@@ -269,6 +269,37 @@ val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 
 def totalPrice(item: Item): Double =
+  `item.unitPrice * item.quantity * item.vat.rate`
+```
+]
+
+
+.thirty-seven-left[
+```scala
+totalPrice(book)
+// res: Double = 18.879
+```
+]
+
+---
+class: medium-code
+
+# null causes exceptions
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def totalPrice(item: Item): Double =
   item.unitPrice * item.quantity * item.vat.rate
 ```
 ]
@@ -408,6 +439,47 @@ totalPrice(null)
 ]
 
 ---
+class: medium-code
+
+# Handling null
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def totalPrice(item: Item): Double =
+  if(item == null)           0.0
+  else if (item.vat == null) item.quantity * item.unitPrice
+  else                       item.quantity * item.unitPrice * item.vat.rate
+```
+]
+
+.thirty-seven-left[
+```scala
+totalPrice(unknown)
+// res: Double = 53.8
+```
+]
+
+.three-left[&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.thirty-seven-left[
+```scala
+totalPrice(null)
+// res: Double = 0.0
+```
+]
+
+---
 # Ignore null
 
 <br>
@@ -519,10 +591,10 @@ case class User(
 .forty-two-right[
 ```scala
 List(1,2,3,4).find(_ > 2)
-// res4: Option[Int] = Some(3)
+// res5: Option[Int] = Some(3)
 
 List(1,2,3,4).find(_ > 10)
-// res5: Option[Int] = None
+// res6: Option[Int] = None
 ```
 ]
 
