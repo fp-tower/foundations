@@ -360,7 +360,7 @@ class: medium-code
 def helloV1(user: User) = {
   if(user.email.isDefined) throw InvalidUser("No email")
   val res1 = funB(user)
-  sendEmail(user)
+  val res2 = sendEmail(user)
   res1
 }
 ```
