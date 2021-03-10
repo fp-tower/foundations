@@ -790,6 +790,40 @@ import org.apache.poi.ss.usermodel.{Cell, Row}
 val row: Row = ...
 
 Option(row.getCell(0))
+// res: Option[Cell] = Some(Little Red Train)
+
+Option(row.getCell(1))
+// res: Option[Cell] = Some(2)
+
+Option(row.getCell(3))
+// res: Option[Cell] = None
+```
+
+```scala
+object Option {
+  def apply[A](value: A): Option[A] =
+    if (value == null) None
+    else Some(value)
+}
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
+]
+
+
+---
+# Option constructor
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+Option(row.getCell(0))
 // res: Option[Cell] = `Some(Little Red Train)`
 
 Option(row.getCell(1))
@@ -823,6 +857,44 @@ class: medium-code
 import org.apache.poi.ss.usermodel.{Cell, Row}
 
 case class SafeRow(row: Row) {
+  def getDouble(column: Int): Option[Double] =
+    if (row == null) None
+    else {
+      val cell = row.getCell(column)
+      if (cell == null || cell.getCellType() != Cell.NUMERIC)
+        None
+      else
+        Some(cell.getNumericCellValue())
+    }
+}
+```
+]
+
+.thirty-four-right[
+```scala
+val row: SafeRow = ...
+
+row.getDouble(0)
+// res: Option[Double] = None
+
+row.getDouble(1)
+// res: Option[Double] = Some(2)
+
+Option(row.getCell(3))
+// res: Option[Double] = None
+```
+]
+
+---
+class: medium-code
+
+# Scala wrapper
+
+.sixty-two-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+case class `SafeRow`(row: `Row`) {
   def getDouble(column: Int): Option[Double] =
     if (row == null) None
     else {
