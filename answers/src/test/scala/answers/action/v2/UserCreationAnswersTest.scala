@@ -22,7 +22,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dobFormatter)
 
   val invalidAttempts: Gen[List[String]] =
-    Gen.listOf(Gen.alphaNumStr)
+    Gen.listOf(Arbitrary.arbitrary[String])
 
   val invalidMaxAttempt: Gen[Int] =
     Gen.choose(Int.MinValue, 0)
