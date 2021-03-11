@@ -1181,6 +1181,28 @@ enum Env {
 ]
 
 ---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _ =>  
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.`authenticate`(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+---
 # Increase load
 
 <br>
