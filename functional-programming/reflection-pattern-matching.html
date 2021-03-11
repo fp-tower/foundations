@@ -1417,8 +1417,7 @@ env match {
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1432,8 +1431,21 @@ trait Auth {
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
+  def `revoke`(token: Token): Future[Unit]
+}
+```
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1459,8 +1471,7 @@ def checkAuth(auth: Auth) =
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1470,8 +1481,8 @@ def checkAuth(auth: Auth) =
   test("revoke makes token invalid") {
     forAll { (token: Token) =>
       for {
-        _    <- `auth.revoke(token)`
-        user <- `auth.authenticate(token)`
+        _    <- auth.`revoke`(token)
+        user <- auth.`authenticate`(token)
       } assert(user == None)
     }
   }
@@ -1486,8 +1497,7 @@ def checkAuth(auth: Auth) =
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1516,7 +1526,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 ## .white[Ignore runtime reflection]
 
-## .white[Reflection is used in pattern matching]
+## .white[But, pattern matching use reflection]
 
 ## .white[Two dangerous use cases:]
    * ### .white[Classes with type parameters]
@@ -1537,11 +1547,32 @@ def increment(value: Any) =
   }
 
 // warning pattern selector should be an instance of
-// `Matchable`, but it has unmatchable type `Any` instead
+// Matchable, but it has unmatchable type Any instead
 ```
 ]
 
---
+.thirty-seven-right[
+<img src="../img/foundation/matchable.svg" style="width:400px;"/>
+]
+
+---
+# Scala 3: Matchable trait
+
+<br>
+
+.sixty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+
+// warning pattern selector should be an instance of
+// `Matchable`, but it has unmatchable type `Any` instead
+```
+]
 
 .thirty-seven-right[
 <img src="../img/foundation/matchable.svg" style="width:400px;"/>
