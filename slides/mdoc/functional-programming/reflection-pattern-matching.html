@@ -1241,6 +1241,30 @@ class CachedAuth(
 ```
 ]
 
+---
+# Cache authenticate requests
+
+.seventy-two-left[
+```scala
+class CachedAuth(
+  cache     : `Cache`,
+  underlying: Auth,
+) extends Auth { /* ... */ }
+```
+]
+
+---
+# Cache authenticate requests
+
+.seventy-two-left[
+```scala
+class CachedAuth(
+  cache     : Cache,
+  underlying: `Auth`,
+) extends Auth { /* ... */ }
+```
+]
+
 
 ---
 # Authentication Middleware
