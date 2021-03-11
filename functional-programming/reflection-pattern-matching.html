@@ -1360,6 +1360,32 @@ val auth: Auth = new CachedAuth(cache, new `MockAuth`(...))
 ]
 
 ---
+# Pattern Matching
+
+
+.forty-seven-left[
+## Unsafe
+```scala
+auth match {
+  case _: MockAuth => ...
+  case _           => ...
+}
+&#x200B;
+```
+]
+
+.forty-seven-right[
+## Safe
+```scala
+env match {
+  case Local => ...
+  case UAT   => ...
+  case Prod  => ...
+}
+```
+]
+
+---
 # Safe pattern matching keywords
 
 .forty-seven-left[
