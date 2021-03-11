@@ -13,7 +13,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.3\n2021-03-10 11:10:42 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.18.3\n2021-03-11 13:13:28 +0000</metadata>
   <g id="http-auth-cache-success" stroke="none" fill="none" stroke-dasharray="none" stroke-opacity="1" fill-opacity="1">
     <title>http-auth-cache-success</title>
     <g id="http-auth-cache-success_Layer_1">
@@ -64,11 +64,11 @@
         </text>
       </g>
       <g id="Graphic_230">
-        <rect x="63" y="49" width="9" height="311" fill="#ff8080"/>
+        <rect x="63" y="49" width="9" height="311" fill="#b79074"/>
         <rect x="63" y="49" width="9" height="311" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_229">
-        <ellipse cx="65.17391" cy="36" rx="56.1740028038802" ry="27.0000431433512" fill="#ff7f7f"/>
+        <ellipse cx="65.17391" cy="36" rx="56.1740028038802" ry="27.0000431433512" fill="#b79074"/>
         <ellipse cx="65.17391" cy="36" rx="56.1740028038802" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(25.234783 24.22)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="19.01913" y="19">User</tspan>
