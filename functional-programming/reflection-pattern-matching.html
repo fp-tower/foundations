@@ -326,6 +326,40 @@ case object Backward extends Direction
 val robot = Robot(0, Forward)
 
 classOf[Robot]
+  .getDeclaredMethod("move")
+  .invoke(robot)
+// res: Object = Robot(1, Forward)
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+classOf[Robot]
   .`getDeclaredMethod("move")`
   .invoke(robot)
 // res: Object = Robot(1, Forward)
