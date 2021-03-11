@@ -1188,7 +1188,7 @@ enum Env {
 def checkUser(request: Request, auth: Auth, env: Env) =
   (env, auth) match {
     case (Prod, _: MockAuth) => InternalServerError()
-    case _ =>  
+    case _ =>
 
       request.headers.get("Authorization") match {
         case None        => reject(Forbidden())
@@ -1283,7 +1283,7 @@ val auth: Auth = new CachedAuth(cache, new MockAuth(...))
 def checkUser(request: Request, auth: Auth, env: Env) =
   (env, auth) match {
     case (Prod, _: MockAuth) => InternalServerError()
-    `case _ `                  => // check header and dispatch to auth
+    case _                   => // check header and dispatch to auth
   }
 ```
 
@@ -1292,6 +1292,46 @@ def checkUser(request: Request, auth: Auth, env: Env) =
 ```scala
 val env : Env  = Prod
 val auth: Auth = new `CachedAuth`(cache, new `MockAuth`(...))
+```
+]
+
+---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, `_: MockAuth`) => InternalServerError()
+    case _                   => // check header and dispatch to auth
+  }
+```
+
+<br>
+
+```scala
+val env : Env  = Prod
+val auth: Auth = new `CachedAuth`(cache, new MockAuth(...))
+```
+]
+
+---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    `case _ `                  => // check header and dispatch to auth
+  }
+```
+
+<br>
+
+```scala
+val env : Env  = Prod
+val auth: Auth = new CachedAuth(cache, new `MockAuth`(...))
 ```
 ]
 
