@@ -581,6 +581,98 @@ increment("Hello")
 
 .fifty-two-left[
 ```scala
+def increment(`value: Any`) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case `x: Int   ` => x + 1
+    case `x: Double` => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => `x + 1  `
+    case x: Double => `x + 1.0`
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case `other     => other`
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
 def increment(value: Any) =
   value match {
     case x: Int    => x + 1
