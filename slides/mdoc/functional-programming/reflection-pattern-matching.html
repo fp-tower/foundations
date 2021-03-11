@@ -115,6 +115,48 @@ case object Backward extends Direction
 ```scala
 val robot = Robot(0, Forward)
 
+robot.`getClass.getMethods`
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "position",
+//   "copy",
+//   "direction",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
 robot.getClass.getMethods
   .map(_.getName)
 // res: Array[String] = Array(
