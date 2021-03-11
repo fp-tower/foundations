@@ -989,6 +989,23 @@ def checkUser(request: Request, auth: Auth) =
 ]
 
 ---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.headers.get("Authorization") match {
+    case None => reject(Forbidden()) // 403 Status
+
+    case Some(token) =>
+      auth.authenticate(token).map(user =>
+        provide(user) // pass it down the line
+      )
+  }
+```
+]
+
+---
 # Auth instance is defined in a config file
 
 .forty-seven-left[
