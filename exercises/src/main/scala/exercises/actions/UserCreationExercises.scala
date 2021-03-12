@@ -22,7 +22,7 @@ object UserCreationExercises {
   def readUser(): User = {
     println("What's your name?")
     val name = StdIn.readLine()
-    println("What's your date of birth (dd-mm-yyyy)?")
+    println("What's your date of birth? [dd-mm-yyyy]")
     val dateOfBirth = LocalDate.parse(StdIn.readLine(), dateOfBirthFormatter)
     val now         = Instant.now()
     val user        = User(name, dateOfBirth, now)
@@ -30,18 +30,71 @@ object UserCreationExercises {
     user
   }
 
+  // 1. Implement `readSubscribeToMailingList` which asks if the user wants to
+  // subscribe to our mailing list. They can answer "Y" for yes or "N" for No.
+  // If the user enters something else, we throw an exception.
+  // For example,
+  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [User] N
+  // Returns false
+  // Note: You can use `throw new IllegalArgumentException("...")` to throw an exception
+  def readSubscribeToMailingList(): Boolean =
+    ???
+
+  // 2. How can we test `readSubscribeToMailingList` or `readUser`? We cannot write
+  // an example-based or property-based test because these functions depend on
+  // the standard input `StdIn`.
+  // Implement a new version of `readSubscribeToMailingList` which uses an instance
+  // of the `Console` interface to read/write lines.
+  // Then, try to test this version using example-based or property-based testing.
+  // Note: Check the `Console` companion object.
+  def readSubscribeToMailingList(console: Console): Boolean =
+    ???
+
+  // 3. Implement `readDateOfBirth` which asks the date of birth of the user.
+  // They must answer with the format `dd-mm-yyyy`, e.g. "18-03-2001" for 18th of March 2001.
+  // If the user enters something else, we throw an exception.
+  // For example,
+  // [Prompt] What's your date of birth? [dd-mm-yyyy]
+  // [User] 21-07-1986
+  // Returns LocalDate.of(1986,7,21)
+  // Note: You can use `LocalDate.parse` to parse a String into a LocalDate.
+  // Note: You can use the formatter `dateOfBirthFormatter`.
+  def readDateOfBirth(console: Console): LocalDate =
+    ???
+
+  // 4. Implement a testable version of `readUser`.
+  // For example,
+  // [Prompt] "What's your name?"
+  // [User] Eda
+  // [Prompt] What's your date of birth? [dd-mm-yyyy]
+  // [User] 18-03-2001
+  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [User] Y
+  // Returns User(
+  //   name = "Eda",
+  //   dateOfBirth = LocalDate.of(2001, 3, 18),
+  //   subscribedToMailingList = true,
+  //   createdAt = Instant.now()
+  // )
+  // Note: You will need to add `subscribedToMailingList: Boolean field to `User`.
+  // Note: How can you mock the current time? Check the `Clock` class in this package
+  //       and update the signature of `readUser`.
+  def readUser(console: Console): User =
+    ???
+
   // 1. Implement `readDateOfBirth` which attempts to read a date of birth from the
   // console using the specified `DateTimeFormatter` parser.
   // If `readDateOfBirth` fails, it retries up `maxAttempt` times.
   // For example: readDateOfBirth(dateOfBirthFormatter, maxAttempt = 2)
-  // [Prompt] What's your date of birth (dd-mm-yyyy)?
+  // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21st of July
   // [Prompt] Incorrect format, for example enter "18-03-2001" for 18th of March 2001
-  // [Prompt] What's your date of birth (dd-mm-yyyy)?
+  // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21-07-1986
   // Returns LocalDate.of(1986,7,21)
   // But, readDateOfBirth(dateOfBirthFormatter, maxAttempt = 1)
-  // [Prompt] What's your date of birth (dd-mm-yyyy)?
+  // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21st of July
   // Throw an exception because the user had only 1 attempt and they entered an invalid input.
   // Note: You can `LocalDate.parse` to parse a String into a LocalDate.

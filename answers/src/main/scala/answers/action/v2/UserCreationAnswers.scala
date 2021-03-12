@@ -3,19 +3,23 @@ package answers.action.v2
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
+import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
 
 object UserCreationApp extends App {
   import UserCreationAnswers._
 
-  UserCreationAnswers.readUser(Console.system, Clock.system)(
-    readDateOfBirthV2(_, dobFormatter, 3),
+  UserCreationAnswers.readUser(
+    Console.system,
+    Clock.system,
+    readDateOfBirthV2(_, dateOfBirthFormatter, 3),
     readSubscribeToMailingListV2(_, 3)
   )
 }
 
 object UserCreationAnswers {
-  val dobFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-uuuu")
+  val dateOfBirthFormatter: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("dd-MM-uuuu")
 
   case class User(
     name: String,
@@ -24,14 +28,34 @@ object UserCreationAnswers {
     createdAt: Instant
   )
 
-  def readUser(console: Console, clock: Clock)(
-    readDOB: Console => LocalDate,
-    readSubscribe: Console => Boolean
-  ): User = {
+  def readSubscribeToMailingList(): Boolean = {
+    println("Would you like to subscribe to our mailing list? [Y/N]")
+    StdIn.readLine() match {
+      case "Y"   => true
+      case "N"   => false
+      case other => throw new IllegalArgumentException(s"$other is not a valid response")
+    }
+  }
+
+  def readSubscribeToMailingList(console: Console): Boolean = {
+    console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
+    console.readLine() match {
+      case "Y"   => true
+      case "N"   => false
+      case other => throw new IllegalArgumentException(s"$other is not a valid response")
+    }
+  }
+
+  def readDateOfBirth(console: Console): LocalDate = {
+    console.writeLine("What's your date of birth? [dd-mm-yyyy]")
+    LocalDate.parse(console.readLine(), dateOfBirthFormatter)
+  }
+
+  def readUser(console: Console, clock: Clock): User = {
     console.writeLine("What's your name?")
     val name                    = console.readLine()
-    val dateOfBirth             = readDOB(console)
-    val subscribedToMailingList = readSubscribe(console)
+    val dateOfBirth             = readDateOfBirth(console)
+    val subscribedToMailingList = readSubscribeToMailingList(console)
     val now                     = clock.now()
     val user                    = User(name, dateOfBirth, subscribedToMailingList, now)
     console.writeLine(s"User is $user")
@@ -44,7 +68,7 @@ object UserCreationAnswers {
 
     while (date.isEmpty && remaining > 0) {
       remaining -= 1
-      console.writeLine("What's your date of birth (dd-mm-yyyy)?")
+      console.writeLine("What's your date of birth? [dd-mm-yyyy]")
       val line = console.readLine()
       date = Try(LocalDate.parse(line, formatter)).toOption
       if (date.isEmpty) {
@@ -108,7 +132,7 @@ object UserCreationAnswers {
   def readDateOfBirthV2(console: Console, formatter: DateTimeFormatter, maxAttempt: Int): LocalDate =
     retryWithError(maxAttempt)(
       block = {
-        console.writeLine("What's your date of birth (dd-mm-yyyy)?")
+        console.writeLine("What's your date of birth? [dd-mm-yyyy]")
         val line = console.readLine()
         LocalDate.parse(line, formatter)
       },
@@ -127,5 +151,21 @@ object UserCreationAnswers {
       },
       onError = e => console.writeLine(e.getMessage)
     )
+
+  def readUser(
+    console: Console,
+    clock: Clock,
+    readDOB: Console => LocalDate,
+    readSubscribe: Console => Boolean
+  ): User = {
+    console.writeLine("What's your name?")
+    val name                    = console.readLine()
+    val dateOfBirth             = readDOB(console)
+    val subscribedToMailingList = readSubscribe(console)
+    val now                     = clock.now()
+    val user                    = User(name, dateOfBirth, subscribedToMailingList, now)
+    console.writeLine(s"User is $user")
+    user
+  }
 
 }

@@ -1,7 +1,7 @@
 package answers.action.v2
 
-import java.time.{Instant, LocalDate}
 import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDate}
 
 import answers.action.v2.UserCreationAnswers._
 import org.scalacheck.{Arbitrary, Gen}
@@ -9,7 +9,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
-import scala.util.{Failure, Try}
+import scala.util.Try
 
 class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
@@ -19,13 +19,98 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       .map(LocalDate.ofEpochDay)
 
   val localDateFormatter: Gen[DateTimeFormatter] =
-    Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dobFormatter)
+    Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dateOfBirthFormatter)
 
-  val invalidAttempts: Gen[List[String]] =
-    Gen.listOf(Arbitrary.arbitrary[String])
+  val invalidYesNoInput: Gen[String] =
+    Gen.alphaNumStr.filterNot(Set("Y", "N"))
+
+  val invalidDateInput: Gen[String] =
+    Gen.alphaNumStr.suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
 
   val invalidMaxAttempt: Gen[Int] =
     Gen.choose(Int.MinValue, 0)
+
+  test("readSubscribeToMailingList example") {
+    val console = Console.mock(ListBuffer("N"), ListBuffer())
+    val result  = readSubscribeToMailingList(console)
+
+    assert(result == false)
+  }
+
+  test("readSubscribeToMailingList") {
+    forAll { (boolean: Boolean) =>
+      val boolStr = if (boolean) "Y" else "N"
+      val inputs  = ListBuffer(boolStr)
+      val outputs = ListBuffer.empty[String]
+      val console = Console.mock(inputs, outputs)
+
+      val result = readSubscribeToMailingList(console)
+
+      assert(result == boolean)
+    }
+  }
+
+  test("readSubscribeToMailingList invalid input") {
+    forAll(invalidYesNoInput) { input =>
+      val inputs  = ListBuffer(input)
+      val outputs = ListBuffer.empty[String]
+      val console = Console.mock(inputs, outputs)
+
+      val result = Try(readSubscribeToMailingList(console))
+
+      assert(result.isFailure)
+    }
+  }
+
+  test("readDateOfBirth example") {
+    val console = Console.mock(ListBuffer("21-07-1986"), ListBuffer())
+    val result  = readDateOfBirth(console)
+
+    assert(result == LocalDate.of(1986, 7, 21))
+  }
+
+  test("readDateOfBirth") {
+    forAll(localDateGen) { (date: LocalDate) =>
+      val input   = dateOfBirthFormatter.format(date)
+      val inputs  = ListBuffer(input)
+      val outputs = ListBuffer.empty[String]
+      val console = Console.mock(inputs, outputs)
+
+      val result = readDateOfBirth(console)
+
+      assert(result == date)
+    }
+  }
+
+  test("readDateOfBirth invalid input") {
+    forAll(invalidDateInput) { input =>
+      val inputs  = ListBuffer(input)
+      val outputs = ListBuffer.empty[String]
+      val console = Console.mock(inputs, outputs)
+
+      val result = Try(readDateOfBirth(console))
+
+      assert(result.isFailure)
+    }
+  }
+
+  test("readUser example") {
+    val inputs  = ListBuffer("Eda", "18-03-2001", "Y")
+    val outputs = ListBuffer.empty[String]
+    val now     = Instant.ofEpochSecond(9999999)
+    val console = Console.mock(inputs, outputs)
+    val clock   = Clock.constant(now)
+    val result  = readUser(console, clock)
+
+    val expected = User(
+      name = "Eda",
+      dateOfBirth = LocalDate.of(2001, 3, 18),
+      subscribedToMailingList = true,
+      createdAt = now
+    )
+
+    assert(result == expected)
+  }
 
   checkReadDateOfBirth("readDateOfBirth", readDateOfBirth)
   checkReadDateOfBirth("readDateOfBirthV2", readDateOfBirthV2)
@@ -33,7 +118,10 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
   checkReadSubscribeToMailingList("readSubscribeToMailingList", readSubscribeToMailingList)
   checkReadSubscribeToMailingList("readSubscribeToMailingListV2", readSubscribeToMailingListV2)
 
-  def checkReadDateOfBirth(name: String, impl: (Console, DateTimeFormatter, Int) => LocalDate): Unit = {
+  def checkReadDateOfBirth(
+    name: String,
+    impl: (Console, DateTimeFormatter, Int) => LocalDate
+  ): Unit = {
     test(s"$name success") {
       forAll(localDateFormatter, localDateGen) { (formatter, date) =>
         val dateStr = formatter.format(date)
@@ -45,7 +133,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
 
     test(s"$name retry") {
-      forAll(localDateFormatter, localDateGen, invalidAttempts) { (formatter, date, attempts) =>
+      forAll(localDateFormatter, localDateGen, Gen.listOf(invalidDateInput)) { (formatter, date, attempts) =>
         val dateStr    = formatter.format(date)
         val inputs     = ListBuffer.from(attempts :+ dateStr)
         val outputs    = ListBuffer.empty[String]
@@ -57,7 +145,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
         assert(result == date)
 
         val pairOutput = List(
-          "What's your date of birth (dd-mm-yyyy)?",
+          "What's your date of birth? [dd-mm-yyyy]",
           """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
         )
 
@@ -76,9 +164,12 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
   }
 
-  def checkReadSubscribeToMailingList(name: String, impl: (Console, Int) => Boolean): Unit = {
+  def checkReadSubscribeToMailingList(
+    name: String,
+    impl: (Console, Int) => Boolean
+  ): Unit = {
     test(s"$name retry") {
-      forAll(Arbitrary.arbitrary[Boolean], invalidAttempts) { (bool, attempts) =>
+      forAll(Arbitrary.arbitrary[Boolean], Gen.listOf(invalidYesNoInput)) { (bool, attempts) =>
         val boolStr    = if (bool) "Y" else "N"
         val inputs     = ListBuffer.from(attempts :+ boolStr)
         val outputs    = ListBuffer.empty[String]
@@ -115,8 +206,10 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     val console = Console.mock(inputs, ListBuffer.empty)
     val clock   = Clock.constant(now)
 
-    val user = readUser(console, clock)(
-      readDateOfBirthV2(_, dobFormatter, 2),
+    val user = readUser(
+      console,
+      clock,
+      readDateOfBirthV2(_, dateOfBirthFormatter, 2),
       readSubscribeToMailingListV2(_, 2)
     )
 
@@ -128,72 +221,6 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     )
 
     assert(user == expectedUser)
-  }
-
-  test("retry when block always succeeds") {
-    var counter = 0
-    val result = retry(1) { () =>
-      counter += 1
-      2 + 2
-    }
-    assert(result == 4)
-    assert(counter == 1)
-  }
-
-  test("retry when block always fails") {
-    forAll { (error: Exception) =>
-      var counter = 0
-      def exec(): Int = {
-        counter += 1
-        throw error
-      }
-      val result = Try(retry(5)(exec))
-
-      assert(result == Failure(error))
-      assert(counter == 5)
-    }
-  }
-
-  test("retry when block fails and then succeeds") {
-    var counter = 0
-    def exec(): String = {
-      counter += 1
-      if (counter < 3) throw new Exception("Boom!")
-      else "Hello"
-    }
-    val result = retry(5)(exec)
-
-    assert(result == "Hello")
-    assert(counter == 3)
-  }
-
-  test("retryWithError when block always succeeds") {
-    var counter = 0
-    val result = retryWithError(1)(
-      block = 2 + 2,
-      onError = _ => counter += 1
-    )
-    assert(result == 4)
-    assert(counter == 0)
-  }
-
-  test("retryWithError when block always fails") {
-    var counter = 0
-    val result  = Try(retryWithError(5)(block = throw new Exception("boom"), onError = _ => counter += 1))
-
-    assert(result.isFailure)
-    assert(counter == 5)
-  }
-
-  test("retryWithError when block fails and then succeeds") {
-    var counter = 0
-    val result = retryWithError(5)(
-      block = if (counter >= 3) "" else throw new Exception("boom"),
-      onError = _ => counter += 1
-    )
-
-    assert(result == "")
-    assert(counter == 3)
   }
 
 }
