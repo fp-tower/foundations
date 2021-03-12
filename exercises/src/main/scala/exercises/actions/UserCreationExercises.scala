@@ -83,9 +83,25 @@ object UserCreationExercises {
   def readUser(console: Console): User =
     ???
 
-  // 1. Implement `readDateOfBirth` which attempts to read a date of birth from the
-  // console using the specified `DateTimeFormatter` parser.
-  // If `readDateOfBirth` fails, it retries up `maxAttempt` times.
+  // 5. Implement `readSubscribeToMailingListRetry` which behaves like
+  // `readSubscribeToMailingList` but retries in case the user enters an invalid input.
+  // For example: readSubscribeToMailingListRetry(console, maxAttempt = 2)
+  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [User] No
+  // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
+  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [User] N
+  // Returns false
+  // But, readSubscribeToMailingListRetry(console, maxAttempt = 1)
+  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [User] No
+  // Throw an exception because the user had only 1 attempt and they entered an invalid input.
+  // Note: Don't try to generalise the retry logic yet, we will do it later.
+  def readSubscribeToMailingListRetry(console: Console, maxAttempt: Int): Boolean =
+    ???
+
+  // 6. Implement `readDateOfBirthRetry` which behaves like
+  // `readDateOfBirth` but retries in case the user enters an invalid input.
   // For example: readDateOfBirth(dateOfBirthFormatter, maxAttempt = 2)
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21st of July
@@ -97,39 +113,8 @@ object UserCreationExercises {
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21st of July
   // Throw an exception because the user had only 1 attempt and they entered an invalid input.
-  // Note: You can `LocalDate.parse` to parse a String into a LocalDate.
-  // Note: After implementing `readDateOfBirth`, use it in `readUser`.
-  // Note: Don't try to generalise the retry logic, we will do it in 4).
-  def readDateOfBirth(formatter: DateTimeFormatter, maxAttempt: Int): LocalDate =
-    ???
-
-  // 2. One problem with `readDateOfBirth` and `readUser` is that we cannot test them with
-  // an example-based or property-based test because they depend on the StdIn.
-  // Write a new version of `readDateOfBirth` that use an instance of the `Console` interface
-  // to read/write lines.
-  // Then test this version, ideally using property-based testing.
-  // Hint: there is a bug in the parser, try to find it.
-  def readDateOfBirth(console: Console, formatter: DateTimeFormatter, maxAttempt: Int): LocalDate =
-    ???
-
-  // 3. Implement `readSubscribeToMailingList` which asks the user if they want to
-  // subscribe to our mailing list. They can answer "Y" for yes or "N" for No.
-  // If the user enters something else, we either retry if they have any attempts left.
-  // Otherwise, we throw an exception.
-  // For example: readSubscribeToMailingList(maxAttempt = 2)
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
-  // [User] No
-  // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
-  // [Prompt] N
-  // Returns `false`
-  // But, readSubscribeToMailingList(maxAttempt = 1)
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
-  // [User] No
-  // Throw an exception because the user had only 1 attempt and they entered an invalid input.
-  // Note: After implementing `readSubscribeToMailingList`, add a Boolean field to User and
-  // use `readSubscribeToMailingList` in `readUser`
-  // Note: Don't try to generalise the retry logic, we will do it in 3).
-  def readSubscribeToMailingList(console: Console, maxAttempt: Int): Boolean =
+  // Note: Don't try to generalise the retry logic yet, we will do it later.
+  def readDateOfBirthRetry(console: Console, maxAttempt: Int): LocalDate =
     ???
 
   // 4. Implement `retry`, a function that evaluate a block of code until it succeeds or

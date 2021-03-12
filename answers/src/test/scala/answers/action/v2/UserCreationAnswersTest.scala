@@ -112,35 +112,65 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     assert(result == expected)
   }
 
-  checkReadDateOfBirth("readDateOfBirth", readDateOfBirth)
-  checkReadDateOfBirth("readDateOfBirthV2", readDateOfBirthV2)
+  test("readSubscribeToMailingListRetry example") {
+    val outputs = ListBuffer.empty[String]
+    val console = Console.mock(ListBuffer("No", "N"), outputs)
+    val result  = readSubscribeToMailingListRetry(console, maxAttempt = 2)
 
-  checkReadSubscribeToMailingList("readSubscribeToMailingList", readSubscribeToMailingList)
-  checkReadSubscribeToMailingList("readSubscribeToMailingListV2", readSubscribeToMailingListV2)
+    assert(result == false)
+    assert(
+      outputs.toList == List(
+        """Would you like to subscribe to our mailing list? [Y/N]""",
+        """Incorrect format, enter "Y" for Yes or "N" for "No"""",
+        """Would you like to subscribe to our mailing list? [Y/N]""",
+      )
+    )
+  }
+
+  test("readDateOfBirthRetry example") {
+    val outputs = ListBuffer.empty[String]
+    val console = Console.mock(ListBuffer("July 21st 1986", "21-07-1986"), outputs)
+    val result  = readDateOfBirthRetry(console, maxAttempt = 2)
+
+    assert(result == LocalDate.of(1986, 7, 21))
+    assert(
+      outputs.toList == List(
+        """What's your date of birth? [dd-mm-yyyy]""",
+        """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
+        """What's your date of birth? [dd-mm-yyyy]""",
+      )
+    )
+  }
+
+  checkReadDateOfBirth("readDateOfBirthRetry", readDateOfBirthRetry)
+  checkReadDateOfBirth("readDateOfBirthRetryV2", readDateOfBirthRetryV2)
+
+  checkReadSubscribeToMailingList("readSubscribeToMailingListRetry", readSubscribeToMailingListRetry)
+  checkReadSubscribeToMailingList("readSubscribeToMailingListRetryV2", readSubscribeToMailingListRetryV2)
 
   def checkReadDateOfBirth(
     name: String,
-    impl: (Console, DateTimeFormatter, Int) => LocalDate
+    impl: (Console, Int) => LocalDate
   ): Unit = {
     test(s"$name success") {
-      forAll(localDateFormatter, localDateGen) { (formatter, date) =>
-        val dateStr = formatter.format(date)
+      forAll(localDateGen) { (date) =>
+        val dateStr = dateOfBirthFormatter.format(date)
         val console = Console.mock(ListBuffer(dateStr), ListBuffer.empty)
-        val result  = impl(console, formatter, 1)
+        val result  = impl(console, 1)
 
         assert(result == date)
       }
     }
 
     test(s"$name retry") {
-      forAll(localDateFormatter, localDateGen, Gen.listOf(invalidDateInput)) { (formatter, date, attempts) =>
-        val dateStr    = formatter.format(date)
+      forAll(localDateGen, Gen.listOf(invalidDateInput)) { (date, attempts) =>
+        val dateStr    = dateOfBirthFormatter.format(date)
         val inputs     = ListBuffer.from(attempts :+ dateStr)
         val outputs    = ListBuffer.empty[String]
         val console    = Console.mock(inputs, outputs)
         val maxAttempt = attempts.size + 1
 
-        val result = impl(console, formatter, maxAttempt)
+        val result = impl(console, maxAttempt)
 
         assert(result == date)
 
@@ -155,9 +185,9 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
 
     test(s"$name if maxAttempt <= 0") {
-      forAll(localDateFormatter, invalidMaxAttempt) { (formatter, maxAttempt) =>
+      forAll(invalidMaxAttempt) { (maxAttempt) =>
         val console = Console.mock(ListBuffer.empty, ListBuffer.empty)
-        val result  = Try(impl(console, formatter, maxAttempt))
+        val result  = Try(impl(console, maxAttempt))
 
         assert(result.isFailure)
       }
@@ -182,7 +212,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
 
         val pairOutput = List(
           "Would you like to subscribe to our mailing list? [Y/N]",
-          s"""Incorrect format, enter "Y" for Yes or "N" for "No"""""
+          s"""Incorrect format, enter "Y" for Yes or "N" for "No""""
         )
 
         val expectedOutputs = 1.to(maxAttempt).flatMap(_ => pairOutput).toList.dropRight(1)
@@ -198,29 +228,6 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
         assert(result.isFailure)
       }
     }
-  }
-
-  test("readUser") {
-    val inputs  = ListBuffer("Bob", "12-03-1997", "Y")
-    val now     = Instant.now()
-    val console = Console.mock(inputs, ListBuffer.empty)
-    val clock   = Clock.constant(now)
-
-    val user = readUser(
-      console,
-      clock,
-      readDateOfBirthV2(_, dateOfBirthFormatter, 2),
-      readSubscribeToMailingListV2(_, 2)
-    )
-
-    val expectedUser = User(
-      name = "Bob",
-      dateOfBirth = LocalDate.of(1997, 3, 12),
-      subscribedToMailingList = true,
-      createdAt = now
-    )
-
-    assert(user == expectedUser)
   }
 
 }
