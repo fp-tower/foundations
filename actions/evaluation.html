@@ -15,7 +15,24 @@ class: center, middle, white
 .title[Evaluation]
 
 ---
-# Def vs Val
+# Retry
+
+```scala
+def retry[A](maxAttempt: Int): A = {
+  var result   : Option[A] = None
+  var remaining: Int       = maxAttempt
+
+  while (result.isEmpty && remaining > 0) {
+    remaining -= 1
+    state = Try { ... }.toOption
+  }
+
+  result.getOrElse(sys.error(s"Failed after $maxAttempt attempts"))
+}
+```
+
+---
+# def vs val
 
 .forty-seven-left[
 ```scala
@@ -80,7 +97,7 @@ eda.`fullName`
 ]
 
 ---
-# Def vs Val
+# def vs val
 
 .forty-seven-left[
 ```scala
@@ -119,7 +136,7 @@ execVal
 ]
 
 ---
-# Lazy Val vs Val
+# lazy val vs val
 
 .forty-seven-left[
 ```scala
@@ -226,7 +243,7 @@ exec
 ]
 
 ---
-# Def vs Lazy Val vs Val
+# def vs lazy val vs val
 
 .cols[
 .forty-five[
@@ -280,7 +297,7 @@ exec
 ]
 
 ---
-# Def vs Lazy Val vs Val
+# def vs lazy val vs val
 
 .cols[
 .forty-five[
