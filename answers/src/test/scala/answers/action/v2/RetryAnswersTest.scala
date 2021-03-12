@@ -1,6 +1,6 @@
 package answers.action.v2
 
-import answers.action.v2.UserCreationAnswers.{retry, retryWithError}
+import answers.action.v2.RetryAnswers.{retry, retryWithError}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -48,7 +48,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("retryWithError when block always succeeds") {
     var counter = 0
     val result = retryWithError(1)(
-      block = 2 + 2,
+      block = () => 2 + 2,
       onError = _ => counter += 1
     )
     assert(result == 4)
@@ -57,7 +57,12 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("retryWithError when block always fails") {
     var counter = 0
-    val result  = Try(retryWithError(5)(block = throw new Exception("boom"), onError = _ => counter += 1))
+    val result = Try {
+      retryWithError(5)(
+        block = () => throw new Exception("boom"),
+        onError = _ => counter += 1
+      )
+    }
 
     assert(result.isFailure)
     assert(counter == 5)
@@ -66,7 +71,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("retryWithError when block fails and then succeeds") {
     var counter = 0
     val result = retryWithError(5)(
-      block = if (counter >= 3) "" else throw new Exception("boom"),
+      block = () => if (counter >= 3) "" else throw new Exception("boom"),
       onError = _ => counter += 1
     )
 

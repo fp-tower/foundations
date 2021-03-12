@@ -3,8 +3,10 @@ package answers.action.v2
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
+import answers.action.v2.RetryAnswers.retryWithError
+
 import scala.io.StdIn
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 object UserCreationApp extends App {
   import UserCreationAnswers._
@@ -91,41 +93,9 @@ object UserCreationAnswers {
     date.getOrElse(sys.error(s"Failed to read a date after $maxAttempt attempts"))
   }
 
-  def retry[A](maxAttempt: Int)(block: () => A): A = {
-    var error: Throwable  = new IllegalArgumentException("Failed too many times")
-    var result: Option[A] = None
-    var remaining: Int    = maxAttempt
-
-    while (result.isEmpty && remaining > 0) {
-      remaining -= 1
-      Try(block()) match {
-        case Failure(e)     => error = e
-        case Success(value) => result = Some(value)
-      }
-    }
-
-    result.getOrElse(throw error)
-  }
-
-  def retryWithError[A](maxAttempt: Int)(block: => A, onError: Throwable => Any): A = {
-    var error: Throwable  = new IllegalArgumentException("Failed too many times")
-    var result: Option[A] = None
-    var remaining: Int    = maxAttempt
-
-    while (result.isEmpty && remaining > 0) {
-      remaining -= 1
-      Try(block) match {
-        case Failure(e)     => onError(e); error = e
-        case Success(value) => result = Some(value)
-      }
-    }
-
-    result.getOrElse(throw error)
-  }
-
   def readSubscribeToMailingListRetryV2(console: Console, maxAttempt: Int): Boolean =
     retryWithError(maxAttempt)(
-      block = {
+      block = () => {
         console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
         console.readLine() match {
           case "Y" => true
@@ -138,7 +108,7 @@ object UserCreationAnswers {
 
   def readDateOfBirthRetryV2(console: Console, maxAttempt: Int): LocalDate =
     retryWithError(maxAttempt)(
-      block = {
+      block = () => {
         console.writeLine("What's your date of birth? [dd-mm-yyyy]")
         val line = console.readLine()
         LocalDate.parse(line, dateOfBirthFormatter)
