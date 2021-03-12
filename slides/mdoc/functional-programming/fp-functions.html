@@ -116,7 +116,7 @@ def procedure(input1: Int, input2: String): String = {
 ---
 # Program in functional programming
 
-<br><br><br>
+<br><br><br><br><br><br>
 
 
 <img src="../img/foundation/fp-program.svg" style="width:1000px;"/>
@@ -149,7 +149,7 @@ val function: Map[Input, Output] =
 --
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -168,7 +168,7 @@ val getUserAge: Map[User, Int] =
 
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -187,7 +187,7 @@ val getUserAge: Map[User, Int] =
 
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -205,7 +205,7 @@ val getUserAge: Map[User, Int] =
 ]
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -224,7 +224,7 @@ val getUserAge: Map[User, Int] =
 ]
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -243,7 +243,7 @@ val getUserAge: Map[User, Int] =
 ]
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -260,6 +260,30 @@ class: medium-code
 
 .fifty-seven-left[
 ```scala mdoc
+sealed trait Json
+
+case class JsonNumber(value: Int   ) extends Json
+case class JsonString(value: String) extends Json
+
+def jsonToInt(json: Json): Int =
+  json match {
+    case JsonNumber(number) => number
+  }
+```
+
+```scala
+jsonToInt(JsonNumber(12))
+// res: Int = 12
+```
+]
+
+---
+class: medium-code
+
+# 1. All inputs must return an output
+
+.fifty-seven-left[
+```scala
 sealed trait Json
 
 case class JsonNumber(value: Int   ) extends Json
@@ -295,13 +319,6 @@ def jsonToInt(json: Json): Int =
   }
 ```
 
-```scala
-jsonToInt(JsonNumber(12))
-// res: Int = 12
-```
-]
-
-.fifty-seven-left[
 ```scala mdoc:invisible:crash
 jsonToInt(JsonString("Hello"))
 ```
@@ -383,7 +400,7 @@ function(input1) // tomorrow
 ]
 
 .thirty-seven-right[
-<br><br>
+<br><br><br><br><br><br>
 ```scala
 val zoe = User("Zoe", ...)
 
