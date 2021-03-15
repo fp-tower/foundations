@@ -1,4 +1,4 @@
-package answers.action.v2
+package answers.action.imperative
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn

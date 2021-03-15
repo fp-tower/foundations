@@ -1,9 +1,9 @@
-package answers.action.v2
+package answers.action.imperative
 
-import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
-import answers.action.v2.UserCreationAnswers._
+import answers.action.UserCreationInstances
+import answers.action.imperative.UserCreationAnswers._
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -11,24 +11,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.Try
 
-class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
-
-  val localDateGen: Gen[LocalDate] =
-    Gen
-      .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
-      .map(LocalDate.ofEpochDay)
-
-  val localDateFormatter: Gen[DateTimeFormatter] =
-    Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dateOfBirthFormatter)
-
-  val invalidYesNoInput: Gen[String] =
-    Gen.alphaNumStr.filterNot(Set("Y", "N"))
-
-  val invalidDateInput: Gen[String] =
-    Gen.alphaNumStr.suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
-
-  val invalidMaxAttempt: Gen[Int] =
-    Gen.choose(Int.MinValue, 0)
+class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
 
   test("readSubscribeToMailingList example") {
     val console = Console.mock(ListBuffer("N"), ListBuffer())

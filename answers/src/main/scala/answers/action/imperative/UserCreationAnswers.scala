@@ -1,9 +1,9 @@
-package answers.action.v2
+package answers.action.imperative
 
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
-import answers.action.v2.RetryAnswers.{onError, retry, retryWithError}
+import answers.action.imperative.RetryAnswers.{onError, retry, retryWithError}
 
 import scala.io.StdIn
 import scala.util.Try

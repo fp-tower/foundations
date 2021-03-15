@@ -1,6 +1,6 @@
-package answers.action.v2
+package answers.action.imperative
 
-import answers.action.v2.RetryAnswers.{onError, retry, retryWithError}
+import answers.action.imperative.RetryAnswers.{onError, retry, retryWithError}
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
