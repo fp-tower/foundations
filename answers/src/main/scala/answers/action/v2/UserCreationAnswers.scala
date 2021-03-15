@@ -3,7 +3,7 @@ package answers.action.v2
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
-import answers.action.v2.RetryAnswers.retryWithError
+import answers.action.v2.RetryAnswers.{onError, retry, retryWithError}
 
 import scala.io.StdIn
 import scala.util.Try
@@ -94,16 +94,19 @@ object UserCreationAnswers {
   }
 
   def readSubscribeToMailingListRetryV2(console: Console, maxAttempt: Int): Boolean =
-    retryWithError(maxAttempt)(
-      block = () => {
-        console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-        console.readLine() match {
-          case "Y" => true
-          case "N" => false
-          case _   => throw new IllegalArgumentException(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-        }
-      },
-      onError = e => console.writeLine(e.getMessage)
+    retry(maxAttempt)(
+      block = () =>
+        onError(
+          block = () => {
+            console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
+            console.readLine() match {
+              case "Y" => true
+              case "N" => false
+              case _   => throw new IllegalArgumentException(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
+            }
+          },
+          callback = e => console.writeLine(e.getMessage)
+      )
     )
 
   def readDateOfBirthRetryV2(console: Console, maxAttempt: Int): LocalDate =

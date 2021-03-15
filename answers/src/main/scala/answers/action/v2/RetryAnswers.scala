@@ -36,4 +36,13 @@ object RetryAnswers {
     result.getOrElse(throw error)
   }
 
+  def onError[A](block: () => A, callback: Throwable => Any): A =
+    Try(block()) match {
+      case Failure(exception) =>
+        Try(callback(exception)) // catch failure
+        throw exception
+      case Success(value) =>
+        value
+    }
+
 }

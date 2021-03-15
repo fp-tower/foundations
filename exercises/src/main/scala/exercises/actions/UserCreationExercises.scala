@@ -41,19 +41,19 @@ object UserCreationExercises {
   def readSubscribeToMailingList(): Boolean =
     ???
 
-  // 2. How can we test `readSubscribeToMailingList` or `readUser`? We cannot write
+  // 2. How can we test `readSubscribeToMailingList` and `readUser`? We cannot write
   // an example-based or property-based test because these functions depend on
   // the standard input `StdIn`.
   // Implement a new version of `readSubscribeToMailingList` which uses an instance
-  // of the `Console` interface to read/write lines.
-  // Then, try to test this version using example-based or property-based testing.
+  // of `Console` to read/write lines.
+  // Then, try to test this version using property-based testing.
   // Note: Check the `Console` companion object.
   def readSubscribeToMailingList(console: Console): Boolean =
     ???
 
   // 3. Implement `readDateOfBirth` which asks the date of birth of the user.
   // They must answer with the format `dd-mm-yyyy`, e.g. "18-03-2001" for 18th of March 2001.
-  // If the user enters something else, we throw an exception.
+  // If the user enters an invalid response, `readDateOfBirth` throws an exception.
   // For example,
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21-07-1986
@@ -77,7 +77,7 @@ object UserCreationExercises {
   //   subscribedToMailingList = true,
   //   createdAt = Instant.now()
   // )
-  // Note: You will need to add `subscribedToMailingList: Boolean field to `User`.
+  // Note: You will need to add a new Boolean field to `User`: `subscribedToMailingList`.
   // Note: How can you mock the current time? Check the `Clock` class in this package
   //       and update the signature of `readUser`.
   def readUser(console: Console): User =

@@ -1,12 +1,22 @@
 package answers.action.v2
 
-import answers.action.v2.RetryAnswers.{retry, retryWithError}
+import answers.action.v2.RetryAnswers.{onError, retry, retryWithError}
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.util.{Failure, Try}
 
 class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+
+  val thunkGen: Gen[() => Int] =
+    Gen.oneOf(
+      Arbitrary.arbitrary[Int].map(() => _),
+      Gen.const(() => throw new Exception("Boom"))
+    )
+
+  val retryGen: Gen[Int] =
+    Gen.choose(1, 20)
 
   test("retry when block always succeeds") {
     var counter = 0
@@ -77,6 +87,40 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     assert(result == "")
     assert(counter == 3)
+  }
+
+  test("onError") {
+    var counter = 0
+    onError(() => 1, _ => counter += 1)
+
+  }
+
+  test("retryWithError is consistent with retry + onError") {
+    forAll(Gen.listOf(thunkGen), retryGen) { (thunks, maxAttempt) =>
+      val it1      = thunks.iterator
+      var counter1 = 0
+      val result1 = Try(
+        retryWithError(maxAttempt)(
+          block = () => it1.next().apply(),
+          onError = _ => counter1 += 1
+        )
+      )
+
+      val it2      = thunks.iterator
+      var counter2 = 0
+      val result2 = Try(
+        retry(maxAttempt)(
+          block = () =>
+            onError(
+              block = () => it2.next().apply(),
+              callback = _ => counter2 += 1
+          )
+        )
+      )
+
+      assert(result1.toEither.left.map(_.getMessage) == result2.toEither.left.map(_.getMessage))
+      assert(counter1 == counter2)
+    }
   }
 
 }
