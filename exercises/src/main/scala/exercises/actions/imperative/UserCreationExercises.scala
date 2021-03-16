@@ -32,18 +32,21 @@ object UserCreationExercises {
 
   // 1. Implement `readSubscribeToMailingList` which asks if the user wants to
   // subscribe to our mailing list. They can answer "Y" for yes or "N" for No.
-  // If the user enters something else, we throw an exception.
+  // If the user enters something else, `readSubscribeToMailingList` throws an exception.
   // For example,
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
   // [User] N
-  // Returns false
+  // Returns false. But,
+  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [User] Nope
+  // Throws an exception.
   // Note: You can use `throw new IllegalArgumentException("...")` to throw an exception
   def readSubscribeToMailingList(): Boolean =
     ???
 
-  // 2. How can we test `readSubscribeToMailingList` and `readUser`? We cannot write
-  // an example-based or property-based test because these functions depend on
-  // the standard input `StdIn`.
+  // 2. How can we test `readSubscribeToMailingList`? We cannot use example-based
+  // or property-based tests because `readSubscribeToMailingList` depends on the
+  // standard input `StdIn`.
   // Implement a new version of `readSubscribeToMailingList` which uses an instance
   // of `Console` to read/write lines.
   // Then, try to test this version using property-based testing.
@@ -52,12 +55,15 @@ object UserCreationExercises {
     ???
 
   // 3. Implement `readDateOfBirth` which asks the date of birth of the user.
-  // They must answer with the format `dd-mm-yyyy`, e.g. "18-03-2001" for 18th of March 2001.
-  // If the user enters an invalid response, `readDateOfBirth` throws an exception.
+  // User must answer using the format `dd-mm-yyyy`, e.g. "18-03-2001" for 18th of March 2001.
+  // If they enter an invalid response, `readDateOfBirth` throws an exception.
   // For example,
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21-07-1986
-  // Returns LocalDate.of(1986,7,21)
+  // Returns LocalDate.of(1986,7,21). But,
+  // [Prompt] What's your date of birth? [dd-mm-yyyy]
+  // [User] 1986/07/21
+  // Throws an exception.
   // Note: You can use `LocalDate.parse` to parse a String into a LocalDate.
   // Note: You can use the formatter `dateOfBirthFormatter`.
   def readDateOfBirth(console: Console): LocalDate =

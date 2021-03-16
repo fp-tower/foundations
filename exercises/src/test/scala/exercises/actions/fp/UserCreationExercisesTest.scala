@@ -14,19 +14,12 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
       val outputs = ListBuffer.empty[String]
       val console = Console.mock(inputs, outputs)
 
-      val action = readName(console)
-
-      // nothing is happen before `execute` is called
-      assert(inputs.size == otherInputs.size + 1)
-      assert(outputs.isEmpty)
-
-      val result = action.execute()
+      val result = readName(console).execute()
 
       assert(result == name)
-      assert(inputs.size == otherInputs.size)
-      assert(outputs.size == 1)
+      assert(inputs.toList == otherInputs) // consumed one input
+      assert(outputs.toList == List("What's your name?"))
     }
-
   }
 
 }

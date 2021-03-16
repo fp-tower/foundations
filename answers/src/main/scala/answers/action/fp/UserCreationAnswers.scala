@@ -36,14 +36,6 @@ object UserCreationAnswers {
       name <- console.readLine()
     } yield name
 
-  def readSubscribeToMailingList(console: Console): Action[Boolean] = {
-    val errorMessage = """Incorrect format, enter "Y" for Yes or "N" for "No""""
-
-    for {
-      _    <- console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-      bool <- console.readBoolean.onError(_ => console.writeLine(errorMessage))
-    } yield bool
-  }
   def readDateOfBirth(console: Console): Action[LocalDate] = {
     val errorMessage = """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
 
@@ -51,6 +43,15 @@ object UserCreationAnswers {
       _    <- console.writeLine("What's your date of birth? [dd-mm-yyyy]")
       date <- console.readDate(dateOfBirthFormatter).onError(_ => console.writeLine(errorMessage))
     } yield date
+  }
+
+  def readSubscribeToMailingList(console: Console): Action[Boolean] = {
+    val errorMessage = """Incorrect format, enter "Y" for Yes or "N" for "No""""
+
+    for {
+      _    <- console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
+      bool <- console.readBoolean.onError(_ => console.writeLine(errorMessage))
+    } yield bool
   }
 
 }
