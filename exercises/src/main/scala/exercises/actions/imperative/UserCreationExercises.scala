@@ -7,7 +7,7 @@ import scala.io.StdIn
 
 // Run the App using the green arrow next to object (if using IntelliJ)
 // or run `sbt` in the terminal to open it in shell mode then type:
-// exercises/runMain exercises.actions.UserCreationApp
+// exercises/runMain exercises.actions.imperative.UserCreationApp
 object UserCreationApp extends App {
   import UserCreationExercises._
 
@@ -40,7 +40,8 @@ object UserCreationExercises {
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
   // [User] Nope
   // Throws an exception.
-  // Note: You can use `throw new IllegalArgumentException("...")` to throw an exception
+  // Note: You can read from the command line using `StdIn.readLine()`.
+  // Note: You can use `throw new IllegalArgumentException("...")` to throw an exception.
   def readSubscribeToMailingList(): Boolean =
     ???
 

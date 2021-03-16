@@ -6,7 +6,7 @@ import java.time.{Instant, LocalDate}
 import answers.action.imperative.RetryAnswers.{onError, retry, retryWithError}
 
 import scala.io.StdIn
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 object UserCreationApp extends App {
   import UserCreationAnswers._
@@ -27,20 +27,19 @@ object UserCreationAnswers {
 
   def readSubscribeToMailingList(): Boolean = {
     println("Would you like to subscribe to our mailing list? [Y/N]")
-    StdIn.readLine() match {
+    parseYesNo(StdIn.readLine())
+  }
+
+  def parseYesNo(line: String): Boolean =
+    line match {
       case "Y"   => true
       case "N"   => false
-      case other => throw new IllegalArgumentException(s"$other is not a valid response")
+      case other => throw new IllegalArgumentException(s"""Expected "Y" or "N" but received $other""")
     }
-  }
 
   def readSubscribeToMailingList(console: Console): Boolean = {
     console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-    console.readLine() match {
-      case "Y"   => true
-      case "N"   => false
-      case other => throw new IllegalArgumentException(s"$other is not a valid response")
-    }
+    parseYesNo(console.readLine())
   }
 
   def readDateOfBirth(console: Console): LocalDate = {
@@ -66,10 +65,9 @@ object UserCreationAnswers {
     while (subscribed.isEmpty && remaining > 0) {
       remaining -= 1
       console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-      console.readLine() match {
-        case "Y" => subscribed = Some(true)
-        case "N" => subscribed = Some(false)
-        case _   => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
+      Try(parseYesNo(console.readLine())) match {
+        case Success(bool) => subscribed = Some(bool)
+        case Failure(_)    => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
       }
     }
 
@@ -84,9 +82,10 @@ object UserCreationAnswers {
       remaining -= 1
       console.writeLine("What's your date of birth? [dd-mm-yyyy]")
       val line = console.readLine()
-      date = Try(LocalDate.parse(line, dateOfBirthFormatter)).toOption
-      if (date.isEmpty) {
-        console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
+      Try(LocalDate.parse(line, dateOfBirthFormatter)) match {
+        case Success(value) => date = Some(value)
+        case Failure(_) =>
+          console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
       }
     }
 

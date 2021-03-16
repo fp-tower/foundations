@@ -13,6 +13,15 @@ import scala.util.Try
 
 class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
 
+  test("parseYesNo") {
+    assert(parseYesNo("Y") == true)
+    assert(parseYesNo("N") == false)
+
+    forAll(invalidYesNoInput) { (line: String) =>
+      assert(Try(parseYesNo(line)).isFailure)
+    }
+  }
+
   test("readSubscribeToMailingList example") {
     val console = Console.mock(ListBuffer("N"), ListBuffer())
     val result  = readSubscribeToMailingList(console)
