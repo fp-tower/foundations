@@ -23,10 +23,14 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
   }
 
   test("readSubscribeToMailingList example") {
-    val console = Console.mock(ListBuffer("N"), ListBuffer())
+    val inputs  = ListBuffer("N")
+    val outputs = ListBuffer.empty[String]
+    val console = Console.mock(inputs, outputs)
     val result  = readSubscribeToMailingList(console)
 
     assert(result == false)
+    assert(inputs.isEmpty) // "N" has been consumed
+    assert(outputs.toList == List("Would you like to subscribe to our mailing list? [Y/N]"))
   }
 
   test("readSubscribeToMailingList") {
