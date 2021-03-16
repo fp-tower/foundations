@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import answers.action.imperative.UserCreationAnswers.dateOfBirthFormatter
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 
 import scala.util.Try
@@ -19,10 +20,10 @@ trait UserCreationInstances {
     Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dateOfBirthFormatter)
 
   val invalidYesNoInput: Gen[String] =
-    Gen.alphaNumStr.filterNot(Set("Y", "N"))
+    arbitrary[String].filterNot(Set("Y", "N"))
 
   val invalidDateInput: Gen[String] =
-    Gen.alphaNumStr.suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
+    arbitrary[String].suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
 
   val invalidMaxAttempt: Gen[Int] =
     Gen.choose(Int.MinValue, 0)
