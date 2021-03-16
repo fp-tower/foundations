@@ -1,4 +1,4 @@
-package exercises.actions
+package exercises.actions.imperative
 
 object RetryExercises {
 

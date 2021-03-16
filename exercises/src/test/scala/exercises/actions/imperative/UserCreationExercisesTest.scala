@@ -1,11 +1,9 @@
-package exercises.actions
+package exercises.actions.imperative
 
 import java.time.{Instant, LocalDate}
 
+import exercises.actions.imperative.UserCreationExercises._
 import org.scalatest.funsuite.AnyFunSuite
-
-import scala.util.{Failure, Try}
-import UserCreationExercises._
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer

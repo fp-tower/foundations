@@ -1,8 +1,8 @@
-package exercises.actions
+package exercises.actions.imperative
 
+import exercises.actions.imperative.RetryExercises._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import RetryExercises._
 
 import scala.util.{Failure, Try}
 

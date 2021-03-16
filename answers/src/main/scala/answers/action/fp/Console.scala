@@ -1,14 +1,36 @@
 package answers.action.fp
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 trait Console {
   def readLine(): Action[String]
   def writeLine(message: String): Action[Unit]
+
+  def readBoolean: Action[Boolean] =
+    for {
+      line <- readLine()
+      bool <- Console.parseLineToBoolean(line)
+    } yield bool
+
+  def readDate(formatter: DateTimeFormatter): Action[LocalDate] =
+    for {
+      line <- readLine()
+      date <- Action(LocalDate.parse(line, formatter))
+    } yield date
 }
 
 object Console {
+  def parseLineToBoolean(line: String): Action[Boolean] =
+    line match {
+      case "Y" => Action(true)
+      case "N" => Action(false)
+      case _   => Action.fail(new IllegalArgumentException("Invalid input, expected Y/N"))
+    }
+
   val system: Console = new Console {
     def readLine(): Action[String] =
       Action { StdIn.readLine() }

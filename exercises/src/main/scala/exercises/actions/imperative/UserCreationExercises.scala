@@ -1,7 +1,7 @@
-package exercises.actions
+package exercises.actions.imperative
 
-import java.time.{Instant, LocalDate}
 import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDate}
 
 import scala.io.StdIn
 

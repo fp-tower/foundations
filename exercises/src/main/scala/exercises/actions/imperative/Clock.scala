@@ -1,4 +1,4 @@
-package exercises.actions
+package exercises.actions.imperative
 
 import java.time.Instant
 
