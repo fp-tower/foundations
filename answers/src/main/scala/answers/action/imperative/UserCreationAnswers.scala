@@ -15,6 +15,10 @@ object UserCreationApp extends App {
 }
 
 object UserCreationAnswers {
+  // If you use `y` you should also use `G`. Since `G` is rarely used,
+  // the correct year symbol is `u`, not `y`, otherwise a non-positive year
+  // will show incorrectly.
+  // https://stackoverflow.com/a/41178418
   val dateOfBirthFormatter: DateTimeFormatter =
     DateTimeFormatter.ofPattern("dd-MM-uuuu")
 
@@ -30,16 +34,12 @@ object UserCreationAnswers {
     parseYesNo(StdIn.readLine())
   }
 
-  private val yesNoMap: Map[String, Boolean] = List(true, false)
-    .map(b => (booleanToYesNo(b), b))
-    .toMap
-
   def parseYesNo(line: String): Boolean =
-    yesNoMap
-      .getOrElse(line, throw new IllegalArgumentException(s"""Expected "Y" or "N" but received $line"""))
-
-  def booleanToYesNo(boolean: Boolean): String =
-    if (boolean) "Y" else "N"
+    line match {
+      case "Y"   => true
+      case "N"   => false
+      case other => throw new IllegalArgumentException(s"""Expected "Y" or "N" but received $other""")
+    }
 
   def readSubscribeToMailingList(console: Console): Boolean = {
     console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")

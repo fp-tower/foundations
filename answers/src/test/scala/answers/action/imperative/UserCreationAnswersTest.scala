@@ -108,6 +108,24 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     assert(result == expected)
   }
 
+  test("readUser pbt") {
+    forAll { (name: String, dob: LocalDate, yesNo: Boolean, now: Instant) =>
+      val inputs = ListBuffer(
+        name,
+        dateOfBirthFormatter.format(dob),
+        if (yesNo) "Y" else "N"
+      )
+      val outputs = ListBuffer.empty[String]
+      val console = Console.mock(inputs, outputs)
+      val clock   = Clock.constant(now)
+      val result  = readUser(console, clock)
+
+      val expected = User(name, dob, yesNo, now)
+
+      assert(result == expected)
+    }
+  }
+
   test("readSubscribeToMailingListRetry example") {
     val outputs = ListBuffer.empty[String]
     val console = Console.mock(ListBuffer("No", "N"), outputs)
