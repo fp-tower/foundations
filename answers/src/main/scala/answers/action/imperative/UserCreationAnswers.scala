@@ -30,12 +30,16 @@ object UserCreationAnswers {
     parseYesNo(StdIn.readLine())
   }
 
+  private val yesNoMap: Map[String, Boolean] = List(true, false)
+    .map(b => (booleanToYesNo(b), b))
+    .toMap
+
   def parseYesNo(line: String): Boolean =
-    line match {
-      case "Y"   => true
-      case "N"   => false
-      case other => throw new IllegalArgumentException(s"""Expected "Y" or "N" but received $other""")
-    }
+    yesNoMap
+      .getOrElse(line, throw new IllegalArgumentException(s"""Expected "Y" or "N" but received $line"""))
+
+  def booleanToYesNo(boolean: Boolean): String =
+    if (boolean) "Y" else "N"
 
   def readSubscribeToMailingList(console: Console): Boolean = {
     console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
