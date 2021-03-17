@@ -160,6 +160,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
   checkReadDateOfBirth("readDateOfBirthRetryV2", readDateOfBirthRetryV2)
 
   checkReadSubscribeToMailingList("readSubscribeToMailingListRetry", readSubscribeToMailingListRetry)
+  checkReadSubscribeToMailingList("readSubscribeToMailingListRetryWhileLoop", readSubscribeToMailingListRetryWhileLoop)
   checkReadSubscribeToMailingList("readSubscribeToMailingListRetryV2", readSubscribeToMailingListRetryV2)
 
   def checkReadDateOfBirth(

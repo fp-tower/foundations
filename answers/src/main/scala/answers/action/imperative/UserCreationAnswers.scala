@@ -73,26 +73,26 @@ object UserCreationAnswers {
       case Success(value) => value
       case Failure(error) =>
         console.writeLine("""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-        if (maxAttempt <= 1) throw error
+        if (maxAttempt == 1) throw error
         else readSubscribeToMailingListRetry(console, maxAttempt - 1)
     }
   }
 
+  // same but with a while loop instead of recursion
   def readSubscribeToMailingListRetryWhileLoop(console: Console, maxAttempt: Int): Boolean = {
-    var subscribed: Option[Boolean] = None
-    var remaining: Int              = maxAttempt
+    var subscribed: Try[Boolean] = Failure(new IllegalArgumentException("maxAttempt must be greater than 0"))
+    var remaining: Int           = maxAttempt
 
-    while (subscribed.isEmpty && remaining > 0) {
+    while (subscribed.isFailure && remaining > 0) {
       remaining -= 1
       console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-      val line = console.readLine()
-      Try(parseYesNo(line)) match {
-        case Success(bool) => subscribed = Some(bool)
-        case Failure(_)    => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-      }
+      subscribed = Try(parseYesNo(console.readLine()))
+
+      if (subscribed.isFailure)
+        console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
     }
 
-    subscribed.getOrElse(sys.error(s"Failed to read a boolean after $maxAttempt attempts"))
+    subscribed.get
   }
 
   @tailrec
@@ -105,7 +105,7 @@ object UserCreationAnswers {
       case Success(value) => value
       case Failure(error) =>
         console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
-        if (maxAttempt <= 1) throw error
+        if (maxAttempt == 1) throw error
         else readDateOfBirthRetry(console, maxAttempt - 1)
     }
   }
