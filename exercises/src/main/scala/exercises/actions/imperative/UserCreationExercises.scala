@@ -3,7 +3,9 @@ package exercises.actions.imperative
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
+import scala.annotation.tailrec
 import scala.io.StdIn
+import scala.util.{Failure, Success, Try}
 
 // Run the App using the green arrow next to object (if using IntelliJ)
 // or run `sbt` in the terminal to open it in shell mode then type:
@@ -92,17 +94,19 @@ object UserCreationExercises {
 
   // 5. Implement `readSubscribeToMailingListRetry` which behaves like
   // `readSubscribeToMailingList` but retries in case the user enters an invalid input.
-  // For example: readSubscribeToMailingListRetry(console, maxAttempt = 2)
+  // For example,
+  // readSubscribeToMailingListRetry(console, maxAttempt = 2)
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
-  // [User] No
+  // [User] Never
   // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
   // [User] N
-  // Returns false
-  // But, readSubscribeToMailingListRetry(console, maxAttempt = 1)
+  // Returns true. But,
+  // readSubscribeToMailingListRetry(console, maxAttempt = 1)
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
-  // [User] No
-  // Throw an exception because the user had only 1 attempt and they entered an invalid input.
+  // [User] Never
+  // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
+  // Throw an exception because the user had 2 attempts and they entered an invalid input twice.
   // Note: Don't try to generalise the retry logic yet, we will do it later.
   def readSubscribeToMailingListRetry(console: Console, maxAttempt: Int): Boolean =
     ???
@@ -119,6 +123,7 @@ object UserCreationExercises {
   // But, readDateOfBirth(dateOfBirthFormatter, maxAttempt = 1)
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21st of July
+  // [Prompt] Incorrect format, for example enter "18-03-2001" for 18th of March 2001
   // Throw an exception because the user had only 1 attempt and they entered an invalid input.
   // Note: Don't try to generalise the retry logic yet, we will do it later.
   def readDateOfBirthRetry(console: Console, maxAttempt: Int): LocalDate =

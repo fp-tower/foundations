@@ -1,39 +1,33 @@
 package answers.action.imperative
 
+import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}
 
 object RetryAnswers {
 
+  @tailrec
   def retry[A](maxAttempt: Int)(block: () => A): A = {
-    var error: Throwable  = new IllegalArgumentException("Failed too many times")
-    var result: Option[A] = None
-    var remaining: Int    = maxAttempt
+    require(maxAttempt > 0, "maxAttempt must be greater than 0")
 
-    while (result.isEmpty && remaining > 0) {
-      remaining -= 1
-      Try(block()) match {
-        case Failure(e)     => error = e
-        case Success(value) => result = Some(value)
-      }
+    Try(block()) match {
+      case Success(value) => value
+      case Failure(error) =>
+        if (maxAttempt == 1) throw error
+        else retry(maxAttempt - 1)(block)
     }
-
-    result.getOrElse(throw error)
   }
 
+  @tailrec
   def retryWithError[A](maxAttempt: Int)(block: () => A, onError: Throwable => Any): A = {
-    var error: Throwable  = new IllegalArgumentException("Failed too many times")
-    var result: Option[A] = None
-    var remaining: Int    = maxAttempt
+    require(maxAttempt > 0, "maxAttempt must be greater than 0")
 
-    while (result.isEmpty && remaining > 0) {
-      remaining -= 1
-      Try(block()) match {
-        case Failure(e)     => onError(e); error = e
-        case Success(value) => result = Some(value)
-      }
+    Try(block()) match {
+      case Success(value) => value
+      case Failure(error) =>
+        onError(error)
+        if (maxAttempt == 1) throw error
+        else retryWithError(maxAttempt - 1)(block, onError)
     }
-
-    result.getOrElse(throw error)
   }
 
   def onError[A](block: () => A, callback: Throwable => Any): A =
