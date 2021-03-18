@@ -4,12 +4,13 @@ import java.time.{Instant, LocalDate}
 
 import answers.action.UserCreationInstances
 import answers.action.imperative.UserCreationAnswers._
-import org.scalacheck.{Arbitrary, Gen}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
-import scala.util.Try
+import scala.util.{Success, Try}
 
 class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
 
@@ -17,7 +18,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     assert(parseYesNo("Y") == true)
     assert(parseYesNo("N") == false)
 
-    forAll(invalidYesNoInput) { (line: String) =>
+    forAll(invalidYesNoGen) { (line: String) =>
       assert(Try(parseYesNo(line)).isFailure)
     }
   }
@@ -47,7 +48,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
   }
 
   test("readSubscribeToMailingList invalid input") {
-    forAll(invalidYesNoInput) { input =>
+    forAll(invalidYesNoGen) { input =>
       val inputs  = ListBuffer(input)
       val outputs = ListBuffer.empty[String]
       val console = Console.mock(inputs, outputs)
@@ -126,9 +127,9 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
   }
 
-  test("readSubscribeToMailingListRetry example") {
+  test("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]
-    val console = Console.mock(ListBuffer("No", "N"), outputs)
+    val console = Console.mock(ListBuffer("Never", "N"), outputs)
     val result  = readSubscribeToMailingListRetry(console, maxAttempt = 2)
 
     assert(result == false)
@@ -141,7 +142,25 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     )
   }
 
-  test("readDateOfBirthRetry example") {
+  test("readSubscribeToMailingListRetry example failure") {
+    val outputs = ListBuffer.empty[String]
+    val console = Console.mock(ListBuffer("Never"), outputs)
+    val result  = Try(readSubscribeToMailingListRetry(console, maxAttempt = 1))
+
+    assert(result.isFailure)
+    assert(
+      outputs.toList == List(
+        """Would you like to subscribe to our mailing list? [Y/N]""",
+        """Incorrect format, enter "Y" for Yes or "N" for "No"""",
+      )
+    )
+
+    val console2 = Console.mock(ListBuffer("Never"), ListBuffer.empty[String])
+    val result2  = Try(readSubscribeToMailingList(console2))
+    assert(result.failed.get.getMessage == result2.failed.get.getMessage)
+  }
+
+  test("readDateOfBirthRetry example success") {
     val outputs = ListBuffer.empty[String]
     val console = Console.mock(ListBuffer("July 21st 1986", "21-07-1986"), outputs)
     val result  = readDateOfBirthRetry(console, maxAttempt = 2)
@@ -156,46 +175,56 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     )
   }
 
-  checkReadDateOfBirth("readDateOfBirthRetry", readDateOfBirthRetry)
-  checkReadDateOfBirth("readDateOfBirthRetryV2", readDateOfBirthRetryV2)
+  test("readDateOfBirthRetry example failure") {
+    val outputs        = ListBuffer.empty[String]
+    val invalidAttempt = "July 21st 1986"
+    val console        = Console.mock(ListBuffer(invalidAttempt), outputs)
+    val result         = Try(readDateOfBirthRetry(console, maxAttempt = 1))
+
+    assert(result.isFailure)
+    assert(
+      outputs.toList == List(
+        """What's your date of birth? [dd-mm-yyyy]""",
+        """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
+      )
+    )
+  }
 
   checkReadSubscribeToMailingList("readSubscribeToMailingListRetry", readSubscribeToMailingListRetry)
   checkReadSubscribeToMailingList("readSubscribeToMailingListRetryWhileLoop", readSubscribeToMailingListRetryWhileLoop)
   checkReadSubscribeToMailingList("readSubscribeToMailingListRetryV2", readSubscribeToMailingListRetryV2)
 
-  def checkReadDateOfBirth(
+  checkReadDateOfBirth("readDateOfBirthRetry", readDateOfBirthRetry)
+  checkReadDateOfBirth("readDateOfBirthRetryV2", readDateOfBirthRetryV2)
+
+  def checkReadSubscribeToMailingList(
     name: String,
-    impl: (Console, Int) => LocalDate
+    impl: (Console, Int) => Boolean
   ): Unit = {
-    test(s"$name success") {
-      forAll(localDateGen) { (date) =>
-        val dateStr = dateOfBirthFormatter.format(date)
-        val console = Console.mock(ListBuffer(dateStr), ListBuffer.empty)
-        val result  = impl(console, 1)
-
-        assert(result == date)
-      }
-    }
-
     test(s"$name retry") {
-      forAll(localDateGen, Gen.listOf(invalidDateInput)) { (date, attempts) =>
-        val dateStr    = dateOfBirthFormatter.format(date)
-        val inputs     = ListBuffer.from(attempts :+ dateStr)
-        val outputs    = ListBuffer.empty[String]
-        val console    = Console.mock(inputs, outputs)
-        val maxAttempt = attempts.size + 1
+      forAll(validMaxAttempt, Gen.listOf(invalidYesNoGen), arbitrary[Boolean]) {
+        (maxAttempt: Int, invalidInputs: List[String], bool: Boolean) =>
+          val validInput = if (bool) "Y" else "N"
+          val inputs     = ListBuffer.from(invalidInputs :+ validInput)
+          val outputs    = ListBuffer.empty[String]
+          val console    = Console.mock(inputs, outputs)
+          val result     = Try(impl(console, maxAttempt))
 
-        val result = impl(console, maxAttempt)
+          val pairOutput = List(
+            "Would you like to subscribe to our mailing list? [Y/N]",
+            s"""Incorrect format, enter "Y" for Yes or "N" for "No""""
+          )
 
-        assert(result == date)
+          val attempts    = (invalidInputs.size + 1).min(maxAttempt)
+          val pairOutputs = List.fill(attempts)(pairOutput).flatten
 
-        val pairOutput = List(
-          "What's your date of birth? [dd-mm-yyyy]",
-          """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
-        )
-
-        val expectedOutputs = 1.to(maxAttempt).flatMap(_ => pairOutput).toList.dropRight(1)
-        assert(outputs.toList == expectedOutputs)
+          if (invalidInputs.size < maxAttempt) {
+            assert(result == Success(bool))
+            assert(outputs.toList == pairOutputs.dropRight(1))
+          } else {
+            assert(result.isFailure)
+            assert(outputs.toList == pairOutputs)
+          }
       }
     }
 
@@ -209,29 +238,24 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
   }
 
-  def checkReadSubscribeToMailingList(
+  def checkReadDateOfBirth(
     name: String,
-    impl: (Console, Int) => Boolean
+    impl: (Console, Int) => LocalDate
   ): Unit = {
     test(s"$name retry") {
-      forAll(Arbitrary.arbitrary[Boolean], Gen.listOf(invalidYesNoInput)) { (bool, attempts) =>
-        val boolStr    = if (bool) "Y" else "N"
-        val inputs     = ListBuffer.from(attempts :+ boolStr)
-        val outputs    = ListBuffer.empty[String]
-        val console    = Console.mock(inputs, outputs)
-        val maxAttempt = attempts.size + 1
+      forAll(validMaxAttempt, Gen.listOf(invalidDateInput), localDateGen) {
+        (maxAttempt: Int, invalidInputs: List[String], date: LocalDate) =>
+          val dateStr = dateOfBirthFormatter.format(date)
+          val inputs  = ListBuffer.from(invalidInputs :+ dateStr)
+          val outputs = ListBuffer.empty[String]
+          val console = Console.mock(inputs, outputs)
 
-        val result = impl(console, maxAttempt)
+          val result = Try(impl(console, maxAttempt))
 
-        assert(result == bool)
-
-        val pairOutput = List(
-          "Would you like to subscribe to our mailing list? [Y/N]",
-          s"""Incorrect format, enter "Y" for Yes or "N" for "No""""
-        )
-
-        val expectedOutputs = 1.to(maxAttempt).flatMap(_ => pairOutput).toList.dropRight(1)
-        assert(outputs.toList == expectedOutputs)
+          if (invalidInputs.size < maxAttempt)
+            assert(result == Success(date))
+          else
+            assert(result.isFailure)
       }
     }
 

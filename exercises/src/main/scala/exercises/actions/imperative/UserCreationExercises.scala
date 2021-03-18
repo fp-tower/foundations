@@ -93,7 +93,8 @@ object UserCreationExercises {
     ???
 
   // 5. Implement `readSubscribeToMailingListRetry` which behaves like
-  // `readSubscribeToMailingList` but retries in case the user enters an invalid input.
+  // `readSubscribeToMailingList` but retries when the user enters an invalid input.
+  // This methods also prints an error message when it happens.
   // For example,
   // readSubscribeToMailingListRetry(console, maxAttempt = 2)
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
@@ -106,13 +107,15 @@ object UserCreationExercises {
   // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
   // [User] Never
   // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
-  // Throw an exception because the user had 2 attempts and they entered an invalid input twice.
-  // Note: Don't try to generalise the retry logic yet, we will do it later.
+  // Throw an exception because the user had only 1 attempt and they entered an invalid input.
+  // Note: `maxAttempt` must be greater than 0, throw an exception if that's not the case.
+  // Note: You can implement the retry logic using recursion or a for/while loop. I suggest
+  //       to try both version.
   def readSubscribeToMailingListRetry(console: Console, maxAttempt: Int): Boolean =
     ???
 
   // 6. Implement `readDateOfBirthRetry` which behaves like
-  // `readDateOfBirth` but retries in case the user enters an invalid input.
+  // `readDateOfBirth` but retries when the user enters an invalid input.
   // For example: readDateOfBirth(dateOfBirthFormatter, maxAttempt = 2)
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 21st of July
@@ -125,7 +128,7 @@ object UserCreationExercises {
   // [User] 21st of July
   // [Prompt] Incorrect format, for example enter "18-03-2001" for 18th of March 2001
   // Throw an exception because the user had only 1 attempt and they entered an invalid input.
-  // Note: Don't try to generalise the retry logic yet, we will do it later.
+  // Note: maxAttempt must be greater than 0, throw an exception if that's not the case.
   def readDateOfBirthRetry(console: Console, maxAttempt: Int): LocalDate =
     ???
 

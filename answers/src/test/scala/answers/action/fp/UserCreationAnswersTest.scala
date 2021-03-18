@@ -47,7 +47,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
   }
 
   test("readSubscribeToMailingList failure") {
-    forAll(invalidYesNoInput) { (input) =>
+    forAll(invalidYesNoGen) { (input) =>
       val inputs  = ListBuffer(input)
       val outputs = ListBuffer.empty[String]
       val console = Console.mock(inputs, outputs)

@@ -101,7 +101,7 @@ object UserCreationAnswers {
 
     console.writeLine("What's your date of birth? [dd-mm-yyyy]")
     val line = console.readLine()
-    Try(LocalDate.parse(line, dateOfBirthFormatter)) match {
+    Try(parseDate(line)) match {
       case Success(value) => value
       case Failure(error) =>
         console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
@@ -110,19 +110,21 @@ object UserCreationAnswers {
     }
   }
 
+  def parseDate(line: String): LocalDate =
+    Try(LocalDate.parse(line, dateOfBirthFormatter))
+      .getOrElse(
+        throw new IllegalArgumentException(s"Expected a date with format dd-mm-yyyy but received $line")
+      )
+
   def readSubscribeToMailingListRetryV2(console: Console, maxAttempt: Int): Boolean =
     retry(maxAttempt)(
       block = () =>
         onError(
           block = () => {
             console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-            console.readLine() match {
-              case "Y" => true
-              case "N" => false
-              case _   => throw new IllegalArgumentException(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-            }
+            parseYesNo(console.readLine())
           },
-          callback = e => console.writeLine(e.getMessage)
+          callback = _ => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
       )
     )
 
@@ -130,8 +132,7 @@ object UserCreationAnswers {
     retryWithError(maxAttempt)(
       block = () => {
         console.writeLine("What's your date of birth? [dd-mm-yyyy]")
-        val line = console.readLine()
-        LocalDate.parse(line, dateOfBirthFormatter)
+        parseDate(console.readLine())
       },
       onError = _ => console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
     )

@@ -31,13 +31,13 @@ trait UserCreationInstances {
   val localDateFormatter: Gen[DateTimeFormatter] =
     Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dateOfBirthFormatter)
 
-  val invalidYesNoInput: Gen[String] =
+  val invalidYesNoGen: Gen[String] =
     arbitrary[String].filterNot(Set("Y", "N"))
 
   val invalidDateInput: Gen[String] =
     arbitrary[String].suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
 
-  val invalidMaxAttempt: Gen[Int] =
-    Gen.choose(Int.MinValue, 0)
+  val validMaxAttempt: Gen[Int] = Gen.choose(1, 20)
+  val invalidMaxAttempt: Gen[Int] = Gen.choose(Int.MinValue, 0)
 
 }
