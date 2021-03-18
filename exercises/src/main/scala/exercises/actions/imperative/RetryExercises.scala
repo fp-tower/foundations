@@ -2,25 +2,22 @@ package exercises.actions.imperative
 
 object RetryExercises {
 
-  // 1. Implement `retry`, a function that evaluate a block of code until it succeeds or
-  // exhausts the number of attempts.
-  // If the block of code succeeds, then `retry` returns the result.
-  // If the block of code throws an exception, then `retry` attempts to re-evaluate it.
-  // If `maxAttempt` is lower than or equal to 0, then `retry` throws an exception.
-  // For example,
+  // 1. Implement `retry`, a function which evaluates a block of code until it succeeds
+  // or the number of attempts is exhausted. For example,
   // var counter = 0
   // def exec(): String = {
   //   counter += 1
-  //   if(counter < 3) throw new Exception("Boom!")
-  //   else "Hello"
+  //   require(counter >= 3, "Counter is too low")
+  //   "Hello"
   // }
   // retry(maxAttempt = 5)(exec) == "Hello"
   // Returns "Hello" because `exec` fails twice and then succeeds when counter reaches 3.
   // retry(maxAttempt = 5){ () => throw new Exception("Boom!") }
   // Throws an exception because `block` fails every time it is evaluated
-  // Note: `block: () => A` is a val function which takes 0 argument.
-  //       You can execute `block` using `block()`
-  def retry[A](maxAttempt: Int)(block: () => A): A =
+  // Note: `action: () => A` is a val function which takes 0 argument.
+  //       You can execute `block` using `action()`
+  // Note: `maxAttempt` must be greater than 0, throw an exception if that's not the case.
+  def retry[A](maxAttempt: Int)(action: () => A): A =
     ???
 
   // 2. Refactor `readSubscribeToMailingListRetry` using `retry`.
@@ -43,14 +40,14 @@ object RetryExercises {
   //   else "Hello"
   // }
   // val result = retryWithError(maxAttempt = 5)(
-  //   block   = exec,
+  //   action  = exec,
   //   onError = _ => println("An error occurred, counter is $counter")
   // )
   // print "An error occurred, counter is 0"
   // print "An error occurred, counter is 1"
   // print "An error occurred, counter is 2"
   // result == "Hello"
-  def retryWithError[A](maxAttempt: Int)(block: () => A, onError: Throwable => Any): A =
+  def retryWithError[A](maxAttempt: Int)(action: () => A, onError: Throwable => Any): A =
     ???
 
   //////////////////////////////////////////////
@@ -71,7 +68,7 @@ object RetryExercises {
   // But,
   // onError(() => throw new Exception("Boom"), _ => println("Hello"))
   // print "Hello" and then throw an Exception.
-  def onError[A](block: () => A, callback: Throwable => Any): A =
+  def onError[A](action: () => A, callback: Throwable => Any): A =
     ???
 
   // 5. Write a property-based test which verifies `retryWithError` is consistent

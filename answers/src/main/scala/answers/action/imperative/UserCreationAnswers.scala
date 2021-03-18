@@ -118,9 +118,9 @@ object UserCreationAnswers {
 
   def readSubscribeToMailingListRetryV2(console: Console, maxAttempt: Int): Boolean =
     retry(maxAttempt)(
-      block = () =>
+      action = () =>
         onError(
-          block = () => {
+          action = () => {
             console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
             parseYesNo(console.readLine())
           },
@@ -130,7 +130,7 @@ object UserCreationAnswers {
 
   def readDateOfBirthRetryV2(console: Console, maxAttempt: Int): LocalDate =
     retryWithError(maxAttempt)(
-      block = () => {
+      action = () => {
         console.writeLine("What's your date of birth? [dd-mm-yyyy]")
         parseDate(console.readLine())
       },

@@ -58,7 +58,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("retryWithError when block always succeeds") {
     var counter = 0
     val result = retryWithError(1)(
-      block = () => 2 + 2,
+      action = () => 2 + 2,
       onError = _ => counter += 1
     )
     assert(result == 4)
@@ -69,7 +69,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     var counter = 0
     val result = Try {
       retryWithError(5)(
-        block = () => throw new Exception("boom"),
+        action = () => throw new Exception("boom"),
         onError = _ => counter += 1
       )
     }
@@ -81,7 +81,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("retryWithError when block fails and then succeeds") {
     var counter = 0
     val result = retryWithError(5)(
-      block = () => if (counter >= 3) "" else throw new Exception("boom"),
+      action = () => if (counter >= 3) "" else throw new Exception("boom"),
       onError = _ => counter += 1
     )
 
@@ -101,7 +101,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
       var counter1 = 0
       val result1 = Try(
         retryWithError(maxAttempt)(
-          block = () => it1.next().apply(),
+          action = () => it1.next().apply(),
           onError = _ => counter1 += 1
         )
       )
@@ -110,9 +110,9 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
       var counter2 = 0
       val result2 = Try(
         retry(maxAttempt)(
-          block = () =>
+          action = () =>
             onError(
-              block = () => it2.next().apply(),
+              action = () => it2.next().apply(),
               callback = _ => counter2 += 1
           )
         )

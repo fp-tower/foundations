@@ -128,7 +128,7 @@ object UserCreationExercises {
   // [User] 21st of July
   // [Prompt] Incorrect format, for example enter "18-03-2001" for 18th of March 2001
   // Throw an exception because the user had only 1 attempt and they entered an invalid input.
-  // Note: maxAttempt must be greater than 0, throw an exception if that's not the case.
+  // Note: `maxAttempt` must be greater than 0, throw an exception if that's not the case.
   def readDateOfBirthRetry(console: Console, maxAttempt: Int): LocalDate =
     ???
 
