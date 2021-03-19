@@ -11,13 +11,13 @@ import scala.util.Try
 
 trait UserCreationInstances {
 
-  val localDateGen: Gen[LocalDate] =
+  val dateGen: Gen[LocalDate] =
     Gen
       .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
       .map(LocalDate.ofEpochDay)
 
   implicit val localDateArb: Arbitrary[LocalDate] =
-    Arbitrary(localDateGen)
+    Arbitrary(dateGen)
 
   val instantGen: Gen[Instant] =
     for {
@@ -34,10 +34,10 @@ trait UserCreationInstances {
   val invalidYesNoGen: Gen[String] =
     arbitrary[String].filterNot(Set("Y", "N"))
 
-  val invalidDateInput: Gen[String] =
+  val invalidDateGen: Gen[String] =
     arbitrary[String].suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
 
   val validMaxAttempt: Gen[Int] = Gen.choose(1, 20)
-  val invalidMaxAttempt: Gen[Int] = Gen.choose(Int.MinValue, 0)
+  val invalidMaxAttemptGen: Gen[Int] = Gen.choose(Int.MinValue, 0)
 
 }

@@ -12,7 +12,9 @@ import scala.util.{Failure, Success, Try}
 object UserCreationApp extends App {
   import UserCreationAnswers._
 
-  readUserRetry(Console.system, Clock.system)
+  val service = new UserCreationService(Console.system, Clock.system)
+
+  service.readUser()
 }
 
 object UserCreationAnswers {
@@ -22,13 +24,6 @@ object UserCreationAnswers {
   // https://stackoverflow.com/a/41178418
   val dateOfBirthFormatter: DateTimeFormatter =
     DateTimeFormatter.ofPattern("dd-MM-uuuu")
-
-  case class User(
-    name: String,
-    dateOfBirth: LocalDate,
-    subscribedToMailingList: Boolean,
-    createdAt: Instant
-  )
 
   def readSubscribeToMailingList(): Boolean = {
     println("Would you like to subscribe to our mailing list? [Y/N]")
@@ -49,65 +44,7 @@ object UserCreationAnswers {
 
   def readDateOfBirth(console: Console): LocalDate = {
     console.writeLine("What's your date of birth? [dd-mm-yyyy]")
-    LocalDate.parse(console.readLine(), dateOfBirthFormatter)
-  }
-
-  def readUser(console: Console, clock: Clock): User = {
-    console.writeLine("What's your name?")
-    val name                    = console.readLine()
-    val dateOfBirth             = readDateOfBirth(console)
-    val subscribedToMailingList = readSubscribeToMailingList(console)
-    val now                     = clock.now()
-    val user                    = User(name, dateOfBirth, subscribedToMailingList, now)
-    console.writeLine(s"User is $user")
-    user
-  }
-
-  @tailrec
-  def readSubscribeToMailingListRetry(console: Console, maxAttempt: Int): Boolean = {
-    require(maxAttempt > 0, "maxAttempt must be greater than 0")
-
-    console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-    val line = console.readLine()
-    Try(parseYesNo(line)) match {
-      case Success(value) => value
-      case Failure(error) =>
-        console.writeLine("""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-        if (maxAttempt == 1) throw error
-        else readSubscribeToMailingListRetry(console, maxAttempt - 1)
-    }
-  }
-
-  // same but with a while loop instead of recursion
-  def readSubscribeToMailingListRetryWhileLoop(console: Console, maxAttempt: Int): Boolean = {
-    var subscribed: Try[Boolean] = Failure(new IllegalArgumentException("maxAttempt must be greater than 0"))
-    var remaining: Int           = maxAttempt
-
-    while (subscribed.isFailure && remaining > 0) {
-      remaining -= 1
-      console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-      subscribed = Try(parseYesNo(console.readLine()))
-
-      if (subscribed.isFailure)
-        console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-    }
-
-    subscribed.get
-  }
-
-  @tailrec
-  def readDateOfBirthRetry(console: Console, maxAttempt: Int): LocalDate = {
-    require(maxAttempt > 0, "maxAttempt must be greater than 0")
-
-    console.writeLine("What's your date of birth? [dd-mm-yyyy]")
-    val line = console.readLine()
-    Try(parseDate(line)) match {
-      case Success(value) => value
-      case Failure(error) =>
-        console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
-        if (maxAttempt == 1) throw error
-        else readDateOfBirthRetry(console, maxAttempt - 1)
-    }
+    parseDate(console.readLine())
   }
 
   def parseDate(line: String): LocalDate =
@@ -116,32 +53,11 @@ object UserCreationAnswers {
         throw new IllegalArgumentException(s"Expected a date with format dd-mm-yyyy but received $line")
       )
 
-  def readSubscribeToMailingListRetryV2(console: Console, maxAttempt: Int): Boolean =
-    retry(maxAttempt)(
-      action = () =>
-        onError(
-          action = () => {
-            console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-            parseYesNo(console.readLine())
-          },
-          callback = _ => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
-      )
-    )
-
-  def readDateOfBirthRetryV2(console: Console, maxAttempt: Int): LocalDate =
-    retryWithError(maxAttempt)(
-      action = () => {
-        console.writeLine("What's your date of birth? [dd-mm-yyyy]")
-        parseDate(console.readLine())
-      },
-      onError = _ => console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
-    )
-
-  def readUserRetry(console: Console, clock: Clock): User = {
+  def readUser(console: Console, clock: Clock): User = {
     console.writeLine("What's your name?")
     val name                    = console.readLine()
-    val dateOfBirth             = readDateOfBirthRetryV2(console, 3)
-    val subscribedToMailingList = readSubscribeToMailingListRetryV2(console, 3)
+    val dateOfBirth             = readDateOfBirth(console)
+    val subscribedToMailingList = readSubscribeToMailingList(console)
     val now                     = clock.now()
     val user                    = User(name, dateOfBirth, subscribedToMailingList, now)
     console.writeLine(s"User is $user")
