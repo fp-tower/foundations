@@ -1,4 +1,4 @@
-package exercises.actions
+package exercises.action
 
 import java.time.{Instant, LocalDate}
 

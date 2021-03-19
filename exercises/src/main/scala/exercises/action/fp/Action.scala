@@ -1,4 +1,4 @@
-package exercises.actions.fp
+package exercises.action.fp
 
 trait Action[A] {
   def execute(): A

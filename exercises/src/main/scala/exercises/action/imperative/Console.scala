@@ -1,4 +1,4 @@
-package exercises.actions.imperative
+package exercises.action.imperative
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn

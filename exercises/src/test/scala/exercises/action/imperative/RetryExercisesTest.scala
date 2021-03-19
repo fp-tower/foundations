@@ -1,10 +1,10 @@
-package exercises.actions.imperative
+package exercises.action.imperative
 
 import java.time.LocalDate
 
-import exercises.actions.TimeInstances
-import exercises.actions.imperative.RetryExercises._
-import exercises.actions.imperative.UserCreationExercises.readSubscribeToMailingList
+import exercises.action.TimeInstances
+import exercises.action.imperative.RetryExercises._
+import exercises.action.imperative.UserCreationExercises.readSubscribeToMailingList
 import org.scalacheck.Gen
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.funsuite.AnyFunSuite

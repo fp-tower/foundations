@@ -1,9 +1,9 @@
-package exercises.actions.imperative
+package exercises.action.imperative
 
 import java.time.{Instant, LocalDate}
 
-import exercises.actions.TimeInstances
-import exercises.actions.imperative.UserCreationExercises._
+import exercises.action.TimeInstances
+import exercises.action.imperative.UserCreationExercises._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite

@@ -1,8 +1,8 @@
-package exercises.actions.imperative
+package exercises.action.imperative
 
 import java.time.LocalDate
 
-import exercises.actions.imperative.UserCreationExercises._
+import exercises.action.imperative.UserCreationExercises._
 
 import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}

@@ -1,9 +1,9 @@
-package exercises.actions.imperative
+package exercises.action.imperative
 
 import java.time.LocalDate
 
-import exercises.actions.imperative.UserCreationExercises.User
-import exercises.actions.imperative.RetryExercises._
+import exercises.action.imperative.UserCreationExercises.User
+import exercises.action.imperative.RetryExercises._
 
 object UserCreationServiceApp extends App {
   // initialise dependencies
