@@ -2,15 +2,18 @@ package exercises.actions.imperative
 
 import java.time.LocalDate
 
+import exercises.actions.TimeInstances
 import exercises.actions.imperative.RetryExercises._
 import exercises.actions.imperative.UserCreationExercises.readSubscribeToMailingList
+import org.scalacheck.Gen
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
-import scala.util.{Failure, Try}
+import scala.util.{Failure, Success, Try}
 
-class RetryExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class RetryExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with TimeInstances {
 
   ignore("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]
@@ -75,28 +78,51 @@ class RetryExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
     )
   }
 
-  ignore("retry when block always succeeds") {
+  ignore("retry until action succeeds") {
     var counter = 0
-    val result = retry(1) { () =>
+    val result = retry(5) { () =>
       counter += 1
-      2 + 2
+      require(counter >= 3, "Counter is too low")
+      "Hello"
     }
-    assert(result == 4)
-    assert(counter == 1)
+    assert(result == "Hello")
+    assert(counter == 3)
   }
 
-  ignore("retry when block always fails") {
+  ignore("retry when action fails") {
     forAll { (error: Exception) =>
       var counter = 0
-      def exec(): Int = {
+      val result = Try(retry(5)(() => {
         counter += 1
         throw error
-      }
-      val result = Try(retry(5)(exec))
+      }))
 
       assert(result == Failure(error))
       assert(counter == 5)
     }
+  }
+
+  ignore("onError success") {
+    var counter = 0
+    val result  = onError(() => "Hello", _ => counter += 1)
+
+    assert(result == "Hello")
+    assert(counter == 0)
+  }
+
+  ignore("onError failure") {
+    var counter = 0
+    val result  = Try(onError(() => throw new Exception("Boom"), _ => counter += 1))
+
+    assert(result.isFailure)
+    assert(counter == 1)
+  }
+
+  ignore("onError failure rethrow the initial error") {
+    val result = Try(onError(() => throw new Exception("Boom"), _ => throw new Exception("BadaBoom")))
+
+    assert(result.isFailure)
+    assert(result.failed.get.getMessage == "Boom")
   }
 
 }

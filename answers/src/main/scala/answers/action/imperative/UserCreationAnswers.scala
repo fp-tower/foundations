@@ -1,20 +1,15 @@
 package answers.action.imperative
 
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.{Instant, LocalDate}
 
-import answers.action.imperative.RetryAnswers.{onError, retry, retryWithError}
-
-import scala.annotation.tailrec
 import scala.io.StdIn
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 object UserCreationApp extends App {
   import UserCreationAnswers._
 
-  val service = new UserCreationService(Console.system, Clock.system)
-
-  service.readUser()
+  readUser(Console.system, Clock.system)
 }
 
 object UserCreationAnswers {

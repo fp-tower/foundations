@@ -37,7 +37,7 @@ trait UserCreationInstances {
   val invalidDateGen: Gen[String] =
     arbitrary[String].suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
 
-  val validMaxAttempt: Gen[Int] = Gen.choose(1, 20)
+  val validMaxAttemptGen: Gen[Int] = Gen.choose(1, 20)
   val invalidMaxAttemptGen: Gen[Int] = Gen.choose(Int.MinValue, 0)
 
 }

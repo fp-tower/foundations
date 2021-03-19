@@ -7,15 +7,23 @@ import answers.action.imperative.RetryAnswers.{onError, retry}
 
 import scala.util.Try
 
+object UserCreationServiceApp extends App {
+  val console = Console.system
+  val clock   = Clock.system
+  val service = new UserCreationService(console, clock)
+
+  service.readUser()
+}
+
 class UserCreationService(console: Console, clock: Clock) {
   import UserCreationService._
 
   def readUser(): User = {
-    val name                    = readName()
-    val dateOfBirth             = retry(3)(readDateOfBirth())
-    val subscribedToMailingList = retry(3)(readSubscribeToMailingList())
-    val now                     = clock.now()
-    val user                    = User(name, dateOfBirth, subscribedToMailingList, now)
+    val name        = readName()
+    val dateOfBirth = retry(3)(readDateOfBirth())
+    val subscribed  = retry(3)(readSubscribeToMailingList())
+    val now         = clock.now()
+    val user        = User(name, dateOfBirth, subscribed, now)
     console.writeLine(s"User is $user")
     user
   }

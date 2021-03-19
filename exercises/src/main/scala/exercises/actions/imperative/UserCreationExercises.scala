@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDate}
 
 import scala.io.StdIn
+import scala.util.{Failure, Success, Try}
 
 // Run the App using the green arrow next to object (if using IntelliJ)
 // or run `sbt` in the terminal to open it in shell mode then type:

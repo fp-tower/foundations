@@ -15,12 +15,6 @@ import scala.util.{Failure, Success, Try}
 
 class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
 
-  val thunkGen: Gen[() => Int] =
-    Gen.oneOf(
-      Arbitrary.arbitrary[Int].map(() => _),
-      Gen.const(() => throw new Exception("Boom"))
-    )
-
   test("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]
     val console = Console.mock(ListBuffer("Never", "N"), outputs)
@@ -96,7 +90,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks w
     impl: (Console, Int) => Boolean
   ): Unit = {
     test(s"$name retry") {
-      forAll(validMaxAttempt, Gen.listOf(invalidYesNoGen), arbitrary[Boolean]) {
+      forAll(validMaxAttemptGen, Gen.listOf(invalidYesNoGen), arbitrary[Boolean]) {
         (maxAttempt: Int, invalidInputs: List[String], bool: Boolean) =>
           val validInput = if (bool) "Y" else "N"
           val inputs     = ListBuffer.from(invalidInputs :+ validInput)
@@ -137,7 +131,7 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks w
     impl: (Console, Int) => LocalDate
   ): Unit = {
     test(s"$name retry") {
-      forAll(validMaxAttempt, Gen.listOf(invalidDateGen), dateGen) {
+      forAll(validMaxAttemptGen, Gen.listOf(invalidDateGen), dateGen) {
         (maxAttempt: Int, invalidInputs: List[String], date: LocalDate) =>
           val dateStr = dateOfBirthFormatter.format(date)
           val inputs  = ListBuffer.from(invalidInputs :+ dateStr)
@@ -163,107 +157,83 @@ class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks w
     }
   }
 
-  test("retry when block always succeeds") {
+  test("retry until action succeeds") {
     var counter = 0
-    val result = retry(1) {
+    val result = retry(5) {
       counter += 1
-      2 + 2
+      require(counter >= 3, "Counter is too low")
+      "Hello"
     }
-    assert(result == 4)
-    assert(counter == 1)
+    assert(result == "Hello")
+    assert(counter == 3)
   }
 
-  test("retry when block always fails") {
+  test("retry when block action fails") {
     forAll { (error: Exception) =>
       var counter = 0
-      def exec(): Int = {
+      val result = Try(retry(5) {
         counter += 1
         throw error
-      }
-      val result = Try(retry(5)(exec()))
+      })
 
       assert(result == Failure(error))
       assert(counter == 5)
     }
   }
 
-  test("retry when block fails and then succeeds") {
-    var counter = 0
-    def exec(): String = {
-      counter += 1
-      if (counter < 3) throw new Exception("Boom!")
-      else "Hello"
-    }
-    val result = retry(5)(exec())
+  test("retry until action succeeds PBT") {
+    forAll(validMaxAttemptGen, Gen.choose(0, 20)) { (maxAttempt: Int, numberOfError: Int) =>
+      var counter = 0
+      def myMethod(): String =
+        if (counter < numberOfError) {
+          counter += 1
+          throw new Exception("Boom")
+        } else "Hello"
 
-    assert(result == "Hello")
-    assert(counter == 3)
+      val result = Try(retry(maxAttempt)(myMethod()))
+
+      if (maxAttempt > numberOfError)
+        assert(result == Success("Hello"))
+      else {
+        assert(result.isFailure)
+        assert(result.failed.get.getMessage == "Boom")
+      }
+    }
   }
 
-  test("retryWithError when block always succeeds") {
+  test("onError success") {
     var counter = 0
-    val result = retryWithError(1)(
-      action = 2 + 2,
-      onError = _ => counter += 1
-    )
-    assert(result == 4)
+    val result  = onError("Hello", _ => counter += 1)
+
+    assert(result == "Hello")
     assert(counter == 0)
   }
 
-  test("retryWithError when block always fails") {
+  test("onError failure") {
     var counter = 0
-    val result = Try {
-      retryWithError(5)(
-        action = throw new Exception("boom"),
-        onError = _ => counter += 1
-      )
-    }
+    val result  = Try(onError(throw new Exception("Boom"), _ => counter += 1))
 
     assert(result.isFailure)
-    assert(counter == 5)
+    assert(counter == 1)
   }
 
-  test("retryWithError when block fails and then succeeds") {
-    var counter = 0
-    val result = retryWithError(5)(
-      action = if (counter >= 3) "" else throw new Exception("boom"),
-      onError = _ => counter += 1
-    )
+  test("onError failure rethrow the initial error") {
+    val result = Try(onError(throw new Exception("Boom"), _ => throw new Exception("BadaBoom")))
 
-    assert(result == "")
-    assert(counter == 3)
+    assert(result.isFailure)
+    assert(result.failed.get.getMessage == "Boom")
   }
 
   test("onError") {
-    var counter = 0
-    onError(() => 1, _ => counter += 1)
+    forAll { (tryInt: Try[Int]) =>
+      var counter = 0
+      val result  = Try(onError(tryInt.get, _ => counter += 1))
 
-  }
-
-  test("retryWithError is consistent with retry + onError") {
-    forAll(Gen.listOf(thunkGen), validMaxAttempt) { (thunks, maxAttempt) =>
-      val it1      = thunks.iterator
-      var counter1 = 0
-      val result1 = Try(
-        retryWithError(maxAttempt)(
-          action = it1.next().apply(),
-          onError = _ => counter1 += 1
-        )
-      )
-
-      val it2      = thunks.iterator
-      var counter2 = 0
-      val result2 = Try(
-        retry(maxAttempt)(
-          action = onError(
-            action = it2.next().apply(),
-            callback = _ => counter2 += 1
-          )
-        )
-      )
-
-      assert(result1.toEither.left.map(_.getMessage) == result2.toEither.left.map(_.getMessage))
-      assert(counter1 == counter2)
+      assert(result == tryInt)
+      tryInt match {
+        case Failure(_) => assert(counter == 1)
+        case Success(_) => assert(counter == 0)
+      }
     }
   }
 
