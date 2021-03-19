@@ -355,10 +355,10 @@ class: medium-code
 
 # Refactoring: remove unused code
 
-.fifty-seven-left[
+.sixty-two-left[
 ```scala
 def helloV1(user: User) = {
-  if(user.email.isDefined) throw InvalidUser("No email")
+  if(user.email.isEmpty) throw new InvalidUser("No email")
   val res1 = funB(user)
   val res2 = sendEmail(user)
   res1
@@ -383,10 +383,10 @@ class: medium-code
 
 # Refactoring: remove unused code
 
-.fifty-seven-left[
+.sixty-two-left[
 ```scala
 def helloV1(user: User) = {
-  `if(user.email.isDefined) throw InvalidUser("No email")`
+  `if(user.email.isEmpty) throw new InvalidUser("No email")`
   val res1 = funB(user)
   val res2 = sendEmail(user)
   res1
@@ -411,10 +411,10 @@ class: medium-code
 
 # Refactoring: remove unused code
 
-.fifty-seven-left[
+.sixty-two-left[
 ```scala
 def helloV1(user: User) = {
-  if(user.email.isDefined) throw InvalidUser("No email")
+  if(user.email.isEmpty) throw new InvalidUser("No email")
   val res1 = funB(user)
   val res2 = `sendEmail(user)`
   res1
