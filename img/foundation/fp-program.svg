@@ -8,7 +8,7 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.4\n2021-03-21 16:35:38 +0000</metadata>
+  <metadata> Produced by OmniGraffle 7.18.4\n2021-03-21 18:24:30 +0000</metadata>
   <g id="fp-program" fill="none" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-dasharray="none">
     <title>fp-program</title>
     <g id="fp-program_Layer_1">
@@ -33,11 +33,11 @@
         <path d="M 294 171 L 294 126 L 387 126 L 387 99 L 429 148.5 L 387 198 L 387 171 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_130">
-        <path d="M 1035 18 L 1161 148.5 L 1035 279 L 909 148.5 Z" fill="#70a3d8"/>
-        <path d="M 1035 18 L 1161 148.5 L 1035 279 L 909 148.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(948.02 110.05)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="white" x="5.59" y="29">Intermediate</tspan>
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="white" x="34.765" y="64.84">Result 2</tspan>
+        <path d="M 1035 18 L 1154.833 108.17341 L 1109.061 254.0766 L 960.939 254.0766 L 915.1669 108.17341 Z" fill="#70a3d8"/>
+        <path d="M 1035 18 L 1154.833 108.17341 L 1109.061 254.0766 L 960.939 254.0766 L 915.1669 108.17341 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(939.2 107.71)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="white" x="11.890003" y="29">Intermediate</tspan>
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="white" x="41.065003" y="64.84">Result 2</tspan>
         </text>
       </g>
       <g id="Graphic_133">
