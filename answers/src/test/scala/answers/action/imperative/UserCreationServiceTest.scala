@@ -1,7 +1,6 @@
 package answers.action.imperative
 
 import answers.action.UserCreationInstances
-import answers.action.imperative.UserCreationAnswers.readUser
 import answers.action.imperative.UserCreationService._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -28,7 +27,8 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val outputs     = ListBuffer.empty[String]
       val console     = Console.mock(inputs, outputs)
       val clock       = Clock.constant(now)
-      val result      = Try(readUser(console, clock))
+      val service     = new UserCreationService(console, clock)
+      val result      = Try(service.readUser())
 
       val user = User(name, dob, yesNo, now)
 
