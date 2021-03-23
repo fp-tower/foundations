@@ -1,5 +1,7 @@
 package answers.action.imperative
 
+import java.time.LocalDate
+
 import answers.action.UserCreationInstances
 import answers.action.imperative.UserCreationService._
 import org.scalacheck.Arbitrary.arbitrary
@@ -11,6 +13,20 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Success, Try}
 
 class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+
+  test("formatDate - parseDate round trip") {
+    forAll { (date: LocalDate) =>
+      val encoded: String = formatDate(date)
+      assert(parseDate(encoded) == date)
+    }
+  }
+
+  test("formatBoolean - parseYesNo round trip") {
+    forAll { (boolean: Boolean) =>
+      val encoded: String = formatBoolean(boolean)
+      assert(parseYesNo(encoded) == boolean)
+    }
+  }
 
   test("readUser") {
     forAll(
