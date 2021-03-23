@@ -53,6 +53,8 @@ class UserCreationService(console: Console, clock: Clock) {
   def readUser(): User =
     ???
 
+  // 3. add a method `readDate` and `readYesNo` to `Console`
+
 }
 
 object UserCreationService {

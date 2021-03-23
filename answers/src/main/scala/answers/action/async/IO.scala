@@ -38,6 +38,7 @@ sealed trait IO[A] {
   def start(ec: ExecutionContext): IO[IO[A]] =
     delay {
       val promise = Promise[A]()
+//      ec.execute(() => this.executeAsync(promise.complete))
       evalOn(ec).executeAsync(promise.complete)
       Async(cb => promise.future.onComplete(cb)(ec))
     }
@@ -77,9 +78,9 @@ sealed trait IO[A] {
 
   def executeAsync(cb: CallBack[A]): Unit =
     this match {
-      case Thunk(block)   => cb(Try(block()))
-      case Async(runCB)   => runCB(cb)
-      case EvalOn(io, ec) => ec.execute(() => io.executeAsync(cb))
+      case Thunk(block)    => cb(Try(block()))
+      case Async(register) => register(cb)
+      case EvalOn(io, ec)  => ec.execute(() => io.executeAsync(cb))
     }
 }
 
@@ -102,7 +103,7 @@ object IO {
     }
 
   case class Thunk[A](block: () => A)                           extends IO[A]
-  case class Async[A](runCB: CallBack[A] => Unit)               extends IO[A]
+  case class Async[A](register: CallBack[A] => Unit)            extends IO[A]
   case class EvalOn[A](underlying: IO[A], ec: ExecutionContext) extends IO[A]
 
 }

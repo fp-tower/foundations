@@ -1,21 +1,26 @@
 package answers.action.fp
 
+import java.time.Instant
+
 import answers.action.UserCreationInstances
-import answers.action.fp.UserCreationAnswers._
+import answers.action.fp.UserCreationService._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
 
-class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+
+  val fixClock = Clock.constant(Instant.MIN)
 
   test("readName") {
     forAll { (name: String, otherInputs: List[String]) =>
       val inputs  = ListBuffer.from(name :: otherInputs)
       val outputs = ListBuffer.empty[String]
       val console = Console.mock(inputs, outputs)
+      val service = new UserCreationService(console, fixClock)
 
-      val action = readName(console)
+      val action = service.readName
 
       // nothing is happen before `execute` is called
       assert(inputs.size == otherInputs.size + 1)
@@ -35,8 +40,9 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val inputs  = ListBuffer.from(boolStr :: otherInputs)
       val outputs = ListBuffer.empty[String]
       val console = Console.mock(inputs, outputs)
+      val service = new UserCreationService(console, fixClock)
 
-      val result = readSubscribeToMailingList(console).execute()
+      val result = service.readSubscribeToMailingList.execute()
 
       assert(result == bool)
       assert(inputs.size == otherInputs.size)
@@ -51,8 +57,9 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val inputs  = ListBuffer(input)
       val outputs = ListBuffer.empty[String]
       val console = Console.mock(inputs, outputs)
+      val service = new UserCreationService(console, fixClock)
 
-      val result = readSubscribeToMailingList(console).attempt.execute()
+      val result = service.readSubscribeToMailingList.attempt.execute()
 
       assert(result.isFailure)
       assert(

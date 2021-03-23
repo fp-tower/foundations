@@ -7,18 +7,18 @@ import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 trait Console {
-  def readLine(): Action[String]
+  def readLine: Action[String]
   def writeLine(message: String): Action[Unit]
 
-  def readBoolean: Action[Boolean] =
+  def readYesNo: Action[Boolean] =
     for {
-      line <- readLine()
+      line <- readLine
       bool <- Console.parseLineToBoolean(line)
     } yield bool
 
   def readDate(formatter: DateTimeFormatter): Action[LocalDate] =
     for {
-      line <- readLine()
+      line <- readLine
       date <- Action(LocalDate.parse(line, formatter))
     } yield date
 }
@@ -31,8 +31,11 @@ object Console {
       case _   => Action.fail(new IllegalArgumentException("Invalid input, expected Y/N"))
     }
 
+  def formatBoolean(bool: Boolean): String =
+    if (bool) "Y" else "N"
+
   val system: Console = new Console {
-    def readLine(): Action[String] =
+    val readLine: Action[String] =
       Action { StdIn.readLine() }
 
     def writeLine(message: String): Action[Unit] =
@@ -40,7 +43,7 @@ object Console {
   }
 
   def mock(inputs: ListBuffer[String], outputs: ListBuffer[String]): Console = new Console {
-    def readLine(): Action[String] =
+    val readLine: Action[String] =
       Action {
         if (inputs.isEmpty) throw new Exception("No input in the console")
         else inputs.remove(0)
