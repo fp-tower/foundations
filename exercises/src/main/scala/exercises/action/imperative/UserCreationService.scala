@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import exercises.action.imperative.UserCreationExercises.User
-import exercises.action.imperative.RetryExercises._
 
 import scala.util.Try
 
@@ -31,7 +30,7 @@ class UserCreationService(console: Console, clock: Clock) {
 
   def readDateOfBirth(): LocalDate =
     onError(
-      action = () => {
+      action = {
         console.writeLine("What's your date of birth? [dd-mm-yyyy]")
         parseDate(console.readLine())
       },

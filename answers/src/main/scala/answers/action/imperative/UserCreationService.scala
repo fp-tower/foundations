@@ -3,8 +3,6 @@ package answers.action.imperative
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import answers.action.imperative.RetryAnswers.{onError, retry}
-
 import scala.util.Try
 
 object UserCreationServiceApp extends App {

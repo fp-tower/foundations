@@ -15,186 +15,191 @@ class: center, middle, white
 .title[Evaluation]
 
 ---
-# Variables
+# 1. Vals
 
 .forty-seven-left[
 ```scala mdoc
-val city = "London"
+val city = "New York"
 
-var counter = 1
+val counter = 1
 ```
 ]
 
 ---
-# Variables: evaluate when created
+# 1. Vals are evaluated when created
 
 .forty-seven-left[
 ```scala mdoc:reset
-val city = "London".take(2)
+val city = "New York".drop(4)
 
-var counter = 1 + 3
+val counter = 1 + 3
 ```
 ]
 
 ---
-# Variables: definition order matters
+# 1. Vals are evaluated only once
 
-.forty-seven-left[
+.fifty-two-left[
 ```scala
-val userId = 1234
+import java.time.Instant
 
-val currentUser = fetchUser(userId)
-// currentUser = Some(User("Bob", ...))
+val nowSeconds = Instant.now().getEpochSecond
+// nowSeconds: Long = 1616594266L
+```
+]
 
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
+
+<br><br><br><br><br><br><br>
+
+.fifty-two-left[
+```scala
+nowSeconds
+// res: Long = 1616594266L
+
+nowSeconds
+// res: Long = 1616594266L
 ```
 ]
 
 ---
-# Variables: definition order matters
+# 2. Defs
 
 .forty-seven-left[
-```scala
-val userId = 1234
-
-val currentUser = fetchUser(userId)
-// currentUser = Some(User("Bob", ...))
-
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
-```
-]
-
-.forty-seven-right[
-```scala
-val userId = 1234
-
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
-
-val currentUser = fetchUser(userId)
-// currentUser = None
-```
-]
-
----
-# Variables: definition order matters
-
-.forty-seven-left[
-```scala
-val userId = 1234
-
-val currentUser = fetchUser(userId)
-// currentUser = Some(User("Bob", ...))
-
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
-```
-]
-
-.forty-seven-right[
-```scala
-val deletedUser = deleteUser(userId)
-// java.lang.NullPointerException
-
-val currentUser = fetchUser(userId)
-&#x200B;
-
-val userId = 1234
-```
-]
-
----
-# Functions
-
-.forty-seven-left[
-```scala mdoc:silent
+```scala mdoc
 def greeting(): Unit =
   println("Hello")
-
-val sum: (Int, Int) => Int =
-  (x, y) => x + y
 ```
 ]
 
 ---
-# Functions
+# 2. Defs are evaluated when called
 
 .forty-seven-left[
-```scala mdoc:reset:silent
+```scala mdoc:reset
 def greeting(): Unit =
   println("Hello")
-
-val sum: (Int, Int) => Int =
-  (x, y) => x + y
 ```
+]
 
+<br><br><br><br>
+
+.forty-seven-left[
 ```scala
 greeting()
-// "Hello"
-
-sum(3, 4)
-// res: Int = 7
+// Hello
 ```
-
-.center[
-## Evaluate when called
-]
 ]
 
 ---
-# Functions
+# 2. Defs are reevaluated everytime
 
 .forty-seven-left[
-```scala mdoc:reset:silent
+```scala mdoc:reset
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+]
+
+---
+# 2. Defs are reevaluated everytime
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.time.Instant
+
+def nowMillis(): Long =
+  Instant.now().toEpochMilli
+```
+]
+
+<br><br><br><br><br><br><br>
+
+.forty-seven-left[
+```scala
+nowMillis()
+// res: Long = 1616590118552L
+
+nowMillis()
+// res: Long = 1616590118554L
+```
+]
+
+---
+# 2. Defs without parameter
+
+.sixty-two-left[
+```scala mdoc:reset
 def greeting(): Unit =
   println("Hello")
 
-val sum: (Int, Int) => Int =
-  (x, y) => x + y
+case class User(firstName: String, lastName: String) {
+  def fullName: String =
+    s"${firstName} ${lastName}"
+}
 ```
+]
 
+--
+
+.sixty-two-left[
 ```scala mdoc
 greeting()
 
-greeting()
-```
+User("John", "Doe").fullName
 
-.center[
-## Evaluate when called
-]
-]
-
----
-# Lazy Val
-
-.forty-seven-left[
-```scala mdoc:reset
-lazy val message = "Hello"
-
-lazy val greeting = println(message)
+User("John", "Doe").firstName
 ```
 ]
 
 ---
-# Lazy Val
+# 3. Lazy Vals
 
 .forty-seven-left[
 ```scala mdoc:reset
-lazy val message = "Hello"
+lazy val greeting = println("Hello")
+```
+]
 
-lazy val greeting = println(message)
+---
+# 3. Lazy Vals are evaluated when first accessed
+
+.forty-seven-left[
+```scala mdoc:reset
+lazy val greeting = println("Hello")
+```
+
+```scala mdoc
+greeting
+```
+]
+
+---
+# 3. Lazy Vals are cached for subsequent evaluations
+
+.forty-seven-left[
+```scala mdoc:reset
+lazy val greeting = println("Hello")
 ```
 
 ```scala mdoc
 greeting
 
 greeting
+
+greeting
 ```
-.center[
-## Evaluate when first accessed
-]
 ]
 
 ---
@@ -255,73 +260,180 @@ greeting()
 // Hello
 ```
 .center[
-## Everytime called
+## Everytime it is called
 ]
-
 ]
 ]
 
 ---
-# Number of Evaluation
+# Test evaluation
+
+.forty-seven-left[
+```scala
+test("lazy val evaluation") {
+  var counter = 0
+
+  lazy val action = counter += 1
+  assert(counter == 0)
+
+  action
+  assert(counter == 1)
+
+  action
+  assert(counter == 1)
+}
+```
+]
+
+---
+# Test evaluation
+
+.forty-seven-left[
+```scala
+test("def evaluation") {
+  var counter = 0
+
+  def action() = counter += 1
+  assert(counter == 0)
+
+  action()
+  assert(counter == 1)
+
+  action()
+  assert(counter == 2)
+}
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala mdoc:reset
+def sum(x: Int, y: Int): Int =
+  x + y
+```
+
+```scala mdoc
+def foo(): Int = {
+  println("Foo")
+  5
+}
+
+def bar(): Int = {
+  println("Bar")
+  2
+}
+
+sum(foo(), bar())
+sum(bar(), foo())
+```
+]
+
+
+---
+# Parameters evaluation
+
+.sixty-two-left[
+```scala mdoc
+def getOrElse[A](option: Option[A], fallback: A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala mdoc
+getOrElse(Some(1), 5)
+
+getOrElse(None, 5)
+```
+
+```scala mdoc:crash
+getOrElse(Some(1), sys.error("Must be defined"))
+```
+]
+
+---
+# Parameters evaluation
+
+.sixty-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala mdoc
+getOrElse(Some(1), 5)
+
+getOrElse(None, 5)
+```
+
+```scala mdoc
+getOrElse(Some(1), sys.error("Must be defined"))
+```
+]
+
+
+
+
+---
+# Retry
+
+.seventy-seven-left[
+```scala
+import java.time.LocalDate
+
+def readSubscribe  (console: Console, maxAttempt: Int): Boolean =
+  ???
+
+def readDateOfBirth(console: Console, maxAttempt: Int): LocalDate =
+  ???
+```
+]
+
+--
+
+.seventy-seven-left[
+```scala
+def retry(console: Console, maxAttempt: Int) =
+  ???
+```
+]
+
+
+---
+# Exceptions
 
 <br><br>
 
 .cols[
 .forty-five[
 ```scala
-val greeting =
-  println("Hello")
-// Hello
-
-greeting
-
-
-greeting
-&#x200B;
+val greeting = ???
+// NotImplementedError
 ```
-
-.center[
-## 1
-]
 ]
 
 .ten[&nbsp;&nbsp;&nbsp;]
 
 .forty-five[
 ```scala
-lazy val greeting =
-  println("Hello")
-
-
-greeting
-// Hello
-
-greeting
+lazy val greeting = ???
 &#x200B;
 ```
-.center[
-## 0 - 1
-]
 ]
 
 .ten[&nbsp;&nbsp;&nbsp;]
 
 .forty-five[
 ```scala
-def greeting(): Int =
-  println("Hello")
-
-
-greeting()
-// Hello
-
-greeting()
-// Hello
+def greeting(): Int = ???
+&#x200B;
 ```
-.center[
-## 0 - n
-]
-
 ]
 ]
 
