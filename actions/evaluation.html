@@ -15,150 +15,98 @@ class: center, middle, white
 .title[Evaluation]
 
 ---
-# Variables
+# 1. Vals
 
 .forty-seven-left[
 ```scala
-val city = "London"
-// city: String = "London"
+val city = "New York"
+// city: String = "New York"
 
-var counter = 1
+val counter = 1
 // counter: Int = 1
 ```
 ]
 
 ---
-# Variables: evaluate when created
+# 1. Vals are evaluated when created
 
 .forty-seven-left[
 ```scala
-val city = "London".take(2)
-// city: String = "Lo"
+val city = "New York".drop(4)
+// city: String = "York"
 
-var counter = 1 + 3
+val counter = 1 + 3
 // counter: Int = 4
 ```
 ]
 
 ---
-# Variables: definition order matters
+# 1. Vals are evaluated only once
 
-.forty-seven-left[
+.fifty-two-left[
 ```scala
-val userId = 1234
+import java.time.Instant
 
-val currentUser = fetchUser(userId)
-// currentUser = Some(User("Bob", ...))
+val nowSeconds = Instant.now().getEpochSecond
+// nowSeconds: Long = 1616594266L
+```
+]
 
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
+
+<br><br><br><br><br><br><br>
+
+.fifty-two-left[
+```scala
+nowSeconds
+// res: Long = 1616594266L
+
+nowSeconds
+// res: Long = 1616594266L
 ```
 ]
 
 ---
-# Variables: definition order matters
-
-.forty-seven-left[
-```scala
-val userId = 1234
-
-val currentUser = fetchUser(userId)
-// currentUser = Some(User("Bob", ...))
-
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
-```
-]
-
-.forty-seven-right[
-```scala
-val userId = 1234
-
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
-
-val currentUser = fetchUser(userId)
-// currentUser = None
-```
-]
-
----
-# Variables: definition order matters
-
-.forty-seven-left[
-```scala
-val userId = 1234
-
-val currentUser = fetchUser(userId)
-// currentUser = Some(User("Bob", ...))
-
-val deletedUser = deleteUser(userId)
-// deletedUser = Some(User("Bob", ...))
-```
-]
-
-.forty-seven-right[
-```scala
-val deletedUser = deleteUser(userId)
-// java.lang.NullPointerException
-
-val currentUser = fetchUser(userId)
-&#x200B;
-
-val userId = 1234
-```
-]
-
----
-# Functions
+# 2. Defs
 
 .forty-seven-left[
 ```scala
 def greeting(): Unit =
   println("Hello")
-
-val sum: (Int, Int) => Int =
-  (x, y) => x + y
 ```
 ]
 
 ---
-# Functions
+# 2. Defs are evaluated when called
 
 .forty-seven-left[
 ```scala
 def greeting(): Unit =
   println("Hello")
-
-val sum: (Int, Int) => Int =
-  (x, y) => x + y
 ```
+]
 
+<br><br><br><br>
+
+.forty-seven-left[
 ```scala
 greeting()
-// "Hello"
-
-sum(3, 4)
-// res: Int = 7
+// Hello
 ```
-
-.center[
-## Evaluate when called
-]
 ]
 
 ---
-# Functions
+# 2. Defs are reevaluated everytime
 
 .forty-seven-left[
 ```scala
 def greeting(): Unit =
   println("Hello")
-
-val sum: (Int, Int) => Int =
-  (x, y) => x + y
 ```
+]
 
+<br><br><br><br>
+
+.forty-seven-left[
 ```scala
 greeting()
 // Hello
@@ -166,31 +114,91 @@ greeting()
 greeting()
 // Hello
 ```
-
-.center[
-## Evaluate when called
-]
 ]
 
 ---
-# Lazy Val
+# 2. Defs are reevaluated everytime
 
 .forty-seven-left[
 ```scala
-lazy val message = "Hello"
+import java.time.Instant
 
-lazy val greeting = println(message)
+def nowMillis(): Long =
+  Instant.now().toEpochMilli
+```
+]
+
+<br><br><br><br><br><br><br>
+
+.forty-seven-left[
+```scala
+nowMillis()
+// res: Long = 1616590118552L
+
+nowMillis()
+// res: Long = 1616590118554L
 ```
 ]
 
 ---
-# Lazy Val
+# 2. Defs without parameter
+
+.sixty-two-left[
+```scala
+def greeting(): Unit =
+  println("Hello")
+
+case class User(firstName: String, lastName: String) {
+  def fullName: String =
+    s"${firstName} ${lastName}"
+}
+```
+]
+
+--
+
+.sixty-two-left[
+```scala
+greeting()
+// Hello
+
+User("John", "Doe").fullName
+// res6: String = "John Doe"
+
+User("John", "Doe").firstName
+// res7: String = "John"
+```
+]
+
+---
+# 3. Lazy Vals
 
 .forty-seven-left[
 ```scala
-lazy val message = "Hello"
+lazy val greeting = println("Hello")
+```
+]
 
-lazy val greeting = println(message)
+---
+# 3. Lazy Vals are evaluated when first accessed
+
+.forty-seven-left[
+```scala
+lazy val greeting = println("Hello")
+```
+
+```scala
+greeting
+// Hello
+```
+]
+
+---
+# 3. Lazy Vals are cached for subsequent evaluations
+
+.forty-seven-left[
+```scala
+lazy val greeting = println("Hello")
 ```
 
 ```scala
@@ -198,10 +206,9 @@ greeting
 // Hello
 
 greeting
+
+greeting
 ```
-.center[
-## Evaluate when first accessed
-]
 ]
 
 ---
@@ -262,73 +269,196 @@ greeting()
 // Hello
 ```
 .center[
-## Everytime called
+## Everytime it is called
 ]
-
 ]
 ]
 
 ---
-# Number of Evaluation
+# Test evaluation
+
+.forty-seven-left[
+```scala
+test("lazy val evaluation") {
+  var counter = 0
+
+  lazy val action = counter += 1
+  assert(counter == 0)
+
+  action
+  assert(counter == 1)
+
+  action
+  assert(counter == 1)
+}
+```
+]
+
+---
+# Test evaluation
+
+.forty-seven-left[
+```scala
+test("def evaluation") {
+  var counter = 0
+
+  def action() = counter += 1
+  assert(counter == 0)
+
+  action()
+  assert(counter == 1)
+
+  action()
+  assert(counter == 2)
+}
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala
+def sum(x: Int, y: Int): Int =
+  x + y
+```
+
+```scala
+def foo(): Int = {
+  println("Foo")
+  5
+}
+
+def bar(): Int = {
+  println("Bar")
+  2
+}
+
+sum(foo(), bar())
+// Foo
+// Bar
+// res16: Int = 7
+sum(bar(), foo())
+// Bar
+// Foo
+// res17: Int = 7
+```
+]
+
+
+---
+# Parameters evaluation
+
+.sixty-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala
+getOrElse(Some(1), 5)
+// res18: Int = 1
+
+getOrElse(None, 5)
+// res19: Int = 5
+```
+
+```scala
+getOrElse(Some(1), sys.error("Must be defined"))
+// java.lang.RuntimeException: Must be defined
+// 	at scala.sys.package$.error(package.scala:27)
+// 	at repl.Session$App15$$anonfun$16.apply$mcI$sp(evaluation.html:193)
+// 	at repl.Session$App15$$anonfun$16.apply(evaluation.html:193)
+// 	at repl.Session$App15$$anonfun$16.apply(evaluation.html:193)
+```
+]
+
+---
+# Parameters evaluation
+
+.sixty-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala
+getOrElse(Some(1), 5)
+// res21: Int = 1
+
+getOrElse(None, 5)
+// res22: Int = 5
+```
+
+```scala
+getOrElse(Some(1), sys.error("Must be defined"))
+// res23: Int = 1
+```
+]
+
+
+
+
+---
+# Retry
+
+.seventy-seven-left[
+```scala
+import java.time.LocalDate
+
+def readSubscribe  (console: Console, maxAttempt: Int): Boolean =
+  ???
+
+def readDateOfBirth(console: Console, maxAttempt: Int): LocalDate =
+  ???
+```
+]
+
+--
+
+.seventy-seven-left[
+```scala
+def retry(console: Console, maxAttempt: Int) =
+  ???
+```
+]
+
+
+---
+# Exceptions
 
 <br><br>
 
 .cols[
 .forty-five[
 ```scala
-val greeting =
-  println("Hello")
-// Hello
-
-greeting
-
-
-greeting
-&#x200B;
+val greeting = ???
+// NotImplementedError
 ```
-
-.center[
-## 1
-]
 ]
 
 .ten[&nbsp;&nbsp;&nbsp;]
 
 .forty-five[
 ```scala
-lazy val greeting =
-  println("Hello")
-
-
-greeting
-// Hello
-
-greeting
+lazy val greeting = ???
 &#x200B;
 ```
-.center[
-## 0 - 1
-]
 ]
 
 .ten[&nbsp;&nbsp;&nbsp;]
 
 .forty-five[
 ```scala
-def greeting(): Int =
-  println("Hello")
-
-
-greeting()
-// Hello
-
-greeting()
-// Hello
+def greeting(): Int = ???
+&#x200B;
 ```
-.center[
-## 0 - n
-]
-
 ]
 ]
 
@@ -416,11 +546,11 @@ def execDef: Int = {
 
 execDef
 // Hello
-// res9: Int = 5
+// res24: Int = 5
 
 execDef
 // Hello
-// res10: Int = 5
+// res25: Int = 5
 ```
 ]
 
@@ -434,10 +564,10 @@ val execVal: Int = {
 // execVal: Int = 5
 
 execVal
-// res11: Int = 5
+// res26: Int = 5
 
 execVal
-// res12: Int = 5
+// res27: Int = 5
 ```
 ]
 
@@ -460,10 +590,10 @@ val eda = User("Eda", "Smith", 45)
 
 ```scala
 eda.`firstName`
-// res13: String = "Eda"
+// res28: String = "Eda"
 
 eda.`fullName`
-// res14: String = "Eda Smith"
+// res29: String = "Eda Smith"
 ```
 ]
 
@@ -481,11 +611,11 @@ def execDef(): Int = {
 
 execDef()
 // Hello
-// res16: Int = 5
+// res31: Int = 5
 
 execDef()
 // Hello
-// res17: Int = 5
+// res32: Int = 5
 ```
 ]
 
@@ -499,10 +629,10 @@ val execVal: Int = {
 // execVal: Int = 5
 
 execVal
-// res18: Int = 5
+// res33: Int = 5
 
 execVal
-// res19: Int = 5
+// res34: Int = 5
 ```
 ]
 
@@ -520,10 +650,10 @@ lazy val execLazyVal: Int = {
 
 execLazyVal
 // Hello
-// res21: Int = 5
+// res36: Int = 5
 
 execLazyVal
-// res22: Int = 5
+// res37: Int = 5
 ```
 ]
 
@@ -537,10 +667,10 @@ val execVal: Int = {
 // execVal: Int = 5
 
 execVal
-// res23: Int = 5
+// res38: Int = 5
 
 execVal
-// res24: Int = 5
+// res39: Int = 5
 ```
 ]
 
@@ -751,7 +881,7 @@ foo(
 )
 // Hello
 // World
-// res25: Int = 6
+// res40: Int = 6
 ```
 ]
 
@@ -787,7 +917,7 @@ foo(
 )
 // Hello
 // World
-// res27: Int = 6
+// res42: Int = 6
 ```
 ]
 
