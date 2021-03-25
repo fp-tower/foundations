@@ -203,6 +203,11 @@ greeting
 ]
 
 ---
+# Lazy Val code generation in Scala 3
+
+https://dotty.epfl.ch/docs/reference/changed-features/lazy-vals-init.html
+
+---
 # Evaluation
 
 <br><br>
@@ -249,7 +254,7 @@ greeting
 
 .forty-five[
 ```scala
-def greeting(): Int =
+def greeting() =
   println("Hello")
 
 
@@ -266,11 +271,36 @@ greeting()
 ]
 
 ---
-# Test evaluation
+# Test code evaluation
 
-.forty-seven-left[
+.seventy-two-left[
 ```scala
-test("lazy val evaluation") {
+test("a lazy val is only evaluated when first accessed") {
+  // ...
+}
+```
+]
+
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
+  var counter = 0
+
+  lazy val action = counter += 1
+}
+```
+]
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
   var counter = 0
 
   lazy val action = counter += 1
@@ -286,11 +316,11 @@ test("lazy val evaluation") {
 ]
 
 ---
-# Test evaluation
+# Test code evaluation
 
-.forty-seven-left[
+.seventy-two-left[
 ```scala
-test("def evaluation") {
+test("a def is evaluated every time it is called") {
   var counter = 0
 
   def action() = counter += 1
@@ -310,23 +340,112 @@ test("def evaluation") {
 
 .forty-seven-left[
 ```scala mdoc:reset
-def sum(x: Int, y: Int): Int =
-  x + y
+def sum(x: Double, y: Double): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
 ```
 
+<br>
+
 ```scala mdoc
-def foo(): Int = {
-  println("Foo")
-  5
+def getEdaBalance(): Double = {
+  println("Eda")
+  120.0
 }
 
-def bar(): Int = {
-  println("Bar")
-  2
+def getBobBalance(): Double = {
+  println("Bob")
+  35.0
+}
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+sum(
+  getEdaBalance(),
+  getBobBalance()
+)
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala mdoc:reset
+def sum(x: Double, y: Double): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
+```
+
+<br>
+
+```scala mdoc
+def getEdaBalance(): Double = {
+  println("Eda")
+  120.0
 }
 
-sum(foo(), bar())
-sum(bar(), foo())
+def getBobBalance(): Double = {
+  println("Bob")
+  35.0
+}
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+sum(
+  getEdaBalance(),
+  getBobBalance()
+)
+// Eda
+// Bob
+// The sum is 155.0
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala mdoc:reset
+def sum(x: Double, y: Double): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
+```
+
+<br>
+
+```scala mdoc
+def getEdaBalance(): Double = {
+  println("Eda")
+  120.0
+}
+
+def getBobBalance(): Double = {
+  println("Bob")
+  35.0
+}
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+val eda = getEdaBalance()
+// Eda
+val bob = getBobBalance()
+// Bob
+
+sum(
+  eda,
+  bob
+)
+// The sum is 155.0
 ```
 ]
 
@@ -334,8 +453,32 @@ sum(bar(), foo())
 ---
 # Parameters evaluation
 
-.sixty-two-left[
-```scala mdoc
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+]
+--
+
+.seventy-two-left[
+```scala
+getOrElse(Some("bob@gmail.com"), "support@fp-tower.com")
+// res: String = "bob@gmail.com"
+
+getOrElse(None                 , "support@fp-tower.com")
+// res: String = "support@fp-tower.com"
+```
+]
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala mdoc:reset
 def getOrElse[A](option: Option[A], fallback: A): A =
   option match {
     case Some(value) => value
@@ -343,16 +486,230 @@ def getOrElse[A](option: Option[A], fallback: A): A =
   }
 ```
 
-```scala mdoc
-getOrElse(Some(1), 5)
-
-getOrElse(None, 5)
-```
-
-```scala mdoc:crash
-getOrElse(Some(1), sys.error("Must be defined"))
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
 ```
 ]
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: () => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback()
+  }
+```
+]
+
+--
+
+
+.forty-two-left[
+## Def function
+```scala mdoc
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+.forty-seven-right[
+## Val function
+```scala mdoc:reset
+val greeting: () => Unit =
+  () => println("Hello")
+```
+]
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: () => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback()
+  }
+```
+
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  () => throw new IllegalArgumentException("email is required")
+)
+// res: String = "bob@gmail.com"
+
+getOrElse(
+  None,
+  () => throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
+
+---
+# By-name parameters
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+]
+
+---
+# By-name parameters
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  throw new IllegalArgumentException("email is required")
+)
+// res: String = "bob@gmail.com"
+
+getOrElse(
+  None,
+  throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
+
+---
+# Test by-name parameters
+
+.forty-seven-left[
+```scala mdoc
+sealed trait Eval
+
+case object Never extends Eval
+case object Once  extends Eval
+case object Twice extends Eval
+
+def testEval(eval: Eval, param: => Unit) =
+  eval match {
+    case Never => () // do nothing
+    case Once  => param
+    case Twice =>
+      param
+      param
+  }
+```
+]
+
+--
+
+.forty-seven-right[
+```scala
+test("by-name parameter evaluation") {
+  var counter = 0
+
+  testEval(Never, counter += 1)
+  assert(counter == 0)
+
+  testEval(Once, counter += 1)
+  assert(counter == 1)
+
+  counter = 0 // reset counter
+  testEval(Twice, counter += 1)
+  assert(counter == 2)
+}
+&#x200B;
+```
+]
+
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+# .white[Three types of expression evaluation]
+
+.thirty-seven-left[
+## .white[Once when defined]
+
+## .white[Once when first accessed]
+
+## .white[Everytime called]
+]
+
+.sixty-two-right[
+## .white[→ `val`]
+
+## .white[→ `lazy val`]
+
+## .white[→ `def`]
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+# .white[Two types of parameters evaluation]
+
+.twenty-seven-left[
+## .white[Standard (by-value)]
+
+## .white[By-name]
+]
+
+.seventy-two-right[
+## .white[behaves like `val`]
+
+## .white[behaves like `def`]
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+<br>
+# .white[Summary]
+
+<br>
+
+## .white[Three types of evaluation:]
+
+## .white[1.] .white[val - once when created]
+
+## .white[2.] .white[lazy val - once when first created]
+
+## .white[3.] .white[Faster to onboard developers]
+
+
+---
+# Retry
+
+.fifty-seven-left[
+```scala
+def retry[A](maxAttempt: Int, action: => A): A =
+  ???
+```
+]
+
 
 ---
 # Parameters evaluation
