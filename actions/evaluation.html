@@ -212,6 +212,11 @@ greeting
 ]
 
 ---
+# Lazy Val code generation in Scala 3
+
+https://dotty.epfl.ch/docs/reference/changed-features/lazy-vals-init.html
+
+---
 # Evaluation
 
 <br><br>
@@ -258,7 +263,7 @@ greeting
 
 .forty-five[
 ```scala
-def greeting(): Int =
+def greeting() =
   println("Hello")
 
 
@@ -275,11 +280,36 @@ greeting()
 ]
 
 ---
-# Test evaluation
+# Test code evaluation
 
-.forty-seven-left[
+.seventy-two-left[
 ```scala
-test("lazy val evaluation") {
+test("a lazy val is only evaluated when first accessed") {
+  // ...
+}
+```
+]
+
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
+  var counter = 0
+
+  lazy val action = counter += 1
+}
+```
+]
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
   var counter = 0
 
   lazy val action = counter += 1
@@ -295,11 +325,11 @@ test("lazy val evaluation") {
 ]
 
 ---
-# Test evaluation
+# Test code evaluation
 
-.forty-seven-left[
+.seventy-two-left[
 ```scala
-test("def evaluation") {
+test("a def is evaluated every time it is called") {
   var counter = 0
 
   def action() = counter += 1
@@ -319,29 +349,112 @@ test("def evaluation") {
 
 .forty-seven-left[
 ```scala
-def sum(x: Int, y: Int): Int =
-  x + y
+def sum(x: Double, y: Double): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
 ```
 
+<br>
+
 ```scala
-def foo(): Int = {
-  println("Foo")
-  5
+def getEdaBalance(): Double = {
+  println("Eda")
+  120.0
 }
 
-def bar(): Int = {
-  println("Bar")
-  2
+def getBobBalance(): Double = {
+  println("Bob")
+  35.0
+}
+```
+]
+
+.forty-seven-right[
+```scala
+sum(
+  getEdaBalance(),
+  getBobBalance()
+)
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala
+def sum(x: Double, y: Double): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
+```
+
+<br>
+
+```scala
+def getEdaBalance(): Double = {
+  println("Eda")
+  120.0
 }
 
-sum(foo(), bar())
-// Foo
-// Bar
-// res16: Int = 7
-sum(bar(), foo())
-// Bar
-// Foo
-// res17: Int = 7
+def getBobBalance(): Double = {
+  println("Bob")
+  35.0
+}
+```
+]
+
+.forty-seven-right[
+```scala
+sum(
+  getEdaBalance(),
+  getBobBalance()
+)
+// Eda
+// Bob
+// The sum is 155.0
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala
+def sum(x: Double, y: Double): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
+```
+
+<br>
+
+```scala
+def getEdaBalance(): Double = {
+  println("Eda")
+  120.0
+}
+
+def getBobBalance(): Double = {
+  println("Bob")
+  35.0
+}
+```
+]
+
+.forty-seven-right[
+```scala
+val eda = getEdaBalance()
+// Eda
+val bob = getBobBalance()
+// Bob
+
+sum(
+  eda,
+  bob
+)
+// The sum is 155.0
 ```
 ]
 
@@ -349,7 +462,31 @@ sum(bar(), foo())
 ---
 # Parameters evaluation
 
-.sixty-two-left[
+.seventy-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+]
+--
+
+.seventy-two-left[
+```scala
+getOrElse(Some("bob@gmail.com"), "support@fp-tower.com")
+// res: String = "bob@gmail.com"
+
+getOrElse(None                 , "support@fp-tower.com")
+// res: String = "support@fp-tower.com"
+```
+]
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
 ```scala
 def getOrElse[A](option: Option[A], fallback: A): A =
   option match {
@@ -359,22 +496,229 @@ def getOrElse[A](option: Option[A], fallback: A): A =
 ```
 
 ```scala
-getOrElse(Some(1), 5)
-// res18: Int = 1
+getOrElse(
+  Some("bob@gmail.com"),
+  throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
 
-getOrElse(None, 5)
-// res19: Int = 5
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: () => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback()
+  }
+```
+]
+
+--
+
+
+.forty-two-left[
+## Def function
+```scala
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+.forty-seven-right[
+## Val function
+```scala
+val greeting: () => Unit =
+  () => println("Hello")
+```
+]
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: () => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback()
+  }
 ```
 
 ```scala
-getOrElse(Some(1), sys.error("Must be defined"))
-// java.lang.RuntimeException: Must be defined
-// 	at scala.sys.package$.error(package.scala:27)
-// 	at repl.Session$App15$$anonfun$16.apply$mcI$sp(evaluation.html:193)
-// 	at repl.Session$App15$$anonfun$16.apply(evaluation.html:193)
-// 	at repl.Session$App15$$anonfun$16.apply(evaluation.html:193)
+getOrElse(
+  Some("bob@gmail.com"),
+  () => throw new IllegalArgumentException("email is required")
+)
+// res: String = "bob@gmail.com"
+
+getOrElse(
+  None,
+  () => throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
 ```
 ]
+
+---
+# By-name parameters
+
+.seventy-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+]
+
+---
+# By-name parameters
+
+.seventy-two-left[
+```scala
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  throw new IllegalArgumentException("email is required")
+)
+// res: String = "bob@gmail.com"
+
+getOrElse(
+  None,
+  throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
+
+---
+# Test by-name parameters
+
+.forty-seven-left[
+```scala
+sealed trait Eval
+
+case object Never extends Eval
+case object Once  extends Eval
+case object Twice extends Eval
+
+def testEval(eval: Eval, param: => Unit) =
+  eval match {
+    case Never => () // do nothing
+    case Once  => param
+    case Twice =>
+      param
+      param
+  }
+```
+]
+
+--
+
+.forty-seven-right[
+```scala
+test("by-name parameter evaluation") {
+  var counter = 0
+
+  testEval(Never, counter += 1)
+  assert(counter == 0)
+
+  testEval(Once, counter += 1)
+  assert(counter == 1)
+
+  counter = 0 // reset counter
+  testEval(Twice, counter += 1)
+  assert(counter == 2)
+}
+&#x200B;
+```
+]
+
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+# .white[Three types of expression evaluation]
+
+.thirty-seven-left[
+## .white[Once when defined]
+
+## .white[Once when first accessed]
+
+## .white[Everytime called]
+]
+
+.sixty-two-right[
+## .white[→ `val`]
+
+## .white[→ `lazy val`]
+
+## .white[→ `def`]
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br><br>
+# .white[Two types of parameters evaluation]
+
+.twenty-seven-left[
+## .white[Standard (by-value)]
+
+## .white[By-name]
+]
+
+.seventy-two-right[
+## .white[behaves like `val`]
+
+## .white[behaves like `def`]
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+<br>
+# .white[Summary]
+
+<br>
+
+## .white[Three types of evaluation:]
+
+## .white[1.] .white[val - once when created]
+
+## .white[2.] .white[lazy val - once when first created]
+
+## .white[3.] .white[Faster to onboard developers]
+
+
+---
+# Retry
+
+.fifty-seven-left[
+```scala
+def retry[A](maxAttempt: Int, action: => A): A =
+  ???
+```
+]
+
 
 ---
 # Parameters evaluation
@@ -390,15 +734,15 @@ def getOrElse[A](option: Option[A], fallback: => A): A =
 
 ```scala
 getOrElse(Some(1), 5)
-// res21: Int = 1
+// res29: Int = 1
 
 getOrElse(None, 5)
-// res22: Int = 5
+// res30: Int = 5
 ```
 
 ```scala
 getOrElse(Some(1), sys.error("Must be defined"))
-// res23: Int = 1
+// res31: Int = 1
 ```
 ]
 
@@ -546,11 +890,11 @@ def execDef: Int = {
 
 execDef
 // Hello
-// res24: Int = 5
+// res32: Int = 5
 
 execDef
 // Hello
-// res25: Int = 5
+// res33: Int = 5
 ```
 ]
 
@@ -564,10 +908,10 @@ val execVal: Int = {
 // execVal: Int = 5
 
 execVal
-// res26: Int = 5
+// res34: Int = 5
 
 execVal
-// res27: Int = 5
+// res35: Int = 5
 ```
 ]
 
@@ -590,10 +934,10 @@ val eda = User("Eda", "Smith", 45)
 
 ```scala
 eda.`firstName`
-// res28: String = "Eda"
+// res36: String = "Eda"
 
 eda.`fullName`
-// res29: String = "Eda Smith"
+// res37: String = "Eda Smith"
 ```
 ]
 
@@ -611,11 +955,11 @@ def execDef(): Int = {
 
 execDef()
 // Hello
-// res31: Int = 5
+// res39: Int = 5
 
 execDef()
 // Hello
-// res32: Int = 5
+// res40: Int = 5
 ```
 ]
 
@@ -629,10 +973,10 @@ val execVal: Int = {
 // execVal: Int = 5
 
 execVal
-// res33: Int = 5
+// res41: Int = 5
 
 execVal
-// res34: Int = 5
+// res42: Int = 5
 ```
 ]
 
@@ -650,10 +994,10 @@ lazy val execLazyVal: Int = {
 
 execLazyVal
 // Hello
-// res36: Int = 5
+// res44: Int = 5
 
 execLazyVal
-// res37: Int = 5
+// res45: Int = 5
 ```
 ]
 
@@ -667,10 +1011,10 @@ val execVal: Int = {
 // execVal: Int = 5
 
 execVal
-// res38: Int = 5
+// res46: Int = 5
 
 execVal
-// res39: Int = 5
+// res47: Int = 5
 ```
 ]
 
@@ -881,7 +1225,7 @@ foo(
 )
 // Hello
 // World
-// res40: Int = 6
+// res48: Int = 6
 ```
 ]
 
@@ -917,7 +1261,7 @@ foo(
 )
 // Hello
 // World
-// res42: Int = 6
+// res50: Int = 6
 ```
 ]
 
