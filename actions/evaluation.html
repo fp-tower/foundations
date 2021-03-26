@@ -163,10 +163,7 @@ greeting()
 // Hello
 
 User("John", "Doe").fullName
-// res6: String = "John Doe"
-
-User("John", "Doe").firstName
-// res7: String = "John"
+// res: String = "John Doe"
 ```
 ]
 
@@ -209,6 +206,31 @@ greeting
 
 greeting
 ```
+]
+
+---
+# 3. Lazy Vals solve Vals initialisation issue
+
+.forty-seven-left[
+```scala
+val name = user.fullName
+// java.lang.NullPointerException
+
+val user = User("John", "Doe")
+```
+
+<br>
+
+
+```scala
+lazy val name = user.fullName
+
+lazy val user = User("John", "Doe")
+
+name
+// res13: String = "John Doe"
+```
+
 ]
 
 ---
@@ -349,7 +371,7 @@ test("a def is evaluated every time it is called") {
 
 .forty-seven-left[
 ```scala
-def sum(x: Double, y: Double): Unit = {
+def sum(x: Int, y: Int): Unit = {
   val result = x + y
   println("The sum is $result")
 }
@@ -358,14 +380,14 @@ def sum(x: Double, y: Double): Unit = {
 <br>
 
 ```scala
-def getEdaBalance(): Double = {
+def getEdaBalance(): Int = {
   println("Eda")
-  120.0
+  120
 }
 
-def getBobBalance(): Double = {
+def getBobBalance(): Int = {
   println("Bob")
-  35.0
+  35
 }
 ```
 ]
@@ -384,7 +406,7 @@ sum(
 
 .forty-seven-left[
 ```scala
-def sum(x: Double, y: Double): Unit = {
+def sum(x: Int, y: Int): Unit = {
   val result = x + y
   println("The sum is $result")
 }
@@ -393,14 +415,14 @@ def sum(x: Double, y: Double): Unit = {
 <br>
 
 ```scala
-def getEdaBalance(): Double = {
+def getEdaBalance(): Int = {
   println("Eda")
-  120.0
+  120
 }
 
-def getBobBalance(): Double = {
+def getBobBalance(): Int = {
   println("Bob")
-  35.0
+  35
 }
 ```
 ]
@@ -413,7 +435,7 @@ sum(
 )
 // Eda
 // Bob
-// The sum is 155.0
+// The sum is 155
 ```
 ]
 
@@ -422,7 +444,7 @@ sum(
 
 .forty-seven-left[
 ```scala
-def sum(x: Double, y: Double): Unit = {
+def sum(x: Int, y: Int): Unit = {
   val result = x + y
   println("The sum is $result")
 }
@@ -431,14 +453,14 @@ def sum(x: Double, y: Double): Unit = {
 <br>
 
 ```scala
-def getEdaBalance(): Double = {
+def getEdaBalance(): Int = {
   println("Eda")
-  120.0
+  120
 }
 
-def getBobBalance(): Double = {
+def getBobBalance(): Int = {
   println("Bob")
-  35.0
+  35
 }
 ```
 ]
@@ -454,7 +476,7 @@ sum(
   eda,
   bob
 )
-// The sum is 155.0
+// The sum is 155
 ```
 ]
 
@@ -505,7 +527,7 @@ getOrElse(
 ]
 
 ---
-# Parameters evaluation
+# 0-parameter function
 
 .seventy-two-left[
 ```scala
@@ -537,7 +559,7 @@ val greeting: () => Unit =
 ]
 
 ---
-# Parameters evaluation
+# 0-parameter function
 
 .seventy-two-left[
 ```scala
@@ -604,48 +626,45 @@ getOrElse(
 ]
 
 ---
-# Test by-name parameters
+# By-name parameters in the standard library
 
 .forty-seven-left[
 ```scala
-sealed trait Eval
-
-case object Never extends Eval
-case object Once  extends Eval
-case object Twice extends Eval
-
-def testEval(eval: Eval, param: => Unit) =
-  eval match {
-    case Never => () // do nothing
-    case Once  => param
-    case Twice =>
-      param
-      param
-  }
-```
-]
-
---
-
-.forty-seven-right[
-```scala
-test("by-name parameter evaluation") {
-  var counter = 0
-
-  testEval(Never, counter += 1)
-  assert(counter == 0)
-
-  testEval(Once, counter += 1)
-  assert(counter == 1)
-
-  counter = 0 // reset counter
-  testEval(Twice, counter += 1)
-  assert(counter == 2)
+object Try {
+  def apply[A](action: => A): Try[A] =
+    try {
+      val result = action
+      Success(result)
+    } catch {
+      case e: Throwable => Failure(e)
+    }
 }
-&#x200B;
+
+Try(2 + 2)
+// res: Try[Int] = Success(4)
+
+Try(throw new Exception("Boom"))
+// res: Try[Nothing] = Failure(4)
 ```
 ]
 
+---
+# By-name parameters in the standard library
+
+.eighty-two-left[
+```scala
+object Future {
+  def apply[A](action: => A)(implicit ec: ExecutionContext): Future[A] = {
+    ...
+    // submit action to the thread pool
+  }
+}
+
+
+Future { 2 + 2 }
+// res: Future[Int] = Future(<not completed>)
+```
+]
 
 ---
 class: white
@@ -692,604 +711,22 @@ background-image: url(../img/fp-tower/website-background.svg)
 ]
 
 ---
-class: white
+# Test evaluation
 
-background-image: url(../img/fp-tower/website-background.svg)
-<br>
-# .white[Summary]
-
-<br>
-
-## .white[Three types of evaluation:]
-
-## .white[1.] .white[val - once when created]
-
-## .white[2.] .white[lazy val - once when first created]
-
-## .white[3.] .white[Faster to onboard developers]
-
-
----
-# Retry
-
-.fifty-seven-left[
+.seventy-two-left[
 ```scala
-def retry[A](maxAttempt: Int, action: => A): A =
-  ???
-```
-]
+test("a lazy val is only evaluated when first accessed") {
+  var counter = 0
 
+  lazy val action = counter += 1
+  assert(counter == 0)
 
----
-# Parameters evaluation
+  action
+  assert(counter == 1)
 
-.sixty-two-left[
-```scala
-def getOrElse[A](option: Option[A], fallback: => A): A =
-  option match {
-    case Some(value) => value
-    case None        => fallback
-  }
-```
-
-```scala
-getOrElse(Some(1), 5)
-// res29: Int = 1
-
-getOrElse(None, 5)
-// res30: Int = 5
-```
-
-```scala
-getOrElse(Some(1), sys.error("Must be defined"))
-// res31: Int = 1
-```
-]
-
-
-
-
----
-# Retry
-
-.seventy-seven-left[
-```scala
-import java.time.LocalDate
-
-def readSubscribe  (console: Console, maxAttempt: Int): Boolean =
-  ???
-
-def readDateOfBirth(console: Console, maxAttempt: Int): LocalDate =
-  ???
-```
-]
-
---
-
-.seventy-seven-left[
-```scala
-def retry(console: Console, maxAttempt: Int) =
-  ???
-```
-]
-
-
----
-# Exceptions
-
-<br><br>
-
-.cols[
-.forty-five[
-```scala
-val greeting = ???
-// NotImplementedError
-```
-]
-
-.ten[&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-lazy val greeting = ???
-&#x200B;
-```
-]
-
-.ten[&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-def greeting(): Int = ???
-&#x200B;
-```
-]
-]
-
----
-# Evaluation
-
-.cols[
-
-
-.forty-five[
-```scala
-val user: Option[User] =
-  fetchUser(1234)
-// Some(User("Bob", ...))
-
-user
-// Some(User("Bob", ...))
-
-user
-// Some(User("Bob", ...))
-```
-]
-
-.ten[&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-lazy val user: Option[User] =
-  fetchUser(1234)
-
-
-user
-// Some(User("Bob", ...))
-
-user
-// Some(User("Bob", ...))
-```
-]
-
-.ten[&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-def user(): Option[User] =
-  fetchUser(1234)
-
-
-user()
-// Some(User("Bob", ...))
-
-user()
-// None
-```
-]
-]
-
----
-# Retry
-
-```scala
-def retry[A](maxAttempt: Int): A = {
-  var result   : Option[A] = None
-  var remaining: Int       = maxAttempt
-
-  while (result.isEmpty && remaining > 0) {
-    remaining -= 1
-    state = Try { ... }.toOption
-  }
-
-  result.getOrElse(sys.error(s"Failed after $maxAttempt attempts"))
+  action
+  assert(counter == 1)
 }
-```
-
----
-# def vs val
-
-.forty-seven-left[
-```scala
-def execDef: Int = {
-  println("Hello")
-  5
-}
-
-
-
-execDef
-// Hello
-// res32: Int = 5
-
-execDef
-// Hello
-// res33: Int = 5
-```
-]
-
-.forty-seven-right[
-```scala
-val execVal: Int = {
-  println("Hello")
-  5
-}
-// Hello
-// execVal: Int = 5
-
-execVal
-// res34: Int = 5
-
-execVal
-// res35: Int = 5
-```
-]
-
----
-# Methods without parameters
-
-.forty-seven-left[
-```scala
-case class User(
-  firstName: String,
-  lastName: String,
-  age: Int
-) {
-  def fullName: String =
-    s"$firstName $lastName"
-}
-
-val eda = User("Eda", "Smith", 45)
-```
-
-```scala
-eda.`firstName`
-// res36: String = "Eda"
-
-eda.`fullName`
-// res37: String = "Eda Smith"
-```
-]
-
----
-# def vs val
-
-.forty-seven-left[
-```scala
-def execDef(): Int = {
-  println("Hello")
-  5
-}
-
-
-
-execDef()
-// Hello
-// res39: Int = 5
-
-execDef()
-// Hello
-// res40: Int = 5
-```
-]
-
-.forty-seven-right[
-```scala
-val execVal: Int = {
-  println("Hello")
-  5
-}
-// Hello
-// execVal: Int = 5
-
-execVal
-// res41: Int = 5
-
-execVal
-// res42: Int = 5
-```
-]
-
----
-# lazy val vs val
-
-.forty-seven-left[
-```scala
-lazy val execLazyVal: Int = {
-  println("Hello")
-  5
-}
-
-
-
-execLazyVal
-// Hello
-// res44: Int = 5
-
-execLazyVal
-// res45: Int = 5
-```
-]
-
-.forty-seven-right[
-```scala
-val execVal: Int = {
-  println("Hello")
-  5
-}
-// Hello
-// execVal: Int = 5
-
-execVal
-// res46: Int = 5
-
-execVal
-// res47: Int = 5
-```
-]
-
----
-# Execution
-
-<br>
-
-.forty-two-left[
-## 1. Execute everytime
-
-## 2. Execute once when first used
-
-## 3. Execute once when defined
-]
-
-.fifty-two-right[
-## -> `def`
-
-## -> `lazy val`
-
-## -> `val`
-]
-
----
-# Def vs Lazy Val vs Val
-
-.cols[
-.forty-five[
-```scala
-def exec(): Int = {
-  println("Hello")
-  5
-}
-
-exec()
-
-exec()
-```
-]
-
-.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-lazy val exec: Int = {
-  println("Hello")
-  5
-}
-
-exec
-
-exec
-```
-]
-
-.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-val exec: Int = {
-  println("Hello")
-  5
-}
-
-exec
-
-exec
-```
-]
-]
-
----
-# def vs lazy val vs val
-
-.cols[
-.forty-five[
-```scala
-def exec(): Int = {
-  println("Hello")
-  5
-}
-
-exec()
-// 5
-
-exec()
-// 5
-```
-]
-
-.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-lazy val exec: Int = {
-  println("Hello")
-  5
-}
-
-exec
-// 5
-
-exec
-// 5
-```
-]
-
-.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-val exec: Int = {
-  println("Hello")
-  5
-}
-
-exec
-// 5
-
-exec
-// 5
-```
-]
-]
-
----
-# def vs lazy val vs val
-
-.cols[
-.forty-five[
-```scala
-def exec(): Int = {
-  println("Hello")
-  5
-}
-
-
-exec()
-// Hello
-
-exec()
-// Hello
-```
-.center[
-## Every time it is called
-]
-]
-
-.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-lazy val exec: Int = {
-  println("Hello")
-  5
-}
-
-
-exec
-// Hello
-
-exec
-&#x200B;
-```
-
-.center[
-## First time it is called
-]
-]
-
-.ten[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.forty-five[
-```scala
-val exec: Int = {
-  println("Hello")
-  5
-}
-// Hello
-
-exec
-
-
-exec
-&#x200B;
-```
-.center[
-## When it is defined
-]
-]
-]
-
----
-# Arguments evaluation
-
-<br>
-
-```scala
-def foo(x: Int, y: Int): Int = x + y
-```
-
-.forty-seven-left[
-```scala
-foo(
-  { println("Hello"); 4 },
-  { println("World"); 2 },
-)
-// Hello
-// World
-// res48: Int = 6
-```
-]
-
---
-
-.forty-seven-right[
-```scala
-val x = { println("Hello"); 4 }
-// Hello
-
-val y = { println("World"); 2 }
-// World
-
-foo(x, y)
-// res: Int = 6
-```
-]
-
----
-# Arguments evaluation
-
-<br>
-
-```scala
-def foo(x: Int, y: Int): Int = x + y
-```
-
-.forty-seven-left[
-```scala
-foo(
-  { println("Hello"); 4 },
-  { println("World"); 2 },
-)
-// Hello
-// World
-// res50: Int = 6
-```
-]
-
-
-.forty-seven-right[
-```scala
-println("Hello")
-// Hello
-val x = 4
-
-println("World")
-// World
-val y = 2
-
-foo(x, y)
-// res: Int = 6
-```
-]
-
----
-# Arguments evaluation
-
-.sixty-seven-left[
-```scala
-def repeat(iteration: Int, block: () => Int): List[Int] =
-  1.to(iteration).map(_ =>
-    block()
-  )
 ```
 ]
 
