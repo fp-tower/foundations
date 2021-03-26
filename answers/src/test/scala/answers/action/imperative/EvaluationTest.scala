@@ -34,31 +34,33 @@ class EvaluationTest extends AnyFunSuite {
     assert(counter == 2)
   }
 
-  test("by-name parameter evaluation") {
-    sealed trait Eval
+  sealed trait Eval
 
-    case object Never extends Eval
-    case object Once  extends Eval
-    case object Twice extends Eval
+  case object Never extends Eval
+  case object Once  extends Eval
+  case object Twice extends Eval
 
-    def testEval(eval: Eval, param: => Unit): Unit =
-      eval match {
-        case Never => () // do nothing
-        case Once  => param
-        case Twice =>
-          param
-          param
-      }
+  def testEval(eval: Eval, param: => Unit): Unit =
+    eval match {
+      case Never => () // do nothing
+      case Once  => param
+      case Twice =>
+        param
+        param
+    }
 
+  test("by-name parameter never evaluated") {
     var counter = 0
-
     testEval(Never, counter += 1)
     assert(counter == 0)
-
+  }
+  test("by-name parameter evaluated once") {
+    var counter = 0
     testEval(Once, counter += 1)
     assert(counter == 1)
-
-    counter = 0
+  }
+  test("by-name parameter evaluated twice") {
+    var counter = 0
     testEval(Twice, counter += 1)
     assert(counter == 2)
   }
