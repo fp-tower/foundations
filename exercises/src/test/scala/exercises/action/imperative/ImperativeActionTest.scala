@@ -3,32 +3,32 @@ package exercises.action.imperative
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-import scala.util.{Failure, Try}
+import scala.util.{Failure, Success, Try}
 
-class ActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+
+  ignore("retry when action fails") {
+    var counter = 0
+    val error   = new Exception("Boom")
+
+    val result = Try(retry(5) {
+      counter += 1
+      throw error
+    })
+
+    assert(result == Failure(error))
+    assert(counter == 5)
+  }
 
   ignore("retry until action succeeds") {
     var counter = 0
-    val result = retry(5) {
+    val result = Try(retry(5) {
       counter += 1
       require(counter >= 3, "Counter is too low")
       "Hello"
-    }
-    assert(result == "Hello")
+    })
+    assert(result == Success("Hello"))
     assert(counter == 3)
-  }
-
-  ignore("retry when action fails") {
-    forAll { (error: Exception) =>
-      var counter = 0
-      val result = Try(retry(5) {
-        counter += 1
-        throw error
-      })
-
-      assert(result == Failure(error))
-      assert(counter == 5)
-    }
   }
 
   ignore("onError success") {

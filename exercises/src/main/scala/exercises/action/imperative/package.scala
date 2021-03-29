@@ -2,6 +2,9 @@ package exercises.action
 
 package object imperative {
 
+  def greeting(): Unit =
+    println("Hello")
+
   // 1. Implement `retry`, a function which evaluates a block of code until either:
   // * It succeeds.
   // * Or the number of attempts is exhausted (when `maxAttempt` is 1).
@@ -12,9 +15,9 @@ package object imperative {
   //   require(counter >= 3, "Counter is too low")
   //   "Hello"
   // }
-  // retry(maxAttempt = 5)( () => exec() ) == "Hello"
+  // retry(maxAttempt = 5)( exec() ) == "Hello"
   // Returns "Hello" because `exec` fails twice and then succeeds when counter reaches 3.
-  // retry(maxAttempt = 5){ () => throw new Exception("Boom!") }
+  // retry(maxAttempt = 5){ throw new Exception("Boom!") }
   // Throws an exception because `block` fails every time it is evaluated
   // Note: `action: () => A` is a val function which takes 0 argument.
   //       You can create a 0-argument function using the syntax:
@@ -23,15 +26,13 @@ package object imperative {
   //          the def function `myMethod` into a val function.
   //       You can execute `action` using `action()`
   // Note: `maxAttempt` must be greater than 0, throw an exception if that's not the case.
-  // Note: Tests are in the `exercises.action.imperative.ActionTest`
+  // Note: Tests are in the `exercises.action.imperative.ImperativeActionTest`
   def retry[A](maxAttempt: Int)(action: => A): A =
     ???
 
-  // 2. Refactor `readSubscribeToMailingListRetry` using
-  // `retry` and `readSubscribeToMailingList` (from `UserCreationExercises`).
+  // 2. Refactor `readSubscribeToMailingListRetry` in `RetryExercises` using `retry`.
 
-  // 3. Refactor `readDateOfBirthRetry` using
-  // `retry` and `readDateOfBirth` (from `UserCreationExercises`).
+  // 3. Refactor `readDateOfBirthRetry` in `RetryExercises` using `retry`.
 
   //////////////////////////////////////////////
   //////////////////////////////////////////////
@@ -54,6 +55,6 @@ package object imperative {
   def onError[A](action: => A, callback: Throwable => Any): A =
     ???
 
-  // 5. Refactor `readSubscribeToMailingList` and `readDateOfBirth` using `onError`
+  // 5. Refactor `readSubscribeToMailingListRetry` and `readDateOfBirthRetry` using `onError`
 
 }
