@@ -52,4 +52,10 @@ class UserCreationService(console: Console, clock: Clock) {
 object UserCreationService {
   val dateOfBirthFormatter: DateTimeFormatter =
     DateTimeFormatter.ofPattern("dd-MM-uuuu")
+
+  def formatDateOfBirth(date: LocalDate): String =
+    dateOfBirthFormatter.format(date)
+
+  def formatYesNo(bool: Boolean): String =
+    if (bool) "Y" else "N"
 }

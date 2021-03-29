@@ -57,4 +57,10 @@ package object imperative {
 
   // 5. Refactor `readSubscribeToMailingListRetry` and `readDateOfBirthRetry` using `onError`
 
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the video)
+  //////////////////////////////////////////////
+
+  // 6. Implement `retry` using an imperative loop instead of a recursion.
+
 }

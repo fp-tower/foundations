@@ -4,14 +4,17 @@ import java.time.Instant
 
 import answers.action.UserCreationInstances
 import answers.action.fp.UserCreationService._
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
+import scala.util.Success
 
 class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
 
-  val fixClock = Clock.constant(Instant.MIN)
+  val fixClock: Clock = Clock.constant(Instant.MIN)
 
   test("readName") {
     forAll { (name: String, otherInputs: List[String]) =>
@@ -68,6 +71,33 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
           s"""Incorrect format, enter "Y" for Yes or "N" for "No""""
         )
       )
+    }
+  }
+
+  test("readUser") {
+    forAll(
+      arbitrary[String],
+      Gen.listOf(invalidDateGen),
+      dateGen,
+      Gen.listOf(invalidYesNoGen),
+      arbitrary[Boolean],
+      instantGen
+    ) { (name, invalidDates, dob, invalidYesNo, yesNo, now) =>
+      val dateInputs  = invalidDates :+ formatDateOfBirth(dob)
+      val yesNoInputs = invalidYesNo :+ formatYesNo(yesNo)
+      val inputs      = ListBuffer.from(List(name) ++ dateInputs ++ yesNoInputs)
+      val outputs     = ListBuffer.empty[String]
+      val console     = Console.mock(inputs, outputs)
+      val clock       = Clock.constant(now)
+      val service     = new UserCreationService(console, clock)
+      val result      = service.readUser.attempt.execute()
+
+      val user = User(name, dob, yesNo, now)
+
+      if (invalidDates.size < 3 && invalidYesNo.size < 3)
+        assert(result == Success(user))
+      else
+        assert(result.isFailure)
     }
   }
 

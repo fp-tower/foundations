@@ -6,13 +6,13 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait TimeInstances {
 
-  val localDateGen: Gen[LocalDate] =
+  val dateGen: Gen[LocalDate] =
     Gen
       .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
       .map(LocalDate.ofEpochDay)
 
   implicit val localDateArb: Arbitrary[LocalDate] =
-    Arbitrary(localDateGen)
+    Arbitrary(dateGen)
 
   val instantGen: Gen[Instant] =
     for {
