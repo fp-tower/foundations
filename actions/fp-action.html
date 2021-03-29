@@ -15,13 +15,118 @@ class: center, middle, white
 .title[FP Action]
 
 ---
-# Actions needs to be
+# Actions must be
 
-## Delayed (errors)
+<br>
 
-## Retryable (non-deterministic)
+## 1. Delayed (errors)
 
-## Async (non-blocking, use multiple threads)
+## 2. Retryable (non-deterministic)
+
+## 3. Async (non-blocking, run on multiple threads)
+
+---
+# By-name parameter
+
+.eighty-two-left[
+```scala
+object Try {
+  def apply[A](action: => A): Try[A] =
+    ???
+}
+```
+
+```scala
+def retry[A](maxAttempt: Int)(action: => A): A =
+  ???
+```
+
+```scala
+object Future {
+  def apply[A](action: => A)(implicit ec: ExecutionContext): Future[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-seven-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-seven-left[
+```scala
+trait Action[A] {
+  def execute(): A
+
+  def retry(maxAttempt: Int): Action[A] =
+    ???
+
+  def onError(cb: Throwable => Any): Action[A] =
+    ???
+
+  def parallel(ec: ExecutionContext) =
+    ???
+}
+```
+]
+
+--
+
+.thirty-seven-right[
+<br><br>
+```scala
+action
+  .retry(5)
+  .onError(log.error)
+```
+]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+# Action.scala
 
 
 </textarea>
