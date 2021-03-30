@@ -15,35 +15,86 @@ class: center, middle, white
 .title[FP Action]
 
 ---
-# Actions must be
+# Actions requirements
 
 <br>
 
-## 1. Delayed (errors)
+.thirty-seven-left[
+## 1. Non-deterministic
 
-## 2. Retryable (non-deterministic)
+## 2. Can fail
+]
 
-## 3. Async (non-blocking, run on multiple threads)
+.sixty-two-right[
+## -> Retry
+
+## -> Try-catch
+
+]
 
 ---
-# By-name parameter
+# Actions requirements
+
+<br>
+
+.thirty-seven-left[
+## 1. Non-deterministic
+
+## 2. Can fail
+
+## 3. Async
+]
+
+.sixty-two-right[
+## -> Retry
+
+## -> Try-catch
+
+## -> Execute on a thread pool
+]
+
+---
+# By-name parameters
 
 .eighty-two-left[
 ```scala
-object Try {
-  def apply[A](action: => A): Try[A] =
-    ???
-}
+def retry[A](maxAttempt: Int)(action:` => A`): A =
+  ???
 ```
 
+```scala
+def onError[A](action:` => A`, callback: Throwable => Any): A =
+    ???
+```
+]
+
+---
+# By-name parameters
+
+.eighty-two-left[
 ```scala
 def retry[A](maxAttempt: Int)(action: => A): A =
   ???
 ```
 
 ```scala
+def onError[A](action: => A, callback: Throwable => Any): A =
+    ???
+```
+
+
+```scala
+object Try {
+  def apply[A](action:` => A`): Try[A] =
+    ???
+}
+```
+
+
+
+```scala
 object Future {
-  def apply[A](action: => A)(implicit ec: ExecutionContext): Future[A] =
+  def apply[A](`action: => A`)(implicit ec: ExecutionContext): Future[A] =
     ???
 }
 ```
@@ -57,6 +108,50 @@ object Future {
 object Action {
   def apply[A](action: => A): Action[A] =
     ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action:` => A`): Action[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[`A`](action: => `A`): Action[`A`] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala mdoc:reset:silent
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+```scala mdoc
+trait Action[A] {
+
 }
 ```
 ]
@@ -84,40 +179,113 @@ trait Action[A] {
 ---
 # Action encoding
 
-.fifty-seven-left[
+.fifty-two-left[
 ```scala
 object Action {
-  def apply[A](action: => A): Action[A] =
+  def apply[A](action: `() => A`): Action[A] =
     ???
 }
 ```
 ]
 
-.fifty-seven-left[
+.fifty-two-left[
+```scala
+trait Action[A] {
+  def execute()`: A`
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala mdoc:reset
+object Action {
+  def apply[A](action:  => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+
+.fifty-two-left[
+```scala mdoc
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Action encoding
+
+.sixty-two-left[
+```scala
+object Action {
+  def apply[A](action:  => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+
+.sixty-two-left[
 ```scala
 trait Action[A] {
   def execute(): A
 
-  def retry(maxAttempt: Int): Action[A] =
-    ???
+  def retry(maxAttempt: Int): Action[A] = ???
 
-  def onError(cb: Throwable => Any): Action[A] =
-    ???
+  def onError(cb: Throwable => Any): Action[A] = ???
 
-  def parallel(ec: ExecutionContext) =
-    ???
+  def parallel(ec: ExecutionContext) = ???
 }
 ```
 ]
 
 --
 
-.thirty-seven-right[
-<br><br>
+.thirty-two-right[
+<br>
 ```scala
 action
   .retry(5)
   .onError(log.error)
+  .parallel(ec)
+```
+]
+
+---
+# Documentation
+
+.fifty-seven-left[
+```scala
+def getUser(id: UserId): Action[User] =
+  db.query(s"SELECT * from USERS where id = $id")
+
+val readToday: Action[LocalDate] =
+  Action(LocalDate.now())
+```
+
+<br>
+
+```scala
+def sum(x: Int, y: Int): Int =
+  x + y
+```
+]
+
+--
+
+.fifty-seven-left[
+```scala
+readToday // nothing happened
+
+readToday.execute()
+// res: LocalDate = "2021-03-30"
 ```
 ]
 
@@ -126,7 +294,9 @@ background-image: url(../img/fp-tower/website-background-white.svg)
 
 class: middle, white
 
-# Action.scala
+## package exercises.action.fp
+
+# UserCreationService.scala
 
 
 </textarea>
