@@ -12,7 +12,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[FP Functions]
+.title[Functions<br> in <br>Functional Programming]
 
 ---
 # FP == Val Functions
@@ -35,10 +35,10 @@ val isEven: Int => Boolean =
 
 .forty-seven-left[
 ```scala
-List(-6, 2, 7, -3, 0).filter(isPositive)
+List(-6, 2, 7, -3, 0).filter(`isPositive`)
 // res0: List[Int] = List(2, 7, 0)
 
-List(-6, 2, 7, -3, 0).filter(isEven)
+List(-6, 2, 7, -3, 0).filter(`isEven`)
 // res1: List[Int] = List(-6, 2, 0)
 ```
 ]
@@ -60,12 +60,62 @@ def procedure(input1: Int, input2: String): String = {
 ]
 
 ---
-# Function in functional programming
+# Function in imperative programming
 
 <br>
 
+.sixty-two-left[
+```scala
+def procedure(input1: Int, input2: String): String = {
+  `var var1 = 0`
+  var var2 = otherProcedure1(input1, 3)
+  var1 = otherProcedure2(var2, input2)
+  return var1
+}
+```
+]
 
-<img src="../img/foundation/fp-function-transformation.svg" style="width:800px;"/>
+---
+# Function in imperative programming
+
+<br>
+
+.sixty-two-left[
+```scala
+def procedure(input1: Int, input2: String): String = {
+  var var1 = 0
+  var var2 = `otherProcedure1(input1, 3)`
+  var1 = `otherProcedure2(var2, input2)`
+  return var1
+}
+```
+]
+
+---
+# Function in imperative programming
+
+<br>
+
+.sixty-two-left[
+```scala
+def procedure(input1: Int, input2: String): String = {
+  var var1 = 0
+  var var2 = otherProcedure1(input1, 3)
+  var1 = otherProcedure2(var2, input2)
+  `return var1`
+}
+```
+]
+
+---
+# Function in functional programming
+
+<br><br>
+
+.sixty-seven-left[
+.center[
+<img src="../img/foundation/fp-function-transformation.svg" style="width:600px;"/>
+]]
 
 ---
 # Program in functional programming
@@ -103,7 +153,7 @@ val function: Map[Input, Output] =
 --
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -117,17 +167,55 @@ val getUserAge: Map[User, Int] =
 # An FP Function is an immutable Map
 
 .sixty-two-left[
-<img src="../img/foundation/fp-function-map-2.svg" style="width:600px;"/>
+<img src="../img/foundation/fp-function-map-1a.svg" style="width:600px;"/>
 ]
 
+
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
+```scala
+val getUserAge: Map[User, Int] =
+  Map(
+    User("`Elise`", ...) -> `34`,
+    User("Bob"  , ...) -> 52,
+  )
+```
+]
+
+---
+# An FP Function is an immutable Map
+
+.sixty-two-left[
+<img src="../img/foundation/fp-function-map-1b.svg" style="width:600px;"/>
+]
+
+
+.thirty-seven-right[
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
     User("Elise", ...) -> 34,
+    User("`Bob`"  , ...) -> `52`,
+  )
+```
+]
+
+---
+# An FP Function is an immutable Map
+
+.sixty-two-left[
+<img src="../img/foundation/fp-function-map-2a.svg" style="width:600px;"/>
+]
+
+.thirty-seven-right[
+<br><br><br><br><br><br><br>
+```scala
+val getUserAge: Map[User, Int] =
+  Map(
+    User("`Elise`", ...) -> `34`,
     User("Bob"  , ...) -> 52,
-    User("Zoe"  , ...) -> 34,
+    User("`Zoe`"  , ...) -> `34`,
   )
 ```
 ]
@@ -140,7 +228,7 @@ val getUserAge: Map[User, Int] =
 ]
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -159,7 +247,7 @@ val getUserAge: Map[User, Int] =
 ]
 
 .thirty-seven-right[
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 ```scala
 val getUserAge: Map[User, Int] =
   Map(
@@ -189,13 +277,52 @@ def jsonToInt(json: Json): Int =
 
 ```scala
 jsonToInt(JsonNumber(12))
-// res2: Int = 12
+// res: Int = 12
 ```
 ]
 
---
+---
+class: medium-code
+
+# 1. All inputs must return an output
 
 .fifty-seven-left[
+```scala
+sealed trait Json
+
+case class JsonNumber(value: Int   ) extends Json
+case class JsonString(value: String) extends Json
+
+def `jsonToInt`(json: Json): Int =
+  json match {
+    case JsonNumber(number) => number
+  }
+```
+
+```scala
+jsonToInt(JsonNumber(12))
+// res: Int = 12
+```
+]
+
+---
+class: medium-code
+
+# 1. All inputs must return an output
+
+.fifty-seven-left[
+```scala
+sealed trait Json
+
+case class JsonNumber(value: Int   ) extends Json
+case class JsonString(value: String) extends Json
+
+def jsonToInt(json: Json): Int =
+  json match {
+    case JsonNumber(number) => number
+  }
+```
+
 
 ```scala
 jsonToInt(JsonString("Hello"))
@@ -219,24 +346,13 @@ def jsonToInt(json: Json): Int =
   json match {
     case JsonNumber(number) => number
     case JsonString(text)   =>
-      throw new `IllegalArgumentException`("cannot convert a JsonString to a number")
+      `throw new IllegalArgumentException`("cannot convert a JsonString to a number")
   }
-```
-
-```scala
-jsonToInt(JsonNumber(12))
-// res: Int = 12
-```
-
-
-```scala
-jsonToInt(JsonString("Hello"))
-// IllegalArgumentException: cannot convert a JsonString to a number
 ```
 ]
 
 ---
-# 2. Mapping is static/immutable
+# 2. Mapping is static
 
 .forty-seven-left[
 ```scala
@@ -250,40 +366,49 @@ val function: Map[Input, Output] =
   )
 ```
 ]
---
+
+---
+# 2. Mapping is static
+
+.forty-seven-left[
+```scala
+val function: Map[Input, Output] =
+  scala.collection.immutable.Map(
+    input1 -> output1,
+    input2 -> output2,
+    input3 -> output3,
+    input4 -> output4,
+    // ...
+  )
+```
+]
 <br><br><br><br><br><br><br><br><br><br><br>
 .forty-seven-left[
 ```scala
 function(input1)
-// res = output1
+// res = `output1`
 
-function(input1) // next day
-// res = output1
+function(input1) // tomorrow
+// res = `output1`
 ```
 ]
 
 ---
-# 2. Mapping is static/immutable
+# 2. Mapping is static
 
 .sixty-two-left[
-<img src="../img/foundation/fp-function-map-2.svg" style="width:600px;"/>
+<img src="../img/foundation/fp-function-map-zoe.svg" style="width:600px;"/>
 ]
 
 .thirty-seven-right[
-<br><br>
+<br><br><br><br><br><br>
 ```scala
 val zoe = User("Zoe", ...)
 
 getUserAge(zoe)
 // res: Int = 34
-```
 
-.center[
-## 10 years later
-]
-
-```scala
-getUserAge(zoe)
+getUserAge(zoe) // 10 years later
 // res: Int = 34
 ```
 ]
@@ -316,6 +441,87 @@ def auditLog(service: String, message: String): Unit =
 ]
 
 ---
+class: medium-code
+
+# 3. Cannot perform actions
+
+.eighty-two-left[
+```scala
+def `createNewBlogPost`(author: User, title: String, content: String): Future[Unit] =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
+
+```scala
+def getAllUser: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
+
+```scala
+def auditLog(service: String, message: String): Unit =
+  println(s"[$service] $message")
+```
+]
+
+---
+class: medium-code
+
+# 3. Cannot perform actions
+
+.eighty-two-left[
+```scala
+def createNewBlogPost(author: User, title: String, content: String): Future[Unit] =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
+
+```scala
+def `getAllUser`: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
+
+```scala
+def auditLog(service: String, message: String): Unit =
+  println(s"[$service] $message")
+```
+]
+
+---
+class: medium-code
+
+# 3. Cannot perform actions
+
+.eighty-two-left[
+```scala
+def createNewBlogPost(author: User, title: String, content: String): Future[Unit] =
+  httpClient.post(
+    path = "/user/${author.userId}/blog",
+    payload = json"""{"title" : $title, "content" : $content }"""
+  )
+```
+
+```scala
+def getAllUser: Future[List[User]] =
+  db.query(
+    sql"SELECT userId, userName, createdAt from users"
+  ).as[User]
+```
+
+```scala
+def `auditLog`(service: String, message: String): Unit =
+  println(s"[$service] $message")
+```
+]
+
+---
 # 3. Cannot perform actions
 
 .forty-seven-left[
@@ -329,10 +535,37 @@ val function: Map[Input, Output] =
     // ...
   )
 ```
+]
 
+---
+# 3. Cannot perform actions
+
+.forty-seven-left[
 ```scala
-function(input3)
-// res = output3
+val function: Map[Input, `Unit`] =
+  Map(
+    input1 -> (),
+    input2 -> (),
+    input3 -> (),
+    input4 -> (),
+    // ...
+  )
+```
+]
+
+---
+# 3. Cannot perform actions
+
+.forty-seven-left[
+```scala
+val function: Map[Input, Unit] =
+  Map(
+    input1 -> `()`,
+    input2 -> `()`,
+    input3 -> `()`,
+    input4 -> `()`,
+    // ...
+  )
 ```
 ]
 
@@ -353,10 +586,10 @@ val function: Map[Input, Unit] =
 
 ```scala
 function(input1)
-// res = ()
+// res = `()`
 
 function(input3)
-// res = ()
+// res = `()`
 ```
 ]
 
@@ -377,7 +610,7 @@ val function: Map[Input, Unit] =
 
 ```scala
 val function: Input => Unit =
-  _ => ()
+  `_ => ()`
 ```
 ]
 
@@ -415,7 +648,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 <br><br>
 
-# .white[Summary FP functions]
+# .white[FP functions]
 
 <br>
 
@@ -434,7 +667,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 <br><br>
 
-# .white[Summary FP functions]
+# .white[FP functions]
 
 <br>
 
@@ -495,7 +728,7 @@ val isWeekend: Map[Day, Boolean] =
     Thursday  -> false,
     Friday    -> false,
     Saturday  -> true,
-    Sunday    -> true
+    Sunday    -> true,
   )
 ```
 ]
@@ -536,9 +769,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 case class BlogEntry(
-  id: UUID,
-  title: String,
-  publishedAt: LocalDate
+  id         : UUID,
+  title      : String,
+  publishedAt: LocalDate,
 )
 
 def createBlogEntry(title: String): BlogEntry =
@@ -579,9 +812,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 case class BlogEntry(
-  id: UUID,
-  title: String,
-  publishedAt: LocalDate
+  id         : UUID,
+  title      : String,
+  publishedAt: LocalDate,
 )
 
 def createBlogEntry(title: String): BlogEntry =
@@ -602,11 +835,11 @@ createBlogEntry("Hello")
 //   `2021-01-06`
 // )
 
-createBlogEntry("Hello")
+createBlogEntry("Hello") // tomorrow
 // res: BlogEntry = BlogEntry(
 //   bc899606-da5e-4c1f-a143-0deae306651b,
 //   "Hello",
-//   `2021-01-06`
+//   `2021-01-07`
 // )
 ```
 ]

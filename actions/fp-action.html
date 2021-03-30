@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FP Action</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[FP Action]
+
+---
+# Actions requirements
+
+<br>
+
+.thirty-seven-left[
+## 1. Non-deterministic
+
+## 2. Can fail
+]
+
+.sixty-two-right[
+## -> Retry
+
+## -> Try-catch
+
+]
+
+---
+# Actions requirements
+
+<br>
+
+.thirty-seven-left[
+## 1. Non-deterministic
+
+## 2. Can fail
+
+## 3. Async
+]
+
+.sixty-two-right[
+## -> Retry
+
+## -> Try-catch
+
+## -> Execute on a thread pool
+]
+
+---
+# By-name parameters
+
+.eighty-two-left[
+```scala
+def retry[A](maxAttempt: Int)(action:` => A`): A =
+  ???
+```
+
+```scala
+def onError[A](action:` => A`, callback: Throwable => Any): A =
+    ???
+```
+]
+
+---
+# By-name parameters
+
+.eighty-two-left[
+```scala
+def retry[A](maxAttempt: Int)(action: => A): A =
+  ???
+```
+
+```scala
+def onError[A](action: => A, callback: Throwable => Any): A =
+    ???
+```
+
+
+```scala
+object Try {
+  def apply[A](action:` => A`): Try[A] =
+    ???
+}
+```
+
+
+
+```scala
+object Future {
+  def apply[A](`action: => A`)(implicit ec: ExecutionContext): Future[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action:` => A`): Action[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[`A`](action: => `A`): Action[`A`] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: `() => A`): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+  def execute()`: A`
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action:  => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Action encoding
+
+.sixty-two-left[
+```scala
+object Action {
+  def apply[A](action:  => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+
+.sixty-two-left[
+```scala
+trait Action[A] {
+  def execute(): A
+
+  def retry(maxAttempt: Int): Action[A] = ???
+
+  def onError(cb: Throwable => Any): Action[A] = ???
+
+  def parallel(ec: ExecutionContext) = ???
+}
+```
+]
+
+--
+
+.thirty-two-right[
+<br>
+```scala
+action
+  .retry(5)
+  .onError(log.error)
+  .parallel(ec)
+```
+]
+
+---
+# Documentation
+
+.fifty-seven-left[
+```scala
+def getUser(id: UserId): Action[User] =
+  db.query(s"SELECT * from USERS where id = $id")
+
+val readToday: Action[LocalDate] =
+  Action(LocalDate.now())
+```
+
+<br>
+
+```scala
+def sum(x: Int, y: Int): Int =
+  x + y
+```
+]
+
+--
+
+.fifty-seven-left[
+```scala
+readToday // nothing happened
+
+readToday.execute()
+// res: LocalDate = "2021-03-30"
+```
+]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+## package exercises.action.fp
+
+# UserCreationService.scala
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
