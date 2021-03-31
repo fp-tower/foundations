@@ -130,7 +130,7 @@ object Action {
 .fifty-two-left[
 ```scala
 object Action {
-  def apply[`A`](action: => `A`): Action[`A`] =
+  def apply[A](action: => `A`): Action[`A`] =
     ???
 }
 ```
@@ -162,7 +162,7 @@ trait Action[A] {
 .fifty-two-left[
 ```scala
 object Action {
-  def apply[A](action: => A): Action[A] =
+  def apply[A](action:` => A`): Action[A] =
     ???
 }
 ```
@@ -171,7 +171,27 @@ object Action {
 .fifty-two-left[
 ```scala
 trait Action[A] {
-  def execute(): A
+
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: `() => A`): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+
 }
 ```
 ]
@@ -202,9 +222,9 @@ trait Action[A] {
 .fifty-two-left[
 ```scala
 object Action {
-  def apply[A](action:  => A): Action[A] =
+  def apply[A](action: => A): Action[A] =
     new Action[A] {
-      def execute(): A = action
+      def execute(): A = `???`
     }
 }
 ```
@@ -221,16 +241,42 @@ trait Action[A] {
 ---
 # Action encoding
 
-.sixty-two-left[
+.fifty-two-left[
 ```scala
 object Action {
-  def apply[A](action:  => A): Action[A] =
+  def apply[A](action: => A): Action[A] =
     new Action[A] {
       def execute(): A = action
     }
 }
 ```
 ]
+
+.fifty-two-left[
+```scala
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+--
+
+.forty-two-right[
+```scala
+val greeting: Action[Unit] =
+  Action { println("Hello") }
+
+greeting.execute()
+// Hello
+
+greeting.execute()
+// Hello
+```
+]
+
+---
+# Rich API
 
 .sixty-two-left[
 ```scala
@@ -263,11 +309,11 @@ action
 
 .fifty-seven-left[
 ```scala
-def getUser(id: UserId): Action[User] =
+def getUser(id: Long): Action[User] =
   db.query(s"SELECT * from USERS where id = $id")
 
-val readToday: Action[LocalDate] =
-  Action(LocalDate.now())
+val greeting: Action[Unit] =
+  Action { println("Hello") }
 ```
 
 <br>
@@ -278,16 +324,64 @@ def sum(x: Int, y: Int): Int =
 ```
 ]
 
---
+---
+# Ordinary value
 
 .fifty-seven-left[
 ```scala
-readToday // nothing happened
+def getUser(id: Long): Action[User] =
+  db.query(s"SELECT * from USERS where id = $id")
 
-readToday.execute()
-// res: LocalDate = "2021-03-30"
+val getBob = getUser(1234)
+val getEda = getUser(9753)
+
+val actions = List(getEda, getBob)
+
+actions.foreach(_.execute())
+// res: List[User] = List(
+//   User(9753, Eda, ...),
+//   User(1234, Bob, ...),
+// )
 ```
 ]
+
+---
+# Naming convention
+
+.forty-seven-left[
+```scala
+trait IO[A] {
+  def unsafeRun(): A
+}
+```
+
+<br>
+
+```scala
+object IO {
+  def apply[A](action: => A): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+}
+```
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br>
+# .white[Summary]
+
+<br>
+
+## .white[Encode action with a SAM and a rich API]
+
+## .white[Constructor with a by-name parameter]
+
+## .white[Document when something can fail <br>or interact with the external world]
 
 ---
 background-image: url(../img/fp-tower/website-background-white.svg)
