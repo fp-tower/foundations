@@ -3,16 +3,16 @@ package answers.action.fp
 import java.time.Instant
 
 trait Clock {
-  def now: Action[Instant]
+  def now: IO[Instant]
 }
 
 object Clock {
   val system: Clock = new Clock {
-    val now: Action[Instant] =
-      Action(Instant.now())
+    val now: IO[Instant] =
+      IO(Instant.now())
   }
 
   def constant(instant: Instant): Clock = new Clock {
-    val now: Action[Instant] = Action(instant)
+    val now: IO[Instant] = IO(instant)
   }
 }

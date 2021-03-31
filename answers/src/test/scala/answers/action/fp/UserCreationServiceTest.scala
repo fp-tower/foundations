@@ -29,7 +29,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       assert(inputs.size == otherInputs.size + 1)
       assert(outputs.isEmpty)
 
-      val result = action.execute()
+      val result = action.unsafeRun()
 
       assert(result == name)
       assert(inputs.size == otherInputs.size)
@@ -45,7 +45,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readSubscribeToMailingList.execute()
+      val result = service.readSubscribeToMailingList.unsafeRun()
 
       assert(result == bool)
       assert(inputs.size == otherInputs.size)
@@ -62,7 +62,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readSubscribeToMailingList.attempt.execute()
+      val result = service.readSubscribeToMailingList.attempt.unsafeRun()
 
       assert(result.isFailure)
       assert(
@@ -90,7 +90,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console     = Console.mock(inputs, outputs)
       val clock       = Clock.constant(now)
       val service     = new UserCreationService(console, clock)
-      val result      = service.readUser.attempt.execute()
+      val result      = service.readUser.attempt.unsafeRun()
 
       val user = User(name, dob, yesNo, now)
 

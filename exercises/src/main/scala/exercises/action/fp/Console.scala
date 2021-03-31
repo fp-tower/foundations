@@ -4,28 +4,28 @@ import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 trait Console {
-  def readLine: Action[String]
-  def writeLine(message: String): Action[Unit]
+  def readLine: IO[String]
+  def writeLine(message: String): IO[Unit]
 }
 
 object Console {
   val system: Console = new Console {
-    val readLine: Action[String] =
-      Action { StdIn.readLine() }
+    val readLine: IO[String] =
+      IO { StdIn.readLine() }
 
-    def writeLine(message: String): Action[Unit] =
-      Action { println(message) }
+    def writeLine(message: String): IO[Unit] =
+      IO { println(message) }
   }
 
   def mock(inputs: ListBuffer[String], outputs: ListBuffer[String]): Console = new Console {
-    val readLine: Action[String] =
-      Action {
+    val readLine: IO[String] =
+      IO {
         if (inputs.isEmpty) throw new Exception("No input in the console")
         else inputs.remove(0)
       }
 
-    def writeLine(message: String): Action[Unit] =
-      Action {
+    def writeLine(message: String): IO[Unit] =
+      IO {
         outputs.append(message)
       }
   }

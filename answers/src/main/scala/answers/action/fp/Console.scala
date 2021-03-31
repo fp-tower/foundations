@@ -7,50 +7,50 @@ import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 trait Console {
-  def readLine: Action[String]
-  def writeLine(message: String): Action[Unit]
+  def readLine: IO[String]
+  def writeLine(message: String): IO[Unit]
 
-  def readYesNo: Action[Boolean] =
+  def readYesNo: IO[Boolean] =
     for {
       line <- readLine
       bool <- Console.parseLineToBoolean(line)
     } yield bool
 
-  def readDate(formatter: DateTimeFormatter): Action[LocalDate] =
+  def readDate(formatter: DateTimeFormatter): IO[LocalDate] =
     for {
       line <- readLine
-      date <- Action(LocalDate.parse(line, formatter))
+      date <- IO(LocalDate.parse(line, formatter))
     } yield date
 }
 
 object Console {
-  def parseLineToBoolean(line: String): Action[Boolean] =
+  def parseLineToBoolean(line: String): IO[Boolean] =
     line match {
-      case "Y" => Action(true)
-      case "N" => Action(false)
-      case _   => Action.fail(new IllegalArgumentException("Invalid input, expected Y/N"))
+      case "Y" => IO(true)
+      case "N" => IO(false)
+      case _   => IO.fail(new IllegalArgumentException("Invalid input, expected Y/N"))
     }
 
   def formatBoolean(bool: Boolean): String =
     if (bool) "Y" else "N"
 
   val system: Console = new Console {
-    val readLine: Action[String] =
-      Action { StdIn.readLine() }
+    val readLine: IO[String] =
+      IO { StdIn.readLine() }
 
-    def writeLine(message: String): Action[Unit] =
-      Action { println(message) }
+    def writeLine(message: String): IO[Unit] =
+      IO { println(message) }
   }
 
   def mock(inputs: ListBuffer[String], outputs: ListBuffer[String]): Console = new Console {
-    val readLine: Action[String] =
-      Action {
+    val readLine: IO[String] =
+      IO {
         if (inputs.isEmpty) throw new Exception("No input in the console")
         else inputs.remove(0)
       }
 
-    def writeLine(message: String): Action[Unit] =
-      Action {
+    def writeLine(message: String): IO[Unit] =
+      IO {
         outputs.append(message)
       }
   }

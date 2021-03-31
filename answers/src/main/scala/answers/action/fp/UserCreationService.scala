@@ -8,19 +8,19 @@ object UserCreationServiceApp extends App {
   val clock   = Clock.system
   val service = new UserCreationService(console, clock)
 
-  service.readUser.execute()
+  service.readUser.unsafeRun()
 }
 
 class UserCreationService(console: Console, clock: Clock) {
   import UserCreationService._
 
-  val readName: Action[String] =
+  val readName: IO[String] =
     for {
       _    <- console.writeLine("What's your name?")
       name <- console.readLine
     } yield name
 
-  val readDateOfBirth: Action[LocalDate] = {
+  val readDateOfBirth: IO[LocalDate] = {
     val errorMessage = """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
 
     for {
@@ -29,7 +29,7 @@ class UserCreationService(console: Console, clock: Clock) {
     } yield date
   }
 
-  val readSubscribeToMailingList: Action[Boolean] = {
+  val readSubscribeToMailingList: IO[Boolean] = {
     val errorMessage = """Incorrect format, enter "Y" for Yes or "N" for "No""""
 
     for {
@@ -38,7 +38,7 @@ class UserCreationService(console: Console, clock: Clock) {
     } yield bool
   }
 
-  val readUser: Action[User] =
+  val readUser: IO[User] =
     for {
       name       <- readName
       dob        <- readDateOfBirth.retry(3)

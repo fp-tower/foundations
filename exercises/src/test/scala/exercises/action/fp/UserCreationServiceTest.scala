@@ -21,7 +21,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     arbitrary[String].filterNot(Set("Y", "N"))
 
   val invalidDateGen: Gen[String] =
-    arbitrary[String].suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
+    arbitrary[String].suchThat(str => Try(parseDateOfBirth(str).unsafeRun()).isFailure)
 
   test("readName success") {
     forAll { (name: String) =>
@@ -30,7 +30,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readName.execute()
+      val result = service.readName.unsafeRun()
 
       assert(result == name)
       assert(outputs.toList == List("What's your name?"))
@@ -44,7 +44,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readDateOfBirth.execute()
+      val result = service.readDateOfBirth.unsafeRun()
 
       assert(result == date)
       assert(outputs.toList == List("What's your date of birth? [dd-mm-yyyy]"))
@@ -58,7 +58,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readSubscribeToMailingList.execute()
+      val result = service.readSubscribeToMailingList.unsafeRun()
 
       assert(result == bool)
       assert(outputs.toList == List("Would you like to subscribe to our mailing list? [Y/N]"))
@@ -81,7 +81,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console     = Console.mock(inputs, outputs)
       val clock       = Clock.constant(now)
       val service     = new UserCreationService(console, clock)
-      val result      = Try(service.readUser.execute())
+      val result      = Try(service.readUser.unsafeRun())
 
       val user = User(name, dob, yesNo, now)
 

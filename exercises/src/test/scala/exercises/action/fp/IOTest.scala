@@ -1,16 +1,17 @@
-package answers.action.async
+package exercises.action.fp
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class ActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  test("apply is lazy") {
+  test("IO.apply is lazy") {
     var counter = 0
-    val action  = Action(counter += 1)
 
+    val action = IO { counter += 1 }
     assert(counter == 0)
-    action.execute()
+
+    action.unsafeRun()
     assert(counter == 1)
   }
 

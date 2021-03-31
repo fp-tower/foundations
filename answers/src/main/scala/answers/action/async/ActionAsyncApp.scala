@@ -8,40 +8,39 @@ import scala.concurrent.duration._
 object ActionAsyncApp extends App {
   val ec = ThreadPoolUtil.fixedSizeExecutionContext(4, "pool")
 
-  Examples.parMany(ec).execute()
+  Examples.parMany(ec).unsafeRun()
 }
 
 object Examples {
-  def task(suffix: String, length: Int, duration: FiniteDuration): Action[Unit] =
-    Action
-      .sequence(
+  def task(suffix: String, length: Int, duration: FiniteDuration): IO[Unit] =
+    IO.sequence(
         List
           .range(0, length)
-          .map(i => Action.log(s"Task $suffix $i") *> Action.sleep(duration))
+          .map(i => IO.log(s"Task $suffix $i") *> IO.sleep(duration))
       )
       .void
 
-  def timeoutSucceed(ec: ExecutionContext): Action[Unit] =
+  def timeoutSucceed(ec: ExecutionContext): IO[Unit] =
     task("", 20, 200.milliseconds) // 4 seconds
       .timeout(10.second)(ec)
 
-  def timeoutFailed(ec: ExecutionContext): Action[Unit] =
+  def timeoutFailed(ec: ExecutionContext): IO[Unit] =
     task("", 20, 200.milliseconds) // 4 seconds
       .timeout(2.second)(ec)
 
-  def par2(ec: ExecutionContext): Action[Unit] = {
+  def par2(ec: ExecutionContext): IO[Unit] = {
     val taskA = task("A", 10, 200.milliseconds)
     val taskB = task("B", 8, 300.milliseconds)
 
     taskA.parZip(taskB)(ec).void
   }
 
-  def parMany(ec: ExecutionContext): Action[Unit] = {
+  def parMany(ec: ExecutionContext): IO[Unit] = {
     val taskA = task("A", 20, 50.milliseconds)
     val taskB = task("B", 15, 100.milliseconds)
     val taskC = task("C", 10, 200.milliseconds)
     val taskD = task("D", 7, 300.milliseconds)
 
-    Action.parSequence(List(taskA, taskB, taskC, taskD))(ec).void
+    IO.parSequence(List(taskA, taskB, taskC, taskD))(ec).void
   }
 }
