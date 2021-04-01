@@ -3,6 +3,8 @@ package exercises.action.fp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import scala.util.{Failure, Success, Try}
+
 object UserCreationServiceApp extends App {
   val console = Console.system
   val clock   = Clock.system
@@ -26,18 +28,36 @@ class UserCreationService(console: Console, clock: Clock) {
     IO {
       console.writeLine("What's your date of birth? [dd-mm-yyyy]").unsafeRun()
       val line = console.readLine.unsafeRun()
-      parseDateOfBirth(line).unsafeRun()
+      Try(parseDateOfBirth(line).unsafeRun()) match {
+        case Success(date) => date
+        case Failure(exception) =>
+          console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""").unsafeRun()
+          throw exception
+      }
     }
 
   val readSubscribeToMailingList: IO[Boolean] =
     IO {
       console.writeLine("Would you like to subscribe to our mailing list? [Y/N]").unsafeRun()
       val line = console.readLine.unsafeRun()
-      parseLineToBoolean(line).unsafeRun()
+      Try(parseLineToBoolean(line).unsafeRun()) match {
+        case Success(bool) => bool
+        case Failure(exception) =>
+          console.writeLine("""Incorrect format, enter "Y" for Yes or "N" for "No"""").unsafeRun()
+          throw exception
+      }
     }
 
-  lazy val readUser: IO[User] =
-    ???
+  val readUser: IO[User] =
+    IO {
+      val name        = readName.unsafeRun()
+      val dateOfBirth = readDateOfBirth.unsafeRun()
+      val subscribed  = readSubscribeToMailingList.unsafeRun()
+      val now         = clock.now.unsafeRun()
+      val user        = User(name, dateOfBirth, subscribed, now)
+      console.writeLine(s"User is $user").unsafeRun()
+      user
+    }
 }
 
 object UserCreationService {

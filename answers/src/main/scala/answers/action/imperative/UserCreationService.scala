@@ -46,7 +46,7 @@ class UserCreationService(console: Console, clock: Clock) {
         console.writeLine("Would you like to subscribe to our mailing list? [Y/N]")
         parseYesNo(console.readLine())
       },
-      callback = _ => console.writeLine(s"""Incorrect format, enter "Y" for Yes or "N" for "No"""")
+      callback = _ => console.writeLine("""Incorrect format, enter "Y" for Yes or "N" for "No"""")
     )
 
 }
