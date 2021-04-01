@@ -6,6 +6,29 @@ sealed trait IO[A] {
 
   def unsafeRun(): A
 
+  def andThen[Other](other: IO[Other]): IO[Other] =
+    IO {
+      this.unsafeRun()
+      other.unsafeRun()
+    }
+
+  def onError[Other](callback: Throwable => IO[Other]): IO[A] =
+    attempt.flatMap {
+      case Failure(e)     => callback(e).attempt *> IO.fail(e)
+      case Success(value) => IO(value)
+    }
+
+  def flatMap[Other](callBack: A => IO[Other]): IO[Other] =
+    IO {
+      val result: A             = unsafeRun()
+      val nextAction: IO[Other] = callBack(result)
+
+      nextAction.unsafeRun()
+    }
+
+  def map[Other](callBack: A => Other): IO[Other] =
+    flatMap(a => IO(callBack(a)))
+
   def retry(maxAttempt: Int): IO[A] =
     if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be > 0"))
     else if (maxAttempt == 1) this
@@ -15,30 +38,8 @@ sealed trait IO[A] {
         case Success(value) => IO(value)
       }
 
-  def onError[Other](callback: Throwable => IO[Other]): IO[A] =
-    attempt.flatMap {
-      case Failure(e)     => callback(e).attempt *> IO.fail(e)
-      case Success(value) => IO(value)
-    }
-
-  def andThen[Next](callBack: A => IO[Next]): IO[Next] =
-    flatMap(callBack)
-
-  def flatMap[Next](callBack: A => IO[Next]): IO[Next] =
-    IO {
-      val result: A            = unsafeRun()
-      val nextAction: IO[Next] = callBack(result)
-
-      nextAction.unsafeRun()
-    }
-
   def *>[Next](next: IO[Next]): IO[Next] =
     this.flatMap(_ => next)
-
-  def map[Next](callBack: A => Next): IO[Next] =
-    IO {
-      callBack(unsafeRun())
-    }
 
   def attempt: IO[Try[A]] =
     IO {

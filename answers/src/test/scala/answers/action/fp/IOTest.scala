@@ -1,4 +1,4 @@
-package exercises.action.fp
+package answers.action.fp
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -20,7 +20,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(counter == 2)
   }
 
-  ignore("andThen") {
+  test("andThen") {
     var counter = 0
 
     val first  = IO { counter += 1 }
@@ -33,7 +33,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(counter == 2) // first and second were executed in the expected order
   }
 
-  ignore("onError success") {
+  test("onError success") {
     var counter = 0
 
     val action = IO { counter += 1; "" }.onError(_ => IO { counter *= 2 })
@@ -44,7 +44,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(result == Success(""))
   }
 
-  ignore("onError failure") {
+  test("onError failure") {
     var counter = 0
 
     val error1 = new Exception("Boom 1")
@@ -57,6 +57,30 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     val result = Try(action.unsafeRun())
     assert(counter == 1)              // callback was executed
     assert(result == Failure(error1)) // callback error was swallowed
+  }
+
+  test("flatMap") {
+    var counter = 0
+
+    val first  = IO { counter += 1 }
+    val second = IO { counter *= 2 }
+
+    val action = first.flatMap(_ => second)
+    assert(counter == 0) // nothing happened before unsafeRun
+
+    action.unsafeRun()
+    assert(counter == 2) // first and second were executed
+  }
+
+  test("map") {
+    var counter = 0
+
+    val first  = IO { counter += 1 }
+    val action = first.map(_ => 1)
+    assert(counter == 0) // nothing happened before unsafeRun
+
+    action.unsafeRun()
+    assert(counter == 1) // first was executed
   }
 
 }

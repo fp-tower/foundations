@@ -16,14 +16,23 @@ object UserCreationServiceApp extends App {
 class UserCreationService(console: Console, clock: Clock) {
   import UserCreationService._
 
-  // 1. `readName` works as expected (see UserCreationServiceTest) but it is really ugly.
-  // Refactor `readName` using the method `andThen` from `IO`
+  // 1. `readName` works as we expect (see exercises.action.fp.UserCreationServiceTest),
+  // but `IO` doesn't help, it only adds noise by requiring to:
+  // * wrap the entire method in `IO { }`
+  // * call `unsafeRun` on each internal action
+  //
+  // Let's capture the pattern of `readName` with the method `andThen` on the `IO` trait.
+  // Then, when `andThen` is implemented, refactor `readName` with it.
   val readName: IO[String] =
     IO {
       console.writeLine("What's your name?").unsafeRun()
       console.readLine.unsafeRun()
     }
 
+  // 2. `readDateOfBirth` is very difficult to read. Here are few issues:
+  // a) Try/pattern-match/rethrow to print a message in case of a failure.
+  //    --> capture this pattern with the method `onError` on the `IO` trait.
+  // b) 3 internal actions are executed one after another
   val readDateOfBirth: IO[LocalDate] =
     IO {
       console.writeLine("What's your date of birth? [dd-mm-yyyy]").unsafeRun()
