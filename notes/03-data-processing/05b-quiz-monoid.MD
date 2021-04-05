@@ -9,7 +9,7 @@
 We only need 1) and 3) to ensure that whichever way we partition the data, `monoFold` on `ParList` always returns the same result as `fold` on List.
 
 Many `combine` operations are commutative, e.g. multiplication `a * b = b * a` or finding the minimum of two numbers `min(a, b) = min(b, a)`.
-But, some are not, e.g. String concatenation “Hello” + “World” != “World” + “Hello”.
+But, some are not, e.g. String concatenation "Hello" + "World" != "World" + "Hello".
 
 In the bonus exercises, we’ll cover two additional benefits for requiring `combine` to be commutative. I let you think about it.
 
@@ -116,17 +116,17 @@ If `default` returned `true` then `and` would be a valid instance of `MonoFoldPa
 ### Is `mergeMap` a valid instance of MonoFoldParam?
 
 `mergeMap` is a `MonoFoldParam` of `Map[String, Int]`, which follows two rules:
-If a key is in both Maps, then `mergeMap` sums the values (see “Eda” example).
-If a key is only in one Map, then `mergeMap` keeps the key-value pair unchanged (see “Bob” and “Jo” examples).
+If a key is in both Maps, then `mergeMap` sums the values (see "Eda" example).
+If a key is only in one Map, then `mergeMap` keeps the key-value pair unchanged (see "Bob" and "Jo" examples).
 
 ```scala
 mergeMap.combine(
-  Map(“Bob” -> 2, “Eda” -> 1),
-  Map(“Eda” -> 5, “Jo” -> 4)
+  Map("Bob" -> 2, "Eda" -> 1),
+  Map("Eda" -> 5, "Jo"  -> 4)
 ) == Map(
-  “Bob” -> 2, // Bob is only in Map 1
-  “Eda” -> 6, // Eda is in both Maps, so we get 1 + 5
-  “Jo” -> 4,    // Jo is only in Map 2
+  "Bob" -> 2, // Bob is only in Map 1
+  "Eda" -> 6, // Eda is in both Maps, so we get 1 + 5
+  "Jo"  -> 4, // Jo is only in Map 2
 )
 
 mergeMap.empty == Map.empty
