@@ -7,6 +7,9 @@ import exercises.action.imperative.UserCreationExercises.User
 
 import scala.util.Try
 
+// Run the App using the green arrow next to object (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode then type:
+// exercises/runMain exercises.actions.imperative.UserCreationServiceApp
 object UserCreationServiceApp extends App {
   // initialise dependencies
   val console = Console.system

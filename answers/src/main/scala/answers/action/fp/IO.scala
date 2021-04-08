@@ -20,7 +20,7 @@ sealed trait IO[A] {
 
   def flatMap[Other](callBack: A => IO[Other]): IO[Other] =
     IO {
-      val result: A             = unsafeRun()
+      val result: A             = this.unsafeRun()
       val nextAction: IO[Other] = callBack(result)
 
       nextAction.unsafeRun()
@@ -30,20 +30,33 @@ sealed trait IO[A] {
     flatMap(a => IO(callBack(a)))
 
   def retry(maxAttempt: Int): IO[A] =
+    IO {
+      var remaining      = maxAttempt
+      var result: Try[A] = Failure(new IllegalArgumentException("maxAttempt must be > 0"))
+
+      while (remaining > 0 && result.isFailure) {
+        remaining -= 1
+        result = attempt.unsafeRun()
+      }
+
+      result.get
+    }
+
+  def retryRecursive(maxAttempt: Int): IO[A] =
     if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be > 0"))
     else if (maxAttempt == 1) this
     else
       attempt.flatMap {
-        case Failure(_)     => retry(maxAttempt - 1)
         case Success(value) => IO(value)
+        case Failure(_)     => retryRecursive(maxAttempt - 1)
       }
 
   def *>[Next](next: IO[Next]): IO[Next] =
-    this.flatMap(_ => next)
+    flatMap(_ => next)
 
   def attempt: IO[Try[A]] =
     IO {
-      Try(unsafeRun())
+      Try(this.unsafeRun())
     }
 }
 
