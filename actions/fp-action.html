@@ -28,7 +28,7 @@ class: center, middle, white
 .sixty-two-right[
 ## -> Retry
 
-## -> Try-catch
+## -> Try
 
 ]
 
@@ -48,7 +48,7 @@ class: center, middle, white
 .sixty-two-right[
 ## -> Retry
 
-## -> Try-catch
+## -> Try
 
 ## -> Execute on a thread pool
 ]
@@ -149,6 +149,7 @@ object Action {
 ]
 
 .fifty-two-left[
+<br>
 ```scala
 trait Action[A] {
 
@@ -169,6 +170,7 @@ object Action {
 ]
 
 .fifty-two-left[
+<br>
 ```scala
 trait Action[A] {
 
@@ -189,12 +191,46 @@ object Action {
 ]
 
 .fifty-two-left[
+<br>
 ```scala
 trait Action[A] {
 
 }
 ```
 ]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: () => A): Action[A] =
+    ???
+}
+```
+]
+
+.forty-two-right[
+```scala
+val greeting: `() => Unit` =
+  () => println("Hello")
+
+def greeting(): Unit =
+  () => println("Hello")
+```
+]
+
+.fifty-two-left[
+<br>
+```scala
+trait Action[A] {
+
+}
+```
+]
+
+
 
 ---
 # Action encoding
@@ -209,6 +245,7 @@ object Action {
 ]
 
 .fifty-two-left[
+<br>
 ```scala
 trait Action[A] {
   def execute()`: A`
@@ -260,12 +297,51 @@ trait Action[A] {
 ```
 ]
 
---
+---
+# Comparison
 
-.forty-two-right[
+<br>
+
+.cols[
+.forty-five[
+## Val function
+```scala
+val greeting: () => Unit  =
+  println("Hello")
+
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+## Def function
+
+```scala
+def greeting(): Unit  =
+  println("Hello")
+
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+## Action
+
 ```scala
 val greeting: Action[Unit] =
-  Action { println("Hello") }
+  Action{ println("Hello") }
 
 greeting.execute()
 // Hello
@@ -273,6 +349,7 @@ greeting.execute()
 greeting.execute()
 // Hello
 ```
+]
 ]
 
 ---
@@ -372,16 +449,15 @@ class: white
 
 background-image: url(../img/fp-tower/website-background.svg)
 
-<br>
 # .white[Summary]
 
 <br>
 
-## .white[Encode action with a SAM and a rich API]
+## .white[Encode action with a trait (SAM)]
 
 ## .white[Constructor with a by-name parameter]
 
-## .white[Document when something can fail <br>or interact with the external world]
+## .white[Provide a rich API (retry, onError, parallel)]
 
 ---
 background-image: url(../img/fp-tower/website-background-white.svg)
