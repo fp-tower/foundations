@@ -83,11 +83,20 @@ trait IO[A] {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // Checks if the current actions is a failure or a success.
+  // Checks if the current IO is a failure or a success.
   // For example,
   // IO(throw exception) == IO(Failure(exception))
   // IO(1).attempt == IO(Success(1))
   def attempt: IO[Try[A]] =
+    ???
+
+  // If the current IO is a success, do nothing.
+  // If the current IO is a failure, use `callback`.
+  // For example,
+  // val action: IO[Int] = IO(throw exception).handleErrorWith(e => IO(1))
+  // action.unsafeRun()
+  // returns 1
+  def handleErrorWith(callback: Throwable => IO[A]): IO[A] =
     ???
 }
 

@@ -84,6 +84,48 @@ class UserCreationService(console: Console, clock: Clock) {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
+  // 5. Implement the method `attempt` on `IO`. Then, use `attempt` to
+  // simplify the logic of `onError` and `retry`. For example,
+  // attempt.flatMap {
+  //  case Success(value)     => ...
+  //  case Failure(exception) => ...
+  // }
+  // You can also use `attempt` in tests:
+  // action.attempt.unsafeRun()
+  // instead of
+  // Try(action.unsafeRun())
+
+  // 6. Write a property-based test for `retry` which cover both:
+  // a) successes, when `maxAttempt >  number of errors`
+  // b) failures , when `maxAttempt <= number of errors`
+
+  // 7. The implementation of `retry` used in the video has a bug.
+  // Did you find it? Try to write a test which exhibits the issue.
+
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //                                          //
+  //                SPOILER                   //
+  //                                          //
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+
+  // `retry` is a recursive function but it is not tail recursive.
+  // If you add a @tailrec annotation to `retry`, the program doesn't compile.
+  // One way to check if `retry` is stack-safe is to write a test when
+  // `maxAttempt` and `number of errors` are high (around 10 000).
+  //
+  // There are two ways to make `retry` stack-safe:
+  // a) rewrite it using a while loop, without recursion.
+  // b) wait until the end of the chapter.
+
+  // 8. Implement the method `handleErrorWith` on `IO`. Then,
+  // use `handleErrorWith` to simplify the logic of `onError` and `retry`.
+
 }
 
 object UserCreationService {

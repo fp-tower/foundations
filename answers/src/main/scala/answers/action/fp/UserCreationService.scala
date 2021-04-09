@@ -22,20 +22,20 @@ class UserCreationService(console: Console, clock: Clock) {
     } yield name
 
   val readDateOfBirth: IO[LocalDate] = {
-    val errorMessage = """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
+    val printError = writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
 
     for {
       _    <- writeLine("What's your date of birth? [dd-mm-yyyy]")
-      date <- readDate(dateOfBirthFormatter).onError(_ => writeLine(errorMessage))
+      date <- readDate(dateOfBirthFormatter).onError(_ => printError)
     } yield date
   }
 
   val readSubscribeToMailingList: IO[Boolean] = {
-    val errorMessage = """Incorrect format, enter "Y" for Yes or "N" for "No""""
+    val printError = writeLine("""Incorrect format, enter "Y" for Yes or "N" for "No"""")
 
     for {
       _    <- writeLine("Would you like to subscribe to our mailing list? [Y/N]")
-      bool <- readYesNo.onError(_ => writeLine(errorMessage))
+      bool <- readYesNo.onError(_ => printError)
     } yield bool
   }
 

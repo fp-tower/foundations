@@ -7,16 +7,13 @@ sealed trait IO[A] {
   def unsafeRun(): A
 
   def andThen[Other](other: IO[Other]): IO[Other] =
-    IO {
-      this.unsafeRun()
-      other.unsafeRun()
-    }
+    for {
+      _   <- this
+      res <- other
+    } yield res
 
   def onError[Other](callback: Throwable => IO[Other]): IO[A] =
-    attempt.flatMap {
-      case Failure(e)     => callback(e).attempt *> IO.fail(e)
-      case Success(value) => IO(value)
-    }
+    handleErrorWith(e => callback(e).attempt *> IO.fail(e))
 
   def flatMap[Other](callBack: A => IO[Other]): IO[Other] =
     IO {
@@ -43,13 +40,12 @@ sealed trait IO[A] {
     }
 
   def retryRecursive(maxAttempt: Int): IO[A] =
-    if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be > 0"))
-    else if (maxAttempt == 1) this
+    if (maxAttempt <= 0)
+      IO.fail(new IllegalArgumentException("maxAttempt must be > 0"))
+    else if (maxAttempt == 1)
+      this
     else
-      attempt.flatMap {
-        case Success(value) => IO(value)
-        case Failure(_)     => retryRecursive(maxAttempt - 1)
-      }
+      handleErrorWith(_ => retryRecursive(maxAttempt - 1))
 
   def *>[Next](next: IO[Next]): IO[Next] =
     flatMap(_ => next)
@@ -57,6 +53,12 @@ sealed trait IO[A] {
   def attempt: IO[Try[A]] =
     IO {
       Try(this.unsafeRun())
+    }
+
+  def handleErrorWith(callback: Throwable => IO[A]): IO[A] =
+    attempt.flatMap {
+      case Success(value)     => IO(value)
+      case Failure(exception) => callback(exception)
     }
 }
 
