@@ -35,8 +35,8 @@ object Generator {
       duration <- Gen.choose(20, 2400).map(Duration.ofMinutes(_))
       departureAt <- Gen
         .choose(
-          LocalDate.of(2020, 1, 1).toEpochSecond(LocalTime.MIN, ZoneOffset.UTC),
-          LocalDate.of(2060, 1, 1).toEpochSecond(LocalTime.MIN, ZoneOffset.UTC)
+          LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.of("UTC")).toEpochSecond,
+          LocalDate.of(2060, 1, 1).atStartOfDay(ZoneId.of("UTC")).toEpochSecond
         )
         .map(Instant.ofEpochSecond)
       numberOfStops <- Gen.choose(0, 4)
