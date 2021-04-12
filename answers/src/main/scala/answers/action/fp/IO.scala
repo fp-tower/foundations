@@ -1,5 +1,6 @@
 package answers.action.fp
 
+import java.time.Duration
 import scala.util.{Failure, Success, Try}
 
 sealed trait IO[A] {
@@ -70,5 +71,18 @@ object IO {
 
   def fail[A](error: Throwable): IO[A] =
     IO(throw error)
+
+  def sleep(duration: Duration): IO[Unit] =
+    IO {
+      Thread.sleep(duration.toMillis)
+    }
+
+  def sequence[A](actions: List[IO[A]]): IO[List[A]] =
+    IO {
+      actions.map(_.unsafeRun())
+    }
+
+  def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
+    sequence(values.map(action))
 
 }
