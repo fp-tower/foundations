@@ -59,14 +59,12 @@ object Generator {
         redirectLink = redirectLink
       )
 
-  val searchFlightClientGen: Gen[SearchFlightClient] = {
-    for {
-      flights <- Gen.listOf(flightGen)
-      correct <- Gen.choose(1, 10).map(_ < 9)
-    } yield
-      new SearchFlightClient {
-        def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
-          if (correct)
+  val validSearchFlightClientGen: Gen[SearchFlightClient] =
+    Gen
+      .listOf(flightGen)
+      .map { flights =>
+        new SearchFlightClient {
+          def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
             IO(
               flights.map(
                 flight =>
@@ -77,8 +75,20 @@ object Generator {
                 )
               )
             )
-          else
-            IO(flights)
+        }
       }
-  }
+
+  val invalidSearchFlightClientGen: Gen[SearchFlightClient] =
+    Gen.listOf(flightGen).map(flights => (_: Airport, _: Airport, _: LocalDate) => IO(flights))
+
+  val failingSearchFlightClientGen: Gen[SearchFlightClient] =
+    arbitrary[Exception].map(e => (_: Airport, _: Airport, _: LocalDate) => IO.fail(e))
+
+  val searchFlightClientGen: Gen[SearchFlightClient] =
+    Gen.frequency(
+      8 -> validSearchFlightClientGen,
+      1 -> invalidSearchFlightClientGen,
+      1 -> failingSearchFlightClientGen
+    )
+
 }

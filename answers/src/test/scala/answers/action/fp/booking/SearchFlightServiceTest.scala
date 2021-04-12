@@ -11,6 +11,21 @@ class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
   import Generator._
   import SearchFlightService._
 
+  test("all results match the criteria") {
+    forAll(Gen.listOf(searchFlightClientGen), airportGen, airportGen, dateGen, predicateGen, MinSuccessful(100)) {
+      (clients, from, to, date, predicate) =>
+        val service = SearchFlightService.fromClients(clients)
+        val result  = service.search(from, to, date, predicate).unsafeRun()
+
+        result.foreach { flight =>
+          assert(flight.from == from)
+          assert(flight.to == to)
+          assert(flight.departureAt.atZone(ZoneId.of("UTC")).toLocalDate == date)
+          assert(predicate.isValid(flight))
+        }
+    }
+  }
+
   test("combineFlightResults - all results satisfy the predicate") {
     forAll(
       Gen.listOf(Gen.listOf(flightGen)),
@@ -38,21 +53,6 @@ class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     ) { (flightResults, predicate) =>
       val result = combineFlightResults(flightResults, predicate)
       assert(result.distinctBy(_.flightId).size == result.size)
-    }
-  }
-
-  test("all results match the criteria") {
-    forAll(Gen.listOf(searchFlightClientGen), airportGen, airportGen, dateGen, predicateGen, MinSuccessful(100)) {
-      (clients, from, to, date, predicate) =>
-        val service = SearchFlightService.fromClients(clients)
-        val result  = service.search(from, to, date, predicate).unsafeRun()
-
-        result.foreach { flight =>
-          assert(flight.from == from)
-          assert(flight.to == to)
-          assert(flight.departureAt.atZone(ZoneId.of("UTC")).toLocalDate == date)
-          assert(predicate.isValid(flight))
-        }
     }
   }
 
