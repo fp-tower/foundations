@@ -27,14 +27,14 @@ trait IO[A] {
   def *>[Other](other: IO[Other]): IO[Other] =
     andThen(other)
 
-  // Runs the current action, if it fails, executes the `callback` and rethrows the original error.
-  // If the current action is a success, return the result.
+  // Runs the current action, if it fails it executes the `callback` and rethrows the original error.
+  // If the current action is a success, it will return the result.
   // For example,
   // def logError(e: Throwable): IO[Unit] =
   //   IO{ println("Got an error: ${e.getMessage}") }
   //
   // IO(1).onError(logError).unsafeRun()
-  // returns 1 and nothing is printed on the console
+  // returns 1 and nothing is printed to the console
   //
   // IO(throw new Exception("Boom!")).onError(logError).unsafeRun()
   // prints "Got an error: Boom!" and throws new Exception("Boom!")
@@ -54,7 +54,7 @@ trait IO[A] {
   def map[Next](callBack: A => Next): IO[Next] =
     ???
 
-  // Runs the current action (`this`), if it succeeds pass the result to callback and
+  // Runs the current action (`this`), if it succeeds passes the result to callback and
   // runs the second action.
   // For example,
   // IO(1).flatMap(x => IO(x + 1)).unsafeRun()
@@ -64,7 +64,7 @@ trait IO[A] {
 
   // Retries this action until either:
   // * It succeeds.
-  // * Or the number of attempts has been exhausted.
+  // * Or the number of attempts have been exhausted.
   // For example,
   // var counter = 0
   // val action: IO[String] = {
@@ -74,7 +74,7 @@ trait IO[A] {
   // }
   // action.retry(maxAttempt = 5).unsafeRun()
   // Returns "Hello" because `action` fails twice and then succeeds when counter reaches 3.
-  // Note: `maxAttempt` must be greater than 0, otherwise makes the `IO` fail.
+  // Note: `maxAttempt` must be greater than 0, otherwise the `IO` should fail.
   // Note: `retry` is a no-operation when `maxAttempt` is equal to 1.
   def retry(maxAttempt: Int): IO[A] =
     ???

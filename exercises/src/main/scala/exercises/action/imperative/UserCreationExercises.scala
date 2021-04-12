@@ -7,7 +7,7 @@ import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
 
 // Run the App using the green arrow next to object (if using IntelliJ)
-// or run `sbt` in the terminal to open it in shell mode then type:
+// or run `sbt` in the terminal to open it in shell mode, then type:
 // exercises/runMain exercises.actions.imperative.UserCreationApp
 object UserCreationApp extends App {
   import UserCreationExercises._
@@ -46,8 +46,9 @@ object UserCreationExercises {
   def readSubscribeToMailingList(): Boolean =
     ???
 
-  // 2. How can we test `readSubscribeToMailingList`? We cannot use example-based
-  // or property-based tests because `readSubscribeToMailingList` depends on the
+  // 2. How can we test `readSubscribeToMailingList`? 
+  // We cannot use example-based tests or property-based tests 
+  // because `readSubscribeToMailingList` depends on the
   // standard input `StdIn`.
   // Implement a new version of `readSubscribeToMailingList` which uses an instance
   // of `Console` to read/write lines.
