@@ -119,16 +119,30 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("sequence") {
     var counter = 0
 
-    val actions = List(
-      IO { counter += 2; 1 },
-      IO { counter *= 3; 2 },
-      IO { counter -= 1; 3 },
+    val action = IO.sequence(
+      List(
+        IO { counter += 2; counter },
+        IO { counter *= 3; counter },
+        IO { counter -= 1; counter },
+      )
     )
     assert(counter == 0)
 
-    assert(IO.sequence(actions).unsafeRun() == List(1, 2, 3))
+    assert(action.unsafeRun() == List(2, 6, 5))
     assert(counter == 5)
 
+  }
+
+  test("traverse") {
+    var counter = 0
+
+    val values: List[Int => Int] = List(_ + 2, _ * 3, _ - 1)
+
+    val action = IO.traverse(values)(f => IO { counter = f(counter); counter })
+    assert(counter == 0)
+
+    assert(action.unsafeRun() == List(2, 6, 5))
+    assert(counter == 5)
   }
 
 }
