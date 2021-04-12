@@ -13,6 +13,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Success
 
 class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+  import answers.action.DateGenerator._
 
   val fixClock: Clock = Clock.constant(Instant.MIN)
 

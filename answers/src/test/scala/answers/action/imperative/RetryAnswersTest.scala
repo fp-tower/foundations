@@ -14,6 +14,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Success, Try}
 
 class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+  import answers.action.DateGenerator._
 
   test("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]

@@ -11,6 +11,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Try
 
 class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+  import answers.action.DateGenerator._
 
   test("parseYesNo") {
     assert(parseYesNo("Y") == true)

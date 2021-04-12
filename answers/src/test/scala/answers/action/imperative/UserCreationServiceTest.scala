@@ -13,6 +13,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Success, Try}
 
 class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
+  import answers.action.DateGenerator._
 
   test("formatDate - parseDate round trip") {
     forAll { (date: LocalDate) =>

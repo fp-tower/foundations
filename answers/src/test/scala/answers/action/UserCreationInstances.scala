@@ -11,23 +11,6 @@ import scala.util.Try
 
 trait UserCreationInstances {
 
-  val dateGen: Gen[LocalDate] =
-    Gen
-      .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
-      .map(LocalDate.ofEpochDay)
-
-  implicit val localDateArb: Arbitrary[LocalDate] =
-    Arbitrary(dateGen)
-
-  val instantGen: Gen[Instant] =
-    for {
-      seconds <- Gen.choose(Instant.MIN.getEpochSecond, Instant.MAX.getEpochSecond)
-      nano    <- Gen.choose(0, 1000_000_000L)
-    } yield Instant.ofEpochSecond(seconds, nano)
-
-  implicit val instantArb: Arbitrary[Instant] =
-    Arbitrary(instantGen)
-
   val localDateFormatter: Gen[DateTimeFormatter] =
     Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dateOfBirthFormatter)
 
@@ -37,7 +20,7 @@ trait UserCreationInstances {
   val invalidDateGen: Gen[String] =
     arbitrary[String].suchThat(date => Try(dateOfBirthFormatter.parse(date)).isFailure)
 
-  val validMaxAttemptGen: Gen[Int] = Gen.choose(1, 20)
+  val validMaxAttemptGen: Gen[Int]   = Gen.choose(1, 20)
   val invalidMaxAttemptGen: Gen[Int] = Gen.choose(Int.MinValue, 0)
 
 }

@@ -2,6 +2,7 @@ package answers.action.fp.booking
 
 import java.time.{Duration, Instant, LocalDate, LocalTime, ZoneId, ZoneOffset}
 
+import answers.action.fp.IO
 import answers.action.fp.booking.FlightPredicate.{CheaperThan, Direct, OneStop, ShorterThan, TwoOrMoreStops}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -26,12 +27,15 @@ object Generator {
       )
     )
 
+  val airportGen: Gen[Airport] =
+    Gen.oneOf(Airport.all)
+
   val flightGen: Gen[Flight] =
     for {
       flightId <- arbitrary[Short].map(_.toString)
       airline  <- Gen.oneOf("British Airways", "Lufthansa", "Air France", "Ryanair")
-      from     <- Gen.oneOf(Airport.all)
-      to       <- Gen.oneOf(Airport.all) // .filterNot(_ == from)
+      from     <- airportGen
+      to       <- airportGen // .filterNot(_ == from)
       duration <- Gen.choose(20, 2400).map(Duration.ofMinutes(_))
       departureAt <- Gen
         .choose(
@@ -54,4 +58,27 @@ object Generator {
         cost = cost,
         redirectLink = redirectLink
       )
+
+  val searchFlightClientGen: Gen[SearchFlightClient] = {
+    for {
+      flights <- Gen.listOf(flightGen)
+      correct <- Gen.choose(1, 10).map(_ < 9)
+    } yield
+      new SearchFlightClient {
+        def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
+          if (correct)
+            IO(
+              flights.map(
+                flight =>
+                  flight.copy(
+                    from = from,
+                    to = to,
+                    departureAt = date.atTime(flight.departureAt.atOffset(ZoneOffset.UTC).toOffsetTime).toInstant
+                )
+              )
+            )
+          else
+            IO(flights)
+      }
+  }
 }

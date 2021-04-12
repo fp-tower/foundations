@@ -1,6 +1,7 @@
 package answers.action.fp.booking
 
-import java.time.Duration
+import java.time.{Duration, LocalDate, ZoneId}
+
 import Ordering.Implicits._
 
 sealed trait FlightPredicate { self =>
@@ -40,6 +41,13 @@ object FlightPredicate {
   case class CheaperThan(maxPrice: Double) extends FlightPredicate {
     def isValid(flight: Flight): Boolean =
       flight.cost <= maxPrice
+  }
+
+  case class BasicSearch(from: Airport, to: Airport, date: LocalDate) extends FlightPredicate {
+    def isValid(flight: Flight): Boolean =
+      flight.from == from &&
+        flight.to == to &&
+        flight.departureAt.atZone(ZoneId.of("UTC")).toLocalDate == date
   }
 
 }

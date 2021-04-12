@@ -3,6 +3,7 @@ package answers.action.fp.booking
 import java.time.LocalDate
 
 import answers.action.fp.IO
+import answers.action.fp.booking.FlightPredicate.BasicSearch
 
 trait SearchFlightService {
   def search(from: Airport, to: Airport, date: LocalDate, predicate: FlightPredicate): IO[List[Flight]]
@@ -23,8 +24,12 @@ object SearchFlightService {
     new SearchFlightService {
       def search(from: Airport, to: Airport, date: LocalDate, predicate: FlightPredicate): IO[List[Flight]] =
         clients
-          .traverse(_.search(from, to, date))
-          .map(combineFlightResults(_, predicate))
+          .traverse { client =>
+            client
+              .search(from, to, date)
+              .handleErrorWith(_ => IO(Nil))
+          }
+          .map(combineFlightResults(_, predicate && BasicSearch(from, to, date)))
     }
 
   def combineFlightResults(flightResults: List[List[Flight]], predicate: FlightPredicate): List[Flight] =
