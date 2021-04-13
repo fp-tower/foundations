@@ -1,4 +1,4 @@
-package answers.action.fp
+package exercises.action.fp.console
 
 import java.time.{Instant, LocalDate}
 

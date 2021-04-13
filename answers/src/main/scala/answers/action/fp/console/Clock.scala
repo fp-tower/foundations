@@ -1,6 +1,8 @@
-package answers.action.fp
+package answers.action.fp.console
 
 import java.time.Instant
+
+import answers.action.fp.IO
 
 trait Clock {
   def now: IO[Instant]

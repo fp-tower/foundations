@@ -1,21 +1,29 @@
-package answers.action.fp
+package exercises.action.fp.console
 
 import java.time.{Instant, LocalDate}
 
-import answers.action.UserCreationInstances
-import answers.action.fp.UserCreationService._
+import exercises.action.fp.console.UserCreationService._
+import exercises.action.{fp, TimeInstances}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.collection.mutable.ListBuffer
-import scala.util.Success
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 
-class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
-  import answers.action.DateGenerator._
+import scala.util.{Success, Try}
+
+class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with TimeInstances {
 
   val fixClock: Clock = Clock.constant(Instant.MIN)
+
+  val invalidYesNoGen: Gen[String] =
+    arbitrary[String].filterNot(Set("Y", "N"))
+
+  val invalidDateGen: Gen[String] =
+    arbitrary[String].suchThat(str => Try(parseDateOfBirth(str).unsafeRun()).isFailure)
 
   test("readName success") {
     forAll { (name: String) =>
@@ -52,7 +60,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readDateOfBirth.attempt.unsafeRun()
+      val result = Try(service.readDateOfBirth.unsafeRun())
 
       assert(result.isFailure)
       assert(
@@ -85,7 +93,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val console = Console.mock(inputs, outputs)
       val service = new UserCreationService(console, fixClock)
 
-      val result = service.readSubscribeToMailingList.attempt.unsafeRun()
+      val result = Try(service.readSubscribeToMailingList.unsafeRun())
 
       assert(result.isFailure)
       assert(
@@ -110,14 +118,14 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val clock   = Clock.constant(now)
       val service = new UserCreationService(console, clock)
 
-      val result   = service.readUser.attempt.unsafeRun()
+      val result   = Try(service.readUser.unsafeRun())
       val expected = User(name, dob, yesNo, now)
 
       assert(result == Success(expected))
     }
   }
 
-  test("readUser with retry") {
+  ignore("readUser with retry") {
     forAll(
       arbitrary[String],
       Gen.listOf(invalidDateGen),
@@ -135,8 +143,8 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val clock       = Clock.constant(now)
       val service     = new UserCreationService(console, clock)
 
-      val result   = service.readUser.attempt.unsafeRun()
-      val expected = User(name, dob, yesNo, now)
+      val result   = Try(service.readUser.unsafeRun())
+      val expected = fp.console.User(name, dob, yesNo, now)
 
       if (invalidDates.size < 3 && invalidYesNo.size < 3)
         assert(result == Success(expected))

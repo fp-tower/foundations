@@ -105,6 +105,11 @@ data type that supports powerful retry strategies and concurrency primitives.
 
 ### Slides
 1. [Evaluation](https://blog.fp-tower.com/foundations/actions/evaluation.html#1)
+1. [Actions in FP](https://blog.fp-tower.com/foundations/actions/fp-actions.html#1)
+1. [For Comprehension](https://blog.fp-tower.com/foundations/actions/for-comprehensions.html#1)
+
+### Slides
+1. [Evaluation](https://blog.fp-tower.com/foundations/actions/evaluation.html#1)
 
 ## 6. Error Handling
 

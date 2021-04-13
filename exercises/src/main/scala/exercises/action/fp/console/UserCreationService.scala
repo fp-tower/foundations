@@ -1,7 +1,9 @@
-package exercises.action.fp
+package exercises.action.fp.console
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+import exercises.action.fp.IO
 
 import scala.util.{Failure, Success, Try}
 
@@ -18,7 +20,6 @@ object UserCreationServiceApp extends App {
 
 class UserCreationService(console: Console, clock: Clock) {
   import UserCreationService._
-  import console._
 
   // 1. `readName` works as we expect (see exercises.action.fp.UserCreationServiceTest),
   // but `IO` makes the code more difficult to read by requiring:

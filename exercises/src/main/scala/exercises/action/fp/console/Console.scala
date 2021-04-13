@@ -1,4 +1,6 @@
-package exercises.action.fp
+package exercises.action.fp.console
+
+import exercises.action.fp.IO
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn

@@ -1,7 +1,9 @@
-package answers.action.fp
+package answers.action.fp.console
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+import answers.action.fp.IO
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
