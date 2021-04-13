@@ -2,7 +2,8 @@ package answers.action.imperative
 
 import java.time.LocalDate
 
-import answers.action.UserCreationInstances
+import answers.action.DateGenerator._
+import answers.action.UserCreationGenerator._
 import answers.action.imperative.RetryAnswers._
 import answers.action.imperative.UserCreationAnswers.{dateOfBirthFormatter, readSubscribeToMailingList}
 import org.scalacheck.Arbitrary.arbitrary
@@ -13,8 +14,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.{Success, Try}
 
-class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
-  import answers.action.DateGenerator._
+class RetryAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]

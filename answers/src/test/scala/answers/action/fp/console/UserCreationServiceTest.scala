@@ -2,8 +2,10 @@ package answers.action.fp.console
 
 import java.time.{Instant, LocalDate}
 
+import answers.action.DateGenerator._
+import answers.action.UserCreationGenerator._
+import answers.action.fp
 import answers.action.fp.console.UserCreationService._
-import answers.action.{fp, UserCreationInstances}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
@@ -12,9 +14,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.Success
 
-class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
-  import answers.action.DateGenerator._
-
+class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   val fixClock: Clock = Clock.constant(Instant.MIN)
 
   test("readName success") {

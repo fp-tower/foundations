@@ -2,7 +2,7 @@ package exercises.action.imperative
 
 import java.time.LocalDate
 
-import exercises.action.TimeInstances
+import exercises.action.DateGenerator._
 import exercises.action.imperative.RetryExercises._
 import exercises.action.imperative.UserCreationExercises.readSubscribeToMailingList
 import org.scalacheck.Gen
@@ -13,7 +13,8 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
-class RetryExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with TimeInstances {
+class RetryExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+  import exercises.action.DateGenerator._
 
   ignore("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]

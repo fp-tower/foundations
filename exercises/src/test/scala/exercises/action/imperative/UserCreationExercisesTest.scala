@@ -2,8 +2,8 @@ package exercises.action.imperative
 
 import java.time.{Instant, LocalDate}
 
-import exercises.action.TimeInstances
 import exercises.action.imperative.UserCreationExercises._
+import exercises.action.DateGenerator._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
@@ -12,7 +12,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
-class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with TimeInstances {
+class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   ignore("readSubscribeToMailingList example") {
     val inputs  = ListBuffer("N")

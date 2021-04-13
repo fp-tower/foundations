@@ -9,7 +9,7 @@ import org.scalacheck.{Arbitrary, Gen}
 
 import scala.util.Try
 
-trait UserCreationInstances {
+object UserCreationGenerator {
 
   val localDateFormatter: Gen[DateTimeFormatter] =
     Gen.oneOf(DateTimeFormatter.ISO_LOCAL_DATE, dateOfBirthFormatter)

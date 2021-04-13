@@ -2,7 +2,8 @@ package answers.action.imperative
 
 import java.time.{Instant, LocalDate}
 
-import answers.action.UserCreationInstances
+import answers.action.DateGenerator._
+import answers.action.UserCreationGenerator._
 import answers.action.imperative.UserCreationAnswers._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -10,8 +11,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.Try
 
-class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with UserCreationInstances {
-  import answers.action.DateGenerator._
+class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("parseYesNo") {
     assert(parseYesNo("Y") == true)

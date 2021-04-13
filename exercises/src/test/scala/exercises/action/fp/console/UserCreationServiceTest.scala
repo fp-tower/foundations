@@ -2,8 +2,9 @@ package exercises.action.fp.console
 
 import java.time.{Instant, LocalDate}
 
+import exercises.action.DateGenerator._
 import exercises.action.fp.console.UserCreationService._
-import exercises.action.{fp, TimeInstances}
+import exercises.action.fp
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
@@ -15,7 +16,7 @@ import org.scalacheck.Gen
 
 import scala.util.{Success, Try}
 
-class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with TimeInstances {
+class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   val fixClock: Clock = Clock.constant(Instant.MIN)
 

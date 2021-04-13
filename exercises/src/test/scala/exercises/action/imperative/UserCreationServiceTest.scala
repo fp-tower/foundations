@@ -2,7 +2,7 @@ package exercises.action.imperative
 
 import java.time.{Instant, LocalDate}
 
-import exercises.action.TimeInstances
+import exercises.action.DateGenerator._
 import exercises.action.imperative.UserCreationExercises.User
 import exercises.action.imperative.UserCreationService._
 import org.scalacheck.Arbitrary.arbitrary
@@ -13,7 +13,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.{Success, Try}
 
-class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks with TimeInstances {
+class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("formatDate - parseDate round trip") {
     forAll { (date: LocalDate) =>

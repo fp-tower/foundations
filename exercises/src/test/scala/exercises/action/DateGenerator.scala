@@ -4,8 +4,7 @@ import java.time.{Instant, LocalDate}
 
 import org.scalacheck.{Arbitrary, Gen}
 
-trait TimeInstances {
-
+object DateGenerator {
   val dateGen: Gen[LocalDate] =
     Gen
       .choose(LocalDate.MIN.toEpochDay, LocalDate.MAX.toEpochDay)
@@ -22,5 +21,4 @@ trait TimeInstances {
 
   implicit val instantArb: Arbitrary[Instant] =
     Arbitrary(instantGen)
-
 }
