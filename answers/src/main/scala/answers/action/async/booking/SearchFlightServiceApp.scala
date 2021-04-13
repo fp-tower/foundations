@@ -3,7 +3,7 @@ package answers.action.async.booking
 import java.time.{Duration, LocalDate}
 
 import answers.action.async.IO
-import answers.action.fp.booking.{Airport, Flight, FlightPredicate}
+import answers.action.fp.booking.{Airport, Flight}
 
 import scala.concurrent.ExecutionContext
 import scala.util.Random
@@ -34,7 +34,7 @@ object SearchFlightServiceApp extends App {
 
   SearchFlightService
     .fromPartners(partners, ec)
-    .search(Airport.parisOrly, Airport.tokyoAneda, LocalDate.now(), FlightPredicate.Direct)
+    .search(Airport.parisOrly, Airport.tokyoAneda, LocalDate.now())
     .flatMap(_ => IO.log("Complete"))
     .unsafeRun()
 

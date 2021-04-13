@@ -1,6 +1,6 @@
 package answers.action.fp.booking
 
-import java.time.{Duration, Instant}
+import java.time.{Duration, Instant, LocalDate}
 
 case class Flight(
   flightId: String,
@@ -10,6 +10,9 @@ case class Flight(
   departureAt: Instant,
   duration: Duration,
   numberOfStops: Int,
-  cost: Double, // in dollars for one passenger
+  unitPrice: Double, // in dollars for one passenger
   redirectLink: String,
-)
+) {
+  def departureDate: LocalDate =
+    departureAt.atZone(from.timeZone).toLocalDate
+}

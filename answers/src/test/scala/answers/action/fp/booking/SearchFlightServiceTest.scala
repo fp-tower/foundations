@@ -1,58 +1,24 @@
 package answers.action.fp.booking
 
-import java.time.ZoneId
-
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+  import SearchFlightGenerator._
   import answers.action.DateGenerator._
-  import Generator._
-  import SearchFlightService._
 
   test("all results match the criteria") {
-    forAll(Gen.listOf(searchFlightClientGen), airportGen, airportGen, dateGen, predicateGen, MinSuccessful(100)) {
-      (clients, from, to, date, predicate) =>
+    forAll(Gen.listOf(searchFlightClientGen), airportGen, airportGen, dateGen, MinSuccessful(100)) {
+      (clients, from, to, date) =>
         val service = SearchFlightService.fromClients(clients)
-        val result  = service.search(from, to, date, predicate).unsafeRun()
+        val result  = service.search(from, to, date).unsafeRun()
 
-        result.foreach { flight =>
+        result.flights.foreach { flight =>
           assert(flight.from == from)
           assert(flight.to == to)
-          assert(flight.departureAt.atZone(ZoneId.of("UTC")).toLocalDate == date)
-          assert(predicate.isValid(flight))
+          assert(flight.departureDate == date)
         }
-    }
-  }
-
-  test("combineFlightResults - all results satisfy the predicate") {
-    forAll(
-      Gen.listOf(Gen.listOf(flightGen)),
-      predicateGen
-    ) { (flightResults, predicate) =>
-      val result = combineFlightResults(flightResults, predicate)
-      assert(result.forall(predicate.isValid))
-    }
-  }
-
-  test("combineFlightResults - all results are ordered by cost") {
-    forAll(
-      Gen.listOf(Gen.listOf(flightGen)),
-      predicateGen
-    ) { (flightResults, predicate) =>
-      val result = combineFlightResults(flightResults, predicate)
-      assert(result.sortBy(_.cost) == result)
-    }
-  }
-
-  test("combineFlightResults - all results are unique by flight id") {
-    forAll(
-      Gen.listOf(Gen.listOf(flightGen)),
-      predicateGen
-    ) { (flightResults, predicate) =>
-      val result = combineFlightResults(flightResults, predicate)
-      assert(result.distinctBy(_.flightId).size == result.size)
     }
   }
 
