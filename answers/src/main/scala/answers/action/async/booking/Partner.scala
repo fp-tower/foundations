@@ -1,4 +1,4 @@
-package answers.action.fp.booking
+package answers.action.async.booking
 
 import java.time.Duration
 

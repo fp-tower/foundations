@@ -1,10 +1,10 @@
 package answers.action.async
 
+import java.time.Duration
 import java.util.concurrent.CountDownLatch
 
 import scala.concurrent.{ExecutionContext, Promise, TimeoutException}
-import scala.concurrent.duration.FiniteDuration
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 /**
   * Action supporting async evaluation in a different thread pool.
@@ -15,21 +15,30 @@ sealed trait IO[A] {
   import IO._
 
   def map[To](next: A => To): IO[To] =
-    IO {
-      next(unsafeRun())
-    }
+    flatMap(a => IO(next(a)))
 
   def flatMap[To](next: A => IO[To]): IO[To] =
-    IO {
-      next(unsafeRun()).unsafeRun()
-    }
+    FlatMap(this, next)
 
   def *>[Other](other: IO[Other]): IO[Other] =
-    flatMap(_ => other)
+    for {
+      _      <- this
+      result <- other
+    } yield result
+
+  def *<[Other](other: IO[Other]): IO[A] =
+    for {
+      result <- this
+      _      <- other
+    } yield result
 
   def attempt: IO[Try[A]] =
-    IO {
-      Try(unsafeRun())
+    Attempt(this)
+
+  def handleErrorWith(callback: Throwable => IO[A]): IO[A] =
+    attempt.flatMap {
+      case Success(value)     => IO(value)
+      case Failure(exception) => callback(exception)
     }
 
   def start(ec: ExecutionContext): IO[IO[A]] =
@@ -53,7 +62,7 @@ sealed trait IO[A] {
       other  <- startB
     } yield (a, other)
 
-  def timeout(duration: FiniteDuration)(ec: ExecutionContext): IO[A] =
+  def timeout(duration: Duration)(ec: ExecutionContext): IO[A] =
     race(sleep(duration) *> fail[Unit](new TimeoutException(s"Action timeout after $duration")))(ec)
       .map {
         case Left(value) => value
@@ -64,8 +73,8 @@ sealed trait IO[A] {
   def race[Other](other: IO[Other])(ec: ExecutionContext): IO[Either[A, Other]] =
     Async[Either[A, Other]](cb => {
       val promise = Promise[Either[A, Other]]()
-      ec.execute(() => this.unsafeRunAsync(tryA => promise.complete(tryA.map(Left(_)))))
-      ec.execute(() => other.unsafeRunAsync(tryA => promise.complete(tryA.map(Right(_)))))
+      ec.execute(() => this.unsafeRunAsync(tryA => promise.tryComplete(tryA.map(Left(_)))))
+      ec.execute(() => other.unsafeRunAsync(tryOther => promise.tryComplete(tryOther.map(Right(_)))))
       promise.future.onComplete(cb)(ec)
     })
 
@@ -91,18 +100,29 @@ sealed trait IO[A] {
   }
 
   def unsafeRunAsync(cb: CallBack[A]): Unit =
-    this match {
-      case Thunk(block)    => cb(Try(block()))
-      case Async(register) => register(cb)
-    }
+    runLoop(this)(cb)
 }
 
 object IO {
-  case class Thunk[A](block: () => A)                extends IO[A]
-  case class Async[A](register: CallBack[A] => Unit) extends IO[A]
+  case class Thunk[A](block: () => A)                                   extends IO[A]
+  case class Async[A](register: CallBack[A] => Unit)                    extends IO[A]
+  case class FlatMap[From, To](current: IO[From], next: From => IO[To]) extends IO[To]
+  case class Attempt[A](current: IO[A])                                 extends IO[Try[A]]
 
-  def apply[A](block: => A): IO[A] =
-    Thunk(() => block)
+  def runLoop[A](action: IO[A])(cb: CallBack[A]): Unit =
+    action match {
+      case Thunk(block)    => cb(Try(block()))
+      case Async(register) => register(cb)
+      case FlatMap(current, next) =>
+        runLoop(current) {
+          case Failure(e) => cb(Failure(e))
+          case Success(x) => runLoop(next(x))(cb)
+        }
+      case Attempt(current) => runLoop(current)(a => cb(Success(a)))
+    }
+
+  def apply[A](action: => A): IO[A] =
+    Thunk(() => action)
 
   val unit: IO[Unit] = apply(())
 
@@ -115,10 +135,8 @@ object IO {
   def fail[A](error: Throwable): IO[A] =
     IO(throw error)
 
-  def sleep(duration: FiniteDuration): IO[Unit] =
-    IO {
-      Thread.sleep(duration.toMillis)
-    }
+  def sleep(duration: Duration): IO[Unit] =
+    IO { Thread.sleep(duration.toMillis) }
 
   def sequence[A](values: List[IO[A]]): IO[List[A]] =
     values
@@ -126,6 +144,9 @@ object IO {
         state.zip(action).map { case (list, a) => a :: list }
       }
       .map(_.reverse)
+
+  def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
+    sequence(values.map(action))
 
   def sequence_[A](values: List[IO[A]]): IO[Unit] =
     values
@@ -135,5 +156,8 @@ object IO {
 
   def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
     sequence(values.map(_.start(ec))).flatMap(sequence)
+
+  def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
+    parSequence(values.map(action))(ec)
 
 }

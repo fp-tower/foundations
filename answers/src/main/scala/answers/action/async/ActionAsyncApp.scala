@@ -12,6 +12,9 @@ object ActionAsyncApp extends App {
 }
 
 object Examples {
+  implicit def scalaDurToJava(fd: FiniteDuration): java.time.Duration =
+    java.time.Duration.ofNanos(fd.toNanos)
+
   def task(suffix: String, length: Int, duration: FiniteDuration): IO[Unit] =
     IO.sequence(
         List
