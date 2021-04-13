@@ -7,7 +7,7 @@ package object imperative {
 
   // 1. Implement `retry`, a function which evaluates a block of code until either:
   // * It succeeds.
-  // * Or the number of attempts is exhausted (when `maxAttempt` is 1).
+  // * Or the maximum number of attempts are exhausted (when `maxAttempt` is 1).
   // For example,
   // var counter = 0
   // def exec(): String = {
@@ -19,13 +19,13 @@ package object imperative {
   // Returns "Hello" because `exec` fails twice and then succeeds when counter reaches 3.
   // retry(maxAttempt = 5){ throw new Exception("Boom!") }
   // Throws an exception because `block` fails every time it is evaluated
-  // Note: `action: () => A` is a val function which takes 0 argument.
+  // Note: `action: () => A` is a val function which takes 0 arguments.
   //       You can create a 0-argument function using the syntax:
   //       * `() => { code }` (recommended syntax)
   //       * `def myMethod() = { code }` and then use eta-expansion to convert
   //          the def function `myMethod` into a val function.
   //       You can execute `action` using `action()`
-  // Note: `maxAttempt` must be greater than 0, throw an exception if that's not the case.
+  // Note: `maxAttempt` must be greater than 0, if not you should throw an exception.
   // Note: Tests are in the `exercises.action.imperative.ImperativeActionTest`
   def retry[A](maxAttempt: Int)(action: => A): A =
     ???
@@ -44,13 +44,13 @@ package object imperative {
   //////////////////////////////////////////////
 
   // 4. Implement `onError` which executes `action`.
-  // If an error occurs, it calls the `callBack` function with the error and then rethrow it.
+  // If an error occurs, it calls the `callBack` function with the error and then rethrows it.
   // For example,
   // onError(() => 1, _ => println("Hello"))
-  // print nothing and return 1 because action succeeds.
+  // Will print nothing and return 1 because the action succeeds.
   // But,
   // onError(() => throw new Exception("Boom"), _ => println("Hello"))
-  // print "Hello" and then rethrow the "Boom" exception.
+  // Will print "Hello" and then rethrow the "Boom" exception.
   // Note: What should happen if the `callback` function fails?
   def onError[A](action: => A, callback: Throwable => Any): A =
     ???

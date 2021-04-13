@@ -25,7 +25,7 @@ class UserCreationService(console: Console, clock: Clock) {
   // * to wrap the entire method in `IO { }`
   // * to call `unsafeRun` on each internal action
   //
-  // Let's capture the pattern of doing two actions one after the other using
+  // We'll capture the pattern of doing two actions, one after the other, using
   // the method `andThen` on the `IO` trait.
   // Then, we'll refactor `readName` with `andThen`.
   val readName: IO[String] =
@@ -38,7 +38,7 @@ class UserCreationService(console: Console, clock: Clock) {
   // a) noisy error-handling logic in case the input is invalid.
   //    Let's capture this pattern using the method `onError` on the `IO` trait.
   // b) 3 internal actions are executed one after the other.
-  //    Let's try to use `andThen`, if it doesn't work, investigate the
+  //    Let's try to use `andThen` if it doesn't work and investigate the
   //    methods `map` and `flatMap` on the IO trait.
   val readDateOfBirth: IO[LocalDate] =
     IO {
@@ -67,8 +67,8 @@ class UserCreationService(console: Console, clock: Clock) {
 
   // 4. Refactor `readUser` using a for comprehension.
   // Then, update the logic so that users have up to 3 attempts to answer
-  // the date of birth and mailing list question.
-  // Note: Enable the last test in `UserCreationServiceTest`.
+  // the date of birth and mailing list questions.
+  // Note: Enable the final test in `UserCreationServiceTest`.
   val readUser: IO[User] =
     IO {
       val name        = readName.unsafeRun()
@@ -84,7 +84,7 @@ class UserCreationService(console: Console, clock: Clock) {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // 5. Implement the method `attempt` on `IO`. Then, use `attempt` to
+  // 5. Implement the method `attempt` on `IO`. Then use `attempt` to
   // simplify the logic of `onError` and `retry`. For example,
   // attempt.flatMap {
   //  case Success(value)     => ...
@@ -95,12 +95,13 @@ class UserCreationService(console: Console, clock: Clock) {
   // instead of
   // Try(action.unsafeRun())
 
-  // 6. Write a property-based test for `retry` which cover both:
+  // 6. Write a property-based test for `retry` which covers both:
   // a) successes, when `maxAttempt >  number of errors`
-  // b) failures , when `maxAttempt <= number of errors`
+  // b) failures, when `maxAttempt <= number of errors`
 
   // 7. The implementation of `retry` used in the video has a bug.
-  // Did you find it? Try to write a test which exhibits the issue.
+  // Were you able to identify it?
+  // Try to write a test which exhibits the issue.
 
   //////////////////////////////////////////////
   //////////////////////////////////////////////
@@ -116,7 +117,7 @@ class UserCreationService(console: Console, clock: Clock) {
 
   // `retry` is a recursive function but it is not tail recursive.
   // If you add a @tailrec annotation to `retry`, the program doesn't compile.
-  // One way to check if `retry` is stack-safe is to write a test when
+  // One way to check if `retry` is stack-safe is to write a test where
   // `maxAttempt` and `number of errors` are high (around 10 000).
   //
   // There are two ways to make `retry` stack-safe:

@@ -8,7 +8,7 @@ import exercises.action.imperative.UserCreationExercises.User
 import scala.util.Try
 
 // Run the App using the green arrow next to object (if using IntelliJ)
-// or run `sbt` in the terminal to open it in shell mode then type:
+// or run `sbt` in the terminal to open it in shell mode, then type:
 // exercises/runMain exercises.actions.imperative.UserCreationServiceApp
 object UserCreationServiceApp extends App {
   // initialise dependencies
@@ -40,8 +40,8 @@ class UserCreationService(console: Console, clock: Clock) {
       callback = _ => console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""")
     )
 
-  // 1. Implement `readSubscribeToMailingList` using a similar approach that `readDateOfBirth`.
-  // Note: Don't hesitate to move static helper methods to `UserCreationService` companion
+  // 1. Implement `readSubscribeToMailingList` using a similar approach to `readDateOfBirth`.
+  // Note: Don't hesitate to move static helper methods to a `UserCreationService` companion
   //       object such as `parseYesNo`.
   def readSubscribeToMailingList(): Boolean =
     ???
@@ -50,12 +50,12 @@ class UserCreationService(console: Console, clock: Clock) {
   // * `readName`
   // * `readDateOfBirth`
   // * `readSubscribeToMailingList`
-  // `readUser` should allow user to make up to 3 mistakes when they
+  // `readUser` should allow the user to make up to 3 mistakes when they
   // attempt to enter the date of birth or subscription flag.
   def readUser(): User =
     ???
 
-  // 3. add a method `readDate` and `readYesNo` to `Console`
+  // 3. add the methods `readDate` and `readYesNo` to `Console`
 
 }
 
