@@ -1,20 +1,17 @@
 package answers.action.fp.search
 
-sealed abstract case class SearchResult(
-  best: Option[Flight], // top secret AI algorithm
-  cheapest: Option[Flight],
-  fastest: Option[Flight],
-  flights: List[Flight], // ordered collection of flights from cheapest to most expensive
-)
+sealed abstract case class SearchResult(flights: List[Flight]) {
+  val cheapest: Option[Flight] = flights.minByOption(_.unitPrice)
+  val fastest: Option[Flight]  = flights.minByOption(_.duration)
+  val best: Option[Flight]     = flights.minOption(SearchResult.bestOrder)
+}
 
 object SearchResult {
-  def fromList(flights: List[Flight]): SearchResult = {
-    val orderedByPrice = flights.distinctBy(_.flightId).sortBy(_.unitPrice)
-    new SearchResult(
-      flights = orderedByPrice,
-      cheapest = orderedByPrice.headOption,
-      best = orderedByPrice.headOption, // we'll come up with a more clever choice later
-      fastest = flights.minByOption(_.duration)
-    ){}
+  val bestOrder: Ordering[Flight] =
+    Ordering.by(flight => (flight.numberOfStops, flight.unitPrice))
+
+  def validate(flights: List[Flight]): SearchResult = {
+    val ordered = flights.distinctBy(_.flightId).sorted(bestOrder)
+    new SearchResult(ordered) {}
   }
 }

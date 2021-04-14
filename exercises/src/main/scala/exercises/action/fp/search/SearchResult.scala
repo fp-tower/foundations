@@ -1,25 +1,17 @@
 package exercises.action.fp.search
 
-// A `sealed abstract case class` is a hack to create a case class with
-// * a private constructor (no `apply` or `new` outside this file)
-// * no `copy` method
-// As a result, we know all instances of `SearchResult` have consistent fields
-// where, for example, `cheapest` is the cheapest flight from the list.
-sealed abstract case class SearchResult(
-  best: Option[Flight], // top secret AI algorithm
-  cheapest: Option[Flight],
-  fastest: Option[Flight],
-  flights: List[Flight], // ordered collection of flights from cheapest to most expensive
-)
+case class SearchResult(flights: List[Flight]) {
+  val cheapest: Option[Flight] = flights.minByOption(_.unitPrice)
+  val fastest: Option[Flight]  = flights.minByOption(_.duration)
 
-object SearchResult {
-  def fromList(flights: List[Flight]): SearchResult = {
-    val orderedByPrice = flights.distinctBy(_.flightId).sortBy(_.unitPrice)
-    new SearchResult(
-      flights = orderedByPrice,
-      cheapest = orderedByPrice.headOption,
-      best = orderedByPrice.headOption, // we'll come up with a more clever choice later
-      fastest = flights.minByOption(_.duration)
-    ){}
-  }
+  // Cheapest flight with the minimum number of stops.
+  // For example,
+  // flight 1: 1 stop,  50$
+  // flight 2: 0 stop,  80$ <-- best, cheapest among the 0 stop flights
+  // flight 3: 1 stop, 100$
+  // flight 4: 0 stop, 120$
+  val best: Option[Flight] =
+    flights.minByOption { flight =>
+      (flight.numberOfStops, flight.unitPrice)
+    }
 }

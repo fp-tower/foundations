@@ -11,7 +11,8 @@ trait SearchFlightService {
 object SearchFlightService {
 
   // 1. Implement `fromTwoClients` which creates a `SearchFlightService` by
-  // querying two `SearchFlightClient` and aggregating their results.
+  // combining the results from two `SearchFlightClient`.
+  // For example, imagine we combine the results from British Airways and Swissair.
   def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient): SearchFlightService =
     ???
 
