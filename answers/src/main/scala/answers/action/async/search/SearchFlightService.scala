@@ -1,7 +1,7 @@
-package answers.action.async.booking
+package answers.action.async.search
 
 import answers.action.async.{IO, ListExtension}
-import answers.action.fp.booking.{Airport, Flight, SearchResult}
+import answers.action.fp.search.{Airport, Flight, SearchResult}
 
 import scala.concurrent.ExecutionContext
 import java.time.LocalDate

@@ -1,4 +1,4 @@
-package exercises.action.fp.booking
+package exercises.action.fp.search
 
 import java.time.{Duration, Instant}
 

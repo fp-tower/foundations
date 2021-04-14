@@ -1,4 +1,4 @@
-package answers.action.fp.booking
+package answers.action.fp.search
 
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite

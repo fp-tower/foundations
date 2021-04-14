@@ -1,4 +1,4 @@
-package answers.action.fp.booking
+package exercises.action.fp.search
 
 import org.scalatest.funsuite.AnyFunSuite
 import SearchFlightGenerator._

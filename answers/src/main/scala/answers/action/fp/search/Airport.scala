@@ -1,4 +1,4 @@
-package answers.action.fp.booking
+package answers.action.fp.search
 
 import java.time.ZoneId
 

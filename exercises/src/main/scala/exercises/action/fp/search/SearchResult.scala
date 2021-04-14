@@ -1,4 +1,4 @@
-package exercises.action.fp.booking
+package exercises.action.fp.search
 
 // A `sealed abstract case class` is a hack to create a case class with
 // * a private constructor (no `apply` or `new` outside this file)

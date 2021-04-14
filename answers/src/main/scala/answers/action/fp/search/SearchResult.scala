@@ -1,4 +1,4 @@
-package answers.action.fp.booking
+package answers.action.fp.search
 
 sealed abstract case class SearchResult(
   best: Option[Flight], // top secret AI algorithm

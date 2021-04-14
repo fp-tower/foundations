@@ -1,9 +1,9 @@
-package answers.action.async.booking
+package answers.action.async.search
 
 import java.time.{Duration, LocalDate}
 
 import answers.action.async.IO
-import answers.action.fp.booking.{Airport, Flight}
+import answers.action.fp.search.{Airport, Flight}
 
 import scala.concurrent.ExecutionContext
 import scala.util.Random

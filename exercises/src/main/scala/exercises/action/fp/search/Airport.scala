@@ -1,4 +1,4 @@
-package exercises.action.fp.booking
+package exercises.action.fp.search
 
 case class Airport(code: String, city: String, country: String)
 
