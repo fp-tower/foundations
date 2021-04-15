@@ -48,5 +48,5 @@ object SearchFlightService {
     flightResults: List[List[Flight]],
     predicate: Flight => Boolean,
   ): SearchResult =
-    SearchResult.validate(flightResults.flatten.filter(predicate))
+    SearchResult.fromFlights(flightResults.flatten.filter(predicate))
 }

@@ -8,7 +8,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  test("all results must match the criteria") {
+  test("fromClients - all results must match the from, to and date requested") {
     forAll(Gen.listOf(searchFlightClientGen), airportGen, airportGen, dateGen, MinSuccessful(100)) {
       (clients, from, to, date) =>
         val service = SearchFlightService.fromClients(clients)

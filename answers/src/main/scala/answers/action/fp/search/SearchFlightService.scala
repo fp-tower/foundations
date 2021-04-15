@@ -11,36 +11,25 @@ trait SearchFlightService {
 object SearchFlightService {
 
   def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient): SearchFlightService =
-    new SearchFlightService {
-      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] =
-        for {
-          flights1 <- client1.search(from, to, date)
-          flights2 <- client2.search(from, to, date)
-        } yield combineFlightResults(List(flights1, flights2), flightPredicate(from, to, date))
-    }
+    fromClients(List(client1, client2))
 
   def fromClients(clients: List[SearchFlightClient]): SearchFlightService =
     new SearchFlightService {
-      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] =
+      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] = {
+        def fetchFlights(client: SearchFlightClient): IO[List[Flight]] =
+          client
+            .search(from, to, date)
+            .handleErrorWith(_ => IO(Nil))
+            .map(_.filter { flight =>
+              flight.from == from &&
+              flight.to == to &&
+              flight.departureDate == date
+            })
+
         clients
-          .traverse { client =>
-            client
-              .search(from, to, date)
-              .handleErrorWith(_ => IO(Nil))
-          }
-          .map(combineFlightResults(_, flightPredicate(from, to, date)))
+          .traverse(fetchFlights)
+          .map(_.flatten)
+          .map(SearchResult.fromFlights)
+      }
     }
-
-  def flightPredicate(from: Airport, to: Airport, date: LocalDate): Flight => Boolean =
-    (flight: Flight) => {
-      flight.from == from &&
-      flight.to == to &&
-      flight.departureDate == date
-    }
-
-  def combineFlightResults(
-    flightResults: List[List[Flight]],
-    predicate: Flight => Boolean,
-  ): SearchResult =
-    SearchResult.validate(flightResults.flatten.filter(predicate))
 }
