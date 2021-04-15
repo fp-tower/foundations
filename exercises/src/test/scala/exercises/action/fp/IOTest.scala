@@ -12,7 +12,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     var counter = 0
 
     val action = IO { counter += 1 }
-    assert(counter == 0)
+    assert(counter == 0) // nothing happened
 
     action.unsafeRun()
     assert(counter == 1)

@@ -101,6 +101,10 @@ trait IO[A] {
 }
 
 object IO {
+  // Constructor for IO. For example,
+  // val greeting: IO[Unit] = IO { println("Hello") }
+  // greeting.unsafeRun()
+  // prints "Hello"
   def apply[A](action: => A): IO[A] =
     new IO[A] {
       def unsafeRun(): A = action
