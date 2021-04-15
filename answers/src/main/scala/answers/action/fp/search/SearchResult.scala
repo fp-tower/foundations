@@ -10,14 +10,9 @@ object SearchResult {
   val bestOrdering: Ordering[Flight] =
     Ordering.by(flight => (flight.numberOfStops, flight.unitPrice))
 
-  def fromFlights(flights: List[Flight]): SearchResult = {
-    val deduplicate = flights
-      .groupBy(_.flightId)
-      .flatMap {
-        case (_, values) => values.minByOption(_.unitPrice)
-      }
-      .toList
-    val ordered = deduplicate.sorted(bestOrdering)
+  def apply(flights: List[Flight]): SearchResult = {
+    val deduplicate = flights.groupBy(_.flightId).map { case (_, sameIds) => sameIds.minBy(_.unitPrice) }.toList
+    val ordered     = deduplicate.sorted(bestOrdering)
     new SearchResult(ordered) {}
   }
 }

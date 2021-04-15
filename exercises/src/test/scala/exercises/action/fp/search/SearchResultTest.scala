@@ -1,10 +1,12 @@
 package exercises.action.fp.search
 
-import org.scalatest.funsuite.AnyFunSuite
-import SearchFlightGenerator._
+import exercises.action.fp.search.SearchFlightGenerator._
+import exercises.action.fp.search.SearchResult._
 import org.scalacheck.Gen
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import Ordering.Implicits._
+
+import scala.Ordering.Implicits._
 
 class SearchResultTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 

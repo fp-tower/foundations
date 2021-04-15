@@ -21,7 +21,7 @@ object SearchFlightGenerator {
   val flightGen: Gen[Flight] =
     for {
       flightId <- arbitrary[Short].map(_.toString)
-      airline  <- Gen.oneOf("British Airways", "Lufthansa", "Air France", "Ryanair")
+      airline  <- Gen.oneOf("British Airways", "Lufthansa", "Air France", "Lastminute.com")
       from     <- airportGen
       to       <- airportGen // .filterNot(_ == from)
       duration <- Gen.choose(20, 2400).map(Duration.ofMinutes(_))
@@ -48,35 +48,36 @@ object SearchFlightGenerator {
       )
 
   val validSearchFlightClientGen: Gen[SearchFlightClient] =
-    Gen
-      .listOf(flightGen)
-      .map { flights =>
-        new SearchFlightClient {
-          def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
-            IO(
-              flights.map(
-                flight =>
-                  flight.copy(
-                    from = from,
-                    to = to,
-                    departureAt = date.atTime(flight.departureAt.atOffset(ZoneOffset.UTC).toOffsetTime).toInstant
-                )
-              )
+    for {
+      flights <- Gen.listOf(flightGen)
+    } yield
+      new SearchFlightClient {
+        def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] = {
+          // replace random flights data with expected `from`, `to`, `date`
+          def update(flight: Flight): Flight =
+            flight.copy(
+              from = from,
+              to = to,
+              departureAt = date.atTime(flight.departureAt.atOffset(ZoneOffset.UTC).toOffsetTime).toInstant
             )
+
+          IO { flights.map(update) }
         }
       }
 
   val invalidSearchFlightClientGen: Gen[SearchFlightClient] =
-    Gen.listOf(flightGen).map(flights => (_: Airport, _: Airport, _: LocalDate) => IO(flights))
-
-  val failingSearchFlightClientGen: Gen[SearchFlightClient] =
-    arbitrary[Exception].map(e => (_: Airport, _: Airport, _: LocalDate) => IO(throw e))
+    for {
+      flights <- Gen.listOf(flightGen)
+    } yield
+      new SearchFlightClient {
+        def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
+          IO { flights }
+      }
 
   val searchFlightClientGen: Gen[SearchFlightClient] =
     Gen.frequency(
-      8 -> validSearchFlightClientGen,
+      5 -> validSearchFlightClientGen,
       1 -> invalidSearchFlightClientGen,
-      1 -> failingSearchFlightClientGen
     )
 
 }

@@ -8,7 +8,7 @@ import exercises.action.fp.search.SearchFlightGenerator._
 
 class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  ignore("fromTwoClients - all results must match the from, to and date requested") {
+  ignore("fromTwoClients - all flights must match the from, to and date requested") {
     forAll(searchFlightClientGen, searchFlightClientGen, airportGen, airportGen, dateGen, MinSuccessful(100)) {
       (client1, client2, from, to, date) =>
         val service = SearchFlightService.fromTwoClients(client1, client2)

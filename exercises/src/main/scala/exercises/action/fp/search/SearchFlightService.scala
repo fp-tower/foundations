@@ -15,18 +15,19 @@ object SearchFlightService {
   // For example, imagine we fetch flight data from Swissair and lastminute.com.
   //
   // A few things to consider:
-  // a) The aggregated list of flights must be ordered using the "best" ordering strategy
-  //    (see `SearchResult` companion object).
-  // b) Both clients may return data about the same flight in which case, we should only keep
-  //    the flight with the lowest `unitPrice`.
-  // c) A client may occasionally return flights which do not match the search criteria,
-  //    for example, flights from London Heathrow while the search was for London Gatwick airport.
+  // a) A client may occasionally return flights which do not match the search criteria,
+  //    for example, flights from London Heathrow airport while the search was for London Gatwick.
   //    It is the responsibility of `SearchFlightService` to return only valid flights.
+  // b) The aggregated list of flights must be ordered using the "best" ordering strategy
+  //    (see `SearchResult` companion object).
+  // c) Both clients may return data about the same flight in which case, we should only keep
+  //    the flight with the lowest `unitPrice`.
+  // Note: A few tests are already defined in `SearchFlightServiceTest` and `SearchResultTest`.
   def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient): SearchFlightService =
     ???
 
   // 2. Can you think of other scenarios we should consider in `fromTwoClients`?
-  //    Try to write a test for each scenario before implement
+  //    Try to write a test for each scenario before refactoring `fromTwoClients`.
 
   //////////////////////////////////////////////
   //////////////////////////////////////////////
