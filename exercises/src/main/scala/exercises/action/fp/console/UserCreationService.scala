@@ -21,7 +21,7 @@ object UserCreationServiceApp extends App {
 class UserCreationService(console: Console, clock: Clock) {
   import UserCreationService._
 
-  // 1. `readName` works as we expect (see exercises.action.fp.UserCreationServiceTest),
+  // 1. `readName` works as we expect (see exercises.action.fp.console.UserCreationServiceTest),
   // but `IO` makes the code more difficult to read by requiring:
   // * to wrap the entire method in `IO { }`
   // * to call `unsafeRun` on each internal action
