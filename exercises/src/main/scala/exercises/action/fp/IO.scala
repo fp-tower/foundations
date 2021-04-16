@@ -27,7 +27,7 @@ trait IO[A] {
   def *>[Other](other: IO[Other]): IO[Other] =
     andThen(other)
 
-  // Runs the current action, if it fails it executes the `callback` and rethrows the original error.
+  // Runs the current action, if it fails it executes `cleanup` and rethrows the original error.
   // If the current action is a success, it will return the result.
   // For example,
   // def logError(e: Throwable): IO[Unit] =
@@ -38,11 +38,7 @@ trait IO[A] {
   //
   // IO(throw new Exception("Boom!")).onError(logError).unsafeRun()
   // prints "Got an error: Boom!" and throws new Exception("Boom!")
-  //
-  // Note: if the IO produced by `callback` throws an exception, then
-  // we have two errors: one from the current IO, and one from the callback.
-  // In this case, `onError` should rethrow the former and swallow the error from `callback`.
-  def onError[Other](callback: Throwable => IO[Other]): IO[A] =
+  def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
     ???
 
   // Runs the current action (`this`) and update the result with `callback`.

@@ -13,8 +13,8 @@ sealed trait IO[A] {
       res <- other
     } yield res
 
-  def onError[Other](callback: Throwable => IO[Other]): IO[A] =
-    handleErrorWith(e => callback(e).attempt *> IO.fail(e))
+  def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
+    handleErrorWith(e => cleanup(e).attempt *> IO.fail(e))
 
   def flatMap[Other](callBack: A => IO[Other]): IO[Other] =
     IO {

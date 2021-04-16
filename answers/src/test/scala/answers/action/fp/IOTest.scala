@@ -47,15 +47,26 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("onError failure") {
     var counter = 0
+    val error1  = new Exception("Boom 1")
 
-    val error1 = new Exception("Boom 1")
-    val error2 = new Exception("Boom 2")
+    val action = IO { throw error1 }.onError(_ => IO { counter += 1 })
+    assert(counter == 0) // nothing happened before unsafeRun
+
+    val result = Try(action.unsafeRun())
+    assert(counter == 1) // callback was executed
+    assert(result == Failure(error1))
+  }
+
+  test("onError with two failures") {
+    var counter = 0
+    val error1  = new Exception("Boom 1")
+    val error2  = new Exception("Boom 2")
 
     val action = IO { throw error1 }
       .onError(_ => IO { counter += 1 }.andThen(IO { throw error2 }))
     assert(counter == 0) // nothing happened before unsafeRun
 
-    val result = action.attempt.unsafeRun()
+    val result = Try(action.unsafeRun())
     assert(counter == 1)              // callback was executed
     assert(result == Failure(error1)) // callback error was swallowed
   }

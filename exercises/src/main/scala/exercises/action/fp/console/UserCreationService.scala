@@ -85,7 +85,19 @@ class UserCreationService(console: Console, clock: Clock) {
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // 5. Implement the method `attempt` on `IO`. Then use `attempt` to
+  // 5. `onError` takes a `cleanup` function which returns an IO.
+  // This means we could end up with two exceptions:
+  // * One from the current IO
+  // * One from `cleanup`
+  // For example, if both `emailClient.send` and `db.saveUnsentEmail` fail
+  // emailClient.send(email).onError(exception =>
+  //   db.saveUnsentEmail(email, exception.getMessage)
+  // )
+  // In this case, we would like on error to swallow the error from `cleanup` and
+  // rethrow the error from the current IO.
+  // Add test case for this scenario and update `onError` implementation.
+
+  // 6. Implement the method `attempt` on `IO`. Then use `attempt` to
   // simplify the logic of `onError` and `retry`. For example,
   // attempt.flatMap {
   //  case Success(value)     => ...
@@ -96,11 +108,11 @@ class UserCreationService(console: Console, clock: Clock) {
   // instead of
   // Try(action.unsafeRun())
 
-  // 6. Write a property-based test for `retry` which covers both:
+  // 7. Write a property-based test for `retry` which covers both:
   // a) successes, when `maxAttempt >  number of errors`
   // b) failures, when `maxAttempt <= number of errors`
 
-  // 7. The implementation of `retry` used in the video has a bug.
+  // 8. The implementation of `retry` used in the video has a bug.
   // Were you able to identify it?
   // Try to write a test which exhibits the issue.
 
@@ -125,7 +137,7 @@ class UserCreationService(console: Console, clock: Clock) {
   // a) rewrite it using a while loop, without recursion.
   // b) wait until the end of the chapter.
 
-  // 8. Implement the method `handleErrorWith` on `IO`. Then,
+  // 9. Implement the method `handleErrorWith` on `IO`. Then,
   // use `handleErrorWith` to simplify the logic of `onError` and `retry`.
 
 }
