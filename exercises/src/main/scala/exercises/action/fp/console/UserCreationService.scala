@@ -93,9 +93,9 @@ class UserCreationService(console: Console, clock: Clock) {
   // emailClient.send(email).onError(exception =>
   //   db.saveUnsentEmail(email, exception.getMessage)
   // )
-  // In this case, we would like on error to swallow the error from `cleanup` and
+  // In this case, we would like `onError` to swallow the error from `cleanup` and
   // rethrow the error from the current IO.
-  // Add test case for this scenario and update `onError` implementation.
+  // Add a test case for this scenario and update `onError` implementation.
 
   // 6. Implement the method `attempt` on `IO`. Then use `attempt` to
   // simplify the logic of `onError` and `retry`. For example,
