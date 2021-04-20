@@ -1,5 +1,8 @@
 package exercises.action
 
+import scala.annotation.tailrec
+import scala.util.{Failure, Success, Try}
+
 package object imperative {
 
   def greeting(): Unit =
@@ -10,57 +13,61 @@ package object imperative {
   // * Or the maximum number of attempts are exhausted (when `maxAttempt` is 1).
   // For example,
   // var counter = 0
-  // def exec(): String = {
+  // retry(maxAttempt = 5){
   //   counter += 1
   //   require(counter >= 3, "Counter is too low")
   //   "Hello"
   // }
-  // retry(maxAttempt = 5)( exec() ) == "Hello"
-  // Returns "Hello" because `exec` fails twice and then succeeds when counter reaches 3.
+  // Returns "Hello" because `action` fails twice and then succeeds when counter reaches 3.
+  // However,
   // retry(maxAttempt = 5){ throw new Exception("Boom!") }
-  // Throws an exception because `block` fails every time it is evaluated
-  // Note: `action: () => A` is a val function which takes 0 arguments.
-  //       You can create a 0-argument function using the syntax:
-  //       * `() => { code }` (recommended syntax)
-  //       * `def myMethod() = { code }` and then use eta-expansion to convert
-  //          the def function `myMethod` into a val function.
-  //       You can execute `action` using `action()`
+  // Throws an exception because `action` fails every time it is evaluated
+  // Note: `action: => A` is a by-name parameter (see the Evaluation lesson).
   // Note: `maxAttempt` must be greater than 0, if not you should throw an exception.
   // Note: Tests are in the `exercises.action.imperative.ImperativeActionTest`
   def retry[A](maxAttempt: Int)(action: => A): A =
     ???
 
-  // 2. Refactor `readSubscribeToMailingListRetry` in `RetryExercises` using `retry`.
+  // 2. Refactor `readSubscribeToMailingListRetry` in `UserCreationExercises` using `retry`.
 
-  // 3. Refactor `readDateOfBirthRetry` in `RetryExercises` using `retry`.
-
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-
-  // 4. Implement `onError` which executes `action`.
-  // If an error occurs, it calls the `callBack` function with the error and then rethrows it.
+  // 3. Implement `onError` which executes `action`.
+  // If an error occurs, it calls the `cleanup` function with the error and then rethrows it.
   // For example,
-  // onError(() => 1, _ => println("Hello"))
-  // Will print nothing and return 1 because the action succeeds.
+  // onError(1, _ => println("Hello"))
+  // Prints nothing and return 1 because `action` is a success.
   // But,
-  // onError(() => throw new Exception("Boom"), _ => println("Hello"))
-  // Will print "Hello" and then rethrow the "Boom" exception.
-  // Note: What should happen if the `callback` function fails?
-  def onError[A](action: => A, callback: Throwable => Any): A =
+  // onError(throw new Exception("Boom"), e => println("An error occurred: ${e.getMessage}"))
+  // Prints "An error occurred: Boom" and then rethrow the "Boom" exception.
+  // Note: You need to write tests for `onError` yourself in `exercises.action.imperative.ImperativeActionTest`
+  def onError[A](action: => A, cleanup: Throwable => Any): A =
     ???
 
-  // 5. Refactor `readSubscribeToMailingListRetry` and `readDateOfBirthRetry` using `onError`
+  // 4. Refactor `readSubscribeToMailingListRetry` using `onError` in `UserCreationExercises`.
+
+  // 5. Refactor `readDateOfBirthRetry` using `retry` and `onError` in `UserCreationExercises`.
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
   //////////////////////////////////////////////
 
-  // 6. Implement `retry` using an imperative loop instead of a recursion.
+  // 6. Write a property based for `retry`. For example,
+  //    Step 1. Generate a function that throws an exception for the first `n` evaluations.
+  //    Step 2. Generate a random value for `maxAttempt`.
+  //    Step 3. Check `retry` is a success if `maxAttempt > number of errors` and a failure otherwise.
+
+  // 7. Implement `retry` using an imperative loop instead of a recursion.
+
+  // 8. `onError` takes a `cleanup` function which can fail.
+  // This means we could end up with two exceptions:
+  // * One from `action`
+  // * One from `cleanup`
+  // For example, if both `emailClient.send` and `db.saveUnsentEmail` fail
+  // onError(
+  //   action  = emailClient.send(email),
+  //   cleanup = db.saveUnsentEmail(email, exception.getMessage)
+  // )
+  // In this case, we would like `onError` to swallow the error from `cleanup` and
+  // rethrow the error from `action`.
+  // Add a test case for this scenario and update `onError` implementation.
 
 }

@@ -17,14 +17,14 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
 
   test("formatDate - parseDate round trip") {
     forAll { (date: LocalDate) =>
-      val encoded: String = formatDate(date)
-      assert(parseDate(encoded) == date)
+      val encoded: String = formatDateOfBirth(date)
+      assert(parseDateOfBirth(encoded) == date)
     }
   }
 
   test("formatBoolean - parseYesNo round trip") {
     forAll { (boolean: Boolean) =>
-      val encoded: String = formatBoolean(boolean)
+      val encoded: String = formatYesNo(boolean)
       assert(parseYesNo(encoded) == boolean)
     }
   }
@@ -38,8 +38,8 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       arbitrary[Boolean],
       instantGen
     ) { (name, invalidDates, dob, invalidYesNo, yesNo, now) =>
-      val dateInputs  = invalidDates :+ formatDate(dob)
-      val yesNoInputs = invalidYesNo :+ formatBoolean(yesNo)
+      val dateInputs  = invalidDates :+ formatDateOfBirth(dob)
+      val yesNoInputs = invalidYesNo :+ formatYesNo(yesNo)
       val inputs      = ListBuffer.from(List(name) ++ dateInputs ++ yesNoInputs)
       val outputs     = ListBuffer.empty[String]
       val console     = Console.mock(inputs, outputs)

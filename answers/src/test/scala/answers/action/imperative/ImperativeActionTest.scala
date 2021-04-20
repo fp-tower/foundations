@@ -6,7 +6,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.util.{Failure, Success, Try}
 
-class ActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("retry until action succeeds") {
     var counter = 0

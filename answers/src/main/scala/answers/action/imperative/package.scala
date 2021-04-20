@@ -17,10 +17,10 @@ package object imperative {
     }
   }
 
-  def onError[A](action: => A, callback: Throwable => Any): A =
+  def onError[A](action: => A, cleanup: Throwable => Any): A =
     Try(action) match {
       case Failure(exception) =>
-        Try(callback(exception)) // catch failure
+        Try(cleanup(exception)) // catch failure
         throw exception
       case Success(value) =>
         value

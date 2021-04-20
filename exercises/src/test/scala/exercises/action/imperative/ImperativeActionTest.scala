@@ -7,6 +7,11 @@ import scala.util.{Failure, Success, Try}
 
 class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
+  ignore("retry when maxAttempt is 0") {
+    val result = Try(retry(0)(""))
+    assert(result.isFailure)
+  }
+
   ignore("retry when action fails") {
     var counter = 0
     val error   = new Exception("Boom")
@@ -31,26 +36,4 @@ class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     assert(counter == 3)
   }
 
-  ignore("onError success") {
-    var counter = 0
-    val result  = onError("Hello", _ => counter += 1)
-
-    assert(result == "Hello")
-    assert(counter == 0)
-  }
-
-  ignore("onError failure") {
-    var counter = 0
-    val result  = Try(onError(throw new Exception("Boom"), _ => counter += 1))
-
-    assert(result.isFailure)
-    assert(counter == 1)
-  }
-
-  ignore("onError failure rethrow the initial error") {
-    val result = Try(onError(throw new Exception("Boom"), _ => throw new Exception("BadaBoom")))
-
-    assert(result.isFailure)
-    assert(result.failed.get.getMessage == "Boom")
-  }
 }
