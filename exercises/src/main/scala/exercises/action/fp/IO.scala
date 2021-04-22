@@ -27,6 +27,29 @@ trait IO[A] {
   def *>[Other](other: IO[Other]): IO[Other] =
     andThen(other)
 
+  // Runs the current action (`this`) and update the result with `callback`.
+  // For example,
+  // IO(1).map(x => x + 1).unsafeRun()
+  // returns 2
+  // db.getUser(1234).map(_.name).unsafeRun()
+  // Fetches the user with id 1234 from the database and returns its name.
+  // Note: `callback` is expected to be an FP function (total, deterministic, no action).
+  //       Use `flatMap` if `callBack` is not an FP function.
+  def map[Next](callBack: A => Next): IO[Next] =
+    ???
+
+  // Runs the current action (`this`), if it succeeds passes the result to `callback` and
+  // runs the second action.
+  // For example,
+  // val action = db.getUser(1234).flatMap{ user =>
+  //   emailClient.send(user.email, "Welcome to the FP Tower!")
+  // }
+  // action.unsafeRun()
+  // Fetches the user with id 1234 from the database and send them an email using the email
+  // address found in the database.
+  def flatMap[Next](callBack: A => IO[Next]): IO[Next] =
+    ???
+
   // Runs the current action, if it fails it executes `cleanup` and rethrows the original error.
   // If the current action is a success, it will return the result.
   // For example,
@@ -39,23 +62,6 @@ trait IO[A] {
   // IO(throw new Exception("Boom!")).onError(logError).unsafeRun()
   // prints "Got an error: Boom!" and throws new Exception("Boom!")
   def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
-    ???
-
-  // Runs the current action (`this`) and update the result with `callback`.
-  // For example,
-  // IO(1).map(x => x + 1).unsafeRun()
-  // returns 2
-  // db.getUser(1234).map(_.name).unsafeRun()
-  // fetches the user 1234 from the database and returns its name
-  def map[Next](callBack: A => Next): IO[Next] =
-    ???
-
-  // Runs the current action (`this`), if it succeeds passes the result to callback and
-  // runs the second action.
-  // For example,
-  // IO(1).flatMap(x => IO(x + 1)).unsafeRun()
-  // returns 2
-  def flatMap[Next](callBack: A => IO[Next]): IO[Next] =
     ???
 
   // Retries this action until either:
@@ -75,16 +81,16 @@ trait IO[A] {
   def retry(maxAttempt: Int): IO[A] =
     ???
 
-  //////////////////////////////////////////////
-  // Bonus question (not covered by the video)
-  //////////////////////////////////////////////
-
   // Checks if the current IO is a failure or a success.
   // For example,
   // IO(throw exception) == IO(Failure(exception))
   // IO(1).attempt == IO(Success(1))
   def attempt: IO[Try[A]] =
     ???
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the videos)
+  //////////////////////////////////////////////
 
   // If the current IO is a success, do nothing.
   // If the current IO is a failure, use `callback`.
@@ -105,4 +111,8 @@ object IO {
     new IO[A] {
       def unsafeRun(): A = action
     }
+
+  // Construct an IO which throws `error` everytime it is called.
+  def fail[A](error: Throwable): IO[A] =
+    IO(throw error)
 }

@@ -21,55 +21,40 @@ object UserCreationServiceApp extends App {
 class UserCreationService(console: Console, clock: Clock) {
   import UserCreationService._
 
-  // 1. `readName` works as we expect (see exercises.action.fp.console.UserCreationServiceTest),
-  // but `IO` makes the code more difficult to read by requiring:
+  // 1. `readName` works as we expect, but `IO` makes the code
+  // more difficult to read by requiring:
   // * to wrap the entire method in `IO { }`
   // * to call `unsafeRun` on each internal action
   //
-  // We'll capture the pattern of doing two actions, one after the other, using
+  // Let's capture the pattern of doing two actions, one after the other, using
   // the method `andThen` on the `IO` trait.
   // Then, we'll refactor `readName` with `andThen`.
+  // Note: You can find tests in `exercises.action.fp.console.UserCreationServiceTest`
   val readName: IO[String] =
     IO {
       console.writeLine("What's your name?").unsafeRun()
       console.readLine.unsafeRun()
     }
 
-  // 2. `readDateOfBirth` is very complex for two reasons:
-  // a) noisy error-handling logic in case the input is invalid.
-  //    Let's capture this pattern using the method `onError` on the `IO` trait.
-  // b) 3 internal actions are executed one after the other.
-  //    Let's try to use `andThen` if it doesn't work and investigate the
-  //    methods `map` and `flatMap` on the IO trait.
+  // 2. Refactor `readDateOfBirth` so that the code combines the three internal `IO`
+  // instead of executing each `IO` one after another using `unsafeRun`.
+  // For example, try to use `andThen`.
+  // If it doesn't work investigate the methods `map` and `flatMap` on the `IO` trait.
   val readDateOfBirth: IO[LocalDate] =
     IO {
       console.writeLine("What's your date of birth? [dd-mm-yyyy]").unsafeRun()
       val line = console.readLine.unsafeRun()
-      Try(parseDateOfBirth(line).unsafeRun()) match {
-        case Success(date) => date
-        case Failure(exception) =>
-          console.writeLine("""Incorrect format, for example enter "18-03-2001" for 18th of March 2001""").unsafeRun()
-          throw exception
-      }
+      parseDateOfBirth(line).unsafeRun()
     }
 
-  // 3. Refactor `readSubscribeToMailingList` using the same techniques as `readDateOfBirth`
+  // 3. Refactor `readSubscribeToMailingList` and `readUser` using the same techniques as `readDateOfBirth`.
   val readSubscribeToMailingList: IO[Boolean] =
     IO {
       console.writeLine("Would you like to subscribe to our mailing list? [Y/N]").unsafeRun()
       val line = console.readLine.unsafeRun()
-      Try(parseLineToBoolean(line).unsafeRun()) match {
-        case Success(bool) => bool
-        case Failure(exception) =>
-          console.writeLine("""Incorrect format, enter "Y" for Yes or "N" for "No"""").unsafeRun()
-          throw exception
-      }
+      parseLineToBoolean(line).unsafeRun()
     }
 
-  // 4. Refactor `readUser` using a for comprehension.
-  // Then, update the logic so that users have up to 3 attempts to answer
-  // the date of birth and mailing list questions.
-  // Note: Enable the final test in `UserCreationServiceTest`.
   val readUser: IO[User] =
     IO {
       val name        = readName.unsafeRun()
@@ -82,10 +67,56 @@ class UserCreationService(console: Console, clock: Clock) {
     }
 
   //////////////////////////////////////////////
-  // Bonus question (not covered by the video)
+  // PART 2: For Comprehension
   //////////////////////////////////////////////
 
-  // 5. `onError` takes a `cleanup` function which returns an IO.
+  // 4. Refactor `readDateOfBirth` using a for comprehension.
+
+  // 5. Refactor `readSubscribeToMailingList` and `readUser` using a for comprehension.
+
+  //////////////////////////////////////////////
+  // PART 3: Error handling
+  //////////////////////////////////////////////
+
+  // 6. Refactor `readDateOfBirth` so that it prints the following error message
+  // when a user enters an invalid input:
+  // Incorrect format, for example enter "18-03-2001" for 18th of March 2001
+  // Use the method `onError` on `IO` to implement the error handling logic.
+  // Note: Uncomment the last line of `readDate failure` test in `UserCreationServiceTest`.
+
+  // 7. Refactor `readSubscribeToMailingList` so that it prints the following error message
+  // when a user enters an invalid input:
+  // Incorrect format, enter "Y" for Yes or "N" for "No"
+  // Use the method `onError` on `IO` to implement the error handling logic.
+  // Note: Uncomment the last line of `readSubscribeToMailingList failure` test in `UserCreationServiceTest`.
+
+  // 8. Refactor `readUser` so that users have up to 3 attempts to answer
+  // the date of birth and mailing list questions.
+  // Use the method `retry` on `IO`.
+  // Note: Enable the final test in `UserCreationServiceTest`.
+
+  //////////////////////////////////////////////
+  // PART 4: IO clean-up
+  //////////////////////////////////////////////
+
+  // 9. Refactor `andThen` method on `IO` so that it doesn't use `unsafeRun`.
+
+  // 10. `map` and `flatMap` on `IO` do almost the same thing.
+  // Could you implement one using the other? If yes, which one?
+
+  // 11. Implement `attempt` on `IO`.
+
+  // 12. Refactor `onError` on `IO` so that that it doesn't use `unsafeRun`.
+  // You will likely need to use a combination of `flatMap` and `attempt`.
+
+  // 13. Refactor `retry` on `IO` so that that it doesn't use `unsafeRun`.
+  // You will likely need to use a combination of `flatMap` and `attempt`.
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the videos)
+  //////////////////////////////////////////////
+
+  // 14. `onError` takes a `cleanup` function which returns an IO.
   // This means we could end up with two exceptions:
   // * One from the current IO
   // * One from `cleanup`
@@ -97,22 +128,11 @@ class UserCreationService(console: Console, clock: Clock) {
   // rethrow the error from the current IO.
   // Add a test case for this scenario and update `onError` implementation.
 
-  // 6. Implement the method `attempt` on `IO`. Then use `attempt` to
-  // simplify the logic of `onError` and `retry`. For example,
-  // attempt.flatMap {
-  //  case Success(value)     => ...
-  //  case Failure(exception) => ...
-  // }
-  // You can also use `attempt` in tests:
-  // action.attempt.unsafeRun()
-  // instead of
-  // Try(action.unsafeRun())
-
-  // 7. Write a property-based test for `retry` which covers both:
+  // 15. Write a property-based test for `retry` which covers both:
   // a) successes, when `maxAttempt >  number of errors`
   // b) failures, when `maxAttempt <= number of errors`
 
-  // 8. The implementation of `retry` used in the video has a bug.
+  // 16. The implementation of `retry` used in the video has a bug.
   // Were you able to identify it?
   // Try to write a test which exhibits the issue.
 
@@ -137,8 +157,9 @@ class UserCreationService(console: Console, clock: Clock) {
   // a) rewrite it using a while loop, without recursion.
   // b) wait until the end of the chapter.
 
-  // 9. Implement the method `handleErrorWith` on `IO`. Then,
-  // use `handleErrorWith` to simplify the logic of `onError` and `retry`.
+  // 17. Implement the method `handleErrorWith` on `IO`.
+
+  // 18. Simplify the code of `onError` and `retry` using `handleErrorWith`
 
 }
 

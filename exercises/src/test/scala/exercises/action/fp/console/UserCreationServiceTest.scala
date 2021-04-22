@@ -67,7 +67,8 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       assert(
         outputs.toList == List(
           "What's your date of birth? [dd-mm-yyyy]",
-          """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
+          // Uncomment after adding `onError` to `readDateOfBirth`
+          // """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
         )
       )
     }
@@ -100,7 +101,8 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       assert(
         outputs.toList == List(
           "Would you like to subscribe to our mailing list? [Y/N]",
-          """Incorrect format, enter "Y" for Yes or "N" for "No"""",
+          // Uncomment after adding `onError` to `readSubscribeToMailingList`
+          // """Incorrect format, enter "Y" for Yes or "N" for "No"""",
         )
       )
     }
@@ -145,12 +147,13 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val service     = new UserCreationService(console, clock)
 
       val result   = Try(service.readUser.unsafeRun())
-      val expected = fp.console.User(name, dob, yesNo, now)
+      val expected = User(name, dob, yesNo, now)
 
-      if (invalidDates.size < 3 && invalidYesNo.size < 3)
-        assert(result == Success(expected))
-      else
+      if (invalidDates.size >= 3 && invalidYesNo.size >= 3)
         assert(result.isFailure)
+      else
+        assert(result == Success(expected))
+
     }
   }
 
