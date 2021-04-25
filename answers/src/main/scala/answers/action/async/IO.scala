@@ -6,8 +6,7 @@ import java.util.concurrent.CountDownLatch
 import scala.concurrent.{ExecutionContext, Promise, TimeoutException}
 import scala.util.{Failure, Success, Try}
 
-/**
-  * Action supporting async evaluation in a different thread pool.
+/** Action supporting async evaluation in a different thread pool.
   * This implementation can cause deadlocks because `execute` is used
   * to implement many internal functions such as `map`, `flatMap` or `attempt`.
   */
@@ -71,12 +70,12 @@ sealed trait IO[A] {
 
   // no cancellation
   def race[Other](other: IO[Other])(ec: ExecutionContext): IO[Either[A, Other]] =
-    Async[Either[A, Other]](cb => {
+    Async[Either[A, Other]] { cb =>
       val promise = Promise[Either[A, Other]]()
       ec.execute(() => this.unsafeRunAsync(tryA => promise.tryComplete(tryA.map(Left(_)))))
       ec.execute(() => other.unsafeRunAsync(tryOther => promise.tryComplete(tryOther.map(Right(_)))))
       promise.future.onComplete(cb)(ec)
-    })
+    }
 
   def repeat(iteration: Int): IO[Unit] =
     if (iteration > 1) flatMap(_ => repeat(iteration - 1))
@@ -105,7 +104,7 @@ sealed trait IO[A] {
 
 object IO {
   case class Thunk[A](block: () => A)                                   extends IO[A]
-  case class Async[A](register: CallBack[A] => Unit)                    extends IO[A]
+  case class Async[A](onComplete: CallBack[A] => Unit)                  extends IO[A]
   case class FlatMap[From, To](current: IO[From], next: From => IO[To]) extends IO[To]
   case class Attempt[A](current: IO[A])                                 extends IO[Try[A]]
 
@@ -136,7 +135,7 @@ object IO {
     IO(throw error)
 
   def sleep(duration: Duration): IO[Unit] =
-    IO { Thread.sleep(duration.toMillis) }
+    IO(Thread.sleep(duration.toMillis))
 
   def sequence[A](values: List[IO[A]]): IO[List[A]] =
     values
