@@ -76,12 +76,13 @@ object UserCreationExercises {
 
   // 4. Implement a testable version of `readUser`.
   // For example,
-  // [Prompt] "What's your name?"
+  // [Prompt] What's your name?
   // [User] Eda
   // [Prompt] What's your date of birth? [dd-mm-yyyy]
   // [User] 18-03-2001
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] Y
+  // [Prompt] User is User(Eda,2001-03-18,true,2021-04-26T11:09:12.702261Z))
   // Returns User(
   //   name = "Eda",
   //   dateOfBirth = LocalDate.of(2001, 3, 18),
@@ -91,7 +92,7 @@ object UserCreationExercises {
   // Note: You will need to add `subscribedToMailingList: Boolean` field to `User`.
   // Note: How can you mock the current time? Check the `Clock` class in this package
   //       and update the signature of `readUser`.
-  def readUser(console: Console, clock: Clock): User =
+  def readUser(console: Console): User =
     ???
 
   //////////////////////////////////////////////

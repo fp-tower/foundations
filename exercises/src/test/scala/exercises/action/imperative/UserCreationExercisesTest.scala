@@ -39,12 +39,10 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
   }
 
   ignore("readUser example") {
-    val inputs  = ListBuffer("Eda", "hello", "2001-03-18", "18-03-2001", "Never", "n", "Y")
+    val inputs  = ListBuffer("Eda", "18-03-2001", "Y")
     val outputs = ListBuffer.empty[String]
     val console = Console.mock(inputs, outputs)
-    val now     = Instant.now()
-    val clock   = Clock.constant(now)
-    val result  = readUser(console, clock)
+    val result  = readUser(console)
 
     val expected = User(
       name = "Eda",
@@ -70,7 +68,7 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
       outputs.toList == List(
         "Would you like to subscribe to our mailing list? [Y/N]",
         """Incorrect format, enter "Y" for Yes or "N" for "No"""",
-        "Would you like to subscribe to our mailing list? [Y/N]",
+        "Would you like to subscribe to our mailing list? [Y/N]"
       )
     )
   }
@@ -84,7 +82,7 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
     assert(
       outputs.toList == List(
         "Would you like to subscribe to our mailing list? [Y/N]",
-        """Incorrect format, enter "Y" for Yes or "N" for "No"""",
+        """Incorrect format, enter "Y" for Yes or "N" for "No""""
       )
     )
 
@@ -104,7 +102,7 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
       outputs.toList == List(
         """What's your date of birth? [dd-mm-yyyy]""",
         """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
-        """What's your date of birth? [dd-mm-yyyy]""",
+        """What's your date of birth? [dd-mm-yyyy]"""
       )
     )
   }
@@ -119,7 +117,7 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
     assert(
       outputs.toList == List(
         """What's your date of birth? [dd-mm-yyyy]""",
-        """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
+        """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
       )
     )
   }
