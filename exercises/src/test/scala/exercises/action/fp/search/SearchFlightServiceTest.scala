@@ -6,6 +6,9 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import exercises.action.DateGenerator._
 import exercises.action.fp.search.SearchFlightGenerator._
 
+// Run the test using the green arrow next to class name (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode, then type:
+// testOnly exercises.action.fp.search.SearchFlightServiceTest
 class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   ignore("fromTwoClients - all flights must match the from, to and date requested") {

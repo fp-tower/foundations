@@ -16,6 +16,9 @@ import org.scalacheck.Gen
 
 import scala.util.{Success, Try}
 
+// Run the test using the green arrow next to class name (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode, then type:
+// testOnly exercises.action.fp.console.UserCreationServiceTest
 class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   val fixClock: Clock = Clock.constant(Instant.MIN)
@@ -66,7 +69,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       assert(result.isFailure)
       assert(
         outputs.toList == List(
-          "What's your date of birth? [dd-mm-yyyy]",
+          "What's your date of birth? [dd-mm-yyyy]"
           // Uncomment after adding `onError` to `readDateOfBirth`
           // """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
         )
@@ -100,7 +103,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       assert(result.isFailure)
       assert(
         outputs.toList == List(
-          "Would you like to subscribe to our mailing list? [Y/N]",
+          "Would you like to subscribe to our mailing list? [Y/N]"
           // Uncomment after adding `onError` to `readSubscribeToMailingList`
           // """Incorrect format, enter "Y" for Yes or "N" for "No"""",
         )

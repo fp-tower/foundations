@@ -5,6 +5,9 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.util.{Failure, Success, Try}
 
+// Run the test using the green arrow next to class name (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode, then type:
+// testOnly exercises.action.imperative.ImperativeActionTest
 class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   ignore("retry when maxAttempt is 0") {

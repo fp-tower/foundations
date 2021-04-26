@@ -6,12 +6,15 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.util.{Failure, Success, Try}
 
+// Run the test using the green arrow next to class name (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode, then type:
+// testOnly exercises.action.IOTest
 class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("apply is lazy and repeatable") {
     var counter = 0
 
-    val action = IO { counter += 1 }
+    val action = IO(counter += 1)
     assert(counter == 0) // nothing happened
 
     action.unsafeRun()
@@ -25,8 +28,8 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   ignore("andThen") {
     var counter = 0
 
-    val first  = IO { counter += 1 }
-    val second = IO { counter *= 2 }
+    val first  = IO(counter += 1)
+    val second = IO(counter *= 2)
 
     val action = first.andThen(second)
     assert(counter == 0) // nothing happened before unsafeRun
@@ -38,7 +41,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   ignore("map") {
     var counter = 0
 
-    val first  = IO { counter += 1 }
+    val first  = IO(counter += 1)
     val action = first.map(_ => 1)
     assert(counter == 0) // nothing happened before unsafeRun
 
@@ -49,8 +52,8 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   ignore("flatMap") {
     var counter = 0
 
-    val first  = IO { counter += 1 }
-    val second = IO { counter *= 2 }
+    val first  = IO(counter += 1)
+    val second = IO(counter *= 2)
 
     val action = first.flatMap(_ => second)
     assert(counter == 0) // nothing happened before unsafeRun
@@ -66,7 +69,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   ignore("onError success") {
     var counter = 0
 
-    val action = IO { counter += 1; "" }.onError(_ => IO { counter *= 2 })
+    val action = IO { counter += 1; "" }.onError(_ => IO(counter *= 2))
     assert(counter == 0) // nothing happened before unsafeRun
 
     val result = Try(action.unsafeRun())
@@ -78,7 +81,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     var counter = 0
     val error1  = new Exception("Boom 1")
 
-    val action = IO { throw error1 }.onError(_ => IO { counter += 1 })
+    val action = IO(throw error1).onError(_ => IO(counter += 1))
     assert(counter == 0) // nothing happened before unsafeRun
 
     val result = Try(action.unsafeRun())
@@ -134,7 +137,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   ignore("attempt success") {
     var counter = 0
 
-    val action = IO { counter += 1 }.attempt
+    val action = IO(counter += 1).attempt
     assert(counter == 0) // nothing happened before unsafeRun
 
     val result = action.unsafeRun()

@@ -8,6 +8,9 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import scala.Ordering.Implicits._
 
+// Run the test using the green arrow next to class name (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode, then type:
+// testOnly exercises.action.fp.search.SearchResultTest
 class SearchResultTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("cheapest, fastest and best are consistent with flights") {

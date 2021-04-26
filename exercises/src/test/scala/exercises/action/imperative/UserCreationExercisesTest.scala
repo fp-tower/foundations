@@ -12,6 +12,9 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
+// Run the test using the green arrow next to class name (if using IntelliJ)
+// or run `sbt` in the terminal to open it in shell mode, then type:
+// testOnly exercises.action.imperative.UserCreationExercisesTest
 class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   ignore("readSubscribeToMailingList example") {
