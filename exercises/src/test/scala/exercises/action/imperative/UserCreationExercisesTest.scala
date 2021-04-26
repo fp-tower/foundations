@@ -58,6 +58,13 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
   // PART 2: Error handling
   //////////////////////////////////////////////
 
+  ignore("readSubscribeToMailingListRetry negative maxAttempt") {
+    val console = Console.mock(ListBuffer.empty[String], ListBuffer.empty[String])
+    val result  = Try(readSubscribeToMailingListRetry(console, maxAttempt = -1))
+
+    assert(result.isFailure)
+  }
+
   ignore("readSubscribeToMailingListRetry example success") {
     val outputs = ListBuffer.empty[String]
     val console = Console.mock(ListBuffer("Never", "N"), outputs)
@@ -73,7 +80,7 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
     )
   }
 
-  ignore("readSubscribeToMailingListRetry example failure") {
+  ignore("readSubscribeToMailingListRetry example invalid input") {
     val outputs = ListBuffer.empty[String]
     val console = Console.mock(ListBuffer("Never"), outputs)
     val result  = Try(readSubscribeToMailingListRetry(console, maxAttempt = 1))
@@ -90,6 +97,13 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
     val console2 = Console.mock(ListBuffer("Never"), ListBuffer.empty[String])
     val result2  = Try(readSubscribeToMailingList(console2))
     assert(result.failed.get.getMessage == result2.failed.get.getMessage)
+  }
+
+  ignore("readDateOfBirthRetry negative maxAttempt") {
+    val console = Console.mock(ListBuffer.empty[String], ListBuffer.empty[String])
+    val result  = Try(readSubscribeToMailingListRetry(console, maxAttempt = -1))
+
+    assert(result.isFailure)
   }
 
   ignore("readDateOfBirthRetry example success") {

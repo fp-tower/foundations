@@ -36,10 +36,10 @@ object UserCreationExercises {
   // subscribe to our mailing list. They can answer "Y" for yes or "N" for No.
   // If the user enters something else, `readSubscribeToMailingList` throws an exception.
   // For example,
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] N
   // Returns false. But,
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] Nope
   // Throws an exception.
   // Note: You can read a user input using `StdIn.readLine()`.
@@ -103,13 +103,13 @@ object UserCreationExercises {
   // `readSubscribeToMailingList` but retries if the user enters an invalid input.
   // This method also prints an error message when the attempt fails.
   // For example, readSubscribeToMailingListRetry(console, maxAttempt = 2)
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] Never
   // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] N
   // Returns true. But, readSubscribeToMailingListRetry(console, maxAttempt = 1)
-  // [Prompt] "Would you like to subscribe to our mailing list? [Y/N]"
+  // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] Never
   // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
   // Throws an exception because the user only had 1 attempt and they entered an invalid input.
