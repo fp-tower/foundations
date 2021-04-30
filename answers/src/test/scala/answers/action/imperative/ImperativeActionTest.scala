@@ -56,19 +56,41 @@ class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
   }
 
   test("onError success") {
-    var counter = 0
-    val result  = onError("Hello", _ => counter += 1)
+    var counterAction = 0
+    var counterError  = 0
+
+    def action(): String = {
+      counterAction += 1
+      "Hello"
+    }
+
+    def cleanup(error: Throwable): Unit =
+      counterError += 1
+
+    val result = onError(action(), cleanup)
 
     assert(result == "Hello")
-    assert(counter == 0)
+    assert(counterAction == 1)
+    assert(counterError == 0)
   }
 
   test("onError failure") {
-    var counter = 0
-    val result  = Try(onError(throw new Exception("Boom"), _ => counter += 1))
+    var counterAction = 0
+    var counterError  = 0
+
+    def action(): Nothing = {
+      counterAction += 1
+      throw new Exception("Boom")
+    }
+
+    def cleanup(error: Throwable): Unit =
+      counterError += 1
+
+    val result = Try(onError(action(), cleanup))
 
     assert(result.isFailure)
-    assert(counter == 1)
+    assert(counterAction == 1)
+    assert(counterError == 1)
   }
 
   test("onError failure rethrow the initial error") {
@@ -79,15 +101,10 @@ class ImperativeActionTest extends AnyFunSuite with ScalaCheckDrivenPropertyChec
   }
 
   test("onError") {
-    forAll { (tryInt: Try[Int]) =>
-      var counter = 0
-      val result  = Try(onError(tryInt.get, _ => counter += 1))
+    forAll { (actionResult: Try[String], cleanupResult: Try[Int]) =>
+      val result = Try(onError(actionResult.get, _ => cleanupResult.get))
 
-      assert(result == tryInt)
-      tryInt match {
-        case Failure(_) => assert(counter == 1)
-        case Success(_) => assert(counter == 0)
-      }
+      assert(result == actionResult)
     }
   }
 

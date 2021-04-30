@@ -108,7 +108,7 @@ object UserCreationExercises {
   // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
   // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] N
-  // Returns true. But, readSubscribeToMailingListRetry(console, maxAttempt = 1)
+  // Returns false. But, readSubscribeToMailingListRetry(console, maxAttempt = 1)
   // [Prompt] Would you like to subscribe to our mailing list? [Y/N]
   // [User] Never
   // [Prompt] Incorrect format, enter "Y" for Yes or "N" for "No"
@@ -147,13 +147,13 @@ object UserCreationExercises {
   // 8. Implement `readSubscribeToMailingListRetry` using a while-loop instead of a recursion.
 
   // 9. Transform the example based tests for `readSubscribeToMailingListRetry` into a property based test.
-  //    Step 1. Randomise Yes/No input. For example, generate random boolean and convert it to "Y" or "N".
-  //    Step 2. Randomise invalid input. For example, generate a random String that's not "Y" or "N".
-  //    Step 3. Randomise `maxAttempt`. For example, a number between 1 and 20.
-  //    Step 4. Randomise the number of invalid inputs. For example, generate a List of invalid inputs
-  //            using `Gen.listOf`.
-  //    Step 5. Check that the method returns a success if `maxAttempt > # of invalid inputs`,
-  //            otherwise, it throws an exception.
+  // Step 1. Randomise Yes/No input. For example, generate random boolean and convert it to "Y" or "N".
+  // Step 2. Randomise invalid input. For example, generate a random String that's not "Y" or "N".
+  // Step 3. Randomise `maxAttempt`. For example, a number between 1 and 20.
+  // Step 4. Randomise the number of invalid inputs. For example, generate a List of invalid inputs
+  //         using `Gen.listOf`.
+  // Step 5. Check that the method returns a success if `maxAttempt > # of invalid inputs`,
+  //         otherwise, it throws an exception.
 
   // 10. Write property based tests for `readDateOfBirthRetry` and `readUser`.
 

@@ -47,13 +47,13 @@ package object imperative {
   // 5. Refactor `readDateOfBirthRetry` using `retry` and `onError` in `UserCreationExercises`.
 
   //////////////////////////////////////////////
-  // Bonus question (not covered by the video)
+  // Bonus questions (not covered by the video)
   //////////////////////////////////////////////
 
   // 6. Write a property based for `retry`. For example,
-  //    Step 1. Generate a function that throws an exception for the first `n` evaluations.
-  //    Step 2. Generate a random value for `maxAttempt`.
-  //    Step 3. Check `retry` is a success if `maxAttempt > number of errors` and a failure otherwise.
+  // Step 1. Generate a function that throws an exception for the first `n` evaluations.
+  // Step 2. Generate a random value for `maxAttempt`.
+  // Step 3. Check `retry` is a success if `maxAttempt > number of errors` and a failure otherwise.
 
   // 7. Implement `retry` using an imperative loop instead of a recursion.
 

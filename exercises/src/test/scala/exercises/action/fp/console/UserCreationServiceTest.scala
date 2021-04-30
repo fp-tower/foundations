@@ -152,7 +152,7 @@ class UserCreationServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val result   = Try(service.readUser.unsafeRun())
       val expected = User(name, dob, yesNo, now)
 
-      if (invalidDates.size >= 3 && invalidYesNo.size >= 3)
+      if (invalidDates.size >= 3 || invalidYesNo.size >= 3)
         assert(result.isFailure)
       else
         assert(result == Success(expected))

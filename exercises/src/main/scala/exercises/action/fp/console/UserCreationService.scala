@@ -112,11 +112,15 @@ class UserCreationService(console: Console, clock: Clock) {
   // 13. Refactor `retry` on `IO` so that that it doesn't use `unsafeRun`.
   // You will likely need to use a combination of `flatMap` and `attempt`.
 
+  // 14. Implement the method `handleErrorWith` on `IO`.
+
+  // 15. Simplify the code of `onError` and `retry` using `handleErrorWith`
+
   //////////////////////////////////////////////
   // Bonus question (not covered by the videos)
   //////////////////////////////////////////////
 
-  // 14. `onError` takes a `cleanup` function which returns an IO.
+  // 16. `onError` takes a `cleanup` function which returns an IO.
   // This means we could end up with two exceptions:
   // * One from the current IO
   // * One from `cleanup`
@@ -128,11 +132,11 @@ class UserCreationService(console: Console, clock: Clock) {
   // rethrow the error from the current IO.
   // Add a test case for this scenario and update `onError` implementation.
 
-  // 15. Write a property-based test for `retry` which covers both:
+  // 17. Write a property-based test for `retry` which covers both:
   // a) successes, when `maxAttempt >  number of errors`
   // b) failures, when `maxAttempt <= number of errors`
 
-  // 16. The implementation of `retry` used in the video has a bug.
+  // 18. The implementation of `retry` used in the video has a bug.
   // Were you able to identify it?
   // Try to write a test which exhibits the issue.
 
@@ -157,10 +161,6 @@ class UserCreationService(console: Console, clock: Clock) {
   // a) rewrite it using a while loop, without recursion.
   // b) wait until the end of the chapter.
 
-  // 17. Implement the method `handleErrorWith` on `IO`.
-
-  // 18. Simplify the code of `onError` and `retry` using `handleErrorWith`
-
 }
 
 object UserCreationService {
@@ -171,7 +171,7 @@ object UserCreationService {
     dateOfBirthFormatter.format(date)
 
   def parseDateOfBirth(line: String): IO[LocalDate] =
-    IO { LocalDate.parse(line, dateOfBirthFormatter) }
+    IO(LocalDate.parse(line, dateOfBirthFormatter))
 
   def formatYesNo(bool: Boolean): String =
     if (bool) "Y" else "N"

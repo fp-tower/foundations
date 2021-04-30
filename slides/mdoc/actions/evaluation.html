@@ -197,8 +197,6 @@ lazy val greeting = println("Hello")
 greeting
 
 greeting
-
-greeting
 ```
 ]
 
@@ -233,14 +231,63 @@ name
 ]
 
 ---
-# Lazy Val code generation in Scala 3
+class: tiny-code
 
-https://dotty.epfl.ch/docs/reference/changed-features/lazy-vals-init.html
+# Lazy Val code generation (Scala 3)
+
+.twenty-two-left[
+<br><br><br><br><br><br>
+```scala
+class Foo {
+  lazy val bar = <RHS>
+}
+```
+.center[
+## Translate to
+]
+]
+.seventy-two-right[
+```scala
+class Foo {
+  import scala.runtime.LazyVals
+  var value_0: Int = _
+  var bitmap: Long = 0L
+  val bitmap_offset: Long = LazyVals.getOffset(classOf[LazyCell], "bitmap")
+
+  def bar(): Int = {
+    while (true) {
+      val flag = LazyVals.get(this, bitmap_offset)
+      val state = LazyVals.STATE(flag, <field-id>)
+
+      if (state == <state-3>) {
+        return value_0
+      } else if (state == <state-0>) {
+        if (LazyVals.CAS(this, bitmap_offset, flag, <state-1>, <field-id>)) {
+          try {
+            val result = <RHS>
+            value_0 = result
+            LazyVals.setFlag(this, bitmap_offset, <state-3>, <field-id>)
+            return result
+          }
+          catch {
+            case ex =>
+              LazyVals.setFlag(this, bitmap_offset, <state-0>, <field-id>)
+              throw ex
+          }
+        }
+      } else /* if (state == <state-1> || state == <state-2>) */ {
+        LazyVals.wait4Notification(this, bitmap_offset, flag, <field-id>)
+      }
+    }
+  }
+}
+```
+]
 
 ---
 # Evaluation
 
-<br><br>
+<br><br><br><br>
 
 .cols[
 .forty-five[
@@ -666,48 +713,41 @@ Future { 2 + 2 }
 ]
 
 ---
-class: white
-
-background-image: url(../img/fp-tower/website-background.svg)
-
-<br><br>
-# .white[Three types of expression evaluation]
-
-.thirty-seven-left[
-## .white[Once when defined]
-
-## .white[Once when first accessed]
-
-## .white[Everytime called]
-]
-
-.sixty-two-right[
-## .white[→ `val`]
-
-## .white[→ `lazy val`]
-
-## .white[→ `def`]
-]
-
----
-class: white
-
-background-image: url(../img/fp-tower/website-background.svg)
-
-<br><br>
-# .white[Two types of parameters evaluation]
+# Expressions evaluation
+<br>
 
 .twenty-seven-left[
-## .white[Standard (by-value)]
+## Val
 
-## .white[By-name]
+## Lazy Val
+
+## Def
 ]
 
 .seventy-two-right[
-## .white[behaves like `val`]
+## → &nbsp;&nbsp;Once when defined
 
-## .white[behaves like `def`]
+## → &nbsp;&nbsp;Once when first accessed
+
+## → &nbsp;&nbsp;Everytime called
 ]
+
+---
+# Parameters evaluation
+<br>
+
+.twenty-seven-left[
+## Normal (by-value)
+
+## By-name
+]
+
+.seventy-two-right[
+## → &nbsp;&nbsp;Immediately
+
+## → &nbsp;&nbsp;Everytime accessed
+]
+
 
 ---
 # Test evaluation

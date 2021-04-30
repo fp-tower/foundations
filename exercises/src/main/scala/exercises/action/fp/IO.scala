@@ -83,8 +83,11 @@ trait IO[A] {
 
   // Checks if the current IO is a failure or a success.
   // For example,
-  // IO(throw exception) == IO(Failure(exception))
-  // IO(1).attempt == IO(Success(1))
+  // val action: IO[User] = db.getUser(1234)
+  // action.attempt.unsafeRun()
+  // returns either:
+  // 1. Success(User(1234, "Bob", ...)) if `action` was successful or
+  // 2. Failure(new Exception("User 1234 not found")) if `action` throws an exception
   def attempt: IO[Try[A]] =
     ???
 
@@ -93,11 +96,12 @@ trait IO[A] {
   //////////////////////////////////////////////
 
   // If the current IO is a success, do nothing.
-  // If the current IO is a failure, use `callback`.
+  // If the current IO is a failure, execute `callback` and keep its result.
   // For example,
-  // val action: IO[Int] = IO(throw exception).handleErrorWith(e => IO(1))
-  // action.unsafeRun()
-  // returns 1
+  // val user: User = ...
+  // val action: IO[Unit] = closeAccount(user.id).handleErrorWith(e =>
+  //   logError(e).andThen(emailClient.send(user.email, "Sorry something went wrong"))
+  // )
   def handleErrorWith(callback: Throwable => IO[A]): IO[A] =
     ???
 }
