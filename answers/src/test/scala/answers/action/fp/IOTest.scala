@@ -11,7 +11,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("apply is lazy and repeatable") {
     var counter = 0
 
-    val action = IO { counter += 1 }
+    val action = IO(counter += 1)
     assert(counter == 0)
 
     action.unsafeRun()
@@ -24,8 +24,8 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("andThen") {
     var counter = 0
 
-    val first  = IO { counter += 1 }
-    val second = IO { counter *= 2 }
+    val first  = IO(counter += 1)
+    val second = IO(counter *= 2)
 
     val action = first.andThen(second)
     assert(counter == 0) // nothing happened before unsafeRun
@@ -34,10 +34,34 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(counter == 2) // first and second were executed in the expected order
   }
 
+  test("map") {
+    var counter = 0
+
+    val first  = IO(counter += 1)
+    val action = first.map(_ => 1)
+    assert(counter == 0) // nothing happened before unsafeRun
+
+    action.unsafeRun()
+    assert(counter == 1) // first was executed
+  }
+
+  test("flatMap") {
+    var counter = 0
+
+    val first  = IO(counter += 1)
+    val second = IO(counter *= 2)
+
+    val action = first.flatMap(_ => second)
+    assert(counter == 0) // nothing happened before unsafeRun
+
+    action.unsafeRun()
+    assert(counter == 2) // first and second were executed
+  }
+
   test("onError success") {
     var counter = 0
 
-    val action = IO { counter += 1; "" }.onError(_ => IO { counter *= 2 })
+    val action = IO { counter += 1; "" }.onError(_ => IO(counter *= 2))
     assert(counter == 0) // nothing happened before unsafeRun
 
     val result = action.attempt.unsafeRun()
@@ -49,7 +73,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     var counter = 0
     val error1  = new Exception("Boom 1")
 
-    val action = IO { throw error1 }.onError(_ => IO { counter += 1 })
+    val action = IO(throw error1).onError(_ => IO(counter += 1))
     assert(counter == 0) // nothing happened before unsafeRun
 
     val result = Try(action.unsafeRun())
@@ -62,8 +86,8 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     val error1  = new Exception("Boom 1")
     val error2  = new Exception("Boom 2")
 
-    val action = IO { throw error1 }
-      .onError(_ => IO { counter += 1 }.andThen(IO { throw error2 }))
+    val action = IO(throw error1)
+      .onError(_ => IO(counter += 1).andThen(IO(throw error2)))
     assert(counter == 0) // nothing happened before unsafeRun
 
     val result = Try(action.unsafeRun())
@@ -71,28 +95,29 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(result == Failure(error1)) // callback error was swallowed
   }
 
-  test("map") {
+  test("handleErrorWith success") {
     var counter = 0
 
-    val first  = IO { counter += 1 }
-    val action = first.map(_ => 1)
+    val first  = IO(counter += 1) andThen IO("A")
+    val second = IO(counter *= 2) andThen IO("B")
+    val action = first.handleErrorWith(_ => second)
     assert(counter == 0) // nothing happened before unsafeRun
 
-    action.unsafeRun()
-    assert(counter == 1) // first was executed
+    val result = action.unsafeRun()
+    assert(result == "A")
+    assert(counter == 1) // only first is executed
   }
 
-  test("flatMap") {
+  test("handleErrorWith failure") {
     var counter = 0
 
-    val first  = IO { counter += 1 }
-    val second = IO { counter *= 2 }
-
-    val action = first.flatMap(_ => second)
+    val first  = IO(counter += 1) andThen IO.fail[Unit](new Exception("Boom"))
+    val second = IO(counter *= 2)
+    val action = first.handleErrorWith(_ => second)
     assert(counter == 0) // nothing happened before unsafeRun
 
     action.unsafeRun()
-    assert(counter == 2) // first and second were executed
+    assert(counter == 2) // first and second were executed in the expected order
   }
 
   test("retry, maxAttempt must be greater than 0") {
@@ -134,7 +159,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
       List(
         IO { counter += 2; counter },
         IO { counter *= 3; counter },
-        IO { counter -= 1; counter },
+        IO { counter -= 1; counter }
       )
     )
     assert(counter == 0)

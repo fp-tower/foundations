@@ -27,6 +27,13 @@ class UserCreationExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropert
     assert(outputs.toList == List("Would you like to subscribe to our mailing list? [Y/N]"))
   }
 
+  ignore("readSubscribeToMailingList example failure") {
+    val console = Console.mock(ListBuffer("Never"), ListBuffer())
+    val result  = Try(readSubscribeToMailingList(console))
+
+    assert(result.isFailure)
+  }
+
   ignore("readDateOfBirth example success") {
     val console = Console.mock(ListBuffer("21-07-1986"), ListBuffer())
     val result  = readDateOfBirth(console)
