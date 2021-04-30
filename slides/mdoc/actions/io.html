@@ -300,11 +300,11 @@ trait Action[A] {
 ---
 # Comparison
 
-<br>
+<br><br>
 
 .cols[
 .forty-five[
-## Val function
+## &nbsp;&nbsp;Val function
 ```scala
 val greeting: () => Unit  =
   println("Hello")
@@ -320,7 +320,7 @@ greeting()
 .ten[&nbsp;&nbsp;&nbsp;]
 
 .forty-five[
-## Def function
+## &nbsp;&nbsp;Def function
 
 ```scala
 def greeting(): Unit  =
@@ -337,7 +337,7 @@ greeting()
 .ten[&nbsp;&nbsp;&nbsp;]
 
 .forty-five[
-## Action
+## &nbsp;&nbsp;Action
 
 ```scala
 val greeting: Action[Unit] =
@@ -371,8 +371,7 @@ trait Action[A] {
 
 --
 
-.thirty-two-right[
-<br>
+.sixty-two-left[
 ```scala
 action
   .retry(5)
@@ -425,10 +424,114 @@ actions.foreach(_.execute())
 ---
 # Naming convention
 
+<br>
+
 .forty-seven-left[
+```scala mdoc:reset
+trait Action[A] {
+  def execute(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+.forty-seven-right[
 ```scala mdoc:reset
 trait IO[A] {
   def unsafeRun(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object IO {
+  def apply[A](action: => A): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+}
+```
+]
+
+---
+# Naming convention
+
+<br>
+
+.forty-seven-left[
+```scala mdoc:reset
+trait `Action`[A] {
+  def execute(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+.forty-seven-right[
+```scala mdoc:reset
+trait `IO`[A] {
+  def unsafeRun(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object IO {
+  def apply[A](action: => A): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+}
+```
+]
+
+---
+# Naming convention
+
+<br>
+
+.forty-seven-left[
+```scala mdoc:reset
+trait Action[A] {
+  def `execute`(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+.forty-seven-right[
+```scala mdoc:reset
+trait IO[A] {
+  def `unsafeRun`(): A
 }
 ```
 
@@ -449,6 +552,8 @@ class: white
 
 background-image: url(../img/fp-tower/website-background.svg)
 
+<br>
+
 # .white[Summary]
 
 <br>
@@ -457,7 +562,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 ## .white[Constructor with a by-name parameter]
 
-## .white[Provide a rich API (retry, onError, parallel)]
+## .white[Provide a rich API (retry, onError)]
 
 ---
 background-image: url(../img/fp-tower/website-background-white.svg)
