@@ -51,8 +51,8 @@ sealed trait IO[+A] {
     else handleErrorWith(_ => retry(maxAttempt = maxAttempt - 1))
 
   def attempt: IO[Try[A]] =
-    IO {
-      Try(unsafeRun())
+    async { cb =>
+      unsafeRunAsync(result => cb(Success(result)))
     }
 
   def handleErrorWith[AA >: A](callback: Throwable => IO[AA]): IO[AA] =
@@ -105,14 +105,20 @@ object IO {
   // greeting.unsafeRun()
   // prints "Hello"
   def apply[A](action: => A): IO[A] =
-    Thunk(() => action)
+    new IO[A] {
+      def unsafeRunAsync(callback: Try[A] => Unit): Unit =
+        callback(Try(action))
+    }
 
   // Construct an IO which throws `error` everytime it is called.
   def fail(error: Throwable): IO[Nothing] =
     IO(throw error)
 
   def async[A](onComplete: (Try[A] => Unit) => Unit): IO[A] =
-    Async(onComplete)
+    new IO[A] {
+      def unsafeRunAsync(callback: Try[A] => Unit): Unit =
+        onComplete(callback)
+    }
 
   def log(message: String): IO[Unit] =
     IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
@@ -138,19 +144,4 @@ object IO {
   def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
     parSequence(values.map(action))(ec)
 
-  //////////////////////////////////////////////
-  // IO enumeration
-  //////////////////////////////////////////////
-
-  case class Thunk[+A](action: () => A) extends IO[A] {
-    def unsafeRunAsync(callback: Try[A] => Unit): Unit = {
-      val result = Try(action())
-      callback(result)
-    }
-  }
-
-  case class Async[+A](onComplete: (Try[A] => Unit) => Unit) extends IO[A] {
-    def unsafeRunAsync(callback: Try[A] => Unit): Unit =
-      onComplete(callback)
-  }
 }
