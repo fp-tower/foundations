@@ -35,9 +35,11 @@ sealed trait IO[+A] {
     flatMap(value => IO(callBack(value)))
 
   def flatMap[Next](callBack: A => IO[Next]): IO[Next] =
-    IO {
-      val result: A = unsafeRun()
-      callBack(result).unsafeRun()
+    async { cb =>
+      unsafeRunAsync {
+        case Failure(exception) => cb(Failure(exception))
+        case Success(value)     => callBack(value).unsafeRunAsync(cb)
+      }
     }
 
   def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
