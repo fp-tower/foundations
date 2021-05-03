@@ -28,7 +28,7 @@ object SearchFlightService {
   // Update `fromTwoClients` so that if we get two or more flights with the same `flightId`,
   // `SearchFlightService` selects the flight with the lowest `unitPrice` and discards the other ones.
 
-  // 3. Clients may occasionally return invalid data. For example, one may returns flights from
+  // 3. Clients may occasionally return invalid data. For example, one may returns flights for
   // London Heathrow airport while the search was for London Gatwick airport.
   // Update `fromTwoClients` so that `SearchFlightService` only returns flights that satisfies the
   // search criteria.

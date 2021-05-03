@@ -1,10 +1,8 @@
 package answers.action
 
 import scala.concurrent.ExecutionContext
-import scala.util.Try
 
 package object async {
-  type CallBack[A] = Try[A] => Unit
 
   implicit class ListExtension[A](values: List[A]) {
     def traverse[B](action: A => IO[B]): IO[List[B]] =
@@ -21,4 +19,5 @@ package object async {
     def parSequence(ec: ExecutionContext): IO[List[A]] =
       IO.parSequence(values)(ec)
   }
+
 }
