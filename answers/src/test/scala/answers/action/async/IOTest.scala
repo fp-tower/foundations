@@ -269,7 +269,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     val action = List(
       IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet()),
       IO(counter.set(5)) *> IO(counter.get()),
-      IO.sleep(Duration.ofMillis(50)) *> IO(counter.set(10)) *> IO(counter.get())
+      IO.sleep(Duration.ofMillis(100)) *> IO(counter.set(10)) *> IO(counter.get())
     ).parSequence(global)
     assert(counter.get() == 0)
 
@@ -283,7 +283,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     def sleepAndIncrement(sleepMillis: Int): IO[Int] =
       IO.sleep(Duration.ofMillis(sleepMillis)) *> IO(counter.incrementAndGet())
 
-    val action = List(10, 0, 50).parTraverse(sleepAndIncrement)(global)
+    val action = List(10, 0, 100).parTraverse(sleepAndIncrement)(global)
     assert(counter.get() == 0)
 
     assert(action.unsafeRun() == List(2, 1, 3))
