@@ -47,6 +47,6 @@ object Examples {
   // repeat $iteration times
   def stream(suffix: String, iteration: Int, duration: Duration): IO[Any] =
     List.range(0, iteration).traverse { n =>
-      IO.log(s"Task $suffix $n") *> IO.sleep(duration)
+      IO.debug(s"Task $suffix $n") *> IO.sleep(duration)
     }
 }

@@ -1,10 +1,12 @@
 package exercises.action.async
 
+import java.time.Duration
 import java.util.concurrent.CountDownLatch
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success, Try}
 
-sealed trait IO[A] {
+sealed trait IO[+A] {
+  import IO._
 
   // Executes the action asynchronously.
   // This is the ONLY abstract method of the `IO` trait.
@@ -83,7 +85,7 @@ sealed trait IO[A] {
   // IO(throw new Exception("Boom!")).onError(logError).unsafeRun()
   // prints "Got an error: Boom!" and throws new Exception("Boom!")
   def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
-    handleErrorWith(e => cleanup(e) andThen IO.fail(e))
+    handleErrorWith(e => cleanup(e) andThen fail(e))
 
   // Retries this action until either:
   // * It succeeds.
@@ -100,7 +102,7 @@ sealed trait IO[A] {
   // Note: `maxAttempt` must be greater than 0, otherwise the `IO` should fail.
   // Note: `retry` is a no-operation when `maxAttempt` is equal to 1.
   def retry(maxAttempt: Int): IO[A] =
-    if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
+    if (maxAttempt <= 0) fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
     else if (maxAttempt == 1) this
     else handleErrorWith(_ => retry(maxAttempt = maxAttempt - 1))
 
@@ -127,7 +129,7 @@ sealed trait IO[A] {
   // val action: IO[Unit] = closeAccount(user.id).handleErrorWith(e =>
   //   logError(e).andThen(emailClient.send(user.email, "Sorry something went wrong"))
   // )
-  def handleErrorWith(callback: Throwable => IO[A]): IO[A] =
+  def handleErrorWith[AA >: A](callback: Throwable => IO[AA]): IO[AA] =
     attempt.flatMap {
       case Success(value)     => IO(value)
       case Failure(exception) => callback(exception)
@@ -152,36 +154,61 @@ sealed trait IO[A] {
   def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
     ???
 
+  def fork(ec: ExecutionContext): IO[Fiber[A]] =
+    ???
+
+  def timeout(duration: Duration)(ec: ExecutionContext): IO[A] =
+    ???
+
+  def race[Other](other: IO[Other])(ec: ExecutionContext): IO[Either[A, Other]] =
+    ???
+
 }
 
 object IO {
-  // Constructor for IO. For example,
+  // Constructor for synchronous IO. For example,
   // val greeting: IO[Unit] = IO { println("Hello") }
   // greeting.unsafeRun()
   // prints "Hello"
   def apply[A](action: => A): IO[A] =
-    Thunk(() => action)
-
-  // Construct an IO which throws `error` everytime it is called.
-  def fail[A](error: Throwable): IO[A] =
-    IO(throw error)
-
-  def async[A](onComplete: (Try[A] => Unit) => Unit): IO[A] =
-    Async(onComplete)
-
-  //////////////////////////////////////////////
-  // IO enumeration
-  //////////////////////////////////////////////
-
-  case class Thunk[A](action: () => A) extends IO[A] {
-    def unsafeRunAsync(callback: Try[A] => Unit): Unit = {
-      val result = Try(action())
+    async { callback =>
+      val result: Try[A] = Try(action)
       callback(result)
     }
-  }
 
-  case class Async[A](onComplete: (Try[A] => Unit) => Unit) extends IO[A] {
-    def unsafeRunAsync(callback: Try[A] => Unit): Unit =
-      onComplete(callback)
-  }
+  // Construct an IO which throws `error` everytime it is called.
+  def fail(error: Throwable): IO[Nothing] =
+    async { callback =>
+      callback(Failure(error))
+    }
+
+  // Constructor for asynchronous IO.
+  def async[A](onComplete: (Try[A] => Unit) => Unit): IO[A] =
+    new IO[A] {
+      def unsafeRunAsync(callback: Try[A] => Unit): Unit =
+        onComplete(callback)
+    }
+
+  // prints a debug message to the command line with the name of the current thread
+  def debug(message: String): IO[Unit] =
+    IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
+
+  def sleep(duration: Duration): IO[Unit] =
+    apply(Thread.sleep(duration.toMillis))
+
+  // executes sequentially all IOs in the List
+  def sequence[A](values: List[IO[A]]): IO[List[A]] =
+    ???
+
+  def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    ???
+
+  // convenient shortcut for map + sequence (similar to flatMap = map + flatten)
+  def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
+    sequence(values.map(action))
+
+  // convenient shortcut for map + parSequence (similar to flatMap = map + flatten)
+  def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
+    parSequence(values.map(action))(ec)
+
 }

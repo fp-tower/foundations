@@ -24,10 +24,10 @@ class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     val flight3 = Flight("3", "BA", parisOrly, londonGatwick, now, Duration.ofMinutes(140), 1, 234.0, "")
     val flight4 = Flight("4", "LH", parisOrly, londonGatwick, now, Duration.ofMinutes(210), 2, 55.5, "")
 
-    val client1 = SearchFlightClient.constant(List(flight3, flight1))
-    val client2 = SearchFlightClient.constant(List(flight2, flight4))
-    val client3 = SearchFlightClient.static(IO.fail(new Exception("")))
-    val client4 = SearchFlightClient.static(IO.sleep(Duration.ofSeconds(4)) *> IO(Nil))
+    val client1 = SearchFlightClient.constant(IO(List(flight3, flight1)))
+    val client2 = SearchFlightClient.constant(IO(List(flight2, flight4)))
+    val client3 = SearchFlightClient.constant(IO.fail(new Exception("")))
+    val client4 = SearchFlightClient.constant(IO.sleep(Duration.ofSeconds(4)) *> IO(Nil))
 
     val service = SearchFlightService.fromClients(List(client1, client2, client3, client4))(global)
     val result  = service.search(parisOrly, londonGatwick, today).unsafeRun()

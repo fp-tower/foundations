@@ -1,13 +1,12 @@
 package answers.action.async
 
-import answers.action.async.IO.async
-
 import java.time.Duration
 import java.util.concurrent.CountDownLatch
 import scala.concurrent.{ExecutionContext, Promise, TimeoutException}
 import scala.util.{Failure, Success, Try}
 
 sealed trait IO[+A] {
+  import IO._
 
   def unsafeRunAsync(callback: Try[A] => Unit): Unit
 
@@ -43,10 +42,10 @@ sealed trait IO[+A] {
     }
 
   def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
-    handleErrorWith(e => cleanup(e).attempt andThen IO.fail(e))
+    handleErrorWith(e => cleanup(e).attempt andThen fail(e))
 
   def retry(maxAttempt: Int): IO[A] =
-    if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
+    if (maxAttempt <= 0) fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
     else if (maxAttempt == 1) this
     else handleErrorWith(_ => retry(maxAttempt - 1))
 
@@ -75,19 +74,19 @@ sealed trait IO[+A] {
       second <- fiber2.join
     } yield (first, second)
 
-  def timeout(duration: Duration)(ec: ExecutionContext): IO[A] =
-    race(IO.sleep(duration) *> IO.fail(new TimeoutException("Timeout")))(ec)
-      .map {
-        case Left(value) => value
-        case Right(_)    => sys.error("Impossible")
-      }
-
   def fork(ec: ExecutionContext): IO[Fiber[A]] =
     IO {
       val promise = Promise[A]()
       ec.execute(() => this.unsafeRunAsync(promise.complete))
       Fiber.fromPromise(promise)(ec)
     }
+
+  def timeout(duration: Duration)(ec: ExecutionContext): IO[A] =
+    race(sleep(duration) *> fail(new TimeoutException("Timeout")))(ec)
+      .map {
+        case Left(value) => value
+        case Right(_)    => sys.error("Impossible")
+      }
 
   def race[Other](other: IO[Other])(ec: ExecutionContext): IO[Either[A, Other]] =
     async { callback =>
@@ -100,19 +99,16 @@ sealed trait IO[+A] {
 }
 
 object IO {
-  // Constructor for IO. For example,
-  // val greeting: IO[Unit] = IO { println("Hello") }
-  // greeting.unsafeRun()
-  // prints "Hello"
   def apply[A](action: => A): IO[A] =
-    new IO[A] {
-      def unsafeRunAsync(callback: Try[A] => Unit): Unit =
-        callback(Try(action))
+    async { callback =>
+      val result: Try[A] = Try(action)
+      callback(result)
     }
 
-  // Construct an IO which throws `error` everytime it is called.
   def fail(error: Throwable): IO[Nothing] =
-    IO(throw error)
+    async { callback =>
+      callback(Failure(error))
+    }
 
   def async[A](onComplete: (Try[A] => Unit) => Unit): IO[A] =
     new IO[A] {
@@ -120,7 +116,7 @@ object IO {
         onComplete(callback)
     }
 
-  def log(message: String): IO[Unit] =
+  def debug(message: String): IO[Unit] =
     IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
 
   def sleep(duration: Duration): IO[Unit] =
@@ -137,9 +133,9 @@ object IO {
     sequence(values.map(action))
 
   def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
-    sequence(values.map(_.fork(ec)))
-      .map(_.map(_.join))
-      .flatMap(sequence)
+    traverse(values)(_.fork(ec)) // IO[List[Fiber[A]]]
+      .map(_.map(_.join))        // IO[List[IO[A]]]
+      .flatMap(sequence)         // IO[A]
 
   def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
     parSequence(values.map(action))(ec)

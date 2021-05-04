@@ -11,10 +11,7 @@ trait SearchFlightClient {
 
 object SearchFlightClient {
 
-  def constant(flights: List[Flight]): SearchFlightClient =
-    static(IO(flights))
-
-  def static(flights: IO[List[Flight]]): SearchFlightClient =
+  def constant(flights: IO[List[Flight]]): SearchFlightClient =
     new SearchFlightClient {
       def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
         flights

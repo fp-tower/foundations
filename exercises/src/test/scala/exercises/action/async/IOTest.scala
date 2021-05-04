@@ -173,7 +173,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   test("handleErrorWith failure") {
     var counter = 0
 
-    val first  = IO(counter += 1) andThen IO.fail[Unit](new Exception("Boom"))
+    val first  = IO(counter += 1) andThen IO.fail(new Exception("Boom"))
     val second = IO(counter *= 2)
     val action = first.handleErrorWith(_ => second)
     assert(counter == 0) // nothing happened before unsafeRun
