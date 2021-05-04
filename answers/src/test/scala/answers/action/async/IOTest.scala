@@ -131,10 +131,25 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     }
   }
 
-  ignore("retry until action succeeds") {
+  // it is not stack-safe, we would need to use a runLoop
+  ignore("retry is stack safe") {
+    var counter = 0
+    val action = IO {
+      if (counter < 9999) {
+        counter += 1
+        throw new Exception("Boom")
+      } else "Hello"
+    }
+
+    val result = action.retry(10000).attempt.unsafeRun()
+
+    assert(result == Success("Hello"))
+  }
+
+  test("retry until action succeeds") {
     forAll(
-      Gen.choose(1, 10000),
-      Gen.choose(0, 10000)
+      Gen.choose(1, 100),
+      Gen.choose(0, 100)
     ) { (maxAttempt: Int, numberOfError: Int) =>
       var counter = 0
       val action = IO {
@@ -168,20 +183,6 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(counter == 2) // first and second were executed in the expected order
   }
 
-  test("parZip") {
-    val counter = new AtomicInteger(0)
-
-    val first  = IO(counter.incrementAndGet())
-    val second = IO(counter.incrementAndGet())
-
-    val action = first.parZip(second)(global)
-    assert(counter.get() == 0) // nothing happened before unsafeRun
-
-    action.unsafeRun()
-
-    assert(counter.get() == 2)
-  }
-
   test("sequence") {
     var counter = 0
 
@@ -196,7 +197,6 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     assert(action.unsafeRun() == List(2, 6, 5))
     assert(counter == 5)
-
   }
 
   test("traverse") {
@@ -209,6 +209,85 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     assert(action.unsafeRun() == List(2, 6, 5))
     assert(counter == 5)
+  }
+
+  test("parZip first faster than second") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO(counter.incrementAndGet())
+    val second = IO.sleep(Duration.ofMillis(10)) *> IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (1, 5))
+    assert(counter.get() == 5)
+  }
+
+  test("parZip second faster than first") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet())
+    val second = IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (6, 5))
+    assert(counter.get() == 6)
+  }
+
+  test("race first faster than second") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO(counter.incrementAndGet())
+    val second = IO.sleep(Duration.ofMillis(10)) *> IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.race(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == Left(1))
+    assert(counter.get() == 1)
+  }
+
+  test("race second faster than first") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet())
+    val second = IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.race(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == Right(5))
+    assert(counter.get() == 5)
+  }
+
+  test("parSequence") {
+    val counter = new AtomicInteger(0)
+
+    val action = List(
+      IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet()),
+      IO(counter.set(5)) *> IO(counter.get()),
+      IO.sleep(Duration.ofMillis(50)) *> IO(counter.set(10)) *> IO(counter.get())
+    ).parSequence(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == List(6, 5, 10))
+    assert(counter.get() == 10)
+  }
+
+  test("parTraverse") {
+    val counter = new AtomicInteger(0)
+
+    def sleepAndIncrement(sleepMillis: Int): IO[Int] =
+      IO.sleep(Duration.ofMillis(sleepMillis)) *> IO(counter.incrementAndGet())
+
+    val action = List(10, 0, 50).parTraverse(sleepAndIncrement)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == List(2, 1, 3))
+    assert(counter.get() == 3)
   }
 
 }

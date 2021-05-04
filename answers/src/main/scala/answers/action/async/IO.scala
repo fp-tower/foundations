@@ -48,7 +48,7 @@ sealed trait IO[+A] {
   def retry(maxAttempt: Int): IO[A] =
     if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
     else if (maxAttempt == 1) this
-    else handleErrorWith(_ => retry(maxAttempt = maxAttempt - 1))
+    else handleErrorWith(_ => retry(maxAttempt - 1))
 
   def attempt: IO[Try[A]] =
     async { cb =>
