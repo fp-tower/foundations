@@ -91,10 +91,6 @@ trait IO[A] {
   def attempt: IO[Try[A]] =
     ???
 
-  //////////////////////////////////////////////
-  // Bonus question (not covered by the videos)
-  //////////////////////////////////////////////
-
   // If the current IO is a success, do nothing.
   // If the current IO is a failure, execute `callback` and keep its result.
   // For example,
