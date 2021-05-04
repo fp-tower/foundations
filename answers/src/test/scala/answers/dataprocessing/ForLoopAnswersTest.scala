@@ -74,10 +74,9 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
 
   test("wordCount - size(filter)") {
     forAll { (words: List[String]) =>
-      wordCount(words).foreach {
-        case (word, count) =>
-          val filtered = words.filter(_ == word)
-          assert(count == size(filtered))
+      wordCount(words).foreach { case (word, count) =>
+        val filtered = words.filter(_ == word)
+        assert(count == size(filtered))
       }
     }
   }
@@ -119,7 +118,7 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
 
   test("sizeFoldLeft consistent with size") {
     forAll { (numbers: List[Int]) =>
-      assert(sizeFoldLeft(numbers) == sizeFoldLeft(numbers))
+      assert(sizeFoldLeft(numbers) == size(numbers))
     }
   }
 
@@ -132,6 +131,30 @@ class ForLoopAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks
   test("wordCountFoldLeft consistent with wordCount") {
     forAll { (words: List[String]) =>
       assert(wordCountFoldLeft(words) == wordCount(words))
+    }
+  }
+
+  test("map consistent with List map") {
+    forAll { (numbers: List[Int], update: Int => Int) =>
+      assert(map(numbers)(update) == numbers.map(update))
+    }
+  }
+
+  test("reverse consistent with List reverse") {
+    forAll { (numbers: List[Int]) =>
+      assert(reverse(numbers) == numbers.reverse)
+    }
+  }
+
+  test("lastOption consistent with List lastOption") {
+    forAll { (numbers: List[Int]) =>
+      assert(lastOption(numbers) == numbers.lastOption)
+    }
+  }
+
+  test("generalMin consistent with List minOption") {
+    forAll { (numbers: List[Int]) =>
+      assert(generalMin(numbers)(implicitly) == numbers.minOption)
     }
   }
 }
