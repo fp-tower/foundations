@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Async Action</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Async Actions]
+
+---
+# Current IO is synchronous
+
+```scala
+trait IO[A] {
+  def unsafeRun(): A
+}
+```
+
+terminology:
+* sequential
+* parallel
+* concurrent
+* synchronous
+* asynchronous
+
+---
+# For comprehension is synchronous
+
+```scala
+for {
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} yield name
+```
+
+---
+# For comprehension is synchronous
+
+```scala
+for {
+  flights1 <- client1.search(from, to, date)
+  flights2 <- client2.search(from, to, date)
+} yield SearchResult(flights ++ flights2)
+```
+
+---
+class: medium-code
+
+# For comprehension is synchronous
+
+.fifty-two-left[
+```scala
+def createUser(email: String): Future[User] =
+  httpClient.post("/user", email)
+
+def sendActivationLink(email: String):Future[Unit] =
+  emailClient.send(email, generateLink(email))
+```
+]
+
+--
+
+.fifty-two-left[
+```scala
+val email = "eda@fp-tower.com"
+
+for {
+  user <- createUser(email)
+  _    <- sendActivationLink(email)
+} yield user
+```
+]
+
+---
+# Calling a method is synchronous
+
+.fifty-two-left[
+```scala
+val numbers = List(1, 2, 3, 4, 5)
+// numbers: List[Int] = List(1, 2, 3, 4, 5)
+
+val twice = numbers.map(_ * 2)
+// twice: List[Int] = List(2, 4, 6, 8, 10)
+
+val top3 = numbers.take(3)
+// top3: List[Int] = List(1, 2, 3)
+```
+]
+
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

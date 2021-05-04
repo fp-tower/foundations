@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>For comprehension</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[For comprehension]
+
+---
+# For loop
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} println(s"The area is $area")
+&#x200B;
+// The area is 6
+// The area is 8
+// The area is 10
+// The area is 12
+// The area is 16
+// The area is 20
+```
+]
+
+--
+
+.forty-two-right[
+```scala
+widths.foreach { width =>
+  heights.foreach { height =>
+    val area = width * height
+    println(s"The area is $area")
+  }
+}
+// The area is 6
+// The area is 8
+// The area is 10
+// The area is 12
+// The area is 16
+// The area is 20
+```
+]
+
+---
+# For loop
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+for {
+  width  `<-` widths
+  height `<-` heights
+  area = width * height
+} println(s"The area is $area")
+&#x200B;
+// The area is 6
+// The area is 8
+// The area is 10
+// The area is 12
+// The area is 16
+// The area is 20
+```
+]
+
+
+.forty-two-right[
+```scala
+widths.`foreach` { width =>
+  heights.`foreach` { height =>
+    val area = width * height
+    println(s"The area is $area")
+  }
+}
+// The area is 6
+// The area is 8
+// The area is 10
+// The area is 12
+// The area is 16
+// The area is 20
+```
+]
+
+---
+# For loop
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} println(s"The area is $area")
+&#x200B;
+```
+]
+
+
+.forty-two-right[
+```scala
+widths.foreach { width =>
+  heights.foreach { height =>
+    val area = width * height
+    println(s"The area is $area")
+  }
+}
+```
+]
+
+.fifty-two-left[
+```scala
+trait List[A] {
+  def foreach[To](action: A => To): `Unit` =
+    ???
+}
+```
+]
+
+---
+# For loop
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+var areas = List.empty[Int]
+
+for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} areas = areas :+ area
+&#x200B;
+
+areas
+// areas = List(6, 8, 10, 12, 16, 20)
+```
+]
+
+
+.forty-two-right[
+```scala
+var areas = List.empty[Int]
+
+widths.foreach { width =>
+  heights.foreach { height =>
+    val area = width * height
+    areas = areas :+ area
+  }
+}
+
+areas
+// areas = List(6, 8, 10, 12, 16, 20)
+```
+]
+
+---
+# For loop
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+var areas = List.empty[Int]
+
+for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} `areas = areas :+ area`
+&#x200B;
+
+areas
+// areas = List(6, 8, 10, 12, 16, 20)
+```
+]
+
+
+.forty-two-right[
+```scala
+var areas = List.empty[Int]
+
+widths.foreach { width =>
+  heights.foreach { height =>
+    val area = width * height
+    `areas = areas :+ area`
+  }
+}
+
+areas
+// areas = List(6, 8, 10, 12, 16, 20)
+```
+]
+
+---
+# For comprehension
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+val areas = for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} yield area
+// areas: List[Int] = List(6,8,10,12,16,20)
+```
+]
+
+---
+# For comprehension
+
+.fifty-two-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.fifty-two-left[
+```scala
+val areas = for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} `yield` area
+// areas: List[Int] = List(6,8,10,12,16,20)
+```
+]
+
+
+---
+# For comprehension translation
+
+.forty-seven-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} yield area
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+widths.flatMap { width =>
+  heights.map { height =>
+     val area = width * height
+     area
+  }
+}
+```
+]
+
+---
+# For comprehension translation
+
+.forty-seven-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+for {
+  width  `<-` widths
+  height <- heights
+  area = width * height
+} yield area
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+widths.`flatMap` { width =>
+  heights.map { height =>
+     val area = width * height
+     area
+  }
+}
+```
+]
+
+---
+# For comprehension translation
+
+.forty-seven-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+for {
+  width  <- widths
+  height `<-` heights
+  area = width * height
+} yield area
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+widths.flatMap { width =>
+  heights.`map` { height =>
+     val area = width * height
+     area
+  }
+}
+```
+]
+
+---
+# For comprehension translation
+
+.forty-seven-left[
+```scala
+val widths  = List(2, 4)
+val heights = List(3, 4, 5)
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+for {
+  width  <- widths
+  height <- heights
+  area = width * height
+} yield area
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+widths.flatMap { width =>
+  heights.map { height =>
+     val area = width * height
+     area
+  }
+}
+```
+]
+
+---
+# For comprehension translation
+
+
+.forty-seven-left[
+```scala
+for {
+  a <- listA
+  b <- listB
+  c <- listC
+  d <- listD
+} yield fun(a, b, c, d)
+&#x200B;
+&#x200B;
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+listA.flatMap { a =>
+  listB.flatMap { b =>
+    listC.flatMap { c =>
+      listD.map { d =>
+        fun(a, b, c, d)
+      }
+    }
+  }
+}
+```
+]
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+.center[
+## flatMap, flatMap, flatMap ... and then map
+]
+
+---
+# For comprehension translation
+
+
+.forty-seven-left[
+```scala
+for {
+  a `<-` listA
+  b `<-` listB
+  c `<-` listC
+  d <- listD
+} yield fun(a, b, c, d)
+&#x200B;
+&#x200B;
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+listA.`flatMap` { a =>
+  listB.`flatMap` { b =>
+    listC.`flatMap` { c =>
+      listD.map { d =>
+        fun(a, b, c, d)
+      }
+    }
+  }
+}
+```
+]
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+.center[
+## flatMap, flatMap, flatMap ... and then map
+]
+
+---
+# For comprehension translation
+
+
+.forty-seven-left[
+```scala
+for {
+  a <- listA
+  b <- listB
+  c <- listC
+  d `<-` listD
+} yield fun(a, b, c, d)
+&#x200B;
+&#x200B;
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+listA.flatMap { a =>
+  listB.flatMap { b =>
+    listC.flatMap { c =>
+      listD.`map` { d =>
+        fun(a, b, c, d)
+      }
+    }
+  }
+}
+```
+]
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+.center[
+## flatMap, flatMap, flatMap ... and then map
+]
+
+---
+# For comprehension translation
+
+
+.forty-seven-left[
+```scala
+for {
+  a <- listA
+  b <- listB
+  c <- listC
+  d <- listD
+} `yield fun(a, b, c, d)`
+&#x200B;
+&#x200B;
+&#x200B;
+```
+]
+
+.forty-seven-right[
+```scala
+listA.flatMap { a =>
+  listB.flatMap { b =>
+    listC.flatMap { c =>
+      listD.map { d =>
+        `fun(a, b, c, d)`
+      }
+    }
+  }
+}
+```
+]
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+.center[
+## flatMap, flatMap, flatMap ... and then map
+]
+
+---
+# For comprehension with IO
+
+.forty-seven-left[
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} yield name
+```
+
+```scala
+action.unsafeRun()
+// What's your name?
+// $ bob
+// Your name is bob
+// res: String = bob
+```
+]
+
+---
+# For comprehension with IO
+
+.forty-seven-left[
+```scala
+val action = for {
+  _    <- `writeLine("What's your name?")`
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} yield name
+```
+
+```scala
+action.unsafeRun()
+// `What's your name?`
+// $ bob
+// Your name is bob
+// res: String = bob
+```
+]
+
+---
+# For comprehension with IO
+
+.forty-seven-left[
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  name <- `readLine`
+  _    <- writeLine(s"Your name is $name")
+} yield name
+```
+
+```scala
+action.unsafeRun()
+// What's your name?
+// $ `bob`
+// Your name is bob
+// res: String = bob
+```
+]
+
+---
+# For comprehension with IO
+
+.forty-seven-left[
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- `writeLine(s"Your name is $name")`
+} yield name
+```
+
+```scala
+action.unsafeRun()
+// What's your name?
+// $ bob
+// `Your name is bob`
+// res: String = bob
+```
+]
+
+---
+# For comprehension with IO
+
+.forty-seven-left[
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} `yield name`
+```
+
+```scala
+action.unsafeRun()
+// What's your name?
+// $ bob
+// Your name is bob
+// res: String = `bob`
+```
+]
+
+---
+# For comprehension with IO
+
+.forty-seven-left[
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  `name` <- readLine
+  _    <- writeLine(s"Your name is `$name`")
+} yield name
+```
+
+```scala
+action.unsafeRun()
+// What's your name?
+// $ bob
+// Your name is bob
+// res: String = bob
+```
+]
+
+---
+# Action syntax
+
+.forty-seven-left[
+## IO
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} yield name
+```
+
+```scala
+def writeLine(message: String): IO[Unit]
+def readLine: IO[String]
+```
+]
+
+.forty-seven-right[
+## Imperative
+```scala
+&#x200B;
+writeLine("What's your name?")
+val name = readLine
+writeLine(s"Your name is $name")
+name
+```
+
+```scala
+def writeLine(message: String): Unit
+def readLine(): String
+```
+]
+
+---
+# Action syntax
+
+.forty-seven-left[
+## IO
+```scala
+val action = `for {`
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} `yield` name
+```
+
+```scala
+def writeLine(message: String): IO[Unit]
+def readLine: IO[String]
+```
+]
+
+.forty-seven-right[
+## Imperative
+```scala
+&#x200B;
+writeLine("What's your name?")
+val name = readLine
+writeLine(s"Your name is $name")
+name
+```
+
+```scala
+def writeLine(message: String): Unit
+def readLine(): String
+```
+]
+
+---
+# Action syntax
+
+.forty-seven-left[
+## IO
+```scala
+val action = for {
+ ` _    <-` writeLine("What's your name?")
+  name <- readLine
+ ` _    <-` writeLine(s"Your name is $name")
+} yield name
+```
+
+```scala
+def writeLine(message: String): IO[Unit]
+def readLine: IO[String]
+```
+]
+
+.forty-seven-right[
+## Imperative
+```scala
+&#x200B;
+writeLine("What's your name?")
+val name = readLine
+writeLine(s"Your name is $name")
+name
+```
+
+```scala
+def writeLine(message: String): Unit
+def readLine(): String
+```
+]
+
+---
+# Action syntax
+
+.forty-seven-left[
+## IO
+```scala
+val action = for {
+  _    <- writeLine("What's your name?")
+  name <- readLine
+  _    <- writeLine(s"Your name is $name")
+} yield name
+```
+
+```scala
+def writeLine(message: String): IO[Unit]
+def readLine: `IO[String]`
+```
+]
+
+.forty-seven-right[
+## Imperative
+```scala
+&#x200B;
+writeLine("What's your name?")
+val name = readLine
+writeLine(s"Your name is $name")
+name
+```
+
+```scala
+def writeLine(message: String): Unit
+def readLine(): `String`
+```
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+# .white[Summary]
+
+<br><br>
+
+## .white[For comprehension is a for-loop with yield]
+
+## .white[Simplify the creation of complex actions]
+
+## .white[Translate to flatMap and map (widely used in FP)]
+
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+## package exercises.action.fp.console
+
+# UserCreationService.scala
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

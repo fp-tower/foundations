@@ -14,6 +14,7 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .remark-code { font-size: 22px; }
 .medium-code .remark-code { font-size: 20px; }
 .small-code .remark-code { font-size: 18px; }
+.tiny-code .remark-code { font-size: 14px; }
 .hljs-literal { color: #0033B3 !important; }
 .remark-code {
     border-radius: 5px;
@@ -38,6 +39,8 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 
 .three-left         { float: left ; width: 3%; }
 .twelve-left        { float: left ; width: 12%; }
+.twenty-two-left    { float: left ; width: 22%; }
+.twenty-two-right   { float: right; width: 22%; }
 .twenty-seven-left  { float: left ; width: 27%; }
 .twenty-seven-right { float: right; width: 27%; }
 .thirty-two-left    { float: left ; width: 32%; }
@@ -66,11 +69,13 @@ h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; color: #6f9a9c; 
 .eighty-two-right   { float: right; width: 82%; }
 .eighty-seven-left  { float: left ; width: 87%; }
 .eighty-seven-right { float: right; width: 87%; }
+.ninety-seven-right { float: right; width: 97%; }
 
 .cols { display: flex; }
 .fifty { flex: 50%; }
-.fortyfive { flex: 45%; }
+.forty-five { flex: 45%; }
 .fortyfive-middle{ flex: 45%; display: flex; align-items: center; justify-content: center;}
+.thirty { flex: 30%; }
 .ten { flex: 10%; }
 .footer { position: absolute; bottom: 12px; left: 45px }
 .reference {font-size: 16px; position: fixed; left: 50%; bottom: 12px; transform: translate(-50%, -50%); margin: 0 auto;}

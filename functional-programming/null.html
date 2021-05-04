@@ -12,12 +12,14 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[null]
+.title[Dealing with optional values]
+<br><br>
 
 ---
 # Scala Functional Subset
-<br><br>
+<br>
 
+.sixty-seven-left[
 .center[
 # .light-green[FP functions everywhere]
 
@@ -25,37 +27,95 @@ class: center, middle, white
 
 # .light-green[Two additional requirements]
 ]
+]
 
+---
+<br><br><br><br><br><br><br>
+
+.sixty-seven-left[
+.center[
+# null is a valid reference
+# .light-green[class or trait]
+]
+]
 ---
 class: medium-code
 
-# Null is valid reference
+# null is a valid reference
 
 .seventy-two-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
-
-sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
 ```
 ]
 
 ---
 class: medium-code
 
-# Null is valid reference
+# null is a valid reference
 
 .seventy-two-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+```
+]
 
+---
+class: medium-code
 
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+# null is a valid reference
+
+.seventy-two-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object `Reduced`  extends VAT(`1.05`)
+  case object Standard extends VAT(1.20)
+}
+```
+]
+
+---
+class: medium-code
+
+# null is a valid reference
+
+.seventy-two-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object `Standard` extends VAT(`1.20`)
+}
+```
+]
+
+---
+class: medium-code
+
+# null is a valid reference
+
+.seventy-two-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 ```
 ]
@@ -63,18 +123,19 @@ val unknown: Item = Item(null              , 4, 13.45, null   )
 ---
 class: medium-code
 
-# Null is valid reference
+# null is a valid reference
 
 .seventy-two-left[
 ```scala
 case class Item(name: `String`, quantity: Int, unitPrice: Double, vat: `VAT`)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(`null`              , 4, 13.45, `null`   )
 ```
 ]
@@ -82,18 +143,19 @@ val unknown: Item = Item(`null`              , 4, 13.45, `null`   )
 ---
 class: medium-code
 
-# Null is valid reference
+# null is a valid reference
 
 .seventy-two-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 val other  : Item = `null`
 ```
@@ -102,26 +164,27 @@ val other  : Item = `null`
 ---
 class: medium-code
 
-# Null is valid reference but not a primitive
+# null is a valid reference but not a primitive
 
 .seventy-seven-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 val other  : Item = null
 ```
 
 ```scala
-val toy    : Item = Item("Puzzle 40 Pcs", `null`, `null`, Standard)
+val toy    : Item = Item("Puzzle 40 Pcs", `null`, `null`, VAT.Standard)
 // error: an expression of type Null is ineligible for implicit conversion
-// val toy: Item = Item("Puzzle 40 Pcs", null, null, Standard)
+// val toy: Item = Item("Puzzle 40 Pcs", null, null, VAT.Standard)
 //                                       ^^^^  ^^^^
 ```
 ]
@@ -129,17 +192,19 @@ val toy    : Item = Item("Puzzle 40 Pcs", `null`, `null`, Standard)
 ---
 class: medium-code
 
-# Null causes exceptions
+# null causes exceptions
 
 .seventy-seven-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 
 def totalPrice(item: Item): Double =
@@ -158,17 +223,112 @@ totalPrice(book)
 ---
 class: medium-code
 
-# Null causes exceptions
+# null causes exceptions
 
 .seventy-seven-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def `totalPrice`(item: Item): Double =
+  item.unitPrice * item.quantity * item.vat.rate
+```
+]
+
+
+.thirty-seven-left[
+```scala
+totalPrice(book)
+// res: Double = 18.879
+```
+]
+
+---
+class: medium-code
+
+# null causes exceptions
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def totalPrice(item: Item): Double =
+  `item.unitPrice * item.quantity * item.vat.rate`
+```
+]
+
+
+.thirty-seven-left[
+```scala
+totalPrice(book)
+// res: Double = 18.879
+```
+]
+
+---
+class: medium-code
+
+# null causes exceptions
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def totalPrice(item: Item): Double =
+  item.unitPrice * item.quantity * item.vat.rate
+```
+]
+
+
+.thirty-seven-left[
+```scala
+totalPrice(`book`)
+// res: Double = `18.879`
+```
+]
+
+---
+class: medium-code
+
+# null causes exceptions
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, `null`   )
 
 def totalPrice(item: Item): Double =
@@ -178,15 +338,6 @@ def totalPrice(item: Item): Double =
 
 .thirty-seven-left[
 ```scala
-totalPrice(book)
-// res: Double = 18.879
-```
-]
-
-.three-left[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.thirty-seven-left[
-```scala
 totalPrice(unknown)
 // java.lang.NullPointerException
 ```
@@ -195,17 +346,19 @@ totalPrice(unknown)
 ---
 class: medium-code
 
-# Null causes exceptions
+# null causes exceptions
 
 .seventy-seven-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 
 def totalPrice(item: Item): Double =
@@ -215,18 +368,6 @@ def totalPrice(item: Item): Double =
 
 .thirty-seven-left[
 ```scala
-totalPrice(book)
-// res: Double = 18.879
-```
-]
-
-.three-left[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.thirty-seven-left[
-```scala
-totalPrice(unknown)
-// java.lang.NullPointerException
-
 totalPrice(`null`)
 // java.lang.NullPointerException
 ```
@@ -235,17 +376,19 @@ totalPrice(`null`)
 ---
 class: medium-code
 
-# Null handling
+# Handling null
 
 .seventy-seven-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 
 def totalPrice(item: Item): Double =
@@ -255,39 +398,22 @@ def totalPrice(item: Item): Double =
 ```
 ]
 
-.thirty-seven-left[
-```scala
-totalPrice(book)
-// res: Double = 18.879
-```
-]
-
-.three-left[&nbsp;&nbsp;&nbsp;&nbsp;]
-
-.thirty-seven-left[
-```scala
-totalPrice(unknown)
-// res: Double = 53.8
-
-totalPrice(null)
-// res: Double = 0.0
-```
-]
-
 ---
 class: medium-code
 
-# Null handling
+# Handling null
 
 .seventy-seven-left[
 ```scala
 case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
 
 sealed abstract class VAT(val rate: Double)
-case object Reduced  extends VAT(1.05)
-case object Standard extends VAT(1.20)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
 
-val book   : Item = Item("Little Red Train", 2,  8.99, Reduced)
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
 val unknown: Item = Item(null              , 4, 13.45, null   )
 
 def totalPrice(item: Item): Double =
@@ -299,8 +425,8 @@ def totalPrice(item: Item): Double =
 
 .thirty-seven-left[
 ```scala
-totalPrice(book)
-// res: Double = 18.879
+totalPrice(unknown)
+// res: Double = `53.8`
 ```
 ]
 
@@ -308,20 +434,58 @@ totalPrice(book)
 
 .thirty-seven-left[
 ```scala
-totalPrice(unknown)
-// res: Double = `53.8`
-
 totalPrice(null)
 // res: Double = `0.0`
 ```
 ]
 
 ---
-# Ignore Null
+class: medium-code
+
+# Handling null
+
+.seventy-seven-left[
+```scala
+case class Item(name: String, quantity: Int, unitPrice: Double, vat: VAT)
+
+sealed abstract class VAT(val rate: Double)
+object VAT {
+  case object Reduced  extends VAT(1.05)
+  case object Standard extends VAT(1.20)
+}
+
+val book   : Item = Item("Little Red Train", 2,  8.99, VAT.Reduced)
+val unknown: Item = Item(null              , 4, 13.45, null   )
+
+def totalPrice(item: Item): Double =
+  if(item == null)           0.0
+  else if (item.vat == null) item.quantity * item.unitPrice
+  else                       item.quantity * item.unitPrice * item.vat.rate
+```
+]
+
+.thirty-seven-left[
+```scala
+totalPrice(unknown)
+// res: Double = 53.8
+```
+]
+
+.three-left[&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.thirty-seven-left[
+```scala
+totalPrice(null)
+// res: Double = 0.0
+```
+]
+
+---
+# Ignore null
 
 <br>
 
-## 1. Don't write functions that return null
+## 1. Don't write functions that returns null
 
 ## 2. Don't assign null to variables
 
@@ -337,11 +501,33 @@ totalPrice(null)
 val defaultRate = defaultVAT.rate
 // java.lang.NullPointerException
 
-val defaultVAT  = Standard
+val defaultVAT  = VAT.Standard
 ```
 ]
 
---
+---
+# Forward reference
+
+.forty-two-left[
+```scala
+val defaultRate = `defaultVAT`.rate
+// java.lang.NullPointerException
+
+val `defaultVAT`  = VAT.Standard
+```
+]
+
+---
+# Forward reference
+
+.forty-two-left[
+```scala
+val defaultRate = defaultVAT.rate
+// java.lang.NullPointerException
+
+val defaultVAT  = VAT.Standard
+```
+]
 
 <br><br><br><br><br><br><br>
 
@@ -363,6 +549,20 @@ val defaultVAT  = Standard
 <img src="../img/screenshot/forward-reference.png" style="width:800px;"/>
 ]
 
+
+---
+# Option is a better null
+
+.fifty-two-left[
+```scala
+case class User(
+  name : String,
+  age  : Int,
+  email: Option[String],
+)
+```
+]
+
 ---
 # Option is a better null
 
@@ -376,7 +576,18 @@ case class User(
 ```
 ]
 
---
+---
+# Option is a better null
+
+.fifty-two-left[
+```scala
+case class User(
+  name : String,
+  age  : Int,
+  email: Option[String],
+)
+```
+]
 
 .forty-two-right[
 ```sql
@@ -428,10 +639,10 @@ case class User(
 .forty-two-right[
 ```scala
 List(1,2,3,4).find(_ > 2)
-// res3: Option[Int] = Some(3)
+// res5: Option[Int] = Some(3)
 
 List(1,2,3,4).find(_ > 10)
-// res4: Option[Int] = None
+// res6: Option[Int] = None
 ```
 ]
 
@@ -445,8 +656,6 @@ def vatRate(optVat: Option[VAT]): Double =
 ```
 ]
 
-
-
 ---
 # Exception 1: Interface with Java code
 
@@ -457,6 +666,31 @@ import org.apache.poi.ss.usermodel.{Cell, Row}
 val row: Row = ...
 
 row.getCell(0)
+// res: Cell = Little Red Train
+
+row.getCell(1)
+// res: Cell = 2
+
+row.getCell(3)
+// res: Cell = null
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
+]
+
+---
+# Exception 1: Interface with Java code
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+row.`getCell`(0)
 // res: Cell = Little Red Train
 
 row.getCell(1)
@@ -557,6 +791,40 @@ import org.apache.poi.ss.usermodel.{Cell, Row}
 val row: Row = ...
 
 Option(row.getCell(0))
+// res: Option[Cell] = Some(Little Red Train)
+
+Option(row.getCell(1))
+// res: Option[Cell] = Some(2)
+
+Option(row.getCell(3))
+// res: Option[Cell] = None
+```
+
+```scala
+object Option {
+  def apply[A](value: A): Option[A] =
+    if (value == null) None
+    else Some(value)
+}
+```
+]
+
+.thirty-seven-right[
+<br>
+<img src="../img/screenshot/excel-poi.png" style="width:400px;"/>
+]
+
+
+---
+# Option constructor
+
+.fifty-seven-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+val row: Row = ...
+
+Option(row.getCell(0))
 // res: Option[Cell] = `Some(Little Red Train)`
 
 Option(row.getCell(1))
@@ -613,7 +881,45 @@ row.getDouble(0)
 row.getDouble(1)
 // res: Option[Double] = Some(2)
 
-Option(row.getCell(3))
+row.getDouble(3)
+// res: Option[Double] = None
+```
+]
+
+---
+class: medium-code
+
+# Scala wrapper
+
+.sixty-two-left[
+```scala
+import org.apache.poi.ss.usermodel.{Cell, Row}
+
+case class `SafeRow`(row: `Row`) {
+  def getDouble(column: Int): Option[Double] =
+    if (row == null) None
+    else {
+      val cell = row.getCell(column)
+      if (cell == null || cell.getCellType() != Cell.NUMERIC)
+        None
+      else
+        Some(cell.getNumericCellValue())
+    }
+}
+```
+]
+
+.thirty-four-right[
+```scala
+val row: SafeRow = ...
+
+row.getDouble(0)
+// res: Option[Double] = None
+
+row.getDouble(1)
+// res: Option[Double] = Some(2)
+
+row.getDouble(3)
 // res: Option[Double] = None
 ```
 ]
@@ -651,7 +957,7 @@ row.getDouble(0)
 row.getDouble(1)
 // res: Option[Double] = Some(2)
 
-Option(row.getCell(3))
+row.getDouble(3)
 // res: Option[Double] = None
 ```
 ]
@@ -714,7 +1020,39 @@ val item: Item = null
 ```
 ]
 
---
+---
+# Explicit Nulls in Scala 3
+
+.forty-seven-left[
+```scala
+scalacOptions += `"-Yexplicit-nulls"`
+```
+
+<br>
+```scala
+val item: Item = null
+// error
+//    Found:    Null
+//    Required: Item
+```
+]
+
+---
+# Explicit Nulls in Scala 3
+
+.forty-seven-left[
+```scala
+scalacOptions += "-Yexplicit-nulls"
+```
+
+<br>
+```scala
+val item: Item = null
+// error
+//    Found:    Null
+//    Required: Item
+```
+]
 <br><br><br><br><br><br><br><br><br><br><br>
 
 .seventy-seven-left[
