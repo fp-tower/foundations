@@ -4,6 +4,9 @@ import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
+import java.time.Duration
+import java.util.concurrent.atomic.AtomicInteger
+import scala.concurrent.ExecutionContext.global
 import scala.util.{Failure, Success, Try}
 
 // Run the test using the green arrow next to class name (if using IntelliJ)
@@ -61,10 +64,6 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     action.unsafeRun()
     assert(counter == 2) // first and second were executed
   }
-
-  //////////////////////////////////////////////
-  // PART 3: Error handling
-  //////////////////////////////////////////////
 
   test("onError success") {
     var counter = 0
@@ -130,10 +129,6 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(counter == 2)
   }
 
-  //////////////////////////////////////////////
-  // PART 4: IO clean-up
-  //////////////////////////////////////////////
-
   test("attempt success") {
     var counter = 0
 
@@ -180,6 +175,126 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     action.unsafeRun()
     assert(counter == 2) // first and second were executed in the expected order
+  }
+
+  ignore("zip") {
+    var counter = 0
+
+    val first  = IO(counter += 1)
+    val second = IO(counter *= 2)
+
+    val action = first.zip(second)
+    assert(counter == 0) // nothing happened before unsafeRun
+
+    action.unsafeRun()
+    assert(counter == 2) // first and second were executed in the expected order
+  }
+
+  ignore("parZip first faster than second") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO(counter.incrementAndGet())
+    val second = IO.sleep(Duration.ofMillis(10)) *> IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (1, 5))
+    assert(counter.get() == 5)
+  }
+
+  ignore("parZip second faster than first") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet())
+    val second = IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (6, 5))
+    assert(counter.get() == 6)
+  }
+
+  ignore("race first faster than second") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO(counter.incrementAndGet())
+    val second = IO.sleep(Duration.ofMillis(10)) *> IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.race(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == Left(1))
+    assert(counter.get() == 1)
+  }
+
+  ignore("race second faster than first") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet())
+    val second = IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.race(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == Right(5))
+    assert(counter.get() == 5)
+  }
+
+  ignore("sequence") {
+    var counter = 0
+
+    val action = IO.sequence(
+      List(
+        IO { counter += 2; counter },
+        IO { counter *= 3; counter },
+        IO { counter -= 1; counter }
+      )
+    )
+    assert(counter == 0)
+
+    assert(action.unsafeRun() == List(2, 6, 5))
+    assert(counter == 5)
+  }
+
+  ignore("traverse") {
+    var counter = 0
+
+    val values: List[Int => Int] = List(_ + 2, _ * 3, _ - 1)
+
+    val action = IO.traverse(values)(f => IO { counter = f(counter); counter })
+    assert(counter == 0)
+
+    assert(action.unsafeRun() == List(2, 6, 5))
+    assert(counter == 5)
+  }
+
+  ignore("parSequence") {
+    val counter = new AtomicInteger(0)
+
+    val action = List(
+      IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet()),
+      IO(counter.set(5)) *> IO(counter.get()),
+      IO.sleep(Duration.ofMillis(50)) *> IO(counter.set(10)) *> IO(counter.get())
+    ).parSequence(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == List(6, 5, 10))
+    assert(counter.get() == 10)
+  }
+
+  ignore("parTraverse") {
+    val counter = new AtomicInteger(0)
+
+    def sleepAndIncrement(sleepMillis: Int): IO[Int] =
+      IO.sleep(Duration.ofMillis(sleepMillis)) *> IO(counter.incrementAndGet())
+
+    val action = List(10, 0, 50).parTraverse(sleepAndIncrement)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == List(2, 1, 3))
+    assert(counter.get() == 3)
   }
 
 }

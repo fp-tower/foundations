@@ -196,10 +196,11 @@ object IO {
   def sleep(duration: Duration): IO[Unit] =
     apply(Thread.sleep(duration.toMillis))
 
-  // executes sequentially all IOs in the List
+  // executes all IOs in the List sequentially and returns results in the same order.
   def sequence[A](values: List[IO[A]]): IO[List[A]] =
     ???
 
+  // executes all IOs in the List concurrently and returns results in the same order.
   def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
     ???
 
