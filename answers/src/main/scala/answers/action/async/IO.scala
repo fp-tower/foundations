@@ -74,6 +74,17 @@ sealed trait IO[+A] {
       second <- fiber2.join
     } yield (first, second)
 
+  // other implementation of `parZip`
+  def parZip2[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    async { callback =>
+      val promise1 = Promise[A]()
+      val promise2 = Promise[Other]()
+      ec.execute(() => this.unsafeRunAsync(promise1.complete))
+      ec.execute(() => other.unsafeRunAsync(promise2.complete))
+
+      promise1.future.zip(promise2.future).onComplete(callback)(ec)
+    }
+
   def fork(ec: ExecutionContext): IO[Fiber[A]] =
     IO {
       val promise = Promise[A]()
@@ -129,13 +140,21 @@ object IO {
       }
       .map(_.reverse)
 
-  def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
-    sequence(values.map(action))
-
   def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    values
+      .foldLeft(IO(List.empty[A])) { (state, action) =>
+        state.parZip(action)(ec).map { case (list, a) => a :: list }
+      }
+      .map(_.reverse)
+
+  // other implementation of `parSequence`
+  def parSequence2[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
     traverse(values)(_.fork(ec)) // IO[List[Fiber[A]]]
       .map(_.map(_.join))        // IO[List[IO[A]]]
       .flatMap(sequence)         // IO[A]
+
+  def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
+    sequence(values.map(action))
 
   def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
     parSequence(values.map(action))(ec)

@@ -4,6 +4,9 @@ import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
+import java.time.Duration
+import java.util.concurrent.atomic.AtomicInteger
+import scala.concurrent.ExecutionContext.global
 import scala.util.{Failure, Success, Try}
 
 class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
@@ -150,6 +153,32 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
         assert(result.failed.get.getMessage == "Boom")
       }
     }
+  }
+
+  test("parZip first faster than second") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO(counter.incrementAndGet())
+    val second = IO.sleep(Duration.ofMillis(10)) *> IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (1, 5))
+    assert(counter.get() == 5)
+  }
+
+  test("parZip second faster than first") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet())
+    val second = IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (6, 5))
+    assert(counter.get() == 6)
   }
 
   test("sequence") {

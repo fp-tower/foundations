@@ -1,6 +1,7 @@
 package answers.action.fp
 
 import java.time.Duration
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 sealed trait IO[A] {
@@ -61,6 +62,22 @@ sealed trait IO[A] {
       case Success(value)     => IO(value)
       case Failure(exception) => callback(exception)
     }
+
+  def zip[Other](other: IO[Other]): IO[(A, Other)] =
+    for {
+      first  <- this
+      second <- other
+    } yield (first, second)
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    IO {
+      val future1: Future[A]     = Future(this.unsafeRun())(ec)
+      val future2: Future[Other] = Future(other.unsafeRun())(ec)
+
+      val zipped: Future[(A, Other)] = future1.zip(future2)
+
+      Await.result(zipped, scala.concurrent.duration.Duration.Inf)
+    }
 }
 
 object IO {
@@ -72,17 +89,32 @@ object IO {
   def fail[A](error: Throwable): IO[A] =
     IO(throw error)
 
+  def debug(message: String): IO[Unit] =
+    IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
+
   def sleep(duration: Duration): IO[Unit] =
     IO {
       Thread.sleep(duration.toMillis)
     }
 
   def sequence[A](actions: List[IO[A]]): IO[List[A]] =
-    IO {
-      actions.map(_.unsafeRun())
-    }
+    actions
+      .foldLeft(IO(List.empty[A])) { (state, action) =>
+        state.zip(action).map { case (list, a) => a :: list }
+      }
+      .map(_.reverse)
+
+  def parSequence[A](actions: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    actions
+      .foldLeft(IO(List.empty[A])) { (state, action) =>
+        state.parZip(action)(ec).map { case (list, a) => a :: list }
+      }
+      .map(_.reverse)
 
   def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
     sequence(values.map(action))
+
+  def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
+    parSequence(values.map(action))(ec)
 
 }
