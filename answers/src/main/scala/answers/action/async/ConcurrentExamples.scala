@@ -5,30 +5,32 @@ import answers.dataprocessing.ThreadPoolUtil
 import java.time.Duration
 import scala.concurrent.ExecutionContext
 
-object ActionAsyncApp extends App {
-  import Examples._
+object ConcurrentExamplesApp extends App {
+  import ConcurrentExamples._
 
   val ec = ThreadPoolUtil.fixedSizeExecutionContext(4, "pool")
 
-  parTwo(ec).unsafeRun()
+  parMany(ec).unsafeRun()
 }
 
-object Examples {
+object ConcurrentExamples {
 
   def parTwo(ec: ExecutionContext): IO[Any] = {
-    val taskA = stream("A", 10, Duration.ofMillis(200))
-    val taskB = stream("B", 8, Duration.ofMillis(300))
+    val streamA = stream("A", 10, Duration.ofMillis(200))
+    val streamB = stream("B", 8, Duration.ofMillis(400))
 
-    taskA.parZip(taskB)(ec)
+    streamA.parZip(streamB)(ec)
   }
 
   def parMany(ec: ExecutionContext): IO[Any] = {
-    val taskA = stream("A", 20, Duration.ofMillis(50))
-    val taskB = stream("B", 15, Duration.ofMillis(100))
-    val taskC = stream("C", 10, Duration.ofMillis(200))
-    val taskD = stream("D", 7, Duration.ofMillis(300))
+    val streamA = stream("A", 2, Duration.ofMillis(1000))
+    val streamB = stream("B", 5, Duration.ofMillis(500))
+    val streamC = stream("C", 7, Duration.ofMillis(300))
+    val streamD = stream("D", 10, Duration.ofMillis(200))
+    val streamE = stream("E", 15, Duration.ofMillis(100))
+    val streamF = stream("F", 20, Duration.ofMillis(50))
 
-    IO.parSequence(List(taskA, taskB, taskC, taskD))(ec)
+    List(streamA, streamB, streamC, streamD, streamE, streamF).parSequence(ec)
   }
 
   def timeoutSucceed(ec: ExecutionContext): IO[Any] =
