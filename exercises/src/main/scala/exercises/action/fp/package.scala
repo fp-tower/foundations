@@ -1,8 +1,8 @@
 package exercises.action
+
 import scala.concurrent.ExecutionContext
 
-package object async {
-
+package object fp {
   // extend the List API
   implicit class ListExtension[A](values: List[A]) {
     def traverse[B](action: A => IO[B]): IO[List[B]] =
@@ -29,5 +29,4 @@ package object async {
     def parZip(ec: ExecutionContext): IO[(A, B)] =
       tuple._1.parZip(tuple._2)(ec)
   }
-
 }

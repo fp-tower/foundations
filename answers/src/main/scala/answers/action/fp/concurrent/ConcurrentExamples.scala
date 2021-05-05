@@ -1,5 +1,6 @@
-package answers.action.fp
+package answers.action.fp.concurrent
 
+import answers.action.fp._
 import answers.dataprocessing.ThreadPoolUtil
 
 import java.time.Duration
@@ -7,9 +8,6 @@ import scala.concurrent.ExecutionContext
 
 object ConcurrentExamplesApp extends App {
   import ConcurrentExamples._
-
-  val x = IO(1)
-  println(x.toString)
 
   val boundedEC = ThreadPoolUtil.fixedSizeExecutionContext(8, "pool")
 

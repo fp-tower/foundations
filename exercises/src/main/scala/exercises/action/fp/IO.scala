@@ -1,7 +1,7 @@
 package exercises.action.fp
 
-import exercises.action.fp.IO.fail
-
+import java.time.Duration
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 trait IO[A] {
@@ -67,7 +67,7 @@ trait IO[A] {
   // IO(throw new Exception("Boom!")).onError(logError).unsafeRun()
   // prints "Got an error: Boom!" and throws new Exception("Boom!")
   def onError[Other](cleanup: Throwable => IO[Other]): IO[A] =
-    handleErrorWith(e => cleanup(e) andThen fail(e))
+    handleErrorWith(e => cleanup(e) andThen IO.fail(e))
 
   // Retries this action until either:
   // * It succeeds.
@@ -84,7 +84,7 @@ trait IO[A] {
   // Note: `maxAttempt` must be greater than 0, otherwise the `IO` should fail.
   // Note: `retry` is a no-operation when `maxAttempt` is equal to 1.
   def retry(maxAttempt: Int): IO[A] =
-    if (maxAttempt <= 0) fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
+    if (maxAttempt <= 0) IO.fail(new IllegalArgumentException("maxAttempt must be greater than 0"))
     else if (maxAttempt == 1) this
     else handleErrorWith(_ => retry(maxAttempt - 1))
 
@@ -112,6 +112,26 @@ trait IO[A] {
       case Success(value)     => IO(value)
       case Failure(exception) => callback(exception)
     }
+
+  //////////////////////////////////////////////
+  // PART 5: Concurrent IO
+  //////////////////////////////////////////////
+
+  def zip[Other](other: IO[Other]): IO[(A, Other)] =
+    for {
+      first  <- this
+      second <- other
+    } yield (first, second)
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    IO {
+      val future1: Future[A]     = Future(this.unsafeRun())(ec)
+      val future2: Future[Other] = Future(other.unsafeRun())(ec)
+
+      val zipped: Future[(A, Other)] = future1.zip(future2)
+
+      Await.result(zipped, scala.concurrent.duration.Duration.Inf)
+    }
 }
 
 object IO {
@@ -127,4 +147,36 @@ object IO {
   // Construct an IO which throws `error` everytime it is called.
   def fail[A](error: Throwable): IO[A] =
     IO(throw error)
+
+  //////////////////////////////////////////////
+  // PART 5: Concurrent IO
+  //////////////////////////////////////////////
+
+  def debug(message: String): IO[Unit] =
+    IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
+
+  def sleep(duration: Duration): IO[Unit] =
+    IO {
+      Thread.sleep(duration.toMillis)
+    }
+
+  def sequence[A](actions: List[IO[A]]): IO[List[A]] =
+    actions
+      .foldLeft(IO(List.empty[A])) { (state, action) =>
+        state.zip(action).map { case (list, a) => a :: list }
+      }
+      .map(_.reverse)
+
+  def parSequence[A](actions: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    actions
+      .foldLeft(IO(List.empty[A])) { (state, action) =>
+        state.parZip(action)(ec).map { case (list, a) => a :: list }
+      }
+      .map(_.reverse)
+
+  def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
+    sequence(values.map(action))
+
+  def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
+    parSequence(values.map(action))(ec)
 }
