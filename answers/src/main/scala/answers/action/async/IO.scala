@@ -133,25 +133,27 @@ object IO {
   def sleep(duration: Duration): IO[Unit] =
     IO(Thread.sleep(duration.toMillis))
 
-  def sequence[A](values: List[IO[A]]): IO[List[A]] =
-    values
+  def sequence[A](actions: List[IO[A]]): IO[List[A]] =
+    actions
       .foldLeft(IO(List.empty[A])) { (state, action) =>
         state.zip(action).map { case (list, a) => a :: list }
       }
       .map(_.reverse)
 
   def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    for {
+      fibers  <- values.traverse(_.fork(ec))
+      results <- fibers.traverse(_.join)
+    } yield results
+
+  // Other implementation of `parSequence`.
+  // Copy-paste `sequence` with `parZip` instead of `zip`
+  def parSequence2[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
     values
       .foldLeft(IO(List.empty[A])) { (state, action) =>
         state.parZip(action)(ec).map { case (list, a) => a :: list }
       }
       .map(_.reverse)
-
-  // other implementation of `parSequence`
-  def parSequence2[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
-    traverse(values)(_.fork(ec)) // IO[List[Fiber[A]]]
-      .map(_.map(_.join))        // IO[List[IO[A]]]
-      .flatMap(sequence)         // IO[A]
 
   def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
     sequence(values.map(action))

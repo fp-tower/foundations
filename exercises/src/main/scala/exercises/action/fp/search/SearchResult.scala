@@ -1,7 +1,7 @@
 package exercises.action.fp.search
 
 // `flights` must be ordered using `SearchResult.bestOrdering`
-case class SearchResult private (flights: List[Flight]) {
+case class SearchResult(flights: List[Flight]) {
   val cheapest: Option[Flight] = flights.minByOption(_.unitPrice)
   val fastest: Option[Flight]  = flights.minByOption(_.duration)
   val best: Option[Flight]     = flights.minOption(SearchResult.bestOrdering)
