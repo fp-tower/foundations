@@ -67,15 +67,6 @@ sealed trait IO[+A] {
     } yield (first, second)
 
   def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
-    for {
-      fiber1 <- this.fork(ec)
-      fiber2 <- other.fork(ec)
-      first  <- fiber1.join
-      second <- fiber2.join
-    } yield (first, second)
-
-  // other implementation of `parZip`
-  def parZip2[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
     async { callback =>
       val promise1 = Promise[A]()
       val promise2 = Promise[Other]()
@@ -84,6 +75,15 @@ sealed trait IO[+A] {
 
       promise1.future.zip(promise2.future).onComplete(callback)(ec)
     }
+
+  // other implementation of `parZip` using `Fiber`
+  def parZip2[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    for {
+      fiber1 <- this.fork(ec)
+      fiber2 <- other.fork(ec)
+      first  <- fiber1.join
+      second <- fiber2.join
+    } yield (first, second)
 
   def fork(ec: ExecutionContext): IO[Fiber[A]] =
     IO {
@@ -140,20 +140,20 @@ object IO {
       }
       .map(_.reverse)
 
+  // copy-paste `sequence` with `parZip` instead of `zip`
   def parSequence[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
-    for {
-      fibers  <- values.traverse(_.fork(ec))
-      results <- fibers.traverse(_.join)
-    } yield results
-
-  // Other implementation of `parSequence`.
-  // Copy-paste `sequence` with `parZip` instead of `zip`
-  def parSequence2[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
     values
       .foldLeft(IO(List.empty[A])) { (state, action) =>
         state.parZip(action)(ec).map { case (list, a) => a :: list }
       }
       .map(_.reverse)
+
+  // Other implementation of `parSequence` using `fork` and `join`
+  def parSequence2[A](values: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
+    for {
+      fibers  <- values.traverse(_.fork(ec))
+      results <- fibers.traverse(_.join)
+    } yield results
 
   def traverse[A, B](values: List[A])(action: A => IO[B]): IO[List[B]] =
     sequence(values.map(action))
