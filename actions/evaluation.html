@@ -420,7 +420,7 @@ test("a def is evaluated every time it is called") {
 ```scala
 def sum(x: Int, y: Int): Unit = {
   val result = x + y
-  println("The sum is $result")
+  println(s"The sum is $result")
 }
 ```
 
@@ -675,7 +675,7 @@ getOrElse(
 ---
 # By-name parameters in the standard library
 
-.forty-seven-left[
+.seventy-two-left[
 ```scala
 object Try {
   def apply[A](action: => A): Try[A] =
@@ -691,7 +691,7 @@ Try(2 + 2)
 // res: Try[Int] = Success(4)
 
 Try(throw new Exception("Boom"))
-// res: Try[Nothing] = Failure(4)
+// res: Try[Nothing] = Failure(java.lang.Exception: Boom)
 ```
 ]
 
