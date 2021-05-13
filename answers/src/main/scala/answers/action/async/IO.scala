@@ -1,7 +1,7 @@
 package answers.action.async
 
-import java.time.Duration
 import java.util.concurrent.CountDownLatch
+import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Promise, TimeoutException}
 import scala.util.{Failure, Success, Try}
 
@@ -92,7 +92,7 @@ sealed trait IO[+A] {
       Fiber.fromPromise(promise)(ec)
     }
 
-  def timeout(duration: Duration)(ec: ExecutionContext): IO[A] =
+  def timeout(duration: FiniteDuration)(ec: ExecutionContext): IO[A] =
     race(sleep(duration) *> fail(new TimeoutException("Timeout")))(ec)
       .map {
         case Left(value) => value
@@ -130,7 +130,7 @@ object IO {
   def debug(message: String): IO[Unit] =
     IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
 
-  def sleep(duration: Duration): IO[Unit] =
+  def sleep(duration: FiniteDuration): IO[Unit] =
     IO(Thread.sleep(duration.toMillis))
 
   def sequence[A](actions: List[IO[A]]): IO[List[A]] =

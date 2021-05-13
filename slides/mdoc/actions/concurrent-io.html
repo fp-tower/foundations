@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Concurrent Actions</title>
+  <title>Concurrent IO</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="../style.css"/>
 </head>
@@ -12,7 +12,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[Concurrent Actions]
+.title[Concurrent IO]
 
 ---
 class: medium-code
@@ -206,9 +206,9 @@ class: medium-code
 
 .seventy-two-left[
 ```scala
-def stream(suffix: String, iteration: Int, duration: FiniteDuration) =
+def stream(taskName: String, iteration: Int, duration: FiniteDuration) =
   List.range(0, iteration).traverse { n =>
-    IO.debug(s"Task $suffix $n") andThen IO.sleep(duration)
+    IO.debug(s"Task $taskName $n") andThen IO.sleep(duration)
   }
 
 val streamA = stream("A", 4, 200.millis)
@@ -232,9 +232,9 @@ class: medium-code
 
 .seventy-two-left[
 ```scala
-def stream(suffix: String, iteration: Int, duration: FiniteDuration) =
+def stream(taskName: String, iteration: Int, duration: FiniteDuration) =
   List.range(0, iteration).traverse { n =>
-    IO.debug(s"Task $suffix $n") andThen IO.sleep(duration)
+    IO.debug(s"Task $taskName $n") andThen IO.sleep(duration)
   }
 
 val streamA = stream("A", 4, 200.millis)
@@ -262,9 +262,9 @@ class: medium-code
 
 .seventy-two-left[
 ```scala
-def stream(suffix: String, iteration: Int, duration: FiniteDuration) =
+def stream(taskName: String, iteration: Int, duration: FiniteDuration) =
   List.range(0, iteration).traverse { n =>
-    IO.debug(s"Task $suffix $n") andThen IO.sleep(duration)
+    IO.debug(s"Task $taskName $n") andThen IO.sleep(duration)
   }
 
 val streamA = stream("A", 4, 200.millis)
@@ -292,9 +292,9 @@ class: medium-code
 
 .seventy-two-left[
 ```scala
-def stream(suffix: String, iteration: Int, duration: FiniteDuration) =
+def stream(taskName: String, iteration: Int, duration: FiniteDuration) =
   List.range(0, iteration).traverse { n =>
-    IO.debug(s"Task $suffix $n") andThen IO.sleep(duration)
+    IO.debug(s"Task $taskName $n") andThen IO.sleep(duration)
   }
 
 val streamA = stream("A", 4, 200.millis)
@@ -322,9 +322,9 @@ class: medium-code
 
 .seventy-two-left[
 ```scala
-def stream(suffix: String, iteration: Int, duration: FiniteDuration) =
+def stream(taskName: String, iteration: Int, duration: FiniteDuration) =
   List.range(0, iteration).traverse { n =>
-    IO.debug(s"Task $suffix $n") andThen IO.sleep(duration)
+    IO.debug(s"Task $taskName $n") andThen IO.sleep(duration)
   }
 
 val streamA = stream("A", 4, 200.millis)

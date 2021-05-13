@@ -7,6 +7,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 import scala.concurrent.ExecutionContext.global
+import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 
 class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
@@ -160,7 +161,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     val counter = new AtomicInteger(0)
 
     val first  = IO(counter.incrementAndGet())
-    val second = IO.sleep(Duration.ofMillis(10)) *> IO(counter.set(5)) *> IO(counter.get())
+    val second = IO.sleep(10.millis) *> IO(counter.set(5)) *> IO(counter.get())
 
     val action = first.parZip(second)(global)
     assert(counter.get() == 0)
@@ -173,7 +174,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   ignore("parZip second faster than first") {
     val counter = new AtomicInteger(0)
 
-    val first  = IO.sleep(Duration.ofMillis(10)) *> IO(counter.incrementAndGet())
+    val first  = IO.sleep(10.millis) *> IO(counter.incrementAndGet())
     val second = IO(counter.set(5)) *> IO(counter.get())
 
     val action = first.parZip(second)(global)

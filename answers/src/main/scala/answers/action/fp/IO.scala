@@ -1,6 +1,6 @@
 package answers.action.fp
 
-import java.time.Duration
+import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
@@ -92,7 +92,7 @@ object IO {
   def debug(message: String): IO[Unit] =
     IO(Predef.println(s"[${Thread.currentThread().getName}] " + message))
 
-  def sleep(duration: Duration): IO[Unit] =
+  def sleep(duration: FiniteDuration): IO[Unit] =
     IO {
       Thread.sleep(duration.toMillis)
     }

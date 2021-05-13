@@ -1,10 +1,11 @@
 package answers.action.async.search
 
-import java.time.{Duration, LocalDate}
 import answers.action.async._
 import answers.action.fp.search.{Airport, Flight, SearchResult}
 
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
 
 trait SearchFlightService {
   def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult]
@@ -19,7 +20,7 @@ object SearchFlightService {
           client
             .search(from, to, date)
             .map(removeInvalidFlights)
-            .timeout(Duration.ofMillis(100))(ec)
+            .timeout(100.millis)(ec)
             .handleErrorWith(_ => IO(Nil))
 
         def removeInvalidFlights(flights: List[Flight]): List[Flight] =
