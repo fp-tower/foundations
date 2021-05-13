@@ -51,11 +51,12 @@ class SearchResultTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     }
   }
 
-  test("flights are distinct by flightId") {
+  test("no duplicate flights by flight id") {
     forAll(Gen.listOf(flightGen)) { (flights: List[Flight]) =>
-      val result = SearchResult(flights)
+      val result       = SearchResult(flights)
+      val distinctById = result.flights.distinctBy(_.flightId)
 
-      assert(result.flights.distinctBy(_.flightId) == result.flights)
+      assert(distinctById.size == result.flights.size)
     }
   }
 

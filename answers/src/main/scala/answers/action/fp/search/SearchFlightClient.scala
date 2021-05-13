@@ -10,10 +10,10 @@ trait SearchFlightClient {
 object SearchFlightClient {
 
   // test client which returns the same list of flights for all requests
-  def constant(flights: List[Flight]): SearchFlightClient =
+  def constant(flights: IO[List[Flight]]): SearchFlightClient =
     new SearchFlightClient {
       def search(from: Airport, to: Airport, date: LocalDate): IO[List[Flight]] =
-        IO(flights)
+        flights
     }
 
 }

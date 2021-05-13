@@ -4,6 +4,10 @@ import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
+import java.time.Duration
+import java.util.concurrent.atomic.AtomicInteger
+import scala.concurrent.ExecutionContext.global
+import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 
 // Run the test using the green arrow next to class name (if using IntelliJ)
@@ -180,6 +184,68 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     action.unsafeRun()
     assert(counter == 2) // first and second were executed in the expected order
+  }
+
+  //////////////////////////////////////////////
+  // Search Flight Exercises
+  //////////////////////////////////////////////
+
+  test("sequence") {
+    var counter = 0
+
+    val action = IO.sequence(
+      List(
+        IO { counter += 2; counter },
+        IO { counter *= 3; counter },
+        IO { counter -= 1; counter }
+      )
+    )
+    assert(counter == 0)
+
+    assert(action.unsafeRun() == List(2, 6, 5))
+    assert(counter == 5)
+  }
+
+  test("traverse") {
+    var counter = 0
+
+    val values: List[Int => Int] = List(_ + 2, _ * 3, _ - 1)
+
+    val action = IO.traverse(values)(f => IO { counter = f(counter); counter })
+    assert(counter == 0)
+
+    assert(action.unsafeRun() == List(2, 6, 5))
+    assert(counter == 5)
+  }
+
+  //////////////////////////////////////////////
+  // Concurrent IO
+  //////////////////////////////////////////////
+
+  test("parZip first faster than second") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO(counter.incrementAndGet())
+    val second = IO.sleep(10.millis) *> IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (1, 5))
+    assert(counter.get() == 5)
+  }
+
+  test("parZip second faster than first") {
+    val counter = new AtomicInteger(0)
+
+    val first  = IO.sleep(10.millis) *> IO(counter.incrementAndGet())
+    val second = IO(counter.set(5)) *> IO(counter.get())
+
+    val action = first.parZip(second)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == (6, 5))
+    assert(counter.get() == 6)
   }
 
 }

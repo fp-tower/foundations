@@ -64,7 +64,7 @@ val average = new MonoFoldParam[Double] {
   def default: Double = 0
 
   def combine(first: Double, second: Double) =
-    (first * second) / 2
+    (first + second) / 2
 }
 ```
 

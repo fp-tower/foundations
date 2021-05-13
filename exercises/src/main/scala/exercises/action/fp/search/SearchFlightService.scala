@@ -1,7 +1,6 @@
 package exercises.action.fp.search
 
 import java.time.LocalDate
-
 import exercises.action.fp.IO
 
 // This represent the main API of Lambda Corp.
@@ -21,40 +20,44 @@ object SearchFlightService {
   // Note: A example based test is defined in `SearchFlightServiceTest`.
   //       You can also defined tests for `SearchResult` in `SearchResultTest`
   def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient): SearchFlightService =
-    ???
+    fromClients(List(client1, client2))
 
   // 2. Several clients can return data for the same flight. For example, if we combine data
   // from British Airways and lastminute.com, lastminute.com may include flights from British Airways.
   // Update `fromTwoClients` so that if we get two or more flights with the same `flightId`,
   // `SearchFlightService` selects the flight with the lowest `unitPrice` and discards the other ones.
 
-  // 3. Clients may occasionally return invalid data. For example, one may returns flights for
-  // London Heathrow airport while the search was for London Gatwick airport.
-  // Update `fromTwoClients` so that `SearchFlightService` only returns flights that satisfies the
-  // search criteria.
+  // 3. A client may occasionally throw an exception. `fromTwoClients` should
+  // handle the error gracefully, for example log a message and ignore the error.
+  // In other words, `fromTwoClients` should consider that a client which throws an exception
+  // is the same as a client which returns an empty list.
 
-  // 4. Can you think of other scenarios we should consider in `fromTwoClients`?
-  // Try to write a test for each scenario before updating `fromTwoClients`.
-  // Note: Some scenarios are extremely difficult to test and fix.
-  //       It is already great if you can think of the issue!
+  // 4. Implement `fromClients` which behaves like `fromTwoClients` but it takes
+  // a list of `SearchFlightClient`.
+  // Note: You can use a recursion/loop/foldLeft to call all the clients and combine their results.
+  // Note: We can assume `clients` to contain less than 100 elements.
+  def fromClients(clients: List[SearchFlightClient]): SearchFlightService =
+    new SearchFlightService {
+      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] = {
+        def searchByClient(client: SearchFlightClient): IO[List[Flight]] =
+          client
+            .search(from, to, date)
+            .handleErrorWith(e => IO.debug(s"Couldn't fetch flights, ${e.getMessage}") andThen IO(Nil))
+
+        clients
+          .traverse(searchByClient)
+          .map(_.flatten)
+          .map(SearchResult(_))
+      }
+    }
+
+  // 5. Refactor `fromClients` using `sequence` or `traverse` from the `IO` companion object.
 
   //////////////////////////////////////////////
+  // Concurrent IO
   //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //                                          //
-  //                SPOILER                   //
-  //                                          //
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  // Here are some examples:
-  //
-  // a) A client may occasionally throw an exception. `SearchFlightService` should
-  //    handle the error gracefully, for example log a message and ignore the error.
-  //
-  // b) Each client's search request is executed sequentially - one after another.
+
+  // 6. Each client's search request is executed sequentially - one after another.
   //    Here are the current execution steps of `fromTwoClients`
   //    1. send search request to client 1
   //    2. receive list of flights from client 1
@@ -68,12 +71,13 @@ object SearchFlightService {
   //    3. receive list of flights from client 1
   //    4. receive list of flights from client 2
   //    5. aggregate results from client 1 and 2
-  //
-  // c) A client may be extremely slow. `fromTwoClients` should define a timeout
-  //    so that it doesn't wait more than 2 seconds per client.
 
-  // 5. Implement `fromClients` which behaves like `fromTwoClients` but for
-  //    an unknown number of `SearchFlightClient`.
-  def fromClients(clients: List[SearchFlightClient]): SearchFlightService =
-    ???
+  // 10. A client may be extremely slow. `fromTwoClients` should define a timeout
+  // so that it doesn't wait more than 2 seconds per client.
+
+  // 11. Clients may occasionally return invalid data. For example, one may returns flights for
+  // London Heathrow airport while the search was for London Gatwick airport.
+  // Update `fromClients` so that `SearchFlightService` only returns flights that satisfies the
+  // search criteria.
+
 }

@@ -1,7 +1,8 @@
 package exercises.action
+
 import scala.concurrent.ExecutionContext
 
-package object async {
+package object fp {
 
   // extend the List API
   implicit class ListExtension[A](values: List[A]) {
