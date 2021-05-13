@@ -24,9 +24,9 @@
     </font-face>
   </defs>
   <metadata> Produced by OmniGraffle 7.18.5\n2021-05-05 14:48:59 +0000</metadata>
-  <g id="fp-function-map-3" stroke="none" stroke-dasharray="none" fill-opacity="1" stroke-opacity="1" fill="none">
-    <title>fp-function-map-3</title>
-    <g id="fp-function-map-3_Layer_1">
+  <g id="Canvas_282" stroke="none" stroke-dasharray="none" fill-opacity="1" stroke-opacity="1" fill="none">
+    <title>Canvas 282</title>
+    <g id="Canvas_282_Layer_1">
       <title>Layer 1</title>
       <g id="Graphic_98">
         <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#70a3d8"/>
@@ -86,23 +86,6 @@
       <g id="Graphic_112">
         <text transform="translate(226 359.884)" fill="#404040">
           <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#404040" x="1.345" y="29">getUserAge</tspan>
-        </text>
-      </g>
-      <g id="Graphic_114">
-        <path d="M 117 279 L 153 315 L 117 351 L 81 315 Z" fill="#589b9d"/>
-        <path d="M 117 279 L 153 315 L 117 351 L 81 315 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
-        <text transform="translate(95.72 302.5)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="4.78" y="19">Zoe</tspan>
-        </text>
-      </g>
-      <g id="Line_115">
-        <line x1="140.18644" y1="302.18644" x2="424.52294" y2="145.05311" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-      </g>
-      <g id="Graphic_116">
-        <path d="M 549 135 L 585 171 L 549 207 L 513 171 Z" fill="#70a3d8"/>
-        <path d="M 549 135 L 585 171 L 549 207 L 513 171 Z" stroke="#eabc00" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-        <text transform="translate(527.72 158.5)" fill="white">
-          <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="5.32" y="19">427</tspan>
         </text>
       </g>
     </g>
