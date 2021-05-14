@@ -3,6 +3,8 @@ package exercises.action.fp.search
 import java.time.LocalDate
 import exercises.action.fp.IO
 
+import scala.concurrent.ExecutionContext
+
 // This represent the main API of Lambda Corp.
 // `search` is called whenever a user press the "Search" button on the website.
 trait SearchFlightService {
@@ -19,8 +21,10 @@ object SearchFlightService {
   // (see `SearchResult` companion object).
   // Note: A example based test is defined in `SearchFlightServiceTest`.
   //       You can also defined tests for `SearchResult` in `SearchResultTest`
-  def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient): SearchFlightService =
-    fromClients(List(client1, client2))
+  def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient)(
+    ec: ExecutionContext
+  ): SearchFlightService =
+    fromClients(List(client1, client2))(ec)
 
   // 2. Several clients can return data for the same flight. For example, if we combine data
   // from British Airways and lastminute.com, lastminute.com may include flights from British Airways.
@@ -36,7 +40,7 @@ object SearchFlightService {
   // a list of `SearchFlightClient`.
   // Note: You can use a recursion/loop/foldLeft to call all the clients and combine their results.
   // Note: We can assume `clients` to contain less than 100 elements.
-  def fromClients(clients: List[SearchFlightClient]): SearchFlightService =
+  def fromClients(clients: List[SearchFlightClient])(ec: ExecutionContext): SearchFlightService =
     new SearchFlightService {
       def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] = {
         def searchByClient(client: SearchFlightClient): IO[List[Flight]] =
@@ -45,7 +49,7 @@ object SearchFlightService {
             .handleErrorWith(e => IO.debug(s"Couldn't fetch flights, ${e.getMessage}") andThen IO(Nil))
 
         clients
-          .traverse(searchByClient)
+          .parTraverse(searchByClient)(ec)
           .map(_.flatten)
           .map(SearchResult(_))
       }

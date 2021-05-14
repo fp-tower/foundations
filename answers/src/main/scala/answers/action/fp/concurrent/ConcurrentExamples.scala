@@ -1,28 +1,32 @@
-package answers.action.async
+package answers.action.fp.concurrent
 
+import answers.action.fp._
 import answers.dataprocessing.ThreadPoolUtil
 
-import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 object ConcurrentExamplesApp extends App {
   import ConcurrentExamples._
 
-  val ec = ThreadPoolUtil.fixedSizeExecutionContext(4, "pool")
+  val x = IO(1)
+  println(x.toString)
 
-  parMany(ec).unsafeRun()
+  val boundedEC = ThreadPoolUtil.fixedSizeExecutionContext(4, "pool")
+
+  parMany(boundedEC).unsafeRun()
 }
 
 object ConcurrentExamples {
 
-  def parTwo(ec: ExecutionContext): IO[Any] = {
+  def parTwo(ec: ExecutionContext) = {
     val streamA = stream("A", 10, 200.millis)
-    val streamB = stream("B", 8, 400.millis)
+    val streamB = stream("B", 10, 400.millis)
 
     streamA.parZip(streamB)(ec)
   }
 
-  def parMany(ec: ExecutionContext): IO[Any] = {
+  def parMany(ec: ExecutionContext) = {
     val streamA = stream("A", 2, 1000.millis)
     val streamB = stream("B", 5, 500.millis)
     val streamC = stream("C", 7, 300.millis)
@@ -33,21 +37,13 @@ object ConcurrentExamples {
     List(streamA, streamB, streamC, streamD, streamE, streamF).parSequence(ec)
   }
 
-  def timeoutSucceed(ec: ExecutionContext): IO[Any] =
-    stream("", 20, 200.millis) // 4 seconds
-      .timeout(10.seconds)(ec)
-
-  def timeoutFailed(ec: ExecutionContext): IO[Any] =
-    stream("", 20, 200.millis) // 4 seconds
-      .timeout(2.seconds)(ec)
-
   // Print "Task $taskName 0"
   // sleep $duration
   // Print "Task $taskName 1"
   // sleep $duration
   // ...
   // repeat $iteration times
-  def stream(taskName: String, iteration: Int, duration: FiniteDuration): IO[Any] =
+  def stream(taskName: String, iteration: Int, duration: FiniteDuration) =
     List.range(0, iteration).traverse { n =>
       IO.debug(s"Task $taskName $n") *> IO.sleep(duration)
     }

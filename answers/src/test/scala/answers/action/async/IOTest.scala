@@ -275,7 +275,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     val action = List(
       IO.sleep(10.millis) *> IO(counter.incrementAndGet()),
       IO(counter.set(5)) *> IO(counter.get()),
-      IO.sleep(10.millis) *> IO(counter.set(10)) *> IO(counter.get())
+      IO.sleep(50.millis) *> IO(counter.set(10)) *> IO(counter.get())
     ).parSequence(global)
     assert(counter.get() == 0)
 

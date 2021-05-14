@@ -1,11 +1,10 @@
 package exercises.action.fp
 
-import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
+import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.global
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
@@ -26,6 +25,15 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     action.unsafeRun()
     assert(counter == 2)
+  }
+
+  test("concurrent IO") {
+    val action = IO.futureApply {
+      Thread.sleep(100)
+      1
+    }(ExecutionContext.global)
+
+    assert(action.unsafeRun() == 1)
   }
 
   // replace `ignore` by `test` to enable this test
@@ -222,6 +230,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   // Concurrent IO
   //////////////////////////////////////////////
 
+  // flaky
   test("parZip first faster than second") {
     val counter = new AtomicInteger(0)
 
@@ -235,6 +244,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     assert(counter.get() == 5)
   }
 
+  // flaky
   test("parZip second faster than first") {
     val counter = new AtomicInteger(0)
 
@@ -246,6 +256,35 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     assert(action.unsafeRun() == (6, 5))
     assert(counter.get() == 6)
+  }
+
+  // flaky
+  test("parSequence") {
+    val counter = new AtomicInteger(0)
+
+    val action = List(
+      IO.sleep(10.millis) *> IO(counter.incrementAndGet()),
+      IO(counter.set(5)) *> IO(counter.get()),
+      IO.sleep(50.millis) *> IO(counter.set(10)) *> IO(counter.get())
+    ).parSequence(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == List(6, 5, 10))
+    assert(counter.get() == 10)
+  }
+
+  // flaky
+  test("parTraverse") {
+    val counter = new AtomicInteger(0)
+
+    def sleepAndIncrement(sleepMillis: Int): IO[Int] =
+      IO.sleep(sleepMillis.millis) *> IO(counter.incrementAndGet())
+
+    val action = List(10, 0, 50).parTraverse(sleepAndIncrement)(global)
+    assert(counter.get() == 0)
+
+    assert(action.unsafeRun() == List(2, 1, 3))
+    assert(counter.get() == 3)
   }
 
 }

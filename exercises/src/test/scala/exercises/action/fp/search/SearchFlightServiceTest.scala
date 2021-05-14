@@ -10,11 +10,14 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import java.time.{Duration, Instant, LocalDate}
+import scala.concurrent.ExecutionContext
+import scala.util.Random
 
 // Run the test using the green arrow next to class name (if using IntelliJ)
 // or run `sbt` in the terminal to open it in shell mode, then type:
 // testOnly exercises.action.fp.search.SearchFlightServiceTest
 class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+  val ec = ExecutionContext.global
 
   test("fromClients example") {
     val now   = Instant.now()
@@ -30,7 +33,7 @@ class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     val client2 = SearchFlightClient.constant(IO(List(flight1b, flight2, flight4)))
     val client3 = SearchFlightClient.constant(IO.fail(new Exception("Boom")))
 
-    val service = SearchFlightService.fromClients(List(client1, client2, client3))
+    val service = SearchFlightService.fromClients(List(client1, client2, client3))(ec)
     val result  = service.search(parisOrly, londonGatwick, today).unsafeRun()
 
     assert(result == SearchResult(List(flight1b, flight2, flight3, flight4)))
@@ -38,19 +41,31 @@ class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
 
   test("search never fail") {
     forAll(airportGen, airportGen, dateGen, Gen.listOf(clientGen)) { (from, to, date, clients) =>
-      val service = SearchFlightService.fromClients(clients)
+      val service = SearchFlightService.fromClients(clients)(ec)
       val result  = service.search(from, to, date).attempt.unsafeRun()
 
       assert(result.isSuccess)
     }
   }
 
+  test("clients order doesn't matter") {
+    forAll(airportGen, airportGen, dateGen, Gen.listOf(clientGen)) { (from, to, date, clients) =>
+      val service1 = SearchFlightService.fromClients(clients)(ec)
+      val service2 = SearchFlightService.fromClients(Random.shuffle(clients))(ec)
+
+      val result1 = service1.search(from, to, date).unsafeRun()
+      val result2 = service2.search(from, to, date).unsafeRun()
+
+      assert(result1 == result2)
+    }
+  }
+
   test("search use all clients") {
     forAll(airportGen, airportGen, dateGen, Gen.listOf(clientGen), Gen.listOf(clientGen)) {
       (from, to, date, clients1, clients2) =>
-        val service1 = SearchFlightService.fromClients(clients1)
-        val service2 = SearchFlightService.fromClients(clients2)
-        val service3 = SearchFlightService.fromClients(clients1 ++ clients2)
+        val service1 = SearchFlightService.fromClients(clients1)(ec)
+        val service2 = SearchFlightService.fromClients(clients2)(ec)
+        val service3 = SearchFlightService.fromClients(clients1 ++ clients2)(ec)
 
         val result1 = service1.search(from, to, date).unsafeRun()
         val result2 = service2.search(from, to, date).unsafeRun()

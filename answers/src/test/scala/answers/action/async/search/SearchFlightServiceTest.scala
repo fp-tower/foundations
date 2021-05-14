@@ -11,6 +11,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import java.time.{Duration, Instant, LocalDate}
 import scala.concurrent.ExecutionContextExecutor
+import scala.util.Random
 
 class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   val ec: ExecutionContextExecutor = scala.concurrent.ExecutionContext.global
@@ -42,6 +43,18 @@ class SearchFlightServiceTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       val result  = service.search(from, to, date).attempt.unsafeRun()
 
       assert(result.isSuccess)
+    }
+  }
+
+  test("clients order doesn't matter") {
+    forAll(airportGen, airportGen, dateGen, Gen.listOf(clientGen), fewAttempts) { (from, to, date, clients) =>
+      val service1 = SearchFlightService.fromClients(clients)(ec)
+      val service2 = SearchFlightService.fromClients(Random.shuffle(clients))(ec)
+
+      val result1 = service1.search(from, to, date).unsafeRun()
+      val result2 = service2.search(from, to, date).unsafeRun()
+
+      assert(result1 == result2)
     }
   }
 

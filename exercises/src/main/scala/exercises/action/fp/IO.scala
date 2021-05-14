@@ -1,13 +1,28 @@
 package exercises.action.fp
 
+import java.util.concurrent.CountDownLatch
 import scala.concurrent.duration.{Duration, FiniteDuration}
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{Await, ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success, Try}
 
 trait IO[A] {
-  // Executes the action.
   // This is the ONLY abstract method of the `IO` trait.
-  def unsafeRun(): A
+  def unsafeRunAsync(callback: Try[A] => Unit): Unit
+
+  // Executes the action.
+  def unsafeRun(): A = {
+    var result: Option[Try[A]] = None
+    val latch                  = new CountDownLatch(1)
+
+    unsafeRunAsync { res =>
+      result = Some(res)
+      latch.countDown() // release the latch
+    }
+
+    latch.await()
+
+    result.get.get
+  }
 
   // Runs the current IO (`this`), discards its result and runs the second IO (`other`).
   // For example,
@@ -125,13 +140,16 @@ trait IO[A] {
   // Runs both the current IO and `other` concurrently,
   // then combine their results into a tuple
   def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
-    IO {
-      val future1: Future[A]     = Future(this.unsafeRun())(ec)
-      val future2: Future[Other] = Future(other.unsafeRun())(ec)
+    IO.async { callback =>
+      val promise1: Promise[A]     = Promise() // var promise1 = null
+      val promise2: Promise[Other] = Promise() // var promise2 = null
 
-      val combined: Future[(A, Other)] = future1.zip(future2)
+      ec.execute(() => this.unsafeRunAsync(promise1.complete))
+      ec.execute(() => other.unsafeRunAsync(promise2.complete))
 
-      Await.result(combined, Duration.Inf): (A, Other)
+      val combined: Future[(A, Other)] = promise1.future.zip(promise2.future)
+
+      combined.onComplete(callback)(ec)
     }
 }
 
@@ -141,8 +159,19 @@ object IO {
   // greeting.unsafeRun()
   // prints "Hello"
   def apply[A](action: => A): IO[A] =
+    async(callback => callback(Try(action)))
+
+  def async[A](onComplete: (Try[A] => Unit) => Unit): IO[A] =
     new IO[A] {
-      def unsafeRun(): A = action
+      def unsafeRunAsync(callback: Try[A] => Unit): Unit =
+        onComplete(callback)
+    }
+
+  def futureApply[A](action: => A)(ec: ExecutionContext): IO[A] =
+    async { callback =>
+      ec.execute { () =>
+        callback(Try(action))
+      }
     }
 
   // Construct an IO which throws `error` everytime it is called.
@@ -165,20 +194,18 @@ object IO {
   // val actions : List[IO[User]] = List(db.getUser(1111), db.getUser(2222), db.getUser(3333))
   // val combined: IO[List[User]] = sequence(actions)
   // combined.unsafeRun
-  // will fetch user 1111 and then user 2222 and then user 3333.
-  // If no error occurs, it will return the users in the same order:
+  // fetches user 1111, then fetches user 2222 and finally fetches user 3333.
+  // If no error occurs, it returns the users in the same order:
   // List(User(1111, ...), User(2222, ...), User(3333, ...))
   def sequence[A](actions: List[IO[A]]): IO[List[A]] =
     actions
       .foldLeft[IO[List[A]]](IO(Nil))((state, action) =>
-        for {
-          otherResults <- state
-          result       <- action
-        } yield result :: otherResults
+        state.zip(action).map { case (otherResults, result) => result :: otherResults }
       )
       .map(_.reverse)
 
-  // shortcut for map + sequence, similar to flatMap = map + flatten
+  // `traverse` is a shortcut for `map` followed by `sequence`, similar to how
+  // `flatMap`  is a shortcut for `map` followed by `flatten`
   // For example,
   // traverse(List(1111, 2222, 3333))(db.getUser) is equivalent to
   // sequence(List(db.getUser(1111), db.getUser(2222), db.getUser(3333)))
@@ -189,12 +216,27 @@ object IO {
   // Concurrent IO
   //////////////////////////////////////////////
 
-  // Runs all the actions concurrently (one after the other).
-  // Note: You may want to re-use `parZip`
+  // Runs all the actions concurrently and collect the results in the same order.
+  // For example,
+  // val actions : List[IO[User]] = List(db.getUser(1111), db.getUser(2222), db.getUser(3333))
+  // val combined: IO[List[User]] = parSequence(actions)
+  // combined.unsafeRun
+  // sends requests to fetch user 1111, 2222 and 3333 roughly at the same time.
+  // If no error occurs, `parSequence` returns the users in the same order:
+  // List(User(1111, ...), User(2222, ...), User(3333, ...))
+  // Note: You may want to use `parZip` to implement `parSequence`.
   def parSequence[A](actions: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
-    ???
+    actions
+      .foldLeft[IO[List[A]]](IO(Nil))((state, action) =>
+        state.parZip(action)(ec).map { case (otherResults, result) => result :: otherResults }
+      )
+      .map(_.reverse)
 
-  // shortcut for map + parSequence, similar to flatMap = map + flatten
+  // `parTraverse` is a shortcut for `map` followed by `parSequence`, similar to how
+  // `flatMap`     is a shortcut for `map` followed by `flatten`
+  // For example,
+  // parTraverse(List(1111, 2222, 3333))(db.getUser) is equivalent to
+  // parSequence(List(db.getUser(1111), db.getUser(2222), db.getUser(3333)))
   def parTraverse[A, B](values: List[A])(action: A => IO[B])(ec: ExecutionContext): IO[List[B]] =
     parSequence(values.map(action))(ec)
 

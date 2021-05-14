@@ -18,6 +18,9 @@ package object async {
 
     def parSequence(ec: ExecutionContext): IO[List[A]] =
       IO.parSequence(values)(ec)
+
+    def parSequence2(ec: ExecutionContext): IO[List[A]] =
+      IO.parSequence2(values)(ec)
   }
 
   implicit class Tuple2IOExtension[A, B](tuple: (IO[A], IO[B])) {

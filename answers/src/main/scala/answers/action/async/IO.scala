@@ -92,6 +92,9 @@ sealed trait IO[+A] {
       Fiber.fromPromise(promise)(ec)
     }
 
+  def evalOn(ec: ExecutionContext): IO[A] =
+    fork(ec).flatMap(_.join)
+
   def timeout(duration: FiniteDuration)(ec: ExecutionContext): IO[A] =
     race(sleep(duration) *> fail(new TimeoutException("Timeout")))(ec)
       .map {
