@@ -218,7 +218,7 @@ val greeting: () => Unit =
   () => println("Hello")
 
 def greeting(): Unit =
-  () => println("Hello")
+  println("Hello")
 ```
 ]
 
@@ -239,7 +239,7 @@ trait Action[A] {
 .fifty-two-left[
 ```scala
 object Action {
-  def apply[A](action: () => A): Action[A] =
+  def apply[A](action: => A): Action[A] =
     ???
 }
 ```

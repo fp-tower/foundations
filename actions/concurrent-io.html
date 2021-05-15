@@ -532,8 +532,11 @@ trait SearchFlightClient {
 .forty-seven-left[
 <br><br><br>
 ```scala
-client1.search(from, to, date)
-  .zip(client2.search(from, to, date))
+val search1 = client1.search(from, to, date)
+val search2 = client2.search(from, to, date)
+
+search1
+  .zip(search2)
   .map { case (flights1, flights2) =>
     SearchResult(flights1 ++ flights2)
   }
@@ -541,7 +544,7 @@ client1.search(from, to, date)
 ]
 
 .fifty-two-right[.center[
-<img src="../img/foundation/from-two-clients-2b.svg" style="width:550px;"/>
+<img src="../img/foundation/from-two-clients-2a.svg" style="width:550px;"/>
 ]]
 
 ---
@@ -554,150 +557,17 @@ class: middle, white
 # IO.scala
 
 ---
-# For comprehension is sequential
-
-.fifty-two-left[
-```scala
-for {
-  _    <- writeLine("What's your name?")
-  name <- readLine
-  _    <- writeLine(s"Your name is $name")
-} yield name
-```
-]
-
----
-# For comprehension is sequential
-
-.fifty-two-left[
-```scala
-for {
-  _    <- writeLine("What's your name?")
-  `name` <- readLine
-  _    <- writeLine(s"Your name is `$name`")
-} yield name
-```
-]
-
----
-# FlatMap is sequential
-
-.fifty-two-left[
-```scala
-for {
-  _    <- writeLine("What's your name?")
-  name <- readLine
-  _    <- writeLine(s"Your name is $name")
-} yield name
-```
-]
-
-.fifty-two-left[
-```scala
-readLine.flatMap { `name` =>
-  writeLine(s"Your name is `$name`")
-}
-```
-]
-
----
-# Can we detect if there are dependencies between IO?
-
-.fifty-two-left[
-```scala
-for {
-  flights1 <- client1.search(from, to, date)
-  flights2 <- client2.search(from, to, date)
-} yield SearchResult(flights1 ++ flights2)
-```
-]
-
---
-
-<br><br><br><br><br><br><br>
-
-.forty-seven-left[
-```scala
-def upsertUser(user: User): IO[Unit] =
-  for {
-    _ <- db.deleteUser(user.id)
-    _ <- db.insertUser(user)
-  } yield ()
-```
-]
-
-.forty-seven-right[
-```scala
-def upsertUser(user: User): IO[Unit] =
-  for {
-    _ <- db.insertUser(user)
-    _ <- db.deleteUser(user.id)
-  } yield ()
-```
-]
-
----
-class: center, middle
-
-# What about Futures?
-
-
----
-class: medium-code
-
-# Concurrent IOs
-
-.seventy-seven-left[
-```scala
-def parZip3[A1, A2, A3](
-  action1: IO[A1],
-  action2: IO[A2],
-  action3: IO[A3]
-)(ec: ExecutionContext): IO[(A1, A2, A3)] =
-  ???
-```
-]
-
----
-class: medium-code
-
-# Concurrent IOs
-
-.seventy-seven-left[
-```scala
-def parZip3[A1, A2, A3](
-  action1: IO[A1],
-  action2: IO[A2],
-  action3: IO[A3]
-)(ec: ExecutionContext): IO[(A1, A2, A3)] =
-  action1                                        // IO[A1]
-    .parZip(action2)(ec)                         // IO[(A1, A2)]
-    .parZip(action3)(ec)                         // IO[((A1, A2), A3)]
-    .map { case ((a1, a2), a3) => (a1, a2, a3) } // IO[(A1, A2, A3)]
-```
-]
-
---
-
-.seventy-seven-left[
-```scala
-def parSequence[A](actions: List[IO[A]])(ec: ExecutionContext): IO[List[A]] =
-  ??? // fold + parZip
-```
-]
-
-
-
----
 class: medium-code
 
 # parZip is blocking
 
-.fifty-two-left[
+<br>
+
+.fifty-seven-left[
 ```scala
 trait IO[A] {
 
-  // Runs both "this" and "other" concurrently,
+  // Runs both the current IO and "other" concurrently,
   // then combine their results into a tuple
   def parZip[Other](other: IO[Other])
                    (ec: ExecutionContext) =
@@ -705,47 +575,87 @@ trait IO[A] {
       val future1 = Future {  this.unsafeRun() }(ec)
       val future2 = Future { other.unsafeRun() }(ec)
 
-      val futureZip = future1.zip(future2)
+      val combined = future1.zip(future2)
 
-      `Await.result`(futureZip, Duration.Inf)
+      `Await.result`(combined, Duration.Inf)
     }
 
 }
 ```
 ]
 
+--
+
 .forty-two-right[
+<br><br><br>
 <img src="../img/foundation/parzip-blocking-1.svg" style="width:450px;"/>
 ]
 
 ---
 class: medium-code
 
-# parZip is blocking
+# parSequence calls parZip recursively
 
-.fifty-two-left[
+.fifty-seven-left[
+<br><br><br><br>
 ```scala
-trait IO[A] {
-
-  // Runs both "this" and "other" concurrently,
-  // then combine their results into a tuple
-  def parZip[Other](other: IO[Other])
-                   (ec: ExecutionContext) =
-    IO {
-      val future1 = Future {  this.unsafeRun() }(ec)
-      val future2 = Future { other.unsafeRun() }(ec)
-
-      val futureZip = future1.zip(future2)
-
-      `Await.result`(futureZip, Duration.Inf)
+def parSequence[A](actions: List[IO[A]])
+                  (ec: ExecutionContext): IO[List[A]] =
+  actions.`foldLeft`(IO(List.empty[A]))( (state, action) =>
+    state.`parZip`(action)(ec).map {
+      case (list, value) => value :: list
     }
-
-}
+  ).map(_.reverse)
 ```
 ]
 
 .forty-two-right[
-<img src="../img/foundation/parzip-blocking-2.svg" style="width:450px;"/>
+<img src="../img/foundation/parzip-blocking-3.svg" style="width:450px;"/>
+]
+
+---
+class: medium-code
+
+# parSequence calls parZip recursively
+
+.fifty-seven-left[
+<br><br><br><br>
+```scala
+def parSequence[A](actions: List[IO[A]])
+                  (ec: ExecutionContext): IO[List[A]] =
+  actions.`foldLeft`(IO(List.empty[A]))( (state, action) =>
+    state.`parZip`(action)(ec).map {
+      case (list, value) => value :: list
+    }
+  ).map(_.reverse)
+```
+]
+
+.forty-two-right[
+<img src="../img/foundation/parzip-blocking-4.svg" style="width:450px;"/>
+]
+
+---
+class: medium-code
+
+# parSequence can cause a deadlock
+
+.fifty-seven-left[
+<br><br><br><br>
+```scala
+def parSequence[A](actions: List[IO[A]])
+                  (ec: ExecutionContext): IO[List[A]] =
+  actions.`foldLeft`(IO(List.empty[A]))( (state, action) =>
+    state.`parZip`(action)(ec).map {
+      case (list, value) => value :: list
+    }
+  ).map(_.reverse)
+```
+]
+
+.forty-two-right[
+<br>
+<img src="../img/foundation/execution-context-dead-lock.svg" style="width:450px;"/>
 ]
 
 ---
