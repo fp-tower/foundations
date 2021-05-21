@@ -1,4 +1,4 @@
-## Erratum
+## Corrections
 
 44:34 The nested method code has a typo, it should be `go(tail, state + head)` instead of `sum(tail, state + head)`
 

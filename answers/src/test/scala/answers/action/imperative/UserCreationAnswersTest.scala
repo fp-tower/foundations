@@ -137,7 +137,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       outputs.toList == List(
         """Would you like to subscribe to our mailing list? [Y/N]""",
         """Incorrect format, enter "Y" for Yes or "N" for "No"""",
-        """Would you like to subscribe to our mailing list? [Y/N]""",
+        """Would you like to subscribe to our mailing list? [Y/N]"""
       )
     )
   }
@@ -151,7 +151,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     assert(
       outputs.toList == List(
         """Would you like to subscribe to our mailing list? [Y/N]""",
-        """Incorrect format, enter "Y" for Yes or "N" for "No"""",
+        """Incorrect format, enter "Y" for Yes or "N" for "No""""
       )
     )
 
@@ -170,7 +170,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
       outputs.toList == List(
         """What's your date of birth? [dd-mm-yyyy]""",
         """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
-        """What's your date of birth? [dd-mm-yyyy]""",
+        """What's your date of birth? [dd-mm-yyyy]"""
       )
     )
   }
@@ -185,7 +185,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     assert(
       outputs.toList == List(
         """What's your date of birth? [dd-mm-yyyy]""",
-        """Incorrect format, for example enter "18-03-2001" for 18th of March 2001""",
+        """Incorrect format, for example enter "18-03-2001" for 18th of March 2001"""
       )
     )
   }
@@ -229,7 +229,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
 
     test(s"$name if maxAttempt <= 0") {
-      forAll(invalidMaxAttemptGen) { (maxAttempt) =>
+      forAll(invalidMaxAttemptGen) { maxAttempt =>
         val console = Console.mock(ListBuffer.empty, ListBuffer.empty)
         val result  = Try(impl(console, maxAttempt))
 
@@ -260,7 +260,7 @@ class UserCreationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyC
     }
 
     test(s"$name if maxAttempt <= 0") {
-      forAll(invalidMaxAttemptGen) { (maxAttempt) =>
+      forAll(invalidMaxAttemptGen) { maxAttempt =>
         val console = Console.mock(ListBuffer.empty, ListBuffer.empty)
         val result  = Try(impl(console, maxAttempt))
 
