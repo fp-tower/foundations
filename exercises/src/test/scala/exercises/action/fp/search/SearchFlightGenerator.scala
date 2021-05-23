@@ -54,7 +54,7 @@ object SearchFlightGenerator {
 
   val clientGen: Gen[SearchFlightClient] =
     Gen.frequency(
-      5 -> successfulClientGen,
+      9 -> successfulClientGen,
       1 -> failingClientGen
     )
 
