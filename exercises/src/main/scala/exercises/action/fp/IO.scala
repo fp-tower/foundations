@@ -1,6 +1,7 @@
 package exercises.action.fp
 
 import java.util.concurrent.CountDownLatch
+import scala.annotation.tailrec
 import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.concurrent.{Await, ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success, Try}
@@ -168,7 +169,14 @@ object IO {
   // If no error occurs, it returns the users in the same order:
   // List(User(1111, ...), User(2222, ...), User(3333, ...))
   def sequence[A](actions: List[IO[A]]): IO[List[A]] =
-    ???
+    actions
+      .foldLeft(IO(List.empty[A]))((state, action) =>
+        for {
+          result1 <- state
+          result2 <- action
+        } yield result2 :: result1
+      )
+      .map(_.reverse)
 
   // `traverse` is a shortcut for `map` followed by `sequence`, similar to how
   // `flatMap`  is a shortcut for `map` followed by `flatten`

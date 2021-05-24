@@ -189,7 +189,7 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   // Search Flight Exercises
   //////////////////////////////////////////////
 
-  ignore("sequence") {
+  test("sequence") {
     var counter = 0
 
     val action = IO.sequence(

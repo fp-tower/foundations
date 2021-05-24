@@ -3,6 +3,7 @@ package exercises.action.fp.search
 import java.time.LocalDate
 import exercises.action.fp.IO
 
+import scala.annotation.tailrec
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
@@ -24,8 +25,18 @@ object SearchFlightService {
   //       You can also defined tests for `SearchResult` in `SearchResultTest`
   def fromTwoClients(client1: SearchFlightClient, client2: SearchFlightClient): SearchFlightService =
     new SearchFlightService {
-      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] =
-        ???
+      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] = {
+        def searchByClient(client: SearchFlightClient): IO[List[Flight]] =
+          client
+            .search(from, to, date)
+            .handleErrorWith(e => IO.debug(s"Oops an error occurred: ${e}") andThen IO(Nil))
+
+        for {
+          flights1 <- searchByClient(client1)
+          flights2 <- searchByClient(client2)
+        } yield SearchResult(flights1 ++ flights2)
+      }
+
     }
 
   // 2. Several clients can return data for the same flight. For example, if we combine data
@@ -44,8 +55,17 @@ object SearchFlightService {
   // Note: We can assume `clients` to contain less than 100 elements.
   def fromClients(clients: List[SearchFlightClient]): SearchFlightService =
     new SearchFlightService {
-      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] =
-        ???
+      def search(from: Airport, to: Airport, date: LocalDate): IO[SearchResult] = {
+        def searchByClient(client: SearchFlightClient): IO[List[Flight]] =
+          client
+            .search(from, to, date)
+            .handleErrorWith(e => IO.debug(s"Oops an error occurred: ${e}") andThen IO(Nil))
+
+        clients
+          .traverse(searchByClient)
+          .map(_.flatten)
+          .map(SearchResult(_))
+      }
     }
 
   // 5. Refactor `fromClients` using `sequence` or `traverse` from the `IO` companion object.
