@@ -221,20 +221,6 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
   //////////////////////////////////////////////
 
   // flaky
-  ignore("parZip first faster than second") {
-    var counter = 0
-
-    val first  = IO { counter += 1; counter }
-    val second = IO.sleep(10.millis) *> IO { counter *= 2; counter }
-
-    val action = first.parZip(second)(global)
-    assert(counter == 0)
-
-    assert(action.unsafeRun() == (1, 2))
-    assert(counter == 2)
-  }
-
-  // flaky
   ignore("parZip second faster than first") {
     var counter = 0
 
@@ -246,6 +232,20 @@ class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     assert(action.unsafeRun() == (1, 0))
     assert(counter == 1)
+  }
+
+  // flaky
+  ignore("parZip first faster than second") {
+    var counter = 0
+
+    val first  = IO { counter += 1; counter }
+    val second = IO.sleep(10.millis) *> IO { counter *= 2; counter }
+
+    val action = first.parZip(second)(global)
+    assert(counter == 0)
+
+    assert(action.unsafeRun() == (1, 2))
+    assert(counter == 2)
   }
 
   // flaky
