@@ -19,9 +19,9 @@ object ConcurrentExamples extends App {
   val streamE = stream("E", 15, 100.millis)
   val streamF = stream("F", 20, 50.millis)
 
-  val seqTwo  = streamA.zip(streamB)
-  val parTwo  = streamA.parZip(streamB)(ec)
-  val parMany = List(streamA, streamB, streamC, streamD, streamE, streamF).parSequence(ec)
+  val seqTwo       = streamA.zip(streamB)
+  val parTwo       = streamA.parZip(streamB)(ec)
+  lazy val parMany = List(streamA, streamB, streamC, streamD, streamE, streamF).parSequence(ec)
 
   parTwo.unsafeRun()
 

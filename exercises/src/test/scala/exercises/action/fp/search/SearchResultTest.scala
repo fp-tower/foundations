@@ -1,14 +1,10 @@
 package exercises.action.fp.search
 
-import exercises.action.fp.IO
-import exercises.action.fp.search.Airport.{londonGatwick, parisOrly}
 import exercises.action.fp.search.SearchFlightGenerator._
-import exercises.action.fp.search.SearchResult._
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-import java.time.{Duration, Instant, LocalDate}
 import scala.Ordering.Implicits._
 
 // Run the test using the green arrow next to class name (if using IntelliJ)
@@ -48,20 +44,6 @@ class SearchResultTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
         flight  <- result.flights
       } assert(fastest.duration <= flight.duration)
     }
-  }
-
-  test("apply - sorts") {
-    val now = Instant.now()
-
-    val flight1a = Flight("1", "BA", parisOrly, londonGatwick, now, Duration.ofMinutes(100), 0, 89.5, "")
-    val flight1b = Flight("1", "BA", parisOrly, londonGatwick, now, Duration.ofMinutes(100), 0, 91.5, "")
-    val flight2  = Flight("2", "LH", parisOrly, londonGatwick, now, Duration.ofMinutes(105), 0, 96.5, "")
-    val flight3  = Flight("3", "BA", parisOrly, londonGatwick, now, Duration.ofMinutes(140), 1, 234.0, "")
-    val flight4  = Flight("4", "LH", parisOrly, londonGatwick, now, Duration.ofMinutes(210), 2, 55.5, "")
-
-    val result = SearchResult(List(flight2, flight4, flight3, flight1b, flight1a))
-
-    assert(result == SearchResult(List(flight1a, flight2, flight3, flight4)))
   }
 
 }
