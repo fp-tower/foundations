@@ -26,7 +26,7 @@ def greaterThan(x: Int, y: Int): Boolean = x >= y
 
 1. (c) `greaterThan _`
 1. `greaterThan.toVal`
-1. (c) `greaterThan: (Int, Int) => Boolean`
+1. (c) `val greaterThanVal: (Int, Int) => Boolean = greaterThan`
 
 #### Explanation
 

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Evaluation</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Evaluation]
+
+---
+# 1. Vals
+
+.forty-seven-left[
+```scala mdoc
+val city = "New York"
+
+val counter = 1
+```
+]
+
+---
+# 1. Vals are evaluated when created
+
+.forty-seven-left[
+```scala mdoc:reset
+val city = "New York".drop(4)
+
+val counter = 1 + 3
+```
+]
+
+---
+# 1. Vals are evaluated only once
+
+.fifty-two-left[
+```scala
+import java.time.Instant
+
+val nowSeconds = Instant.now().getEpochSecond
+// nowSeconds: Long = 1616594266L
+```
+]
+
+
+<br><br><br><br><br><br><br>
+
+.fifty-two-left[
+```scala
+nowSeconds
+// res: Long = 1616594266L
+
+nowSeconds
+// res: Long = 1616594266L
+```
+]
+
+---
+# 2. Defs
+
+.forty-seven-left[
+```scala mdoc
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+---
+# 2. Defs are evaluated when called
+
+.forty-seven-left[
+```scala mdoc:reset
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+greeting()
+// Hello
+```
+]
+
+---
+# 2. Defs are reevaluated everytime
+
+.forty-seven-left[
+```scala mdoc:reset
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+<br><br><br><br>
+
+.forty-seven-left[
+```scala
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+]
+
+---
+# 2. Defs are reevaluated everytime
+
+.forty-seven-left[
+```scala mdoc:reset
+import java.time.Instant
+
+def nowMillis(): Long =
+  Instant.now().toEpochMilli
+```
+]
+
+<br><br><br><br><br><br><br>
+
+.forty-seven-left[
+```scala
+nowMillis()
+// res: Long = 1616590118552L
+
+nowMillis()
+// res: Long = 1616590118554L
+```
+]
+
+---
+# 2. Defs without parameter
+
+.sixty-two-left[
+```scala mdoc:reset
+def greeting(): Unit =
+  println("Hello")
+
+case class User(firstName: String, lastName: String) {
+  def fullName: String =
+    s"${firstName} ${lastName}"
+}
+```
+]
+
+--
+
+.sixty-two-left[
+```scala
+greeting()
+// Hello
+
+User("John", "Doe").fullName
+// res: String = "John Doe"
+```
+]
+
+---
+# 3. Lazy Vals
+
+.forty-seven-left[
+```scala mdoc:reset
+lazy val greeting = println("Hello")
+```
+]
+
+---
+# 3. Lazy Vals are evaluated when first accessed
+
+.forty-seven-left[
+```scala mdoc:reset
+lazy val greeting = println("Hello")
+```
+
+```scala mdoc
+greeting
+```
+]
+
+---
+# 3. Lazy Vals are cached for subsequent evaluations
+
+.forty-seven-left[
+```scala mdoc:reset
+lazy val greeting = println("Hello")
+```
+
+```scala mdoc
+greeting
+
+greeting
+```
+]
+
+---
+# 3. Lazy Vals solve Vals initialisation issue
+
+.forty-seven-left[
+```scala
+val name = user.fullName
+// java.lang.NullPointerException
+
+val user = User("John", "Doe")
+```
+
+<br>
+
+```scala mdoc:reset:invisible
+case class User(firstName: String, lastName: String) {
+  def fullName: String =
+    s"${firstName} ${lastName}"
+}
+```
+
+```scala mdoc
+lazy val name = user.fullName
+
+lazy val user = User("John", "Doe")
+
+name
+```
+
+]
+
+---
+class: tiny-code
+
+# Lazy Val code generation (Scala 3)
+
+.twenty-two-left[
+<br><br><br><br><br><br>
+```scala
+class Foo {
+  lazy val bar = <RHS>
+}
+```
+.center[
+## Translate to
+]
+]
+.seventy-two-right[
+```scala
+class Foo {
+  import scala.runtime.LazyVals
+  var value_0: Int = _
+  var bitmap: Long = 0L
+  val bitmap_offset: Long = LazyVals.getOffset(classOf[LazyCell], "bitmap")
+
+  def bar(): Int = {
+    while (true) {
+      val flag = LazyVals.get(this, bitmap_offset)
+      val state = LazyVals.STATE(flag, <field-id>)
+
+      if (state == <state-3>) {
+        return value_0
+      } else if (state == <state-0>) {
+        if (LazyVals.CAS(this, bitmap_offset, flag, <state-1>, <field-id>)) {
+          try {
+            val result = <RHS>
+            value_0 = result
+            LazyVals.setFlag(this, bitmap_offset, <state-3>, <field-id>)
+            return result
+          }
+          catch {
+            case ex =>
+              LazyVals.setFlag(this, bitmap_offset, <state-0>, <field-id>)
+              throw ex
+          }
+        }
+      } else /* if (state == <state-1> || state == <state-2>) */ {
+        LazyVals.wait4Notification(this, bitmap_offset, flag, <field-id>)
+      }
+    }
+  }
+}
+```
+]
+
+---
+# Evaluation
+
+<br><br><br><br>
+
+.cols[
+.forty-five[
+```scala
+val greeting =
+  println("Hello")
+// Hello
+
+greeting
+
+
+greeting
+&#x200B;
+```
+
+.center[
+## Once when created
+]
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+lazy val greeting =
+  println("Hello")
+
+
+greeting
+// Hello
+
+greeting
+&#x200B;
+```
+.center[
+## Once when accessed
+]
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+def greeting() =
+  println("Hello")
+
+
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+.center[
+## Everytime it is called
+]
+]
+]
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
+  // ...
+}
+```
+]
+
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
+  var counter = 0
+
+  lazy val action = counter += 1
+}
+```
+]
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
+  var counter = 0
+
+  lazy val action = counter += 1
+  assert(counter == 0)
+
+  action
+  assert(counter == 1)
+
+  action
+  assert(counter == 1)
+}
+```
+]
+
+---
+# Test code evaluation
+
+.seventy-two-left[
+```scala
+test("a def is evaluated every time it is called") {
+  var counter = 0
+
+  def action() = counter += 1
+  assert(counter == 0)
+
+  action()
+  assert(counter == 1)
+
+  action()
+  assert(counter == 2)
+}
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala mdoc:reset
+def sum(x: Int, y: Int): Unit = {
+  val result = x + y
+  println(s"The sum is $result")
+}
+```
+
+<br>
+
+```scala mdoc
+def getEdaBalance(): Int = {
+  println("Eda")
+  120
+}
+
+def getBobBalance(): Int = {
+  println("Bob")
+  35
+}
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+sum(
+  getEdaBalance(),
+  getBobBalance()
+)
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala mdoc:reset
+def sum(x: Int, y: Int): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
+```
+
+<br>
+
+```scala mdoc
+def getEdaBalance(): Int = {
+  println("Eda")
+  120
+}
+
+def getBobBalance(): Int = {
+  println("Bob")
+  35
+}
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+sum(
+  getEdaBalance(),
+  getBobBalance()
+)
+// Eda
+// Bob
+// The sum is 155
+```
+]
+
+---
+# Parameters evaluation
+
+.forty-seven-left[
+```scala mdoc:reset
+def sum(x: Int, y: Int): Unit = {
+  val result = x + y
+  println("The sum is $result")
+}
+```
+
+<br>
+
+```scala mdoc
+def getEdaBalance(): Int = {
+  println("Eda")
+  120
+}
+
+def getBobBalance(): Int = {
+  println("Bob")
+  35
+}
+```
+]
+
+.forty-seven-right[
+```scala mdoc:silent
+val eda = getEdaBalance()
+// Eda
+val bob = getBobBalance()
+// Bob
+
+sum(
+  eda,
+  bob
+)
+// The sum is 155
+```
+]
+
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+]
+--
+
+.seventy-two-left[
+```scala
+getOrElse(Some("bob@gmail.com"), "support@fp-tower.com")
+// res: String = "bob@gmail.com"
+
+getOrElse(None                 , "support@fp-tower.com")
+// res: String = "support@fp-tower.com"
+```
+]
+
+---
+# Parameters evaluation
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
+
+---
+# 0-parameter function
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: () => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback()
+  }
+```
+]
+
+--
+
+
+.forty-two-left[
+## Def function
+```scala mdoc
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+.forty-seven-right[
+## Val function
+```scala mdoc:reset
+val greeting: () => Unit =
+  () => println("Hello")
+```
+]
+
+---
+# 0-parameter function
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: () => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback()
+  }
+```
+
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  () => throw new IllegalArgumentException("email is required")
+)
+// res: String = "bob@gmail.com"
+
+getOrElse(
+  None,
+  () => throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
+
+---
+# By-name parameters
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+]
+
+---
+# By-name parameters
+
+.seventy-two-left[
+```scala mdoc:reset
+def getOrElse[A](option: Option[A], fallback: => A): A =
+  option match {
+    case Some(value) => value
+    case None        => fallback
+  }
+```
+
+```scala
+getOrElse(
+  Some("bob@gmail.com"),
+  throw new IllegalArgumentException("email is required")
+)
+// res: String = "bob@gmail.com"
+
+getOrElse(
+  None,
+  throw new IllegalArgumentException("email is required")
+)
+// java.lang.IllegalArgumentException: email is required
+```
+]
+
+---
+# By-name parameters in the standard library
+
+.seventy-two-left[
+```scala
+object Try {
+  def apply[A](action: => A): Try[A] =
+    try {
+      val result = action
+      Success(result)
+    } catch {
+      case e: Throwable => Failure(e)
+    }
+}
+
+Try(2 + 2)
+// res: Try[Int] = Success(4)
+
+Try(throw new Exception("Boom"))
+// res: Try[Nothing] = Failure(java.lang.Exception: Boom)
+```
+]
+
+---
+# By-name parameters in the standard library
+
+.eighty-two-left[
+```scala
+object Future {
+  def apply[A](action: => A)(implicit ec: ExecutionContext): Future[A] = {
+    ...
+    // submit action to the thread pool
+  }
+}
+
+
+Future { 2 + 2 }
+// res: Future[Int] = Future(<not completed>)
+```
+]
+
+---
+# Expressions evaluation
+<br>
+
+.twenty-seven-left[
+## Val
+
+## Lazy Val
+
+## Def
+]
+
+.seventy-two-right[
+## → &nbsp;&nbsp;Once when defined
+
+## → &nbsp;&nbsp;Once when first accessed
+
+## → &nbsp;&nbsp;Everytime called
+]
+
+---
+# Parameters evaluation
+<br>
+
+.twenty-seven-left[
+## Normal (by-value)
+
+## By-name
+]
+
+.seventy-two-right[
+## → &nbsp;&nbsp;Immediately
+
+## → &nbsp;&nbsp;Everytime accessed
+]
+
+
+---
+# Test evaluation
+
+.seventy-two-left[
+```scala
+test("a lazy val is only evaluated when first accessed") {
+  var counter = 0
+
+  lazy val action = counter += 1
+  assert(counter == 0)
+
+  action
+  assert(counter == 1)
+
+  action
+  assert(counter == 1)
+}
+```
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

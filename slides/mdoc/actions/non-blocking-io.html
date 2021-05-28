@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Non-Blocking IO</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Non-Blocking IO]
+
+---
+class: medium-code
+
+# Why parZip is blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    IO {
+      val future1 = Future {  this.unsafeRun() }(ec)
+      val future2 = Future { other.unsafeRun() }(ec)
+
+      val combined = future1.zip(future2)
+
+      Await.result(combined, Duration.Inf)
+    }
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Why parZip is blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    IO {
+      val future1 = Future {  this.unsafeRun() }(ec)
+      val future2 = Future { other.unsafeRun() }(ec)
+
+      val combined = future1.zip(future2)
+
+      `Await.result`(combined, Duration.Inf)
+    }
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Why parZip is blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): `IO[(A, Other)]` =
+    IO {
+      val future1 = Future {  this.unsafeRun() }(ec)
+      val future2 = Future { other.unsafeRun() }(ec)
+
+      val combined = future1.zip(future2)
+
+      Await.result(combined, Duration.Inf) : `(A, Other)`
+    }
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Why parZip is blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+object IO {
+
+  def apply[A](action: => A): `IO[A]` =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Why parZip is blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+object IO {
+
+  def apply[A](action: `=> A`): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Why parZip is blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def unsafeRun(): A
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Because unsafeRun is blocking
+
+<br>
+
+.seventy-seven-left[
+```scala
+def block[A](action:     IO[A]): A = action.unsafeRun()
+
+def block[A](future: Future[A]): A = Await.result(future, Duration.Inf)
+```
+]
+
+---
+class: medium-code
+
+# How can we make IO non-blocking?
+
+<br>
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def unsafeRun(): A
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Future is non-blocking
+
+.sixty-two-left[
+```scala
+val futureUser = db.getUser(1234)
+// futureUser: Future[User] = Future(<not completed>)
+```
+]
+
+---
+class: medium-code
+
+# Future is non-blocking
+
+.sixty-two-left[
+```scala
+val futureUser = db.getUser(1234)
+// futureUser: Future[User] = Future(<not completed>)
+
+val futureName = futureUser.map(_.name)
+// futureName: Future[String] = Future(<not completed>)
+```
+]
+
+---
+class: medium-code
+
+# Future is non-blocking
+
+.sixty-two-left[
+```scala
+trait Future[A] {
+
+  def onComplete(callback: Try[A] => Unit): Unit
+
+}
+```
+]
+--
+
+.sixty-two-left[
+```scala
+db.getUser(1234).onComplete {
+  case Failure(error) => println("Oops")
+  case Success(user)  => println(s"User 1234 is $user")
+}
+```
+]
+
+---
+class: medium-code
+
+# Future is non-blocking
+
+.sixty-two-left[
+```scala
+trait Future[A] {
+
+  def onComplete(callback: Try[A] => Unit): Unit
+
+}
+```
+]
+
+.sixty-two-left[
+```scala
+db.getUser(1234).onComplete {
+  case Failure(error) => println("Oops")
+  case Success(user)  => println(s"User 1234 is $user")
+}
+
+db.getUser(4444).onComplete {
+  case Failure(error) => println("Oops")
+  case Success(user)  => println(s"User 4444 is $user")
+}
+```
+]
+
+---
+class: medium-code
+
+# Non-blocking IO
+
+.sixty-two-left[
+```scala
+trait IO[A] {
+
+  def onComplete(callback: Try[A] => Unit): Unit
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Asynchronous IO
+
+.sixty-two-left[
+```scala
+trait IO[A] {
+
+  def unsafeRunAsync(callback: Try[A] => Unit): Unit
+
+}
+```
+]
+
+---
+class: medium-code
+
+# Asynchronous IO
+
+.sixty-two-left[
+```scala
+trait IO[A] {
+  // executes an IO `async`hronously
+  def unsafeRunAsync(callback: Try[A] => Unit): Unit
+
+  // executes an IO `sync`hronously
+  def unsafeRun(): A
+}
+```
+]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-1.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-2.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-3.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-shift-1.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-shift-2.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-shift-3.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-shift-4.svg" style="width:800px;"/>
+]]
+
+---
+# Concurrency with a single thread
+
+.seventy-seven-left[.center[
+<img src="../img/foundation/execution-context-single-thread-shift-5.svg" style="width:800px;"/>
+]]
+
+
+---
+class: medium-code
+
+<br><br>
+
+.forty-two-left[
+# Direct Style
+
+```scala
+def getUser(userId: Long): User
+```
+
+```scala
+val user1 = getUser(1234)
+val user2 = getUser(5555)
+println(s"Users are $user1 and $user2")
+&#x200B;
+&#x200B;
+```
+]
+
+.fifty-seven-right[
+# Continuation Passing Style
+
+```scala
+def getUser(userId: Long)(callback: User => Unit): Unit
+```
+
+```scala
+getUser(1234) { user1 =>
+  getUser(555) { user2 =>
+    println(s"Users are $user1 and $user2")
+  }
+}
+```
+]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

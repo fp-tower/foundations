@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conclusion</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Conclusion]
+
+
+---
+# IOs are like dynamite sticks
+  
+
+---
+class: medium-code
+
+# IO controls .light-green[.hl2[WHEN]] the evaluation occurs
+
+.fifty-seven-left[
+```scala
+trait IO[A] {
+
+  def attempt: IO[Try[A]] =
+    IO { Try(unsafeRun()) }
+
+  def retry(maxAttempt: Int): IO[A] =
+    ???
+
+}
+```
+
+
+<br>
+
+```scala
+db.getUser(1234).retry(3).attempt
+```
+]
+
+---
+class: medium-code
+
+# IO controls .light-green[.hl2[WHEN]] the evaluation occurs
+
+.fifty-seven-left[
+```scala
+trait IO[A] {
+
+  def attempt: IO[Try[A]] =
+    IO { `Try`(unsafeRun()) }
+
+  def retry(maxAttempt: Int): IO[A] =
+    ???
+
+}
+```
+
+<br>
+
+```scala
+db.getUser(1234).retry(3).attempt
+```
+]
+
+---
+class: medium-code
+
+# IO controls .light-green[.hl2[WHEN]] the evaluation occurs
+
+.fifty-seven-left[
+```scala
+trait IO[A] {
+
+  def attempt: IO[Try[A]] =
+    IO { Try(unsafeRun()) }
+
+  def retry(maxAttempt: Int): IO[A] =
+    ???
+
+}
+```
+
+<br>
+
+```scala
+db.getUser(1234).`retry(3)`.attempt
+```
+]
+
+---
+class: medium-code
+
+# IO controls .light-green[.hl2[WHERE]] the evaluation occurs
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    IO.async { callback =>
+      val promise1 = Promise()
+      val promise2 = Promise()
+
+      ec.execute(() =>  this.unsafeRunAsync(promise1.complete))
+      ec.execute(() => other.unsafeRunAsync(promise2.complete))
+
+      val combined = promise1.future.zip(promise2.future)
+
+      combined.onComplete(callback)(ec)
+    }
+
+}
+```
+]
+
+---
+class: medium-code
+
+# IO controls .light-green[.hl2[WHERE]] the evaluation occurs
+
+.seventy-seven-left[
+```scala
+trait IO[A] {
+
+  def parZip[Other](other: IO[Other])(ec: ExecutionContext): IO[(A, Other)] =
+    IO.async { callback =>
+      val promise1 = Promise()
+      val promise2 = Promise()
+
+      `ec.execute`(() =>  this.`unsafeRunAsync`(promise1.complete))
+      ec.execute(() => other.unsafeRunAsync(promise2.complete))
+
+      val combined = promise1.future.zip(promise2.future)
+
+      combined.onComplete(callback)(ec)
+    }
+
+}
+```
+]
+
+---
+# Missing IO features
+
+<br>
+
+## 1. Resource management
+
+## 2. Integration with streaming libraries
+
+## 3. Non-blocking scheduling
+
+## 4. Best practices for thread pools configuration
+
+---
+# IO libraries
+
+
+<br><br>
+
+.cols[
+.forty-five[.center[
+<img src="../img/screenshot/cats-effect.png" style="width:200px;"/>
+
+## cats-effect
+]]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[.center[
+<img src="../img/screenshot/monix.png" style="width:175px;"/>
+
+## Monix
+]]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[.center[
+<br>
+<img src="../img/screenshot/zio.png" style="width:400px;"/>
+<br>
+## ZIO
+]]
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

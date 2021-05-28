@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IO</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[IO]
+
+---
+# Actions requirements
+
+<br>
+
+.thirty-seven-left[
+## 1. Non-deterministic
+
+## 2. Can fail
+]
+
+.sixty-two-right[
+## -> Retry
+
+## -> Try
+
+]
+
+---
+# Actions requirements
+
+<br>
+
+.thirty-seven-left[
+## 1. Non-deterministic
+
+## 2. Can fail
+
+## 3. Async
+]
+
+.sixty-two-right[
+## -> Retry
+
+## -> Try
+
+## -> Execute on a thread pool
+]
+
+---
+# By-name parameters
+
+.eighty-two-left[
+```scala
+def retry[A](maxAttempt: Int)(action:` => A`): A =
+  ???
+```
+
+```scala
+def onError[A](action:` => A`, callback: Throwable => Any): A =
+    ???
+```
+]
+
+---
+# By-name parameters
+
+.eighty-two-left[
+```scala
+def retry[A](maxAttempt: Int)(action: => A): A =
+  ???
+```
+
+```scala
+def onError[A](action: => A, callback: Throwable => Any): A =
+    ???
+```
+
+
+```scala
+object Try {
+  def apply[A](action:` => A`): Try[A] =
+    ???
+}
+```
+
+
+
+```scala
+object Future {
+  def apply[A](action:` => A`)(implicit ec: ExecutionContext): Future[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action:` => A`): Action[A] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => `A`): Action[`A`] =
+    ???
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala mdoc:reset:silent
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+<br>
+```scala mdoc
+trait Action[A] {
+
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action:` => A`): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+<br>
+```scala
+trait Action[A] {
+
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: `() => A`): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+<br>
+```scala
+trait Action[A] {
+
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: () => A): Action[A] =
+    ???
+}
+```
+]
+
+.forty-two-right[
+<br><br><br><br><br><br><br><br>
+```scala
+val greeting: () => Unit =
+  () => println("Hello")
+
+def greeting(): Unit =
+  println("Hello")
+```
+]
+
+.fifty-two-left[
+<br>
+```scala
+trait Action[A] {
+
+}
+```
+]
+
+
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala
+object Action {
+  def apply[A](action: => A): Action[A] =
+    ???
+}
+```
+]
+
+.fifty-two-left[
+<br>
+```scala
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala mdoc:reset
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = `???`
+    }
+}
+```
+]
+
+.fifty-two-left[
+```scala mdoc
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Action encoding
+
+.fifty-two-left[
+```scala mdoc:reset
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+
+.fifty-two-left[
+```scala mdoc
+trait Action[A] {
+  def execute(): A
+}
+```
+]
+
+---
+# Comparison
+
+<br><br>
+
+.cols[
+.forty-five[
+## &nbsp;&nbsp;Val function
+```scala
+val greeting: () => Unit  =
+  println("Hello")
+
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+## &nbsp;&nbsp;Def function
+
+```scala
+def greeting(): Unit  =
+  println("Hello")
+
+greeting()
+// Hello
+
+greeting()
+// Hello
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+## &nbsp;&nbsp;Action
+
+```scala
+val greeting: Action[Unit] =
+  Action{ println("Hello") }
+
+greeting.execute()
+// Hello
+
+greeting.execute()
+// Hello
+```
+]
+]
+
+---
+# Rich API
+
+.sixty-two-left[
+```scala
+trait Action[A] {
+  def execute(): A
+
+  def retry(maxAttempt: Int): Action[A] = ???
+
+  def onError(cb: Throwable => Any): Action[A] = ???
+
+  def parallel(ec: ExecutionContext) = ???
+}
+```
+]
+
+--
+
+.sixty-two-left[
+```scala
+action
+  .retry(5)
+  .onError(log.error)
+  .parallel(ec)
+```
+]
+
+---
+# Documentation
+
+.fifty-seven-left[
+```scala
+def getUser(id: Long): Action[User] =
+  db.query(s"SELECT * from USERS where id = $id")
+
+val greeting: Action[Unit] =
+  Action { println("Hello") }
+```
+
+<br>
+
+```scala
+def sum(x: Int, y: Int): Int =
+  x + y
+```
+]
+
+---
+# Ordinary value
+
+.fifty-seven-left[
+```scala
+def getUser(id: Long): Action[User] =
+  db.query(s"SELECT * from USERS where id = $id")
+
+val getBob = getUser(1234)
+val getEda = getUser(9753)
+
+val actions = List(getEda, getBob)
+
+actions.foreach(_.execute())
+// res: List[User] = List(
+//   User(9753, Eda, ...),
+//   User(1234, Bob, ...),
+// )
+```
+]
+
+---
+# Naming convention
+
+<br>
+
+.forty-seven-left[
+```scala mdoc:reset
+trait Action[A] {
+  def execute(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+.forty-seven-right[
+```scala mdoc:reset
+trait IO[A] {
+  def unsafeRun(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object IO {
+  def apply[A](action: => A): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+}
+```
+]
+
+---
+# Naming convention
+
+<br>
+
+.forty-seven-left[
+```scala mdoc:reset
+trait `Action`[A] {
+  def execute(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+.forty-seven-right[
+```scala mdoc:reset
+trait `IO`[A] {
+  def unsafeRun(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object IO {
+  def apply[A](action: => A): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+}
+```
+]
+
+---
+# Naming convention
+
+<br>
+
+.forty-seven-left[
+```scala mdoc:reset
+trait Action[A] {
+  def `execute`(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object Action {
+  def apply[A](action: => A): Action[A] =
+    new Action[A] {
+      def execute(): A = action
+    }
+}
+```
+]
+.forty-seven-right[
+```scala mdoc:reset
+trait IO[A] {
+  def `unsafeRun`(): A
+}
+```
+
+<br>
+
+```scala mdoc
+object IO {
+  def apply[A](action: => A): IO[A] =
+    new IO[A] {
+      def unsafeRun(): A = action
+    }
+}
+```
+]
+
+---
+class: white
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br>
+
+# .white[Summary]
+
+<br>
+
+## .white[Encode action with a trait (SAM)]
+
+## .white[Constructor with a by-name parameter]
+
+## .white[Provide a rich API (retry, onError)]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+## package exercises.action.fp.console
+
+# UserCreationService.scala
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

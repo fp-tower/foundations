@@ -12,7 +12,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 class: center, middle, white
 
-.title[Reflection<br>&<br>Pattern Matching]
+.title[Pattern Matching<br>&<br>Reflection]
 
 ---
 # Scala Functional Subset
@@ -74,6 +74,48 @@ case object Backward extends Direction
 val robot = Robot(0, Forward)
 
 robot.getClass.getMethods
+  .map(_.getName)
+// res: Array[String] = Array(
+//   "equals",
+//   "toString",
+//   "hashCode",
+//   "position",
+//   "copy",
+//   "direction",
+//   "move",
+//   "productElementNames",
+//   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+robot.`getClass.getMethods`
   .map(_.getName)
 // res: Array[String] = Array(
 //   "equals",
@@ -253,6 +295,40 @@ robot.getClass.getMethods
 //   "`move`",
 //   "productElementNames",
 //   ...
+```
+]
+
+---
+class: medium-code
+
+# Reflection
+
+.fifty-seven-left[
+```scala
+case class Robot(position: Int, direction: Direction) {
+  def move: Robot =
+    direction match {
+      case Backward =>
+        copy(position = position - 1)
+      case Forward  =>
+        copy(position = position + 1)
+    }
+}
+
+sealed trait Direction
+case object Forward  extends Direction
+case object Backward extends Direction
+```
+]
+
+.thirty-seven-right[
+```scala
+val robot = Robot(0, Forward)
+
+classOf[Robot]
+  .getDeclaredMethod("move")
+  .invoke(robot)
+// res: Object = Robot(1, Forward)
 ```
 ]
 
@@ -487,6 +563,98 @@ def increment(value: Any) =
     case x: Int    => x + 1
     case x: Double => x + 1.0
     case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(`value: Any`) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case `x: Int   ` => x + 1
+    case `x: Double` => x + 1.0
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => `x + 1  `
+    case x: Double => `x + 1.0`
+    case other     => other
+  }
+```
+<br>
+```scala
+increment(1)
+// res: Any = 2
+increment(5.3)
+// res: Any = 6.3
+increment("Hello")
+// res: Any = "Hello"
+```
+]
+
+---
+# Pattern matching
+
+.fifty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case `other     => other`
   }
 ```
 <br>
@@ -821,6 +989,23 @@ def checkUser(request: Request, auth: Auth) =
 ]
 
 ---
+# Authentication Middleware
+
+.fifty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth) =
+  request.headers.get("Authorization") match {
+    case None => reject(Forbidden()) // 403 Status
+
+    case Some(token) =>
+      auth.authenticate(token).map(user =>
+        provide(user) // pass it down the line
+      )
+  }
+```
+]
+
+---
 # Auth instance is defined in a config file
 
 .forty-seven-left[
@@ -996,6 +1181,28 @@ enum Env {
 ]
 
 ---
+# Authentication Middleware
+
+.sixty-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    case _ =>
+
+      request.headers.get("Authorization") match {
+        case None        => reject(Forbidden())
+        case Some(token) =>
+          auth.`authenticate`(token).map(user =>
+            provide(user)
+          )
+      }
+
+  }
+```
+]
+
+---
 # Increase load
 
 <br>
@@ -1030,6 +1237,30 @@ enum Env {
 class CachedAuth(
   cache     : Cache,
   underlying: Auth,
+) extends Auth { /* ... */ }
+```
+]
+
+---
+# Cache authenticate requests
+
+.seventy-two-left[
+```scala
+class CachedAuth(
+  cache     : `Cache`,
+  underlying: Auth,
+) extends Auth { /* ... */ }
+```
+]
+
+---
+# Cache authenticate requests
+
+.seventy-two-left[
+```scala
+class CachedAuth(
+  cache     : Cache,
+  underlying: `Auth`,
 ) extends Auth { /* ... */ }
 ```
 ]
@@ -1076,7 +1307,7 @@ val auth: Auth = new CachedAuth(cache, new MockAuth(...))
 def checkUser(request: Request, auth: Auth, env: Env) =
   (env, auth) match {
     case (Prod, _: MockAuth) => InternalServerError()
-    `case _ `                  => // check header and dispatch to auth
+    case _                   => // check header and dispatch to auth
   }
 ```
 
@@ -1089,27 +1320,93 @@ val auth: Auth = new `CachedAuth`(cache, new `MockAuth`(...))
 ]
 
 ---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, `_: MockAuth`) => InternalServerError()
+    case _                   => // check header and dispatch to auth
+  }
+```
+
+<br>
+
+```scala
+val env : Env  = Prod
+val auth: Auth = new `CachedAuth`(cache, new MockAuth(...))
+```
+]
+
+---
+# Authentication Middleware
+
+.seventy-seven-left[
+```scala
+def checkUser(request: Request, auth: Auth, env: Env) =
+  (env, auth) match {
+    case (Prod, _: MockAuth) => InternalServerError()
+    `case _ `                  => // check header and dispatch to auth
+  }
+```
+
+<br>
+
+```scala
+val env : Env  = Prod
+val auth: Auth = new CachedAuth(cache, new `MockAuth`(...))
+```
+]
+
+---
+# Pattern Matching
+
+
+.forty-seven-left[
+## Unsafe
+```scala
+auth match {
+  case _: MockAuth => ...
+  case _           => ...
+}
+&#x200B;
+```
+]
+
+.forty-seven-right[
+## Safe
+```scala
+env match {
+  case Local => ...
+  case UAT   => ...
+  case Prod  => ...
+}
+```
+]
+
+---
 # Safe pattern matching keywords
 
 .forty-seven-left[
-## 1. Final class
+## 1. final class
 
-## 2. Sealed class/trait
+## 2. sealed class/trait
 
-## 3. Primitives (Int, Boolean, ...)
+## 3. case class/object
 
-## 4. Case class/object
+## 4. primitives (Int, Boolean, ...)
 ]
 
 ---
 # Unsafe pattern matching keywords
 
 .forty-seven-left[
-## 1. Abstract class
+## 1. abstract class
 
-## 2. Open class/trait (new in Scala 3)
+## 2. open class/trait (new in Scala 3)
 
-## 3. No keyword, open by default
+## 3. no keyword, open by default
 ]
 
 ---
@@ -1120,8 +1417,7 @@ val auth: Auth = new `CachedAuth`(cache, new `MockAuth`(...))
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1135,8 +1431,21 @@ trait Auth {
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
+  def `revoke`(token: Token): Future[Unit]
+}
+```
+]
+
+---
+# Contract
+
+.sixty-seven-left[
+```scala
+trait Auth {
+  def authenticate(token: Token): Future[Option[User]]
+
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1162,8 +1471,7 @@ def checkAuth(auth: Auth) =
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1173,8 +1481,8 @@ def checkAuth(auth: Auth) =
   test("revoke makes token invalid") {
     forAll { (token: Token) =>
       for {
-        _    <- `auth.revoke(token)`
-        user <- `auth.authenticate(token)`
+        _    <- auth.`revoke`(token)
+        user <- auth.`authenticate`(token)
       } assert(user == None)
     }
   }
@@ -1189,8 +1497,7 @@ def checkAuth(auth: Auth) =
 trait Auth {
   def authenticate(token: Token): Future[Option[User]]
 
-  // if the token is     valid, revoke makes it invalid
-  // if the token is NOT valid, do nothing
+  // if the token is valid, revoke makes it invalid
   def revoke(token: Token): Future[Unit]
 }
 ```
@@ -1219,7 +1526,7 @@ background-image: url(../img/fp-tower/website-background.svg)
 
 ## .white[Ignore runtime reflection]
 
-## .white[Reflection is used in pattern matching]
+## .white[But, pattern matching uses reflection]
 
 ## .white[Two dangerous use cases:]
    * ### .white[Classes with type parameters]
@@ -1240,11 +1547,32 @@ def increment(value: Any) =
   }
 
 // warning pattern selector should be an instance of
-// `Matchable`, but it has unmatchable type `Any` instead
+// Matchable, but it has unmatchable type Any instead
 ```
 ]
 
---
+.thirty-seven-right[
+<img src="../img/foundation/matchable.svg" style="width:400px;"/>
+]
+
+---
+# Scala 3: Matchable trait
+
+<br>
+
+.sixty-two-left[
+```scala
+def increment(value: Any) =
+  value match {
+    case x: Int    => x + 1
+    case x: Double => x + 1.0
+    case other     => other
+  }
+
+// warning pattern selector should be an instance of
+// `Matchable`, but it has unmatchable type `Any` instead
+```
+]
 
 .thirty-seven-right[
 <img src="../img/foundation/matchable.svg" style="width:400px;"/>

@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 1460 639" width="1460" height="639">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1460 587" width="1460" height="587">
   <defs>
-    <font-face font-family="Helvetica Neue" font-size="40" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
-      <font-face-src>
-        <font-face-name name="HelveticaNeue"/>
-      </font-face-src>
-    </font-face>
     <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 6 6" markerWidth="6" markerHeight="6" color="#ff3200">
       <g>
         <path d="M 3.2 0 L 0 -1.2 L 0 1.2 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
@@ -22,26 +17,19 @@
         <font-face-name name="HelveticaNeue"/>
       </font-face-src>
     </font-face>
+    <font-face font-family="Helvetica Neue" font-size="40" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.3\n2021-02-23 17:00:36 +0000</metadata>
-  <g id="order-to-invoice-comparison-2" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-05-18 10:56:19 +0000</metadata>
+  <g id="order-to-invoice-comparison-2" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none">
     <title>order-to-invoice-comparison-2</title>
     <g id="order-to-invoice-comparison-2_Layer_1">
       <title>Layer 1</title>
-      <g id="Graphic_263">
-        <path d="M 926.55 423 L 1260.45 423 C 1299.9456 423 1332 471.384 1332 531 C 1332 590.616 1299.9456 639 1260.45 639 L 926.55 639 C 887.0544 639 855 590.616 855 531 C 855 471.384 887.0544 423 926.55 423 Z" fill="#efc600"/>
-        <text transform="translate(907.7 585.88)" fill="#ff3200">
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="#ff3200" x="118.76" y="38">Actions</tspan>
-        </text>
-      </g>
       <g id="Line_264">
         <line x1="1089" y1="459" x2="1089" y2="566.1" marker-end="url(#FilledArrow_Marker)" stroke="#ff3200" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-      </g>
-      <g id="Graphic_262">
-        <path d="M 917.55 9 L 1251.45 9 C 1290.9456 9 1323 57.384 1323 117 C 1323 176.616 1290.9456 225 1251.45 225 L 917.55 225 C 878.0544 225 846 176.616 846 117 C 846 57.384 878.0544 9 917.55 9 Z" fill="#efc600"/>
-        <text transform="translate(898.7 14)" fill="#ff3200">
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="#ff3200" x="73.9" y="38">Environment</tspan>
-        </text>
       </g>
       <g id="Line_248">
         <line x1="441" y1="297" x2="665.1" y2="297" marker-end="url(#FilledArrow_Marker_2)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
@@ -131,7 +119,7 @@
       </g>
       <g id="Graphic_253">
         <text transform="translate(1103 482)" fill="#404040">
-          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="34.48" y="30">bump</tspan>
+          <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="5.152" y="30">increment</tspan>
           <tspan font-family="Helvetica Neue" font-size="32" font-weight="400" fill="#404040" x="4.304" y="67.896">InvoiceNo</tspan>
         </text>
       </g>

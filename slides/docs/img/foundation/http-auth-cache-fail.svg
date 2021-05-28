@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="0 0 716 361" width="716" height="361">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 716 361" width="716" height="361">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="20" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -13,8 +13,8 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.3\n2021-02-23 17:00:36 +0000</metadata>
-  <g id="http-auth-cache-fail" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none" fill-opacity="1">
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-05-18 10:56:19 +0000</metadata>
+  <g id="http-auth-cache-fail" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none">
     <title>http-auth-cache-fail</title>
     <g id="http-auth-cache-fail_Layer_1">
       <title>Layer 1</title>
@@ -93,11 +93,11 @@
         </text>
       </g>
       <g id="Graphic_230">
-        <rect x="63" y="49" width="9" height="311" fill="#ff8080"/>
+        <rect x="63" y="49" width="9" height="311" fill="#b79074"/>
         <rect x="63" y="49" width="9" height="311" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_229">
-        <ellipse cx="65.17391" cy="36" rx="56.1740028038802" ry="27.0000431433512" fill="#ff7f7f"/>
+        <ellipse cx="65.17391" cy="36" rx="56.1740028038802" ry="27.0000431433512" fill="#b79074"/>
         <ellipse cx="65.17391" cy="36" rx="56.1740028038802" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(25.234783 24.22)" fill="white">
           <tspan font-family="Helvetica Neue" font-size="20" font-weight="400" fill="white" x="19.01913" y="19">User</tspan>
