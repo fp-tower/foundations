@@ -1,0 +1,6 @@
+| Type         | GitHub link |
+|--------------|-------------|
+| Exercises    |     [IO.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/action/fp/IO.scala) <br> [UserCreationService.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/action/fp/console/UserCreationService.scala)       |
+| Tests        | [IOTest.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/action/fp/IOTest.scala) <br> [UserCreationServiceTest.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/action/fp/console/UserCreationServiceTest.scala)       |
+| Answers      |     [IO.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/exercises/action/fp/IO.scala) <br> [UserCreationService.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/exercises/action/fp/console/UserCreationService.scala)       |
+| Test Answers | [IOTest.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/exercises/action/fp/IOTest.scala) <br> [UserCreationServiceTest.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/exercises/action/fp/console/UserCreationServiceTest.scala)       |
