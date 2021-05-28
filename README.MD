@@ -104,9 +104,13 @@ data type that supports powerful retry strategies and concurrency primitives.
 * Learn how to extend an API using algebra and interpreters
 
 ### Slides
+1. [Introduction](https://blog.fp-tower.com/foundations/actions/introduction.html#1)
 1. [Evaluation](https://blog.fp-tower.com/foundations/actions/evaluation.html#1)
 1. [IO](https://blog.fp-tower.com/foundations/actions/io.html#1)
 1. [For Comprehension](https://blog.fp-tower.com/foundations/actions/for-comprehension.html#1)
+1. [Search Flight exercises](https://blog.fp-tower.com/foundations/actions/search-flight-exercises.html#1)
+1. [Concurrent IO](https://blog.fp-tower.com/foundations/actions/concurrent-io.html#1)
+1. [Non-Blocking IO](https://blog.fp-tower.com/foundations/actions/non-blocking-io.html#1)
 
 ### Slides
 1. [Evaluation](https://blog.fp-tower.com/foundations/actions/evaluation.html#1)
