@@ -10,7 +10,7 @@ import scala.util.{Failure, Success, Try}
 
 // Run the test using the green arrow next to class name (if using IntelliJ)
 // or run `sbt` in the terminal to open it in shell mode, then type:
-// testOnly exercises.action.IOTest
+// testOnly exercises.action.fp.IOTest
 class IOTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("apply is lazy and repeatable") {
