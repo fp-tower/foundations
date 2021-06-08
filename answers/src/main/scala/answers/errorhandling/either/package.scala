@@ -20,10 +20,10 @@ package object either {
 
   implicit class ListExtension[A](values: List[A]) {
     def traverse[E, B](transform: A => Either[E, B]): Either[E, List[B]] =
-      Exercise2.traverse(values)(transform)
+      EitherExercise2.traverse(values)(transform)
 
     def parTraverse[E, B](transform: A => EitherNel[E, B]): EitherNel[E, List[B]] =
-      Exercise2.parTraverse(values)(transform)
+      EitherExercise2.parTraverse(values)(transform)
   }
 
 }

@@ -1,9 +1,9 @@
 package answers.errorhandling.either
 
-import answers.errorhandling.either.Exercise2.CountryError._
-import answers.errorhandling.either.Exercise2.UsernameError._
+import answers.errorhandling.either.EitherExercise2.CountryError._
+import answers.errorhandling.either.EitherExercise2.UsernameError._
 
-object Exercise2 {
+object EitherExercise2 {
 
   case class User(username: Username, country: Country)
 
