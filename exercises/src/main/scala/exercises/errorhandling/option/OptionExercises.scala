@@ -15,16 +15,16 @@ object OptionExercises {
   }
   case class AccountId(value: Long)
 
-  // a. Implement `getSingleAccountId` which returns the account id associated
+  // a. Implement `getAccountId` which returns the account id associated
   // with this role (`Reader` or `Editor`). `Admin` do not have an account id.
   // For example,
-  // getSingleAccountId(Reader(123, premiumUser = true)) == Some(123)
-  // getSingleAccountId(Editor(123, "Comic Sans")) == Some(123)
-  // getSingleAccountId(Admin) == None
+  // getAccountId(Reader(123, premiumUser = true)) == Some(123)
+  // getAccountId(Editor(123, "Comic Sans")) == Some(123)
+  // getAccountId(Admin) == None
   // Note: You can pattern match on `Role` using `role match { case Reader(...) => ... }`
-  // Note: Once you have implemented `getSingleAccountId`, try to move it
+  // Note: Once you have implemented `getAccountId`, try to move it
   //       inside the `Role` class.
-  def getSingleAccountId(role: Role): Option[AccountId] =
+  def getAccountId(role: Role): Option[AccountId] =
     ???
 
   case class User(id: UserId, name: String, role: Role, email: Option[Email])
@@ -100,7 +100,7 @@ object OptionExercises {
   // asEditor(Editor(123, "Comic Sans")) == Some(Editor(123, "Comic Sans"))
   // asEditor(Reader(123, premiumUser = true)) == None
   // asEditor(Admin) == None
-  // Note: Once you have implemented `getSingleAccountId`, try to move it
+  // Note: Once you have implemented `getAccountId`, try to move it
   //       inside the `Role` class.
   def asEditor(role: Role): Option[Editor] =
     ???

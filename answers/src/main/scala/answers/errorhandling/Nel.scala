@@ -7,6 +7,9 @@ case class Nel[+A](head: A, tail: List[A]) {
 
   def ++[Other >: A](other: Nel[Other]): Nel[Other] =
     Nel(head, tail ++ other.toList)
+
+  def :+[Other >: A](other: Other): Nel[Other] =
+    Nel(head, tail :+ other)
 }
 
 object Nel {

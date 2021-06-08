@@ -5,7 +5,7 @@ object OptionAnswers {
   sealed trait Role {
     import Role._
 
-    def getSingleAccountId: Option[AccountId] =
+    def getAccountId: Option[AccountId] =
       this match {
         case x: Reader => Some(x.accountId)
         case x: Editor => Some(x.accountId)
@@ -37,7 +37,7 @@ object OptionAnswers {
 
   def getAccountIds(users: List[User]): List[AccountId] =
     users
-      .flatMap(_.role.getSingleAccountId)
+      .flatMap(_.role.getAccountId)
       .distinct
       .sortBy(_.value)
 

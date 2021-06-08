@@ -7,12 +7,12 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class OptionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  ignore("getSingleAccountId example") {
+  ignore("getAccountId example") {
     val accountId = AccountId(124)
 
-    assert(getSingleAccountId(Reader(accountId, true)) == Some(accountId))
-    assert(getSingleAccountId(Editor(accountId, "Comic Sans")) == Some(accountId))
-    assert(getSingleAccountId(Admin) == None)
+    assert(getAccountId(Reader(accountId, true)) == Some(accountId))
+    assert(getAccountId(Editor(accountId, "Comic Sans")) == Some(accountId))
+    assert(getAccountId(Admin) == None)
   }
 
   ignore("asEditor example") {
@@ -45,16 +45,20 @@ class OptionExercisesTest extends AnyFunSuite with ScalaCheckDrivenPropertyCheck
     assert(getAccountIds(users) == List(AccountId(555), AccountId(741)))
   }
 
-  ignore("checkAllEmails example") {
+  ignore("checkAllEmails example success") {
     assert(
       checkAllEmails(
         List(
           User(UserId(111), "Eda", Editor(AccountId(555), "Comic Sans"), Some(Email("e@y.com"))),
+          User(UserId(222), "Bob", Reader(AccountId(555), true), None),
+          User(UserId(333), "Lea", Reader(AccountId(741), false), None),
           User(UserId(444), "Jo", Admin, Some(Email("admin@fp-tower.com")))
         )
-      ) == Some(List(Email("e@y.com"), Email("admin@fp-tower.com")))
+      ) == None
     )
+  }
 
+  ignore("checkAllEmails example failure") {
     assert(
       checkAllEmails(
         List(
