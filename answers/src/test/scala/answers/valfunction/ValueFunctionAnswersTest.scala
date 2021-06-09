@@ -61,17 +61,18 @@ class ValueFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProperty
     assert(!isValidUsername("*john*"))
   }
 
-  test("if a username is case valid, so is its inverse") {
+  test("reversing a username doesn't change its validity") {
     forAll { (username: String) =>
       assert(isValidUsername(username.reverse) == isValidUsername(username))
     }
   }
 
-  test("if two usernames are valid, then concatenating them form a valid username") {
+  test("if two usernames are valid, then the concatenation is a valid username") {
     forAll { (username1: String, username2: String) =>
-      val lhs = isValidUsername(username1 + username2)
-      val rhs = isValidUsername(username1) && isValidUsername(username2)
-      assert(lhs == rhs)
+      val validConcat = isValidUsername(username1 + username2)
+      val bothValid   = isValidUsername(username1) && isValidUsername(username2)
+
+      assert(bothValid == validConcat)
     }
   }
 
