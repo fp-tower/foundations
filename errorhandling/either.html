@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Either</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Either]
+
+---
+class: medium-code
+# Either
+
+<br>
+.eighty-seven-left[
+```scala
+enum Either[E, A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+<br>
+
+```scala
+val result: Either[String, Int] = ???
+```
+]
+
+---
+class: medium-code
+# Either
+
+<br>
+.eighty-seven-left[
+```scala
+enum Either[E, A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+<br>
+
+```scala
+val result: Either[String, Int] = Left("Username must be at least 8 characters long")
+```
+]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
