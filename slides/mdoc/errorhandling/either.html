@@ -15,24 +15,215 @@ class: center, middle, white
 .title[Either]
 
 ---
-class: medium-code
+# Option
+
+<br><br>
+.forty-seven-left[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
+}
+```
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+--
+
+.forty-seven-left[
+## Pros
+
+.medium[
+* Success & Failure are great names
+* Throwable is the main error type on the JVM
+]]
+
+--
+
+.forty-seven-right[
+## Cons
+
+.medium[
+* Can't pattern match exhaustively
+* Can't accumulate errors
+]]
+
+---
+# Try
+
+.fifty-seven-left[
+```scala
+def submit(order: Order): Try[Order] =
+  order.status match {
+    case "Draft" =>
+      if(order.basket.isEmpty)
+        Failure(EmptyBasketError)
+      else
+        Success(order.copy(status = "Submitted"))
+    case other =>
+      Failure(InvalidCommandError("submit", order))
+  }
+```
+]
+
+---
+# Try
+
+.fifty-seven-left[
+```scala
+def submit(order: Order): Try[Order]
+
+submit(order).recover {
+  case EmptyBasketError            => ...
+  case InvalidCommandError(status) => ...
+  case other                       => ...
+}
+```
+]
+
+---
+# Try
+
+.forty-seven-left[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+<br><br><br><br><br><br>
+
+.forty-seven-left[
+## Pros
+
+.medium[
+* Success & Failure are great names
+* Convenient apply method
+* Throwable is the main error type of the JVM
+]]
+
+.forty-seven-right[
+## Cons
+
+.medium[
+* Can't pattern match exhaustively
+* Can't accumulate errors
+]]
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
 # Either
 
+<br><br>
+.fifty-seven-left[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case Left (value: E)
+}
+```
+]
+
 <br>
-.eighty-seven-left[
+.fifty-seven-left[
+```scala
+val result1: Either[String, Int] = Right(5)
+
+val result2: Either[String, Int] = Left("Hello")
+```
+]
+
+---
+class: medium-code
+# Either vs Union Type (Scala 3)
+
+<br>
+.fifty-two-left[
 ```scala
 enum Either[E, A] {
   case Left (value: E)
   case Right(value: A)
 }
 ```
+]
 
 <br>
-
+.fifty-two-left[
 ```scala
-val result: Either[String, Int] = ???
+val result1: Either[String, Int] = Left("Hello")
+
+val result2: Either[String, Int] = Right(5)
 ```
 ]
+
+.forty-two-right[
+```scala
+val result1: String | Int = "Hello"
+
+val result2: String | Int = 5
+```
+]
+
 
 ---
 class: medium-code

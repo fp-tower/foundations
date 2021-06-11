@@ -1,13 +1,13 @@
 package answers.errorhandling.either
 
-import answers.errorhandling.either.EitherExercise1.UserEmailError.{EmailNotFound, UserNotFound}
-import answers.errorhandling.either.EitherExercise1._
+import answers.errorhandling.either.EitherAnswers1.UserEmailError.{EmailNotFound, UserNotFound}
+import answers.errorhandling.either.EitherAnswers1._
 import answers.errorhandling.option.OptionAnswers.Role.Admin
 import answers.errorhandling.option.OptionAnswers.{Email, User, UserId}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class EitherExercise1Test extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
+class EitherAnswers1Test extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   test("getUserEmail example") {
     val users = Map(

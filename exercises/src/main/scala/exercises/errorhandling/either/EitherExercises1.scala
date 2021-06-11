@@ -1,8 +1,9 @@
 package exercises.errorhandling.either
 
 import exercises.errorhandling.option.OptionExercises.{Email, User, UserId}
+import exercises.errorhandling.either.EitherExercises1.UserEmailError._
 
-object EitherExercise1 {
+object EitherExercises1 {
 
   // a. Implement `getUserEmail` which looks up the email address of a user.
   // The email may be missing if:
@@ -27,6 +28,10 @@ object EitherExercise1 {
     case class UserNotFound(userId: UserId)  extends UserEmailError
     case class EmailNotFound(userId: UserId) extends UserEmailError
   }
+  // enum UserEmailError {
+  //   case  UserNotFound(userId: UserId)
+  //   case EmailNotFound(userId: UserId)
+  // }
 
   // c. Implement `errorMessage` which creates a human readable error message
   // from a `UserEmailError`. For example,

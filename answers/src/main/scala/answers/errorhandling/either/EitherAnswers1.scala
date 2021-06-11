@@ -1,11 +1,11 @@
 package answers.errorhandling.either
 
-import answers.errorhandling.either.EitherExercise1.UserEmailError.{EmailNotFound, UserNotFound}
+import answers.errorhandling.either.EitherAnswers1.UserEmailError.{EmailNotFound, UserNotFound}
 import answers.errorhandling.option.OptionAnswers.{Email, User, UserId}
 
 import scala.util.control.NoStackTrace
 
-object EitherExercise1 {
+object EitherAnswers1 {
 
   def getUserEmail(id: UserId, users: Map[UserId, User]): Either[UserEmailError, Email] =
     for {

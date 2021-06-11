@@ -5,6 +5,8 @@ import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
+import scala.util.Random
+
 class ValueFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
   /////////////////////////////////////////////////////
@@ -63,7 +65,8 @@ class ValueFunctionAnswersTest extends AnyFunSuite with ScalaCheckDrivenProperty
 
   test("reversing a username doesn't change its validity") {
     forAll { (username: String) =>
-      assert(isValidUsername(username.reverse) == isValidUsername(username))
+      val random = Random.shuffle(username).toString
+      assert(isValidUsername(username) == isValidUsername(random))
     }
   }
 

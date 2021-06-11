@@ -20,10 +20,15 @@ package object either {
 
   implicit class ListExtension[A](values: List[A]) {
     def traverse[E, B](transform: A => Either[E, B]): Either[E, List[B]] =
-      EitherExercise2.traverse(values)(transform)
+      EitherAnswers2.traverse(values)(transform)
 
     def parTraverse[E, B](transform: A => EitherNel[E, B]): EitherNel[E, List[B]] =
-      EitherExercise2.parTraverse(values)(transform)
+      EitherAnswers2.parTraverse(values)(transform)
+  }
+
+  implicit class TupleEitherNelExtension[E, A, B](value: (EitherNel[E, A], EitherNel[E, B])) {
+    def zipAccWith[C](update: (A, B) => C): EitherNel[E, C] =
+      EitherAnswers2.zipAccWith(value._1, value._2)(update)
   }
 
 }

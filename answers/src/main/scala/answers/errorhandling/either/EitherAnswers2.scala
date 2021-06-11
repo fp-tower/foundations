@@ -1,9 +1,9 @@
 package answers.errorhandling.either
 
-import answers.errorhandling.either.EitherExercise2.CountryError._
-import answers.errorhandling.either.EitherExercise2.UsernameError._
+import answers.errorhandling.either.EitherAnswers2.CountryError._
+import answers.errorhandling.either.EitherAnswers2.UsernameError._
 
-object EitherExercise2 {
+object EitherAnswers2 {
 
   case class User(username: Username, country: Country)
 
@@ -68,25 +68,22 @@ object EitherExercise2 {
     case class NotSupported(country: String)  extends CountryError
   }
 
-  case class SingleFieldError(field: String, reason: String)
-  case class AllFieldErrors(byFields: Map[String, List[String]])
-
   //////////////////////////////////
   // Accumulate errors
   //////////////////////////////////
 
   def validateUserAcc(username: String, country: String): EitherNel[UserError, User] =
-    zipAccWith(
+    (
       validateUsernameAcc(username),
       validateCountry(country).toEitherNel
-    )(User.apply)
+    ).zipAccWith(User.apply)
 
   def validateUsernameAcc(username: String): EitherNel[UsernameError, Username] = {
     val trimmed = username.trim
-    zipAccWith(
+    (
       validateUsernameSize(trimmed).toEitherNel,
       validateUsernameCharacters(trimmed).toEitherNel
-    )((_, _) => Username(trimmed))
+    ).zipAccWith((_, _) => Username(trimmed))
   }
 
   def sequence[E, A](eithers: List[Either[E, A]]): Either[E, List[A]] =
@@ -105,7 +102,7 @@ object EitherExercise2 {
   def parSequence[E, A](eithers: List[EitherNel[E, A]]): EitherNel[E, List[A]] =
     eithers
       .foldLeft[EitherNel[E, List[A]]](Right(Nil)) { (state, either) =>
-        zipAccWith(state, either)((list, value) => value :: list)
+        (state, either).zipAccWith((list, value) => value :: list)
       }
       .map(_.reverse)
 

@@ -1,12 +1,14 @@
 package exercises.errorhandling.either
 
-import exercises.errorhandling.either.EitherExercise2.UsernameError._
-import exercises.errorhandling.either.EitherExercise2.CountryError._
+import exercises.errorhandling.either.EitherExercises2.UsernameError._
+import exercises.errorhandling.either.EitherExercises2.CountryError._
 
-object EitherExercise2 {
+object EitherExercises2 {
 
-  case class User(username: Username, residence: Country)
+  case class User(username: Username, countryOfResidence: Country)
+
   case class Username(value: String)
+
   sealed abstract class Country(val code: String)
   object Country {
     val all: List[Country] = List(France, Germany, Switzerland, UnitedKingdom)
@@ -17,15 +19,15 @@ object EitherExercise2 {
     case object UnitedKingdom extends Country("GBR")
   }
 
-  // a. Implement `validateCountry` which takes a 3-letter country and returns
-  // the matching `Country` value.
+  // a. Implement `validateCountry` which takes a 3-letter country code and returns
+  // the matching `Country` value (see Alpha-3 code format).
   // `validateCountry` can fail for two reasons:
-  // * `countryCode` format is invalid - we expect 3 upper case letters (see Alpha-3 code format)
+  // * string format is invalid - we expect 3 upper case letters
   // * the country is not supported by the application
   // For example,
-  // validateCountry("FRA")   == Right(France)
-  // validateCountry("hello") == Right(InvalidFormat("hello"))
-  // validateCountry("ARG")   == Right(NotSupported("ARG"))
+  // validateCountry("FRA") == Right(France)
+  // validateCountry("UK")  == Left(InvalidFormat("UK"))
+  // validateCountry("ARG") == Left(NotSupported("ARG"))
   def validateCountry(countryCode: String): Either[CountryError, Country] =
     ???
 
