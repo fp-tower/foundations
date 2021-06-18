@@ -27,18 +27,10 @@ object EitherAnswers2 {
     else
       Left(InvalidFormat(country))
 
-  def validateUsername(username: String): Either[UsernameError, Username] = {
-    val trimmed = username.trim
-    for {
-      _ <- validateUsernameSize(trimmed)
-      _ <- validateUsernameCharacters(trimmed)
-    } yield Username(trimmed)
-  }
-
-  def validateUsernameSize(username: String): Either[TooSmall, Unit] =
+  def checkUsernameSize(username: String): Either[TooSmall, Unit] =
     if (username.length < 3) Left(TooSmall(username.length)) else Right(())
 
-  def validateUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
+  def checkUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
     username.toList.filterNot(isValidUsernameCharacter) match {
       case Nil        => Right(())
       case characters => Left(InvalidCharacters(characters))
@@ -47,11 +39,17 @@ object EitherAnswers2 {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  // scatsie union type https://scastie.scala-lang.org/k169tqu3TrSGuRb5HTSG3w
-  def validateUser(username: String, country: String): Either[UserError, User] =
+  def validateUsername(username: String): Either[UsernameError, Username] =
     for {
-      username <- validateUsername(username)
-      country  <- validateCountry(country)
+      _ <- checkUsernameSize(username)
+      _ <- checkUsernameCharacters(username)
+    } yield Username(username)
+
+  // scatsie union type https://scastie.scala-lang.org/k169tqu3TrSGuRb5HTSG3w
+  def validateUser(usernameStr: String, countryStr: String): Either[UserError, User] =
+    for {
+      username <- validateUsername(usernameStr)
+      country  <- validateCountry(countryStr)
     } yield User(username, country)
 
   sealed trait UserError
@@ -81,8 +79,8 @@ object EitherAnswers2 {
   def validateUsernameAcc(username: String): EitherNel[UsernameError, Username] = {
     val trimmed = username.trim
     (
-      validateUsernameSize(trimmed).toEitherNel,
-      validateUsernameCharacters(trimmed).toEitherNel
+      checkUsernameSize(trimmed).toEitherNel,
+      checkUsernameCharacters(trimmed).toEitherNel
     ).zipAccWith((_, _) => Username(trimmed))
   }
 

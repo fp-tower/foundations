@@ -27,52 +27,79 @@ object EitherExercises2 {
   // For example,
   // validateCountry("FRA") == Right(France)
   // validateCountry("UK")  == Left(InvalidFormat("UK"))
-  // validateCountry("ARG") == Left(NotSupported("ARG"))
+  // validateCountry("ARG") == Left(NotSupported("ARG")), ARG represents Argentina
   def validateCountry(countryCode: String): Either[CountryError, Country] =
-    ???
+    if (countryCode.length != 3 || !countryCode.forall(c => c.isLetter && c.isUpper))
+      Left(InvalidFormat(countryCode))
+    else
+      Country.all
+        .find(_.code == countryCode)
+        .toRight(NotSupported(countryCode))
 
-  // b. Implement `validateUsernameSize` which checks if a username is at least
+  // b. Implement `checkUsernameSize` which checks if a username is at least
   // 3 characters long. For example,
-  // validateUsernameSize("bob_2167") == Right(())
-  // validateUsernameSize("bo")       == Left(TooSmall(2))
-  def validateUsernameSize(username: String): Either[TooSmall, Unit] =
-    ???
+  // checkUsernameSize("bob_2167") == Right(())
+  // checkUsernameSize("bob")      == Right(())
+  // checkUsernameSize("bo")       == Left(TooSmall(2))
+  def checkUsernameSize(username: String): Either[TooSmall, Unit] = {
+    val length = username.length
+    Either.cond(length >= 3, right = (), left = TooSmall(length))
+  }
 
-  // c. Implement `validateUsernameCharacters` which checks if all characters are valid
+  // c. Implement `checkUsernameCharacters` which checks if all characters are valid
   // according to the function `isValidUsernameCharacter`. For example,
-  // validateUsernameCharacters("_abc-123_")  == Right(())
-  // validateUsernameCharacters("foo!~23}AD") == Left(InvalidCharacters(List('!','~','}')))
-  def validateUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
-    ???
+  // checkUsernameCharacters("_abc-123_")  == Right(())
+  // checkUsernameCharacters("foo!~23}AD") == Left(InvalidCharacters(List('!','~','}')))
+  def checkUsernameCharacters(username: String): Either[InvalidCharacters, Unit] = {
+    val invalidCharacters = username.toList.filterNot(isValidUsernameCharacter)
+
+    Either.cond(invalidCharacters.isEmpty, right = (), left = InvalidCharacters(invalidCharacters))
+  }
 
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
   // d. Implement `validateUsername` which verifies the username size and content
-  // is correct according to `validateUsernameSize` and `validateUsernameCharacters`.
+  // is correct according to `checkUsernameSize` and `checkUsernameCharacters`.
   // For example,
   // validateUsername("bob_2167")   == Right(Username("bob_2167"))
   // validateUsername("bo")         == Left(TooSmall(2))
   // validateUsername("foo!~23}AD") == Left(InvalidCharacters(List('!','~','}')))
   def validateUsername(username: String): Either[UsernameError, Username] =
-    ???
+    for {
+      _ <- checkUsernameSize(username)
+      _ <- checkUsernameCharacters(username)
+    } yield Username(username)
 
   // e. Implement `validateUser` which verifies that both the username and the country
-  // of residence are correct according to `validateUsernameSize` and `validateUsernameCharacters`.
+  // of residence are correct according to `checkUsernameSize` and `checkUsernameCharacters`.
   // What should be the return type of `validateUser`?
-  def validateUser(username: String, residence: String) =
-    ???
+  def validateUser(usernameStr: String, countryStr: String): Either[UserError, User] =
+    for {
+      username <- validateUsername(usernameStr)
+      country  <- validateCountry(countryStr)
+    } yield User(username, country)
 
-  sealed trait CountryError
+  sealed trait UserError
+
+  sealed trait CountryError extends UserError
   object CountryError {
     case class InvalidFormat(country: String) extends CountryError
     case class NotSupported(country: String)  extends CountryError
   }
 
-  sealed trait UsernameError
+  sealed trait UsernameError extends UserError
   object UsernameError {
-    case class TooSmall(length: Int)               extends UsernameError
+    case class TooSmall(inputLength: Int)          extends UsernameError
     case class InvalidCharacters(char: List[Char]) extends UsernameError
+  }
+
+  sealed trait ValidationError
+  object ValidationError {
+    case class InvalidFormat(input: String)        extends ValidationError
+    case class NotSupported(input: String)         extends ValidationError
+    case class TooSmall(inputLength: Int)          extends ValidationError
+    case class InvalidCharacters(char: List[Char]) extends ValidationError
   }
 
 }

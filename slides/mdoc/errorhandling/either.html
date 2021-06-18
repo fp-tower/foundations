@@ -124,22 +124,104 @@ enum Try[+A] {
 
 <br><br><br><br><br><br>
 
-.forty-seven-left[
+.sixty-seven-left[
 ## Pros
 
 .medium[
-* Success & Failure are great names
-* Convenient apply method
+* Success and Failure are great names
+
 * Throwable is the main error type of the JVM
 ]]
 
-.forty-seven-right[
-## Cons
+---
+class: medium-code
 
-.medium[
-* Can't pattern match exhaustively
-* Can't accumulate errors
-]]
+# Try limitations
+
+.seventy-seven-left[
+```scala mdoc:invisible
+import scala.util.{Try, Success, Failure}
+```
+
+```scala mdoc
+case class Order(total: Double, items: List[Item])
+case class Item(id: String, quantity: Int, unitPrice: Double)
+
+def placeOrder(items: List[Item]): Try[Order] = {
+  val total      = items.map(item => item.quantity * item.unitPrice).sum
+  val duplicates = items
+    .groupBy(_.id)
+    .collect{ case (id, items) if items.size > 1 => id }
+
+  if(duplicates.nonEmpty)
+    Failure(new Exception("Duplicated items: " + duplicates.mkString(",") ))
+  else
+    Success(Order(total, items))
+}
+```
+]
+
+---
+class: medium-code
+
+# Try limitations
+
+.seventy-seven-left[
+```scala
+case class Order(total: Double, items: List[Item])
+case class Item(id: String, quantity: Int, unitPrice: Double)
+
+def placeOrder(items: List[Item]): Try[Order] = {
+  val total      = items.map(item => item.quantity * item.unitPrice).sum
+  val duplicates = items
+    .groupBy(_.id)
+    .collect{ case (id, items) if items.size > 1 => id }
+
+  if(duplicates.nonEmpty)
+    Failure(new Exception("Duplicated items: " + duplicates.mkString(",") ))
+  else
+    Success(Order(total, items))
+}
+
+placeOrder(List(
+  Item("`XYZ`", 2, 18.99), Item("AAA", 1,  8.45), Item("`XYZ`", 1, 10)
+))
+// res: Try[Order] = `Failure(java.lang.Exception: Duplicated item: XYZ`)
+```
+]
+
+---
+class: medium-code
+
+# Try limitations
+
+.seventy-seven-left[
+```scala
+case class Order(total: Double, items: List[Item])
+case class Item(id: String, quantity: Int, unitPrice: Double)
+
+def placeOrder(items: List[Item]): Try[Order] = {
+  val total      = items.map(item => item.quantity * item.unitPrice).sum
+  val duplicates = items
+    .groupBy(_.id)
+    .collect{ case (id, items) if items.size > 1 => id }
+
+  if(duplicates.nonEmpty)
+    Failure(new Exception("Duplicated items: " + duplicates.mkString(",") ))
+  else
+    Success(Order(total, items))
+}
+
+placeOrder(List(
+  Item("XYZ", 2, 18.99), Item("AAA", 1,  8.45)
+))
+// res: Try[Order] = `Success`(Order(46.43, ...))
+```
+]
+
+
+
+
 
 ---
 # Try vs Either
@@ -244,6 +326,29 @@ enum Either[E, A] {
 val result: Either[String, Int] = Left("Username must be at least 8 characters long")
 ```
 ]
+
+---
+# Error Hierarchy
+
+<br>
+
+.eighty-seven-left[.center[
+<img src="../img/foundation/user-error-1.svg" style="width:700px;"/>
+]]
+
+---
+# Error Hierarchy
+
+<img src="../img/foundation/user-error-2.svg" style="width:800px;"/>
+
+---
+# Error Hierarchy
+
+<br>
+
+.eighty-seven-left[.center[
+<img src="../img/foundation/user-error-3.svg" style="width:1000px;"/>
+]]
 
 
 </textarea>
