@@ -23,28 +23,6 @@ sealed trait Validated[+E, +A] {
       case (Valid(_), Invalid(es))      => Invalid(es)
       case (Invalid(es1), Invalid(es2)) => Invalid(es1 ++ es2)
     }
-}sealed trait Validated[+E, +A] {
-  import Validated._
-
-  def map[Next](update: A => Next): Validated[E, Next] =
-    this match {
-      case Invalid(errors) => Invalid(errors)
-      case Valid(value)    => Valid(update(value))
-    }
-
-  def flatMap[EE >: E, Next](update: A => Validated[EE, Next]): Validated[EE, Next] =
-    this match {
-      case Invalid(errors) => Invalid(errors)
-      case Valid(value)    => update(value)
-    }
-
-  def zip[EE >: E, Other](other: Validated[EE, Other]): Validated[EE, (A, Other)] =
-    (this, other) match {
-      case (Valid(a), Valid(b))         => Valid((a, b))
-      case (Invalid(es), Valid(_))      => Invalid(es)
-      case (Valid(_), Invalid(es))      => Invalid(es)
-      case (Invalid(es1), Invalid(es2)) => Invalid(es1 ++ es2)
-    }
 }
 
 object Validated {
