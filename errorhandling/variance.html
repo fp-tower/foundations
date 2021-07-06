@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Variance</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Variance]
+
+---
+# Type inference
+
+```scala
+import java.time.LocalDate
+
+8
+// res0: Int = 8
+
+LocalDate.of(2021, 6, 17)
+// res1: LocalDate = 2021-06-17
+
+List(1, 2, 3)
+// res2: List[Int] = List(1, 2, 3)
+
+List(1, "hello", LocalDate.of(2021, 6, 17))
+// res3: List[Any] = List(1, "hello", 2021-06-17)
+
+List("hello", LocalDate.of(2021, 6, 17))
+// res4: List[Object with Comparable[_1] forSome { type _1 >: java.time.chrono.ChronoLocalDate with String <: Object with Comparable[_1] forSome { type _1 >: java.time.chrono.ChronoLocalDate with String <: Object } } with Serializable] = List(
+//   "hello",
+//   2021-06-17
+// )
+```
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
