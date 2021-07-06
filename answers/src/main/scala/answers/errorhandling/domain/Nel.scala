@@ -1,6 +1,6 @@
-package answers.errorhandling
+package answers.errorhandling.domain
 
-// Non Empty List
+// Non-Empty List
 case class Nel[+A](head: A, tail: List[A]) {
   def toList: List[A] =
     head :: tail
@@ -18,4 +18,10 @@ object Nel {
 
   def one[A](value: A): Nel[A] =
     Nel(value)
+
+  def fromList[A](values: List[A]): Option[Nel[A]] =
+    values match {
+      case Nil          => None
+      case head :: next => Some(Nel(head, next))
+    }
 }

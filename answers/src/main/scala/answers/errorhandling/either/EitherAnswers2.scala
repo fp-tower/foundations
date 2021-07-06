@@ -5,7 +5,7 @@ import answers.errorhandling.either.EitherAnswers2.UsernameError._
 
 object EitherAnswers2 {
 
-  case class User(username: Username, country: Country)
+  case class User(username: Username, countryOfResidence: Country)
 
   case class Username(value: String)
 

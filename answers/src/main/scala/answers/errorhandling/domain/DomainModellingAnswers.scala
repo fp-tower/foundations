@@ -1,15 +1,15 @@
 package answers.errorhandling.domain
+import answers.errorhandling.domain.DomainModellingAnswers.OrderError._
+import answers.errorhandling.domain.DomainModellingAnswers.OrderStatus._
 
-import answers.errorhandling.Nel
-import answers.errorhandling.domain.Exercise1.OrderError._
-import answers.errorhandling.domain.Exercise1.OrderStatus._
-
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.UUID
+import scala.util.control.NoStackTrace
 
-object Exercise1 {
+object DomainModellingAnswers {
 
   case class OrderId(value: UUID)
+  case class ItemId(value: UUID)
   case class Order(id: OrderId, createdAt: Instant, status: OrderStatus)
 
   sealed trait OrderStatus
@@ -23,12 +23,30 @@ object Exercise1 {
       deliveryAddress: Address,
       submittedAt: Instant,
       deliveredAt: Instant
-    ) extends OrderStatus
+    ) extends OrderStatus {
+      val deliveryDuration: Duration = Duration.between(submittedAt, deliveredAt)
+    }
   }
 
-  case class ItemId(value: UUID)
   case class Item(id: ItemId, quantity: Long, price: BigDecimal)
   case class Address(streetNumber: Int, postCode: String)
+
+  def newOrder(id: OrderId, now: Instant): Order =
+    Order(
+      id = id,
+      createdAt = now,
+      Draft(Nil)
+    )
+
+  def checkout(order: Order): Either[OrderError, Order] =
+    order.status match {
+      case Draft(items) =>
+        Nel.fromList(items) match {
+          case None      => Left(EmptyBasket)
+          case Some(nel) => Right(order.copy(status = Checkout(nel, None)))
+        }
+      case _: Checkout | _: Submitted | _: Delivered | _: Cancelled => Left(InvalidStatus(order.status))
+    }
 
   def submit(order: Order, now: Instant): Either[OrderError, Order] =
     order.status match {
@@ -64,10 +82,15 @@ object Exercise1 {
         Left(InvalidStatus(order.status))
     }
 
-  sealed trait OrderError
+  sealed abstract class OrderError(message: String) extends NoStackTrace {
+    override def getMessage: String = message
+  }
+
   object OrderError {
-    case class MissingDeliveryAddress(status: OrderStatus) extends OrderError
-    case class InvalidStatus(status: OrderStatus)          extends OrderError
+    case object EmptyBasket                                extends OrderError("Basket is empty")
+    case class MissingDeliveryAddress(status: OrderStatus) extends OrderError("Delivery address is missing")
+    case class InvalidStatus(status: OrderStatus)
+        extends OrderError(s"Invalid order status: ${status.getClass.getSimpleName}")
   }
 
 }

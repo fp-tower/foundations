@@ -1,4 +1,5 @@
 package answers.errorhandling
+import answers.errorhandling.domain.Nel
 
 package object either {
 

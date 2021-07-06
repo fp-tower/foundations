@@ -1,10 +1,10 @@
 package answers.errorhandling.either
 
-import answers.errorhandling.either.EitherAnswers2b.ValidationError._
+import answers.errorhandling.either.EitherAnswers2bis.ValidationError._
 
-object EitherAnswers2b {
+object EitherAnswers2bis {
 
-  case class User(username: Username, country: Country)
+  case class User(username: Username, countryOfResidence: Country)
 
   case class Username(value: String)
 
