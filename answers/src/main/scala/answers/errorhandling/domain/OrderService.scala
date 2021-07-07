@@ -1,7 +1,6 @@
 package answers.errorhandling.domain
 
 import answers.action.async.IO
-import answers.errorhandling.domain.DomainModellingAnswers.{Order, OrderError, OrderId}
 
 import java.time.Instant
 
@@ -10,22 +9,27 @@ class OrderService(orderStore: OrderStore, clock: Clock, idGen: IdGen) {
     for {
       orderId <- idGen.genOrderId
       now     <- clock.now
-    } yield DomainModellingAnswers.newOrder(orderId, now)
+    } yield Order.empty(orderId, now)
 
   def checkout(id: OrderId): IO[Order] =
-    modifyOrder(id)((order, _) => DomainModellingAnswers.checkout(order))
+    modifyOrder(id)(_.checkout)
 
   def submit(id: OrderId): IO[Order] =
-    modifyOrder(id)(DomainModellingAnswers.submit)
+    for {
+      now     <- clock.now
+      updated <- modifyOrder(id)(_.submit(now))
+    } yield updated
 
   def deliver(id: OrderId): IO[Order] =
-    modifyOrder(id)(DomainModellingAnswers.deliver)
-
-  private def modifyOrder(id: OrderId)(transition: (Order, Instant) => Either[OrderError, Order]): IO[Order] =
     for {
-      now      <- clock.now
+      now     <- clock.now
+      updated <- modifyOrder(id)(_.deliver(now))
+    } yield updated
+
+  private def modifyOrder(id: OrderId)(transition: Order => Either[OrderError, Order]): IO[Order] =
+    for {
       order    <- orderStore.get(id).getOrFail(OrderMissing(id)) // add transaction in real code
-      newOrder <- transition(order, now).getOrFail
+      newOrder <- transition(order).getOrFail
       _        <- orderStore.save(newOrder)
     } yield newOrder
 
