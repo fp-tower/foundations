@@ -28,6 +28,109 @@ enum Option[+A] {
 ]
 
 ---
+# Option
+
+<br><br>
+.forty-seven-left[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  `case None`
+}
+```
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(`error: Throwable`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(`value: A`)
+  case None
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(`value: A`)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case `None`
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case `Failure`(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
 # Option vs Try
 
 <br><br>
@@ -57,167 +160,27 @@ enum Try[+A] {
 
 ]
 
---
-
-.forty-seven-left[
-## Pros
-
-.medium[
-* Success & Failure are great names
-* Throwable is the main error type on the JVM
-]]
-
---
-
-.forty-seven-right[
-## Cons
-
-.medium[
-* Can't pattern match exhaustively
-* Can't accumulate errors
-]]
-
----
-# Try
-
-.fifty-seven-left[
-```scala
-def submit(order: Order): Try[Order] =
-  order.status match {
-    case "Draft" =>
-      if(order.basket.isEmpty)
-        Failure(EmptyBasketError)
-      else
-        Success(order.copy(status = "Submitted"))
-    case other =>
-      Failure(InvalidCommandError("submit", order))
-  }
-```
-]
-
----
-# Try
-
-.fifty-seven-left[
-```scala
-def submit(order: Order): Try[Order]
-
-submit(order).recover {
-  case EmptyBasketError            => ...
-  case InvalidCommandError(status) => ...
-  case other                       => ...
-}
-```
-]
-
----
-# Try
-
-.forty-seven-left[
-```scala
-enum Try[+A] {
-  case Success(value: A)
-  case Failure(error: Throwable)
-}
-```
-]
-
-<br><br><br><br><br><br>
-
 .sixty-seven-left[
-## Pros
 
-.medium[
-* Success and Failure are great names
-
-* Throwable is the main error type of the JVM
-]]
-
----
-class: medium-code
-
-# Try limitations
-
-.seventy-seven-left[
-
-```scala
-case class Order(total: Double, items: List[Item])
-case class Item(id: String, quantity: Int, unitPrice: Double)
-
-def placeOrder(items: List[Item]): Try[Order] = {
-  val total      = items.map(item => item.quantity * item.unitPrice).sum
-  val duplicates = items
-    .groupBy(_.id)
-    .collect{ case (id, items) if items.size > 1 => id }
-
-  if(duplicates.nonEmpty)
-    Failure(new Exception("Duplicated items: " + duplicates.mkString(",") ))
-  else
-    Success(Order(total, items))
-}
-```
-]
-
----
-class: medium-code
-
-# Try limitations
-
-.seventy-seven-left[
-```scala
-case class Order(total: Double, items: List[Item])
-case class Item(id: String, quantity: Int, unitPrice: Double)
-
-def placeOrder(items: List[Item]): Try[Order] = {
-  val total      = items.map(item => item.quantity * item.unitPrice).sum
-  val duplicates = items
-    .groupBy(_.id)
-    .collect{ case (id, items) if items.size > 1 => id }
-
-  if(duplicates.nonEmpty)
-    Failure(new Exception("Duplicated items: " + duplicates.mkString(",") ))
-  else
-    Success(Order(total, items))
-}
-
-placeOrder(List(
-  Item("`XYZ`", 2, 18.99), Item("AAA", 1,  8.45), Item("`XYZ`", 1, 10)
-))
-// res: Try[Order] = `Failure(java.lang.Exception: Duplicated item: XYZ`)
-```
-]
-
----
-class: medium-code
-
-# Try limitations
-
-.seventy-seven-left[
-```scala
-case class Order(total: Double, items: List[Item])
-case class Item(id: String, quantity: Int, unitPrice: Double)
-
-def placeOrder(items: List[Item]): Try[Order] = {
-  val total      = items.map(item => item.quantity * item.unitPrice).sum
-  val duplicates = items
-    .groupBy(_.id)
-    .collect{ case (id, items) if items.size > 1 => id }
-
-  if(duplicates.nonEmpty)
-    Failure(new Exception("Duplicated items: " + duplicates.mkString(",") ))
-  else
-    Success(Order(total, items))
-}
-
-placeOrder(List(
-  Item("XYZ", 2, 18.99), Item("AAA", 1,  8.45)
-))
-// res: Try[Order] = `Success`(Order(46.43, ...))
-```
+## Success & Failure are great names
+## Throwable is the main error type on the JVM
 ]
 
 
+---
+# Try limitation
 
+<br>
+
+```scala
+val result: Try[Int] = ...
+
+result.recover {
+  case e: FileNotFoundException => ...
+  case e: TimeoutException      => ...
+  case other                    => ...
+}
+```
 
 
 ---
@@ -251,7 +214,97 @@ enum Either[+E, +A] {
 ]
 
 ---
-# Either
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(`value: A`)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(`value: A`)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(`error: Throwable`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(`value: E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+`E`, +A] {
+  case Right(value: A)
+  case  Left(value: `E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Custom error type
 
 <br><br>
 .fifty-seven-left[
@@ -266,11 +319,56 @@ enum Either[+E, +A] {
 <br>
 .fifty-seven-left[
 ```scala
-val result1: Either[String, Int] = Right(5)
+val result1: Either[`String`          , Int] = ...
 
-val result2: Either[String, Int] = Left("Hello")
+val result2: Either[`TimeoutException`, Int] = ...
 ```
 ]
+
+---
+# Why Left and Right?
+
+<br><br>
+.sixty-two-left[
+```scala
+enum Either[+E, +A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+```scala
+def getUser(identifier: `Either[Email, UserId]`): User =
+  identifier match {
+    case Left(email)   => ...
+    case Right(userId) => ...
+  }
+```
+]
+
+---
+# Why Left is for failure and Right for success?
+
+<br><br>
+.sixty-two-left[
+```scala
+enum Either[+E, +A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+```scala
+val result1: Either[String, Int] = Right(1)
+val result2: Either[String, Int] = Left("Oops")
+
+result1.map(_ + 1)
+// res: Either[String, Int] = `Right(2)`
+result2.map(_ + 1)
+// res: Either[String, Int] = `Left("Oops")`
+```
+]
+
 
 ---
 class: medium-code
