@@ -28,6 +28,7 @@ object EitherExercises1 {
     case class UserNotFound(userId: UserId)  extends UserEmailError
     case class EmailNotFound(userId: UserId) extends UserEmailError
   }
+  // In Scala 3,
   // enum UserEmailError {
   //   case  UserNotFound(userId: UserId)
   //   case EmailNotFound(userId: UserId)
