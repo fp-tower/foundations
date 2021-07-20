@@ -31,13 +31,13 @@ object EitherExercises2 {
   def validateCountry(countryCode: String): Either[CountryError, Country] =
     ???
 
-  // b. Implement `checkUsernameSize` which checks if a username is at least
-  // 3 characters long. For example,
+  // b. Implement `checkUsernameSize` which checks if a username is
+  // at least 5 characters long. For example,
   // checkUsernameSize("bob_2167") == Right(())
-  // checkUsernameSize("bob")      == Right(())
+  // checkUsernameSize("bob_2")    == Right(())
   // checkUsernameSize("bo")       == Left(TooSmall(2))
   def checkUsernameSize(username: String): Either[TooSmall, Unit] =
-    ???
+    Either.cond(username.length >= 5, (), TooSmall(username.length))
 
   // c. Implement `checkUsernameCharacters` which checks if all characters are valid
   // according to the function `isValidUsernameCharacter`. For example,

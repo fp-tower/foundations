@@ -16,7 +16,7 @@ class EitherExercises2Test extends AnyFunSuite with ScalaCheckDrivenPropertyChec
 
   ignore("checkUsernameSize example") {
     assert(checkUsernameSize("bob_2167") == Right(()))
-    assert(checkUsernameSize("bob") == Right(()))
+    assert(checkUsernameSize("bob_2") == Right(()))
     assert(checkUsernameSize("bo") == Left(TooSmall(2)))
   }
 

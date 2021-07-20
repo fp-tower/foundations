@@ -25,19 +25,16 @@ object EitherExercises1 {
   // in the error channel.
   sealed trait UserEmailError
   object UserEmailError {
-    case class UserNotFound(userId: UserId)  extends UserEmailError
-    case class EmailNotFound(userId: UserId) extends UserEmailError
+    case object UserNotFound  extends UserEmailError
+    case object EmailNotFound extends UserEmailError
   }
   // In Scala 3,
   // enum UserEmailError {
-  //   case  UserNotFound(userId: UserId)
-  //   case EmailNotFound(userId: UserId)
+  //   case UserNotFound, EmailNotFound
   // }
 
   // c. Implement `errorMessage` which creates a human readable error message
-  // from a `UserEmailError`. For example,
-  // errorMessage(UserNotFound(UserId(111)))  == "User 111 is missing"
-  // errorMessage(EmailNotFound(UserId(111))) == "User 111 has no email"
+  // from a `UserEmailError` object.
   // Note: Once implemented, move this method inside `UserEmailError`
   def errorMessage(error: UserEmailError): String =
     ???
