@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 100
       - uses: coursier/cache-action@v5
-      - uses: olafurpg/setup-scala@v10
+      - uses: olafurpg/setup-scala@v12
       - uses: olafurpg/setup-gpg@v3
       - name: Run tests and doc
         run: csbt test slides/mdoc
