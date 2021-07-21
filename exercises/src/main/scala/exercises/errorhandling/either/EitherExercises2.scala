@@ -59,31 +59,23 @@ object EitherExercises2 {
     ???
 
   // e. Implement `validateUser` which verifies that both the username and the country
-  // of residence are correct according to `checkUsernameSize` and `checkUsernameCharacters`.
+  // of residence are correct according to `validateUsername` and `validateCountry`.
   // What should be the return type of `validateUser`?
-  def validateUser(usernameStr: String, countryStr: String) =
+  // validateUser("bob_2167", "FRA") --> Success User(Username("bob_2167"), France)
+  // validateUser("bo", "FRA")       --> Failure
+  def validateUser(usernameStr: String, countryStr: String) = // Either[???, User]
     ???
 
-  sealed trait UserError
-
-  sealed trait CountryError extends UserError
+  sealed trait CountryError
   object CountryError {
     case class InvalidFormat(country: String) extends CountryError
     case class NotSupported(country: String)  extends CountryError
   }
 
-  sealed trait UsernameError extends UserError
+  sealed trait UsernameError
   object UsernameError {
     case class TooSmall(inputLength: Int)          extends UsernameError
     case class InvalidCharacters(char: List[Char]) extends UsernameError
-  }
-
-  sealed trait ValidationError
-  object ValidationError {
-    case class InvalidFormat(input: String)        extends ValidationError
-    case class NotSupported(input: String)         extends ValidationError
-    case class TooSmall(inputLength: Int)          extends ValidationError
-    case class InvalidCharacters(char: List[Char]) extends ValidationError
   }
 
 }
