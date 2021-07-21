@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Design Error</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Design Error]
+
+---
+# Union types
+
+<br>
+
+.seventy-seven-left[
+```scala
+def validateUser(
+  usernameStr: String,
+  countryStr : String
+): Either[`UsernameError | CountryError`, User] =
+  for {
+    username <- validateUsername(usernameStr)
+    country  <- validateCountry(countryStr)
+  } yield User(username, country)
+```
+]
+
+---
+# Union types
+
+<br><br><br>
+.seventy-seven-left[.center[
+<img src="../img/foundation/union-types.svg" style="width:250px;"/>
+]]
+
+---
+# Union types
+
+<br>
+
+.eighty-seven-left[
+```scala
+def validateUser(
+  usernameStr   : String,
+  countryStr    : String,
+  addressStr    : String,
+  dateOfBirthStr: String,
+): Either[`UsernameError | CountryError | AddressError | DateOfBirtError`, User] =
+  ...
+```
+]
+
+---
+# Union types
+
+<br>
+
+.eighty-seven-left[
+```scala
+type UserError = UsernameError | CountryError | AddressError | DateOfBirtError
+
+def validateUser(
+  usernameStr   : String,
+  countryStr    : String,
+  addressStr    : String,
+  dateOfBirthStr: String,
+): Either[UserError, User] =
+  ...
+```
+]
+
+---
+background-image: url(../img/foundation/user-error-hierarchy-1.svg)
+
+# Pyramid of types
+
+---
+background-image: url(../img/foundation/user-error-hierarchy-2.svg)
+
+# Pyramid of types
+
+---
+background-image: url(../img/foundation/user-error-hierarchy-3.svg)
+
+# Pyramid of types
+
+---
+background-image: url(../img/foundation/application-error-hierarchy-1.svg)
+
+# Pyramid of types
+
+---
+background-image: url(../img/foundation/application-error-hierarchy-2.svg)
+
+# 3 Levels
+
+---
+background-image: url(../img/foundation/application-error-hierarchy-3.svg)
+
+# 3 Levels
+
+---
+background-image: url(../img/foundation/application-error-hierarchy-4.svg)
+
+# 3 Levels
+
+---
+background-image: url(../img/foundation/application-error-hierarchy-5.svg)
+
+# 3 Levels
+
+---
+background-image: url(../img/foundation/application-error-hierarchy-6.svg)
+
+# ValidationError
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>
