@@ -23,8 +23,8 @@ class: center, middle, white
 .forty-seven-left[
 ```scala
 enum Validation[+E, +A] {
-  case   Valid(value : A)
-  case Invalid(errors: List[E])
+  case   Valid(value: A)
+  case Invalid(value: List[E])
 }
 ```
 ]
@@ -38,8 +38,8 @@ enum Validation[+E, +A] {
 .forty-five[
 ```scala
 enum Validation[+E, +A] {
-  case   Valid(value : A)
-  case Invalid(errors: List[E])
+  case   Valid(value: A)
+  case Invalid(value: List[E])
 }
 ```
 ]
@@ -60,7 +60,180 @@ enum Either[+E, +A] {
 ]
 
 
+---
+# Validation vs Either
 
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   `Valid`(value: A)
+  case Invalid(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case `Right`(value: A)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case `Invalid`(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  `Left`(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: `List[E]`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: `E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("xxx", "FRA")
+// Invalid(Nil)
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.forty-seven-left[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: `NEL`[E])
+}
+```
+]
 
 
 </textarea>

@@ -1,4 +1,5 @@
 package answers.errorhandling.domain
+import answers.errorhandling.NEL
 import answers.errorhandling.domain.OrderError._
 import answers.errorhandling.domain.OrderStatus._
 
@@ -19,7 +20,7 @@ case class Order(id: OrderId, createdAt: Instant, status: OrderStatus) {
   def checkout: Either[OrderError, Order] =
     status match {
       case Draft(items) =>
-        Nel.fromList(items) match {
+        NEL.fromList(items) match {
           case None      => Left(EmptyBasket)
           case Some(nel) => Right(copy(status = Checkout(nel, None)))
         }

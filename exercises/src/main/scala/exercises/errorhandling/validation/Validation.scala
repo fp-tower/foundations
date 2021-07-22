@@ -1,5 +1,5 @@
 package exercises.errorhandling.validation
-import exercises.errorhandling.Nel
+import exercises.errorhandling.NEL
 
 // Validation is not part of the standard library.
 // It is called `Validated` in cats and `ZValidation` in zio-prelude.
@@ -29,12 +29,12 @@ sealed trait Validation[+E, +A] {
 }
 
 object Validation {
-  case class Invalid[+E](errors: Nel[E]) extends Validation[E, Nothing]
-  case class Valid[+A](value: A)         extends Validation[Nothing, A]
+  case class Invalid[+E](value: NEL[E]) extends Validation[E, Nothing]
+  case class Valid[+A](value: A)        extends Validation[Nothing, A]
 
   def fromEither[E, A](either: Either[E, A]): Validation[E, A] =
     either match {
-      case Left(value)  => Invalid(Nel(value))
+      case Left(value)  => Invalid(NEL(value))
       case Right(value) => Valid(value)
     }
 }

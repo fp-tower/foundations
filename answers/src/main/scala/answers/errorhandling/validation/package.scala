@@ -1,11 +1,10 @@
 package answers.errorhandling
-import answers.errorhandling.domain.Nel
 
 package object validation {
 
   implicit class ValidationExtension[A](value: A) {
     def valid: Validation[Nothing, A]   = Validation.Valid(value)
-    def invalid: Validation[A, Nothing] = Validation.Invalid(Nel(value))
+    def invalid: Validation[A, Nothing] = Validation.Invalid(NEL(value))
   }
 
   implicit class EitherValidationExtension[E, A](value: Either[E, A]) {

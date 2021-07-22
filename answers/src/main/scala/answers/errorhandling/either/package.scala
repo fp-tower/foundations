@@ -1,12 +1,11 @@
 package answers.errorhandling
-import answers.errorhandling.domain.Nel
 
 package object either {
 
-  type EitherNel[E, A] = Either[Nel[E], A]
+  type EitherNel[E, A] = Either[NEL[E], A]
 
   implicit class EitherSyntax[E, A](self: Either[E, A]) {
-    def toEitherNel: EitherNel[E, A] = self.left.map(Nel.one)
+    def toEitherNel: EitherNel[E, A] = self.left.map(NEL.one)
   }
 
   implicit class EitherObjectSyntax(self: Either.type) {

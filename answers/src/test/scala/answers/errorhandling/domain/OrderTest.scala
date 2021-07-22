@@ -1,4 +1,5 @@
 package answers.errorhandling.domain
+import answers.errorhandling.NEL
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import answers.errorhandling.domain.OrderStatus.Delivered
@@ -29,7 +30,7 @@ class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
     assert(
       result == Right(
-        Order(orderId, createdAt, Delivered(Nel(item1, item2), deliveryAddress, submittedAt, deliveredAt))
+        Order(orderId, createdAt, Delivered(NEL(item1, item2), deliveryAddress, submittedAt, deliveredAt))
       )
     )
   }

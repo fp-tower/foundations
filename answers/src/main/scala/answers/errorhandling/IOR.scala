@@ -1,5 +1,4 @@
 package answers.errorhandling
-import answers.errorhandling.domain.Nel
 
 sealed trait IOR[+E, +A] {
   import IOR._
@@ -38,12 +37,12 @@ sealed trait IOR[+E, +A] {
 }
 
 object IOR {
-  case class Left[+E](failures: Nel[E])                 extends IOR[E, Nothing]
+  case class Left[+E](failures: NEL[E])                 extends IOR[E, Nothing]
   case class Right[+A](success: A)                      extends IOR[Nothing, A]
-  case class Both[+E, +A](failures: Nel[E], success: A) extends IOR[E, A]
+  case class Both[+E, +A](failures: NEL[E], success: A) extends IOR[E, A]
 
   def fromEither[E, A](either: Either[E, A]): IOR[E, A] =
-    either.fold(e => Left(Nel(e)), Right(_))
+    either.fold(e => Left(NEL(e)), Right(_))
 
   def sequence[E, A](values: List[IOR[E, A]]): IOR[E, List[A]] =
     values

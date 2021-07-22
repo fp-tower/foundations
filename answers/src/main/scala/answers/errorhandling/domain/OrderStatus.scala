@@ -1,14 +1,16 @@
 package answers.errorhandling.domain
+import answers.errorhandling.NEL
+
 import java.time.{Duration, Instant}
 
 sealed trait OrderStatus
 object OrderStatus {
   case class Draft(basket: List[Item])                                                    extends OrderStatus
-  case class Checkout(basket: Nel[Item], deliveryAddress: Option[Address])                extends OrderStatus
-  case class Submitted(basket: Nel[Item], deliveryAddress: Address, submittedAt: Instant) extends OrderStatus
+  case class Checkout(basket: NEL[Item], deliveryAddress: Option[Address])                extends OrderStatus
+  case class Submitted(basket: NEL[Item], deliveryAddress: Address, submittedAt: Instant) extends OrderStatus
   case class Cancelled(previousState: Either[Checkout, Submitted], cancelledAt: Instant)  extends OrderStatus
   case class Delivered(
-    basket: Nel[Item],
+    basket: NEL[Item],
     deliveryAddress: Address,
     submittedAt: Instant,
     deliveredAt: Instant

@@ -1,5 +1,5 @@
 package answers.errorhandling.validation
-import answers.errorhandling.domain.Nel
+import answers.errorhandling.NEL
 
 sealed trait Validation[+E, +A] {
   import Validation._
@@ -31,12 +31,12 @@ sealed trait Validation[+E, +A] {
 }
 
 object Validation {
-  case class Invalid[+E](errors: Nel[E]) extends Validation[E, Nothing]
-  case class Valid[+A](value: A)         extends Validation[Nothing, A]
+  case class Invalid[+E](value: NEL[E]) extends Validation[E, Nothing]
+  case class Valid[+A](value: A)        extends Validation[Nothing, A]
 
   def fromEither[E, A](either: Either[E, A]): Validation[E, A] =
     either match {
-      case Left(value)  => Invalid(Nel(value))
+      case Left(value)  => Invalid(NEL(value))
       case Right(value) => Valid(value)
     }
 }
