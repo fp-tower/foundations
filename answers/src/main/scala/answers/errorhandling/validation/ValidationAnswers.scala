@@ -18,7 +18,7 @@ object ValidationAnswers {
     case object UnitedKingdom extends Country("GBR")
   }
 
-  def validateCountry(country: String): Validated[ValidationError, Country] =
+  def validateCountry(country: String): Validation[ValidationError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
       Country.all
         .find(_.code == country)
@@ -27,11 +27,11 @@ object ValidationAnswers {
     else
       InvalidFormat(country).invalid
 
-  def checkUsernameSize(username: String): Validated[TooSmall, Unit] =
+  def checkUsernameSize(username: String): Validation[TooSmall, Unit] =
     if (username.length < 3) TooSmall(username.length).invalid
     else ().valid
 
-  def checkUsernameCharacters(username: String): Validated[InvalidCharacters, Unit] =
+  def checkUsernameCharacters(username: String): Validation[InvalidCharacters, Unit] =
     username.toList.filterNot(isValidUsernameCharacter) match {
       case Nil        => ().valid
       case characters => InvalidCharacters(characters).invalid
@@ -40,11 +40,11 @@ object ValidationAnswers {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  def validateUsername(username: String): Validated[ValidationError, Username] =
+  def validateUsername(username: String): Validation[ValidationError, Username] =
     (checkUsernameSize(username), checkUsernameCharacters(username))
       .zipWith((_, _) => Username(username))
 
-  def validateUser(usernameStr: String, countryStr: String): Validated[ValidationError, User] =
+  def validateUser(usernameStr: String, countryStr: String): Validation[ValidationError, User] =
     (validateUsername(usernameStr), validateCountry(countryStr)).zipWith(User.apply)
 
   sealed trait ValidationError

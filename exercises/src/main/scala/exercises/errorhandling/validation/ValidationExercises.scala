@@ -4,7 +4,8 @@ import exercises.errorhandling.validation.ValidationExercises.ValidationError._
 
 object ValidationExercises {
 
-  // 1. Replace all occurrences of `Either` by `Validated` in the code below (taken from EitherExercises2).
+  // 1. Replace all occurrences of `Either` by `Validated` in the code below (taken from `EitherExercises2`).
+  // You will also need to update the test in `ValidationExercisesTest`.
   // Note: You can use `valid` or `invalid` extension methods to create `Validated`.
   // For example,
   // 5.valid        == Valid(5)
