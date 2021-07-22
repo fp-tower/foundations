@@ -1,9 +1,10 @@
 package exercises.errorhandling.validation
 
+import exercises.errorhandling.validation.ValidationExercises.ValidationError._
+
 object ValidationExercises {
 
-  // 1. Copy-Paste all code (methods + classes) from either.EitherExercises2 into this object.
-  // Then, replace all occurrences of `Either` by `Validated`.
+  // 1. Replace all occurrences of `Either` by `Validated` in the code below (taken from EitherExercises2).
   // Note: You can use `valid` or `invalid` extension methods to create `Validated`.
   // For example,
   // 5.valid        == Valid(5)
@@ -11,6 +12,59 @@ object ValidationExercises {
   // Note: You can use `toValidated` extension method to transform an Either into a Validated.
   // val result: Either[String, Int] = Right(1)
   // result.toValidated == Valid(1)
+
+  def validateCountry(country: String): Either[ValidationError, Country] =
+    if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
+      Country.all
+        .find(_.code == country)
+        .toRight(NotSupported(country))
+    else
+      Left(InvalidFormat(country))
+
+  def checkUsernameSize(username: String): Either[TooSmall, Unit] =
+    if (username.length < 3) Left(TooSmall(username.length)) else Right(())
+
+  def checkUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
+    username.toList.filterNot(isValidUsernameCharacter) match {
+      case Nil        => Right(())
+      case characters => Left(InvalidCharacters(characters))
+    }
+
+  def isValidUsernameCharacter(c: Char): Boolean =
+    c.isLetter || c.isDigit || c == '_' || c == '-'
+
+  def validateUsername(username: String): Either[ValidationError, Username] =
+    for {
+      _ <- checkUsernameSize(username)
+      _ <- checkUsernameCharacters(username)
+    } yield Username(username)
+
+  def validateUser(usernameStr: String, countryStr: String): Either[ValidationError, User] =
+    for {
+      username <- validateUsername(usernameStr)
+      country  <- validateCountry(countryStr)
+    } yield User(username, country)
+
+  case class User(username: Username, countryOfResidence: Country)
+  case class Username(value: String)
+
+  sealed abstract class Country(val code: String)
+  object Country {
+    val all: List[Country] = List(France, Germany, Switzerland, UnitedKingdom)
+
+    case object France        extends Country("FRA")
+    case object Germany       extends Country("DEU")
+    case object Switzerland   extends Country("CHE")
+    case object UnitedKingdom extends Country("GBR")
+  }
+
+  sealed trait ValidationError
+  object ValidationError {
+    case class InvalidFormat(input: String)        extends ValidationError
+    case class NotSupported(input: String)         extends ValidationError
+    case class TooSmall(inputLength: Int)          extends ValidationError
+    case class InvalidCharacters(char: List[Char]) extends ValidationError
+  }
 
   // 2. Implement the method `zip` in the class `Validated` so that it accumulated errors.
   // For example,
