@@ -181,8 +181,74 @@ validateUser("bo", "UK")
 
 .eighty-seven-left[
 ```scala
+validateUser("bob_2167", "FRA")
+// `Valid(User(Username("bob_2167"), France))`
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// `Invalid(List(NotSupported("UK")))`
+
+validateUser("bo", "FRA")
+// `Invalid(List(TooSmall(2)))`
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// `Invalid(List(TooSmall(2), NotSupported("UK")))`
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
 validateUser("xxx", "FRA")
-// Invalid(Nil)
+// `Invalid(Nil)`
 ```
 ]
 
@@ -221,6 +287,50 @@ NEL(1, 2, 3).filter(_ > 10)
 ]
 
 ---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: `NEL[Int]` = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: `List[Int]` = List()
+```
+]
+
+---
 # Validation
 
 <br><br>
@@ -234,6 +344,15 @@ enum Validation[+E, +A] {
 }
 ```
 ]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+## package exercises.errorhandling.validation
+
+# ValidationExercises.scala
 
 
 </textarea>

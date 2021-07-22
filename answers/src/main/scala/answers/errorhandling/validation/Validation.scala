@@ -10,13 +10,13 @@ sealed trait Validation[+E, +A] {
       case Valid(value)    => Valid(update(value))
     }
 
-  def flatMap[EE >: E, Next](update: A => Validation[EE, Next]): Validation[EE, Next] =
+  def flatMap[E1 >: E, Next](update: A => Validation[E1, Next]): Validation[E1, Next] =
     this match {
       case Invalid(errors) => Invalid(errors)
       case Valid(value)    => update(value)
     }
 
-  def zip[EE >: E, Other](other: Validation[EE, Other]): Validation[EE, (A, Other)] =
+  def zip[E1 >: E, Other](other: Validation[E1, Other]): Validation[E1, (A, Other)] =
     (this, other) match {
       case (Valid(a), Valid(b))         => Valid((a, b))
       case (Invalid(es), Valid(_))      => Invalid(es)
@@ -24,9 +24,9 @@ sealed trait Validation[+E, +A] {
       case (Invalid(es1), Invalid(es2)) => Invalid(es1 ++ es2)
     }
 
-  def zipWith[EE >: E, Other, Next](other: Validation[EE, Other])(
+  def zipWith[E1 >: E, Other, Next](other: Validation[E1, Other])(
     update: (A, Other) => Next
-  ): Validation[EE, Next] =
+  ): Validation[E1, Next] =
     zip(other).map { case (a, other) => update(a, other) }
 }
 
