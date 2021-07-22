@@ -28,7 +28,7 @@ object EitherAnswers2 {
       Left(InvalidFormat(country))
 
   def checkUsernameSize(username: String): Either[TooSmall, Unit] =
-    if (username.length < 5) Left(TooSmall(username.length)) else Right(())
+    Either.cond(username.length >= 5, left = TooSmall(username.length), right = ())
 
   def checkUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
     username.toList.filterNot(isValidUsernameCharacter) match {
