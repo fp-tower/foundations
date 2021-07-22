@@ -15,118 +15,223 @@ class: center, middle, white
 .title[Validation]
 
 ---
-# Option
+# Validation
 
-<br>
+<br><br>
 
-.sixty-two-left[
+
+.forty-seven-left[
 ```scala
-val secret: Option[String] = Some("Hello World")
-
-val other : Option[String] = None
-```
-]
-
----
-# Option
-
-<br>
-
-.sixty-two-left[
-```scala
-case class User(
-  username   : String,
-  email      : String
-  dateOfBirth: Option[LocalDate],
-)
-
-val bob = User(
-  "bob_64",
-  "bob@gmail.com",
-  `dateOfBirth = None`,
-)
-```
-]
-
----
-# Option
-
-<br>
-
-.sixty-two-left[
-```scala
-trait List[A] {
-  def find(predicate: A => Boolean): `Option[A]`
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: List[E])
 }
 ```
-
-<br>
-
-```scala
-List(2, 3, 15, 7).find(_ > 10)
-// res: Option[Int] = Some(15)
-
-List(2, 3, 15, 7).find(_ > 20)
-// res: Option[Int] = None
-```
 ]
 
 ---
-# Option
+# Validation vs Either
 
-<br>
+<br><br>
 
-.sixty-two-left[
+.cols[
+.forty-five[
 ```scala
-trait List[A] {
-  def find(predicate: A => Boolean): Option[A]
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: List[E])
 }
 ```
+]
 
-<br>
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
 
+.forty-five[
 ```scala
-List(2, 3, 15, 7).find(_ > 10)
-// res: Option[Int] = `Some(15)`
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: E)
+}
+```
+]
 
-List(2, 3, 15, 7).find(_ > 20)
-// res: Option[Int] = `None`
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   `Valid`(value: A)
+  case Invalid(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case `Right`(value: A)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case `Invalid`(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  `Left`(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: `List[E]`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: `E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
 ```
 ]
 
 ---
-background-image: url(../img/fp-tower/website-background.svg)
+# Validation
 
-<br>
+<br><br>
 
-# .white[Summary]
 
-<br>
-
-## .white[Simple to use: Some or None]
-
-## .white[Compose using for-comprehension or sequence]
-
-## .white[Ignore None by flattening a collection]
+.eighty-seven-left[
+```scala
+validateUser("xxx", "FRA")
+// Invalid(Nil)
+```
+]
 
 ---
-background-image: url(../img/fp-tower/website-background.svg)
+# Non Empty List (NEL)
 
-<br>
+<br><br>
 
-# .white[Limitation]
 
-<br>
-
-## .white[No context when an error occurs]
-
-.fifty-two-left[
+.eighty-seven-left[
 ```scala
-getUserEmail(UserId(111), users) // no user
-// res: Option[Email] = None
+case class NEL[+A](head: A, tail: List[A])
+```
+]
 
-getUserEmail(UserId(444), users) // no email
-// res: Option[Email] = None
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.forty-seven-left[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: `NEL`[E])
+}
 ```
 ]
 
