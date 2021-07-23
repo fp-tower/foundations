@@ -4,6 +4,7 @@ import answers.errorhandling.NEL
 import answers.errorhandling.validation.ValidationAnswers._
 import answers.errorhandling.validation.ValidationAnswers.ValidationError._
 import answers.errorhandling.validation.ValidationAnswers.Country._
+import answers.errorhandling.validation.ValidationAnswers.Fields._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -24,9 +25,14 @@ class ValidationAnswersTest extends AnyFunSuite with ScalaCheckDrivenPropertyChe
 
   test("validateUser example") {
     assert(validateUser("bob_2167", "FRA") == User(Username("bob_2167"), France).valid)
-    assert(validateUser("bob_2167", "UK") == InvalidFormat("UK").invalid)
-    assert(validateUser("bo", "FRA") == TooSmall(2).invalid)
-    assert(validateUser("bo", "UK") == NEL(TooSmall(2), InvalidFormat("UK")).invalid)
+    assert(validateUser("bob_2167", "UK") == FieldError(countryOfResidence, NEL(InvalidFormat("UK"))).invalid)
+    assert(validateUser("bo", "FRA") == FieldError(username, NEL(TooSmall(2))).invalid)
+    assert(
+      validateUser("b!", "UK") == NEL(
+        FieldError(username, NEL(TooSmall(2), InvalidCharacters(List('!')))),
+        FieldError(countryOfResidence, NEL(InvalidFormat("UK")))
+      ).invalid
+    )
   }
 
 }

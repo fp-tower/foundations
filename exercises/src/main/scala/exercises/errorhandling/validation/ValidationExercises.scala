@@ -1,6 +1,8 @@
 package exercises.errorhandling.validation
 
-import ValidationExercises.ValidationError._
+import exercises.errorhandling.NEL
+import exercises.errorhandling.validation.Validation._
+import exercises.errorhandling.validation.ValidationExercises.ValidationError._
 
 object ValidationExercises {
 
@@ -25,10 +27,10 @@ object ValidationExercises {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  // 4. Implement `validateUsername` using a for-comprehension which combines
-  // `checkUsernameSize` and `checkUsernameCharacters`.
-  // What happens if the username is both too small and contains invalid characters?
-  // Check the methods `zip` and `zipWith` inside `Validation`.
+  // 4. Copy-paste `validateUsername` from `EitherExercises2` and adapt it to `Validation`.
+  // In this version, we would like to know if the username is both too small and
+  // contains invalid characters.
+  // Note: Check the methods `zip` and `zipWith` inside `Validation`.
   def validateUsername(username: String): Validation[ValidationError, Username] =
     ???
 

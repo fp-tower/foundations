@@ -1,5 +1,6 @@
 package answers.errorhandling.validation
 
+import answers.errorhandling.NEL
 import answers.errorhandling.validation.ValidationAnswers.ValidationError._
 
 object ValidationAnswers {
@@ -28,8 +29,11 @@ object ValidationAnswers {
     (checkUsernameSize(username), checkUsernameCharacters(username))
       .zipWith((_, _) => Username(username))
 
-  def validateUser(usernameStr: String, countryStr: String): Validation[ValidationError, User] =
-    (validateUsername(usernameStr), validateCountry(countryStr)).zipWith(User.apply)
+  def validateUser(usernameStr: String, countryStr: String): Validation[FieldError, User] =
+    (
+      validateUsername(usernameStr).mapErrorAll(es => NEL(FieldError(Fields.username, es))),
+      validateCountry(countryStr).mapErrorAll(es => NEL(FieldError(Fields.countryOfResidence, es)))
+    ).zipWith(User.apply)
 
   case class User(username: Username, countryOfResidence: Country)
 
@@ -44,6 +48,13 @@ object ValidationAnswers {
     case object Switzerland   extends Country("CHE")
     case object UnitedKingdom extends Country("GBR")
   }
+
+  object Fields {
+    val username           = "username"
+    val countryOfResidence = "country of residence"
+  }
+
+  case class FieldError(fieldName: String, errors: NEL[ValidationError])
 
   sealed trait ValidationError
   object ValidationError {

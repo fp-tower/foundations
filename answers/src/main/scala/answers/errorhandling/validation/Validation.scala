@@ -10,13 +10,13 @@ sealed trait Validation[+E, +A] {
       case Valid(value)    => Valid(update(value))
     }
 
-  def flatMap[E1 >: E, Next](update: A => Validation[E1, Next]): Validation[E1, Next] =
+  def flatMap[E2 >: E, Next](update: A => Validation[E2, Next]): Validation[E2, Next] =
     this match {
       case Invalid(errors) => Invalid(errors)
       case Valid(value)    => update(value)
     }
 
-  def zip[E1 >: E, Other](other: Validation[E1, Other]): Validation[E1, (A, Other)] =
+  def zip[E2 >: E, Other](other: Validation[E2, Other]): Validation[E2, (A, Other)] =
     (this, other) match {
       case (Valid(a), Valid(b))         => Valid((a, b))
       case (Invalid(es), Valid(_))      => Invalid(es)
@@ -24,10 +24,23 @@ sealed trait Validation[+E, +A] {
       case (Invalid(es1), Invalid(es2)) => Invalid(es1 ++ es2)
     }
 
-  def zipWith[E1 >: E, Other, Next](other: Validation[E1, Other])(
+  def zipWith[E2 >: E, Other, Next](other: Validation[E2, Other])(
     update: (A, Other) => Next
-  ): Validation[E1, Next] =
+  ): Validation[E2, Next] =
     zip(other).map { case (a, other) => update(a, other) }
+
+  def mapError[E2](update: E => E2): Validation[E2, A] =
+    this match {
+      case Invalid(value) => Invalid(value.map(update))
+      case Valid(value)   => Valid(value)
+    }
+
+  def mapErrorAll[E2](update: NEL[E] => NEL[E2]): Validation[E2, A] =
+    this match {
+      case Invalid(value) => Invalid(update(value))
+      case Valid(value)   => Valid(value)
+    }
+
 }
 
 object Validation {
