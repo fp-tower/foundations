@@ -1,11 +1,11 @@
 package answers.errorhandling.validation
 
 import answers.errorhandling.NEL
-import answers.errorhandling.validation.ValidationAnswers.ValidationError._
+import answers.errorhandling.validation.ValidationAnswers.FormError._
 
 object ValidationAnswers {
 
-  def validateCountry(country: String): Validation[ValidationError, Country] =
+  def validateCountry(country: String): Validation[FormError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
       Country.all
         .find(_.code == country)
@@ -25,15 +25,18 @@ object ValidationAnswers {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  def validateUsername(username: String): Validation[ValidationError, Username] =
+  def validateUsername(username: String): Validation[FormError, Username] =
     (checkUsernameSize(username), checkUsernameCharacters(username))
       .zipWith((_, _) => Username(username))
 
   def validateUser(usernameStr: String, countryStr: String): Validation[FieldError, User] =
     (
-      validateUsername(usernameStr).mapErrorAll(es => NEL(FieldError(Fields.username, es))),
-      validateCountry(countryStr).mapErrorAll(es => NEL(FieldError(Fields.countryOfResidence, es)))
+      form(_.username)(validateUsername(usernameStr)),
+      form(_.countryOfResidence)(validateCountry(countryStr))
     ).zipWith(User.apply)
+
+  def form[A](field: Fields.type => String)(validation: Validation[FormError, A]): Validation[FieldError, A] =
+    validation.mapErrorAll(es => NEL(FieldError(field(Fields), es)))
 
   case class User(username: Username, countryOfResidence: Country)
 
@@ -51,17 +54,17 @@ object ValidationAnswers {
 
   object Fields {
     val username           = "username"
-    val countryOfResidence = "country of residence"
+    val countryOfResidence = "country_of_residence"
   }
 
-  case class FieldError(fieldName: String, errors: NEL[ValidationError])
+  case class FieldError(fieldId: String, errors: NEL[FormError])
 
-  sealed trait ValidationError
-  object ValidationError {
-    case class InvalidFormat(input: String)        extends ValidationError
-    case class NotSupported(input: String)         extends ValidationError
-    case class TooSmall(inputLength: Int)          extends ValidationError
-    case class InvalidCharacters(char: List[Char]) extends ValidationError
+  sealed trait FormError
+  object FormError {
+    case class InvalidFormat(input: String)        extends FormError
+    case class NotSupported(input: String)         extends FormError
+    case class TooSmall(inputLength: Int)          extends FormError
+    case class InvalidCharacters(char: List[Char]) extends FormError
   }
 
 }

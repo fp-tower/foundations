@@ -2,7 +2,7 @@ package answers.errorhandling.validation
 
 import answers.errorhandling.NEL
 import answers.errorhandling.validation.ValidationAnswers._
-import answers.errorhandling.validation.ValidationAnswers.ValidationError._
+import answers.errorhandling.validation.ValidationAnswers.FormError._
 import answers.errorhandling.validation.ValidationAnswers.Country._
 import answers.errorhandling.validation.ValidationAnswers.Fields._
 import org.scalatest.funsuite.AnyFunSuite
