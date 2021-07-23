@@ -34,9 +34,24 @@ object Validation {
   case class Invalid[+E](value: NEL[E]) extends Validation[E, Nothing]
   case class Valid[+A](value: A)        extends Validation[Nothing, A]
 
+  def valid[A](value: A): Validation[Nothing, A] =
+    Valid(value)
+
+  def invalid[E](value: E, other: E*): Validation[E, Nothing] =
+    Invalid(NEL(value, other.toList))
+
+  def cond[E, A](test: Boolean, success: => A, failure: E): Validation[E, A] =
+    if (test) valid(success) else invalid(failure)
+
   def fromEither[E, A](either: Either[E, A]): Validation[E, A] =
     either match {
       case Left(value)  => Invalid(NEL(value))
       case Right(value) => Valid(value)
+    }
+
+  def fromOption[E, A](option: Option[A], ifNone: => E): Validation[E, A] =
+    option match {
+      case None        => invalid(ifNone)
+      case Some(value) => Valid(value)
     }
 }

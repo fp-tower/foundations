@@ -1,50 +1,40 @@
 package exercises.errorhandling.validation
 
-import exercises.errorhandling.validation.ValidationExercises.ValidationError._
+import ValidationExercises.ValidationError._
 
 object ValidationExercises {
 
-  // 1. Replace all occurrences of `Either` by `Validated` in the code below (taken from `EitherExercises2`).
-  // You will also need to update the test in `ValidationExercisesTest`.
-  // Note: You can use `valid` or `invalid` extension methods to create `Validated`.
+  // 1. Copy-paste `validateCountry` from `EitherExercises2` and adapt it to `Validation`.
   // For example,
-  // 5.valid        == Valid(5)
-  // "oops".invalid == Invalid(List("oops"))
-  // Note: You can use `toValidated` extension method to transform an Either into a Validated.
-  // val result: Either[String, Int] = Right(1)
-  // result.toValidated == Valid(1)
+  // validateCountry("FRA") == Valid(France)
+  // validateCountry("UK")  == Invalid(NEL(InvalidFormat("UK")))
+  // validateCountry("ARG") == Invalid(NEL(NotSupported("ARG")))
+  // Note: You can find several helpers methods in the companion object of Validation,
+  //       as well as many extension methods in `package.scala`.
+  def validateCountry(country: String): Validation[ValidationError, Country] =
+    ???
 
-  def validateCountry(country: String): Either[ValidationError, Country] =
-    if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
-      Country.all
-        .find(_.code == country)
-        .toRight(NotSupported(country))
-    else
-      Left(InvalidFormat(country))
+  // 2. Copy-paste `checkUsernameSize` from `EitherExercises2` and adapt it to `Validation`.
+  def checkUsernameSize(username: String): Validation[TooSmall, Unit] =
+    ???
 
-  def checkUsernameSize(username: String): Either[TooSmall, Unit] =
-    Either.cond(username.length >= 5, left = TooSmall(username.length), right = ())
-
-  def checkUsernameCharacters(username: String): Either[InvalidCharacters, Unit] =
-    username.toList.filterNot(isValidUsernameCharacter) match {
-      case Nil        => Right(())
-      case characters => Left(InvalidCharacters(characters))
-    }
+  // 3. Copy-paste `checkUsernameCharacters` from `EitherExercises2` and adapt it to `Validation`.
+  def checkUsernameCharacters(username: String): Validation[InvalidCharacters, Unit] =
+    ???
 
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  def validateUsername(username: String): Either[ValidationError, Username] =
-    for {
-      _ <- checkUsernameSize(username)
-      _ <- checkUsernameCharacters(username)
-    } yield Username(username)
+  // 4. Implement `validateUsername` using a for-comprehension which combines
+  // `checkUsernameSize` and `checkUsernameCharacters`.
+  // What happens if the username is both too small and contains invalid characters?
+  // Check the methods `zip` and `zipWith` inside `Validation`.
+  def validateUsername(username: String): Validation[ValidationError, Username] =
+    ???
 
-  def validateUser(usernameStr: String, countryStr: String): Either[ValidationError, User] =
-    for {
-      username <- validateUsername(usernameStr)
-      country  <- validateCountry(countryStr)
-    } yield User(username, country)
+  // 5. Implement `validateUser` so that it reports all errors.
+  def validateUser(usernameStr: String, countryStr: String): Validation[ValidationError, User] =
+    ???
 
   case class User(username: Username, countryOfResidence: Country)
   case class Username(value: String)
@@ -66,13 +56,6 @@ object ValidationExercises {
     case class TooSmall(inputLength: Int)          extends ValidationError
     case class InvalidCharacters(char: List[Char]) extends ValidationError
   }
-
-  // 2. Implement the method `zip` in the class `Validated` so that it accumulated errors.
-  // For example,
-  // "error1".invalid.zip("error2".invalid) == Invalid(List("error1", "error2"))
-  // "error1".invalid.zip("Hello".valid)    == Invalid(List("error1"))
-  // 1.valid.zip("error2".invalid)          == Invalid(List("error2"))
-  // 1.valid.zip("Hello".valid)             == Valid((1, "Hello"))
 
   // 3. Update `validateUser` so that it accumulate errors. For example,
   // validateUser("bo", "ARG") == Invalid(List(TooSmall(2), NotSupported("ARG")))

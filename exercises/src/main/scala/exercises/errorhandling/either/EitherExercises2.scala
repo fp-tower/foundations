@@ -19,7 +19,7 @@ object EitherExercises2 {
     case object UnitedKingdom extends Country("GBR")
   }
 
-  // a. Implement `validateCountry` which takes a 3-letter country code and returns
+  // 1. Implement `validateCountry` which takes a 3-letter country code and returns
   // the matching `Country` value (see Alpha-3 code format).
   // `validateCountry` can fail for two reasons:
   // * string format is invalid - we expect 3 upper case letters
@@ -31,15 +31,15 @@ object EitherExercises2 {
   def validateCountry(countryCode: String): Either[CountryError, Country] =
     ???
 
-  // b. Implement `checkUsernameSize` which checks if a username is
+  // 2. Implement `checkUsernameSize` which checks if a username is
   // at least 5 characters long. For example,
   // checkUsernameSize("bob_2167") == Right(())
   // checkUsernameSize("bob_2")    == Right(())
   // checkUsernameSize("bo")       == Left(TooSmall(2))
   def checkUsernameSize(username: String): Either[TooSmall, Unit] =
-    Either.cond(username.length >= 5, (), TooSmall(username.length))
+    ???
 
-  // c. Implement `checkUsernameCharacters` which checks if all characters are valid
+  // 3. Implement `checkUsernameCharacters` which checks if all characters are valid
   // according to the function `isValidUsernameCharacter`. For example,
   // checkUsernameCharacters("_abc-123_")  == Right(())
   // checkUsernameCharacters("foo!~23}AD") == Left(InvalidCharacters(List('!','~','}')))
@@ -49,7 +49,7 @@ object EitherExercises2 {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  // d. Implement `validateUsername` which verifies the username size and content
+  // 4. Implement `validateUsername` which verifies the username size and content
   // is correct according to `checkUsernameSize` and `checkUsernameCharacters`.
   // For example,
   // validateUsername("bob_2167")   == Right(Username("bob_2167"))
@@ -58,7 +58,7 @@ object EitherExercises2 {
   def validateUsername(username: String): Either[UsernameError, Username] =
     ???
 
-  // e. Implement `validateUser` which verifies that both the username and the country
+  // 5. Implement `validateUser` which verifies that both the username and the country
   // of residence are correct according to `validateUsername` and `validateCountry`.
   // What should be the return type of `validateUser`?
   // validateUser("bob_2167", "FRA") --> Success User(Username("bob_2167"), France)

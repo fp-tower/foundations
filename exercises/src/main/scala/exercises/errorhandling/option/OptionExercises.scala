@@ -15,7 +15,7 @@ object OptionExercises {
   }
   case class AccountId(value: Long)
 
-  // a. Implement `getAccountId` which returns the account id associated
+  // 1. Implement `getAccountId` which returns the account id associated
   // with this role (`Reader` or `Editor`). `Admin` do not have an account id.
   // For example,
   // getAccountId(Reader(123, premiumUser = true)) == Some(123)
@@ -31,7 +31,7 @@ object OptionExercises {
   case class UserId(value: Long)
   case class Email(value: String)
 
-  // b. Implement `getUserEmail` which looks up the email address of a user.
+  // 2. Implement `getUserEmail` which looks up the email address of a user.
   // The email may be missing if:
   // * the user doesn't exist, or
   // * the user exists but doesn't have an email address
@@ -48,7 +48,7 @@ object OptionExercises {
   def getUserEmail(userId: UserId, users: Map[UserId, User]): Option[Email] =
     ???
 
-  // c. Implement `getAccountIds` which returns all the account ids associated
+  // 3. Implement `getAccountIds` which returns all the account ids associated
   // with the users. If a user has no account id (e.g. `Admin`), ignore them.
   // For example,
   // getAccountIds(List(
@@ -62,7 +62,7 @@ object OptionExercises {
   def getAccountIds(users: List[User]): List[AccountId] =
     ???
 
-  // d. Implement `checkAllEmails` which checks if all users have an email and returns them.
+  // 4. Implement `checkAllEmails` which checks if all users have an email and returns them.
   // If one or more users don't have an email `checkAllEmails` returns false.
   // checkAllEmails(List(
   //   User(111, "Eda", Editor(555, "Comic Sans"), Some("e@y.com")),
@@ -80,7 +80,7 @@ object OptionExercises {
   def checkAllEmails(users: List[User]): Option[List[Email]] =
     ???
 
-  // e. If all options are defined (`Some`), `sequence` extracts all the values in a List.
+  // 5. If all options are defined (`Some`), `sequence` extracts all the values in a List.
   // If one or more options are None, `sequence` returns None.
   // sequence(List(Some(1), Some(2), Some(3))) == Some(List(1, 2, 3))
   // sequence(List(Some(1), None   , Some(3))) == None
@@ -95,7 +95,7 @@ object OptionExercises {
   // Bonus question (not covered by the videos)
   //////////////////////////////////////////////
 
-  // f. Implement `asEditor` which checks if the current `Role` is an `Editor`.
+  // 6. Implement `asEditor` which checks if the current `Role` is an `Editor`.
   // For example,
   // asEditor(Editor(123, "Comic Sans")) == Some(Editor(123, "Comic Sans"))
   // asEditor(Reader(123, premiumUser = true)) == None

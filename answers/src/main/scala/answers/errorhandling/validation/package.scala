@@ -7,8 +7,16 @@ package object validation {
     def invalid: Validation[A, Nothing] = Validation.Invalid(NEL(value))
   }
 
+  implicit class ValidationNelExtension[A](value: NEL[A]) {
+    def invalid: Validation[A, Nothing] = Validation.Invalid(value)
+  }
+
   implicit class EitherValidationExtension[E, A](value: Either[E, A]) {
-    def toValidated: Validation[E, A] = Validation.fromEither(value)
+    def toValidation: Validation[E, A] = Validation.fromEither(value)
+  }
+
+  implicit class OptionValidationExtension[A](value: Option[A]) {
+    def toValid[E](ifNone: => E): Validation[E, A] = Validation.fromOption(value, ifNone)
   }
 
   implicit class Tuple2ValidationExtension[E, A1, A2](tuple: (Validation[E, A1], Validation[E, A2])) {

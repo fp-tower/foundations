@@ -5,7 +5,7 @@ import exercises.errorhandling.either.EitherExercises1.UserEmailError._
 
 object EitherExercises1 {
 
-  // a. Implement `getUserEmail` which looks up the email address of a user.
+  // 1. Implement `getUserEmail` which looks up the email address of a user.
   // The email may be missing if:
   // * the user doesn't exist, or
   // * the user exists but doesn't have an email address
@@ -21,7 +21,7 @@ object EitherExercises1 {
   def getUserEmail(userId: UserId, users: Map[UserId, User]): Either[String, Email] =
     ???
 
-  // b. Refactor `getUserEmail` so that it uses an `UserEmailError` instead of `String`
+  // 2. Refactor `getUserEmail` so that it uses an `UserEmailError` instead of `String`
   // in the error channel.
   sealed trait UserEmailError
   object UserEmailError {
@@ -33,7 +33,7 @@ object EitherExercises1 {
   //   case UserNotFound, EmailNotFound
   // }
 
-  // c. Implement `errorMessage` which creates a human readable error message
+  // 3. Implement `errorMessage` which creates a human readable error message
   // from a `UserEmailError` object.
   // Note: Once implemented, move this method inside `UserEmailError`
   def errorMessage(error: UserEmailError): String =
