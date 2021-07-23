@@ -1,6 +1,6 @@
 package answers.errorhandling.either
 
-import answers.errorhandling.either.EitherAnswers2bis.ValidationError._
+import answers.errorhandling.either.EitherAnswers2bis.FormError._
 
 object EitherAnswers2bis {
 
@@ -18,7 +18,7 @@ object EitherAnswers2bis {
     case object UnitedKingdom extends Country("GBR")
   }
 
-  def validateCountry(country: String): Either[ValidationError, Country] =
+  def validateCountry(country: String): Either[FormError, Country] =
     if (country.length == 3 && country.forall(c => c.isLetter && c.isUpper))
       Country.all
         .find(_.code == country)
@@ -38,24 +38,24 @@ object EitherAnswers2bis {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  def validateUsername(username: String): Either[ValidationError, Username] =
+  def validateUsername(username: String): Either[FormError, Username] =
     for {
       _ <- checkUsernameSize(username)
       _ <- checkUsernameCharacters(username)
     } yield Username(username)
 
-  def validateUser(usernameStr: String, countryStr: String): Either[ValidationError, User] =
+  def validateUser(usernameStr: String, countryStr: String): Either[FormError, User] =
     for {
       username <- validateUsername(usernameStr)
       country  <- validateCountry(countryStr)
     } yield User(username, country)
 
-  sealed trait ValidationError
-  object ValidationError {
-    case class InvalidFormat(input: String)        extends ValidationError
-    case class NotSupported(input: String)         extends ValidationError
-    case class TooSmall(inputLength: Int)          extends ValidationError
-    case class InvalidCharacters(char: List[Char]) extends ValidationError
+  sealed trait FormError
+  object FormError {
+    case class InvalidFormat(input: String)        extends FormError
+    case class NotSupported(input: String)         extends FormError
+    case class TooSmall(inputLength: Int)          extends FormError
+    case class InvalidCharacters(char: List[Char]) extends FormError
   }
 
 }

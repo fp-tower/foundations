@@ -31,12 +31,12 @@ object ValidationAnswers {
 
   def validateUser(usernameStr: String, countryStr: String): Validation[FieldError, User] =
     (
-      form(_.username)(validateUsername(usernameStr)),
-      form(_.countryOfResidence)(validateCountry(countryStr))
+      form(FieldIds.username)(validateUsername(usernameStr)),
+      form(FieldIds.countryOfResidence)(validateCountry(countryStr))
     ).zipWith(User.apply)
 
-  def form[A](field: Fields.type => String)(validation: Validation[FormError, A]): Validation[FieldError, A] =
-    validation.mapErrorAll(es => NEL(FieldError(field(Fields), es)))
+  def form[A](fieldId: String)(validation: Validation[FormError, A]): Validation[FieldError, A] =
+    validation.mapErrorAll(es => NEL(FieldError(fieldId, es)))
 
   case class User(username: Username, countryOfResidence: Country)
 
@@ -52,7 +52,7 @@ object ValidationAnswers {
     case object UnitedKingdom extends Country("GBR")
   }
 
-  object Fields {
+  object FieldIds {
     val username           = "username"
     val countryOfResidence = "country_of_residence"
   }

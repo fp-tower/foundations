@@ -13,7 +13,7 @@ sealed trait Validation[+E, +A] {
       case Valid(value)    => Valid(update(value))
     }
 
-  def flatMap[E1 >: E, Next](update: A => Validation[E1, Next]): Validation[E1, Next] =
+  def flatMap[E2 >: E, Next](update: A => Validation[E2, Next]): Validation[E2, Next] =
     this match {
       case Invalid(errors) => Invalid(errors)
       case Valid(value)    => update(value)
@@ -25,14 +25,26 @@ sealed trait Validation[+E, +A] {
   // "error1".invalid.zip("Hello".valid)    == Invalid(NEL("error1"))
   // 1.valid.zip("error2".invalid)          == Invalid(NEL("error2"))
   // 1.valid.zip("Hello".valid)             == Valid((1, "Hello"))
-  def zip[E1 >: E, Other](other: Validation[E1, Other]): Validation[E1, (A, Other)] =
+  def zip[E2 >: E, Other](other: Validation[E2, Other]): Validation[E2, (A, Other)] =
     ???
 
   // alias for `zip` followed by `map`.
-  def zipWith[E1 >: E, Other, Next](other: Validation[E1, Other])(
+  def zipWith[E2 >: E, Other, Next](other: Validation[E2, Other])(
     update: (A, Other) => Next
-  ): Validation[E1, Next] =
+  ): Validation[E2, Next] =
     zip(other).map { case (a, other) => update(a, other) }
+
+  def mapError[E2](update: E => E2): Validation[E2, A] =
+    this match {
+      case Invalid(value) => Invalid(value.map(update))
+      case Valid(value)   => Valid(value)
+    }
+
+  def mapErrorAll[E2](update: NEL[E] => NEL[E2]): Validation[E2, A] =
+    this match {
+      case Invalid(value) => Invalid(update(value))
+      case Valid(value)   => Valid(value)
+    }
 }
 
 object Validation {
@@ -60,4 +72,17 @@ object Validation {
       case None        => invalid(ifNone)
       case Some(value) => Valid(value)
     }
+
+  //////////////////////////////////////////////
+  // Bonus question (not covered by the videos)
+  //////////////////////////////////////////////
+
+  // Accumulate all errors.
+  // sequence(List(1.invalid, 2.valid, 3.invalid)) == Invalid(Nel(1,3))
+  def sequence[E, A](validations: List[Validation[E, A]]): Validation[E, List[A]] =
+    ???
+
+  // Alias for map + sequence
+  def traverse[E, A, Next](values: List[A])(update: A => Validation[E, Next]): Validation[E, List[Next]] =
+    sequence(values.map(update))
 }

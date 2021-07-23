@@ -2,7 +2,7 @@ package exercises.errorhandling.validation
 
 import exercises.errorhandling.NEL
 import exercises.errorhandling.validation.Validation._
-import exercises.errorhandling.validation.ValidationExercises.ValidationError._
+import exercises.errorhandling.validation.ValidationExercises.FormError._
 
 object ValidationExercises {
 
@@ -13,7 +13,7 @@ object ValidationExercises {
   // validateCountry("ARG") == Invalid(NEL(NotSupported("ARG")))
   // Note: You can find several helpers methods in the companion object of Validation,
   //       as well as many extension methods in `package.scala`.
-  def validateCountry(country: String): Validation[ValidationError, Country] =
+  def validateCountry(country: String): Validation[FormError, Country] =
     ???
 
   // 2. Copy-paste `checkUsernameSize` from `EitherExercises2` and adapt it to `Validation`.
@@ -27,16 +27,33 @@ object ValidationExercises {
   def isValidUsernameCharacter(c: Char): Boolean =
     c.isLetter || c.isDigit || c == '_' || c == '-'
 
-  // 4. Copy-paste `validateUsername` from `EitherExercises2` and adapt it to `Validation`.
-  // In this version, we would like to know if the username is both too small and
-  // contains invalid characters.
-  // Note: Check the methods `zip` and `zipWith` inside `Validation`.
-  def validateUsername(username: String): Validation[ValidationError, Username] =
+  // 4. Implement `validateUsername` which verifies that the username size and content
+  // is correct according to `checkUsernameSize` and `checkUsernameCharacters`.
+  // If the username is both too small and contains invalid characters, we want to get two `FormError`.
+  // For example,
+  // validateUsername("!") == Invalid(NEL(TooSmall(1), InvalidCharacters(List('!'))))
+  // Note: Check the methods `zip` and `zipWith` of `Validation`.
+  def validateUsername(username: String): Validation[FormError, Username] =
     ???
 
   // 5. Implement `validateUser` so that it reports all errors.
-  def validateUser(usernameStr: String, countryStr: String): Validation[ValidationError, User] =
+  def validateUser(usernameStr: String, countryStr: String): Validation[FormError, User] =
     ???
+
+  // 6. When validateUser` produces a `TooSmall(2)`, how do we know that it is about the username?
+  // Update `validateUser` so that it groups all the errors by field (see `FieldError` below).
+  // For example,
+  // validateUser("b!", "UK") == Invalid(NEL(
+  //   FieldError(FieldIds.username          , NEL(TooSmall(2), InvalidCharacters(List('!')))),
+  //   FieldError(FieldIds.countryOfResidence, NEL(InvalidFormat("UK")))
+  // ))
+  // Note: Check the methods `mapError` and `mapErrorAll` of `Validation`.
+
+  case class FieldError(fieldId: String, errors: NEL[FormError])
+  object FieldIds {
+    val username           = "username"
+    val countryOfResidence = "country_of_residence"
+  }
 
   case class User(username: Username, countryOfResidence: Country)
   case class Username(value: String)
@@ -51,21 +68,12 @@ object ValidationExercises {
     case object UnitedKingdom extends Country("GBR")
   }
 
-  sealed trait ValidationError
-  object ValidationError {
-    case class InvalidFormat(input: String)        extends ValidationError
-    case class NotSupported(input: String)         extends ValidationError
-    case class TooSmall(inputLength: Int)          extends ValidationError
-    case class InvalidCharacters(char: List[Char]) extends ValidationError
+  sealed trait FormError
+  object FormError {
+    case class InvalidFormat(input: String)        extends FormError
+    case class NotSupported(input: String)         extends FormError
+    case class TooSmall(inputLength: Int)          extends FormError
+    case class InvalidCharacters(char: List[Char]) extends FormError
   }
-
-  // 3. Update `validateUser` so that it accumulate errors. For example,
-  // validateUser("bo", "ARG") == Invalid(List(TooSmall(2), NotSupported("ARG")))
-  // Note: You can use `zip` extension method on tuples.
-  // For example,
-  // ("error1".invalid, "error2".invalid).zip == Invalid(List("error1", "error2"))
-  // (1.invalid, "hello".invalid).zip         == Valid((1, "Hello"))
-  // Note: You can use `zipWith` extension method on tuples which is a combination of `zip` followed by `map`.
-  // (1.invalid, 2.invalid).zipWith(_ + _) == Valid(3)
 
 }

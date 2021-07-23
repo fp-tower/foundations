@@ -8,6 +8,9 @@ case class NEL[+A](head: A, tail: List[A]) {
   def toList: List[A] =
     head :: tail
 
+  def map[Next](update: A => Next): NEL[Next] =
+    NEL(update(head), tail.map(update))
+
   // concat
   def ++[Other >: A](other: NEL[Other]): NEL[Other] =
     NEL(head, tail ++ other.toList)
