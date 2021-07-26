@@ -1,30 +1,25 @@
 package answers.errorhandling.project
 import answers.errorhandling.project.OrderGenerator._
 import answers.errorhandling.project.OrderStatus.Delivered
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  test("Invalid actions for empty order") {
-    forAll(orderIdGen, instantGen, durationGen, addressGen) { (orderId, now, delay, deliveryAddress) =>
-      val order = Order.empty(orderId, now)
-      val invalidActions: List[Order => Either[OrderError, Any]] = List(
-        _.checkout,
-        _.updateDeliveryAddress(deliveryAddress),
-        _.submit(now.plus(delay)),
-        _.deliver(now.plus(delay)),
-        _.cancel(now.plus(delay))
-      )
-
-      invalidActions.foreach { action =>
-        assert(action(order).isLeft)
+  def updateDeliveryAddressInvalid(state: String, gen: Gen[Order]): Unit =
+    test(s"updateDeliveryAddress invalid for $state") {
+      forAll(gen, addressGen) { (order, deliveryAddress) =>
+        assert(order.updateDeliveryAddress(deliveryAddress).isLeft)
       }
     }
-  }
+
+  updateDeliveryAddressInvalid("Draft", draftOrderGen)
+  updateDeliveryAddressInvalid("Submitted", submittedOrderGen)
+  updateDeliveryAddressInvalid("Delivered", deliveredOrderGen)
 
   test("happy path") {
-    forAll(orderIdGen, instantGen, durationGen, durationGen, nelGen(itemGen), addressGen) {
+    forAll(orderIdGen, instantGen, durationGen, durationGen, nelOf(itemGen), addressGen) {
       (orderId, now, delay1, delay2, items, deliveryAddress) =>
         val submittedAt = now.plus(delay1)
         val deliveredAt = submittedAt.plus(delay2)

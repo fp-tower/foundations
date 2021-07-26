@@ -1,6 +1,7 @@
 package answers.errorhandling.project
 
 import answers.errorhandling.NEL
+import answers.errorhandling.project.OrderStatus.{Checkout, Delivered, Draft, Submitted}
 import org.scalacheck.Gen
 
 import java.time.{Duration, Instant}
@@ -21,7 +22,7 @@ object OrderGenerator {
       .chooseNum(0L, Duration.ofDays(400).toSeconds)
       .map(Duration.ofSeconds)
 
-  def nelGen[A](gen: Gen[A]): Gen[NEL[A]] =
+  def nelOf[A](gen: Gen[A]): Gen[NEL[A]] =
     Gen.nonEmptyListOf(gen).map {
       case Nil          => sys.error("Impossible")
       case head :: tail => NEL(head, tail)
@@ -39,5 +40,44 @@ object OrderGenerator {
       streetNumber <- Gen.chooseNum(1, 99999)
       postCode     <- Gen.alphaNumStr
     } yield Address(streetNumber, postCode)
+
+  val draftOrderGen: Gen[Order] =
+    for {
+      orderId   <- orderIdGen
+      createdAt <- instantGen
+      items     <- Gen.listOf(itemGen)
+    } yield Order(orderId, createdAt, Draft(items))
+
+  val checkoutOrderGen: Gen[Order] =
+    for {
+      orderId   <- orderIdGen
+      createdAt <- instantGen
+      items     <- nelOf(itemGen)
+      address   <- Gen.option(addressGen)
+    } yield Order(orderId, createdAt, Checkout(items, address))
+
+  val submittedOrderGen: Gen[Order] =
+    for {
+      orderId   <- orderIdGen
+      createdAt <- instantGen
+      items     <- nelOf(itemGen)
+      address   <- addressGen
+      delay     <- durationGen
+    } yield Order(orderId, createdAt, Submitted(items, address, createdAt.plus(delay)))
+
+  val deliveredOrderGen: Gen[Order] =
+    for {
+      orderId   <- orderIdGen
+      createdAt <- instantGen
+      items     <- nelOf(itemGen)
+      address   <- addressGen
+      delay1    <- durationGen
+      submittedAt = createdAt.plus(delay1)
+      delay2 <- durationGen
+      deliveredAt = submittedAt.plus(delay2)
+    } yield Order(orderId, createdAt, Delivered(items, address, submittedAt, deliveredAt))
+
+  val orderGen: Gen[Order] =
+    Gen.oneOf(draftOrderGen, checkoutOrderGen, submittedOrderGen, deliveredOrderGen)
 
 }
