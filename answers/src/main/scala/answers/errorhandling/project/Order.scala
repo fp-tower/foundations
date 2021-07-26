@@ -1,7 +1,7 @@
-package answers.errorhandling.domain
+package answers.errorhandling.project
 import answers.errorhandling.NEL
-import answers.errorhandling.domain.OrderError._
-import answers.errorhandling.domain.OrderStatus._
+import answers.errorhandling.project.OrderError._
+import answers.errorhandling.project.OrderStatus._
 
 import java.time.Instant
 import java.util.UUID
@@ -15,6 +15,11 @@ case class Order(id: OrderId, createdAt: Instant, status: OrderStatus) {
         Right(copy(status = Draft(x.basket.toList :+ item)))
       case _: Submitted | _: Delivered | _: Cancelled =>
         Left(InvalidStatus(status))
+    }
+
+  def addItem(items: NEL[Item]): Either[OrderError, Order] =
+    items.toList.foldLeft[Either[OrderError, Order]](Right(this)) { (state, item) =>
+      state.flatMap(_.addItem(item))
     }
 
   def checkout: Either[OrderError, Order] =

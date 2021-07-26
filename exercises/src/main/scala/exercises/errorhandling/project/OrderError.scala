@@ -1,4 +1,4 @@
-package exercises.errorhandling.domain
+package exercises.errorhandling.project
 
 sealed trait OrderError
 object OrderError {

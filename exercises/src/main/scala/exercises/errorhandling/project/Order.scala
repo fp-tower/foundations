@@ -1,26 +1,21 @@
-package exercises.errorhandling.domain
+package exercises.errorhandling.project
 
-import exercises.errorhandling.domain.OrderError._
+import exercises.errorhandling.project.OrderError._
 
 import java.time.{Duration, Instant}
 
-// All order statuses
-// "Draft"    : initial state, the user can add `Item` to the basket.
-// "Checkout" : basket is non-empty, the user must enter their delivery address.
-// "Submitted": the order is complete and it will be shipped shortly.
-// "Delivered": the order has been delivered to the user.
 case class Order(
   id: String,
-  status: String,
-  basket: List[Item],
-  deliveryAddress: Option[Address],
-  createdAt: Instant,
-  submittedAt: Option[Instant],
-  deliveredAt: Option[Instant]
+  status: String,                   // "Draft", "Checkout", "Submitted" or "Delivered"
+  basket: List[Item],               // basket can be modified only in "Draft" or "Checkout"
+  deliveryAddress: Option[Address], // can only be set during "Checkout"
+  createdAt: Instant,               // set when the order is created ("Draft")
+  submittedAt: Option[Instant],     // set when the order is moved to "Submitted"
+  deliveredAt: Option[Instant]      // set when the order is moved to "Delivered"
 ) {
 
   // Adds an `Item` to the basket.
-  // This action is only allowed if the `Order` is in "Draft" or "Checkout" statuses.
+  // This action is only permitted if the `Order` is in "Draft" or "Checkout" statuses.
   // If the `Order` is in "Checkout" status, move it back to "Draft".
   // Note: We don't verify if the `Item` is already in the basket.
   def addItem(item: Item): Either[OrderError, Order] =
@@ -29,7 +24,7 @@ case class Order(
       case _                    => Left(InvalidStatus(status))
     }
 
-  // 1. Implement `checkout` which moves the `Order` into "Checkout" status.
+  // 1. Implement `checkout` which attempts to move the `Order` to "Checkout" status.
   // `checkout` requires the order to be in the "Draft" status, otherwise it returns an `InvalidStatus` error.
   // `checkout` requires the order to contain at least one item, otherwise it returns an `EmptyBasket` error.
   def checkout: Either[OrderError, Order] =
@@ -41,7 +36,7 @@ case class Order(
       case _          => Left(InvalidStatus(status))
     }
 
-  // 2. Implement `submit` which moves the `Order` into "Submitted" status.
+  // 2. Implement `submit` which attempts to move the `Order` to "Submitted" status.
   // `submit` requires the order to be in the "Checkout" status and to have a delivery address.
   // If `submit` succeeds, the resulting order must be in "Submitted" status and
   // have the field `submittedAt` defined.
@@ -49,7 +44,7 @@ case class Order(
   def submit(now: Instant): Either[OrderError, Order] =
     ???
 
-  // 3. Implement `deliver` which moves the `Order` into "Delivered" status.
+  // 3. Implement `deliver` which attempts to move the `Order` to "Delivered" status.
   // `deliver` requires the order to be in the "Submitted" status.
   // If `deliver` succeeds, the resulting order must be in "Delivered" status and
   // have the field `deliveredAt` defined.

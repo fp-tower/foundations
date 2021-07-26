@@ -1,4 +1,4 @@
-package answers.errorhandling.domain
+package answers.errorhandling.project
 import scala.util.control.NoStackTrace
 
 sealed abstract class OrderError(message: String) extends NoStackTrace {

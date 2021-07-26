@@ -1,4 +1,4 @@
-package answers.errorhandling.domain
+package answers.errorhandling.project
 
 import answers.action.async.IO
 

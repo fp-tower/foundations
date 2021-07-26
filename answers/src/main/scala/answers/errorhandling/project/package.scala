@@ -1,7 +1,7 @@
 package answers.errorhandling
 import answers.action.async.IO
 
-package object domain {
+package object project {
 
   implicit class IOOptionExtension[A](self: IO[Option[A]]) {
     def getOrFail(error: Exception): IO[A] =
