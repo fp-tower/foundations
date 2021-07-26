@@ -7,16 +7,35 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  def updateDeliveryAddressInvalid(state: String, gen: Gen[Order]): Unit =
-    test(s"updateDeliveryAddress invalid for $state") {
-      forAll(gen, addressGen) { (order, deliveryAddress) =>
-        assert(order.updateDeliveryAddress(deliveryAddress).isLeft)
-      }
+  test(s"addItem invalid in submitted and delivered") {
+    forAll(Gen.oneOf(submittedGen, deliveredGen), itemGen) { (order, item) =>
+      assert(order.addItem(item).isLeft)
     }
+  }
 
-  updateDeliveryAddressInvalid("Draft", draftOrderGen)
-  updateDeliveryAddressInvalid("Submitted", submittedOrderGen)
-  updateDeliveryAddressInvalid("Delivered", deliveredOrderGen)
+  test(s"checkout invalid in checkout, submitted and delivered") {
+    forAll(Gen.oneOf(checkoutGen, submittedGen, deliveredGen)) { order =>
+      assert(order.checkout.isLeft)
+    }
+  }
+
+  test(s"updateDeliveryAddress invalid in draft, submitted and delivered") {
+    forAll(Gen.oneOf(draftGen, submittedGen, deliveredGen), addressGen) { (order, deliveryAddress) =>
+      assert(order.updateDeliveryAddress(deliveryAddress).isLeft)
+    }
+  }
+
+  test(s"submit invalid in draft, submitted and delivered") {
+    forAll(Gen.oneOf(draftGen, submittedGen, deliveredGen), instantGen) { (order, now) =>
+      assert(order.submit(now).isLeft)
+    }
+  }
+
+  test(s"deliver invalid in draft, checkout and delivered") {
+    forAll(Gen.oneOf(draftGen, checkoutGen, deliveredGen), instantGen) { (order, now) =>
+      assert(order.deliver(now).isLeft)
+    }
+  }
 
   test("happy path") {
     forAll(orderIdGen, instantGen, durationGen, durationGen, nelOf(itemGen), addressGen) {

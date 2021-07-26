@@ -41,14 +41,14 @@ object OrderGenerator {
       postCode     <- Gen.alphaNumStr
     } yield Address(streetNumber, postCode)
 
-  val draftOrderGen: Gen[Order] =
+  val draftGen: Gen[Order] =
     for {
       orderId   <- orderIdGen
       createdAt <- instantGen
       items     <- Gen.listOf(itemGen)
     } yield Order(orderId, createdAt, Draft(items))
 
-  val checkoutOrderGen: Gen[Order] =
+  val checkoutGen: Gen[Order] =
     for {
       orderId   <- orderIdGen
       createdAt <- instantGen
@@ -56,7 +56,7 @@ object OrderGenerator {
       address   <- Gen.option(addressGen)
     } yield Order(orderId, createdAt, Checkout(items, address))
 
-  val submittedOrderGen: Gen[Order] =
+  val submittedGen: Gen[Order] =
     for {
       orderId   <- orderIdGen
       createdAt <- instantGen
@@ -65,7 +65,7 @@ object OrderGenerator {
       delay     <- durationGen
     } yield Order(orderId, createdAt, Submitted(items, address, createdAt.plus(delay)))
 
-  val deliveredOrderGen: Gen[Order] =
+  val deliveredGen: Gen[Order] =
     for {
       orderId   <- orderIdGen
       createdAt <- instantGen
@@ -78,6 +78,6 @@ object OrderGenerator {
     } yield Order(orderId, createdAt, Delivered(items, address, submittedAt, deliveredAt))
 
   val orderGen: Gen[Order] =
-    Gen.oneOf(draftOrderGen, checkoutOrderGen, submittedOrderGen, deliveredOrderGen)
+    Gen.oneOf(draftGen, checkoutGen, submittedGen, deliveredGen)
 
 }
