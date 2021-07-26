@@ -6,6 +6,27 @@ import exercises.errorhandling.validation.ValidationExercises.FormError._
 
 object ValidationExercises {
 
+  case class User(username: Username, countryOfResidence: Country)
+  case class Username(value: String)
+
+  sealed abstract class Country(val code: String)
+  object Country {
+    val all: List[Country] = List(France, Germany, Switzerland, UnitedKingdom)
+
+    case object France        extends Country("FRA")
+    case object Germany       extends Country("DEU")
+    case object Switzerland   extends Country("CHE")
+    case object UnitedKingdom extends Country("GBR")
+  }
+
+  sealed trait FormError
+  object FormError {
+    case class InvalidFormat(input: String)        extends FormError
+    case class NotSupported(input: String)         extends FormError
+    case class TooSmall(inputLength: Int)          extends FormError
+    case class InvalidCharacters(char: List[Char]) extends FormError
+  }
+
   // 1. Copy-paste `validateCountry` from `EitherExercises2` and adapt it to `Validation`.
   // For example,
   // validateCountry("FRA") == Valid(France)
@@ -53,27 +74,6 @@ object ValidationExercises {
   object FieldIds {
     val username           = "username"
     val countryOfResidence = "country_of_residence"
-  }
-
-  case class User(username: Username, countryOfResidence: Country)
-  case class Username(value: String)
-
-  sealed abstract class Country(val code: String)
-  object Country {
-    val all: List[Country] = List(France, Germany, Switzerland, UnitedKingdom)
-
-    case object France        extends Country("FRA")
-    case object Germany       extends Country("DEU")
-    case object Switzerland   extends Country("CHE")
-    case object UnitedKingdom extends Country("GBR")
-  }
-
-  sealed trait FormError
-  object FormError {
-    case class InvalidFormat(input: String)        extends FormError
-    case class NotSupported(input: String)         extends FormError
-    case class TooSmall(inputLength: Int)          extends FormError
-    case class InvalidCharacters(char: List[Char]) extends FormError
   }
 
 }

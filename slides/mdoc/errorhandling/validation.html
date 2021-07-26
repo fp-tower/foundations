@@ -363,6 +363,40 @@ class: middle, white
 
 # ValidationExercises.scala
 
+---
+# Extension methods on Either
+
+<br><br>
+
+
+```scala
+type Validation[+E, +A] = `Either[NEL[E], A]`
+
+implicit class EitherNelSyntax[E, A](either: Validation[E, A]) {
+
+  def zip[E2 >: E, Other](other: Validation[E2, Other]): Validation[E2, (A, Other)] =
+    ???
+
+}
+```
+
+---
+# Extension methods on Either
+
+<br><br>
+
+
+```scala
+type Validation[+E, +A] = Either[NEL[E], A]
+
+implicit class EitherNelSyntax[E, A](either: Validation[E, A]) {
+
+  def `zip`[E2 >: E, Other](other: Validation[E2, Other]): Validation[E2, (A, Other)] =
+    ???
+
+}
+```
+
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
