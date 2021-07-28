@@ -1,15 +1,25 @@
-package answers.errorhandling.project
+package answers.errorhandling.project.service
 
 import answers.action.async.IO
+import answers.errorhandling.NEL
+import answers.errorhandling.project.{Item, Order, OrderError, OrderId, OrderMissing}
 
-import java.time.Instant
+class OrderService(
+  orderStore: OrderStore,
+  clock: Clock,
+  idGenerator: IdGenerator
+) {
 
-class OrderService(orderStore: OrderStore, clock: Clock, idGen: IdGen) {
-  def createOrder: IO[Order] =
+  def createNewOrder: IO[Order] =
     for {
-      orderId <- idGen.genOrderId
+      orderId <- idGenerator.genOrderId
       now     <- clock.now
-    } yield Order.empty(orderId, now)
+      order = Order.empty(orderId, now)
+      _ <- orderStore.save(order)
+    } yield order
+
+  def addItems(id: OrderId, items: NEL[Item]): IO[Order] =
+    modifyOrder(id)(_.addItems(items))
 
   def checkout(id: OrderId): IO[Order] =
     modifyOrder(id)(_.checkout)
@@ -33,19 +43,4 @@ class OrderService(orderStore: OrderStore, clock: Clock, idGen: IdGen) {
       _        <- orderStore.save(newOrder)
     } yield newOrder
 
-}
-
-case class OrderMissing(id: OrderId) extends Exception(s"Order ${id.value} is missing")
-
-trait OrderStore {
-  def get(id: OrderId): IO[Option[Order]]
-  def save(order: Order): IO[Unit]
-}
-
-trait Clock {
-  def now: IO[Instant]
-}
-
-trait IdGen {
-  def genOrderId: IO[OrderId]
 }

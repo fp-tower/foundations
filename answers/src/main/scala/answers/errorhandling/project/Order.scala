@@ -8,18 +8,16 @@ import java.util.UUID
 
 case class Order(id: OrderId, createdAt: Instant, status: OrderStatus) {
   def addItem(item: Item): Either[OrderError, Order] =
+    addItems(NEL(item))
+
+  def addItems(items: NEL[Item]): Either[OrderError, Order] =
     status match {
-      case Draft(items) =>
-        Right(copy(status = Draft(items :+ item)))
+      case x: Draft =>
+        Right(copy(status = Draft(x.basket ++ items.toList)))
       case x: Checkout =>
-        Right(copy(status = Draft(x.basket.toList :+ item)))
+        Right(copy(status = Draft(x.basket.toList ++ items.toList)))
       case _: Submitted | _: Delivered | _: Cancelled =>
         Left(InvalidStatus(status))
-    }
-
-  def addItem(items: NEL[Item]): Either[OrderError, Order] =
-    items.toList.foldLeft[Either[OrderError, Order]](Right(this)) { (state, item) =>
-      state.flatMap(_.addItem(item))
     }
 
   def checkout: Either[OrderError, Order] =
@@ -46,7 +44,7 @@ case class Order(id: OrderId, createdAt: Instant, status: OrderStatus) {
     status match {
       case x: Checkout =>
         x.deliveryAddress match {
-          case None => Left(MissingDeliveryAddress(x))
+          case None => Left(MissingDeliveryAddress)
           case Some(address) =>
             val newStatus = Submitted(x.basket, address, submittedAt = now)
             Right(copy(status = newStatus))
@@ -86,7 +84,7 @@ object Order {
     )
 }
 
-case class OrderId(value: UUID)
-case class ItemId(value: UUID)
+case class OrderId(value: String)
+case class ItemId(value: String)
 case class Item(id: ItemId, quantity: Long, price: BigDecimal)
 case class Address(streetNumber: Int, postCode: String)

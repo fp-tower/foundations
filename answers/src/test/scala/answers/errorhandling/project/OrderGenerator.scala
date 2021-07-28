@@ -8,8 +8,8 @@ import java.time.{Duration, Instant}
 
 object OrderGenerator {
 
-  val orderIdGen: Gen[OrderId] = Gen.uuid.map(OrderId)
-  val itemIdGen: Gen[ItemId]   = Gen.uuid.map(ItemId)
+  val orderIdGen: Gen[OrderId] = Gen.uuid.map(x => OrderId(x.toString))
+  val itemIdGen: Gen[ItemId]   = Gen.uuid.map(x => ItemId(x.toString))
 
   val instantGen: Gen[Instant] =
     for {
@@ -47,6 +47,13 @@ object OrderGenerator {
       createdAt <- instantGen
       items     <- Gen.listOf(itemGen)
     } yield Order(orderId, createdAt, Draft(items))
+
+  val nonEmptyDraftGen: Gen[Order] =
+    for {
+      orderId   <- orderIdGen
+      createdAt <- instantGen
+      items     <- nelOf(itemGen)
+    } yield Order(orderId, createdAt, Draft(items.toList))
 
   val checkoutGen: Gen[Order] =
     for {

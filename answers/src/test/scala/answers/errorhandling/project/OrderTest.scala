@@ -7,31 +7,31 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  test(s"addItem invalid in submitted and delivered") {
+  test("addItem invalid in submitted and delivered") {
     forAll(Gen.oneOf(submittedGen, deliveredGen), itemGen) { (order, item) =>
       assert(order.addItem(item).isLeft)
     }
   }
 
-  test(s"checkout invalid in checkout, submitted and delivered") {
+  test("checkout invalid in checkout, submitted and delivered") {
     forAll(Gen.oneOf(checkoutGen, submittedGen, deliveredGen)) { order =>
       assert(order.checkout.isLeft)
     }
   }
 
-  test(s"updateDeliveryAddress invalid in draft, submitted and delivered") {
+  test("updateDeliveryAddress invalid in draft, submitted and delivered") {
     forAll(Gen.oneOf(draftGen, submittedGen, deliveredGen), addressGen) { (order, deliveryAddress) =>
       assert(order.updateDeliveryAddress(deliveryAddress).isLeft)
     }
   }
 
-  test(s"submit invalid in draft, submitted and delivered") {
+  test("submit invalid in draft, submitted and delivered") {
     forAll(Gen.oneOf(draftGen, submittedGen, deliveredGen), instantGen) { (order, now) =>
       assert(order.submit(now).isLeft)
     }
   }
 
-  test(s"deliver invalid in draft, checkout and delivered") {
+  test("deliver invalid in draft, checkout and delivered") {
     forAll(Gen.oneOf(draftGen, checkoutGen, deliveredGen), instantGen) { (order, now) =>
       assert(order.deliver(now).isLeft)
     }
@@ -45,7 +45,7 @@ class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
         val order       = Order.empty(orderId, now)
 
         val result = for {
-          order <- order.addItem(items)
+          order <- order.addItems(items)
           order <- order.checkout
           order <- order.updateDeliveryAddress(deliveryAddress)
           order <- order.submit(submittedAt)
