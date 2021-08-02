@@ -486,7 +486,7 @@ def orderWorkflow(orderId: Int, items: List[Item]): Order =
 def orderWorkflow(orderId: Int, items: List[Item]): IO[Order] =
   createOrder(orderId)
    .addItems(items)       // IO[Order]
-   .`flatMap`(_.`checkout`)   // IO[Order]
+   .`flatMap`(_.checkout)   // IO[Order]
 ```
 ]
 
