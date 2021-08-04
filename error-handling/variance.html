@@ -569,6 +569,36 @@ val result2: Either[String, Int] =
 <img src="../img/foundation/either-string-int-3.svg" style="width:550px;"/>
 ]
 
+
+---
+# Either
+
+.eighty-seven-left[
+```scala
+sealed trait Either[+E, +A]
+
+object Either {
+  case class  Left[+E](value: E) extends Either[E, Nothing]
+  case class Right[+A](value: A) extends Either[`Nothing`, A]
+}
+```
+]
+
+.forty-seven-left[
+<br><br>
+```scala
+val result1: Either[String, Int] =
+  Left("Something is missing")
+
+val result2: Either[String, Int] =
+  Right(5)
+```
+]
+
+.fifty-two-right[
+<img src="../img/foundation/either-string-int-3.svg" style="width:550px;"/>
+]
+
 ---
 # For comprehension
 
