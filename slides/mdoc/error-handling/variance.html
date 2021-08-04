@@ -169,7 +169,7 @@ background-image: url(../img/foundation/role-hierarchy-12.svg)
 <br><br>
 .forty-seven-left[
 ```scala
-Either[E1, A]   <-->   Either[E2, B]
+Either[E2, A]   <-->   Either[E2, B]
 ```
 ]
 
@@ -770,7 +770,7 @@ for {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1, Next](next: A => Either[E1, Next]) =
+  def flatMap[E2, Next](next: A => Either[E2, Next]) =
     this match {
       case Left(value)  => Left(value)
       case Right(value) => next(value)
@@ -787,7 +787,7 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1, Next](next: A => `Either[E1, Next]`) =
+  def flatMap[E2, Next](next: A => `Either[E2, Next]`) =
     this match {
       case Left(value)  => Left(value)
       case Right(value) => next(value)
@@ -804,7 +804,7 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1, Next](next: A => Either[E1, Next]): `Either[???, ???]` =
+  def flatMap[E2, Next](next: A => Either[E2, Next]): `Either[???, ???]` =
     this match {
       case Left(value)  => Left(value)
       case Right(value) => next(value)
@@ -821,7 +821,7 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+`E`, +A] {
 
-  def flatMap[E1, Next](next: A => Either[E1, Next]): Either[???, ???] =
+  def flatMap[E2, Next](next: A => Either[E2, Next]): Either[???, ???] =
     this match {
       case Left(value)  => Left(`value`) // Either[E, Nothing]
       case Right(value) => next(value)
@@ -838,10 +838,10 @@ sealed trait Either[+`E`, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1, Next](next: A => `Either[E1, Next]`): Either[???, ???] =
+  def flatMap[E2, Next](next: A => `Either[E2, Next]`): Either[???, ???] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // `Either[E1, Next]`
+      case Right(value) => next(value) // `Either[E2, Next]`
     }
 
 }
@@ -855,10 +855,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, `+`A] {
 
-  def flatMap[E1, Next](next: A => Either[E1, Next]): Either[???, `Next`] =
+  def flatMap[E2, Next](next: A => Either[E2, Next]): Either[???, `Next`] =
     this match {
       case Left(value)  => Left(value) // Either[E , `Nothing`]
-      case Right(value) => next(value) // Either[E1, `Next`]
+      case Right(value) => next(value) // Either[E2, `Next`]
     }
 
 }
@@ -872,10 +872,10 @@ sealed trait Either[+E, `+`A] {
 ```scala
 sealed trait Either[`+`E, +A] {
 
-  def flatMap[E1, Next](next: A => Either[E1, Next]): Either[`Any`, Next] =
+  def flatMap[E2, Next](next: A => Either[E2, Next]): Either[`Any`, Next] =
     this match {
       case Left(value)  => Left(value) // Either[`E `, Nothing]
-      case Right(value) => next(value) // Either[`E1`, Next]
+      case Right(value) => next(value) // Either[`E2`, Next]
     }
 
 }
@@ -890,10 +890,10 @@ sealed trait Either[`+`E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[`E1 >: E`, Next](next: A => Either[E1, Next]): Either[`E1`, Next] =
+  def flatMap[`E2 >: E`, Next](next: A => Either[E2, Next]): Either[`E2`, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -912,10 +912,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1 >: E, Next](next: A => Either[E1, Next]): Either[E1, Next] =
+  def flatMap[E2 >: E, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -935,10 +935,10 @@ Left(TooSmall(2)).flatMap(_ =>
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[`E1 >: E`, Next](next: A => Either[E1, Next]): Either[E1, Next] =
+  def flatMap[`E2 >: E`, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -959,10 +959,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[`E1 >: E`, Next](next: A => Either[E1, Next]): Either[E1, Next] =
+  def flatMap[`E2 >: E`, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -983,10 +983,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1 >: E, Next](next: A => Either[`E1`, Next]): Either[`E1`, Next] =
+  def flatMap[E2 >: E, Next](next: A => Either[`E2`, Next]): Either[`E2`, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -1007,10 +1007,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1 >: E, Next](next: A => Either[E1, Next]): Either[E1, Next] =
+  def flatMap[E2 >: E, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -1031,10 +1031,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[`E1 >: E`, Next](next: A => Either[E1, Next]): Either[E1, Next] =
+  def flatMap[`E2 >: E`, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
@@ -1055,10 +1055,10 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[E1 >: E, Next](next: A => Either[E1, Next]): Either[E1, Next] =
+  def flatMap[E2 >: E, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
-      case Right(value) => next(value) // Either[E1, Next]
+      case Right(value) => next(value) // Either[E2, Next]
     }
 
 }
