@@ -8,7 +8,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class EitherExercises1Test extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
-  ignore("getUserEmail example") {
+  test("getUserEmail example") {
     val users = Map(
       UserId(222) -> User(UserId(222), "john", Admin, Some(Email("j@x.com"))),
       UserId(123) -> User(UserId(123), "elisa", Admin, Some(Email("e@y.com"))),
@@ -16,8 +16,8 @@ class EitherExercises1Test extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     )
 
     assert(getUserEmail(UserId(123), users) == Right(Email("e@y.com")))
-    assert(getUserEmail(UserId(111), users) == Left("User 111 is missing"))
-    assert(getUserEmail(UserId(444), users) == Left("User 444 has no email address"))
+    assert(getUserEmail(UserId(111), users) == Left(UserNotFound(UserId(111))))
+    assert(getUserEmail(UserId(444), users) == Left(EmailNotFound(UserId(444))))
   }
 
 }
