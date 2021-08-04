@@ -950,7 +950,7 @@ sealed trait Either[+E, +A] {
 ```scala
 sealed trait Either[+E, +A] {
 
-  def flatMap[`E2 >: E`, Next](next: A => Either[E2, Next]): Either[E2, Next] =
+  def flatMap[E2 >: E, Next](next: A => Either[E2, Next]): Either[E2, Next] =
     this match {
       case Left(value)  => Left(value) // Either[E , Nothing]
       case Right(value) => next(value) // Either[E2, Next]
@@ -960,7 +960,7 @@ sealed trait Either[+E, +A] {
 ```
 <br>
 ```scala
-(Left(TooSmall(2)): Either[`TooSmall`, Nothing]).flatMap(_ =>
+(Left(TooSmall(2)): Either[TooSmall, Nothing]).flatMap(_ =>
   (Left(InvalidCharacters(List('!', '~'))): Either[`UsernameError`, Nothing])
 )
 // res: Either[???, Nothing]
