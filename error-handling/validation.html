@@ -299,6 +299,31 @@ NEL(1, 2, 3).filter(_ > 10)
 case class NEL[+A](head: A, tail: List[A])
 
 
+`NEL(1, 2, 3)`
+// res: NEL[Int] = NEL(1, 2, 3)
+
+0 +: NEL(1, 2, 3)
+// res: NEL[Int] = NEL(0, 1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
 NEL(1, 2, 3)
 // res: NEL[Int] = NEL(1, 2, 3)
 
