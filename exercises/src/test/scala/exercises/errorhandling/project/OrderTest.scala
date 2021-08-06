@@ -1,6 +1,8 @@
 package exercises.errorhandling.project
 
 import exercises.errorhandling.project.OrderError.{EmptyBasket, InvalidStatus}
+import exercises.errorhandling.project.OrderGenerator._
+import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -51,6 +53,65 @@ class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
     )
 
     assert(order.checkout == Left(InvalidStatus("Delivered")))
+  }
+
+  ignore("submit successful example") {
+    val order = Order(
+      id = "AAA",
+      status = "Checkout",
+      basket = List(Item("A1", 2, 12.99)),
+      deliveryAddress = Some(Address(12, "E16 8TR")),
+      createdAt = Instant.now(),
+      submittedAt = None,
+      deliveredAt = None
+    )
+
+    order.submit(Instant.now()) match {
+      case Left(value)     => fail(s"Expected success but got $value")
+      case Right(newOrder) => assert(newOrder.status == "Submitted")
+    }
+  }
+
+  ignore("submit no address example") {
+    val order = Order(
+      id = "AAA",
+      status = "Checkout",
+      basket = List(Item("A1", 2, 12.99)),
+      deliveryAddress = None,
+      createdAt = Instant.now(),
+      submittedAt = None,
+      deliveredAt = None
+    )
+
+    assert(order.submit(Instant.now()) == Left(???))
+  }
+
+  ignore("submit invalid status example") {
+    val order = Order(
+      id = "AAA",
+      status = "Delivered",
+      basket = List(Item("A1", 2, 12.99)),
+      deliveryAddress = Some(Address(12, "E16 8TR")),
+      createdAt = Instant.now(),
+      submittedAt = None,
+      deliveredAt = None
+    )
+
+    assert(order.submit(Instant.now()) == Left(InvalidStatus("Delivered")))
+  }
+
+  ignore("submit empty basket example") {
+    val order = Order(
+      id = "AAA",
+      status = "Checkout",
+      basket = Nil,
+      deliveryAddress = Some(Address(12, "E16 8TR")),
+      createdAt = Instant.now(),
+      submittedAt = None,
+      deliveredAt = None
+    )
+
+    assert(order.submit(Instant.now()) == Left(EmptyBasket))
   }
 
   ignore("happy path") {
