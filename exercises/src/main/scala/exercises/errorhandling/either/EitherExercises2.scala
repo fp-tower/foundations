@@ -1,7 +1,7 @@
 package exercises.errorhandling.either
 
-import exercises.errorhandling.either.EitherExercises2.UsernameError._
 import exercises.errorhandling.either.EitherExercises2.CountryError._
+import exercises.errorhandling.either.EitherExercises2.UsernameError._
 
 object EitherExercises2 {
 

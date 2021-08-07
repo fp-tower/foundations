@@ -58,7 +58,7 @@ object Validation {
     Invalid(NEL(value, other.toList))
 
   // Similar to `Either.cond`
-  def cond[E, A](test: Boolean, success: => A, failure: E): Validation[E, A] =
+  def cond[E, A](test: Boolean, success: => A, failure: => E): Validation[E, A] =
     if (test) valid(success) else invalid(failure)
 
   def fromEither[E, A](either: Either[E, A]): Validation[E, A] =

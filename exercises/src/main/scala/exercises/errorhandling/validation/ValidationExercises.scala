@@ -34,7 +34,7 @@ object ValidationExercises {
   // validateCountry("ARG") == Invalid(NEL(NotSupported("ARG")))
   // Note: You can find several helpers methods in the companion object of Validation,
   //       as well as many extension methods in `package.scala`.
-  def validateCountry(country: String): Validation[FormError, Country] =
+  def validateCountry(countryCode: String): Validation[FormError, Country] =
     ???
 
   // 2. Copy-paste `checkUsernameSize` from `EitherExercises2` and adapt it to `Validation`.

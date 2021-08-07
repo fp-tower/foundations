@@ -247,8 +247,7 @@ validateUser("bo", "UK")
 
 .eighty-seven-left[
 ```scala
-validateUser("xxx", "FRA")
-// `Invalid(Nil)`
+Invalid(`Nil`)
 ```
 ]
 
@@ -276,6 +275,31 @@ case class NEL[+A](head: A, tail: List[A])
 
 
 NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+0 +: NEL(1, 2, 3)
+// res: NEL[Int] = NEL(0, 1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+`NEL(1, 2, 3)`
 // res: NEL[Int] = NEL(1, 2, 3)
 
 0 +: NEL(1, 2, 3)
@@ -362,6 +386,22 @@ class: middle, white
 ## package exercises.errorhandling.validation
 
 # ValidationExercises.scala
+
+---
+background-image: url(../img/fp-tower/website-background.svg)
+
+
+# .white[Summary]
+
+<br>
+
+## .white[NonEmptyList is a List with at least 1 element]
+
+## .white[Validation can store multiple errors]
+
+## .white[zip and zipWith accumulate errors]
+
+## .white[For-comprehension fails early]
 
 ---
 # Extension methods on Either

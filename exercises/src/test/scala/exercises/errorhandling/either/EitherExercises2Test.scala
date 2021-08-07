@@ -1,10 +1,10 @@
 package exercises.errorhandling.either
-import org.scalatest.funsuite.AnyFunSuite
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import EitherExercises2._
 import exercises.errorhandling.either.EitherExercises2.Country._
 import exercises.errorhandling.either.EitherExercises2.CountryError._
-import exercises.errorhandling.either.EitherExercises2.UsernameError.{InvalidCharacters, TooSmall}
+import exercises.errorhandling.either.EitherExercises2.UsernameError._
+import exercises.errorhandling.either.EitherExercises2._
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class EitherExercises2Test extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
 
@@ -31,6 +31,10 @@ class EitherExercises2Test extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     assert(validateUsername("foo!~23}AD") == Left(InvalidCharacters(List('!', '~', '}'))))
   }
 
-  test("validateUser example") {}
+  ignore("validateUser example") {
+    assert(validateUser("bob_2167", "FRA") == Right(User(Username("bob_2167"), France)))
+    assert(validateUser("bo", "FRA") == Left(TooSmall(2)))
+    assert(validateUser("bob_2167", "ARG") == Left(NotSupported("ARG")))
+  }
 
 }
