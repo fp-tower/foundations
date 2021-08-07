@@ -100,12 +100,12 @@ enum Option[+A] {
 <br>
 
 ```scala
-val users: Map[UserId, User] = Map(...)
+val users: Map[Int, User] = Map(...)
 
-users.get(UserId(111))
+users.get(111)
 // res: Option[User] = Some(...)
 
-users.get(UserId(444))
+users.get(444)
 // res: Option[User] = None
 ```
 ]
