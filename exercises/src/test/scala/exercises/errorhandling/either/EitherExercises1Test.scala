@@ -1,4 +1,5 @@
 package exercises.errorhandling.either
+import exercises.errorhandling.either.EitherExercises1.UserEmailError._
 import exercises.errorhandling.either.EitherExercises1._
 import exercises.errorhandling.option.OptionExercises.Role.Admin
 import exercises.errorhandling.option.OptionExercises.{Email, User, UserId}
