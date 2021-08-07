@@ -1,5 +1,4 @@
 package exercises.errorhandling.either
-import exercises.errorhandling.either.EitherExercises1.UserEmailError.{EmailNotFound, UserNotFound}
 import exercises.errorhandling.either.EitherExercises1._
 import exercises.errorhandling.option.OptionExercises.Role.Admin
 import exercises.errorhandling.option.OptionExercises.{Email, User, UserId}
@@ -16,8 +15,8 @@ class EitherExercises1Test extends AnyFunSuite with ScalaCheckDrivenPropertyChec
     )
 
     assert(getUserEmail(UserId(123), users) == Right(Email("e@y.com")))
-    assert(getUserEmail(UserId(111), users) == Left(UserNotFound))
-    assert(getUserEmail(UserId(444), users) == Left(EmailNotFound))
+    assert(getUserEmail(UserId(111), users) == Left("User 111 is missing"))
+    assert(getUserEmail(UserId(444), users) == Left("User 444 has no email address"))
   }
 
 }
