@@ -263,7 +263,7 @@ static Order checkout(Order order) `throws InvalidStatus, EmptyBasket`
 ```scala
 def createUser(name: String, age: Int): User = {
   require(name.length > 0, "name should not be empty")
-  require(age > 18       , "user must be 18 years old or more")
+  require(age >= 18      , "user must be 18 years old or more")
 
   User(name, age)
 }
