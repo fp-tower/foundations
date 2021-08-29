@@ -2,8 +2,8 @@
 |--------------|-------------|
 | Exercises    |     [EitherExercises2.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/errorhandling/either/EitherExercises2.scala)       |
 | Tests        | [EitherExercises2Test.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/errorhandling/either/EitherExercises2Test.scala)   |
-| Answers      |       [EitherAnswers2.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/answers/errorhandling/either/OptionAnswers2.scala)     |
-| Test Answers |   [EitherAnswers2Test.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/answers/errorhandling/either/OptionAnswers2Test.scala) |
+| Answers      |       [EitherAnswers2.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/answers/errorhandling/either/EitherAnswers2.scala)     |
+| Test Answers |   [EitherAnswers2Test.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/answers/errorhandling/either/EitherAnswers2Test.scala) |
 
 ## Sealed trait vs sealed abstract class
 
@@ -30,7 +30,7 @@ we could have used `findValues` to compute all the values of type `Country`.
 ```scala
 sealed trait Country extends EnumEntry
 
-object Greeting extends Enum[Country] {
+object Country extends Enum[Country] {
   val all = findValues // computes the exhaustive list of countries
 
   case object France        extends Country("FRA")

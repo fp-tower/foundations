@@ -1,8 +1,7 @@
 package answers.errorhandling.either
 
 import answers.errorhandling.either.EitherAnswers2.Country._
-import answers.errorhandling.either.EitherAnswers2.CountryError._
-import answers.errorhandling.either.EitherAnswers2.UsernameError._
+import answers.errorhandling.either.EitherAnswers2.FormError._
 import answers.errorhandling.either.EitherAnswers2._
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
