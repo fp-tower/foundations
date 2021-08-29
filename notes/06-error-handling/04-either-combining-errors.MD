@@ -1,9 +1,9 @@
 | Type         | GitHub link |
 |--------------|-------------|
-| Exercises    |     [EitherExercises1.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/errorhandling/either/EitherExercises1.scala)       |
-| Tests        | [EitherExercises1Test.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/errorhandling/either/EitherExercises1Test.scala)   |
-| Answers      |       [EitherAnswers1.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/answers/errorhandling/either/OptionAnswers1.scala)     |
-| Test Answers |   [EitherAnswers1Test.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/answers/errorhandling/either/OptionAnswers1Test.scala) |
+| Exercises    |     [EitherExercises2.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/main/scala/exercises/errorhandling/either/EitherExercises2.scala)       |
+| Tests        | [EitherExercises2Test.scala](https://github.com/fp-tower/foundations/blob/master/exercises/src/test/scala/exercises/errorhandling/either/EitherExercises2Test.scala)   |
+| Answers      |       [EitherAnswers2.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/main/scala/answers/errorhandling/either/OptionAnswers2.scala)     |
+| Test Answers |   [EitherAnswers2Test.scala](https://github.com/fp-tower/foundations/blob/master/answers/src/test/scala/answers/errorhandling/either/OptionAnswers2Test.scala) |
 
 ## Sealed trait vs sealed abstract class
 
