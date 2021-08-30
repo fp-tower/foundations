@@ -83,7 +83,7 @@ class OrderTest extends AnyFunSuite with ScalaCheckDrivenPropertyChecks {
       deliveredAt = None
     )
 
-    assert(order.submit(Instant.now()) == Left(???))
+    assert(order.submit(Instant.now()) == Left(???)) // replace ??? by the error you created for that scenario
   }
 
   ignore("submit invalid status example") {
