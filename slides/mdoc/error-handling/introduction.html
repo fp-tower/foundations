@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error Handling</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Error Handling]
+
+---
+# Runtime Error
+
+<br><br><br>
+.seventy-two-left[.center[
+## An error that occurs when the program is running.
+]]
+
+---
+# Error scenarios
+
+<br>
+
+## 1. Fail early (most common)
+
+## 2. Accumulate errors
+
+## 3. Mixed result
+
+---
+# What do we do with an error?
+
+<br>
+
+## 1. Report it
+
+## 2. Recover (retry, fallback)
+
+---
+# Solution 1: Exception
+
+<br>
+
+```scala mdoc:invisible
+case class Order(id: Long, status: String, basket: List[Item])
+case class Item(id: Long, quantity: Int, unitPrice: Double)
+```
+
+.eighty-two-left[
+```scala mdoc
+def checkout(order: Order): Order =
+  if (order.status != "Draft")   throw new Exception("Invalid status")
+  else if (order.basket.isEmpty) throw new Exception("Basket is empty")
+  else
+    order.copy(status = "Checkout")
+```
+
+```scala
+checkout(Order(id = 34, status = "Submitted", basket = Nil))
+// java.lang.Exception: Invalid status
+
+checkout(Order(id = 34, status = "Draft", basket = Nil))
+// java.lang.Exception: Basket is empty
+```
+]
+
+---
+# Solution 1: Exception
+
+<br>
+
+```scala mdoc:reset:invisible
+case class Order(id: Long, status: String, basket: List[Item])
+case class Item(id: Long, quantity: Int, unitPrice: Double)
+```
+
+.eighty-two-left[
+```scala mdoc
+def checkout(order: Order): Order = {
+  require(order.status == "Draft", "Invalid status")
+  require(order.basket.nonEmpty  , "Basket is empty")
+
+  order.copy(status = "Checkout")
+}
+```
+
+
+```scala
+checkout(Order(id = 34, status = "Submitted", basket = Nil))
+// java.lang.IllegalArgumentException: requirement failed: Invalid status
+
+checkout(Order(id = 34, status = "Draft", basket = Nil))
+// java.lang.IllegalArgumentException: requirement failed: Basket is empty
+```
+]
+
+---
+# Solution 1: Exception stack trace
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): Order = {
+  require(order.status == "Draft", "Invalid status")
+  require(order.basket.nonEmpty  , "Basket is empty")
+
+  order.copy(status = "Checkout")
+}
+```
+
+
+```scala
+checkout(Order(id = 34, status = "Submitted", basket = Nil))
+// java.lang.IllegalArgumentException: requirement failed: Invalid status
+//         at scala.Predef$.require(Predef.scala:340)
+//         at project.Order.checkout(Order.scala:41)
+//         at project.OrderService.checkout(OrderService.scala:125)
+//         at project.OrderAPI.service(OrderAPI.scala:78)
+//         ...
+```
+]
+
+---
+# Solution 1: Exception stack trace
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): Order = {
+  require(order.status == "Draft", "Invalid status")
+  require(order.basket.nonEmpty  , "Basket is empty")
+
+  order.copy(status = "Checkout")
+}
+```
+
+
+```scala
+checkout(Order(id = 34, status = "Submitted", basket = Nil))
+// java.lang.IllegalArgumentException: requirement failed: Invalid status
+//         at scala.Predef$.`require(Predef.scala:340)`
+//         at project.Order.checkout(Order.scala:41)
+//         at project.OrderService.checkout(OrderService.scala:125)
+//         at project.OrderAPI.service(OrderAPI.scala:78)
+//         ...
+```
+]
+
+---
+# Solution 1: Exception stack trace
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): Order = {
+  require(order.status == "Draft", "Invalid status")
+  require(order.basket.nonEmpty  , "Basket is empty")
+
+  order.copy(status = "Checkout")
+}
+```
+
+
+```scala
+checkout(Order(id = 34, status = "Submitted", basket = Nil))
+// java.lang.IllegalArgumentException: requirement failed: Invalid status
+//         at scala.Predef$.require(Predef.scala:340)
+//         at project.Order.`checkout(Order.scala:41)`
+//         at project.OrderService.checkout(OrderService.scala:125)
+//         at project.OrderAPI.service(OrderAPI.scala:78)
+//         ...
+```
+]
+
+---
+# No documentation
+
+<br>
+
+.forty-seven-left[
+```scala
+def checkout(order: Order): Order
+```
+]
+
+---
+# No documentation
+
+<br>
+
+.eighty-two-left[
+```scala mdoc
+case class InvalidStatus(currentStatus: String) extends Exception
+case object EmptyBasket extends Exception
+```
+
+```scala
+def checkout(order: Order): Order =
+  if (order.status != "Draft")   throw InvalidStatus(order.status)
+  else if (order.basket.isEmpty) throw EmptyBasket
+  else
+    order.copy(status = "Checkout")
+```
+]
+
+---
+# No documentation
+
+<br>
+
+.eighty-two-left[
+```scala
+case class InvalidStatus(currentStatus: String) extends Exception
+case object EmptyBasket extends Exception
+```
+
+```scala
+def checkout(order: Order): Order =
+  if (order.status != "Draft")   throw InvalidStatus(order.status)
+  else if (order.basket.isEmpty) `throw EmptyBasket`
+  else
+    order.copy(status = "Checkout")
+```
+
+```scala
+Try(checkout(order)).recover {
+  `case EmptyBasket` => order // ignore this error
+}
+```
+]
+
+---
+# Java checked exception
+
+<br>
+
+.eighty-two-left[
+```scala
+case class InvalidStatus(currentStatus: String) extends Exception
+case object EmptyBasket extends Exception
+```
+
+```java
+static Order checkout(Order order) `throws InvalidStatus, EmptyBasket`
+```
+]
+
+---
+# Exceptions interrupt the program immediately
+
+<br>
+
+.eighty-two-left[
+```scala
+def createUser(name: String, age: Int): User = {
+  require(name.length > 0, "name should not be empty")
+  require(age >= 18      , "user must be 18 years old or more")
+
+  User(name, age)
+}
+```
+
+```scala
+createUser("", 12)
+// java.lang.IllegalArgumentException: requirement failed: name should not be empty
+```
+]
+
+---
+# Solution 2: IO
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): IO[Order] =
+  if (order.status != "Draft")   IO.fail(InvalidStatus(order.status))
+  else if (order.basket.isEmpty) IO.fail(EmptyBasket)
+  else
+    IO(order.copy(status = "Checkout"))
+```
+]
+
+---
+# Solution 2: IO
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): IO[Order] =
+  if (order.status != "Draft")   `IO.fail`(InvalidStatus(order.status))
+  else if (order.basket.isEmpty) `IO.fail`(EmptyBasket)
+  else
+    IO(order.copy(status = "Checkout"))
+```
+]
+
+---
+# Solution 2: IO
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): IO[Order] =
+  if (order.status != "Draft")   IO.fail(InvalidStatus(order.status))
+  else if (order.basket.isEmpty) IO.fail(EmptyBasket)
+  else
+    `IO`(order.copy(status = "Checkout"))
+```
+]
+
+---
+# Solution 2: IO
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): `IO[Order]` =
+  if (order.status != "Draft")   IO.fail(InvalidStatus(order.status))
+  else if (order.basket.isEmpty) IO.fail(EmptyBasket)
+  else
+    IO(order.copy(status = "Checkout"))
+```
+]
+
+
+---
+# Solution 2: IO
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): IO[Order] =
+  if (order.status != "Draft")   IO.fail(InvalidStatus(order.status))
+  else if (order.basket.isEmpty) IO.fail(EmptyBasket)
+  else
+    IO(order.copy(status = "Checkout"))
+```
+
+```scala
+def createOrder(orderId: Int): `Order` =
+  Order(id = orderId, status = "Draft", basket = Nil)
+```
+]
+
+---
+# Custom error type ala Monix BIO or ZIO
+
+<br>
+
+.eighty-two-left[
+```scala
+trait IO[E, A]
+```
+]
+
+---
+# Custom error type ala Monix BIO or ZIO
+
+<br>
+
+.eighty-two-left[
+```scala
+trait IO[`E`, A]
+```
+]
+
+---
+# Custom error type ala Monix BIO or ZIO
+
+<br>
+
+.eighty-two-left[
+```scala
+trait IO[E, `A`]
+```
+]
+
+---
+# Custom error type ala Monix BIO or ZIO
+
+<br>
+
+.eighty-two-left[
+```scala
+trait IO[E, A]
+```
+
+<br>
+
+```scala
+def fetchUser(id: UserId): IO[`UserNotFoundError`, User]
+```
+]
+
+---
+# Custom error type ala Monix BIO or ZIO
+
+<br>
+
+.eighty-two-left[
+```scala
+trait IO[E, A]
+
+type Task[A] = `IO[Throwable, A]`
+&#x200B;
+```
+
+<br>
+
+```scala
+def readLines(name: String): `Task`[List[String]]
+```
+]
+
+---
+# Custom error type ala Monix BIO or ZIO
+
+<br>
+
+.eighty-two-left[
+```scala
+trait IO[E, A]
+
+type Task[A] = IO[Throwable, A]
+type  UIO[A] = `IO[Nothing, A]`
+```
+
+<br>
+
+```scala
+def readLines(name: String): Task[List[String]]
+
+def getTime: `UIO`[Instant]
+```
+]
+
+---
+# IO spreads
+
+.eighty-two-left[
+```scala
+def orderWorkflow(orderId: Int, items: List[Item]): Order =
+  createOrder(orderId)
+   .addItems(items)        // can throw an Exception
+   .checkout               // can throw an Exception
+```
+
+<br>
+
+```scala
+def orderWorkflow(orderId: Int, items: List[Item]): `IO`[Order] =
+  createOrder(orderId)
+   .`addItems`(items)       // IO[Order]
+   .flatMap(_.`checkout`)   // IO[Order]
+```
+]
+
+---
+# IO spreads
+
+.eighty-two-left[
+```scala
+def orderWorkflow(orderId: Int, items: List[Item]): Order =
+  createOrder(orderId)
+   .addItems(items)        // can throw an Exception
+   .checkout               // can throw an Exception
+```
+
+<br>
+
+```scala
+def orderWorkflow(orderId: Int, items: List[Item]): IO[Order] =
+  createOrder(orderId)
+   .addItems(items)       // IO[Order]
+   .`flatMap`(_.checkout)   // IO[Order]
+```
+]
+
+---
+# IO is too powerful
+
+<br>
+
+.eighty-two-left[
+```scala
+def checkout(order: Order): IO[Order] =
+  if (order.status != "Draft")   IO.fail(InvalidStatus(order.status))
+  else if (order.basket.isEmpty) IO.fail(EmptyBasket)
+  else
+    IO(order.copy(status = "Checkout"))
+```
+]
+
+---
+# Functional error handling
+
+<img src="../img/foundation/pure-error-handling.svg" style="width:700px;"/>
+
+---
+# Functional error handling
+
+<br>
+
+.forty-seven-left[
+## 1. Option
+## 2. Try
+## 3. Either
+]
+
+.forty-seven-right[
+## 4. Validation
+## 5. IOR
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

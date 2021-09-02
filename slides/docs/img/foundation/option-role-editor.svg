@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 964 271" width="964" height="271">
+  <defs>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 6 6" markerWidth="6" markerHeight="6" color="#efc600">
+      <g>
+        <path d="M 3.2 0 L 0 -1.2 L 0 1.2 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-08-04 13:44:20 +0000</metadata>
+  <g id="option-role-editor" fill="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>option-role-editor</title>
+    <g id="option-role-editor_Layer_1">
+      <title>Layer 1</title>
+      <g id="Line_155">
+        <line x1="112.5" y1="215.99999" x2="112.5" y2="180.90001" marker-end="url(#FilledArrow_Marker)" stroke="#efc600" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Line_161">
+        <line x1="409.5" y1="162.00001" x2="409.5" y2="197.09999" marker-end="url(#FilledArrow_Marker)" stroke="#efc600" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+      <g id="Graphic_152">
+        <ellipse cx="112.5" cy="243" rx="94.5001510017292" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="112.5" cy="243" rx="94.5001510017292" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41.9 229.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.5539985" y="21">Option[Editor]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_154">
+        <ellipse cx="112.5" cy="135" rx="94.5001510017292" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="112.5" cy="135" rx="94.5001510017292" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(41.9 121.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.483998" y="21">Option[Role]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_160">
+        <ellipse cx="868.5" cy="189" rx="94.5001510017293" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="868.5" cy="189" rx="94.5001510017293" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(797.9 175.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.483998" y="21">Option[Role]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_159">
+        <ellipse cx="661.5" cy="189" rx="94.5001510017292" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="661.5" cy="189" rx="94.5001510017292" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(590.9 175.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.5539985" y="21">Option[Editor]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_163">
+        <ellipse cx="409.5" cy="243" rx="94.5001510017292" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="409.5" cy="243" rx="94.5001510017292" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(338.9 229.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.5539985" y="21">Option[Editor]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_162">
+        <ellipse cx="409.5" cy="135" rx="94.5001510017292" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="409.5" cy="135" rx="94.5001510017292" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(338.9 121.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="9.483998" y="21">Option[Role]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_164">
+        <text transform="translate(28.106 50)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="2557954e-19" y="21">1. Same as Role</tspan>
+        </text>
+      </g>
+      <g id="Graphic_165">
+        <text transform="translate(316 50)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="0" y="21">2. Opposite of Role</tspan>
+        </text>
+      </g>
+      <g id="Graphic_166">
+        <text transform="translate(670.244 50)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="black" x="8597567e-19" y="21">3. Unrelated</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

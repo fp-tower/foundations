@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Option</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Option]
+
+---
+# Option
+
+<br>
+
+.sixty-two-left[
+```scala
+val secret: Option[String] = Some("Hello World")
+
+val other : Option[String] = None
+```
+]
+
+---
+# Option
+
+<br>
+
+.sixty-two-left[
+```scala
+case class User(
+  username   : String,
+  email      : String
+  dateOfBirth: Option[LocalDate],
+)
+
+val bob = User(
+  "bob_64",
+  "bob@gmail.com",
+  `dateOfBirth = None`,
+)
+```
+]
+
+---
+# Option
+
+<br>
+
+.sixty-two-left[
+```scala
+trait List[A] {
+  def find(predicate: A => Boolean): `Option[A]`
+}
+```
+
+<br>
+
+```scala
+List(2, 3, 15, 7).find(_ > 10)
+// res: Option[Int] = Some(15)
+
+List(2, 3, 15, 7).find(_ > 20)
+// res: Option[Int] = None
+```
+]
+
+---
+# Option
+
+<br>
+
+.sixty-two-left[
+```scala
+trait List[A] {
+  def find(predicate: A => Boolean): Option[A]
+}
+```
+
+<br>
+
+```scala
+List(2, 3, 15, 7).find(_ > 10)
+// res: Option[Int] = `Some(15)`
+
+List(2, 3, 15, 7).find(_ > 20)
+// res: Option[Int] = `None`
+```
+]
+
+---
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br>
+
+# .white[Summary]
+
+<br>
+
+## .white[Simple to use: Some or None]
+
+## .white[Compose using for-comprehension or sequence]
+
+## .white[Ignore None by flattening a collection]
+
+---
+background-image: url(../img/fp-tower/website-background.svg)
+
+<br>
+
+# .white[Limitation]
+
+<br>
+
+## .white[No context when an error occurs]
+
+.fifty-two-left[
+```scala
+getUserEmail(UserId(111), users) // no user
+// res: Option[Email] = None
+
+getUserEmail(UserId(444), users) // no email
+// res: Option[Email] = None
+```
+]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

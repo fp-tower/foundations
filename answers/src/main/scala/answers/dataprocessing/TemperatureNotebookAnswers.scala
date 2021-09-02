@@ -25,15 +25,12 @@ object TemperatureNotebookAnswers extends App {
 
   val coldestSample = TemperatureAnswers.minSampleByTemperature(parSamples)
 
-  println(s"Min sample by temperature is $coldestSample")
-  println(s"Max sample by temperature is ${parSamples.maxBy(_.temperatureFahrenheit)}")
-  println(s"Min sample by date is ${parSamples.minBy(_.localDate)}")
-  println(s"Max sample by date is ${parSamples.maxBy(_.localDate)}")
+  println(s"Min sample is $coldestSample")
+  println(s"Max sample is ${parSamples.maxBy(_.temperatureFahrenheit)}")
 
   val averageTemperature = TemperatureAnswers.averageTemperature(parSamples)
 
-  println(s"Average temperature is $averageTemperature")
-
+  println(s"Average temperature is ${averageTemperature.getOrElse("N/A")} F°")
   println(s"Temperature summary is ${parSamples.parFoldMap(SummaryV1.one)(SummaryV1.monoid)}")
 
   sealed trait Label
@@ -52,18 +49,24 @@ object TemperatureNotebookAnswers extends App {
     Labelled("List map + sum", () => samples.map(_.temperatureFahrenheit).sum),
     Labelled("ParList foldMap", () => parSamples.foldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
     Labelled("ParList parFoldMap", () => parSamples.parFoldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
-    Labelled("ParList parFoldMapUnordered",
-             () => parSamples.parFoldMapUnordered(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
-    Labelled("ParArray parFoldMap",
-             () => parSamplesArray.parFoldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)),
-    Labelled("Array foldLeft",
-             () => samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)),
+    Labelled(
+      "ParList parFoldMapUnordered",
+      () => parSamples.parFoldMapUnordered(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)
+    ),
+    Labelled(
+      "ParArray parFoldMap",
+      () => parSamplesArray.parFoldMap(_.temperatureFahrenheit)(CommutativeMonoid.sumNumeric)
+    ),
+    Labelled(
+      "Array foldLeft",
+      () => samplesArray.foldLeft(0.0)((state, sample) => state + sample.temperatureFahrenheit)
+    )
   )
 
   bench("min")(
     Labelled("ParList minBy", () => parSamples.minBy(_.temperatureFahrenheit)),
     Labelled("ParList parFoldMap", () => parSamples.parFoldMap(Option(_))(Monoid.minByOption(_.temperatureFahrenheit))),
-    Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit)),
+    Labelled("List minByOption", () => samples.minByOption(_.temperatureFahrenheit))
   )
 
   bench("summary")(
@@ -71,14 +74,14 @@ object TemperatureNotebookAnswers extends App {
     Labelled("List 1 iteration", () => TemperatureAnswers.summaryListOnePass(samples)),
     Labelled("ParList 4 iterations", () => TemperatureAnswers.summaryParList(parSamples)),
     Labelled("ParList 1 iteration foldMap", () => TemperatureAnswers.summaryParListOnePassFoldMap(parSamples)),
-    Labelled("ParList 1 iteration reduceMap", () => TemperatureAnswers.summaryParListOnePassReduceMap(parSamples)),
+    Labelled("ParList 1 iteration reduceMap", () => TemperatureAnswers.summaryParListOnePassReduceMap(parSamples))
   )
 
   bench("aggregatePerLabel")(
     Labelled("city", () => aggregatePerLabel(parSamples)(s => List(s.city))),
     Labelled("country", () => aggregatePerLabel(parSamples)(s => List(s.country))),
     Labelled("Bordeaux", () => aggregatePerLabel(parSamples)(s => List(s.city).filter(_ == "Bordeaux"))),
-    Labelled("city, country, region", () => aggregatePerLabel(parSamples)(s => List(s.city, s.country, s.region))),
+    Labelled("city, country, region", () => aggregatePerLabel(parSamples)(s => List(s.city, s.country, s.region)))
   )
 
   def aggregatePerLabel[Label](parList: ParList[Sample])(labels: Sample => List[Label]): Map[Label, Summary] = {

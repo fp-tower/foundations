@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 716 361" width="716" height="361">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 716 361" width="716" height="361">
   <defs>
     <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="black">
       <g>
@@ -13,8 +13,8 @@
       </font-face-src>
     </font-face>
   </defs>
-  <metadata> Produced by OmniGraffle 7.18.5\n2021-05-18 10:56:19 +0000</metadata>
-  <g id="http-auth-cache-success" fill-opacity="1" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill="none">
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-08-04 13:44:20 +0000</metadata>
+  <g id="http-auth-cache-success" fill="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" stroke="none">
     <title>http-auth-cache-success</title>
     <g id="http-auth-cache-success_Layer_1">
       <title>Layer 1</title>

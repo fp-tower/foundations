@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 604 370" width="604" height="370">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker_2" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#b1001c">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <font-face font-family="Helvetica Neue" font-size="24" panose-1="2 0 8 3 0 0 0 9 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="975.0061" descent="-216.99524" font-weight="700">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue-Bold"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-08-04 13:44:20 +0000</metadata>
+  <g id="partial-function-1" fill="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>partial-function-1</title>
+    <g id="partial-function-1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_98">
+        <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#70a3d8"/>
+        <ellipse cx="117" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_99">
+        <ellipse cx="495" cy="207" rx="108.000172573405" ry="162.000258860107" fill="#599a9e"/>
+        <ellipse cx="495" cy="207" rx="108.000172573405" ry="162.000258860107" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_36">
+        <path d="M 103.5 90 L 144 130.5 L 103.5 171 L 63 130.5 Z" fill="#589b9d"/>
+        <path d="M 103.5 90 L 144 130.5 L 103.5 171 L 63 130.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(78.935 120.466)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x=".471" y="15">Input 1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_100">
+        <path d="M 166.5 180 L 207 216 L 166.5 252 L 126 216 Z" fill="#589b9d"/>
+        <path d="M 166.5 180 L 207 216 L 166.5 252 L 126 216 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(141.935 206.056)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x=".471" y="15">Input 2</tspan>
+        </text>
+      </g>
+      <g id="Graphic_101">
+        <path d="M 94.5 270 L 135 306 L 94.5 342 L 54 306 Z" fill="#ff8080"/>
+        <path d="M 94.5 270 L 135 306 L 94.5 342 L 54 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(69.935 296.056)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x=".471" y="15">Input 3</tspan>
+        </text>
+      </g>
+      <g id="Graphic_102">
+        <path d="M 450 90 L 486 126 L 450 162 L 414 126 Z" fill="#70a3d8"/>
+        <path d="M 450 90 L 486 126 L 450 162 L 414 126 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(428.72 106.832)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.104" y="33.448">32…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_103">
+        <path d="M 459 225 L 495 261 L 459 297 L 423 261 Z" fill="#70a3d8"/>
+        <path d="M 459 225 L 495 261 L 459 297 L 423 261 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(437.72 241.832)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.104" y="33.448">45…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_104">
+        <path d="M 549 162 L 585 198 L 549 234 L 513 198 Z" fill="#70a3d8"/>
+        <path d="M 549 162 L 585 198 L 549 234 L 513 198 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(527.72 178.832)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.104" y="33.448">33…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_105">
+        <path d="M 531 270 L 567 306 L 531 342 L 495 306 Z" fill="#70a3d8"/>
+        <path d="M 531 270 L 567 306 L 531 342 L 495 306 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(509.72 286.832)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.104" y="33.448">11…</tspan>
+        </text>
+      </g>
+      <g id="Graphic_106">
+        <path d="M 522 63 L 558 99 L 522 135 L 486 99 Z" fill="#70a3d8"/>
+        <path d="M 522 63 L 558 99 L 522 135 L 486 99 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(500.72 79.832)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="4.208" y="15">0476</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="white" x="5.104" y="33.448">99…</tspan>
+        </text>
+      </g>
+      <g id="Line_107">
+        <line x1="143.48077" y1="129.98077" x2="401.56263" y2="126.62906" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_109">
+        <line x1="201.0246" y1="221.31148" x2="415.05" y2="254.23846" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_113">
+        <line x1="130.38608" y1="310.10127" x2="239.18343" y2="322.53525" marker-end="url(#FilledArrow_Marker_2)" stroke="#b1001c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_116">
+        <text transform="translate(88.124 5)" fill="#70a3d8">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#70a3d8" x="0" y="23">Input</tspan>
+        </text>
+      </g>
+      <g id="Graphic_115">
+        <text transform="translate(434.12 5)" fill="#599a9e">
+          <tspan font-family="Helvetica Neue" font-size="24" font-weight="700" fill="#599a9e" x="3339551e-19" y="23">Debit Card</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

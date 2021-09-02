@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 676 91" width="676" height="91">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-08-04 13:44:20 +0000</metadata>
+  <g id="foo-role" fill="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>foo-role</title>
+    <g id="foo-role_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_190">
+        <ellipse cx="94.5" cy="54" rx="67.500107858378" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="94.5" cy="54" rx="67.500107858378" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(45.5 27.384003)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="30.058" y="21">Foo</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="7.86" y="47.616">[Reader]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_188">
+        <ellipse cx="265.5" cy="54" rx="67.500107858378" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="265.5" cy="54" rx="67.500107858378" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(216.5 27.384003)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="30.058" y="21">Foo</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="14.174" y="47.616">[Editor]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_187">
+        <ellipse cx="436.5" cy="54" rx="67.5001078583779" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="436.5" cy="54" rx="67.5001078583779" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(387.5 27.384003)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="30.058" y="21">Foo</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="11.71" y="47.616">[Admin]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_186">
+        <ellipse cx="607.5" cy="54" rx="67.500107858378" ry="36.0000575244683" fill="#599a9e"/>
+        <ellipse cx="607.5" cy="54" rx="67.500107858378" ry="36.0000575244683" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(558.5 27.384003)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="30.058" y="21">Foo</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="21.104" y="47.616">[Role]</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Validation</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Validation]
+
+---
+# Validation
+
+<br><br>
+
+
+.forty-seven-left[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: List[E])
+}
+```
+]
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   `Valid`(value: A)
+  case Invalid(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case `Right`(value: A)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case `Invalid`(value: List[E])
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  `Left`(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+
+---
+# Validation vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: `List[E]`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: `E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// `Valid(User(Username("bob_2167"), France))`
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// `Invalid(List(NotSupported("UK")))`
+
+validateUser("bo", "FRA")
+// `Invalid(List(TooSmall(2)))`
+
+validateUser("bo", "UK")
+// Invalid(List(TooSmall(2), NotSupported("UK")))
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+validateUser("bob_2167", "FRA")
+// Valid(User(Username("bob_2167"), France))
+
+validateUser("bob_2167", "UK")
+// Invalid(List(NotSupported("UK")))
+
+validateUser("bo", "FRA")
+// Invalid(List(TooSmall(2)))
+
+validateUser("bo", "UK")
+// `Invalid(List(TooSmall(2), NotSupported("UK")))`
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+Invalid(`Nil`)
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+0 +: NEL(1, 2, 3)
+// res: NEL[Int] = NEL(0, 1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+`NEL(1, 2, 3)`
+// res: NEL[Int] = NEL(1, 2, 3)
+
+0 +: NEL(1, 2, 3)
+// res: NEL[Int] = NEL(0, 1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+0 +: NEL(1, 2, 3)
+// res: `NEL[Int]` = NEL(0, 1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: `NEL[Int]` = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: List[Int] = List()
+```
+]
+
+---
+# Non Empty List (NEL)
+
+<br><br>
+
+
+.eighty-seven-left[
+```scala
+case class NEL[+A](head: A, tail: List[A])
+
+
+NEL(1, 2, 3)
+// res: NEL[Int] = NEL(1, 2, 3)
+
+0 +: NEL(1, 2, 3)
+// res: NEL[Int] = NEL(0, 1, 2, 3)
+
+NEL(1, 2, 3) :+ 4
+// res: NEL[Int] = NEL(1, 2, 3, 4)
+
+NEL(1, 2, 3).filter(_ > 10)
+// res: `List[Int]` = List()
+```
+]
+
+---
+# Validation
+
+<br><br>
+
+
+.forty-seven-left[
+```scala
+enum Validation[+E, +A] {
+  case   Valid(value: A)
+  case Invalid(value: `NEL`[E])
+}
+```
+]
+
+---
+background-image: url(../img/fp-tower/website-background-white.svg)
+
+class: middle, white
+
+## package exercises.errorhandling.validation
+
+# ValidationExercises.scala
+
+---
+background-image: url(../img/fp-tower/website-background.svg)
+
+
+# .white[Summary]
+
+<br>
+
+## .white[NonEmptyList is a List with at least 1 element]
+
+## .white[Validation can store multiple errors]
+
+## .white[zip and zipWith accumulate errors]
+
+## .white[For-comprehension fails early]
+
+---
+# Extension methods on Either
+
+<br><br>
+
+
+```scala
+type Validation[+E, +A] = `Either[NEL[E], A]`
+
+implicit class EitherNelSyntax[E, A](either: Validation[E, A]) {
+
+  def zip[E2 >: E, Other](other: Validation[E2, Other]): Validation[E2, (A, Other)] =
+    ???
+
+}
+```
+
+---
+# Extension methods on Either
+
+<br><br>
+
+
+```scala
+type Validation[+E, +A] = Either[NEL[E], A]
+
+implicit class EitherNelSyntax[E, A](either: Validation[E, A]) {
+
+  def `zip`[E2 >: E, Other](other: Validation[E2, Other]): Validation[E2, (A, Other)] =
+    ???
+
+}
+```
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

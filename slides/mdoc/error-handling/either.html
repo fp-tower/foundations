@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Either</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(../img/fp-tower/website-background.svg)
+
+class: center, middle, white
+
+.title[Either]
+
+---
+# Option
+
+<br><br>
+.forty-seven-left[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
+}
+```
+]
+
+---
+# Option
+
+<br><br>
+.forty-seven-left[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  `case None`
+}
+```
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(`error: Throwable`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(`value: A`)
+  case None
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(`value: A`)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case `None`
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case `Failure`(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Option vs Try
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Option[+A] {
+  case Some(value: A)
+  case None
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+.sixty-seven-left[
+
+## Success & Failure are great names
+## Throwable is the main error type on the JVM
+]
+
+
+---
+# Try limitation
+
+<br>
+
+```scala
+val result: Try[Int] = ...
+
+result.recover {
+  case e: FileNotFoundException => ...
+  case e: TimeoutException      => ...
+  case other                    => ...
+}
+```
+
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(`value: A`)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(`value: A`)
+  case  Left(value: E)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(`error: Throwable`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case  Left(`value: E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Try vs Either
+
+<br><br>
+
+.cols[
+.forty-five[
+```scala
+enum Try[+A] {
+  case Success(value: A)
+  case Failure(error: Throwable)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+.forty-five[
+```scala
+enum Either[+`E`, +A] {
+  case Right(value: A)
+  case  Left(value: `E`)
+}
+```
+]
+
+.ten[&nbsp;&nbsp;&nbsp;]
+
+]
+
+---
+# Custom error type
+
+<br><br>
+.fifty-seven-left[
+```scala
+enum Either[+E, +A] {
+  case Right(value: A)
+  case Left (value: E)
+}
+```
+]
+
+<br>
+.fifty-seven-left[
+```scala
+val result1: Either[`String`          , Int] = ...
+
+val result2: Either[`TimeoutException`, Int] = ...
+```
+]
+
+---
+# Why Left and Right?
+
+<br><br>
+.sixty-two-left[
+```scala
+enum Either[+E, +A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+```scala
+def getUser(identifier: `Either[Email, UserId]`): User =
+  identifier match {
+    case Left(email)   => ...
+    case Right(userId) => ...
+  }
+```
+]
+
+---
+# Why Left is for failure and Right for success?
+
+<br><br>
+.sixty-two-left[
+```scala
+enum Either[+E, +A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+```scala
+val result1: Either[String, Int] = Right(1)
+val result2: Either[String, Int] = Left("Oops")
+
+result1.map(_ + 1)
+// res: Either[String, Int] = `Right(2)`
+result2.map(_ + 1)
+// res: Either[String, Int] = `Left("Oops")`
+```
+]
+
+
+---
+class: medium-code
+# Either vs Union Type (Scala 3)
+
+<br>
+.fifty-two-left[
+```scala
+enum Either[E, A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+]
+
+<br>
+.fifty-two-left[
+```scala
+val result1: Either[String, Int] = Left("Hello")
+
+val result2: Either[String, Int] = Right(5)
+```
+]
+
+.forty-two-right[
+```scala
+val result1: String | Int = "Hello"
+
+val result2: String | Int = 5
+```
+]
+
+
+---
+class: medium-code
+# Either
+
+<br>
+.eighty-seven-left[
+```scala
+enum Either[E, A] {
+  case Left (value: E)
+  case Right(value: A)
+}
+```
+
+<br>
+
+```scala
+val result: Either[String, Int] = Left("Username must be at least 8 characters long")
+```
+]
+
+---
+# Error Hierarchy
+
+<br>
+
+.eighty-seven-left[.center[
+<img src="../img/foundation/user-error-1.svg" style="width:700px;"/>
+]]
+
+---
+# Error Hierarchy
+
+<img src="../img/foundation/user-error-2.svg" style="width:800px;"/>
+
+---
+# Error Hierarchy
+
+<br>
+
+.eighty-seven-left[.center[
+<img src="../img/foundation/user-error-3.svg" style="width:1000px;"/>
+]]
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

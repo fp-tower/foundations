@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Foundations</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<textarea id="source">
+
+background-image: url(img/fp-tower/foundation-cover.svg)
+
+
+---
+# Julien Truffaut
+
+<br>
+<br>
+.large[
+## Backend developer for 10+ years
+
+## Run study groups and corporate trainings
+
+## Author of &nbsp<img src="img/fp-tower/monocle-logo.png" alt="Monocle" style="width:150px;"/>
+]
+
+---
+class: center, middle
+
+# Practical concepts of functional programming
+
+--
+
+### Why FP matters to you, your colleagues and your business?
+
+---
+class: center
+
+<br><br><br><br><br><br>
+
+# Become a Scala expert
+
+<img src="img/screenshot/scala-2.svg" alt="Scala" style="width:300px;"/>
+
+---
+class: center, middle
+
+# Prerequisites
+
+### Basic understanding of the Scala syntax
+
+---
+# Lots of exercises, refactoring and IDE tips
+
+.center[
+<img src="img/screenshot/getUserEmail-0.png" alt="Refactoring" style="width:600px;"/>
+]
+
+---
+# Lots of exercises, refactoring and IDE tips
+
+.center[
+<img src="img/screenshot/getUserEmail-1.png" alt="Refactoring" style="width:600px;"/>
+]
+
+---
+# Lots of exercises, refactoring and IDE tips
+
+.center[
+<img src="img/screenshot/getUserEmail-2.png" alt="Refactoring" style="width:600px;"/>
+]
+
+---
+# Lots of exercises, refactoring and IDE tips
+
+.center[
+<img src="img/screenshot/getUserEmail-3.png" alt="Refactoring" style="width:600px;"/>
+]
+
+---
+# Answers and test suite
+
+.center[
+<img src="img/screenshot/exercises-answers.png" alt="Exercises and answers" style="width:1100px;"/>
+]
+
+.center[
+<img src="img/screenshot/tests.png" alt="sbt test" style="width:500px;"/>
+]
+
+---
+# Online community
+
+.center[
+<img src="img/screenshot/slack.png" alt="Slack" style="width:700px;"/>
+]
+
+
+
+
+
+---
+# Plan
+
+<br>
+
+.forty-two-left[
+## 1. Value functions
+
+## 2. Generic functions
+
+## 3. Parallel data processing
+]
+
+.fifty-two-right[
+## 4. What is functional programming?
+
+## 5. Actions
+
+## 6. Error handling
+]
+
+---
+# Property Based Testing (PBT)
+
+.eighty-two-left[
+```scala
+test("isValidUsername") {
+  assert(isValidUsername("john-doe") == true)
+  assert(isValidUsername("*john*")   == false)
+}
+```
+
+<br>
+
+```scala
+test("order of characters doesn't affect validity") {
+  forAll { (username: String) =>
+
+    val randomUsername = Random.shuffle(username).toString
+
+    assert(isValidUsername(username) == isValidUsername(randomUsername))
+  }
+}
+```
+]
+
+---
+# Property Based Testing (PBT)
+
+.sixty-seven-left[
+```scala
+def stringToInt(text: String): Option[Int] =
+  Try(text.toInt).toOption
+
+test("Int -> String -> Int round trip") {
+  forAll { (number: Int) =>
+    val encoded: String      = number.toString
+    val decoded: Option[Int] = stringToInt(encoded)
+
+    assert(decoded == Some(number))
+  }
+}
+```
+]
+
+---
+# Property Based Testing (PBT)
+
+.sixty-seven-left[
+```scala
+def stringToInt(text: String): Option[Int] =
+  Try(text.toInt).toOption
+
+test("String -> Int -> String round trip") {
+  forAll { (text: String) =>
+    stringToInt(text) match {
+      case Some(number) => assert(number.toString == text)
+      case None         => succeed
+    }
+  }
+}
+```
+]
+
+---
+# Property Based Testing (PBT)
+
+.sixty-seven-left[
+```scala
+def stringToInt(text: String): Option[Int] =
+  Try(text.toInt).toOption
+
+test("String -> Int -> String round trip") {
+  forAll { (text: String) =>
+    stringToInt(text) match {
+      case Some(number) => assert(number.toString == text)
+      case None         => succeed
+    }
+  }
+}
+```
+]
+
+.sixty-seven-left[
+```bash
+TestFailedException was thrown during property evaluation.
+  Message: "[9]" did not equal "[꩙]"
+  Occurred when passed generated values (
+    arg0 = "꩙"
+  )
+```
+]
+
+--
+
+.twenty-seven-right[
+<br>
+```scala mdoc
+"꩙".toInt
+```
+]
+
+---
+class: center, middle
+
+# Demo
+
+---
+background-image: url(img/fp-tower/website-background.svg)
+
+class:  middle
+
+.forty-seven-left[
+## .white[Website: &nbspwww.fp-tower.com]
+
+## .white[Email: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp julien@fp-tower.com]
+
+## .white[Twitter: &nbsp&nbsp@TheFpTower]
+]
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create({
+        ratio: "16:9",
+        slideNumberFormat: '',
+        highlightLines: true,
+        highlightSpans: true,
+    });
+</script>
+</body>
+</html>

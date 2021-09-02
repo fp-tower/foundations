@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 739 307" width="739" height="307">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="22" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#424242">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-08-04 13:44:20 +0000</metadata>
+  <g id="user-error-1" fill="none" stroke-opacity="1" fill-opacity="1" stroke-dasharray="none" stroke="none">
+    <title>user-error-1</title>
+    <g id="user-error-1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_99">
+        <ellipse cx="364.5" cy="36" rx="67.500107858378" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="364.5" cy="36" rx="67.500107858378" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(315.5 22.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.162" y="21">UserError</tspan>
+        </text>
+      </g>
+      <g id="Graphic_118">
+        <ellipse cx="189" cy="144" rx="108.000172573405" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="189" cy="144" rx="108.000172573405" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(107.6 130.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="7.0510015" y="21">UsernameError</tspan>
+        </text>
+      </g>
+      <g id="Graphic_119">
+        <ellipse cx="580.5" cy="144" rx="130.500208526197" ry="27.0000431433512" fill="#599a9e"/>
+        <ellipse cx="580.5" cy="144" rx="130.500208526197" ry="27.0000431433512" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(481.1 130.692)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="36.458" y="21">CountryError</tspan>
+        </text>
+      </g>
+      <g id="Graphic_122">
+        <ellipse cx="265.5" cy="270" rx="76.5001222394951" ry="36.0000575244682" fill="#599a9e"/>
+        <ellipse cx="265.5" cy="270" rx="76.5001222394951" ry="36.0000575244682" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(209.3 243.384)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.421" y="21">Invalid</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="2.2230008" y="47.616">Characters</tspan>
+        </text>
+      </g>
+      <g id="Graphic_124">
+        <ellipse cx="468" cy="270" rx="81.0001294300536" ry="36.0000575244682" fill="#599a9e"/>
+        <ellipse cx="468" cy="270" rx="81.0001294300536" ry="36.0000575244682" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(408.2 243.384)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="42.079" y="21">Not</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="7.637999" y="47.616">Supported</tspan>
+        </text>
+      </g>
+      <g id="Line_126">
+        <line x1="229.65924" y1="118.97893" x2="316.7194" y2="65.40345" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_127">
+        <line x1="530.59004" y1="119.04502" x2="418.2087" y2="62.85434" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_129">
+        <line x1="244.48" y1="235.37884" x2="211.9031" y2="181.72276" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_130">
+        <line x1="497.8841" y1="236.5298" x2="548.20014" y2="180.17584" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_145">
+        <ellipse cx="679.5" cy="270" rx="58.5000934772609" ry="36.0000575244682" fill="#599a9e"/>
+        <ellipse cx="679.5" cy="270" rx="58.5000934772609" ry="36.0000575244682" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(637.7 243.384)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="10.020999" y="21">Invalid</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="6.753999" y="47.616">Format</tspan>
+        </text>
+      </g>
+      <g id="Line_146">
+        <line x1="654.0279" y1="237.58094" x2="609.4109" y2="180.79565" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_148">
+        <ellipse cx="76.5" cy="270" rx="58.5000934772609" ry="36.0000575244682" fill="#599a9e"/>
+        <ellipse cx="76.5" cy="270" rx="58.5000934772609" ry="36.0000575244682" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(34.7 243.384)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="24.079" y="21">Too</tspan>
+          <tspan font-family="Helvetica Neue" font-size="22" font-weight="400" fill="white" x="14.498" y="47.616">Small</tspan>
+        </text>
+      </g>
+      <g id="Line_147">
+        <line x1="104.67792" y1="238.44073" x2="156.87728" y2="179.97744" marker-end="url(#FilledArrow_Marker)" stroke="#424242" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>
