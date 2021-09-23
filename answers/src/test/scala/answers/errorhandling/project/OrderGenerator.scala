@@ -19,7 +19,7 @@ object OrderGenerator {
 
   val durationGen: Gen[Duration] =
     Gen
-      .chooseNum(0L, Duration.ofDays(400).toSeconds)
+      .chooseNum(0L, Duration.ofDays(400).getSeconds)
       .map(Duration.ofSeconds)
 
   def nelOf[A](gen: Gen[A]): Gen[NEL[A]] =
