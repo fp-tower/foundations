@@ -12,14 +12,13 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
     "-language:existentials",
     "-language:postfixOps",
     "-unchecked",
-    "-Ywarn-value-discard",
+    "-Ywarn-value-discard"
 //    "-Wconf:cat=other-match-analysis:error", // uncomment to transform non-exhaustive warnings into errors
 //    "-Wconf:cat=unchecked:error",            // uncomment to transform type erasure warnings into errors
   ),
-  addCompilerPlugin(kindProjector),
   libraryDependencies ++= Seq(
     kantanGeneric,
-    scalatest,
+    scalatest
   )
 )
 
@@ -44,9 +43,8 @@ lazy val slides = project
   .settings(baseSettings: _*)
   .settings(
     mdocIn := baseDirectory.value / "mdoc",
-    mdocOut := baseDirectory.value / "docs",
+    mdocOut := baseDirectory.value / "docs"
   )
   .enablePlugins(MdocPlugin)
-
 
 addCommandAlias("testAnswers", "answers/test")
