@@ -18,7 +18,8 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   ),
   libraryDependencies ++= Seq(
     kantanGeneric,
-    scalatest
+    scalatest,
+    scalacheck,
   )
 )
 
