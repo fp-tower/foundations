@@ -68,11 +68,11 @@ defaultShow(true)
 def show(value: List[String]): String = ???
 def show(value: List[Double]): String = ???
 // error: double definition:
-// def show(value: List[String]): String at line 23 and
-// def show(value: List[Double]): String at line 24
+// def show(value: List[String]): String at line 21 and
+// def show(value: List[Double]): String at line 22
 // have same type after erasure: (value: List): String
 // def show(value: List[Double]): String = ???
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//     ^^^^
 ```
 
 ---

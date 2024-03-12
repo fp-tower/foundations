@@ -373,10 +373,10 @@ case class JsonObject(obj: Map[String, Json])
 <br>
 ```scala
 val number = JsonNumber(12)
-// number: JsonNumber = JsonNumber(12.0)
+// number: JsonNumber = JsonNumber(number = 12.0)
 
 val json: Json = JsonNumber(12)
-// json: Json = JsonNumber(12.0)
+// json: Json = JsonNumber(number = 12.0)
 ```
 ]
 

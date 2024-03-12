@@ -149,7 +149,7 @@ val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
 ```scala
 map(users, (user: User) => user.name)
 // error: type mismatch;
-//  found   : App0.this.User => String
+//  found   : MdocApp0.this.User => String
 //  required: java.io.Serializable => java.io.Serializable
 // map(users, (user: User) => user.name)
 //            ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -174,7 +174,7 @@ val users = List(User("John", 23), User("Eda", 37), User("Bob", 18))
 map[User](users, (user: User) => user.name)
 // error: type mismatch;
 //  found   : String
-//  required: App0.this.User
+//  required: MdocApp0.this.User
 // map[User](users, (user: User) => user.name)
 //                                  ^^^^^^^^^
 ```
@@ -336,7 +336,7 @@ def map[A](list: List[A], update: A => A): List[A]
 ```scala
 map(users, (user: User) => user.name)
 // error: type mismatch;
-//  found   : App5.this.User => String
+//  found   : MdocApp5.this.User => String
 //  required: java.io.Serializable => java.io.Serializable
 // map(users, (user: User) => user.name)
 //            ^^^^^^^^^^^^^^^^^^^^^^^^^
