@@ -1,7 +1,7 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.13.6",
+  scalaVersion := "2.13.13",
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
