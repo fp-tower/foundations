@@ -1,7 +1,7 @@
 import Dependencies._
 
 lazy val baseSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.13.13",
+  scalaVersion := "2.13.14",
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
@@ -19,7 +19,7 @@ lazy val baseSettings: Seq[Setting[_]] = Seq(
   libraryDependencies ++= Seq(
     kantanGeneric,
     scalatest,
-    scalacheck,
+    scalacheck
   )
 )
 
