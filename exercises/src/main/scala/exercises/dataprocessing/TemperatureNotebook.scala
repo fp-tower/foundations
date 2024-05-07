@@ -11,7 +11,7 @@ import kantan.csv.ops._
 object TemperatureNotebook extends App {
 
   // !!!!  IMPORTANT !!!!
-  // Download the dataset from https://www.dropbox.com/s/4pf6h2oxw4u7xsq/city_temperature.csv?dl=0
+  // Download the dataset from https://www.dropbox.com/s/4pf6h2oxw4u7xsq/city_temperature.csv?st=g4hnagip&dl=0
   // and place the csv file in the resource directory (exercises/src/main/resources)
 
   // We use kantan.csv library to parse the each csv raw into a case class `Sample`
